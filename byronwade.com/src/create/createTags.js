@@ -1,46 +1,53 @@
 const path = require(`path`)
-const blocks = require(`./blocks/all`)
-
 module.exports = async ({ actions, graphql }) => {
-    const GET_TAGS = `
-  query GET_TAGS($first:Int){
+  const GET_TAGS = `
+  query GET_TAGS($first: Int, $after: String) {
     wordpress {
-        tags( first: $first ) {
+      tags(first: $first, after: $after) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
         nodes {
-            blocks {
-                isValid
-                name
-                originalContent
-                ${blocks.coreP}
-                ${blocks.coreHeading}
-            }
-            title
-            uri
-            slug
+          id
+          tagId
+          slug
         }
       }
     }
   }
   `
-    const { createPage } = actions
-
-    const fetchPages = async variables =>
+  const { createPage } = actions
+  const allTags = []
+  const fetchTags = async variables =>
     await graphql(GET_TAGS, variables).then(({ data }) => {
-        return data.wordpress.tags.nodes
+      const {
+        wordpress: {
+          tags: {
+            nodes,
+            pageInfo: { hasNextPage, endCursor },
+          },
+        },
+      } = data
+      nodes.map(tag => {
+        allTags.push(tag)
+      })
+      if (hasNextPage) {
+        return fetchTags({ first: 100, after: endCursor })
+      }
+      return allTags
     })
 
-    await fetchPages({ first: 500 }).then(allPages => {
-        allPages.map(tag => {
-            console.log(`Create Tags: ${tag.slug}`)
-            const uri = `/${tag.uri}`
-            actions.createPage({
-                path: uri,
-                component: path.resolve(`./src/templates/tag.js`),
-                context: {
-                    ...tag,
-                    title: tag.title,
-                },
-            })
-        })
+  await fetchTags({ first: 100, after: null }).then(allTags => {
+    const tagTemplate = path.resolve(`./src/templates/tag.js`)
+
+    allTags.map(tag => {
+      console.log(`create tag: ${tag.slug}`)
+      createPage({
+        path: `/blog/tag/${tag.slug}`,
+        component: tagTemplate,
+        context: tag,
+      })
     })
+  })
 }

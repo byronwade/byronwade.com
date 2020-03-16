@@ -1,70 +1,53 @@
 const path = require(`path`)
-const slash = require(`slash`)
-const blocks = require(`./blocks/all`)
-
 module.exports = async ({ actions, graphql }) => {
   const GET_WORKS = `
-  query GET_WORKS($first:Int){
+  query GET_WORKS($first:Int $after:String){
     wordpress {
-      works( first: $first ) {
+      works(first: $first after: $after where: {parent: null}) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
         nodes {
-            blocks {
-              isValid
-              originalContent
-              name
-              ${blocks.coreP}
-              ${blocks.coreHeading}
-            }
-            content
-            id
-            slug
-            title
-            excerpt
-            uri
-            date
-          }
+          title
+          id
+          slug
+          uri
+        }
       }
     }
   }
   `
   const { createPage } = actions
-
-  const fetchPosts = async variables =>
+  const allWorks = []
+  const fetchPages = async variables =>
     await graphql(GET_WORKS, variables).then(({ data }) => {
-      return data.wordpress.works.nodes
-    })
-
-  await fetchPosts({ first: 500 }).then(allPosts => {
-
-
-    const worksPerPage = 15
-    const numberOfPages = Math.ceil(allPosts.length / worksPerPage)
-    const blogPostListTemplate = path.resolve('./src/templates/work.js')
-  
-    Array.from({length: numberOfPages}).forEach((page, index) => {
-        createPage({
-            component: slash(blogPostListTemplate),
-            path: index === 0 ? '/work' : `/work/${index + 1}`,
-            context: {
-                works: allPosts.slice(index * worksPerPage, (index * worksPerPage) + worksPerPage),
-                numberOfPages,
-                currentPage: index + 1
-            }
-        })
-    })
-
-    allPosts.map(work => {
-      console.log(`Create Work: ${work.slug}`)
-
-      actions.createPage({
-        path: `/work/${work.slug}`,
-        component: path.resolve(`./src/templates/workPage.js`),
-        context: {
-          ...work,
-          id: work.id,
-          slug: work.uri,
-          title: work.title,
+      const {
+        wordpress: {
+          works: {
+            nodes,
+            pageInfo: { hasNextPage, endCursor },
+          },
         },
+      } = data
+      nodes.map(page => {
+        allWorks.push(page)
+      })
+      if (hasNextPage) {
+        return fetchPages({ first: variables.first, after: endCursor })
+      }
+      return allWorks
+    })
+
+  await fetchPages({ first: 100, after: null }).then(allWorks => {
+    const pageTemplate = path.resolve(`./src/templates/work.js`)
+
+    allWorks.map(page => {
+      console.log(`create work: ${page.uri}`)
+      createPage({
+        path: `/${page.uri}`,
+        component: pageTemplate,
+        context: page,
       })
     })
   })

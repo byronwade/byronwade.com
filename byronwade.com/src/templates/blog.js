@@ -1,41 +1,76 @@
-import React from "react"
-import moment from "moment"
-import { Link } from "gatsby"
+import React, { Component } from "react"
+import { graphql } from "gatsby"
+import Link from "../utils/links"
 
-import Layout from "../components/layout"
-//import Image from "../components/image"
-import SEO from "../components/seo"
+import Layout from "../components/body/layout"
 
-const Blog = ({pageContext}) => (
-    
-  <Layout>
-    <SEO title='{pageContext.title}' />
-    {pageContext.posts.map(post => (
-        <div key={post.id}>
-            <h3 dangerouslySetInnerHTML={{__html: post.title}} />
-            <small>
-                {moment(new Date(post.date)).format("MM/DD/YYYY")}
-            </small>
-            <p dangerouslySetInnerHTML={{__html: post.excerpt}} />
-            <div>
-                <Link to={`/blog/${post.slug}`}>
-                    Read more
-                </Link>
+class IndexPage extends Component {
+  renderPreviousLink = () => {
+    const { pageContext: { pageNumber }, } = this.props
+
+    let previousLink = null
+
+    if (!pageNumber) {
+      return null
+    } else if (1 === pageNumber) {
+      previousLink = `/blog/`
+    } else if (1 < pageNumber) {
+      previousLink = `/blog/${pageNumber - 1}`
+    }
+
+    return (
+      <Link type="primary" to={previousLink}>
+        Previous Posts
+      </Link>
+    )
+  }
+
+  renderNextLink = () => {
+    const { pageContext: { hasNextPage, pageNumber }, } = this.props
+
+    if (hasNextPage) {
+      return (
+        <Link type="primary" to={`/blog/${pageNumber + 1}`} >
+          Next Posts
+        </Link>
+      )
+    } else {
+      return null
+    }
+  }
+
+  render() {
+    const { data, location, pageContext: { pageNumber }, } = this.props
+    const blogPageNumber = pageNumber ? ` Page ${pageNumber}` : ``
+    return (
+      <Layout pageNumber={pageNumber} location={{ location }}>
+        {data && data.wordpress && data.wordpress.posts.nodes.map(post => (
+            <div key={post.id}>
+              {blogPageNumber}
             </div>
+          ))}
+        <div>
+          {this.renderPreviousLink()}
         </div>
-    ))}
-    <div>
-        {Array.from({length: pageContext.numberOfPages}).map((page, index) => (
-            <div key={index}>
-                {index === 0 ? '' : (
-                    <Link activeClassName="active" to={index === 0 ? '/blog' : `/blog/${index + 1}`}>
-                        {index + 1}
-                    </Link>
-                )}
-            </div>
-        ))}
-    </div>
-  </Layout>
-  )
+        <div>
+          {this.renderNextLink()}
+        </div>
+      </Layout>
+    )
+  }
+}
 
-export default Blog
+export default IndexPage
+
+export const query = graphql`
+  query GET_POSTS($ids: [ID]) {
+    wordpress {
+      posts(where: { in: $ids }) {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  }
+`

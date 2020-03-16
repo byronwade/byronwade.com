@@ -1,77 +1,81 @@
 const path = require(`path`)
-const slash = require(`slash`)
-const blocks = require(`./blocks/all`)
-
 module.exports = async ({ actions, graphql }) => {
   const GET_POSTS = `
-  query GET_POSTS($first:Int){
+  query GET_POSTS($first:Int $after:String){
     wordpress {
-      posts( first: $first ) {
+      posts(
+        first: $first 
+        after:$after
+      ) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
         nodes {
-            blocks {
-              isValid
-              originalContent
-              name
-              ${blocks.coreP}
-              ${blocks.coreHeading}
-            }
-            categories {
-              nodes {
-                name
-                slug
-                termTaxonomyId
-              }
-            }
-            content
-            id
-            slug
-            title
-            uri
-            date
-          }
+          id
+          uri
+          postId
+          title
+        }
       }
     }
   }
   `
   const { createPage } = actions
-
+  const allPosts = []
+  const blogPages = []
+  let pageNumber = 0
   const fetchPosts = async variables =>
     await graphql(GET_POSTS, variables).then(({ data }) => {
-      return data.wordpress.posts.nodes
+      const {
+        wordpress: {
+          posts: {
+            nodes,
+            pageInfo: { hasNextPage, endCursor },
+          },
+        },
+      } = data
+
+      const nodeIds = nodes.map(node => node.postId)
+      const blogTemplate = path.resolve(`./src/templates/blog.js`)
+      const blogPagePath = pageNumber === 0 ? `/blog/` : !variables.after ? `/blog/` : `/blog/${pageNumber}`
+
+      blogPages[pageNumber] = {
+        path: blogPagePath,
+        component: blogTemplate,
+        context: {
+          ids: nodeIds,
+          pageNumber: pageNumber,
+          hasNextPage: hasNextPage,
+        },
+        ids: nodeIds,
+      }
+      nodes.map(post => {
+        allPosts.push(post)
+      })
+      if (hasNextPage) {
+        pageNumber++
+        return fetchPosts({ first: 12, after: endCursor })
+      }
+      return allPosts
     })
 
-  await fetchPosts({ first: 500 }).then(allPosts => {
+  await fetchPosts({ first: 12, after: null }).then(allPosts => {
+    const postTemplate = path.resolve(`./src/templates/post.js`)
 
-
-    const postsPerPage = 15
-    const numberOfPages = Math.ceil(allPosts.length / postsPerPage)
-    const blogPostListTemplate = path.resolve('./src/templates/blog.js')
-  
-    Array.from({length: numberOfPages}).forEach((page, index) => {
-        createPage({
-            component: slash(blogPostListTemplate),
-            path: index === 0 ? '/blog' : `/blog/${index + 1}`,
-            context: {
-                posts: allPosts.slice(index * postsPerPage, (index * postsPerPage) + postsPerPage),
-                numberOfPages,
-                currentPage: index + 1
-            }
-        })
+    blogPages.map(blogPage => {
+      console.log(`createBlogPage ${blogPage.context.pageNumber}`)
+      createPage(blogPage)
     })
 
     allPosts.map(post => {
-      console.log(`Create Post: ${post.slug}`)
-
-      actions.createPage({
-        path: `/blog/${post.uri}`,
-        component: path.resolve(`./src/templates/post.js`),
-        context: {
-          ...post,
-          id: post.id,
-          slug: post.uri,
-          title: post.title,
-        },
+      console.log(`create post: ${post.uri}`)
+      createPage({
+        path: `/blog/${post.uri}/`,
+        component: postTemplate,
+        context: post,
       })
     })
   })
+
 }
