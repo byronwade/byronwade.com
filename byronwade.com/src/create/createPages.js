@@ -1,54 +1,60 @@
 const path = require(`path`)
-
-exports.createPages = async ({ graphql, actions, reporter }) => {
+module.exports = async ({ actions, graphql }) => {
   const GET_PAGES = `
   query GET_PAGES($first:Int $after:String){
     wordpress {
-      pages( first: $first after: $after ) {
+      pages(
+        first: $first 
+        after: $after
+        where: {
+          parent: null
+        }
+      ) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
         nodes {
-            blocks {
-                isValid
-                name
-                originalContent
-                ${blocks.coreP}
-                ${blocks.coreHeading}
-            }
-            isFrontPage
-            title
-            uri
-            slug
+          id
+          uri
+          pageId
+          title
+          isFrontPage
         }
       }
     }
   }
   `
-
-  if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`)
-    return
-  }
-
   const { createPage } = actions
-
+  const allPages = []
   const fetchPages = async variables =>
     await graphql(GET_PAGES, variables).then(({ data }) => {
-      return data.wordpress.pages.nodes
+      const {
+        wordpress: {
+          pages: {
+            nodes,
+            pageInfo: { hasNextPage, endCursor },
+          },
+        },
+      } = data
+      nodes.map(page => {
+        allPages.push(page)
+      })
+      if (hasNextPage) {
+        return fetchPages({ first: variables.first, after: endCursor })
+      }
+      return allPages
     })
 
-  await fetchPages({ first: 500 }).then(allPages => {
+  await fetchPages({ first: 100, after: null }).then(allPages => {
+    const pageTemplate = path.resolve(`./src/templates/page.js`)
+
     allPages.map(page => {
-      console.log(`Create Page: ${page.slug}`)
-
-      const { isFrontPage } = page
-      const slug = isFrontPage ? `/` : `/${page.slug}`
-
-      actions.createPage({
-        path: slug,
-        component: path.resolve(`./src/templates/page.js`),
-        context: {
-          ...page,
-          title: page.title,
-        },
+      console.log(`create page: ${page.uri}`)
+      createPage({
+        path: page.uri === "/" ? "/" : `/${page.uri}`,
+        component: pageTemplate,
+        context: page,
       })
     })
   })

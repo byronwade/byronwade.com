@@ -3,14 +3,14 @@ import { graphql } from 'gatsby'
 
 import Layout from "../components/body/layout"
 
-const Post = props => {
-const {
-  data: {
-    wordpress: { post },
-  },
-  pageContext,
-} = props
-const { title, content } = post
+const Case = props => {
+  const {
+    data: {
+      wordpress: { post },
+    },
+    pageContext,
+  } = props
+  const { title, content } = post
 
   return (
     <Layout>
@@ -18,14 +18,14 @@ const { title, content } = post
         <pre>{JSON.stringify(post, null, 4)}</pre>
     </Layout>
   )
- }
+}
 
-export default Post
+export default Case
 
 export const pageQuery = graphql`
-  query GET_POST($id: ID!) {
+  query GET_CASE($id: ID!) {
     wordpress {
-      post(id: $id) {
+      case(id: $id) {
         title
         content
         uri
@@ -34,18 +34,6 @@ export const pageQuery = graphql`
           slug
           avatar {
             url
-          }
-        }
-        tags {
-          nodes {
-            name
-            link
-          }
-        }
-        categories {
-          nodes {
-            name
-            link
           }
         }
       }

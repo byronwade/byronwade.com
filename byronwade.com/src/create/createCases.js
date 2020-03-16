@@ -1,70 +1,53 @@
 const path = require(`path`)
-const slash = require(`slash`)
-const blocks = require(`./blocks/all`)
-
 module.exports = async ({ actions, graphql }) => {
   const GET_CASES = `
-  query GET_CASES($first:Int){
+  query GET_CASES($first:Int $after:String){
     wordpress {
-      caseStudys( first: $first ) {
+      cases(first: $first after: $after where: {parent: null}) {
+        pageInfo {
+          endCursor
+          hasNextPage
+        }
         nodes {
-            blocks {
-              isValid
-              originalContent
-              name
-              ${blocks.coreP}
-              ${blocks.coreHeading}
-            }
-            content
-            id
-            slug
-            title
-            excerpt
-            uri
-            date
-          }
+          title
+          id
+          slug
+          uri
+        }
       }
     }
   }
   `
   const { createPage } = actions
-
-  const fetchPosts = async variables =>
+  const allCases = []
+  const fetchPages = async variables =>
     await graphql(GET_CASES, variables).then(({ data }) => {
-      return data.wordpress.caseStudys.nodes
-    })
-
-  await fetchPosts({ first: 500 }).then(allPosts => {
-
-
-    const casesPerPage = 15
-    const numberOfPages = Math.ceil(allPosts.length / casesPerPage)
-    const blogPostListTemplate = path.resolve('./src/templates/caseStudy.js')
-  
-    Array.from({length: numberOfPages}).forEach((page, index) => {
-        createPage({
-            component: slash(blogPostListTemplate),
-            path: index === 0 ? '/case-studies' : `/case-studies/${index + 1}`,
-            context: {
-                cases: allPosts.slice(index * casesPerPage, (index * casesPerPage) + casesPerPage),
-                numberOfPages,
-                currentPage: index + 1
-            }
-        })
-    })
-
-    allPosts.map(caseStudys => {
-      console.log(`Create Cases: ${caseStudys.slug}`)
-
-      actions.createPage({
-        path: `/case-studies/${caseStudys.slug}`,
-        component: path.resolve(`./src/templates/caseStudyPage.js`),
-        context: {
-          ...caseStudys,
-          id: caseStudys.id,
-          slug: caseStudys.slug,
-          title: caseStudys.title,
+      const {
+        wordpress: {
+          cases: {
+            nodes,
+            pageInfo: { hasNextPage, endCursor },
+          },
         },
+      } = data
+      nodes.map(page => {
+        allCases.push(page)
+      })
+      if (hasNextPage) {
+        return fetchPages({ first: variables.first, after: endCursor })
+      }
+      return allCases
+    })
+
+  await fetchPages({ first: 100, after: null }).then(allCases => {
+    const pageTemplate = path.resolve(`./src/templates/case.js`)
+
+    allCases.map(page => {
+      console.log(`create case: ${page.uri}`)
+      createPage({
+        path: `/${page.uri}`,
+        component: pageTemplate,
+        context: page,
       })
     })
   })
