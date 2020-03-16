@@ -1,0 +1,80 @@
+@import "colors.scss";
+/* GRID EXAMPLE */
+/* 
+<div className="container">
+  <div className="container__row">
+    <div className="container__col-sm-12 container__col-md-4">sm12, md4</div>
+    <div className="container__col-sm-12 container__col-md-4">sm12, md4</div>
+    <div className="container__col-sm-12 container__col-md-4">sm12, md4</div>
+  </div>
+</div>
+*/
+@import "grid.scss";
+@import "reset.scss";
+@import "type.scss";
+
+/*********************/
+.menu a {
+  padding:10px;
+}
+.container {
+  padding:50px;
+}
+/*********************/
+
+
+html, body {
+  font-family: 'Lato', sans-serif;
+}
+h1,h2,h3,h4,h5,h6 {
+  color: rgba(17,17,17,1);
+  font-family: 'Roboto', sans-serif;
+}
+h1 {
+  color: rgba(17,17,17,1);
+}
+p {
+  color: rgba(17,17,17,1);
+  font-weight: normal;
+}
+
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+.nav {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  padding: 20px;
+}
+.branding {
+  flex-direction: row;
+  margin-right: auto;
+  display: flex;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  color: #0083F6;
+  font-weight: bold;
+}
+
+
+
+.hero {
+  padding:100px 0;
+}
+
+
+
+
+
+.socialmedia {
+  padding: 40px 0;
+  a {
+    padding: 0 20px;
+  }
+}
