@@ -8,14 +8,17 @@ const {
   data: {
     wordpress: { tag },
   },
-  pageContext,
 } = props
-const { title, content } = tag
+const { slug, name } = tag
 
   return (
     <Layout>
-        <pre>{JSON.stringify(pageContext, null, 4)}</pre>
-        <pre>{JSON.stringify(tag, null, 4)}</pre>
+        <h1>All Props</h1>
+        <pre>{JSON.stringify(props, null, 4)}</pre>
+
+        <h1>Pulling Data Out</h1>
+        <pre>{JSON.stringify(slug, null, 4)}</pre>
+        <pre>{JSON.stringify(name, null, 4)}</pre>
     </Layout>
   )
  }

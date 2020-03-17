@@ -4,7 +4,7 @@ import Link from "../utils/links"
 
 import Layout from "../components/body/layout"
 
-class IndexPage extends Component {
+class WorksPage extends Component {
   renderPreviousLink = () => {
     const { pageContext: { pageNumber }, } = this.props
 
@@ -13,9 +13,9 @@ class IndexPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/blog/`
+      previousLink = `/work/`
     } else if (1 < pageNumber) {
-      previousLink = `/blog/${pageNumber - 1}`
+      previousLink = `/work/${pageNumber - 1}`
     }
 
     return (
@@ -30,7 +30,7 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/blog/${pageNumber + 1}`} >
+        <Link type="primary" to={`/work/${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -58,13 +58,13 @@ class IndexPage extends Component {
     const { data, location, pageContext: { pageNumber }, } = this.props
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
-        {data && data.wordpress && data.wordpress.posts.nodes.map(post => (
-            <div key={post.id}>
-              <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre>
-              <h1>{post.title}</h1>
-              <small>{post.date}</small>
-              <p>{post.excerpt}</p>
-              <Link to={"/blog/"+post.uri}>Read More</Link>
+        {data && data.wordpress && data.wordpress.works.nodes.map(work => (
+            <div key={work.id}>
+              <pre>{JSON.stringify(work.featuredImage, null, 4)}</pre>
+              <h1>{work.title}</h1>
+              <small>{work.date}</small>
+              <p>{work.excerpt}</p>
+              <Link to={'/'+work.uri}>Read More</Link>
             </div>
           ))}
 
@@ -77,12 +77,12 @@ class IndexPage extends Component {
   }
 }
 
-export default IndexPage
+export default WorksPage
 
 export const query = graphql`
-  query GET_POSTS($ids: [ID]) {
+  query GET_WORKS($id: Int) {
     wordpress {
-      posts(where: { in: $ids }) {
+      works(where: { id: $id }) {
         nodes {
           id
           slug
@@ -94,9 +94,6 @@ export const query = graphql`
             altText
             caption
             mediaItemUrl
-          }
-          blocks {
-            name
           }
         }
       }

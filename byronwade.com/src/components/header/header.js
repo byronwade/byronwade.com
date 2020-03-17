@@ -22,7 +22,7 @@ const Header = () => {
               ... on WORDPRESS_Work {
                 uri
               }
-              ... on WORDPRESS_Case {
+              ... on WORDPRESS_Casestudy {
                 uri
               }
               ... on WORDPRESS_Category {
