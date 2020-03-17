@@ -1,5 +1,6 @@
 import React from "react"
 import { graphql } from 'gatsby'
+//import Img from "gatsby-image"
 
 import Layout from "../components/body/layout"
 
@@ -36,8 +37,19 @@ export const pageQuery = graphql`
         content
         featuredImage {
           sourceUrl
-          title
-          slug
+          mediaItemId
+          modified
+          imageFile {
+            childImageSharp {
+              fluid(maxWidth: 650) {
+                base64
+                aspectRatio
+                src
+                srcSet
+                sizes
+              }
+            }
+          }
         }
         blocks {
           name

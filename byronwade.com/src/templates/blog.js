@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "gatsby"
 import Link from "../utils/links"
+//import Img from "gatsby-image"
 
 import Layout from "../components/body/layout"
 
@@ -63,7 +64,7 @@ class IndexPage extends Component {
               <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre>
               <h1>{post.title}</h1>
               <small>{post.date}</small>
-              <p>{post.excerpt}</p>
+              <div dangerouslySetInnerHTML={{__html: post.excerpt}} />
               <Link to={"/blog/"+post.uri}>Read More</Link>
             </div>
           ))}
@@ -91,9 +92,20 @@ export const query = graphql`
           excerpt
           uri
           featuredImage {
-            altText
-            caption
-            mediaItemUrl
+            sourceUrl
+            mediaItemId
+            modified
+            imageFile {
+              childImageSharp {
+                fluid(maxWidth: 650) {
+                  base64
+                  aspectRatio
+                  src
+                  srcSet
+                  sizes
+                }
+              }
+            }
           }
           blocks {
             name
