@@ -31,6 +31,15 @@ module.exports = {
         // refetchInterval: 600,
       },
     },
+    // {
+    //   resolve: 'gatsby-wpgraphql-inline-images',
+    //   options: {
+    //     wordPressUrl: 'http://64.225.119.202/',
+    //     uploadsUrl: 'http://64.225.119.202/wp-content/uploads/',
+    //     processPostTypes: ['Page', 'Post'],
+    //     graphqlTypeName: 'WORDPRESS',
+    //   },
+    // },
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
       options: {
