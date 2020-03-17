@@ -3,7 +3,7 @@ module.exports = async ({ actions, graphql }) => {
   const GET_WORKS = `
   query GET_WORKS($first:Int $after:String){
     wordpress {
-      works(first: $first after: $after where: {parent: null}) {
+      works(first: $first after: $after) {
         pageInfo {
           endCursor
           hasNextPage
@@ -20,7 +20,9 @@ module.exports = async ({ actions, graphql }) => {
   `
   const { createPage } = actions
   const allWorks = []
-  const fetchPages = async variables =>
+  const worksPages = []
+  let pageNumber = 0
+  const fetchWorks = async variables =>
     await graphql(GET_WORKS, variables).then(({ data }) => {
       const {
         wordpress: {
@@ -30,25 +32,47 @@ module.exports = async ({ actions, graphql }) => {
           },
         },
       } = data
-      nodes.map(page => {
-        allWorks.push(page)
+
+      const nodeIds = nodes.map(node => node.postId)
+      const worksTemplate = path.resolve(`./src/templates/works.js`)
+      const worksPagePath = pageNumber === 0 ? `/work/` : !variables.after ? `/work/` : `/work/${pageNumber}`
+
+      worksPages[pageNumber] = {
+        path: worksPagePath,
+        component: worksTemplate,
+        context: {
+          ids: nodeIds,
+          pageNumber: pageNumber,
+          hasNextPage: hasNextPage,
+        },
+        ids: nodeIds,
+      }
+      nodes.map(work => {
+        allWorks.push(work)
       })
       if (hasNextPage) {
-        return fetchPages({ first: variables.first, after: endCursor })
+        pageNumber++
+        return fetchWorks({ first: 12, after: endCursor })
       }
       return allWorks
     })
 
-  await fetchPages({ first: 100, after: null }).then(allWorks => {
-    const pageTemplate = path.resolve(`./src/templates/work.js`)
+  await fetchWorks({ first: 12, after: null }).then(allWorks => {
 
-    allWorks.map(page => {
-      console.log(`create work: ${page.uri}`)
+    worksPages.map(worksPage => {
+      console.log(`createWorksPage ${worksPage.context.pageNumber}`)
+      createPage(worksPage)
+    })
+    
+    allWorks.map(work => {
+      console.log(`create work: ${work.uri}`)
       createPage({
-        path: `/${page.uri}`,
-        component: pageTemplate,
-        context: page,
+        path: `${work.uri}`,
+        component: path.resolve(`./src/templates/work.js`),
+        context: work,
       })
     })
+    
   })
+
 }

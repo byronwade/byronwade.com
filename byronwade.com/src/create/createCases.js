@@ -3,16 +3,23 @@ module.exports = async ({ actions, graphql }) => {
   const GET_CASES = `
   query GET_CASES($first:Int $after:String){
     wordpress {
-      cases(first: $first after: $after where: {parent: null}) {
+      casestudys(first: $first after: $after) {
         pageInfo {
           endCursor
           hasNextPage
         }
         nodes {
-          title
           id
           slug
-          uri
+          date
+          title
+          excerpt
+          uri 
+          featuredImage {
+            altText
+            caption
+            mediaItemUrl
+          }
         }
       }
     }
@@ -20,35 +27,59 @@ module.exports = async ({ actions, graphql }) => {
   `
   const { createPage } = actions
   const allCases = []
-  const fetchPages = async variables =>
+  const casesPages = []
+  let pageNumber = 0
+  const fetchCases = async variables =>
     await graphql(GET_CASES, variables).then(({ data }) => {
       const {
         wordpress: {
-          cases: {
+          casestudys: {
             nodes,
             pageInfo: { hasNextPage, endCursor },
           },
         },
       } = data
-      nodes.map(page => {
-        allCases.push(page)
+
+      const nodeIds = nodes.map(node => node.postId)
+      const casesTemplate = path.resolve(`./src/templates/cases.js`)
+      const casesPagePath = pageNumber === 0 ? `/case-study/` : !variables.after ? `/case-study/` : `/case-study/${pageNumber}`
+
+      casesPages[pageNumber] = {
+        path: casesPagePath,
+        component: casesTemplate,
+        context: {
+          ids: nodeIds,
+          pageNumber: pageNumber,
+          hasNextPage: hasNextPage,
+        },
+        ids: nodeIds,
+      }
+      nodes.map(work => {
+        allCases.push(work)
       })
       if (hasNextPage) {
-        return fetchPages({ first: variables.first, after: endCursor })
+        pageNumber++
+        return fetchCases({ first: 12, after: endCursor })
       }
       return allCases
     })
 
-  await fetchPages({ first: 100, after: null }).then(allCases => {
-    const pageTemplate = path.resolve(`./src/templates/case.js`)
+  await fetchCases({ first: 12, after: null }).then(allCases => {
 
-    allCases.map(page => {
-      console.log(`create case: ${page.uri}`)
+    casesPages.map(casesPage => {
+      console.log(`createCasesPage ${casesPage.context.pageNumber}`)
+      createPage(casesPage)
+    })
+    
+    allCases.map(cases => {
+      console.log(`create case: ${cases.uri}`)
       createPage({
-        path: `/${page.uri}`,
-        component: pageTemplate,
-        context: page,
+        path: `${cases.uri}`,
+        component: path.resolve(`./src/templates/case.js`),
+        context: cases,
       })
     })
+    
   })
+
 }

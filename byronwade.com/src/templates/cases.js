@@ -13,9 +13,9 @@ class IndexPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/blog/`
+      previousLink = `/case-study/`
     } else if (1 < pageNumber) {
-      previousLink = `/blog/${pageNumber - 1}`
+      previousLink = `/case-study/${pageNumber - 1}`
     }
 
     return (
@@ -30,7 +30,7 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/blog/${pageNumber + 1}`} >
+        <Link type="primary" to={`/case-study/${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -58,20 +58,20 @@ class IndexPage extends Component {
     const { data, location, pageContext: { pageNumber }, } = this.props
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
-        {data && data.wordpress && data.wordpress.posts.nodes.map(post => (
-            <div key={post.id}>
-              <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre>
-              <h1>{post.title}</h1>
-              <small>{post.date}</small>
-              <p>{post.excerpt}</p>
-              <Link to={"/blog/"+post.uri}>Read More</Link>
+        {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
+            <div key={casestudy.id}>
+              <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
+              <h1>{casestudy.title}</h1>
+              <small>{casestudy.date}</small>
+              <p>{casestudy.excerpt}</p>
+              <Link to={"/"+casestudy.uri}>Read More</Link>
             </div>
           ))}
 
 
           {this.pagination()}
 
-
+          
       </Layout>
     )
   }
@@ -80,9 +80,9 @@ class IndexPage extends Component {
 export default IndexPage
 
 export const query = graphql`
-  query GET_POSTS($ids: [ID]) {
+  query GET_CASES($id: Int) {
     wordpress {
-      posts(where: { in: $ids }) {
+      casestudys(where: { id: $id }) {
         nodes {
           id
           slug
@@ -94,9 +94,6 @@ export const query = graphql`
             altText
             caption
             mediaItemUrl
-          }
-          blocks {
-            name
           }
         }
       }

@@ -8,14 +8,17 @@ const {
   data: {
     wordpress: { post },
   },
-  pageContext,
 } = props
 const { title, content } = post
 
   return (
     <Layout>
-        <pre>{JSON.stringify(pageContext, null, 4)}</pre>
-        <pre>{JSON.stringify(post, null, 4)}</pre>
+      <h1>All Props</h1>
+      <pre>{JSON.stringify(props, null, 4)}</pre>
+
+      <h1>Pulling Data Out</h1>
+      <pre>{JSON.stringify(title, null, 4)}</pre>
+      <pre>{JSON.stringify(content, null, 4)}</pre>
     </Layout>
   )
  }
@@ -29,9 +32,11 @@ export const pageQuery = graphql`
         title
         content
         uri
+        date
         author {
           name
           slug
+          email
           avatar {
             url
           }
@@ -47,6 +52,9 @@ export const pageQuery = graphql`
             name
             link
           }
+        }
+        blocks {
+          name
         }
       }
     }

@@ -3,10 +3,7 @@ module.exports = async ({ actions, graphql }) => {
   const GET_POSTS = `
   query GET_POSTS($first:Int $after:String){
     wordpress {
-      posts(
-        first: $first 
-        after:$after
-      ) {
+      posts(first: $first after:$after) {
         pageInfo {
           endCursor
           hasNextPage
@@ -14,6 +11,7 @@ module.exports = async ({ actions, graphql }) => {
         nodes {
           id
           uri
+          slug
           postId
           title
         }
@@ -61,21 +59,21 @@ module.exports = async ({ actions, graphql }) => {
     })
 
   await fetchPosts({ first: 12, after: null }).then(allPosts => {
-    const postTemplate = path.resolve(`./src/templates/post.js`)
 
     blogPages.map(blogPage => {
       console.log(`createBlogPage ${blogPage.context.pageNumber}`)
       createPage(blogPage)
     })
-
+    
     allPosts.map(post => {
-      console.log(`create post: ${post.uri}`)
+      console.log(`create post: ${post.slug}`)
       createPage({
-        path: `/blog/${post.uri}/`,
-        component: postTemplate,
+        path: `/blog/${post.slug}/`,
+        component: path.resolve(`./src/templates/post.js`),
         context: post,
       })
     })
+    
   })
 
 }

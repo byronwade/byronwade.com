@@ -14,11 +14,29 @@
 @import "type.scss";
 
 /*********************/
+.menu {
+  margin:20px 0;
+}
 .menu a {
   padding:10px;
 }
 .container {
   padding:50px;
+}
+.pagnation {
+  display: block;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+  overflow: auto;
+  word-wrap: normal;
+  padding: 1.45rem;
+  margin:20px 0;
+}
+span.next {
+  float: right;
+}
+span.pervious {
+  float: left;
 }
 /*********************/
 
