@@ -20,6 +20,9 @@ const { title, content } = page
       <h1>Pulling Data Out</h1>
       <pre>{JSON.stringify(title, null, 4)}</pre>
       <pre>{JSON.stringify(content, null, 4)}</pre>
+
+      <h1 dangerouslySetInnerHTML={{__html: title}} />
+      <div dangerouslySetInnerHTML={{__html: content}} />
     </Layout>
   )
  }
