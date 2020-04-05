@@ -1,3 +1,6 @@
+/* --------- Programatically Create Image Nodes --------- */
+const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
+
 /* --------- Programatically Create Pages --------- */
 const createPages = require(`./src/create/createPages`)
 const createCases = require(`./src/create/createCases`)
@@ -6,6 +9,7 @@ const createUsers = require(`./src/create/createUsers`)
 const createTags = require(`./src/create/createTags`)
 const createCategories = require(`./src/create/createCategories`)
 const createPosts = require(`./src/create/createPosts`)
+
 
 exports.createPages = async ({ actions, graphql }) => {
   await createPages({ actions, graphql })
@@ -18,19 +22,7 @@ exports.createPages = async ({ actions, graphql }) => {
 }
 
 
-
-/* --------- Programatically Create Image Nodes --------- */
-const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
-
-exports.createResolvers = ({
-  actions,
-  cache,
-  createNodeId,
-  createResolvers,
-  getNode,
-  store,
-  reporter
-}) => {
+exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,store,reporter}) => {
   const { createNode, touchNode } = actions;
 
   // Add all media libary images so they can be queried by
@@ -70,32 +62,32 @@ exports.createResolvers = ({
             }
 
             // If we don't have cached data, download the file
-            if (!fileNodeID) {
-              try {
-                // Get the filenode
-                fileNode = await createRemoteFileNode({
-                  url: source.sourceUrl,
-                  store,
-                  cache,
-                  createNode,
-                  createNodeId,
-                  reporter
-                });
+            // if (!fileNodeID) {
+            //   try {
+            //     // Get the filenode
+            //     fileNode = await createRemoteFileNode({
+            //       url: source.sourceUrl,
+            //       store,
+            //       cache,
+            //       createNode,
+            //       createNodeId,
+            //       reporter
+            //     });
 
-                if (fileNode) {
-                  fileNodeID = fileNode.id;
+            //     if (fileNode) {
+            //       fileNodeID = fileNode.id;
 
-                  await cache.set(mediaDataCacheKey, {
-                    fileNodeID,
-                    modified: sourceModified
-                  });
-                }
-              } catch (e) {
-                // Ignore
-                console.log(e);
-                return null;
-              }
-            }
+            //       await cache.set(mediaDataCacheKey, {
+            //         fileNodeID,
+            //         modified: sourceModified
+            //       });
+            //     }
+            //   } catch (e) {
+            //     // Ignore
+            //     console.log(e);
+            //     return null;
+            //   }
+            // }
 
             if (fileNode) {
               return fileNode;
