@@ -7,10 +7,10 @@ import Layout from "../components/body/layout"
 const Page = props => {
 const {
   data: {
-    wordpress: { page },
+    wordpress: { posts },
   },
 } = props
-const { title, content } = page
+const { title, content } = posts.nodes[0]
 
   return (
     <Layout>
