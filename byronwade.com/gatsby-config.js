@@ -15,9 +15,12 @@ module.exports = {
         path:  path.join(__dirname, `src`, `images`),
       },
     },
+    `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sass`,
-    `gatsby-plugin-sharp`,
+    
+    
+    
     {
       resolve: "gatsby-source-graphql",
       options: {

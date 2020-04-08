@@ -9,16 +9,19 @@ const {
     wordpress: { work },
   },
 } = props
-const { title, blocks } = work
+const { title, blocks, content } = work
 
   return (
     <Layout>
-      <h1>All Props</h1>
+      <h1>Work</h1>
+      {/* <h1>All Props</h1>
       <pre>{JSON.stringify(props, null, 4)}</pre>
 
       <h1>Pulling Data Out</h1>
       <pre>{JSON.stringify(title, null, 4)}</pre>
-      <pre>{JSON.stringify(blocks, null, 4)}</pre>
+      <pre>{JSON.stringify(blocks, null, 4)}</pre> */}
+      <h1 dangerouslySetInnerHTML={{__html: title}} />
+      <div dangerouslySetInnerHTML={{__html: content}} />
     </Layout>
   )
  }
