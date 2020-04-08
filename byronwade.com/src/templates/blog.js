@@ -61,7 +61,7 @@ class IndexPage extends Component {
       <Layout pageNumber={pageNumber} location={{ location }}>
         {data && data.wordpress && data.wordpress.posts.nodes.map(post => (
             <div key={post.id}>
-              <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre>
+              {/* <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre> */}
               <h1>{post.title}</h1>
               <small>{post.date}</small>
               <div dangerouslySetInnerHTML={{__html: post.excerpt}} />
