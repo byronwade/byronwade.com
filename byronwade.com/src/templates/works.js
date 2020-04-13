@@ -6,6 +6,7 @@ import Layout from "../components/body/layout"
 
 class WorksPage extends Component {
   renderPreviousLink = () => {
+    
     const { pageContext: { pageNumber }, } = this.props
 
     let previousLink = null
@@ -56,6 +57,8 @@ class WorksPage extends Component {
 
   render() {
     const { data, location, pageContext: { pageNumber }, } = this.props
+    console.log(data)
+    console.log(this.props)
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
         {data && data.wordpress && data.wordpress.works.nodes.map(work => (
@@ -63,7 +66,8 @@ class WorksPage extends Component {
               <pre>{JSON.stringify(work.featuredImage, null, 4)}</pre>
               <h1>{work.title}</h1>
               <small>{work.date}</small>
-              <p>{work.excerpt}</p>
+              <div dangerouslySetInnerHTML={{__html: work.excerpt}} />
+              {/* <p>{work.excerpt}</p> */}
               <Link to={'/'+work.uri}>Read More</Link>
             </div>
           ))}

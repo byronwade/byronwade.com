@@ -41,7 +41,7 @@ module.exports = async ({ actions, graphql }) => {
       blogPages[pageNumber] = {
         path: blogPagePath,
         component: blogTemplate,
-        context: {
+        context: {  
           ids: nodeIds,
           pageNumber: pageNumber,
           hasNextPage: hasNextPage,

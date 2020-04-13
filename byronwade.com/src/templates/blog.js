@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import { graphql } from "gatsby"
+import { useStaticQuery,graphql } from "gatsby"
 import Link from "../utils/links"
 //import Img from "gatsby-image"
-
+import Img from "gatsby-image"
 import Layout from "../components/body/layout"
 
 class IndexPage extends Component {
@@ -57,17 +57,25 @@ class IndexPage extends Component {
 
   render() {
     const { data, location, pageContext: { pageNumber }, } = this.props
+    console.log(data)
+
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
-        {data && data.wordpress && data.wordpress.posts.nodes.map(post => (
-            <div key={post.id}>
-              <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre>
+        {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
+          console.log(post.featuredImage)
+            return <div key={post.id}>
+              {/* <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre> */}
+ 
+              <Img
+                fluid={post.featuredImage.imageFile.childImageSharp.fluid}
+                alt="Gatsby Docs are awesome"
+              />
               <h1>{post.title}</h1>
               <small>{post.date}</small>
               <div dangerouslySetInnerHTML={{__html: post.excerpt}} />
               <Link to={"/blog/"+post.uri}>Read More</Link>
             </div>
-          ))}
+          })}
 
 
           {this.pagination()}
@@ -77,8 +85,9 @@ class IndexPage extends Component {
     )
   }
 }
-
+// set GATSBY_CONCURRENT_DOWNLOAD=1 && 
 export default IndexPage
+
 
 export const query = graphql`
   query GET_POSTS($ids: [ID]) {

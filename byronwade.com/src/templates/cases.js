@@ -56,6 +56,7 @@ class IndexPage extends Component {
 
   render() {
     const { data, location, pageContext: { pageNumber }, } = this.props
+   
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
         {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
@@ -63,7 +64,8 @@ class IndexPage extends Component {
               <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
               <h1>{casestudy.title}</h1>
               <small>{casestudy.date}</small>
-              <p>{casestudy.excerpt}</p>
+              <div dangerouslySetInnerHTML={{__html: casestudy.excerpt}} />
+              {/* <p>{casestudy.excerpt}</p> */}
               <Link to={"/"+casestudy.uri}>Read More</Link>
             </div>
           ))}
