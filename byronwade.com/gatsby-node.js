@@ -32,6 +32,7 @@ exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,s
       imageFile: {
         type: `File`,
         async resolve(source, args, context, info) {
+          
           if (source.sourceUrl) {
             let fileNodeID;
             let fileNode;
@@ -62,37 +63,37 @@ exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,s
             }
 
             // If we don't have cached data, download the file
-            // if (!fileNodeID) {
-            //   try {
-            //     // Get the filenode
-            //     fileNode = await createRemoteFileNode({
-            //       url: source.sourceUrl,
-            //       store,
-            //       cache,
-            //       createNode,
-            //       createNodeId,
-            //       reporter
-            //     });
+            if (!fileNodeID) {
+              try {
+                // Get the filenode
+                fileNode = await createRemoteFileNode({
+                  url: encodeURI(source.sourceUrl),
+                  store,
+                  cache,
+                  createNode,
+                  createNodeId,
+                  reporter
+                });
 
-            //     if (fileNode) {
-            //       fileNodeID = fileNode.id;
+                if (fileNode) {
+                  fileNodeID = fileNode.id;
 
-            //       await cache.set(mediaDataCacheKey, {
-            //         fileNodeID,
-            //         modified: sourceModified
-            //       });
-            //     }
-            //   } catch (e) {
-            //     // Ignore
-            //     console.log(e);
-            //     return null;
-            //   }
-            // }
+                  await cache.set(mediaDataCacheKey, {
+                    fileNodeID,
+                    modified: sourceModified
+                  });
+                }
+              } catch (e) {
+                // Ignore
+                console.log(e);
+                return null;
+              }
+            }
 
             if (fileNode) {
               return fileNode;
             }
-          }
+          } //source.soureUrl
           return null;
         }
       }
