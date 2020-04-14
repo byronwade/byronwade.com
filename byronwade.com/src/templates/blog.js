@@ -66,10 +66,7 @@ class IndexPage extends Component {
             return <div key={post.id}>
               {/* <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre> */}
  
-              <Img
-                fluid={post.featuredImage.imageFile.childImageSharp.fluid}
-                alt="Gatsby Docs are awesome"
-              />
+              {post.featuredImage ? (<Img fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
               <h1>{post.title}</h1>
               <small>{post.date}</small>
               <div dangerouslySetInnerHTML={{__html: post.excerpt}} />

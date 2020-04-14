@@ -1,7 +1,7 @@
 import React from "react"
 import moment from "moment/moment"
 import { graphql } from 'gatsby'
-//import Img from "gatsby-image"
+import Img from "gatsby-image"
 
 import Layout from "../components/body/layout"
 
@@ -11,8 +11,8 @@ const {
     wordpress: { post },
   },
 } = props
-const { title, content, date, author } = post
-
+const { title, content, date, author, featuredImage } = post
+  console.log(featuredImage)
   return (
     <Layout>
       {/* <h1>All Props</h1>
@@ -22,6 +22,7 @@ const { title, content, date, author } = post
       <pre>{JSON.stringify(title, null, 4)}</pre>
       <pre>{JSON.stringify(content, null, 4)}</pre> */}
 
+      {featuredImage ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
       <h1 dangerouslySetInnerHTML={{__html: title}} />
       <small>{moment(date).format(`MMM Do YYYY`)}</small><small>{author.name}</small>
       <div dangerouslySetInnerHTML={{__html: content}} />
