@@ -96,6 +96,17 @@ export const query = graphql`
             altText
             caption
             mediaItemUrl
+            imageFile {
+              childImageSharp {
+                fluid(maxWidth: 650) {
+                  base64
+                  aspectRatio
+                  src
+                  srcSet
+                  sizes
+                }
+              }
+            }
           }
         }
       }
