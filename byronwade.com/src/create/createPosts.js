@@ -20,6 +20,7 @@ module.exports = async ({ actions, graphql }) => {
   }
   `
   const { createPage } = actions
+  console.log('ACTIONS', createPage)
   const allPosts = []
   const blogPages = []
   let pageNumber = 0
@@ -36,9 +37,9 @@ module.exports = async ({ actions, graphql }) => {
 
       const nodeIds = nodes.map(node => node.postId)
       const blogTemplate = path.resolve(`./src/templates/blog.js`)
-      const blogPagePath = pageNumber === 0 ? `/blog/` : !variables.after ? `/blog/` : `/blog/${pageNumber}`
+      const blogPagePath = pageNumber === 0 ? `/blog/` : `/blog/${pageNumber}`
 
-      blogPages[pageNumber] = {
+      blogPages.push({
         path: blogPagePath,
         component: blogTemplate,
         context: {  
@@ -47,7 +48,7 @@ module.exports = async ({ actions, graphql }) => {
           hasNextPage: hasNextPage,
         },
         ids: nodeIds,
-      }
+      })
       nodes.map(post => {
         allPosts.push(post)
       })
