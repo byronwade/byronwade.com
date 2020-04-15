@@ -43,19 +43,26 @@ module.exports = async ({ actions, graphql }) => {
       if (hasNextPage) {
         return fetchPages({ first: variables.first, after: endCursor })
       }
-      return allPages
+      return allPages;
     })
 
-  await fetchPages({ first: 100, after: null }).then(allPages => {
-    const pageTemplate = path.resolve(`./src/templates/page.js`)
-
-    allPages.map(page => {
-      console.log(`create page: ${page.uri}`)
-      createPage({
-        path: page.uri === "/" ? "/" : `/${page.uri}`,
-        component: pageTemplate,
-        context: page,
+    await fetchPages({ first: 100, after: null }).then(allPages => {
+      const pageTemplate = path.resolve(`./src/templates/page.js`)
+    
+      allPages.map(page => {
+        
+        if(page.uri !== 'blog/' && page.uri !=='case-study/') {
+          console.log(`create page: ${page.uri}`)
+          createPage({
+            path: page.uri === "/" ? "/" : `/${page.uri}`,
+            component: pageTemplate,
+            context: page,
+          })
+        }  
       })
+
     })
-  })
+
+ 
 }
+
