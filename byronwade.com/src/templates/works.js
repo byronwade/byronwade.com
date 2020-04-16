@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "gatsby"
 import Link from "../utils/links"
+import Img from "gatsby-image"
 
 import Layout from "../components/body/layout"
 
@@ -63,7 +64,8 @@ class WorksPage extends Component {
       <Layout pageNumber={pageNumber} location={{ location }}>
         {data && data.wordpress && data.wordpress.works.nodes.map(work => (
             <div key={work.id}>
-              <pre>{JSON.stringify(work.featuredImage, null, 4)}</pre>
+              {/* <pre>{JSON.stringify(work.featuredImage, null, 4)}</pre> */}
+              {work.featuredImage ? (<Img fluid={work.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
               <h1>{work.title}</h1>
               <small>{work.date}</small>
               <div dangerouslySetInnerHTML={{__html: work.excerpt}} />
@@ -95,6 +97,9 @@ export const query = graphql`
           excerpt
           uri
           featuredImage {
+            sourceUrl
+            mediaItemId
+            modified
             altText
             caption
             mediaItemUrl

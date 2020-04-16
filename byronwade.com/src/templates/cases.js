@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "gatsby"
 import Link from "../utils/links"
+import Img from "gatsby-image"
 
 import Layout from "../components/body/layout"
 
@@ -62,6 +63,7 @@ class IndexPage extends Component {
         {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
             <div key={casestudy.id}>
               <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
+              
               <h1>{casestudy.title}</h1>
               <small>{casestudy.date}</small>
               <div dangerouslySetInnerHTML={{__html: casestudy.excerpt}} />

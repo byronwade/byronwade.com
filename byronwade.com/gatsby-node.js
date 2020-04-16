@@ -22,7 +22,7 @@ exports.createPages = async ({ actions, graphql }) => {
 }
 
 
-exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,store,reporter}) => {
+exports.createResolvers = ({actions,cache,getCache,createNodeId,createResolvers,getNode,store,reporter, getNodeAndSavePathDependency}) => {
   const { createNode, touchNode } = actions;
 
   // Add all media libary images so they can be queried by
@@ -68,7 +68,7 @@ exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,s
                 // Get the filenode
                 fileNode = await createRemoteFileNode({
                   url: encodeURI(source.sourceUrl),
-                  store,
+                  source,
                   cache,
                   createNode,
                   createNodeId,
@@ -93,6 +93,7 @@ exports.createResolvers = ({actions,cache,createNodeId,createResolvers,getNode,s
             if (fileNode) {
               return fileNode;
             }
+
           } //source.soureUrl
           return null;
         }

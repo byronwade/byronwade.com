@@ -56,6 +56,7 @@ class IndexPage extends Component {
   }
 
   render() {
+    // open the browser the root page shows up, navigate to the blog page and it shows the error cannot find title or 
     const { data, location, pageContext: { pageNumber }, } = this.props
     console.log(data)
 
