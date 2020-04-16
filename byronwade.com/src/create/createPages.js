@@ -51,7 +51,7 @@ module.exports = async ({ actions, graphql }) => {
     
       allPages.map(page => {
         
-        if(page.uri !== 'blog/' && page.uri !=='case-study/') {
+        if(page.uri !== 'blog/' && page.uri !=='case-study/' && page.uri !=='work/') {
           console.log(`create page: ${page.uri}`)
           createPage({
             path: page.uri === "/" ? "/" : `/${page.uri}`,

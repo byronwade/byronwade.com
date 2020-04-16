@@ -12,18 +12,13 @@ const {
   },
 } = props
 const { title, content, date, author, featuredImage } = post
-  console.log(featuredImage)
+  console.log(post.blocks)
   return (
     <Layout>
-      {/* <h1>All Props</h1>
-      <pre>{JSON.stringify(props, null, 4)}</pre>
-
-      <h1>Pulling Data Out</h1>
-      <pre>{JSON.stringify(title, null, 4)}</pre>
-      <pre>{JSON.stringify(content, null, 4)}</pre> */}
-
+      
       {featuredImage ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
       <h1 dangerouslySetInnerHTML={{__html: title}} />
+      
       <small>{moment(date).format(`MMM Do YYYY`)}</small><small>{author.name}</small>
       <div dangerouslySetInnerHTML={{__html: content}} />
 
@@ -78,8 +73,11 @@ export const pageQuery = graphql`
           }
         }
         blocks {
+          parentId
           name
+          originalContent
         }
+        blocksJSON
       }
     }
   }
