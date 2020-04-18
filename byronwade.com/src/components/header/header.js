@@ -45,7 +45,7 @@ const Header = () => {
     <header>
       <div className="menu">
         {data.wordpress.menuItems.nodes.map(menuItems => (
-          <Link activeClassName="active" key={menuItems.id} to={(menuItems.connectedObject.url ? menuItems.url : (menuItems.connectedObject.__typename === "WORDPRESS_Post" ? '/blog/'+menuItems.connectedObject.uri : (menuItems.connectedObject.url === "/" ? '/' : '/'+menuItems.connectedObject.uri)))}>
+          <Link activeClassName="active" key={menuItems.id} to={(menuItems.connectedObject.url ? menuItems.url : (menuItems.connectedObject.__typename === "WORDPRESS_Post" ? '/blog/'+menuItems.connectedObject.uri : (menuItems.connectedObject.url === "/" ? '/' : "/"+menuItems.connectedObject.uri)))}>
             {menuItems.title || menuItems.label}
           </Link>
         ))}

@@ -70,7 +70,7 @@ class WorksPage extends Component {
               <small>{work.date}</small>
               <div dangerouslySetInnerHTML={{__html: work.excerpt}} />
               {/* <p>{work.excerpt}</p> */}
-              <Link to={'/'+work.uri}>Read More</Link>
+              <Link to={"/"+work.uri}>Read More</Link>
             </div>
           ))}
 
