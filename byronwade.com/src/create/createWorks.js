@@ -34,7 +34,7 @@ module.exports = async ({ actions, graphql }) => {
       } = data
 
       const nodeIds = nodes.map(node => node.postId)
-      const worksTemplate = path.resolve(`./src/templates/works.js`)
+      const worksTemplate = path.resolve(`./src/components/templates/works.js`)
       const worksPagePath = pageNumber === 0 ? `/work/` : !variables.after ? `/work/` : `/work/${pageNumber}`
 
       worksPages[pageNumber] = {
@@ -68,7 +68,7 @@ module.exports = async ({ actions, graphql }) => {
       console.log(`create work: ${work.uri}`)
       createPage({
         path: `${work.uri}`,
-        component: path.resolve(`./src/templates/work.js`),
+        component: path.resolve(`./src/components/templates/work.js`),
         context: work,
       })
     })

@@ -1,9 +1,22 @@
-import React from "react"
-import moment from "moment/moment"
-import { graphql } from 'gatsby'
-import Img from "gatsby-image"
+//Import for code parts of react and gatsby
+import React from "react" //reacts core
+import { graphql } from 'gatsby' //gatsbys graphql setup
+import ReactHtmlParser from 'react-html-parser'; //parse html
+import moment from "moment/moment" //date formatting
+import Img from "gatsby-image" //gatsby image API
 
-import Layout from "../components/body/layout"
+//Link import to check if internal or external link
+//import Link from "../utils/links" //custom links
+
+//Import Blocks
+//import BlockList from "../blocks/BlockList"
+
+//Import Fragment queries
+//import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
+//import ListBlockInfo from "../blocks/blockFragments/core/List"
+
+//Import Layout for pages
+import Layout from "../body/layout"
 
 const Post = props => {
 const {
@@ -15,13 +28,10 @@ const { title, content, date, author, featuredImage } = post
   console.log(post.blocks)
   return (
     <Layout>
-      
       {featuredImage ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
-      <h1 dangerouslySetInnerHTML={{__html: title}} />
-      
+      <h1>{ReactHtmlParser(title)}</h1>
       <small>{moment(date).format(`MMM Do YYYY`)}</small><small>{author.name}</small>
-      <div dangerouslySetInnerHTML={{__html: content}} />
-
+      <div>{ReactHtmlParser(content)}</div>
     </Layout>
   )
  }
