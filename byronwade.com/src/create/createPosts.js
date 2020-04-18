@@ -36,7 +36,7 @@ module.exports = async ({ actions, graphql }) => {
       } = data
 
       const nodeIds = nodes.map(node => node.postId)
-      const blogTemplate = path.resolve(`./src/templates/blog.js`)
+      const blogTemplate = path.resolve(`./src/components/templates/blog.js`)
       const blogPagePath = pageNumber === 0 ? `/blog/` : `/blog/${pageNumber}`
 
       blogPages.push({
@@ -70,7 +70,7 @@ module.exports = async ({ actions, graphql }) => {
       console.log(`create post: ${post.slug}`)
       createPage({
         path: `/blog/${post.slug}/`,
-        component: path.resolve(`./src/templates/post.js`),
+        component: path.resolve(`./src/components/templates/post.js`),
         context: post,
       })
     })

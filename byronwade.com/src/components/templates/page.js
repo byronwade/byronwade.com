@@ -1,19 +1,21 @@
-import React from "react"
-import { graphql } from 'gatsby'
-//import Img from "gatsby-image"
+//Import for code parts of react and gatsby
+import React from "react" //reacts core
+import { graphql } from 'gatsby' //gatsbys graphql setup
+import ReactHtmlParser from 'react-html-parser'; //parse html
+//import Img from "gatsby-image" //gatsby image API
 
-
+//Link import to check if internal or external link
+//import Link from "../utils/links" //custom links
 
 //Import Blocks
 import BlockList from "../blocks/BlockList"
 
 //Import Fragment queries
-import HeadingBlockInfo from "../node/blocks/core/Header"
-import ListBlockInfo from "../node/blocks/core/List"
+import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
+import ListBlockInfo from "../blocks/blockFragments/core/List"
 
-
-
-import Layout from "../components/body/layout"
+//Import Layout for pages
+import Layout from "../body/layout"
 
 
 const Page = props => {
@@ -28,11 +30,8 @@ console.log(blocks)
 
   return (
     <Layout>
-
-      <h1 dangerouslySetInnerHTML={{__html: title}} />
-
+      <h1>{ReactHtmlParser(title)}</h1>
       <BlockList blocks={blocks} />
-      
     </Layout>
   )
  }

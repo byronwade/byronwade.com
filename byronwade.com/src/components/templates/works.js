@@ -1,12 +1,26 @@
-import React, { Component } from "react"
-import { graphql } from "gatsby"
-import Link from "../utils/links"
-//import Img from "gatsby-image"
+//Import for code parts of react and gatsby
+import React, { Component } from 'react' //reacts core
+import { graphql } from 'gatsby' //gatsbys graphql setup
+import ReactHtmlParser from 'react-html-parser'; //parse html
+import moment from "moment/moment" //date formatting
+import Img from "gatsby-image" //gatsby image API
 
-import Layout from "../components/body/layout"
+//Link import to check if internal or external link
+import Link from "../utils/links" //custom links
 
-class IndexPage extends Component {
+//Import Blocks
+//import BlockList from "../blocks/BlockList"
+
+//Import Fragment queries
+//import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
+//import ListBlockInfo from "../blocks/blockFragments/core/List"
+
+//Import Layout for pages
+import Layout from "../body/layout"
+
+class WorksPage extends Component {
   renderPreviousLink = () => {
+    
     const { pageContext: { pageNumber }, } = this.props
 
     let previousLink = null
@@ -14,9 +28,9 @@ class IndexPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/case-study/`
+      previousLink = `/work/`
     } else if (1 < pageNumber) {
-      previousLink = `/case-study/${pageNumber - 1}`
+      previousLink = `/work/${pageNumber - 1}`
     }
 
     return (
@@ -31,7 +45,7 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/case-study/${pageNumber + 1}`} >
+        <Link type="primary" to={`/work/${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -57,36 +71,30 @@ class IndexPage extends Component {
 
   render() {
     const { data, location, pageContext: { pageNumber }, } = this.props
-   
+    console.log(data)
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
-        {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
-            <div key={casestudy.id}>
-              <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
-              
-              <h1>{casestudy.title}</h1>
-              <small>{casestudy.date}</small>
-              <div dangerouslySetInnerHTML={{__html: casestudy.excerpt}} />
-              {/* <p>{casestudy.excerpt}</p> */}
-              <Link to={"/"+casestudy.uri}>Read More</Link>
-            </div>
-          ))}
-
-
-          {this.pagination()}
-
-          
+        {data && data.wordpress && data.wordpress.works.nodes.map(work => (
+          <div key={work.id}>
+            {work.featuredImage ? (<Img fluid={work.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
+            <h1>{ReactHtmlParser(work.title)}</h1>
+            <small>{moment(work.date).format(`MMM Do YYYY`)}</small>
+            <div>{ReactHtmlParser(work.excerpt)}</div>
+            <Link to={"/"+work.uri}>Read More</Link>
+          </div>
+        ))}
+        {this.pagination()}
       </Layout>
     )
   }
 }
 
-export default IndexPage
+export default WorksPage
 
 export const query = graphql`
-  query GET_CASES($id: Int) {
+  query GET_WORKS($id: Int) {
     wordpress {
-      casestudys(where: { id: $id }) {
+      works(where: { id: $id }) {
         nodes {
           id
           slug
@@ -95,6 +103,9 @@ export const query = graphql`
           excerpt
           uri
           featuredImage {
+            sourceUrl
+            mediaItemId
+            modified
             altText
             caption
             mediaItemUrl

@@ -39,7 +39,7 @@ module.exports = async ({ actions, graphql }) => {
     })
 
   await fetchUsers({ first: 100, after: null }).then(allUsers => {
-    const userTemplate = path.resolve(`./src/templates/user.js`)
+    const userTemplate = path.resolve(`./src/components/templates/user.js`)
 
     allUsers.map(user => {
       console.log(`create user: ${user.slug}`)

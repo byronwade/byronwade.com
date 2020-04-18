@@ -41,7 +41,7 @@ module.exports = async ({ actions, graphql }) => {
       } = data
 
       const nodeIds = nodes.map(node => node.postId)
-      const casesTemplate = path.resolve(`./src/templates/cases.js`)
+      const casesTemplate = path.resolve(`./src/components/templates/cases.js`)
       const casesPagePath = pageNumber === 0 ? `/case-study/` : !variables.after ? `/case-study/` : `/case-study/${pageNumber}`
 
       casesPages[pageNumber] = {
@@ -75,7 +75,7 @@ module.exports = async ({ actions, graphql }) => {
       console.log(`create case: ${cases.uri}`)
       createPage({
         path: `${cases.uri}`,
-        component: path.resolve(`./src/templates/case.js`),
+        component: path.resolve(`./src/components/templates/case.js`),
         context: cases,
       })
     })

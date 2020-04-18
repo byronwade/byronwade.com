@@ -1,6 +1,10 @@
-import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import Link from "../../utils/links"
+//Import for code parts of react and gatsby
+import React from "react" //react core
+import { useStaticQuery, graphql } from "gatsby" //gatsby
+//import Img from "gatsby-image" //gatsbys image API
+
+//Link import to check if internal or external link
+import Link from "../utils/links" //custom links
 
 const Footer = () => {
   const data = useStaticQuery(graphql`
