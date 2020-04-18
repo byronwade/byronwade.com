@@ -1,4 +1,5 @@
 import React from "react"
+import ReactHtmlParser from 'react-html-parser';
 
 type ParagraphProps = {
   attributes?: {
@@ -25,7 +26,7 @@ const Paragraph = ({
 
   return (
     <p className={paragraphClass}>
-      {innerContent}
+      {ReactHtmlParser(innerContent)}
     </p>
   )
 }
