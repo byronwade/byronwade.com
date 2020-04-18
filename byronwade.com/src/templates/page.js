@@ -2,6 +2,12 @@ import React from "react"
 import { graphql } from 'gatsby'
 //import Img from "gatsby-image"
 
+import { randomID } from "../utils/helpers"
+
+import Heading from "../blocks/core/Header"
+import Paragraph from "../blocks/core/Paragraph"
+
+
 import Layout from "../components/body/layout"
 
 const Page = props => {
@@ -10,8 +16,8 @@ const {
     wordpress: { page },
   },
 } = props
-const { title, content, blocks } = page
-console.log(blocks)
+const { title, blocks } = page
+//console.log(blocks)
   return (
     <Layout>
      
@@ -23,8 +29,14 @@ console.log(blocks)
       <pre>{JSON.stringify(content, null, 4)}</pre> */}
 
       <h1 dangerouslySetInnerHTML={{__html: title}} />
-      <div dangerouslySetInnerHTML={{__html: content}} />
-    
+      
+      {blocks.map(block => (
+        <div key={`component-${randomID()}`}>
+          {block.name === "core/heading" ? <Heading {...block} {...block.data} {...block.attributes} /> : null}
+          {block.name === "core/paragraph" ? <Paragraph {...block} {...block.data} {...block.attributes} /> : null}
+        </div>
+      ))}
+      
     </Layout>
   )
  }
@@ -57,7 +69,33 @@ export const pageQuery = graphql`
           }
         }
         blocks {
-          name
+          ... on WORDPRESS_CoreHeadingBlock {
+            attributes {
+              align
+              anchor
+              className
+              placeholder
+              level
+              content
+            }
+            name
+            originalContent
+            isValid
+            parentId
+          }
+          ... on WORDPRESS_CoreParagraphBlock {
+            parentId
+            name
+            originalContent
+            isValid
+            attributes {
+              ... on WORDPRESS_CoreParagraphBlockAttributesV3 {
+                content
+                className
+              }
+            }
+          }
+          parentId
         }
         author {
           name

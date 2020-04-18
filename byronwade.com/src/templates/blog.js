@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { useStaticQuery,graphql } from "gatsby"
+import { graphql } from "gatsby"
 import Link from "../utils/links"
 //import Img from "gatsby-image"
 import Img from "gatsby-image"
@@ -65,8 +65,6 @@ class IndexPage extends Component {
         {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
           console.log(post.featuredImage)
             return <div key={post.id}>
-              {/* <pre>{JSON.stringify(post.featuredImage, null, 4)}</pre> */}
- 
               {post.featuredImage ? (<Img fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
               <h1>{post.title}</h1>
               <small>{post.date}</small>
