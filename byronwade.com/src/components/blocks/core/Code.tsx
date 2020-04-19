@@ -1,26 +1,35 @@
-import React from "react"
+import React, { useEffect } from 'react'
+import Prism from "prismjs";
 
 type CodeComponentProps = {
   attributes: {
     className: string
-    content: string
+    codeContent: string
   }
   originalContent: string
   name: string
   className: string
-  content: string
+  codeContent: string
 }
 
 const CodeComponent = ({
     originalContent,
     name,
     className,
-    content
+    codeContent
 }: CodeComponentProps) => {
 
-  if(content) {
+  useEffect(() => {
+    Prism.highlightAll();
+  });
+  
+  if(codeContent) {
     return (
-      <code className={className}>{content}</code>
+      <pre className={className}>
+        <code>
+          {codeContent}
+        </code>
+      </pre>
     )
   }
   return null;

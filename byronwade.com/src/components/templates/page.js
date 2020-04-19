@@ -16,6 +16,12 @@ import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
 import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
 import ImageBlockInfo from "../blocks/blockFragments/core/Image"
+import CodeBlockInfo from "../blocks/blockFragments/core/Code"
+import YouTubeBlockInfo from "../blocks/blockFragments/core/YouTube"
+import HTMLBlockInfo from "../blocks/blockFragments/core/HTML"
+import SeparatorBlockInfo from "../blocks/blockFragments/core/Separator"
+import SpacerBlockInfo from "../blocks/blockFragments/core/Spacer"
+import QuoteBlockInfo from "../blocks/blockFragments/core/Quote"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -74,6 +80,12 @@ export const pageQuery = graphql`
           ...ListBlockInfo
           ...ParagraphBlockInfo
           ...ImageBlockInfo
+          ...CodeBlockInfo
+          ...YouTubeBlockInfo
+          ...HTMLBlockInfo
+          ...SeparatorBlockInfo
+          ...SpacerBlockInfo
+          ...QuoteBlockInfo
         }
         seo {
           title
