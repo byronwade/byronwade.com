@@ -14,12 +14,7 @@ module.exports = async ({ actions, graphql }) => {
           date
           title
           excerpt
-          uri 
-          featuredImage {
-            altText
-            caption
-            mediaItemUrl
-          }
+          uri
         }
       }
     }

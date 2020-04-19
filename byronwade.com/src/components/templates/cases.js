@@ -76,6 +76,7 @@ class IndexPage extends Component {
         {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
             <div key={casestudy.id}>
               <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
+              {/*casestudy.featuredImage ? (<Img fluid={casestudy.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null*/}
               <h1>{ReactHtmlParser(casestudy.title)}</h1>
               <small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
               <div>{ReactHtmlParser(casestudy.excerpt)}</div>
