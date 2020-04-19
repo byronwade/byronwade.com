@@ -13,6 +13,7 @@ import BlockList from "../blocks/BlockList"
 //Import Fragment queries
 import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
+import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -66,6 +67,7 @@ export const pageQuery = graphql`
         blocks {
           ...HeadingBlockInfo
           ...ListBlockInfo
+          ...ParagraphBlockInfo
         }
         author {
           name
