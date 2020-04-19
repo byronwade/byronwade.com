@@ -1,47 +1,35 @@
 import React from "react"
+import LazyLoad from 'react-lazyload';
 //import Img from "gatsby-image" //gatsby image API
 
-type ImageComponentProps = {
-  attributes: {
-    url: string
-    alt: string
-    title: string
-    caption: string
-    className: string
-    height: string
-    width: string
-    id: string
-  }
-  url: string
+type ImageLoaderProps = {
   alt: string
-  title: string
-  caption: string
-  className: string
-  height: string
-  width: string
-  id: string
+  className?: string
+  height?: number
+  url?: string
+  title?: string
+  caption?: string
+  width?: number
 }
 
-const ImageComponent = ({
-  url,
+const Image = ({
   alt,
+  className,
+  height,
+  url,
   title,
   caption,
-  id,
   width,
-  height,
-  className
-}: ImageComponentProps) => {
+}: ImageLoaderProps) => {
   const imageAlt = alt || title || caption || "This is a default alt text"
-  if(url) {
-    return (
-      <img id={id} width={width} height={height} className={className} src={url} alt={imageAlt} />
-    )
-  }
-  
+  return (
+    <LazyLoad height={height ? height : null}>
+      <img width={width} height={height} alt={imageAlt} className={className} src={url} />
+    </LazyLoad>
+  )
 }
 
-export default ImageComponent
+export default Image
 
 
 // Example of image block properties:
