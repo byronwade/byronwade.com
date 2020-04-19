@@ -1,23 +1,29 @@
-import React, { useState } from "react"
-import Img from "gatsby-image" //gatsby image API
+import React from "react"
+//import Img from "gatsby-image" //gatsby image API
 
 type ImageComponentProps = {
   attributes: {
     url: string
     alt: string
+    title: string
+    caption: string
   }
-  url
-  alt
+  title: string
+  caption: string
+  url: string
+  alt: string
 }
 
 const ImageComponent = ({
   url,
-  alt
+  alt,
+  title,
+  caption
 }: ImageComponentProps) => {
-  
+  const imageAlt = alt || title || caption || "This is a default alt text"
   if(url) {
     return (
-      <img src={url} alt={alt} />
+      <img src={url} alt={imageAlt} />
     )
   }
   

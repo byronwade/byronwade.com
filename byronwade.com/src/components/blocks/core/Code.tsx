@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 type CodeComponentProps = {
   attributes: {
@@ -20,7 +20,7 @@ const CodeComponent = ({
 
   if(content) {
     return (
-      <code>{content}</code>
+      <code className={className}>{content}</code>
     )
   }
   return null;
