@@ -10,7 +10,7 @@ type ImageComponentProps = {
     className: string
     height: string
     width: string
-    id: number
+    id: string
   }
   url: string
   alt: string
@@ -19,7 +19,7 @@ type ImageComponentProps = {
   className: string
   height: string
   width: string
-  id: number
+  id: string
 }
 
 const ImageComponent = ({
