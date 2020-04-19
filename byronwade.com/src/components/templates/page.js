@@ -15,6 +15,7 @@ import BlockList from "../blocks/BlockList"
 import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
 import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
+import ImageBlockInfo from "../blocks/blockFragments/core/Image"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -72,6 +73,7 @@ export const pageQuery = graphql`
           ...HeadingBlockInfo
           ...ListBlockInfo
           ...ParagraphBlockInfo
+          ...ImageBlockInfo
         }
         seo {
           title
