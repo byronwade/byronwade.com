@@ -20,6 +20,11 @@ module.exports = async ({ actions, graphql }) => {
           pageId
           title
           isFrontPage
+          seo {
+            title
+            metaDesc
+            focuskw
+          }
         }
       }
     }

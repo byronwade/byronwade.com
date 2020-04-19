@@ -28,6 +28,7 @@ const {
 } = props
 const { title, blocks, seo, link } = page
 
+console.log(page)
 console.log(blocks)
 
   return (
