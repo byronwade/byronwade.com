@@ -4,6 +4,7 @@ import Heading from "../core/Header"
 import Paragraph from "../core/Paragraph"
 import List from "../core/List"
 import Image from "../core/Image"
+import Code from "../core/Code"
 
 
 export const blockToComponent = (block) => {
@@ -21,6 +22,9 @@ export const blockToComponent = (block) => {
         break;
       case "core/image":
         component = <Image {...block} {...block.data} {...block.attributes} />
+        break;
+      case "core/code":
+        component = <Code {...block} {...block.data} {...block.attributes} />
         break;
       default:
         component = null;
