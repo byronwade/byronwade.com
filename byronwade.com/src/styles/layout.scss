@@ -12,6 +12,7 @@
 @import "grid.scss";
 @import "reset.scss";
 @import "type.scss";
+@import "code-highlighting.scss";
 
 /*********************/
 .menu {
@@ -85,7 +86,9 @@ p {
 .hero {
   padding:100px 0;
 }
-
+.spacer{
+  background: #f3f4f5;
+}
 
 
 
