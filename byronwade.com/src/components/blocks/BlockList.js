@@ -5,9 +5,7 @@ import { randomID } from "../utils/helpers"
 export default ({blocks}) => {
     return <>
         {blocks ? blocks.map(block => (
-            <div key={`component-${randomID()}`}>
-                <Block block={block} />
-            </div>
+            <Block key={`component-${randomID()}`} block={block} />
         )) : null}
     </>
 }

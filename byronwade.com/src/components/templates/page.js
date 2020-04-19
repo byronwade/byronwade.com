@@ -16,7 +16,7 @@ import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
 import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
 import ImageBlockInfo from "../blocks/blockFragments/core/Image"
-//import CodeBlockInfo from "../blocks/blockFragments/core/Code"
+import CodeBlockInfo from "../blocks/blockFragments/core/Code"
 
 //Import Layout for pages
 import Layout from "../body/layout"
