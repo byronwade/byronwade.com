@@ -10,7 +10,7 @@
     "gatsby-plugin-manifest": "^2.3.3",
     "gatsby-plugin-offline": "^3.0.32",
     "gatsby-plugin-prefetch-google-fonts": "^1.4.3",
-    "gatsby-plugin-react-helmet": "^3.1.21",
+    "gatsby-plugin-react-helmet": "^3.2.4",
     "gatsby-plugin-sass": "^2.1.30",
     "gatsby-plugin-sharp": "^2.5.3",
     "gatsby-plugin-typescript": "^2.3.3",

@@ -75,6 +75,7 @@ class IndexPage extends Component {
 
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
+        {/* we need to add SEO here for the blog page only somehow we need to query it */}
         {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
           console.log(post.featuredImage)
             return <div key={post.id}>
