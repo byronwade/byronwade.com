@@ -15,6 +15,8 @@ import BlockList from "../blocks/BlockList"
 import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
 import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
+import ImageBlockInfo from "../blocks/blockFragments/core/Image"
+//import CodeBlockInfo from "../blocks/blockFragments/core/Code"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -28,7 +30,13 @@ const {
 } = props
 const { title, blocks, seo, link } = page
 
-console.log(blocks)
+// console.log(blocks)
+
+// test the code block out, no code blocks from wp:
+// blocks.push({
+//   name: "core/code",
+//   content: "<h2>HTML <mark>Marked</mark> Formatting</h2>"
+// })
 
   return (
     <Layout>
@@ -71,6 +79,8 @@ export const pageQuery = graphql`
           ...HeadingBlockInfo
           ...ListBlockInfo
           ...ParagraphBlockInfo
+          ...ImageBlockInfo
+          ...CodeBlockInfo
         }
         seo {
           title
