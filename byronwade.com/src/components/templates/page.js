@@ -6,6 +6,7 @@ import ReactHtmlParser from 'react-html-parser'; //parse html
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
+import SEO from "../utils/seo" //adding SEO
 
 //Import Blocks
 import BlockList from "../blocks/BlockList"
@@ -24,12 +25,13 @@ const {
     wordpress: { page },
   },
 } = props
-const { title, blocks } = page
+const { title, blocks, seo, link } = page
 
 console.log(blocks)
 
   return (
     <Layout>
+      <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
       <h1>{ReactHtmlParser(title)}</h1>
       <BlockList blocks={blocks} />
     </Layout>
@@ -46,6 +48,7 @@ export const pageQuery = graphql`
         slug
         title
         uri
+        link
         content
         featuredImage {
           sourceUrl
@@ -66,6 +69,11 @@ export const pageQuery = graphql`
         blocks {
           ...HeadingBlockInfo
           ...ListBlockInfo
+        }
+        seo {
+          title
+          metaDesc
+          focuskw
         }
         author {
           name

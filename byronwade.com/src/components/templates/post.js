@@ -7,13 +7,14 @@ import Img from "gatsby-image" //gatsby image API
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
+import SEO from "../utils/seo" //adding SEO
 
 //Import Blocks
 //import BlockList from "../blocks/BlockList"
 
 //Import Fragment queries
-//import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
-//import ListBlockInfo from "../blocks/blockFragments/core/List"
+import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
+import ListBlockInfo from "../blocks/blockFragments/core/List"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -24,11 +25,12 @@ const {
     wordpress: { post },
   },
 } = props
-const { title, content, date, author, featuredImage } = post
-  console.log(post.blocks)
+const { title, content, date, author, featuredImage, seo, link } = post
+  console.log(featuredImage)
   return (
     <Layout>
-      {featuredImage ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
+      <SEO title={seo.title} description={seo.metaDesc} image={featuredImage.link} url={link} robots="index, follow" />
+      {featuredImage.imageFile ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
       <h1>{ReactHtmlParser(title)}</h1>
       <small>{moment(date).format(`MMM Do YYYY`)}</small><small>{author.name}</small>
       <div>{ReactHtmlParser(content)}</div>
@@ -45,12 +47,16 @@ export const pageQuery = graphql`
         title
         content
         uri
+        link
         date
         featuredImage {
-          sourceUrl
-          mediaItemId
-          modified
+          link
           imageFile {
+            publicURL
+            relativePath
+            relativeDirectory
+            url
+            sourceInstanceName
             childImageSharp {
               fluid(maxWidth: 650) {
                 base64
@@ -83,11 +89,14 @@ export const pageQuery = graphql`
           }
         }
         blocks {
-          parentId
-          name
-          originalContent
+          ...HeadingBlockInfo
+          ...ListBlockInfo
         }
-        blocksJSON
+        seo {
+          title
+          metaDesc
+          focuskw
+        }
       }
     }
   }
