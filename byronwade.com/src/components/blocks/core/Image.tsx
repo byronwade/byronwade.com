@@ -7,23 +7,35 @@ type ImageComponentProps = {
     alt: string
     title: string
     caption: string
+    className: string
+    height: string
+    width: string
+    id: number
   }
-  title: string
-  caption: string
   url: string
   alt: string
+  title: string
+  caption: string
+  className: string
+  height: string
+  width: string
+  id: number
 }
 
 const ImageComponent = ({
   url,
   alt,
   title,
-  caption
+  caption,
+  id,
+  width,
+  height,
+  className
 }: ImageComponentProps) => {
   const imageAlt = alt || title || caption || "This is a default alt text"
   if(url) {
     return (
-      <img src={url} alt={imageAlt} />
+      <img id={id} width={width} height={height} className={className} src={url} alt={imageAlt} />
     )
   }
   
