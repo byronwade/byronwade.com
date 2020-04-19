@@ -30,10 +30,12 @@ const {
 const { title, blocks } = page
 
 // console.log(blocks)
-blocks.push({
-  name: "core/code",
-  content: "<h2>HTML <mark>Marked</mark> Formatting</h2>"
-})
+
+// test the code block out, no code blocks from wp:
+// blocks.push({
+//   name: "core/code",
+//   content: "<h2>HTML <mark>Marked</mark> Formatting</h2>"
+// })
 
   return (
     <Layout>
