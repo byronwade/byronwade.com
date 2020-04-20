@@ -33,16 +33,12 @@ const {
     wordpress: { page },
   },
 } = props
-const { title, blocks, seo, link } = page
-
-console.log(page)
-console.log(blocks)
-
+const { title, blocks, seo, link, content } = page
   return (
     <Layout>
       <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
       <h1>{ReactHtmlParser(title)}</h1>
-      <BlockList blocks={blocks} />
+      <BlockList blocks={blocks} content={content} />
     </Layout>
   )
  }
