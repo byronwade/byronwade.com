@@ -80,7 +80,7 @@ class IndexPage extends Component {
               <h1>{ReactHtmlParser(casestudy.title)}</h1>
               <small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
               <div>{ReactHtmlParser(casestudy.excerpt)}</div>
-              <Link to={"/"+casestudy.uri}>Read More</Link>
+              <Link to={casestudy.uri}>Read More</Link>
             </div>
           ))}
           {this.pagination()}
