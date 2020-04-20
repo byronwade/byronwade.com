@@ -26,16 +26,15 @@ const {
   },
 } = props
 const { name, posts } = category
-
+  console.log(category)
   return (
     <Layout>
       <h1>Category: {name}</h1>
       {posts.nodes.map(post => (
             <div key={post.id}>
-              <h1>{post.title}</h1>
               <h1>{ReactHtmlParser(post.title)}</h1>
               <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
-              <h1>{ReactHtmlParser(post.excerpt)}</h1>
+              <div>{ReactHtmlParser(post.excerpt)}</div>
               <Link to={"/blog/"+post.uri}>Read More</Link>
             </div>
         ))}

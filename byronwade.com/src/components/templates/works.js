@@ -28,9 +28,9 @@ class WorksPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/work/`
+      previousLink = this.props.path
     } else if (1 < pageNumber) {
-      previousLink = `/work/${pageNumber - 1}`
+      previousLink = this.props.path+`${pageNumber - 1}`
     }
 
     return (
@@ -45,7 +45,7 @@ class WorksPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/work/${pageNumber + 1}`} >
+        <Link type="primary" to={this.props.path+`${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -80,7 +80,7 @@ class WorksPage extends Component {
             <h1>{ReactHtmlParser(work.title)}</h1>
             <small>{moment(work.date).format(`MMM Do YYYY`)}</small>
             <div>{ReactHtmlParser(work.excerpt)}</div>
-            <Link to={work.uri}>Read More</Link>
+            <Link to={this.props.path+work.slug}>Read More</Link>
           </div>
         ))}
         {this.pagination()}
