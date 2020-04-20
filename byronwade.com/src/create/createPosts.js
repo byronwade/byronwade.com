@@ -62,12 +62,12 @@ module.exports = async ({ actions, graphql }) => {
   await fetchPosts({ first: 12, after: null }).then(allPosts => {
 
     blogPages.map(blogPage => {
-      console.log(`createBlogPage ${blogPage.context.pageNumber}`)
+      //console.log(`createBlogPage ${blogPage.context.pageNumber}`)
       createPage(blogPage)
     })
     
     allPosts.map(post => {
-      console.log(`create post: ${post.slug}`)
+      //console.log(`create post: ${post.slug}`)
       createPage({
         path: `/blog/${post.slug}/`,
         component: path.resolve(`./src/components/templates/post.js`),
