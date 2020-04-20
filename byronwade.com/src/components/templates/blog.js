@@ -27,9 +27,9 @@ class IndexPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/blog/`
+      previousLink = this.props.path
     } else if (1 < pageNumber) {
-      previousLink = `/blog/${pageNumber - 1}`
+      previousLink = this.props.path+`${pageNumber - 1}`
     }
 
     return (
@@ -44,7 +44,7 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/blog/${pageNumber + 1}`} >
+        <Link type="primary" to={this.props.path+`${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -83,7 +83,7 @@ class IndexPage extends Component {
               <h1>{ReactHtmlParser(post.title)}</h1>
               <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
               <div>{ReactHtmlParser(post.excerpt)}</div>
-              <Link to={"/blog/"+post.uri}>Read More</Link>
+              <Link to={this.props.path+post.slug}>Read More</Link>
             </div>
           })}
           {this.pagination()}

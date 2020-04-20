@@ -27,9 +27,9 @@ class IndexPage extends Component {
     if (!pageNumber) {
       return null
     } else if (1 === pageNumber) {
-      previousLink = `/case-study/`
+      previousLink = this.props.path
     } else if (1 < pageNumber) {
-      previousLink = `/case-study/${pageNumber - 1}`
+      previousLink = this.props.path+`${pageNumber - 1}`
     }
 
     return (
@@ -44,7 +44,7 @@ class IndexPage extends Component {
 
     if (hasNextPage) {
       return (
-        <Link type="primary" to={`/case-study/${pageNumber + 1}`} >
+        <Link type="primary" to={this.props.path+`${pageNumber + 1}`} >
           Next Posts
         </Link>
       )
@@ -70,7 +70,8 @@ class IndexPage extends Component {
 
   render() {
     const { data, location, pageContext: { pageNumber }, } = this.props
-   
+    console.log(this.props)
+
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
         {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
@@ -80,7 +81,7 @@ class IndexPage extends Component {
               <h1>{ReactHtmlParser(casestudy.title)}</h1>
               <small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
               <div>{ReactHtmlParser(casestudy.excerpt)}</div>
-              <Link to={casestudy.uri}>Read More</Link>
+              <Link to={this.props.path+casestudy.slug}>Read More</Link>
             </div>
           ))}
           {this.pagination()}
