@@ -10,11 +10,19 @@ import Img from "gatsby-image" //gatsby image API
 import SEO from "../utils/seo" //adding SEO
 
 //Import Blocks
-//import BlockList from "../blocks/BlockList"
+import BlockList from "../blocks/BlockList"
 
 //Import Fragment queries
 import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
 import ListBlockInfo from "../blocks/blockFragments/core/List"
+import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
+import ImageBlockInfo from "../blocks/blockFragments/core/Image"
+import CodeBlockInfo from "../blocks/blockFragments/core/Code"
+import YouTubeBlockInfo from "../blocks/blockFragments/core/YouTube"
+import HTMLBlockInfo from "../blocks/blockFragments/core/HTML"
+import SeparatorBlockInfo from "../blocks/blockFragments/core/Separator"
+import SpacerBlockInfo from "../blocks/blockFragments/core/Spacer"
+import QuoteBlockInfo from "../blocks/blockFragments/core/Quote"
 
 //Import Layout for pages
 import Layout from "../body/layout"
@@ -25,15 +33,15 @@ const {
     wordpress: { post },
   },
 } = props
-const { title, content, date, author, featuredImage, seo, link } = post
+const { title, content, date, author, featuredImage, seo, link, blocks } = post
   console.log(featuredImage)
   return (
     <Layout>
-      <SEO title={seo.title} description={seo.metaDesc} image={featuredImage.link} url={link} robots="index, follow" />
+      <SEO title={seo.title} description={seo.metaDesc} image={featuredImage.link ? featuredImage.link : null} url={link ? link : null} robots="index, follow" />
       {featuredImage.imageFile ? (<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
       <h1>{ReactHtmlParser(title)}</h1>
       <small>{moment(date).format(`MMM Do YYYY`)}</small><small>{author.name}</small>
-      <div>{ReactHtmlParser(content)}</div>
+      <BlockList blocks={blocks} content={content} />
     </Layout>
   )
  }
@@ -91,6 +99,14 @@ export const pageQuery = graphql`
         blocks {
           ...HeadingBlockInfo
           ...ListBlockInfo
+          ...ParagraphBlockInfo
+          ...ImageBlockInfo
+          ...CodeBlockInfo
+          ...YouTubeBlockInfo
+          ...HTMLBlockInfo
+          ...SeparatorBlockInfo
+          ...SpacerBlockInfo
+          ...QuoteBlockInfo
         }
         seo {
           title
