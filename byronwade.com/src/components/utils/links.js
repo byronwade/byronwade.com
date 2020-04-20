@@ -7,12 +7,25 @@ const Link = ({ children, to, activeClassName, partiallyActive, ...other }) => {
   // Tailor the following test to your environment.
   // This example assumes that any internal link (intended for Gatsby)
   // will start with exactly one slash, and that anything else is external.
-  const internal = /^\/(?!\/)/.test(to)
+  const internal = to.startsWith("/", 0)
+  //const external = /^((http|https|ftp):\/\/)/.test(to)
   // Use Gatsby Link for internal links, and <a> for others
   if (internal) {
     return (
       <GatsbyLink
         to={to}
+        activeClassName={activeClassName}
+        partiallyActive={partiallyActive}
+        {...other}
+      >
+        {children}
+      </GatsbyLink>
+    )
+  } 
+  if (!internal) {
+    return (
+      <GatsbyLink
+        to={`/`+to}
         activeClassName={activeClassName}
         partiallyActive={partiallyActive}
         {...other}
