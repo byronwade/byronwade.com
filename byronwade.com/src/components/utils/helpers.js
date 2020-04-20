@@ -70,7 +70,12 @@ export function slugTitle(html) {
 }
 
 export function YouTubeGetID(url) {
-  if (!url) return null
-  url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/)
-  return url[2] !== undefined ? url[2].split(/[^0-9a-z_]/i)[0] : url[0]
+  var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  var match = url.match(regExp);
+
+  if (match && match[2].length == 11) {
+      return match[2];
+  } else {
+      return 'error';
+  }
 }
