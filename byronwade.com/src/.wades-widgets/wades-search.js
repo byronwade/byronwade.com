@@ -1,0 +1,1 @@
+//this plugin will search for all content on domain and display it on a seperate page
