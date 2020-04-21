@@ -37,7 +37,8 @@
     "react-helmet": "^5.2.1",
     "react-html-parser": "^2.0.2",
     "react-lazyload": "^2.6.7",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.1",
+    "catalog": "^3.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -67,13 +68,15 @@
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
     "storybook": "start-storybook -p 9009",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "catalog": "catalog start",
+    "build-catalog": "catalog build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/byronwade.com/byronwade.com"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/byronwade.com/byronwade.com/issues"
   }
 }
