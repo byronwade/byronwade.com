@@ -31,7 +31,7 @@ module.exports = {
             seo: true,
             permalink: {
                 base: `/blog`,
-                posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
+                posts: `Name` //Name (base/sample-post/), MonthAndName (base/2020/04/sample-post/)
             },
         },
         //forums for websites - Wordpress Plugin used would be BBPress
@@ -40,7 +40,7 @@ module.exports = {
             seo: true,
             permalink: {
                 base: `/forums`,
-                posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
+                posts: `Name` //Name (base/sample-post/), MonthAndName (base//2020/04/sample-post/)
             },
         },
         //case studies for websites
@@ -49,7 +49,7 @@ module.exports = {
             seo: true,
             permalink: {
                 base: `/case-studies`,
-                posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
+                posts: `Name` //Name (base/sample-post/), MonthAndName (base/2020/04/sample-post/)
             },
         },
         //works would be like a profile
@@ -58,7 +58,7 @@ module.exports = {
             seo: true,
             permalink: {
                 base: `/works`,
-                posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
+                posts: `Name` //Name (base/sample-post/), MonthAndName (base/2020/04/sample-post/)
             },
         }
     }
