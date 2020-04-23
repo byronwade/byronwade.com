@@ -25,6 +25,7 @@ module.exports = {
         }
     },
     has: {
+        //Blog enabled from wordpress site on a specific url
         blog: {
             enable: true,
             seo: true,
@@ -33,6 +34,7 @@ module.exports = {
                 posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
             },
         },
+        //forums for websites - Wordpress Plugin used would be BBPress
         forums: {
             enable: true,
             seo: true,
@@ -41,6 +43,7 @@ module.exports = {
                 posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
             },
         },
+        //case studies for websites
         cases: {
             enable: true,
             seo: true,
@@ -49,6 +52,7 @@ module.exports = {
                 posts: `Name` //Name (sample-post/), MonthAndName (/2020/04/sample-post/)
             },
         },
+        //works would be like a profile
         works: {
             enable: true,
             seo: true,
