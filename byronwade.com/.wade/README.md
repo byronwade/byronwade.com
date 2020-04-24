@@ -1,4 +1,12 @@
-# Wade is the core middle man to the Gatsby/Wordpress integration.
+# WadesCore is built ontop of Gatsby to simplify the website creation process. 
+WadesCore comes default with gatsby and wordpress as the main CMS.
+Our file structure is based on wordpress's files structure.
+
+- install - This folder will be used for replacing the default gatsby files (gatsby-config and gatsby-node) with our new config files settings.
+- wades-admin - this folder will hold all of the files for our small one page admin panel with our settings where our customers and quickly edit and change website settings
+- wades-content - This folder holes all the content we will use across the gatsby websites that we have WadesCore, installed on.
+- wades.config.js - This file is used to practically replaced the gatsby-config file along with adding alot more info for controlling the website in-general.
+
 
 WadesCore Will create a simple and easy way for users to configure their Gatsby websites with any CMS, our goal is to incorporate all sorts of features including:
 - Widgets
