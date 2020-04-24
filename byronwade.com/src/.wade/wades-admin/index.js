@@ -18,7 +18,8 @@ const Admin = () => {
 
   return (
     <>
-        <h1>Admin</h1>
+        <h1>Admin Panel</h1>
+        <p>All the config data will be here where users can change how their website works, by changing the plugins data, and default config data.</p>
     </>
   )
  }
