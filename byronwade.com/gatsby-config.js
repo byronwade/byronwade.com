@@ -1,4 +1,4 @@
-const wade = require(`./.wade/wade.config`)
+const wade = require(`./src/.wade/wade.config`)
 
 module.exports = {
   siteMetadata: {
@@ -9,4 +9,4 @@ module.exports = {
   plugins: wade.plugins.gatsby
 }
 
-console.log(module.exports)
+console.log(module.exports.plugins)

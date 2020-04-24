@@ -1,6 +1,4 @@
 const path = require(`path`)
-var _ = require('lodash');
-const gatsbyConfig = require(`../gatsby-config`)
 
 module.exports = {
     defaults: {
@@ -84,7 +82,7 @@ module.exports = {
               resolve: `gatsby-source-filesystem`,
               options: {
                 name: `images`,
-                path:  path.join(__dirname, `../src`, `images`),
+                path:  path.join(__dirname, `../images`),
               },
             },
             `gatsby-transformer-sharp`,
