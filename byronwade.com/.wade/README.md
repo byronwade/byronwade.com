@@ -1,4 +1,4 @@
-# WadesCore is built ontop of Gatsby to simplify the website creation process. 
+# WadesCore is built ontop of Gatsby with React to simplify the website creation process. 
 
 ```
 WadesCore comes default with gatsby and wordpress configured as the main CMS.
