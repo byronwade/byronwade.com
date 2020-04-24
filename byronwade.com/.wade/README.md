@@ -15,7 +15,9 @@ Sign up for hosting and install Wordpress
 ```
 
 ```
-Once wordpress is installed, download the plugins wp-graphql, wp-graphql-gutenburg, wp-graphql-yoast wordpress plugins on your wordpress website.
+Once wordpress is installed, download the plugins wp-graphql, 
+wp-graphql-gutenburg, wp-graphql-yoast wordpress plugins on 
+your wordpress website.
 ```
 
 .....More To Come.....
