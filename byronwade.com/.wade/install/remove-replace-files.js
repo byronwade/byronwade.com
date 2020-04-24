@@ -1,0 +1,2 @@
+//for a new gatsby site that were including .wade in we need to replace default files with new ones. For instance the gatsby-config and the gatsby-node files.
+//once the wp-graphql plugin is setup on wordpress and configured in the wade.config.js files then we can use this file to send page mutations which lets us create pages on wordpress 
