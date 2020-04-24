@@ -1,10 +1,25 @@
 # WadesCore is built ontop of Gatsby to simplify the website creation process. 
-```
 
-WadesCore comes default with gatsby and wordpress as the main CMS.
+```
+WadesCore comes default with gatsby and wordpress configured as the main CMS.
 Our file structure is based on wordpress's files structure.
+```
+
+### To Start:
+```
+git clone git@github.com:byronwade/byronwade.com.git
+```
 
 ```
+Sign up for hosting and install Wordpress
+```
+
+```
+Once wordpress is installed, download the plugins wp-graphql, wp-graphql-gutenburg, wp-graphql-yoast wordpress plugins on your wordpress website.
+```
+
+.....More To Come.....
+
 
 ### File Structure
 - install - This folder will be used for replacing the default gatsby files (gatsby-config and gatsby-node) with our new config files settings.
