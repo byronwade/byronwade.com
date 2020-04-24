@@ -152,9 +152,3 @@ module.exports = {
         }
     }
 }
-
-//wade.plugins.gatsby.map(plugin => {gatsbyConfig.plugins.concat(plugin)})
-//gatsbyConfig.siteMetadata.title = wade.defaults.title;
-//gatsbyConfig.siteMetadata.description = wade.defaults.description;
-//gatsbyConfig.siteMetadata.author = wade.defaults.author;
-//console.log(wade.plugins.gatsby)
