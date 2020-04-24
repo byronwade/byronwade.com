@@ -23,7 +23,7 @@ const Image = ({
 }: ImageLoaderProps) => {
   const imageAlt = alt || title || caption || "This is a default alt text"
   return (
-    <LazyLoad height={height ? height : null}>
+    <LazyLoad height={height ? height : null} placeholder={<img src="https://via.placeholder.com/300" alt="Image Place Holder" />}>
       <img width={width} height={height} alt={imageAlt} className={className} src={url} />
     </LazyLoad>
   )
