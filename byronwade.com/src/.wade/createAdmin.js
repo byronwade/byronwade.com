@@ -1,9 +1,13 @@
 const path = require(`path`)
+const { plugins } = require(`./wade.config`)
+
+const { wades_admin_panel } = plugins
+
 module.exports = async ({ actions }) => {
   const { createPage } = actions
-      console.log(`created admin panel`)
+      console.log(`Created `+wades_admin_panel.name+` on`)
       createPage({
-        path: `/__admin`,
-        component: path.resolve(`./src/.wade/wades-admin/index.js`)
+        path: wades_admin_panel.permalink.base,
+        component: wades_admin_panel.entry
       })
 }
