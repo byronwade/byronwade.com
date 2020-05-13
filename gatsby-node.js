@@ -2,7 +2,6 @@
     const { createRemoteFileNode } = require('gatsby-source-filesystem')
     
     /* --------- Programatically Create Pages --------- */
-    const createAdmin = require('./src/.wade/createAdmin')
     const createPages = require('./src/create/createPages')
     const createCases = require('./src/create/createCases')
     const createWorks = require('./src/create/createWorks')
@@ -13,7 +12,6 @@
     
     
     exports.createPages = async ({ actions, graphql }) => {
-      await createAdmin({ actions })
       await createPages({ actions, graphql })
       await createCases({ actions, graphql })
       await createWorks({ actions, graphql })
