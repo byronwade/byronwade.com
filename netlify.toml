@@ -1,5 +1,5 @@
 [build]
-  base = "./"
+  base = "byronwade.com/"
   command = "npm run build"
   publish = "public"
 
