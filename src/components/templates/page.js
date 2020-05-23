@@ -12,16 +12,16 @@ import SEO from "../utils/seo" //adding SEO
 import BlockList from "../blocks/BlockList"
 
 //Import Fragment queries
-import HeadingBlockInfo from "../blocks/blockFragments/core/Header"
-import ListBlockInfo from "../blocks/blockFragments/core/List"
-import ParagraphBlockInfo from "../blocks/blockFragments/core/Paragraph"
-import ImageBlockInfo from "../blocks/blockFragments/core/Image"
-import CodeBlockInfo from "../blocks/blockFragments/core/Code"
-import YouTubeBlockInfo from "../blocks/blockFragments/core/YouTube"
-import HTMLBlockInfo from "../blocks/blockFragments/core/HTML"
-import SeparatorBlockInfo from "../blocks/blockFragments/core/Separator"
-import SpacerBlockInfo from "../blocks/blockFragments/core/Spacer"
-import QuoteBlockInfo from "../blocks/blockFragments/core/Quote"
+import "../blocks/blockFragments/core/Header"
+import "../blocks/blockFragments/core/List"
+import  "../blocks/blockFragments/core/Paragraph"
+import "../blocks/blockFragments/core/Image"
+import "../blocks/blockFragments/core/Code"
+import "../blocks/blockFragments/core/YouTube"
+import "../blocks/blockFragments/core/HTML"
+import  "../blocks/blockFragments/core/Separator"
+import "../blocks/blockFragments/core/Spacer"
+import "../blocks/blockFragments/core/Quote"
 
 //Import Layout for pages
 import Layout from "../body/layout"
