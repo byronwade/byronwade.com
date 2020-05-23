@@ -1,6 +1,6 @@
 [build]
-  base = "byronwade.com/"
-  command = "npm run build"
+  base = "./"
+  command = "gatsby build"
   publish = "public"
 
 [[plugins]]
