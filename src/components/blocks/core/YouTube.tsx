@@ -2,7 +2,7 @@ import React from "react"
 import LazyLoad from 'react-lazyload';
 import { YouTubeGetID } from '../../utils/helpers'
 
-type YouTubeComponentProps = {
+type YouTubeProps = {
   attributes: {
     className?: string
     url?: string
@@ -11,10 +11,10 @@ type YouTubeComponentProps = {
   url?: string
 }
 
-const YouTubeComponent = ({
+const YouTube = ({
     className,
     url
-}: YouTubeComponentProps) => {
+}: YouTubeProps) => {
 
   if(url) {
     return (
@@ -26,4 +26,4 @@ const YouTubeComponent = ({
   return null;
 }
 
-export default YouTubeComponent
+export default YouTube
