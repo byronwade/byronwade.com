@@ -1,6 +1,6 @@
 import { graphql } from "gatsby"
 
-export const CodeBlockInfo = graphql`
+export const YouTubeBlockInfo = graphql`
   fragment YouTubeBlockInfo on WORDPRESS_CoreEmbedYoutubeBlock {
     parentId
     attributes {
