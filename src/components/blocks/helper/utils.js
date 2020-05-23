@@ -1,15 +1,15 @@
 import React from 'react';
 //Import Blocks
-import Heading from "../core/Header.tsx"
-import Paragraph from "../core/Paragraph.tsx"
-import List from "../core/List.tsx"
-import Image from "../core/Image.tsx"
-import Code from "../core/Code.tsx"
-import YouTube from "../core/Youtube.tsx"
-import HTML from "../core/HTML.tsx"
-import Separator from "../core/Separator.tsx"
-import Spacer from "../core/Spacer.tsx"
-import Quote from "../core/Quote.tsx"
+import Heading from "../core/Header"
+import Paragraph from "../core/Paragraph"
+import List from "../core/List"
+import Image from "../core/Image"
+import Code from "../core/Code"
+import YouTube from "../core/Youtube"
+import HTML from "../core/HTML"
+import Separator from "../core/Separator"
+import Spacer from "../core/Spacer"
+import Quote from "../core/Quote"
 
 
 export const blockToComponent = (block) => {
