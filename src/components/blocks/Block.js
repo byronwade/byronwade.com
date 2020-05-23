@@ -1,3 +1,3 @@
 import { blockToComponent } from './helper/utils';
 
-export default ({block}) => blockToComponent(block)
+export default ({block}) => blockToComponent(block) 
