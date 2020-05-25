@@ -1,11 +1,11 @@
-import { graphql } from "gatsby"
+import { graphql } from "gatsby";
 
 export const SeparatorBlockInfo = graphql`
-  fragment SeparatorBlockInfo on WORDPRESS_CoreSeparatorBlock {
-    attributes {
-      className
-      color
-    }
-    name
-  }
-`
+	fragment SeparatorBlockInfo on WORDPRESS_CoreSeparatorBlock {
+		attributes {
+			className
+			color
+		}
+		name
+	}
+`;

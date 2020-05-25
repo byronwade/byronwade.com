@@ -1,9 +1,7 @@
-
-import { graphql } from "gatsby"
-
+import { graphql } from "gatsby";
 
 export const HeadingBlockInfo = graphql`
-  fragment HeadingBlockInfo on WORDPRESS_CoreHeadingBlock {
+	fragment HeadingBlockInfo on WORDPRESS_CoreHeadingBlock {
 		attributes {
 			align
 			anchor
@@ -13,10 +11,8 @@ export const HeadingBlockInfo = graphql`
 			placeholder
 		}
 		name
-        originalContent
-        isValid
-        parentId
-  }
-`
-
-
+		originalContent
+		isValid
+		parentId
+	}
+`;

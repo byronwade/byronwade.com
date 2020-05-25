@@ -25,7 +25,7 @@ const Link = ({ children, to, activeClassName, partiallyActive, ...other }) => {
   if (!internal) {
     return (
       <GatsbyLink
-        to={`/`+to}
+        to={to}
         activeClassName={activeClassName}
         partiallyActive={partiallyActive}
         {...other}
