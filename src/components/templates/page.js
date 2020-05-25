@@ -11,18 +11,6 @@ import SEO from "../utils/seo" //adding SEO
 //Import Blocks
 import BlockList from "../blocks/BlockList"
 
-//Import Fragment queries
-import "../blocks/blockFragments/core/Header"
-import "../blocks/blockFragments/core/List"
-import "../blocks/blockFragments/core/Paragraph"
-import "../blocks/blockFragments/core/Image"
-import "../blocks/blockFragments/core/Code"
-import "../blocks/blockFragments/core/Youtube"
-import "../blocks/blockFragments/core/HTML"
-import "../blocks/blockFragments/core/Separator"
-import "../blocks/blockFragments/core/Spacer"
-import "../blocks/blockFragments/core/Quote"
-
 //Import Layout for pages
 import Layout from "../body/layout"
 
@@ -34,6 +22,7 @@ const {
   },
 } = props
 const { title, blocks, seo, link, content } = page
+console.log(blocks)
   return (
     <Layout>
       <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
@@ -82,6 +71,7 @@ export const pageQuery = graphql`
           ...SeparatorBlockInfo
           ...SpacerBlockInfo
           ...QuoteBlockInfo
+          ...ShortCodesBlockInfo
         }
         seo {
           title

@@ -1,15 +1,15 @@
-import { graphql } from "gatsby"
+import { graphql } from "gatsby";
 
 export const CodeBlockInfo = graphql`
-  fragment CodeBlockInfo on WORDPRESS_CoreCodeBlock {
-    attributes {
-        className
-        codeContent: content
-      }
-      originalContent
-      name
-  }
-`
+	fragment CodeBlockInfo on WORDPRESS_CoreCodeBlock {
+		attributes {
+			className
+			codeContent: content
+		}
+		originalContent
+		name
+	}
+`;
 
 //alias 'codeContent' used for property content because:
 // There was an error in your GraphQL query:

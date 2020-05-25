@@ -1,12 +1,12 @@
 //Import for code parts of react and gatsby
-import React, { Component } from 'react' //reacts core
-import { graphql } from 'gatsby' //gatsbys graphql setup
-import ReactHtmlParser from 'react-html-parser'; //parse html
-import moment from "moment/moment" //date formatting
-//import Img from "gatsby-image" //gatsby image API
+import React, { Component } from "react"; //reacts core
+import { graphql } from 'gatsby'
+import ReactHtmlParser from "react-html-parser"; //parse html
+import moment from "moment/moment"; //date formatting
+import Img from "gatsby-image"; //gatsby image API
 
 //Link import to check if internal or external link
-import Link from "../utils/links" //custom links
+import Link from "../utils/links"; //custom links
 
 //Import Blocks
 //import BlockList from "../blocks/BlockList"
@@ -16,81 +16,99 @@ import Link from "../utils/links" //custom links
 //import ListBlockInfo from "../blocks/blockFragments/core/List"
 
 //Import Layout for pages
-import Layout from "../body/layout"
+import Layout from "../body/layout";
 
-class IndexPage extends Component {
-  renderPreviousLink = () => {
-    const { pageContext: { pageNumber }, } = this.props
+class CasesPage extends Component {
+	renderPreviousLink = () => {
+		const {
+			pageContext: { pageNumber },
+		} = this.props;
 
-    let previousLink = null
+		let previousLink = null;
 
-    if (!pageNumber) {
-      return null
-    } else if (1 === pageNumber) {
-      previousLink = this.props.path
-    } else if (1 < pageNumber) {
-      previousLink = this.props.path+`${pageNumber - 1}`
-    }
+		if (!pageNumber) {
+			return null;
+		} else if (1 === pageNumber) {
+			previousLink = this.props.path;
+		} else if (1 < pageNumber) {
+			previousLink = this.props.path + `${pageNumber - 1}`;
+		}
 
-    return (
-      <Link type="primary" to={previousLink}>
-        Previous Posts
-      </Link>
-    )
-  }
+		return (
+			<Link type='primary' to={previousLink}>
+				Previous Posts
+			</Link>
+		);
+	};
 
-  renderNextLink = () => {
-    const { pageContext: { hasNextPage, pageNumber }, } = this.props
+	renderNextLink = () => {
+		const {
+			pageContext: { hasNextPage, pageNumber },
+		} = this.props;
 
-    if (hasNextPage) {
-      return (
-        <Link type="primary" to={this.props.path+`${pageNumber + 1}`} >
-          Next Posts
-        </Link>
-      )
-    } else {
-      return null
-    }
-  }
+		if (hasNextPage) {
+			return (
+				<Link type='primary' to={this.props.path + `${pageNumber + 1}`}>
+					Next Posts
+				</Link>
+			);
+		} else {
+			return null;
+		}
+	};
 
-  pagination = () => {
-    const { pageContext: { hasNextPage }, } = this.props
+	pagination = () => {
+		const {
+			pageContext: { hasNextPage },
+		} = this.props;
 
-    if (hasNextPage) {
-      return (
-        <div className="pagnation">
-          <span className="next">{this.renderNextLink()}</span>
-          <span className="previous">{this.renderPreviousLink()}</span>
-        </div>
-      )
-    } else {
-      return null
-    }
-  }
+		if (hasNextPage) {
+			return (
+				<div className='pagnation'>
+					<span className='next'>{this.renderNextLink()}</span>
+					<span className='previous'>{this.renderPreviousLink()}</span>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	};
 
-  render() {
-    const { data, location, pageContext: { pageNumber }, } = this.props
-    console.log(this.props)
-
-    return (
-      <Layout pageNumber={pageNumber} location={{ location }}>
-        {data && data.wordpress && data.wordpress.casestudys.nodes.map(casestudy => (
-            <div key={casestudy.id}>
-              <pre>{JSON.stringify(casestudy.featuredImage, null, 4)}</pre>
-              {/*casestudy.featuredImage ? (<Img fluid={casestudy.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null*/}
-              <h1>{ReactHtmlParser(casestudy.title)}</h1>
-              <small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
-              <div>{ReactHtmlParser(casestudy.excerpt)}</div>
-              <Link to={this.props.path+casestudy.slug}>Read More</Link>
-            </div>
-          ))}
-          {this.pagination()}
-      </Layout>
-    )
-  }
+	render() {
+		const {
+			data,
+			location,
+			pageContext: { pageNumber },
+		} = this.props;
+		console.log(this.props);
+		return (
+			<Layout pageNumber={pageNumber} location={{ location }}>
+				{data &&
+					data.wordpress &&
+					data.wordpress.casestudys.nodes.map((casestudy) => (
+						<div key={casestudy.id}>
+							{casestudy.featuredImage ? (
+								<Img
+									fluid={
+										casestudy.featuredImage.imageFile.childImageSharp.fluid
+									}
+									alt='Gatsby Docs are awesome'
+								/>
+							) : null}
+							<h1>{ReactHtmlParser(casestudy.title)}</h1>
+							<small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
+							<div>{ReactHtmlParser(casestudy.excerpt)}</div>
+							<Link to={this.props.path + casestudy.slug}>Read More</Link>
+						</div>
+					))}
+				{this.pagination()}
+			</Layout>
+		);
+	}
 }
 
-export default IndexPage
+export default CasesPage;
+
 
 export const query = graphql`
   query GET_CASES($id: Int) {
@@ -104,9 +122,9 @@ export const query = graphql`
           excerpt
           uri
           featuredImage {
-            altText
-            caption
-            mediaItemUrl
+            sourceUrl
+            mediaItemId
+            modified
             imageFile {
               childImageSharp {
                 fluid(maxWidth: 650) {
@@ -118,8 +136,8 @@ export const query = graphql`
                 }
               }
             }
-          }
-        }
+		  }
+		}
       }
     }
   }

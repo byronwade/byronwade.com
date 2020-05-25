@@ -1,6 +1,6 @@
 //Import for code parts of react and gatsby
 import React, { Component } from 'react' //reacts core
-import { graphql } from 'gatsby' //gatsbys graphql setup
+import { graphql } from 'gatsby'
 import ReactHtmlParser from 'react-html-parser'; //parse html
 import moment from "moment/moment" //date formatting
 import Img from "gatsby-image" //gatsby image API
@@ -93,6 +93,7 @@ class IndexPage extends Component {
 }
 // set GATSBY_CONCURRENT_DOWNLOAD=1 && 
 export default IndexPage
+
 
 
 export const query = graphql`
