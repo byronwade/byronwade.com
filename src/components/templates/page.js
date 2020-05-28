@@ -72,6 +72,7 @@ export const pageQuery = graphql`
           ...SpacerBlockInfo
           ...QuoteBlockInfo
           ...ShortCodesBlockInfo
+          ...ACFIntroBlockInfo
         }
         seo {
           title

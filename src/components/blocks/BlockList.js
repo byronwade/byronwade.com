@@ -3,18 +3,20 @@ import Block from "./AllBlocks";
 import { randomID } from "../utils/helpers";
 import ReactHtmlParser from "react-html-parser"; //parse html
 
-//Import Fragment queries
-import "../blocks/blockFragments/core/Header";
-import "../blocks/blockFragments/core/List";
-import "../blocks/blockFragments/core/Paragraph";
-import "../blocks/blockFragments/core/Image";
-import "../blocks/blockFragments/core/Code";
-import "../blocks/blockFragments/core/Youtube";
-import "../blocks/blockFragments/core/HTML";
-import "../blocks/blockFragments/core/Separator";
-import "../blocks/blockFragments/core/Spacer";
-import "../blocks/blockFragments/core/Quote";
-import "../blocks/blockFragments/core/ShortCodes";
+//Import Fragment queries//
+// Core Bocks
+import "./blockFragments/core/List";
+import "./blockFragments/core/Paragraph";
+import "./blockFragments/core/Image";
+import "./blockFragments/core/Code";
+import "./blockFragments/core/Youtube";
+import "./blockFragments/core/HTML";
+import "./blockFragments/core/Separator";
+import "./blockFragments/core/Spacer";
+import "./blockFragments/core/Quote";
+import "./blockFragments/core/ShortCodes";
+// AFC Blocks
+import "./blockFragments/afc/AFCHomeBlockIntro";
 
 export default ({ blocks, content }) => {
 	//console.log(blocks.length)

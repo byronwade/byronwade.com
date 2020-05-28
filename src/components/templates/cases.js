@@ -4,6 +4,8 @@ import { graphql } from 'gatsby'
 import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
+import StackGrid from "react-stack-grid";
+import sizeMe from 'react-sizeme';
 
 //Link import to check if internal or external link
 import Link from "../utils/links"; //custom links
@@ -75,6 +77,11 @@ class CasesPage extends Component {
 	};
 
 	render() {
+		const { 
+		  size: { 
+			width
+		  } 
+		} = this.props;
 		const {
 			data,
 			location,
@@ -83,31 +90,37 @@ class CasesPage extends Component {
 		console.log(this.props);
 		return (
 			<Layout pageNumber={pageNumber} location={{ location }}>
-				{data &&
-					data.wordpress &&
-					data.wordpress.casestudys.nodes.map((casestudy) => (
-						<div key={casestudy.id}>
-							{casestudy.featuredImage ? (
-								<Img
-									fluid={
-										casestudy.featuredImage.imageFile.childImageSharp.fluid
-									}
-									alt='Gatsby Docs are awesome'
-								/>
-							) : null}
-							<h1>{ReactHtmlParser(casestudy.title)}</h1>
-							<small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
-							<div>{ReactHtmlParser(casestudy.excerpt)}</div>
-							<Link to={this.props.path + casestudy.slug}>Read More</Link>
-						</div>
-					))}
+			{/* we need to add SEO here for the blog page only somehow we need to query it */}
+	
+				<StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
+					{data &&
+						data.wordpress &&
+						data.wordpress.casestudys.nodes.map((casestudy) => (
+							<div key={casestudy.id}>
+								{casestudy.featuredImage ? (
+									<Img
+										fluid={
+											casestudy.featuredImage.imageFile.childImageSharp.fluid
+										}
+										alt='Gatsby Docs are awesome'
+									/>
+								) : null}
+								<h1>{ReactHtmlParser(casestudy.title)}</h1>
+								<small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
+								<div>{ReactHtmlParser(casestudy.excerpt)}</div>
+								<Link to={this.props.path + casestudy.slug}>Read More</Link>
+							</div>
+						))}
+				</StackGrid>
+
 				{this.pagination()}
+
 			</Layout>
 		);
 	}
 }
 
-export default CasesPage;
+export default sizeMe()(CasesPage);
 
 
 export const query = graphql`

@@ -4,6 +4,8 @@ import { graphql } from 'gatsby'
 import ReactHtmlParser from 'react-html-parser'; //parse html
 import moment from "moment/moment" //date formatting
 import Img from "gatsby-image" //gatsby image API
+import StackGrid from "react-stack-grid";
+import sizeMe from 'react-sizeme';
 
 //Link import to check if internal or external link
 import Link from "../utils/links" //custom links
@@ -19,6 +21,7 @@ import Link from "../utils/links" //custom links
 import Layout from "../body/layout"
 
 class IndexPage extends Component {
+
   renderPreviousLink = () => {
     const { pageContext: { pageNumber }, } = this.props
 
@@ -69,6 +72,11 @@ class IndexPage extends Component {
   }
 
   render() {
+    const { 
+      size: { 
+        width
+      } 
+    } = this.props;
     // open the browser the root page shows up, navigate to the blog page and it shows the error cannot find title or 
     const { data, location, pageContext: { pageNumber }, } = this.props
     console.log(this.props)
@@ -76,24 +84,30 @@ class IndexPage extends Component {
     return (
       <Layout pageNumber={pageNumber} location={{ location }}>
         {/* we need to add SEO here for the blog page only somehow we need to query it */}
-        {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
-          console.log(post.featuredImage)
-            return <div key={post.id}>
-              {post.featuredImage ? (<Img fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
-              <h1>{ReactHtmlParser(post.title)}</h1>
-              <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
-              <div>{ReactHtmlParser(post.excerpt)}</div>
-              <Link to={this.props.path+post.slug}>Read More</Link>
-            </div>
-          })}
+
+        <StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
+          
+          {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
+            console.log(post.featuredImage)
+              return <div key={post.id}>
+                {post.featuredImage ? (<Img fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
+                <h1>{ReactHtmlParser(post.title)}</h1>
+                <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
+                <div>{ReactHtmlParser(post.excerpt)}</div>
+                <Link to={this.props.path+post.slug}>Read More</Link>
+              </div>
+            })}
+
+          </StackGrid>
+          
           {this.pagination()}
+
       </Layout>
     )
   }
 }
 // set GATSBY_CONCURRENT_DOWNLOAD=1 && 
-export default IndexPage
-
+export default sizeMe()(IndexPage)
 
 
 export const query = graphql`
