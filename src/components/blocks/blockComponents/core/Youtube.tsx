@@ -1,6 +1,6 @@
 import React from "react";
 import LazyLoad from "react-lazyload";
-import { YouTubeGetID } from "../../utils/helpers";
+import { YouTubeGetID } from "../../../utils/helpers";
 
 type YouTubeProps = {
 	attributes: {

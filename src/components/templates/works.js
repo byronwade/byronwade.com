@@ -4,6 +4,8 @@ import { graphql } from 'gatsby'
 import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
+import StackGrid from "react-stack-grid";
+import sizeMe from 'react-sizeme';
 
 //Link import to check if internal or external link
 import Link from "../utils/links"; //custom links
@@ -75,6 +77,11 @@ class WorksPage extends Component {
 	};
 
 	render() {
+		const { 
+		  size: { 
+			width
+		  } 
+		} = this.props;
 		const {
 			data,
 			location,
@@ -83,29 +90,35 @@ class WorksPage extends Component {
 		console.log(data);
 		return (
 			<Layout pageNumber={pageNumber} location={{ location }}>
-				{data &&
-					data.wordpress &&
-					data.wordpress.works.nodes.map((work) => (
-						<div key={work.id}>
-							{work.featuredImage ? (
-								<Img
-									fluid={work.featuredImage.imageFile.childImageSharp.fluid}
-									alt='Gatsby Docs are awesome'
-								/>
-							) : null}
-							<h1>{ReactHtmlParser(work.title)}</h1>
-							<small>{moment(work.date).format(`MMM Do YYYY`)}</small>
-							<div>{ReactHtmlParser(work.excerpt)}</div>
-							<Link to={this.props.path + work.slug}>Read More</Link>
-						</div>
-					))}
+			{/* we need to add SEO here for the blog page only somehow we need to query it */}
+	
+				<StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
+					{data &&
+						data.wordpress &&
+						data.wordpress.works.nodes.map((work) => (
+							<div key={work.id}>
+								{work.featuredImage ? (
+									<Img
+										fluid={work.featuredImage.imageFile.childImageSharp.fluid}
+										alt='Gatsby Docs are awesome'
+									/>
+								) : null}
+								<h1>{ReactHtmlParser(work.title)}</h1>
+								<small>{moment(work.date).format(`MMM Do YYYY`)}</small>
+								<div>{ReactHtmlParser(work.excerpt)}</div>
+								<Link to={this.props.path + work.slug}>Read More</Link>
+							</div>
+						))}
+				</StackGrid>
+
 				{this.pagination()}
+				
 			</Layout>
 		);
 	}
 }
 
-export default WorksPage;
+export default sizeMe()(WorksPage);
 
 export const query = graphql`
   query GET_WORKS($id: Int) {

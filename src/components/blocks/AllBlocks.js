@@ -1,16 +1,22 @@
 import React from "react";
-//Import Blocks
-import Heading from "./core/Header";
-import Paragraph from "./core/Paragraph";
-import List from "./core/List";
-import Image from "./core/Image";
-import Code from "./core/Code";
-import YouTube from "./core/Youtube";
-import HTML from "./core/HTML";
-import Separator from "./core/Separator";
-import Spacer from "./core/Spacer";
-import Quote from "./core/Quote";
-import ShortCodes from "./core/ShortCodes";
+
+//Import Blocks//
+//Core Blocks
+import Heading from "./blockComponents/core/Header";
+import Paragraph from "./blockComponents/core/Paragraph";
+import List from "./blockComponents/core/List";
+import Image from "./blockComponents/core/Image";
+import Code from "./blockComponents/core/Code";
+import YouTube from "./blockComponents/core/Youtube";
+import HTML from "./blockComponents/core/HTML";
+import Separator from "./blockComponents/core/Separator";
+import Spacer from "./blockComponents/core/Spacer";
+import Quote from "./blockComponents/core/Quote";
+import ShortCodes from "./blockComponents/core/ShortCodes";
+//AFC Blocks
+import AFCHomeBlockIntro from "./blockComponents/afc/AFCHomeBlockIntro";
+
+export default ({ block }) => blockToComponent(block);
 
 export const blockToComponent = (block) => {
 	let component;
@@ -20,9 +26,7 @@ export const blockToComponent = (block) => {
 			component = <Heading {...block} {...block.data} {...block.attributes} />;
 			break;
 		case "core/paragraph":
-			component = (
-				<Paragraph {...block} {...block.data} {...block.attributes} />
-			);
+			component = <Paragraph {...block} {...block.data} {...block.attributes} />;
 			break;
 		case "core/list":
 			component = <List {...block} {...block.data} {...block.attributes} />;
@@ -40,9 +44,7 @@ export const blockToComponent = (block) => {
 			component = <HTML {...block} {...block.data} {...block.attributes} />;
 			break;
 		case "core/separator":
-			component = (
-				<Separator {...block} {...block.data} {...block.attributes} />
-			);
+			component = <Separator {...block} {...block.data} {...block.attributes} />;
 			break;
 		case "core/spacer":
 			component = <Spacer {...block} {...block.data} {...block.attributes} />;
@@ -51,15 +53,18 @@ export const blockToComponent = (block) => {
 			component = <Quote {...block} {...block.data} {...block.attributes} />;
 			break;
 		case "core/shortcode":
-			component = (
-				<ShortCodes {...block} {...block.data} {...block.attributes} />
-			);
+			component = <ShortCodes {...block} {...block.data} {...block.attributes} />;
 			break;
+
+			//AFC Blocks
+		case "acf/intro":
+			component = <AFCHomeBlockIntro {...block} {...block.data} {...block.attributes} />;
+			break;
+
+			
 		default:
 			component = null;
 	}
 
 	return component;
 };
-
-export default ({ block }) => blockToComponent(block);
