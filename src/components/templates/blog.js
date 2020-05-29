@@ -43,11 +43,11 @@ class IndexPage extends Component {
   }
 
   renderNextLink = () => {
-    const { pageContext: { hasNextPage, pageNumber }, } = this.props
-
+    const { pageContext: { hasNextPage }, } = this.props
     if (hasNextPage) {
+      console.log(this.props)
       return (
-        <Link type="primary" to={this.props.path+`${pageNumber + 1}`} >
+        <Link type="primary" to={this.props.path + 1} >
           Next Posts
         </Link>
       )
@@ -58,7 +58,7 @@ class IndexPage extends Component {
 
   pagination = () => {
     const { pageContext: { hasNextPage }, } = this.props
-
+    console.log(this.renderNextLink())
     if (hasNextPage) {
       return (
         <div className="pagnation">

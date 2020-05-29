@@ -1,5 +1,6 @@
 import React from "react";
 import ReactHtmlParser from "react-html-parser";
+import { Url } from "url";
 
 type AFCHomeBlockIntroProps = {
 	attributes: {
@@ -9,7 +10,10 @@ type AFCHomeBlockIntroProps = {
 	acf: {
 		test?: string
 		testing: string;
-		testing_block: string;
+		testing_block: {
+			title: String;
+			url: String;
+		}
 	};
     test?: string
     testing?: string
@@ -24,7 +28,7 @@ const AFCHomeBlockIntro = ({ acf }: AFCHomeBlockIntroProps) => {
         <>
             <div>hi {ReactHtmlParser(acf.test)}</div>
             <div>hi {ReactHtmlParser(acf.testing)}</div>
-            <div>hi {ReactHtmlParser(acf.testing_block)}</div>
+            <div>hi {ReactHtmlParser(acf.testing_block.url)}</div>
         </>
     );
 };
