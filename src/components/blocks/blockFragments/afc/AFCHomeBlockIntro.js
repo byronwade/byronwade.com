@@ -9,7 +9,11 @@ export const ACFIntroBlockInfo = graphql`
     acf {
       test
       testing
-      testing_block
+      testing_block {
+        target
+        title
+        url
+      }
     }
     name
     originalContent
