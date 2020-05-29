@@ -14,7 +14,7 @@ import Spacer from "./blockComponents/core/Spacer";
 import Quote from "./blockComponents/core/Quote";
 import ShortCodes from "./blockComponents/core/ShortCodes";
 //AFC Blocks
-import AFCHomeBlockIntro from "./blockComponents/afc/AFCHomeBlockIntro";
+import AFCHomeBlock from "./blockComponents/afc/AFCHomeBlock";
 
 export default ({ block }) => blockToComponent(block);
 
@@ -57,8 +57,8 @@ export const blockToComponent = (block) => {
 			break;
 
 			//AFC Blocks
-		case "acf/intro":
-			component = <AFCHomeBlockIntro {...block} {...block.data} {...block.attributes} />;
+		case "acf/home":
+			component = <AFCHomeBlock {...block} {...block.data} {...block.attributes} />;
 			break;
 
 			
