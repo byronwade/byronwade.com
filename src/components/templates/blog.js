@@ -32,11 +32,14 @@ class IndexPage extends Component {
     } else if (1 === pageNumber) {
       previousLink = this.props.path
     } else if (1 < pageNumber) {
-      previousLink = this.props.path+`${pageNumber - 1}`
+      let path = this.props.path.split("/")
+      path[2] = Number(path[2]) - 1
+      previousLink = path.join('/')
+      console.log(previousLink)
     }
 
     return (
-      <Link type="primary" to={previousLink}>
+      <Link type="primary" to={'/'+previousLink}>
         Previous Posts
       </Link>
     )
@@ -45,9 +48,12 @@ class IndexPage extends Component {
   renderNextLink = () => {
     const { pageContext: { hasNextPage }, } = this.props
     if (hasNextPage) {
-      console.log(this.props)
+      let path = this.props.path.split("/")
+      path[2] = Number(path[2]) + 1
+      const newPath = path.join('/')
+      console.log(newPath)
       return (
-        <Link type="primary" to={this.props.path + 1} >
+        <Link type="primary" to={'/'+newPath} >
           Next Posts
         </Link>
       )

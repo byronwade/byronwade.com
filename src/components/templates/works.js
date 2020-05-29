@@ -21,43 +21,46 @@ import Link from "../utils/links"; //custom links
 import Layout from "../body/layout";
 
 class WorksPage extends Component {
+
 	renderPreviousLink = () => {
-		const {
-			pageContext: { pageNumber },
-		} = this.props;
-
-		let previousLink = null;
-
-		if (!pageNumber) {
-			return null;
-		} else if (1 === pageNumber) {
-			previousLink = this.props.path;
-		} else if (1 < pageNumber) {
-			previousLink = this.props.path + `${pageNumber - 1}`;
-		}
-
-		return (
-			<Link type='primary' to={previousLink}>
-				Previous Posts
-			</Link>
-		);
-	};
-
+	  const { pageContext: { pageNumber }, } = this.props
+  
+	  let previousLink = null
+  
+	  if (!pageNumber) {
+		return null
+	  } else if (1 === pageNumber) {
+		previousLink = this.props.path
+	  } else if (1 < pageNumber) {
+		let path = this.props.path.split("/")
+		path[2] = Number(path[2]) - 1
+		previousLink = path.join('/')
+		console.log(previousLink)
+	  }
+  
+	  return (
+		<Link type="primary" to={'/'+previousLink}>
+		  Previous Posts
+		</Link>
+	  )
+	}
+  
 	renderNextLink = () => {
-		const {
-			pageContext: { hasNextPage, pageNumber },
-		} = this.props;
-
-		if (hasNextPage) {
-			return (
-				<Link type='primary' to={this.props.path + `${pageNumber + 1}`}>
-					Next Posts
-				</Link>
-			);
-		} else {
-			return null;
-		}
-	};
+	  const { pageContext: { hasNextPage }, } = this.props
+	  if (hasNextPage) {
+		let path = this.props.path.split("/")
+		path[2] = Number(path[2]) + 1
+		const newPath = path.join('/')
+		console.log(newPath)
+		return (
+		  <Link type="primary" to={'/'+newPath} >
+			Next Posts
+		  </Link>
+		)
+	  } else {
+		return null
+	  }
+	}
 
 	pagination = () => {
 		const {
