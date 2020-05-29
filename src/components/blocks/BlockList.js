@@ -16,7 +16,7 @@ import "./blockFragments/core/Spacer";
 import "./blockFragments/core/Quote";
 import "./blockFragments/core/ShortCodes";
 // AFC Blocks
-import "./blockFragments/afc/AFCHomeBlockIntro";
+import "./blockFragments/afc/AFCHomeBlock";
 
 export default ({ blocks, content }) => {
 	//console.log(blocks.length)
