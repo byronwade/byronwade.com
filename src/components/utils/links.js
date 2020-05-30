@@ -21,18 +21,6 @@ const Link = ({ children, to, activeClassName, partiallyActive, ...other }) => {
         {children}
       </GatsbyLink>
     )
-  } 
-  if (!internal) {
-    return (
-      <GatsbyLink
-        to={to}
-        activeClassName={activeClassName}
-        partiallyActive={partiallyActive}
-        {...other}
-      >
-        {children}
-      </GatsbyLink>
-    )
   }
   return (
     <a href={to} {...other}>

@@ -101,12 +101,7 @@ class CasesPage extends Component {
 						data.wordpress.casestudys.nodes.map((casestudy) => (
 							<div key={casestudy.id}>
 								{casestudy.featuredImage ? (
-									<Img
-										fluid={
-											casestudy.featuredImage.imageFile.childImageSharp.fluid
-										}
-										alt='Gatsby Docs are awesome'
-									/>
+									<Img fluid={casestudy.featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
 								) : null}
 								<h1>{ReactHtmlParser(casestudy.title)}</h1>
 								<small>{moment(casestudy.date).format(`MMM Do YYYY`)}</small>
