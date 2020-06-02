@@ -1,5 +1,8 @@
 const path = require("path");
 const wade = require("./src/.wade/wade.config");
+require("dotenv").config({
+	path: `.env`,
+})
 
 module.exports = {
 	siteMetadata: {
@@ -47,6 +50,19 @@ module.exports = {
 				// refetch interval in seconds
 				// refetchInterval: 600,
 			},
+		},
+		{
+			resolve: "gatsby-source-graphql",
+			options: {
+				typeName: "GitHub",
+				fieldName: "github",
+				url: "https://api.github.com/graphql",
+				// HTTP headers
+				headers: {
+				  // Learn about environment variables: https://gatsby.dev/env-vars
+				  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+				},
+			  },
 		},
 		`gatsby-plugin-react-helmet`,
 		{

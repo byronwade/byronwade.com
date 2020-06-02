@@ -78,8 +78,6 @@ const Header = () => {
       {data.wordpress.menus.nodes.map(({menuItems, AFCLogoContactMenu}, i) => (
         <div key={i} className="header">
           <div className="header-content">
-            <div>{ReactHtmlParser(AFCLogoContactMenu.email)}</div>
-            <div>{ReactHtmlParser(AFCLogoContactMenu.phoneNumber)}</div>
             {AFCLogoContactMenu.logo ? (
               <div className="logo">
                 <Link to={AFCLogoContactMenu.logoLink.url}>
@@ -87,6 +85,10 @@ const Header = () => {
                 </Link>
               </div>
             ) : null}
+            <div className="contactInfo">
+              <div>{ReactHtmlParser(AFCLogoContactMenu.email)}</div>
+              <div>{ReactHtmlParser(AFCLogoContactMenu.phoneNumber)}</div>
+            </div>
             {menuItems.nodes.map(menuItems => (
               <Link activeClassName="active" key={menuItems.id} to={(menuItems.connectedObject.url ? menuItems.url : (menuItems.connectedObject.__typename === "WORDPRESS_Post" ? '/blog/'+menuItems.connectedObject.uri : (menuItems.connectedObject.url === "/" ? '/' : "/"+menuItems.connectedObject.uri)))}>
                 {menuItems.title || menuItems.label}

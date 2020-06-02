@@ -59,7 +59,7 @@ module.exports = async ({ actions, graphql }) => {
       return allPosts
     })
 
-  await fetchPosts({ first: 12, after: null }).then(allPosts => {
+  await fetchPosts({ first: 12 }).then(allPosts => {
 
     blogPages.map(blogPage => {
       //console.log(`createBlogPage ${blogPage.context.pageNumber}`)
