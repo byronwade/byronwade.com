@@ -1,6 +1,5 @@
 {
   "name": "byronwade.com",
-  "private": true,
   "description": "This is my own personal website.",
   "version": "0.1.0",
   "author": "Byron Wade <bcw1995@gmail.com>",
@@ -27,6 +26,7 @@
     "gatsby-plugin-typescript": "^2.4.3",
     "gatsby-source-filesystem": "^2.3.8",
     "gatsby-source-graphql": "^2.5.2",
+    "gatsby-source-rest-api": "^0.2.3",
     "gatsby-transformer-sharp": "^2.5.3",
     "gatsby-wpgraphql-inline-images": "^0.2.5",
     "glob": "^7.1.6",
@@ -41,7 +41,8 @@
     "react-lazyload": "^2.6.7",
     "react-masonry-layout": "^0.4.0",
     "react-scripts": "^3.4.1",
-    "react-stack-grid": "^0.7.1"
+    "react-stack-grid": "^0.7.1",
+    "underscore": "^1.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.1",

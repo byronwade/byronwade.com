@@ -12,12 +12,17 @@ type AFCHomeBlockHomeProps = {
 		tagline: String
 		what_i_do: String
 		where_i_am_from: String
+
+		pre_header: String
+		header: String
+		description: String
 	}
 };
 
 const AFCHomeBlockIntro = (props: AFCHomeBlockHomeProps) => {
     return (
-        <>
+		<>
+        <div className="section intro">
             <Img className="home_page_logo" fluid={props.acf.logo.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />
 			<h1>{ReactHtmlParser(props.acf.name)}</h1>
 			<div>{ReactHtmlParser(props.acf.tagline)}</div>
@@ -25,7 +30,13 @@ const AFCHomeBlockIntro = (props: AFCHomeBlockHomeProps) => {
 			<div>{ReactHtmlParser(props.acf.where_i_am_from)}</div>
 			<Link to={props.acf.first_button.url}>{props.acf.first_button.title}</Link>
 			<Link to={props.acf.second_button.url}>{props.acf.second_button.title}</Link>
-        </>
+        </div>
+        <div className="section intro">
+			<h1>{ReactHtmlParser(props.acf.pre_header)}</h1>
+			<div>{ReactHtmlParser(props.acf.header)}</div>
+			<div>{ReactHtmlParser(props.acf.description)}</div>
+        </div>
+		</>
     );
 };
 

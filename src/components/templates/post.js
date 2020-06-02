@@ -26,6 +26,7 @@ const Post = (props) => {
 		content,
 		date,
 		author,
+		readingTime,
 		featuredImage,
 		seo,
 		link,
@@ -53,8 +54,9 @@ const Post = (props) => {
 			<h1>{ReactHtmlParser(title)}</h1>
 
 			<img src={author.avatar.url} alt={`Author - ${author.name}`} />
-			<small>{moment(date).format(`MMM Do YYYY`)}</small>
-			<small>{author.name}</small>
+			<div><small>{moment(date).format(`MMM Do YYYY`)}</small></div>
+			<div><small>{author.name}</small></div>
+			<div><small>Reading Time: {readingTime}</small></div>
 
 			<BlockList blocks={blocks} content={content} />
 		</Layout>
@@ -72,6 +74,7 @@ export const pageQuery = graphql`
 				uri
 				link
 				date
+				readingTime
 				featuredImage {
 					sourceUrl
 					mediaItemId

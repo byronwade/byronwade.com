@@ -3,6 +3,9 @@ import { graphql } from "gatsby";
 export const ACFHomeBlock = graphql`
 	fragment ACFHomeBlock on WORDPRESS_AcfHomeBlock {
     acf {
+      pre_header
+      header
+      description
       second_button {
         title
         url
