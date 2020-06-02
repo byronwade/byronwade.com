@@ -3,6 +3,7 @@ import React from "react" //reacts core
 import { graphql } from 'gatsby' //gatsbys graphql setup
 import ReactHtmlParser from 'react-html-parser'; //parse html
 //import Img from "gatsby-image" //gatsby image API
+import '../../schema/person'
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links

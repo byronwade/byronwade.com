@@ -40,8 +40,10 @@
     "react-html-parser": "^2.0.2",
     "react-lazyload": "^2.6.7",
     "react-masonry-layout": "^0.4.0",
+    "react-schemaorg": "^1.0.2",
     "react-scripts": "^3.4.1",
     "react-stack-grid": "^0.7.1",
+    "schema-dts": "^0.6.0",
     "underscore": "^1.10.2"
   },
   "devDependencies": {
