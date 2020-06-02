@@ -3,7 +3,7 @@ import React from "react" //reacts core
 import { graphql } from 'gatsby' //gatsbys graphql setup
 import ReactHtmlParser from 'react-html-parser'; //parse html
 //import Img from "gatsby-image" //gatsby image API
-import '../../schema/person'
+import SchemaWebPage from '../../schema/webpage'
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
@@ -26,6 +26,7 @@ const { title, blocks, seo, link, content } = page
 console.log(blocks)
   return (
     <Layout>
+      <SchemaWebPage {...props} />
       <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
       <h1>{ReactHtmlParser(title)}</h1>
       <BlockList blocks={blocks} content={content} />
