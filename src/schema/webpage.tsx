@@ -1,13 +1,10 @@
-import { WebPage } from "schema-dts";
-import { JsonLd } from "react-schemaorg";
-
-export function GraceHopper(props) {
+export const SchemaWebPage = props => {
   console.log(props)
-  return <JsonLd<WebPage>
-    item={{
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      name: "Byron Wades Website Developemnt",
-      description: "Web design and development"
-    }}/>;
+  const WebPage = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Byron Wades Website Developemnt",
+    "description": "Web design and development"
+  };
+  return JSON.stringify(WebPage);
 }
