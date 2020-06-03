@@ -26,7 +26,8 @@ const Post = (props) => {
 		title,
 		content,
 		date,
-		excerpt,
+		//excerpt,
+		modified,
 		author,
 		readingTime,
 		featuredImage,
@@ -40,6 +41,10 @@ const Post = (props) => {
     const Article = {
 		"@context": "https://schema.org/",
 		"@type": "Article",
+		"mainEntityOfPage": {
+		  "@type": "WebPage",
+		  "@id": link
+		},
 		"headline": title,
 		"image": {
 		  "@type": "ImageObject",
@@ -61,7 +66,8 @@ const Post = (props) => {
 			"height": `"${author && author.avatar ? author.avatar.height : null}px"`
 		  }
 		},
-		"datePublished": moment(date).format(`MMM Do YYYY`)
+		"datePublished": moment(date).format(`YYYY-MM-Do`),
+		"dateModified": moment(modified).format(`YYYY-MM-Do`)
 	};
 
 	return (
@@ -99,6 +105,7 @@ export const pageQuery = graphql`
 				uri
 				link
 				excerpt
+				modified
 				date
 				readingTime
 				featuredImage {
