@@ -16,6 +16,17 @@ module.exports = async ({ actions, graphql }) => {
           title
         }
       }
+      page(idType: URI, id: "/blog/") {
+        id
+        uri
+        pageId
+        title
+        seo {
+          title
+          metaDesc
+          focuskw
+        }
+      }
     }
   }
   `
@@ -44,6 +55,7 @@ module.exports = async ({ actions, graphql }) => {
         component: blogTemplate,
         context: {  
           ids: nodeIds,
+          pageInfo: data,
           pageNumber: pageNumber,
           hasNextPage: hasNextPage,
         },

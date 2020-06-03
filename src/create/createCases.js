@@ -17,6 +17,17 @@ module.exports = async ({ actions, graphql }) => {
           uri
         }
       }
+      page(idType: URI, id: "/case-study/") {
+        id
+        uri
+        pageId
+        title
+        seo {
+          title
+          metaDesc
+          focuskw
+        }
+      }
     }
   }
   `
@@ -44,6 +55,7 @@ module.exports = async ({ actions, graphql }) => {
         component: casesTemplate,
         context: {
           ids: nodeIds,
+          pageInfo: data,
           pageNumber: pageNumber,
           hasNextPage: hasNextPage,
         },

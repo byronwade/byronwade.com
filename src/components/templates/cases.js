@@ -6,6 +6,11 @@ import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
 import StackGrid from "react-stack-grid";
 import sizeMe from 'react-sizeme';
+import { Helmet } from "react-helmet"
+
+//Link import to check if internal or external link
+//import Link from "../utils/links" //custom links
+import SEO from "../utils/seo" //adding SEO
 
 //Link import to check if internal or external link
 import Link from "../utils/links"; //custom links
@@ -80,21 +85,22 @@ class CasesPage extends Component {
 	};
 
 	render() {
-		const { 
-		  size: { 
-			width
-		  } 
-		} = this.props;
-		const {
-			data,
-			location,
-			pageContext: { pageNumber },
-		} = this.props;
-		console.log(this.props);
-		return (
-			<Layout pageNumber={pageNumber} location={{ location }}>
-			{/* we need to add SEO here for the blog page only somehow we need to query it */}
+		const { data, location, pageContext: { pageNumber, pageInfo }, size: { width } } = this.props
+		const { seo } = pageInfo.wordpress.page
+
+		console.log(this.props)
 	
+		const WebPage = {
+		  "@context": "https://schema.org/",
+		  "@type": "WebSite",
+		  "name": seo.title
+		};
+	
+		return (
+		<>
+			<Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
+			<SEO title={seo.title} description={seo.metaDesc} robots="index, follow" />
+        	<Layout pageNumber={pageNumber} location={{ location }}>
 				<StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
 					{data &&
 						data.wordpress &&
@@ -110,10 +116,9 @@ class CasesPage extends Component {
 							</div>
 						))}
 				</StackGrid>
-
 				{this.pagination()}
-
 			</Layout>
+		</>
 		);
 	}
 }
