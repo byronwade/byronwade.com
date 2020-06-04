@@ -34,8 +34,8 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
 
   const WebPage = {
     "@type":"WebPage",
-    "@id":`${link}#webpage`,
-    "url":link,
+    "@id":`${websiteUrl}#webpage`,
+    "url":websiteUrl,
     "inLanguage":"en-US",
     "name":seo.title,
     "isPartOf":{"@id":`${websiteUrl}#webpage`},
