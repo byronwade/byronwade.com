@@ -67,18 +67,6 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
       "postalCode": location.postCode,
       "addressCountry": location.countryShort
     },
-    "review": {
-      "@type": "Review",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "5",
-        "bestRating": "5"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "Byron Wade"
-      }
-    },
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": location.latitude,
