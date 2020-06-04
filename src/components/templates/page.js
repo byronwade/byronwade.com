@@ -45,7 +45,6 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
     }
 
   const Logo = {
-    "@context": "https://schema.org",
     "@type": "Organization",
     "url": generalSettings.url,
     "logo": logo.link,
@@ -122,10 +121,11 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
     "@graph": [
       WebSite, 
       WebPage, 
-      isFrontPage === true ? (Logo, JSON.stringify(LocalBusiness)): null
+      isFrontPage === true ? (Logo, LocalBusiness): null
     ]
   }
 
+  console.log(All)
 
 
   console.log(props)
