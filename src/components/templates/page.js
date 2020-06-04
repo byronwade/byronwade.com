@@ -26,7 +26,6 @@ const { title, blocks, seo, link, content, isFrontPage } = page
 const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
 
   const WebSite = {
-    "@context":"https://schema.org",
     "@type":"WebSite",
     "@id":`${generalSettings.url}#webpage`,
     "url":generalSettings.url,
@@ -34,7 +33,6 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
   }
 
   const WebPage = {
-    "@context":"https://schema.org",
     "@type":"WebPage",
     "@id":`${link}#webpage`,
     "url":link,
@@ -56,7 +54,6 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
   };
   
   const LocalBusiness = {
-    "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "image": [
       logo.link
@@ -118,16 +115,25 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
       }
     ]
   }
+
+
+  const All = {
+    "@context": "http://schema.org",
+    "@graph": [
+      WebSite, 
+      WebPage, 
+      isFrontPage === true ? (Logo, JSON.stringify(LocalBusiness)): null
+    ]
+  }
+
+
+
   console.log(props)
   return (
     <Layout>
       <Helmet>
         <script type="application/ld+json">
-          {
-            JSON.stringify(WebSite), 
-            JSON.stringify(WebPage), 
-            isFrontPage === true ? (JSON.stringify(Logo), JSON.stringify(LocalBusiness)): null
-          }
+          {JSON.stringify(All)}
         </script>
       </Helmet>
       <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
