@@ -208,9 +208,6 @@ export const pageQuery = graphql`
           }
           logo {
             imageFile {
-              absolutePath
-              nlink
-              url
               childImageSharp {
                 fixed {
                   src
