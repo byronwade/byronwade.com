@@ -19,23 +19,117 @@ import Layout from "../body/layout"
 const Page = props => {
 const {
   data: {
-    wordpress: { page },
+    wordpress: { page, websiteGeneralSettings, generalSettings },
   },
 } = props
-const { title, blocks, seo, link, content } = page
-console.log(blocks)
+const { title, blocks, seo, link, content, isFrontPage } = page
+const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
 
+  const WebSite = {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "@id":`${generalSettings.url}#webpage`,
+    "url":generalSettings.url,
+    "name":companyName,
+  }
 
   const WebPage = {
-    "@context": "https://schema.org/",
-    "@type": "WebSite",
-    "name": seo.title,
-    "url": link
+    "@context":"https://schema.org",
+    "@type":"WebPage",
+    "@id":`${link}#webpage`,
+    "url":link,
+    "inLanguage":"en-US",
+    "name":seo.title,
+    "isPartOf":{"@id":`${generalSettings.url}#webpage`},
+      "datePublished": new Date(dateCompanyFormed).toISOString(),
+      "dateModified": new Date().toISOString(),
+      "description": generalSettings.description
+    }
+
+  const Logo = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "url": generalSettings.url,
+    "logo": logo.link,
+    "description": generalSettings.description,
+    "telephone": phoneNumber
   };
   
+  const LocalBusiness = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "image": [
+      logo.link
+     ],
+    "@id": generalSettings.url,
+    "name": companyName,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": location.streetAddress,
+      "addressLocality": location.state,
+      "addressRegion": location.startShort,
+      "postalCode": location.postCode,
+      "addressCountry": location.countryShort
+    },
+    "review": {
+      "@type": "Review",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Byron Wade"
+      }
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": location.latitude,
+      "longitude": location.longitude
+    },
+    "url": generalSettings.url,
+    "telephone": phoneNumber,
+    "priceRange": priceRange,
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "11:30",
+        "closes": "22:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "16:00",
+        "closes": "23:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "16:00",
+        "closes": "22:00"
+      }
+    ]
+  }
+  console.log(props)
   return (
     <Layout>
-      <Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
+      <Helmet>
+        <script type="application/ld+json">
+          {
+            JSON.stringify(WebSite), 
+            JSON.stringify(WebPage), 
+            isFrontPage === true ? (JSON.stringify(Logo), JSON.stringify(LocalBusiness)): null
+          }
+        </script>
+      </Helmet>
       <SEO title={seo.title} description={seo.metaDesc} /*image={null}*/ url={link} robots="index, follow" />
       <h1>{ReactHtmlParser(title)}</h1>
       <BlockList blocks={blocks} content={content} />
@@ -96,6 +190,51 @@ export const pageQuery = graphql`
           email
         }
       }
+
+
+      websiteGeneralSettings {
+        BasicWebsiteData {
+          location {
+            city
+            country
+            countryShort
+            latitude
+            longitude
+            placeId
+            postCode
+            state
+            stateShort
+            streetAddress
+            streetName
+            streetNumber
+            zoom
+          }
+          logo {
+            link
+          }
+          companyName
+          openingHours {
+            fieldGroupName
+            closingHours {
+              monday
+              tusday
+            }
+            openingHours {
+              monday
+              tusday
+            }
+          }
+          priceRange
+          dateCompanyFormed
+          phoneNumber
+        }
+      }
+
+      generalSettings {
+        url
+        description
+      }
+
     }
   }
 `
