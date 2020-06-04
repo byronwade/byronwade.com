@@ -43,14 +43,14 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
     "isPartOf":{"@id":`${websiteUrl}/#webpage`},
       "datePublished": new Date(dateCompanyFormed).toISOString(),
       "dateModified": new Date().toISOString(),
-      "description": generalSettings.description
+      "description": description
     }
 
   const Logo = {
     "@type": "Organization",
     "url": `${websiteUrl}/`,
     "logo": `${websiteUrl + logo.imageFile.childImageSharp.fixed.src}`,
-    "description": generalSettings.description,
+    "description": description,
     "telephone": phoneNumber
   };
   
