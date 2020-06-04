@@ -35,12 +35,12 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
 
   const WebPage = {
     "@type":"WebPage",
-    "@id":`${websiteUrl+slug}/#webpage`,
-    "url": `${websiteUrl+slug}/`,
+    "@id":`${websiteUrl}/+${slug}#webpage`,
+    "url": `${websiteUrl}/+${slug}`,
     "inLanguage":"en-US",
     "name": seo.title,
     "description": seo.metaDesc,
-    "isPartOf":{"@id":`${websiteUrl}#webpage`},
+    "isPartOf":{"@id":`${websiteUrl}/#webpage`},
       "datePublished": new Date(dateCompanyFormed).toISOString(),
       "dateModified": new Date().toISOString(),
       "description": generalSettings.description
@@ -48,8 +48,8 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
 
   const Logo = {
     "@type": "Organization",
-    "url": websiteUrl,
-    "logo": logo.link,
+    "url": `${websiteUrl}/`,
+    "logo": `${websiteUrl + logo.imageFile.childImageSharp.fixed.src}`,
     "description": generalSettings.description,
     "telephone": phoneNumber
   };
@@ -65,7 +65,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
       "@type": "PostalAddress",
       "streetAddress": location.streetAddress,
       "addressLocality": location.state,
-      "addressRegion": location.startShort,
+      "addressRegion": location.stateShort,
       "postalCode": location.postCode,
       "addressCountry": location.countryShort
     },
@@ -111,7 +111,8 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
     "@graph": [
       WebSite, 
       WebPage, 
-      isFrontPage === true ? (Logo, LocalBusiness): null
+      Logo, 
+      LocalBusiness
     ]
   }
 
@@ -206,7 +207,17 @@ export const pageQuery = graphql`
             zoom
           }
           logo {
-            link
+            imageFile {
+              absolutePath
+              nlink
+              url
+              childImageSharp {
+                fixed {
+                  src
+                }
+              }
+            }
+            sourceUrl
           }
           companyName
           openingHours {
