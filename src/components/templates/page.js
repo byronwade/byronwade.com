@@ -22,7 +22,7 @@ const {
     wordpress: { page, websiteGeneralSettings, generalSettings },
   },
 } = props
-const { title, blocks, seo, link, content, isFrontPage } = page
+const { title, blocks, slug, seo, link, content, isFrontPage } = page
 const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
 
   const WebSite = {
@@ -34,10 +34,11 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
 
   const WebPage = {
     "@type":"WebPage",
-    "@id":`${websiteUrl}#webpage`,
-    "url":websiteUrl,
+    "@id":`${websiteUrl+slug}/#webpage`,
+    "url": `${websiteUrl+slug}`,
     "inLanguage":"en-US",
-    "name":seo.title,
+    "name": seo.title,
+    "description": seo.metaDesc,
     "isPartOf":{"@id":`${websiteUrl}#webpage`},
       "datePublished": new Date(dateCompanyFormed).toISOString(),
       "dateModified": new Date().toISOString(),
