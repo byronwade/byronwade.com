@@ -49,7 +49,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
   const Logo = {
     "@type": "Organization",
     "url": `${websiteUrl}/`,
-    "logo": `${websiteUrl + logo.imageFile.childImageSharp.fixed.src}`,
+    "logo": `${websiteUrl}${logo.imageFile.childImageSharp.fixed.src}`,
     "description": description,
     "telephone": phoneNumber
   };
