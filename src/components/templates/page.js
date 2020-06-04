@@ -57,7 +57,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
   const LocalBusiness = {
     "@type": "LocalBusiness",
     "image": [
-      logo.link
+      `${websiteUrl + logo.imageFile.childImageSharp.fixed.src}`
      ],
     "@id": websiteUrl,
     "name": companyName,
