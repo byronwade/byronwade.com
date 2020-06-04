@@ -32,7 +32,7 @@ console.log(blocks)
     "name": seo.title,
     "url": link
   };
-
+  
   return (
     <Layout>
       <Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>

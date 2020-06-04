@@ -5,6 +5,7 @@ import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
 import { Helmet } from "react-helmet"
+import _ from 'lodash'
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
@@ -43,14 +44,14 @@ const Post = (props) => {
 		"@type": "Article",
 		"mainEntityOfPage": {
 		  "@type": "WebPage",
-		  "@id": link
+		  "@id": link ? link : null
 		},
 		"headline": title,
 		"image": {
 		  "@type": "ImageObject",
 		  "url": featuredImage && featuredImage.imageFile ? featuredImage.sourceUrl : null,
-		  "width": `"${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.width : null}px"`,
-		  "height": `"${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.height : null}px"`
+		  "width": `${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.width : null}px`,
+		  "height": `${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.height : null}px`
 		},
 		"author": {
 		  "@type": "Person",
@@ -62,8 +63,8 @@ const Post = (props) => {
 		  "logo": {
 			"@type": "ImageObject",
 			"url": author && author.avatar ? author.avatar.url : null,
-			"width": `"${author && author.avatar ? author.avatar.width : null}px"`,
-			"height": `"${author && author.avatar ? author.avatar.height : null}px"`
+			"width": `${author && author.avatar ? author.avatar.width : null}px`,
+			"height": `${author && author.avatar ? author.avatar.height : null}px`
 		  }
 		},
 		"datePublished": moment(date).format(`YYYY-MM-Do`),
@@ -73,7 +74,7 @@ const Post = (props) => {
 	return (
 		<Layout>
         	<Helmet><script type="application/ld+json">{JSON.stringify(Article)}</script></Helmet>
-			<SEO title={seo.title} description={seo.metaDesc} /*image={featuredImage.link ? featuredImage.link : null}*/ url={link ? link : null} robots='index, follow' />
+			<SEO title={seo.title} description={_.truncate(seo.metaDesc, {'length': 290 ,'separator': ' '})} /*image={featuredImage.link ? featuredImage.link : null}*/ url={link ? link : null} robots='index, follow' />
 
 			{featuredImage && featuredImage.imageFile ? (
 				<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
