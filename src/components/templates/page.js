@@ -23,12 +23,12 @@ const {
   },
 } = props
 const { title, blocks, seo, link, content, isFrontPage } = page
-const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
+const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
 
   const WebSite = {
     "@type":"WebSite",
-    "@id":`${generalSettings.url}#webpage`,
-    "url":generalSettings.url,
+    "@id":`${websiteUrl}#webpage`,
+    "url":websiteUrl,
     "name":companyName,
   }
 
@@ -38,7 +38,7 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
     "url":link,
     "inLanguage":"en-US",
     "name":seo.title,
-    "isPartOf":{"@id":`${generalSettings.url}#webpage`},
+    "isPartOf":{"@id":`${websiteUrl}#webpage`},
       "datePublished": new Date(dateCompanyFormed).toISOString(),
       "dateModified": new Date().toISOString(),
       "description": generalSettings.description
@@ -46,7 +46,7 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
 
   const Logo = {
     "@type": "Organization",
-    "url": generalSettings.url,
+    "url": websiteUrl,
     "logo": logo.link,
     "description": generalSettings.description,
     "telephone": phoneNumber
@@ -57,7 +57,7 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
     "image": [
       logo.link
      ],
-    "@id": generalSettings.url,
+    "@id": websiteUrl,
     "name": companyName,
     "address": {
       "@type": "PostalAddress",
@@ -72,7 +72,7 @@ const { dateCompanyFormed, priceRange, phoneNumber, openingHours, companyName, l
       "latitude": location.latitude,
       "longitude": location.longitude
     },
-    "url": generalSettings.url,
+    "url": websiteUrl,
     "telephone": phoneNumber,
     "priceRange": priceRange,
     "openingHoursSpecification": [
@@ -221,6 +221,7 @@ export const pageQuery = graphql`
           priceRange
           dateCompanyFormed
           phoneNumber
+          websiteUrl
         }
       }
 
