@@ -23,19 +23,20 @@ const {
   },
 } = props
 const { title, blocks, slug, seo, link, content, isFrontPage } = page
-const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, companyName, location, logo } = websiteGeneralSettings.BasicWebsiteData
+const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, companyName, location, logo, description } = websiteGeneralSettings.BasicWebsiteData
 
   const WebSite = {
     "@type":"WebSite",
-    "@id":`${websiteUrl}#webpage`,
-    "url":websiteUrl,
+    "@id":`${websiteUrl}/#webpage`,
+    "url":`${websiteUrl}/`,
     "name":companyName,
+    "description": description,
   }
 
   const WebPage = {
     "@type":"WebPage",
     "@id":`${websiteUrl+slug}/#webpage`,
-    "url": `${websiteUrl+slug}`,
+    "url": `${websiteUrl+slug}/`,
     "inLanguage":"en-US",
     "name": seo.title,
     "description": seo.metaDesc,
@@ -223,6 +224,7 @@ export const pageQuery = graphql`
           dateCompanyFormed
           phoneNumber
           websiteUrl
+          description
         }
       }
 
