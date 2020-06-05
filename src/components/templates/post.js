@@ -69,11 +69,58 @@ const Post = (props) => {
 		},
 		"datePublished": moment(date).format(`YYYY-MM-Do`),
 		"dateModified": moment(modified).format(`YYYY-MM-Do`)
-	};
+	}
 
+	// const FAQPage = {
+	// 	"@type": "FAQPage",
+	// 	"mainEntity": {
+	// 	  "@type": "Question",
+	// 	  "name": "",
+	// 	  "acceptedAnswer": {
+	// 		"@type": "Answer",
+	// 		"text": ""
+	// 	  }
+	// 	}
+	// }
+
+	// const HowTo = {
+	// 	"@type": "HowTo", 
+	// 	"name": "",
+	// 	"supply": {
+	// 	  "@type": "HowToSupply",
+	// 	  "name": ""
+	// 	},
+	// 	"tool": {
+	// 	  "@type": "HowToTool",
+	// 	  "name": ""
+	// 	},
+	// 	"step": [{
+	// 	  "@type": "HowToStep",
+	// 	  "text": ""
+	// 	},{
+	// 	  "@type": "HowToStep",
+	// 	  "text": ""
+	// 	},{
+	// 	  "@type": "HowToStep",
+	// 	  "text": ""
+	// 	}]  
+	// }
+
+	const All = {
+		"@context": "http://schema.org",
+		"@graph": [
+			Article, 
+			//FAQPage, 
+			//HowTo
+		]
+	}
 	return (
 		<Layout>
-        	<Helmet><script type="application/ld+json">{JSON.stringify(Article)}</script></Helmet>
+        	<Helmet>
+				<script type="application/ld+json">
+          			{JSON.stringify(All)}
+				</script>
+			</Helmet>
 			<SEO title={seo.title} description={_.truncate(seo.metaDesc, {'length': 290 ,'separator': ' '})} /*image={featuredImage.link ? featuredImage.link : null}*/ url={link ? link : null} robots='index, follow' />
 
 			{featuredImage && featuredImage.imageFile ? (
