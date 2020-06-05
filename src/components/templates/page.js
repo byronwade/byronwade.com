@@ -35,8 +35,8 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
 
   const WebPage = {
     "@type":"WebPage",
-    "@id":`${websiteUrl}/+${slug}#webpage`,
-    "url": `${websiteUrl}/+${slug}`,
+    "@id":`${websiteUrl}/${slug}/#webpage`,
+    "url": `${websiteUrl}/${slug}/`,
     "inLanguage":"en-US",
     "name": seo.title,
     "description": seo.metaDesc,
@@ -57,7 +57,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
   const LocalBusiness = {
     "@type": "LocalBusiness",
     "image": [
-      `${websiteUrl + logo.imageFile.childImageSharp.fixed.src}`
+      `${websiteUrl}${logo.imageFile.childImageSharp.fixed.src}`
      ],
     "@id": websiteUrl,
     "name": companyName,
@@ -76,6 +76,10 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
     },
     "url": websiteUrl,
     "telephone": phoneNumber,
+    "email": "bcw1995@gmail.com", //this needs to be updated
+    "sameAs": [
+      "https://www.facebooks.com" //this needs to be updated
+    ],
     "priceRange": priceRange,
     "openingHoursSpecification": [
       {
