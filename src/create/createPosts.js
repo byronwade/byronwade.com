@@ -66,12 +66,12 @@ module.exports = async ({ actions, graphql }) => {
       })
       if (hasNextPage) {
         pageNumber++
-        return fetchPosts({ first: 12, after: endCursor })
+        return fetchPosts({ first: 13, after: endCursor })
       }
       return allPosts
     })
 
-  await fetchPosts({ first: 12 }).then(allPosts => {
+  await fetchPosts({ first: 13, after: null }).then(allPosts => {
 
     blogPages.map(blogPage => {
       //console.log(`createBlogPage ${blogPage.context.pageNumber}`)

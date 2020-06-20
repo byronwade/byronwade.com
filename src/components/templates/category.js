@@ -29,6 +29,7 @@ const { name, posts } = category
   console.log(category)
   return (
     <Layout>
+      {/* <SEO title={seo.title} description={seo.metaDesc} robots="index, follow" /> */}
       <h1>Category: {name}</h1>
       {posts.nodes.map(post => (
             <div key={post.id}>

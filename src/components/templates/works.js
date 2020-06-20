@@ -4,8 +4,6 @@ import { graphql } from 'gatsby'
 import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
-import StackGrid from "react-stack-grid";
-import sizeMe from 'react-sizeme';
 import { Helmet } from "react-helmet"
 
 //Link import to check if internal or external link
@@ -85,7 +83,7 @@ class WorksPage extends Component {
 	};
 
 	render() {
-		const { data, location, pageContext: { pageNumber, pageInfo }, size: { width } } = this.props
+		const { data, location, pageContext: { pageNumber, pageInfo } } = this.props
 		const { seo } = pageInfo.wordpress.page
 
 		console.log(this.props)
@@ -101,11 +99,11 @@ class WorksPage extends Component {
 			<Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
 			<SEO title={seo.title} description={seo.metaDesc} robots="index, follow" />
         	<Layout pageNumber={pageNumber} location={{ location }}>
-				<StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
+				<div className="grid">
 					{data &&
 						data.wordpress &&
 						data.wordpress.works.nodes.map((work) => (
-							<div key={work.id}>
+							<div className="gridItem" key={work.id}>
 								{work.featuredImage ? (
 									<Img fluid={work.featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
 								) : null}
@@ -115,7 +113,7 @@ class WorksPage extends Component {
 								<Link to={this.props.path + work.slug}>Read More</Link>
 							</div>
 						))}
-				</StackGrid>
+				</div>
 				{this.pagination()}
 			</Layout>
 		</>
@@ -123,12 +121,12 @@ class WorksPage extends Component {
 	}
 }
 
-export default sizeMe()(WorksPage);
+export default WorksPage;
 
 export const query = graphql`
   query GET_WORKS($id: Int) {
     wordpress {
-      works(where: { id: $id }) {
+      works(first:13, where: { id: $id }) {
         nodes {
           id
           slug
@@ -145,7 +143,7 @@ export const query = graphql`
             mediaItemUrl
             imageFile {
               childImageSharp {
-                fluid(maxWidth: 650) {
+                fluid(maxWidth: 650, maxHeight: 400, quality: 70) {
                   base64
                   aspectRatio
                   src

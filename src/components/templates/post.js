@@ -6,6 +6,7 @@ import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
 import { Helmet } from "react-helmet"
 import _ from 'lodash'
+import { Avatar } from 'antd';
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
@@ -129,7 +130,7 @@ const Post = (props) => {
 
 			<h1>{ReactHtmlParser(title)}</h1>
 
-			<img src={author.avatar.url} alt={`Author - ${author.name}`} />
+			<Avatar size={60} src={author.avatar.url} alt={`Author - ${author.name}`} />
 			<div><small>{moment(date).format(`MMM Do YYYY`)}</small></div>
 			<div><small>{author.name}</small></div>
 			<div><small>Reading Time: {readingTime}</small></div>

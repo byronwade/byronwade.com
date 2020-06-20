@@ -1,11 +1,10 @@
 //Import for code parts of react and gatsby
 import React, { Component } from 'react' //reacts core
+import { globalHistory as history } from '@reach/router'
 import { graphql } from 'gatsby'
 import ReactHtmlParser from 'react-html-parser'; //parse html
 import moment from "moment/moment" //date formatting
 import Img from "gatsby-image" //gatsby image API
-import StackGrid from "react-stack-grid";
-import sizeMe from 'react-sizeme';
 import { Helmet } from "react-helmet"
 
 //Link import to check if internal or external link
@@ -28,6 +27,7 @@ import Layout from "../body/layout"
 class IndexPage extends Component {
 
   renderPreviousLink = () => {
+    const { location } = history //get current location for page
     const { pageContext: { pageNumber }, } = this.props
 
     let previousLink = null
@@ -44,7 +44,7 @@ class IndexPage extends Component {
     }
 
     return (
-      <Link type="primary" to={'/'+previousLink}>
+      <Link type="primary" to={previousLink}>
         Previous Posts
       </Link>
     )
@@ -58,7 +58,7 @@ class IndexPage extends Component {
       const newPath = path.join('/')
       //console.log(newPath)
       return (
-        <Link type="primary" to={'/'+newPath} >
+        <Link type="primary" to={newPath} >
           Next Posts
         </Link>
       )
@@ -83,7 +83,7 @@ class IndexPage extends Component {
   }
 
   render() {
-    const { data, location, pageContext: { pageNumber, pageInfo }, size: { width } } = this.props
+    const { data, location, pageContext: { pageNumber, pageInfo } } = this.props
     const { seo } = pageInfo.wordpress.page
 
     console.log(this.props)
@@ -101,19 +101,35 @@ class IndexPage extends Component {
 
         <Layout pageNumber={pageNumber} location={{ location }}>
 
-          <StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
-            
+          <div className="grid">
+            <div className="gridItem contentHeader">
+              <h1>Valuable Info</h1>
+              <p>Website, domains and hosting info stuff everyone wants to know.</p>
+            </div>
             {data && data.wordpress && data.wordpress.posts.nodes.map(post => {
-                return <div key={post.id}>
-                  {post.featuredImage ? (<Img fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />) : null}
-                  <h1>{ReactHtmlParser(post.title)}</h1>
-                  <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
-                  <div>{ReactHtmlParser(post.excerpt)}</div>
-                  <Link to={this.props.path+post.slug}>Read More</Link>
-                </div>
+                return (
+                <Link className="gridItem" key={post.id} to={"/blog/"+post.slug}>
+                  <div className="blogPostContainer">
+                    {post.featuredImage ? (
+                      <div className="overlayWrapper">
+                        <Img className="blogPhoto" fluid={post.featuredImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />
+                        <div className="overlay"></div>
+                      </div>
+                    ) : (
+                      <div className="overlayWrapper">
+                        <div className="rect"></div>
+                        <div className="overlay"></div>
+                      </div>
+                    )}
+                    <h1 className="blogTitle">{ReactHtmlParser(post.title)}</h1>
+                    <span className="blogDate">{moment(post.date).format(`MMM Do YYYY`)}</span>
+                    <div className="blogLink" to={"/blog/"+post.slug}>Read More</div>
+                  </div>
+                </Link>
+                )
               })}
 
-            </StackGrid>
+            </div>
             
             {this.pagination()}
 
@@ -123,13 +139,13 @@ class IndexPage extends Component {
   }
 }
 // set GATSBY_CONCURRENT_DOWNLOAD=1 && 
-export default sizeMe()(IndexPage)
+export default IndexPage
 
 
 export const query = graphql`
-  query GET_POSTS($ids: [ID]) {
+  query GET_POSTS($id: [ID]) {
     wordpress {
-      posts(where: { in: $ids }) {
+      posts(first:13, where: { in: $id }) {
         nodes {
           id
           slug
@@ -143,7 +159,7 @@ export const query = graphql`
             modified
             imageFile {
               childImageSharp {
-                fluid(maxWidth: 650) {
+                fluid(maxWidth: 650, maxHeight: 400, quality: 70) {
                   base64
                   aspectRatio
                   src

@@ -4,8 +4,6 @@ import { graphql } from 'gatsby'
 import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
-import StackGrid from "react-stack-grid";
-import sizeMe from 'react-sizeme';
 import { Helmet } from "react-helmet"
 
 //Link import to check if internal or external link
@@ -85,7 +83,7 @@ class CasesPage extends Component {
 	};
 
 	render() {
-		const { data, location, pageContext: { pageNumber, pageInfo }, size: { width } } = this.props
+		const { data, location, pageContext: { pageNumber, pageInfo } } = this.props
 		const { seo } = pageInfo.wordpress.page
 
 		console.log(this.props)
@@ -101,11 +99,11 @@ class CasesPage extends Component {
 			<Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
 			<SEO title={seo.title} description={seo.metaDesc} robots="index, follow" />
         	<Layout pageNumber={pageNumber} location={{ location }}>
-				<StackGrid duration={0} columnWidth={width <= 768 ? '100%' : '33.33%'}>
+				<div className="grid">
 					{data &&
 						data.wordpress &&
 						data.wordpress.casestudys.nodes.map((casestudy) => (
-							<div key={casestudy.id}>
+							<div className="gridItem" key={casestudy.id}>
 								{casestudy.featuredImage ? (
 									<Img fluid={casestudy.featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
 								) : null}
@@ -115,7 +113,7 @@ class CasesPage extends Component {
 								<Link to={this.props.path + casestudy.slug}>Read More</Link>
 							</div>
 						))}
-				</StackGrid>
+				</div>
 				{this.pagination()}
 			</Layout>
 		</>
@@ -123,13 +121,13 @@ class CasesPage extends Component {
 	}
 }
 
-export default sizeMe()(CasesPage);
+export default CasesPage;
 
 
 export const query = graphql`
   query GET_CASES($id: Int) {
     wordpress {
-      casestudys(where: { id: $id }) {
+      casestudys(first:13, where: { id: $id }) {
         nodes {
           id
           slug
@@ -143,7 +141,7 @@ export const query = graphql`
             modified
             imageFile {
               childImageSharp {
-                fluid(maxWidth: 650) {
+                fluid(maxWidth: 650, maxHeight: 400, quality: 70) {
                   base64
                   aspectRatio
                   src
