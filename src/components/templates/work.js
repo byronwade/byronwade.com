@@ -34,20 +34,10 @@ const Work = (props) => {
 
 	return (
 		<Layout>
-			<SEO
-				title={seo.title}
-				description={seo.metaDesc}
-				/*image={featuredImage.link ? featuredImage.link : null}*/ url={
-					link ? link : null
-				}
-				robots='index, follow'
-			/>
+			<SEO title={seo.title} description={seo.metaDesc} /*image={featuredImage.link ? featuredImage.link : null}*/ url={link ? link : null} />
 
 			{featuredImage && featuredImage.imageFile ? (
-				<Img
-					fluid={featuredImage.imageFile.childImageSharp.fluid}
-					alt='Gatsby Docs are awesome'
-				/>
+				<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
 			) : null}
 			<h1>{ReactHtmlParser(title)}</h1>
 

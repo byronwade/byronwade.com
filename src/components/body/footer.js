@@ -1,5 +1,6 @@
 //Import for code parts of react and gatsby
 import React from "react" //react core
+import Img from "gatsby-image" //gatsby image API
 import { useStaticQuery, graphql } from "gatsby" //gatsby
 //import Img from "gatsby-image" //gatsbys image API
 import ReactHtmlParser from 'react-html-parser'; //parse html
@@ -25,6 +26,22 @@ const Footer = () => {
           AFCFooterLetsGetStarted {
             header
             subHeader
+            backgroundImage {
+              sourceUrl
+              mediaItemId
+              modified
+              imageFile {
+                childImageSharp {
+                  fluid(quality: 100) {
+                    base64
+                    aspectRatio
+                    src
+                    srcSet
+                    sizes
+                  }
+                }
+              }
+            }
             button {
               url
               title
@@ -73,27 +90,35 @@ const Footer = () => {
       {data.wordpress.menus.nodes.map(({menuItems, AFCFooterInfoMenu, AFCFooterLetsGetStarted}, i) => (
         <div key={i} className="footer">
 
-          {/* Lets get started */}
           {location.pathname === "/contact/" ? null : (
-            <div>
-              <div>{ReactHtmlParser(AFCFooterLetsGetStarted.header)}</div>
-              <div>{ReactHtmlParser(AFCFooterLetsGetStarted.subHeader)}</div>
-              <Link to={AFCFooterLetsGetStarted.button.url}>{ReactHtmlParser(AFCFooterLetsGetStarted.button.title)}</Link>
+            <div className="cta">
+              <div className="ctaContent">
+                <div className="ctaHeader">{ReactHtmlParser(AFCFooterLetsGetStarted.header)}</div>
+                <div className="ctaP">{ReactHtmlParser(AFCFooterLetsGetStarted.subHeader)}</div>
+                <Link className="ctaButton" to={AFCFooterLetsGetStarted.button.url}>{ReactHtmlParser(AFCFooterLetsGetStarted.button.title)}</Link>
+              </div>
+              <Img className="ctaPhoto" fluid={AFCFooterLetsGetStarted.backgroundImage.imageFile.childImageSharp.fluid} alt="Gatsby Docs are awesome" />
             </div>
           )}
 
-          
-          <div>{ReactHtmlParser(AFCFooterInfoMenu.email)}</div>
-          <div>{ReactHtmlParser(AFCFooterInfoMenu.phoneNumber)}</div>
-
-          {menuItems.nodes.map(menuItems => (
-            <Link activeClassName="active" key={menuItems.id} to={(menuItems.connectedObject.url ? menuItems.url : (menuItems.connectedObject.__typename === "WORDPRESS_Post" ? '/blog/'+menuItems.connectedObject.uri : (menuItems.connectedObject.url === "/" ? '/' : "/"+menuItems.connectedObject.uri)))}>
-              {menuItems.title || menuItems.label}
-            </Link>
-          ))}
-
-          © {new Date().getFullYear()}, Built by {ReactHtmlParser(AFCFooterInfoMenu.copywrite)}, Built with <a href="https://www.gatsbyjs.org">Gatsby</a>, <a href="https://www.gatsbyjs.org">React</a>, <a href="https://www.gatsbyjs.org">WP-GraphQL</a>
-        
+          <div className="bottomCopy">
+            <div className="bottomWrapper">
+              <div className="copy">
+                © {new Date().getFullYear()}, Built by {ReactHtmlParser(AFCFooterInfoMenu.copywrite)}, Built with <a href="https://www.gatsbyjs.org">Gatsby</a>, <a href="https://www.gatsbyjs.org">React</a>, <a href="https://www.gatsbyjs.org">WP-GraphQL</a>
+              </div>
+              <div className="contactInfo">
+                <div className="contactEmail">E: {ReactHtmlParser(AFCFooterInfoMenu.email)}</div>
+                <div className="contactPhone">P: {ReactHtmlParser(AFCFooterInfoMenu.phoneNumber)}</div>
+              </div>
+              <div className="socialInfo">
+                {menuItems.nodes.map(menuItems => (
+                  <Link className="menuItem" activeClassName="active" key={menuItems.id} to={(menuItems.connectedObject.url ? menuItems.url : (menuItems.connectedObject.__typename === "WORDPRESS_Post" ? '/blog/'+menuItems.connectedObject.uri : (menuItems.connectedObject.url === "/" ? '/' : "/"+menuItems.connectedObject.uri)))}>
+                    {menuItems.title || menuItems.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       ))}
     </footer>

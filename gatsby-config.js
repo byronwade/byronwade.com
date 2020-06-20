@@ -1,5 +1,6 @@
 const path = require("path");
 const wade = require("./src/.wade/wade.config");
+
 require("dotenv").config({
 	path: `.env`,
 })
@@ -73,6 +74,7 @@ module.exports = {
 			},
 		},
 		`gatsby-transformer-sharp`,
+		`gatsby-plugin-styled-components`,
 		`gatsby-plugin-typescript`,
 		`gatsby-plugin-sass`,
 		`gatsby-plugin-sharp`,
