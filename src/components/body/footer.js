@@ -1,18 +1,104 @@
 //Import for code parts of react and gatsby
 import React from "react" //react core
+import { globalHistory as history } from '@reach/router'
 import Img from "gatsby-image" //gatsby image API
 import { useStaticQuery, graphql } from "gatsby" //gatsby
 //import Img from "gatsby-image" //gatsbys image API
 import ReactHtmlParser from 'react-html-parser'; //parse html
-import { globalHistory as history } from '@reach/router'
+import styled from "styled-components"
 
 //Link import to check if internal or external link
 import Link from "../utils/links" //custom links
 
+const { location } = history //get current location for page
+const pageLocation = location.pathname
+
+const FooterSection = styled.footer`
+  width: 100%;
+  .cta {
+    width: 100%;
+    color: #EAE0D5;
+    position: relative;
+    border-radius: 5px;
+    max-width: 1140px;
+    margin: 2em auto 5em auto;
+    padding: 15px;
+    .ctaContent {
+      position: absolute;
+      width: 100%;
+      z-index: 100;
+      padding: 3em;
+      height: 100%;
+    }
+    .ctaHeader {
+      font-size:50px;
+      font-weight: bold;
+      line-height: 72px;
+    }
+    .ctaP {
+      font-size:17px;
+    }
+    .ctaButton {
+      font-size: 18px;
+      color: #fff;
+      padding: 0.5em 3em;
+      background: #9D6DD8;
+      position: absolute;
+      top: 78px;
+      right: 120px;
+      font-weight: bold;
+    }
+    .ctaPhoto {
+      border-radius: 5px;
+    }
+  }
+  .bottomCopy {
+    width:100%;
+    background: #232323;
+    .bottomWrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 2em 15px;
+      max-width: 1140px;
+      margin: 0 auto;
+      .menuItem {
+        color:#EAE0D5;
+        border-radius: 5px;
+        padding:10px;
+        &:hover {
+          color:#fff;
+          text-decoration:underline;
+        }
+      }
+    }
+    .copy {
+      flex: 2 1;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .contactInfo {
+      flex: 1 1;
+      align-items: start;
+      margin-right: auto;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+    }
+    .socialInfo {
+      flex: 1 1;
+      align-items: center;
+      margin-right: auto;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+`;
+
+
 const Footer = () => {
-
-  const { location } = history //get current location for page
-
   const data = useStaticQuery(graphql`
   {
     wordpress {
@@ -85,12 +171,12 @@ const Footer = () => {
   `)
 
   return (
-    <footer className="footer-menu">
+    <FooterSection>
 
       {data.wordpress.menus.nodes.map(({menuItems, AFCFooterInfoMenu, AFCFooterLetsGetStarted}, i) => (
         <div key={i} className="footer">
 
-          {location.pathname === "/contact/" ? null : (
+          {pageLocation === "/contact/" ? null : (
             <div className="cta">
               <div className="ctaContent">
                 <div className="ctaHeader">{ReactHtmlParser(AFCFooterLetsGetStarted.header)}</div>
@@ -121,7 +207,7 @@ const Footer = () => {
           </div>
         </div>
       ))}
-    </footer>
+    </FooterSection>
   )
   
 }

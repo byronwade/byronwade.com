@@ -37,17 +37,12 @@ module.exports = async ({ actions, graphql }) => {
 			}
 			return allTags;
 		});
-
 	await fetchTags({ first: 100, after: null }).then((allTags) => {
-		const categoryTemplate = path.resolve(
-			`./src/components/templates/category.js`
-		);
-
 		allTags.map((category) => {
 			console.log(`create category: ${category.slug}`);
 			createPage({
 				path: `/blog/category/${category.slug}`,
-				component: categoryTemplate,
+				component: path.resolve(`./src/components/templates/category.js`),
 				context: category,
 			});
 		});

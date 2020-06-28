@@ -47,37 +47,39 @@ module.exports = async ({ actions, graphql }) => {
       } = data
 
       const nodeIds = nodes.map(node => node.postId)
-      const blogTemplate = path.resolve(`./src/components/templates/blog.js`)
-      const blogPagePath = pageNumber === 0 ? `/blog/` : `/blog/${pageNumber}`
 
-      blogPages.push({
-        path: blogPagePath,
-        component: blogTemplate,
-        context: {  
+      blogPages[pageNumber] = {
+        path: pageNumber === 0 ? `/blog/` : `/blog/${pageNumber}`,
+        component: path.resolve(`./src/components/templates/blog.js`),
+        context: {
           ids: nodeIds,
           pageInfo: data,
           pageNumber: pageNumber,
-          hasNextPage: hasNextPage,
+          hasNextPage,
         },
         ids: nodeIds,
-      })
+      }
+
       nodes.map(post => {
         allPosts.push(post)
       })
+
       if (hasNextPage) {
         pageNumber++
         return fetchPosts({ first: 13, after: endCursor })
       }
+
       return allPosts
     })
 
   await fetchPosts({ first: 13, after: null }).then(allPosts => {
 
     blogPages.map(blogPage => {
+      //console.log(blogPage)
       //console.log(`createBlogPage ${blogPage.context.pageNumber}`)
       createPage(blogPage)
     })
-    
+
     allPosts.map(post => {
       //console.log(`create post: ${post.slug}`)
       createPage({
@@ -86,7 +88,7 @@ module.exports = async ({ actions, graphql }) => {
         context: post,
       })
     })
-    
+
   })
 
 }

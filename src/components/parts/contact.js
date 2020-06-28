@@ -7,11 +7,19 @@ import React from "react" //react core
 
 const ContactForm = () => {
   return (
-    <div>
-        <h1>hello form</h1>
-    </div>
+    <form name="contact" method="POST" data-netlify="true">
+
+      <label>Name</label>
+      <input type="text" id="fname" name="firstname" placeholder="Your name.." />
+
+      <label>Message</label>
+      <textarea id="subject" name="subject" placeholder="Write something.."></textarea>
+
+      <button>Submit</button>
+
+    </form>
   )
-  
+
 }
 
 export default ContactForm

@@ -22,8 +22,10 @@ const {
     wordpress: { page, websiteGeneralSettings, generalSettings },
   },
 } = props
-const { title, blocks, slug, seo, link, content, isFrontPage } = page
-const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, companyName, location, logo, description } = websiteGeneralSettings.BasicWebsiteData
+const { title, blocks, slug, seo, link, content } = page
+const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, /* openingHours, */ companyName, location, logo, description } = websiteGeneralSettings.BasicWebsiteData
+
+//console.log(props)
 
   const WebSite = {
     "@type":"WebSite",
@@ -53,7 +55,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
     "description": description,
     "telephone": phoneNumber
   };
-  
+
   const LocalBusiness = {
     "@type": "LocalBusiness",
     "image": [
@@ -113,14 +115,14 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, openingHours, co
   const All = {
     "@context": "http://schema.org",
     "@graph": [
-      WebSite, 
-      WebPage, 
-      Logo, 
+      WebSite,
+      WebPage,
+      Logo,
       LocalBusiness
     ]
   }
 
-  console.log(All)
+  //console.log(All)
 
 
   console.log(props)

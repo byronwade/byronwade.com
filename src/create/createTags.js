@@ -33,12 +33,12 @@ module.exports = async ({ actions, graphql }) => {
         allTags.push(tag)
       })
       if (hasNextPage) {
-        return fetchTags({ first: 100, after: endCursor })
+        return fetchTags({ first: 13, after: endCursor })
       }
       return allTags
     })
 
-  await fetchTags({ first: 100, after: null }).then(allTags => {
+  await fetchTags({ first: 13, after: null }).then(allTags => {
     const tagTemplate = path.resolve(`./src/components/templates/tag.js`)
 
     allTags.map(tag => {

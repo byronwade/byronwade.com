@@ -6,11 +6,14 @@ import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
 import { Helmet } from "react-helmet"
 import _ from 'lodash'
-import { Avatar } from 'antd';
+import styled, { createGlobalStyle } from "styled-components"
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
 import SEO from "../utils/seo"; //adding SEO
+
+//Link import to check if internal or external link
+import Link from "../utils/links" //custom links
 
 //Import Blocks
 import BlockList from "../blocks/BlockList";
@@ -19,6 +22,14 @@ import BlockList from "../blocks/BlockList";
 import Layout from "../body/layout";
 
 const Post = (props) => {
+
+	const GlobalStyles = createGlobalStyle`
+		body {
+			color: ${props => props.theme.light.colors.text};
+			background: ${props => props.theme.light.colors.background};
+		}
+	`
+
 	const {
 		data: {
 			wordpress: { post, allSettings },
@@ -36,9 +47,12 @@ const Post = (props) => {
 		seo,
 		link,
 		blocks,
+		tags,
+		categories,
 	} = post;
 	const { generalSettingsTitle } = allSettings
 
+	console.log(tags)
 
     const Article = {
 		"@context": "https://schema.org/",
@@ -50,9 +64,9 @@ const Post = (props) => {
 		"headline": title,
 		"image": {
 		  "@type": "ImageObject",
-		  "url": featuredImage && featuredImage.imageFile ? featuredImage.sourceUrl : null,
-		  "width": `${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.width : null}px`,
-		  "height": `${featuredImage && featuredImage.imageFile ? featuredImage.mediaDetails.height : null}px`
+		  "url": featuredImage?.imageFile ? featuredImage.sourceUrl : null,
+		  "width": `${featuredImage?.imageFile ? featuredImage.mediaDetails.width : null}px`,
+		  "height": `${featuredImage?.imageFile ? featuredImage.mediaDetails.height : null}px`
 		},
 		"author": {
 		  "@type": "Person",
@@ -63,9 +77,9 @@ const Post = (props) => {
 		  "name": generalSettingsTitle,
 		  "logo": {
 			"@type": "ImageObject",
-			"url": author && author.avatar ? author.avatar.url : null,
-			"width": `${author && author.avatar ? author.avatar.width : null}px`,
-			"height": `${author && author.avatar ? author.avatar.height : null}px`
+			"url": author?.avatar ? author.avatar.url : null,
+			"width": `${author?.avatar ? author.avatar.width : null}px`,
+			"height": `${author?.avatar ? author.avatar.height : null}px`
 		  }
 		},
 		"datePublished": moment(date).format(`YYYY-MM-Do`),
@@ -85,7 +99,7 @@ const Post = (props) => {
 	// }
 
 	// const HowTo = {
-	// 	"@type": "HowTo", 
+	// 	"@type": "HowTo",
 	// 	"name": "",
 	// 	"supply": {
 	// 	  "@type": "HowToSupply",
@@ -104,19 +118,20 @@ const Post = (props) => {
 	// 	},{
 	// 	  "@type": "HowToStep",
 	// 	  "text": ""
-	// 	}]  
+	// 	}]
 	// }
 
 	const All = {
 		"@context": "http://schema.org",
 		"@graph": [
-			Article, 
-			//FAQPage, 
+			Article,
+			//FAQPage,
 			//HowTo
 		]
 	}
 	return (
 		<Layout>
+			<GlobalStyles />
         	<Helmet>
 				<script type="application/ld+json">
           			{JSON.stringify(All)}
@@ -124,16 +139,28 @@ const Post = (props) => {
 			</Helmet>
 			<SEO title={seo.title} description={_.truncate(seo.metaDesc, {'length': 290 ,'separator': ' '})} /*image={featuredImage.link ? featuredImage.link : null}*/ url={link ? link : null} robots='index, follow' />
 
-			{featuredImage && featuredImage.imageFile ? (
-				<Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
+			{featuredImage?.imageFile ? (
+				<div className="featuredImage"><Img fluid={featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' /></div>
 			) : null}
 
 			<h1>{ReactHtmlParser(title)}</h1>
 
-			<Avatar size={60} src={author.avatar.url} alt={`Author - ${author.name}`} />
-			<div><small>{moment(date).format(`MMM Do YYYY`)}</small></div>
-			<div><small>{author.name}</small></div>
+			<Link to={`/blog${author.uri}`}>
+				<img src={author.avatar.url} alt={`Author - ${author.name}`} />
+				<div><small>{moment(date).format(`MMM Do YYYY`)}</small></div>
+				<div><small>{author.name}</small></div>
+			</Link>
+
+
 			<div><small>Reading Time: {readingTime}</small></div>
+
+			{tags ? tags.nodes.map(tag => {
+				return <Link key={tag.name} to={`/blog${tag.uri}`}>{tag.name}</Link>
+			}): null}
+
+			{categories ? categories.nodes.map(category => {
+				return <Link key={category.name} to={`/blog${category.uri}`}>{category.name}</Link>
+			}): null}
 
 			<BlockList blocks={blocks} content={content} />
 		</Layout>
@@ -184,6 +211,7 @@ export const pageQuery = graphql`
 					name
 					slug
 					email
+					uri
 					avatar {
 						url
 						width
@@ -193,13 +221,13 @@ export const pageQuery = graphql`
 				tags {
 					nodes {
 						name
-						link
+						uri
 					}
 				}
 				categories {
 					nodes {
 						name
-						link
+						uri
 					}
 				}
 				blocks {

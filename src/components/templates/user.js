@@ -28,19 +28,17 @@ const { name, posts, avatar } = user
 
   return (
     <Layout>
-      <img src={avatar.url} alt="" />
+      <img src={avatar.url} alt={`Author: name`} />
       <h1>{name}</h1>
       <small>{moment().format(`MMM Do YYYY`)}</small>
-      {
-        posts.nodes.map(post => (
-            <div key={post.id}>
-              <h1>{ReactHtmlParser(post.title)}</h1>
-              <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
-              <div>{ReactHtmlParser(post.excerpt)}</div>
-              <Link to={"/blog/"+post.uri}>Read More</Link>
-            </div>
-        ))
-      }
+      {posts.nodes.map(post => (
+        <div key={post.id}>
+          <h1>{ReactHtmlParser(post.title)}</h1>
+          <small>{moment(post.date).format(`MMM Do YYYY`)}</small>
+          <div>{ReactHtmlParser(post.excerpt)}</div>
+          <Link to={"/blog/"+post.uri}>Read More</Link>
+        </div>
+      ))}
     </Layout>
   )
  }
