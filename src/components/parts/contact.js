@@ -10,12 +10,15 @@ const ContactForm = () => {
     <form name="contact" method="POST" data-netlify="true">
 
       <label>Name</label>
-      <input type="text" id="fname" name="firstname" placeholder="Your name.." />
+      <input type="text" name="name" placeholder="Your name.." />
+
+      <label>Email</label>
+      <input type="email" name="email" placeholder="Your email.." />
 
       <label>Message</label>
-      <textarea id="subject" name="subject" placeholder="Write something.."></textarea>
+      <textarea name="message" placeholder="Write something.."></textarea>
 
-      <button>Submit</button>
+      <button type="submit">Submit</button>
 
     </form>
   )
