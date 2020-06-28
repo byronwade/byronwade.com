@@ -2,7 +2,7 @@ const path = require(`path`)
 module.exports = async ({ actions, graphql }) => {
   const GET_USERS = `
   query GET_USERS($first: Int) {
-    wordpress { 
+    wordpress {
       users(first: $first) {
         pageInfo {
           hasNextPage
@@ -12,6 +12,7 @@ module.exports = async ({ actions, graphql }) => {
           id
           userId
           slug
+          uri
         }
       }
     }
@@ -42,9 +43,9 @@ module.exports = async ({ actions, graphql }) => {
     const userTemplate = path.resolve(`./src/components/templates/user.js`)
 
     allUsers.map(user => {
-      console.log(`create user: ${user.slug}`)
+      console.log(`create user: ${user.uri}`)
       createPage({
-        path: `/author/${user.slug}`,
+        path: `/blog${user.uri}`,
         component: userTemplate,
         context: user,
       })

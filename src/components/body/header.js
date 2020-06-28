@@ -101,6 +101,39 @@ const Header = () => {
         text-decoration:none;
       }
     }
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 15px;
+      .header-left {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .logo {
+          flex: 1;
+        }
+        .contactInfo {
+          flex: 10;
+        }
+      }
+      .header-right {
+        flex: 1;
+        align-items: center;
+        margin-right: auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+    .contentHeader {
+      align-items: center;
+      display: flex;
+      color: #EAE0D5
+    }
   `;
 
   return (

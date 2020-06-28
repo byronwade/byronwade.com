@@ -1,10 +1,11 @@
 //Import for code parts of react and gatsby
-import React, { Component } from "react"; //reacts core
+import React from "react"; //reacts core
 import { graphql } from 'gatsby'
 import ReactHtmlParser from "react-html-parser"; //parse html
 import moment from "moment/moment"; //date formatting
 import Img from "gatsby-image"; //gatsby image API
 import { Helmet } from "react-helmet"
+import Pagination from "../parts/pagnation"
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
@@ -23,105 +24,44 @@ import Link from "../utils/links"; //custom links
 //Import Layout for pages
 import Layout from "../body/layout";
 
-class WorksPage extends Component {
+const Works = (props) => {
 
-	renderPreviousLink = () => {
-	  const { pageContext: { pageNumber }, } = this.props
-  
-	  let previousLink = null
-  
-	  if (!pageNumber) {
-		return null
-	  } else if (1 === pageNumber) {
-		previousLink = this.props.path
-	  } else if (1 < pageNumber) {
-		let path = this.props.path.split("/")
-		path[2] = Number(path[2]) - 1
-		previousLink = path.join('/')
-		console.log(previousLink)
-	  }
-  
-	  return (
-		<Link type="primary" to={'/'+previousLink}>
-		  Previous Posts
-		</Link>
-	  )
-	}
-  
-	renderNextLink = () => {
-	  const { pageContext: { hasNextPage }, } = this.props
-	  if (hasNextPage) {
-		let path = this.props.path.split("/")
-		path[2] = Number(path[2]) + 1
-		const newPath = path.join('/')
-		console.log(newPath)
-		return (
-		  <Link type="primary" to={'/'+newPath} >
-			Next Posts
-		  </Link>
-		)
-	  } else {
-		return null
-	  }
-	}
+	const { data, location, pageContext: { pageNumber, hasNextPage, pageInfo } } = props
+	const { seo } = pageInfo.wordpress.page
 
-	pagination = () => {
-		const {
-			pageContext: { hasNextPage },
-		} = this.props;
-
-		if (hasNextPage) {
-			return (
-				<div className='pagnation'>
-					<span className='next'>{this.renderNextLink()}</span>
-					<span className='previous'>{this.renderPreviousLink()}</span>
-				</div>
-			);
-		} else {
-			return null;
-		}
+	const WebPage = {
+		"@context": "https://schema.org/",
+		"@type": "WebSite",
+		"name": seo.title
 	};
 
-	render() {
-		const { data, location, pageContext: { pageNumber, pageInfo } } = this.props
-		const { seo } = pageInfo.wordpress.page
+	return (
+	<>
+		<Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
+		<SEO title={seo.title} description={seo.metaDesc} robots="index, follow" />
+		<Layout pageNumber={pageNumber} location={{ location }}>
+			<div className="grid">
+				{data?.wordpress?.works.nodes.map((work) => (
+						<div className="gridItem" key={work.id}>
+							{work?.featuredImage ? (
+								<Img fluid={work.featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
+							) : null}
+							<h1>{ReactHtmlParser(work.title)}</h1>
+							<small>{moment(work.date).format(`MMM Do YYYY`)}</small>
+							<div>{ReactHtmlParser(work.excerpt)}</div>
+							<Link to={props.path + work.slug}>Read More</Link>
+						</div>
+					))}
+			</div>
 
-		console.log(this.props)
-	
-		const WebPage = {
-		  "@context": "https://schema.org/",
-		  "@type": "WebSite",
-		  "name": seo.title
-		};
-	
-		return (
-		<>
-			<Helmet><script type="application/ld+json">{JSON.stringify(WebPage)}</script></Helmet>
-			<SEO title={seo.title} description={seo.metaDesc} robots="index, follow" />
-        	<Layout pageNumber={pageNumber} location={{ location }}>
-				<div className="grid">
-					{data &&
-						data.wordpress &&
-						data.wordpress.works.nodes.map((work) => (
-							<div className="gridItem" key={work.id}>
-								{work.featuredImage ? (
-									<Img fluid={work.featuredImage.imageFile.childImageSharp.fluid} alt='Gatsby Docs are awesome' />
-								) : null}
-								<h1>{ReactHtmlParser(work.title)}</h1>
-								<small>{moment(work.date).format(`MMM Do YYYY`)}</small>
-								<div>{ReactHtmlParser(work.excerpt)}</div>
-								<Link to={this.props.path + work.slug}>Read More</Link>
-							</div>
-						))}
-				</div>
-				{this.pagination()}
-			</Layout>
-		</>
-		);
-	}
+			<Pagination pageNumber={pageNumber} hasNextPage={hasNextPage} location={location}/>
+
+		</Layout>
+	</>
+	);
 }
 
-export default WorksPage;
+export default Works;
 
 export const query = graphql`
   query GET_WORKS($id: Int) {

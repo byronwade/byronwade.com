@@ -6,10 +6,11 @@ type ShortCodesProps = {
 };
 
 const ShortCodes = ({ originalContent }: ShortCodesProps) => {
+	console.log(originalContent)
 	if(originalContent === "[contactForm]") {
 		return <ContactForm></ContactForm>
 	}
-	return <p>{originalContent}</p>
+	return <p>asdklf {originalContent}</p>
 };
 
 export default ShortCodes;
