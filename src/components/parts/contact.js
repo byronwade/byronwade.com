@@ -7,7 +7,9 @@ import React from "react" //react core
 
 const ContactForm = () => {
   return (
-    <form name="contact" method="POST" data-netlify="true">
+<form name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+      <input type="hidden" name="bot-field" />
+      <input type="hidden" name="form-name" value="contact" />
 
       <label>Name</label>
       <input type="text" name="name" placeholder="Your name.." />
