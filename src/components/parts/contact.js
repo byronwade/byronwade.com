@@ -16,7 +16,7 @@ const ContactForm = () => {
 
       <Form.Group controlId="formBasicName">
         <Form.Label>Name</Form.Label>
-        <Form.Control type="text" placeholder="Enter your name" />
+        <Form.Control type="text" name="Name" placeholder="Enter your name" />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
         </Form.Text>
