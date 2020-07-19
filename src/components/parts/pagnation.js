@@ -14,7 +14,7 @@ const Pagination = ({ location, pageNumber, hasNextPage }) => {
   if (pageNumber === 0 && !hasNextPage) return null
 
   return (
-    <div>
+    <div className="pagnation">
       {pageNumber > 0 && (
         <Link className="prev page-numbers" to={pageNumber > 1 ? newPrevPath : newPrevPath}>
           <span>Previous page</span>

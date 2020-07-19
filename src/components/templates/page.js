@@ -51,7 +51,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, /* openingHours,
   const Logo = {
     "@type": "Organization",
     "url": `${websiteUrl}/`,
-    "logo": `${websiteUrl}${logo.imageFile.childImageSharp.fixed.src}`,
+    "logo": `${websiteUrl}${logo?.imageFile?.childImageSharp?.fixed.src}`,
     "description": description,
     "telephone": phoneNumber
   };
@@ -59,7 +59,7 @@ const { dateCompanyFormed, priceRange, websiteUrl, phoneNumber, /* openingHours,
   const LocalBusiness = {
     "@type": "LocalBusiness",
     "image": [
-      `${websiteUrl}${logo.imageFile.childImageSharp.fixed.src}`
+      `${websiteUrl}${logo?.imageFile?.childImageSharp?.fixed.src}`
      ],
     "@id": websiteUrl,
     "name": companyName,
