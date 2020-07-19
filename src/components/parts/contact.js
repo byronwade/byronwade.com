@@ -24,7 +24,7 @@ const ContactForm = () => {
 
       <Form.Group controlId="formBasicPhoneNumber">
         <Form.Label>Phone Number</Form.Label>
-        <Form.Control type="number" placeholder="Enter your phone number" />
+        <Form.Control type="number" name="Phone Number" placeholder="Enter your phone number" />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
         </Form.Text>
@@ -32,7 +32,7 @@ const ContactForm = () => {
 
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Control type="email" name="Email" placeholder="Enter email" />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.
         </Form.Text>
@@ -40,7 +40,7 @@ const ContactForm = () => {
 
       <Form.Group controlId="exampleForm.Message">
         <Form.Label>Message</Form.Label>
-        <Form.Control as="textarea" rows="3" />
+        <Form.Control as="textarea" name="Message" rows="3" />
       </Form.Group>
 
       <Button variant="primary" type="submit">
