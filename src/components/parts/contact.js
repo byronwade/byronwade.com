@@ -4,25 +4,50 @@ import React from "react" //react core
 
 //Link import to check if internal or external link
 //import Link from "../utils/links" //custom links
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
 
 const ContactForm = () => {
   return (
-<form name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+    <Form name="contact" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
       <input type="hidden" name="bot-field" />
       <input type="hidden" name="form-name" value="contact" />
 
-      <label>Name</label>
-      <input type="text" name="name" placeholder="Your name.." />
+      <Form.Group controlId="formBasicName">
+        <Form.Label>Name</Form.Label>
+        <Form.Control type="text" placeholder="Enter your name" />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
 
-      <label>Email</label>
-      <input type="email" name="email" placeholder="Your email.." />
+      <Form.Group controlId="formBasicPhoneNumber">
+        <Form.Label>Phone Number</Form.Label>
+        <Form.Control type="number" placeholder="Enter your phone number" />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
 
-      <label>Message</label>
-      <textarea name="message" placeholder="Write something.."></textarea>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Email</Form.Label>
+        <Form.Control type="email" placeholder="Enter email" />
+        <Form.Text className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
 
-      <button type="submit">Submit</button>
+      <Form.Group controlId="exampleForm.Message">
+        <Form.Label>Message</Form.Label>
+        <Form.Control as="textarea" rows="3" />
+      </Form.Group>
 
-    </form>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+
+    </Form>
   )
 
 }

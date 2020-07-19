@@ -18,6 +18,7 @@
     "babel-plugin-react-docgen": "^4.1.0",
     "babel-plugin-remove-graphql-queries": "^2.9.2",
     "babel-plugin-styled-components": "^1.10.7",
+    "bootstrap": "^4.5.0",
     "gatsby": "^2.22.11",
     "gatsby-cli": "^2.12.51",
     "gatsby-image": "^2.4.5",
@@ -39,6 +40,7 @@
     "moment": "^2.26.0",
     "netlify-plugin-gatsby-cache": "^0.2.2",
     "prop-types": "^15.7.2",
+    "react-bootstrap": "^1.2.2",
     "react-helmet": "^5.2.1",
     "react-html-parser": "^2.0.2",
     "react-lazyload": "^2.6.7",
@@ -46,7 +48,8 @@
     "react-schemaorg": "^1.0.2",
     "react-scripts": "^3.4.1",
     "react-stack-grid": "^0.7.1",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "typography": "^0.16.19"
   },
   "devDependencies": {
     "@babel/core": "^7.10.1",
