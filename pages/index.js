@@ -1,16 +1,16 @@
 //import React, { useState } from 'react';
 
-import Header from './components/pageComponents/header'
-import Nav from './components/pageComponents/nav'
-import Footer from './components/pageComponents/footer'
+import Footer from "./components/pageComponents/footer";
+import Header from "./components/pageComponents/header";
+import Nav from "./components/pageComponents/nav";
 
 export default function Home() {
-  return (
-    <>
-      <Header />
-      <Nav />
-      <div>index</div>
-      <Footer />
-    </>
-  )
+	return (
+		<>
+			<Header />
+			<Nav />
+			<div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>index</div>
+			<Footer />
+		</>
+	);
 }
