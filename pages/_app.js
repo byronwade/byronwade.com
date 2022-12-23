@@ -11,14 +11,14 @@ export default function App({ Component, pageProps }) {
 	return (
 		<ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
 			<GlobalStyles />
-			<Component {...pageProps} />
-			<button className='toggleButton' onClick={toggleTheme}>
+			<Component {...pageProps} theme={isDarkTheme ? darkTheme : lightTheme} />
+			{/* <button className='toggleButton' onClick={toggleTheme}>
 				{isDarkTheme ? (
 					<span aria-label='Light mode'>Light</span>
 				) : (
 					<span aria-label='Dark mode'>Dark</span>
 				)}
-			</button>
+			</button> */}
 		</ThemeProvider>
 	);
 }
