@@ -5,18 +5,18 @@ import { useRouter } from "next/router";
 export default function Nav() {
 	const router = useRouter();
 	return (
-		<nav class='bg-gray-800'>
-			<div class='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
-				<div class='relative flex h-16 items-center justify-between'>
-					<div class='absolute inset-y-0 left-0 flex items-center sm:hidden'>
+		<nav className='bg-gray-800'>
+			<div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+				<div className='relative flex h-16 items-center justify-between'>
+					<div className='absolute inset-y-0 left-0 flex items-center sm:hidden'>
 						<button
 							type='button'
-							class='inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
+							className='inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white'
 							aria-controls='mobile-menu'
 							aria-expanded='false'>
-							<span class='sr-only'>Open main menu</span>
+							<span className='sr-only'>Open main menu</span>
 							<svg
-								class='block h-6 w-6'
+								className='block h-6 w-6'
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
 								viewBox='0 0 24 24'
@@ -30,7 +30,7 @@ export default function Nav() {
 								/>
 							</svg>
 							<svg
-								class='hidden h-6 w-6'
+								className='hidden h-6 w-6'
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
 								viewBox='0 0 24 24'
@@ -45,24 +45,24 @@ export default function Nav() {
 							</svg>
 						</button>
 					</div>
-					<div class='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
-						<div class='flex flex-shrink-0 items-center'>
+					<div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
+						<div className='flex flex-shrink-0 items-center'>
 							<img
-								class='block h-8 w-auto lg:hidden'
+								className='block h-8 w-auto lg:hidden'
 								src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500'
 								alt='Your Company'
 							/>
 							<img
-								class='hidden h-8 w-auto lg:block'
+								className='hidden h-8 w-auto lg:block'
 								src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500'
 								alt='Your Company'
 							/>
 						</div>
-						<div class='hidden sm:ml-6 sm:block'>
-							<div class='flex space-x-4'>
+						<div className='hidden sm:ml-6 sm:block'>
+							<div className='flex space-x-4'>
 								<Link
 									href='/'
-									class={
+									className={
 										router.pathname == "/"
 											? "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -72,7 +72,7 @@ export default function Nav() {
 
 								<Link
 									href='projects'
-									class={
+									className={
 										router.pathname == "/projects"
 											? "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -82,7 +82,7 @@ export default function Nav() {
 
 								<Link
 									href='playground'
-									class={
+									className={
 										router.pathname == "/playground"
 											? "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -92,7 +92,7 @@ export default function Nav() {
 
 								<Link
 									href='ideas'
-									class={
+									className={
 										router.pathname == "/ideas"
 											? "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -102,7 +102,7 @@ export default function Nav() {
 
 								<Link
 									href='companies'
-									class={
+									className={
 										router.pathname == "/companies"
 											? "bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
 											: "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -112,13 +112,13 @@ export default function Nav() {
 							</div>
 						</div>
 					</div>
-					<div class='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+					<div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
 						<button
 							type='button'
-							class='rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
-							<span class='sr-only'>View notifications</span>
+							className='rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
+							<span className='sr-only'>View notifications</span>
 							<svg
-								class='h-6 w-6'
+								className='h-6 w-6'
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
 								viewBox='0 0 24 24'
