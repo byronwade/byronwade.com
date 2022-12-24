@@ -1,16 +1,13 @@
 //import React, { useState } from 'react';
-
-import Footer from "./components/pageComponents/footer";
-import Header from "./components/pageComponents/header";
-import Nav from "./components/pageComponents/nav";
+import PageContent from "./components/pageContent";
 
 export default function Projects() {
 	return (
-		<>
-			<Header />
-			<Nav />
-			<div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>Projects</div>
-			<Footer />
-		</>
+		<PageContent>
+		<div className="controlls">
+			<h1>Home</h1>
+		</div>
+		<div className="pageContent">index</div>
+		</PageContent>
 	);
 }
