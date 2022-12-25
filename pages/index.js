@@ -7,7 +7,7 @@ export default function Home() {
 			<div className='controls'>
 				<h1>Home</h1>
 			</div>
-			<div className='pageContent'>index</div>
+			<div className='pageContent'>My Name is Byron Wade</div>
 		</PageContent>
 	);
 }
