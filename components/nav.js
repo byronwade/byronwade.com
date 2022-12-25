@@ -20,9 +20,11 @@ export default function Nav(props) {
 			<div className="menuItems">
 				<Link href='/' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Home</Link>
 				<Link href='/projects' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Projects</Link>
+				<Link href='/learning' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Learning</Link>
 				<Link href='/ideas' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Ideas</Link>
 				<Link href='/playground' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Playground</Link>
 				<Link href='/companies' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Companies</Link>
+				<Link href='/blog' className={router.pathname == "/" ? "navSidebarItems" : "navSidebarItems"}>Blog</Link>
 			</div>
 		</div>
 	);
