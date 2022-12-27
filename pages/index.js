@@ -1,5 +1,7 @@
 //import React, { useState } from 'react';
 import PageContent from "../components/pageContent";
+import {Button} from '@primer/react'
+
 
 export default function Home() {
 	return (
@@ -7,7 +9,9 @@ export default function Home() {
 			<div className='controls'>
 				<h1>Home</h1>
 			</div>
-			<div className='pageContent'>My Name is Byron Wade</div>
+      <div>
+        <Button>Home</Button>
+      </div>
 		</PageContent>
 	);
 }

@@ -1,13 +1,21 @@
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import React from "react";
-import "../styles/globals.css";
-config.autoAddCss = false;
+import {ThemeProvider, BaseStyles} from '@primer/react'
+import {themeGet} from '@primer/react'
+import styled from 'styled-components'
+
+const Background = styled.div`
+  background-color: ${themeGet('colors.canvas.default')};
+  height: 100vh;
+  width:100%;
+`
 
 export default function App({ Component, pageProps }) {
 	return (
-		<>
-			<Component {...pageProps} />
-		</>
+		<ThemeProvider colorMode="auto" preventSSRMismatch>
+			<BaseStyles>
+				<Background>
+					<Component {...pageProps} />
+				</Background>
+			</BaseStyles>
+		</ThemeProvider>
 	);
 }
