@@ -7,12 +7,12 @@ function PageContent({children}) {
     return ( 
 		<>
 			<Header />
-			<div className="p-10 grid grid-cols-12 gap-4">
-				<Nav className="col-span-2" />
-				<div className='col-span-9'>
+			<div>
+				<Nav/>
+				<div>
 					{children}
 				</div>
-				<RightSidebar className="col-span-1" />
+				<RightSidebar/>
 				<Footer />
 			</div>
 		</>
