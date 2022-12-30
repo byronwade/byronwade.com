@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react';
 import {ThemeProvider, BaseStyles} from '@primer/react'
 import {themeGet} from '@primer/react'
 import styled from 'styled-components'
+import '../styles/globals.scss'
 
 //to suppress all the warings from useLayoutEffect
 if (typeof window === "undefined") useLayoutEffect = () => {};
