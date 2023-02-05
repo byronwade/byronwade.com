@@ -51,37 +51,30 @@ export async function getDribbble() {
 }
 
 export const getRepos = cache(async () => {
-	try {
-		const octokit = new Octokit({
-			auth: process.env.GITHUB_TOKEN,
-		});
+	const octokit = new Octokit({
+		auth: process.env.GITHUB_TOKEN,
+	});
 
-		const req = await octokit.request("GET /users/{username}/repos", {
-			username: "byronwade",
-		});
+	const req = await octokit.request("GET /users/{username}/repos", {
+		username: "byronwade",
+	});
 
-		const getRepo = Object.keys(req.data).map(function (key) {
-			return {
-				name: req.data[key].name,
-				url: req.data[key].html_url,
-				stars: req.data[key].stargazers_count,
-				watchers: req.data[key].watchers_count,
-				forks: req.data[key].forks_count,
-				full_name: req.data[key].full_name,
-				language: req.data[key].language,
-				created_at: req.data[key].created_at,
-				updated_at: req.data[key].updated_at,
-			};
-		});
-		let totalStars = 0;
-		getRepo.forEach(function (repo) {
-			totalStars += repo.stars;
-		});
-		return { getRepo, totalStars };
-	} catch (error) {
-		if (error.message === "API rate limit exceeded") {
-			return "API rate limit";
-		}
-		throw error;
-	}
+	const getRepo = Object.keys(req.data).map(function (key) {
+		return {
+			name: req.data[key].name,
+			url: req.data[key].html_url,
+			stars: req.data[key].stargazers_count,
+			watchers: req.data[key].watchers_count,
+			forks: req.data[key].forks_count,
+			full_name: req.data[key].full_name,
+			language: req.data[key].language,
+			created_at: req.data[key].created_at,
+			updated_at: req.data[key].updated_at,
+		};
+	});
+	let totalStars = 0;
+	getRepo.forEach(function (repo) {
+		totalStars += repo.stars;
+	});
+	return { getRepo, totalStars };
 });
