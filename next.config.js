@@ -83,7 +83,7 @@ const securityHeaders = [
 	},
 	{
 		key: "Access-Control-Allow-Credentials",
-		value: true,
+		value: "true",
 	},
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 	{
