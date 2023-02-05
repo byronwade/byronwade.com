@@ -5,7 +5,7 @@ import {
 	ViewsIcon,
 } from "components/icons";
 import { about, avatar, bio, name } from "lib/info";
-import { getStarCount, getTweetCount } from "lib/metrics";
+import { getStarCount, getTweetCount, getBlogViews } from "lib/metrics";
 import Image from "next/image";
 
 export const revalidate = 60;
@@ -32,9 +32,9 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-	const [starCount, /*views,*/ tweetCount] = await Promise.all([
+	const [starCount, views, tweetCount] = await Promise.all([
 		getStarCount(),
-		//getBlogViews(),
+		getBlogViews(),
 		getTweetCount(),
 	]);
 
@@ -64,7 +64,7 @@ export default async function HomePage() {
 					</p>
 					<p className='flex items-center'>
 						<ViewsIcon />
-						{/*`${views.toLocaleString()} blog views all time`*/}
+						{`${views.toLocaleString()} blog views all time`}
 					</p>
 				</div>
 			</div>
