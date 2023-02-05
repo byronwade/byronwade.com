@@ -2,13 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { queryBuilder } from 'lib/planetscale';
 
+console.log("guestbook")
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const session = await getSession({ req });
   const { email, name } = session.user;
-
   if (!session) {
     return res.status(403).send('Unauthorized');
   }
