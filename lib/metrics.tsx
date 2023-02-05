@@ -35,6 +35,19 @@ export async function getTweetCount() {
 	return Number(data.public_metrics.tweet_count);
 }
 
+export async function getDribbble() {
+	if (!process.env.GATSBY_DRIBBBLE_TOKEN) {
+		return 0;
+	}
+
+	const response = await fetch(
+		`https://api.dribbble.com/v2/user/shots?access_token=${process.env.GATSBY_DRIBBBLE_TOKEN}&page=byronwade&per_page=5`
+	);
+	console.log(response)
+
+	return response;
+}
+
 
 export const getRepos = cache(async () => {
 	const octokit = new Octokit({
