@@ -5,7 +5,7 @@ import {
 	ViewsIcon,
 } from "components/icons";
 import { about, avatar, bio, name } from "lib/info";
-import { getStarCount, getTweetCount, getBlogViews } from "lib/metrics";
+import { getRepos, getTweetCount, getBlogViews } from "lib/metrics";
 import Image from "next/image";
 
 export const revalidate = 60;
@@ -34,14 +34,14 @@ export const metadata = {
 export default async function HomePage() {
 	
 	const [starCount, views, tweetCount] = await Promise.all([
-		getStarCount(),
+		getRepos(),
 		getBlogViews(),
 		getTweetCount(),
 	]);
 
 	return (
 		<section className=''>
-			<h1 className='font-bold text-3xl font-serif'>{name}</h1>
+			<h1 className='font-bold text-3xl'>{name}</h1>
 			<p className='my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200'>
 				{about()}
 			</p>
@@ -61,7 +61,7 @@ export default async function HomePage() {
 					</p>
 					<p className='flex items-center gap-2'>
 						<GitHubIcon />
-						{`${starCount.toLocaleString()} stars on this repo`}
+						{`${starCount.totalStars.toLocaleString()} stars all time`}
 					</p>
 					<p className='flex items-center'>
 						<ViewsIcon />

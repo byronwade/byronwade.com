@@ -49,7 +49,7 @@ export default async function GuestbookPage() {
 
   return (
     <section>
-      <h1 className="font-bold text-3xl font-serif mb-5">Guestbook</h1>
+      <h1 className="font-bold text-3xl mb-5">Guestbook</h1>
       {session?.user ? (
         <>
           <Form />
