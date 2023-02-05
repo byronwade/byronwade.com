@@ -28,11 +28,14 @@ export default function ViewCounter({
   const views = new Number(viewsForSlug?.count || 0);
 
   useEffect(() => {
-    const registerView = () =>
+    const registerView = () => {
       fetch(`/api/views/${slug}`, {
         method: 'POST',
       });
+      console.log("It was sent")
+    }
     if (trackView) {
+      console.log(trackView)
       registerView();
     }
   }, [slug]);
