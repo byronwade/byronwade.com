@@ -32,6 +32,7 @@ export const metadata = {
 };
 
 export default async function HomePage() {
+	
 	const [starCount, views, tweetCount] = await Promise.all([
 		getStarCount(),
 		getBlogViews(),

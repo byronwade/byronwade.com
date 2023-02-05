@@ -1,6 +1,5 @@
 import { queryBuilder } from 'lib/planetscale';
 import type { NextApiRequest, NextApiResponse } from 'next';
-console.log("views")
 
 export default async function handler(
   req: NextApiRequest,
