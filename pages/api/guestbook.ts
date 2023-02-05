@@ -17,7 +17,7 @@ export default async function handler(
     await queryBuilder
       .insertInto('guestbook')
       .values({
-        "bcw1995@gmail.com",
+        email: "bcw1995@gmail.com",
         body: (req.body.body || '').slice(0, 500),
         created_by: "byron wade",
       })

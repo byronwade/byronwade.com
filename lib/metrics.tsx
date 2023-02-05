@@ -13,7 +13,7 @@ export const getBlogViews = cache(async () => {
 		.selectFrom("views")
 		.select(["count"])
 		.execute();
-
+	console.log(data)
 	return data.reduce((acc, curr) => acc + Number(curr.count), 0);
 });
 
