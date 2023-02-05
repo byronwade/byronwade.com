@@ -35,15 +35,31 @@ export async function getTweetCount() {
 	return Number(data.public_metrics.tweet_count);
 }
 
-export const getStarCount = cache(async () => {
+
+export const getRepos = cache(async () => {
 	const octokit = new Octokit({
 		auth: process.env.GITHUB_TOKEN,
 	});
 
-	const req = await octokit.request("GET /repos/{owner}/{repo}", {
-		owner: "byronwade",
-		repo: "byronwade.com",
+	const req = await octokit.request("GET /users/{username}/repos", {
+		username: "byronwade",
 	});
-
-	return req.data.stargazers_count;
+	const getRepo = Object.keys(req.data).map(function(key) {
+		return {
+			"name": req.data[key].name,
+			"url": req.data[key].html_url,
+			"stars": req.data[key].stargazers_count,
+			"watchers": req.data[key].watchers_count,
+			"forks": req.data[key].forks_count,
+			"full_name": req.data[key].full_name,
+			"language": req.data[key].language,
+			"created_at": req.data[key].created_at,
+			"updated_at": req.data[key].updated_at
+		};
+	});
+	let totalStars = 0;
+	getRepo.forEach(function(repo) {
+		totalStars += repo.stars;
+	});
+	return {getRepo, totalStars};
 });
