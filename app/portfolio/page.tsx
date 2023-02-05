@@ -4,13 +4,14 @@ export const metadata = {
 	description: "My Projects",
 };
 
-import { getRepos } from "lib/metrics";
+import { getRepos, getDribbble } from "lib/metrics";
 
 export default async function Portfolio() {
-	const [ getRepo ] = await Promise.all([
-		getRepos()
+	const [ getRepo, getDribbbles ] = await Promise.all([
+		getRepos(),
+		getDribbble()
 	]);
-	
+	console.log(getDribbbles)
 	return (
 		<section>
 			<h1 className='font-bold text-3xl'>Portfolio</h1>
