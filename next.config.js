@@ -77,6 +77,14 @@ const securityHeaders = [
 		key: "Strict-Transport-Security",
 		value: "max-age=31536000; includeSubDomains; preload",
 	},
+	{
+		key: "Access-Control-Allow-Origin",
+		value: "*",
+	},
+	{
+		key: "Access-Control-Allow-Credentials",
+		value: true,
+	},
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
 	{
 		key: "Permissions-Policy",
