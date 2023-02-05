@@ -32,7 +32,6 @@ export default function ViewCounter({
       fetch(`/api/views/${slug}`, {
         method: 'POST',
       });
-
     if (trackView) {
       registerView();
     }
