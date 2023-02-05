@@ -1,25 +1,18 @@
-import me from "../app/avatar.jpg";
+import me from '../app/placeholder.jpg';
 
-export const name = "Byron Wade";
+export const name = 'Your Name';
 export const avatar = me;
 export const about = () => {
-	return (
-		<>
-			Hey, I'm Byron. I'm the{" "}
-			<b>
-				Owner of Wade's Inc., Wade's Plumbing & Septic, and Clog Monsters Septic
-				Pumping
-			</b>{" "}
-			where I help bring new technology and ideas into the construction
-			industry.
-		</>
-	);
+  return (
+    <>
+      Hey, I'm a developer who loves Next.js. I work at BigCo or CoolStartup as a Software Engineer.
+    </>
+  );
 };
 export const bio = () => {
-	return (
-		<>
-			I am currently going to a Community Collage in Santa Cruz, CA working to
-			get a Civil Engineering degree and a Computer Science degree.
-		</>
-	);
+  return (
+    <>
+      When I'm not coding, I'm probably playing video games or watching anime. I also love to travel and explore new places.
+    </>
+  );
 };
