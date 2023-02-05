@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { allBlogs } from "contentlayer/generated";
-//import ViewCounter from './view-counter';
+import ViewCounter from './view-counter';
 
 export const metadata = {
 	title: "Blog",
@@ -25,7 +25,7 @@ export default async function BlogPage() {
 						href={`/blog/${post.slug}`}>
 						<div className='w-full flex flex-col'>
 							<p>{post.title}</p>
-							{/* <ViewCounter slug={post.slug} trackView={false} /> */}
+							<ViewCounter slug={post.slug} trackView={false} />
 						</div>
 					</Link>
 				))}

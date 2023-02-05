@@ -17,6 +17,7 @@
 		"contentlayer": "^0.3.0",
 		"date-fns": "^2.29.3",
 		"dotenv": "^16.0.3",
+		"encoding": "^0.1.13",
 		"framer-motion": "^8.5.4",
 		"kysely": "^0.23.4",
 		"kysely-planetscale": "^1.2.1",
