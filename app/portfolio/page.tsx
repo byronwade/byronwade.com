@@ -17,7 +17,7 @@ export default async function Portfolio() {
 			<div className='prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200'>
 			{getRepo.getRepo.map((repo, index) => {
 				return (
-					<div key={`${repo.name}`}>
+					<div key={index}>
 						<h2>{repo.name}</h2>
 						<Link href={repo.url}>{repo.full_name}</Link>
 						<p>Stars: {repo.stars} - Watchers: {repo.watchers} - Forks {repo.forks}</p>
