@@ -20,7 +20,7 @@ export default async function Portfolio() {
 				{getDribbbles.map((repo, index) => {
 					return (
 						<div key={index}>
-							<img src={repo.images.normal} />
+							<img src={repo.images.hidpi} />
 							<Link href={repo.html_url}>{repo.title}</Link>
 							<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
 						</div>
