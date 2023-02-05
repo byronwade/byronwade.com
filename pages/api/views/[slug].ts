@@ -14,7 +14,13 @@ export default async function handler(
       .execute();
 
     if (!data.length) {
-      return 0;
+      await queryBuilder
+      .insertInto('views')
+      .values({ slug, count: 0 })
+      .onDuplicateKeyUpdate({ count: 1 })
+      .execute();
+
+    return res.status(200).json({ total: 1 });
     }
 
     const views = Number(data[0].count);
