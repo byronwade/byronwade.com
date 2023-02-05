@@ -5,6 +5,7 @@ const { withContentlayer } = require("next-contentlayer");
 const nextConfig = {
 	images: {
 		formats: ["image/avif", "image/webp"],
+		domains: ["cdn.dribbble.com"],
 		// Twitter Profile Picture
 		remotePatterns: [
 			{
