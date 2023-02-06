@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { allBlogs } from "contentlayer/generated";
-import ViewCounter from './view-counter';
+import Link from "next/link";
+import ViewCounter from "./view-counter";
 
 export const metadata = {
 	title: "Blog",
