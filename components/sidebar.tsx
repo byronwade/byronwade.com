@@ -20,9 +20,6 @@ const navItems = {
 	"/blog": {
 		name: "blog",
 	},
-	"/guestbook": {
-		name: "guestbook",
-	},
 	"/contact": {
 		name: "contact",
 	},

@@ -31,6 +31,14 @@ const people = [
 		imageUrl:
 			"https://www.twilio.com/assets/icons/twilio-icon-512_maskable.png",
 	},
+	{
+		id: 4,
+		name: "Guestbook",
+		description: "A github authorization to allow chatting on the website!",
+		link: "/playground/guestbook",
+		imageUrl:
+			"https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU",
+	},
 ];
 
 export default function Playground() {
