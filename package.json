@@ -10,6 +10,8 @@
 		"@octokit/rest": "^19.0.7",
 		"@planetscale/database": "^1.5.0",
 		"@sendgrid/mail": "^7.7.0",
+		"@stripe/react-stripe-js": "^1.16.4",
+		"@stripe/stripe-js": "^1.46.0",
 		"@vercel/analytics": "^0.1.8",
 		"@vercel/edge-config": "^0.1.1",
 		"@vercel/og": "^0.0.27",
@@ -35,7 +37,8 @@
 		"remark-gfm": "^3.0.1",
 		"server-only": "^0.0.1",
 		"shiki": "^0.13.0",
-		"swr": "^2.0.3"
+		"swr": "^2.0.3",
+		"twilio": "^3.84.1"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "^0.5.3",

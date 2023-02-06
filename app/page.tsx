@@ -71,6 +71,13 @@ export default async function HomePage() {
 			<p className='my-5 max-w-[600px] text-neutral-800 dark:text-neutral-200'>
 				{bio()}
 			</p>
+			<div>
+				<button
+					type='button'
+					className='inline-flex items-center rounded-md border border-transparent bg-yellow-600 px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'>
+					buy my coffee
+				</button>
+			</div>
 			<ul className='flex flex-col md:flex-row mt-8 space-x-0 md:space-x-4 space-y-2 md:space-y-0 font-sm text-neutral-500 dark:text-neutral-400'>
 				<li>
 					<a
