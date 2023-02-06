@@ -5,7 +5,7 @@ import {
 	ViewsIcon,
 } from "components/icons";
 import { about, avatar, bio, name } from "lib/info";
-import { getRepos, getTweetCount, getBlogViews } from "lib/metrics";
+import { getBlogViews, getRepos, getTweetCount } from "lib/metrics";
 import Image from "next/image";
 
 export const revalidate = 60;
@@ -32,7 +32,6 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-	
 	const [starCount, views, tweetCount] = await Promise.all([
 		getRepos(),
 		getBlogViews(),
@@ -73,6 +72,16 @@ export default async function HomePage() {
 				{bio()}
 			</p>
 			<ul className='flex flex-col md:flex-row mt-8 space-x-0 md:space-x-4 space-y-2 md:space-y-0 font-sm text-neutral-500 dark:text-neutral-400'>
+				<li>
+					<a
+						className='flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all'
+						rel='noopener noreferrer'
+						target='_blank'
+						href='https://twitter.com/byron_c_wade'>
+						<ArrowIcon />
+						<p className='h-7'>follow me on twitter</p>
+					</a>
+				</li>
 				<li>
 					<a
 						className='flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all'

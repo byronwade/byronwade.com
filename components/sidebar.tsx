@@ -23,6 +23,9 @@ const navItems = {
 	"/guestbook": {
 		name: "guestbook",
 	},
+	"/contact": {
+		name: "contact",
+	},
 };
 
 function Logo() {
