@@ -12,7 +12,7 @@ export default async function Portfolio() {
 		getRepos(),
 		getDribbble(),
 	]);
-	console.log(getDribbbles);
+
 	return (
 		<section>
 			<h1 className='font-bold text-3xl'>Portfolio</h1>

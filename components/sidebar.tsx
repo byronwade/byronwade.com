@@ -11,6 +11,9 @@ const navItems = {
 	"/about": {
 		name: "about",
 	},
+	"/future": {
+		name: "future",
+	},
 	"/playground": {
 		name: "playground",
 	},
@@ -22,6 +25,9 @@ const navItems = {
 	},
 	"/guestbook": {
 		name: "guestbook",
+	},
+	"/textme": {
+		name: "text me",
 	},
 	"/contact": {
 		name: "contact",
