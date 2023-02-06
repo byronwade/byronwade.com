@@ -62,7 +62,7 @@ export default function Contact() {
 									onChange={(e) => {
 										setName(e.target.value);
 									}}
-									className='block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
 									placeholder='Byron Wade'
 									aria-describedby='name-optional'
 								/>
@@ -82,7 +82,7 @@ export default function Contact() {
 									onChange={(e) => {
 										setEmail(e.target.value);
 									}}
-									className='block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
 									placeholder='you@example.com'
 									aria-describedby='email-optional'
 								/>
@@ -100,7 +100,7 @@ export default function Contact() {
 									onChange={(e) => {
 										setMessage(e.target.value);
 									}}
-									className='block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
 									defaultValue={""}
 								/>
 							</div>

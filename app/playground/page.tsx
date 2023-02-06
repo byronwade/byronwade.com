@@ -23,6 +23,14 @@ const people = [
 		imageUrl:
 			"https://infosec-jobs.com/media/cache/bb/cc/bbccd9053fcace2a080d3d539e04079a.jpg",
 	},
+	{
+		id: 3,
+		name: "Twilio SMS",
+		description: "I think twilios SMS is pretty cool",
+		link: "/playground/twilioSMS",
+		imageUrl:
+			"https://www.twilio.com/assets/icons/twilio-icon-512_maskable.png",
+	},
 ];
 
 export default function Playground() {
@@ -33,12 +41,18 @@ export default function Playground() {
 				This is all the stuff ive been trying to figure out for fun.
 			</p>
 			<div className='prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200'>
+				<div className='tabs tabs-boxed inline-block'>
+					<a className='tab tab-active !bg-yellow-500 !text-black no-underline'>
+						For Fun
+					</a>
+					<a className='tab  no-underline'>Future Projects</a>
+				</div>
 				<div className='grid grid-cols-1 gap-4 sm:grid-cols-1'>
 					{people.map((person) => (
 						<Link
 							href={person.link}
 							key={person.id}
-							className='hover:scale-105 transform-gpu no-underline relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400'>
+							className='hover:scale-105 transform-gpu no-underline relative flex items-center space-x-3 rounded-lg border border-zinc-800 bg-zinc-900 px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400'>
 							<div className='flex-shrink-0'>
 								<img
 									className='h-10 w-10 rounded-full'
@@ -47,7 +61,7 @@ export default function Playground() {
 								/>
 							</div>
 							<div className='min-w-0 flex-1'>
-								<span className='text-sm font-medium text-gray-900 block no-underline'>
+								<span className='text-sm font-medium text-white block no-underline'>
 									{person.name}
 								</span>
 								<span className='truncate text-sm text-gray-500 block no-underline'>
