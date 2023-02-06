@@ -8,6 +8,9 @@ const navItems = {
 	"/": {
 		name: "home",
 	},
+	"/buy-nextjs-themes": {
+		name: "buy",
+	},
 	"/about": {
 		name: "about",
 	},

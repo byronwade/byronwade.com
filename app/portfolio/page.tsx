@@ -17,28 +17,55 @@ export default async function Portfolio() {
 		<section>
 			<h1 className='font-bold text-3xl'>Portfolio</h1>
 			<div className='prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200'>
+				<div className='tabs tabs-boxed inline-block'>
+					<a className='tab no-underline'>Github</a>
+					<a className='tab tab-active !bg-yellow-500 !text-black no-underline'>
+						Dribble
+					</a>
+				</div>
 				{getDribbbles.map((repo, index) => {
 					return (
-						<div key={index}>
-							<img src={repo.images.hidpi} />
-							<Link href={repo.html_url}>{repo.title}</Link>
-							<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
-						</div>
+						<Link
+							key={index}
+							href={repo.html_url}
+							className='mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl'>
+							<figure className='m-0'>
+								<img src={repo.images.hidpi} alt={repo.title} />
+							</figure>
+							<div className='card-body'>
+								<h2 className='card-title m-0'>{repo.title}</h2>
+								<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
+							</div>
+						</Link>
 					);
 				})}
 				{getRepo.getRepo.map((repo, index) => {
 					return (
-						<div key={index}>
-							<h2>{repo.name}</h2>
-							<Link href={repo.url}>{repo.full_name}</Link>
-							<p>
-								Stars: {repo.stars} - Watchers: {repo.watchers} - Forks{" "}
-								{repo.forks}
-							</p>
-							<p>{repo.language}</p>
-							<p>{new Date(repo.created_at).toLocaleString()}</p>
-							<p>{new Date(repo.updated_at).toLocaleString()}</p>
-						</div>
+						<Link
+							key={index}
+							href={repo.url}
+							className='mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl'>
+							<figure className='m-0'>
+								<img
+									src='https://via.placeholder.com/600x300'
+									alt={repo.name}
+								/>
+							</figure>
+							<div className='card-body'>
+								<h2 className='card-title m-0'>{repo.name}</h2>
+								<span className='block'>
+									Stars: {repo.stars} - Watchers: {repo.watchers} - Forks{" "}
+									{repo.forks}
+								</span>
+								<span className='block'>{repo.language}</span>
+								<span className='block'>
+									{new Date(repo.created_at).toLocaleString()}
+								</span>
+								<span className='block'>
+									{new Date(repo.updated_at).toLocaleString()}
+								</span>
+							</div>
+						</Link>
 					);
 				})}
 			</div>

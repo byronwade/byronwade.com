@@ -38,7 +38,7 @@ export default function TextMe() {
 
 	return (
 		<section>
-			<h1 className='font-bold text-3xl font-serif'>Text Me</h1>
+			<h1 className='font-bold text-3xl'>Text Me</h1>
 			<p className='my-5 text-neutral-800 dark:text-neutral-200'>
 				Send me a text!
 			</p>
@@ -106,13 +106,31 @@ export default function TextMe() {
 							<button
 								type='submit'
 								disabled={loading}
-								className='flex w-full justify-center rounded-md border border-transparent bg-yellow-500 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'>
+								className='flex justify-center rounded-md border border-transparent bg-yellow-500 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'>
 								Send
 							</button>
 						</div>
 						<div>
-							{success && <p>Message sent successfully.</p>}
-							{error && <p>Something went wrong. Please check the number.</p>}
+							{success && (
+								<div className='toast toast-end'>
+									<div className='alert alert-success'>
+										<div>
+											<span>Message sent successfully.</span>
+										</div>
+									</div>
+								</div>
+							)}
+							{error && (
+								<div className='toast toast-end'>
+									<div className='alert alert-error'>
+										<div>
+											<span>
+												Something went wrong. Let me know at bw@wadesinc.io
+											</span>
+										</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</form>
 				</div>
