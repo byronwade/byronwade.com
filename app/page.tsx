@@ -40,19 +40,23 @@ export default async function HomePage() {
 
 	return (
 		<section className=''>
-			<h1 className='font-bold text-3xl'>{name}</h1>
+			<h1 className='font-bold text-5xl'>{name}</h1>
 			<p className='my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200'>
 				{about()}
 			</p>
 			<div className='flex items-start md:items-center my-8 flex-col md:flex-row'>
-				<Image
-					alt={name}
-					className='rounded-full grayscale'
-					src={avatar}
-					placeholder='blur'
-					width={100}
-					priority
-				/>
+				<div className='avatar'>
+					<div className='w-24 rounded-full ring ring-warning ring-offset-base-100 ring-offset-2'>
+						<Image
+							alt={name}
+							className='rounded-full grayscale'
+							src={avatar}
+							placeholder='blur'
+							width={100}
+							priority
+						/>
+					</div>
+				</div>
 				<div className='mt-8 md:mt-0 ml-0 md:ml-6 space-y-2 text-neutral-500 dark:text-neutral-400'>
 					<p className='flex items-center gap-2'>
 						<TwitterIcon />

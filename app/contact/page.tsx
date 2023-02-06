@@ -10,11 +10,11 @@ export default function Contact() {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
-	const [submitted, setSubmitted] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [error, setError] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("Sending");
 		let data = {
 			name,
 			email,
@@ -28,20 +28,20 @@ export default function Contact() {
 			},
 			body: JSON.stringify(data),
 		}).then((res) => {
-			console.log("Response received");
 			if (res.status === 200) {
-				console.log("Response succeeded!");
-				setSubmitted(true);
+				setSuccess(true);
 				setName("");
 				setEmail("");
 				setMessage("");
+			} else {
+				setError(true);
 			}
 		});
 	};
 
 	return (
 		<section>
-			<h1 className='font-bold text-3xl font-serif'>Contact</h1>
+			<h1 className='font-bold text-3xl'>Contact</h1>
 			<p className='my-5 text-neutral-800 dark:text-neutral-200'>
 				Get in contact with me, im always looking for friends and connections.
 			</p>
@@ -111,9 +111,31 @@ export default function Contact() {
 								onClick={(e) => {
 									handleSubmit(e);
 								}}
-								className='flex w-full justify-center rounded-md border border-transparent bg-yellow-500 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'>
+								className='flex justify-center rounded-md border border-transparent bg-yellow-500 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'>
 								Send
 							</button>
+						</div>
+						<div>
+							{success && (
+								<div className='toast toast-end'>
+									<div className='alert alert-success'>
+										<div>
+											<span>Message sent successfully.</span>
+										</div>
+									</div>
+								</div>
+							)}
+							{error && (
+								<div className='toast toast-end'>
+									<div className='alert alert-error'>
+										<div>
+											<span>
+												Something went wrong. Let me know at bw@wadesinc.io
+											</span>
+										</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</form>
 				</div>

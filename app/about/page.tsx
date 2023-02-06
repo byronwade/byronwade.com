@@ -13,7 +13,7 @@ export const metadata = {
 export default function AboutPage() {
 	return (
 		<section>
-			<h1 className='font-bold text-3xl font-serif'>About Me</h1>
+			<h1 className='font-bold text-3xl'>About Me</h1>
 			<p className='my-5 text-neutral-800 dark:text-neutral-200'>
 				Hey, I'm Lee. Most folks know me as <b>leerob</b> online.
 			</p>
@@ -23,7 +23,7 @@ export default function AboutPage() {
 					lead our Developer Relations and Documentation teams. I focus on{" "}
 					<b>educating and growing</b> the Vercel and Next.js communities.
 				</p>
-				<hr />
+				<div className='divider'></div>
 				<p>
 					I'm passionate about many creative pursuits, including music,
 					photography, videography, and of course, coding. This combination of

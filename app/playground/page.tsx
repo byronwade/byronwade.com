@@ -17,19 +17,18 @@ const people = [
 	},
 	{
 		id: 2,
-		name: "Integrating Stripe",
-		description:
-			"Trying to learn how to integrate stripe into this website so I know how to do it in the future.",
-		link: "/playground/stripe",
+		name: "SpaceX",
+		description: "Playing around with the SpaceX API",
+		link: "/playground/spacex",
 		imageUrl:
-			"https://images.ctfassets.net/fzn2n1nzq965/HTTOloNPhisV9P4hlMPNA/cacf1bb88b9fc492dfad34378d844280/Stripe_icon_-_square.svg?q=80&w=1082",
+			"https://infosec-jobs.com/media/cache/bb/cc/bbccd9053fcace2a080d3d539e04079a.jpg",
 	},
 ];
 
 export default function Playground() {
 	return (
 		<section>
-			<h1 className='font-bold text-3xl font-serif'>Playground</h1>
+			<h1 className='font-bold text-3xl'>Playground</h1>
 			<p className='my-5 text-neutral-800 dark:text-neutral-200'>
 				This is all the stuff ive been trying to figure out for fun.
 			</p>
@@ -39,7 +38,7 @@ export default function Playground() {
 						<Link
 							href={person.link}
 							key={person.id}
-							className='no-underline relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400'>
+							className='hover:scale-105 transform-gpu no-underline relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400'>
 							<div className='flex-shrink-0'>
 								<img
 									className='h-10 w-10 rounded-full'
