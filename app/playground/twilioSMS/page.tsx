@@ -59,7 +59,7 @@ export default function TextMe() {
 									onChange={(e) => {
 										setName(e.target.value);
 									}}
-									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-300'
 									placeholder='Byron Wade'
 									aria-describedby='name-optional'
 								/>
@@ -79,7 +79,7 @@ export default function TextMe() {
 									onChange={(e) => {
 										setPhone(e.target.value);
 									}}
-									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-300'
 									placeholder='8412244345'
 									aria-describedby='phone-optional'
 								/>
@@ -97,7 +97,7 @@ export default function TextMe() {
 									onChange={(e) => {
 										setMessage(e.target.value);
 									}}
-									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-700'
+									className='border-zinc-800 bg-zinc-900 block w-full rounded-md sm:text-sm text-gray-300'
 									defaultValue={""}
 								/>
 							</div>
