@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { queryBuilder } from 'lib/planetscale';
+import { queryBuilder } from 'src/lib/planetscale';
 
 export default async function handler(
   req: NextApiRequest,
