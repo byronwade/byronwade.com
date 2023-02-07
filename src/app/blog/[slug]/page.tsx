@@ -1,6 +1,6 @@
-import { Mdx } from "components/mdx";
+import { Mdx } from "src/components/mdx";
 import { allBlogs } from "contentlayer/generated";
-import { getTweets } from "lib/twitter";
+import { getTweets } from "src/lib/twitter";
 import { notFound } from "next/navigation";
 import Balancer from "react-wrap-balancer";
 import ViewCounter from '../view-counter';

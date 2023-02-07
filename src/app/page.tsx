@@ -4,9 +4,9 @@ import {
 	TwitterIcon,
 	ViewsIcon,
 	YoutubeIcon,
-} from "components/icons";
-import { about, avatar, bio, name } from "lib/info";
-import { getBlogViews, getRepos, getTweetCount } from "lib/metrics";
+} from "src/components/icons";
+import { about, avatar, bio, name } from "src/lib/info";
+import { getBlogViews, getRepos, getTweetCount } from "src/lib/metrics";
 import Image from "next/image";
 
 export const revalidate = 60;

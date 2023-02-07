@@ -1,10 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: [
-		"./app/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./content/**/*.mdx",
-	],
+	content: ['./src/**/*.{js,jsx,ts,tsx}', './next.config.js'],
 	theme: {
 		extend: {
 			typography: {
