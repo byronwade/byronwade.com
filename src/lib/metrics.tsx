@@ -46,6 +46,19 @@ export async function getDribbble() {
 	return data;
 }
 
+export async function getDevAPI() {
+	const response = await fetch(
+		"https://dev.to/api/articles?username=byronwade"
+	);
+	if (!response.ok) {
+		throw new Error(
+			`Unable to fetch data, status code: ${response.status}`
+		);
+	}
+	const data = await response.json();
+	return data;
+}
+
 export const getRepos = cache(async () => {
 	const octokit = new Octokit({
 		auth: process.env.GITHUB_TOKEN,
