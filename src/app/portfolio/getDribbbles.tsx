@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getDribbble } from "src/lib/metrics";
 
 export default function GetDribble() {
-	const [dribbbles, setDribbbles] = useState([]);
+	const [dribbbles, setDribbbles] = useState(null);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
@@ -16,6 +16,8 @@ export default function GetDribble() {
 			}
 		})();
 	}, []);
+
+	console.log(dribbbles);
 
 	return (
 		<>
@@ -44,20 +46,19 @@ export default function GetDribble() {
 			)}
 			{dribbbles &&
 				dribbbles.map((repo, index) => (
-					<div>{repo}</div>
-					// <Link
-					// 	key={index}
-					// 	href={repo.html_url}
-					// 	className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
-					// >
-					// 	<figure className="m-0">
-					// 		<img src={repo.images.hidpi} alt={repo.title} />
-					// 	</figure>
-					// 	<div className="card-body">
-					// 		<h2 className="card-title m-0">{repo.title}</h2>
-					// 		<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
-					// 	</div>
-					// </Link>
+					<Link
+						key={index}
+						href={repo.html_url}
+						className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
+					>
+						<figure className="m-0">
+							<img src={repo.images.hidpi} alt={repo.title} />
+						</figure>
+						<div className="card-body">
+							<h2 className="card-title m-0">{repo.title}</h2>
+							<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
+						</div>
+					</Link>
 				))}
 		</>
 	);
