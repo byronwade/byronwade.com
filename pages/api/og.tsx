@@ -5,14 +5,9 @@ export const config = {
 	runtime: "edge",
 };
 
-const font = fetch(
-	new URL("../../public/fonts/kaisei-tokumin-bold.ttf", import.meta.url)
-).then((res) => res.arrayBuffer());
-
 export default async function handler(req: NextRequest) {
 	const { searchParams } = req.nextUrl;
 	const postTitle = searchParams.get("title");
-	const fontData = await font;
 
 	return new ImageResponse(
 		(
@@ -25,7 +20,8 @@ export default async function handler(req: NextRequest) {
 					alignItems: "flex-start",
 					justifyContent: "center",
 					backgroundImage: "url(https://byronwade.com/og-bg.png)",
-				}}>
+				}}
+			>
 				<div
 					style={{
 						marginLeft: 190,
@@ -38,21 +34,11 @@ export default async function handler(req: NextRequest) {
 						color: "white",
 						lineHeight: "120px",
 						whiteSpace: "pre-wrap",
-					}}>
+					}}
+				>
 					{postTitle}
 				</div>
 			</div>
-		),
-		{
-			width: 1920,
-			height: 1080,
-			fonts: [
-				{
-					name: "Kaisei Tokumin",
-					data: fontData,
-					style: "normal",
-				},
-			],
-		}
+		)
 	);
 }
