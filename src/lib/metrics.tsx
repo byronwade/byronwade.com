@@ -34,18 +34,16 @@ export async function getTweetCount() {
 }
 
 export async function getDribbble() {
-	if (!process.env.GATSBY_DRIBBBLE_TOKEN) {
-		return 0;
-	}
-
 	const response = await fetch(
-		`https://api.dribbble.com/v2/user/shots?access_token=${process.env.GATSBY_DRIBBBLE_TOKEN}&page=byronwade&per_page=50`
-	)
-		.then((res) => res.json())
-		.then((data) => {
-			return data;
-		});
-	return response;
+		"https://api.dribbble.com/v2/user/shots?access_token=3efebd272ebbd3f27426b0535456f1eade0d5238169654d47d9f797b31fcb08a&page=byronwade&per_page=50"
+	);
+	if (!response.ok) {
+		throw new Error(
+			`Unable to fetch data, status code: ${response.status}`
+		);
+	}
+	const data = await response.json();
+	return data;
 }
 
 export const getRepos = cache(async () => {
@@ -56,7 +54,6 @@ export const getRepos = cache(async () => {
 	const req = await octokit.request("GET /users/{username}/repos", {
 		username: "byronwade",
 	});
-
 	const getRepo = Object.keys(req.data).map(function (key) {
 		return {
 			name: req.data[key].name,

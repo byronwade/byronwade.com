@@ -2,8 +2,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getRepos } from "src/lib/metrics";
 
-console.log(getRepos);
-
 export default function GetRepo() {
 	const [repos, setRepos] = useState([]);
 	const [error, setError] = useState(null);
@@ -12,13 +10,14 @@ export default function GetRepo() {
 		(async () => {
 			try {
 				const repoData = await getRepos();
-				console.log(repoData);
 				setRepos(repoData.getRepo);
 			} catch (error) {
 				setError(error);
 			}
 		})();
 	}, []);
+
+	console.log(repos);
 
 	return (
 		<>
@@ -52,12 +51,17 @@ export default function GetRepo() {
 						href={repo.url}
 						className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
 					>
-						{/* <figure className="m-0">
-							<img src={repo.images.normal} alt={repo.title} />
-						</figure> */}
+						<figure className="m-0">
+							<img
+								src={`https://via.placeholder.com/650x350/ffffff/808080%20?text=${repo.name}`}
+								alt={repo.name}
+							/>
+						</figure>
 						<div className="card-body">
 							<h2 className="card-title m-0">{repo.name}</h2>
-							{/* <p>{repo.description.replace(/<[^>]*>/g, "")}</p> */}
+							<p>{repo.description}</p>
+							<span>Stars: {repo.stars}</span>
+							<span>Watchers: {repo.watchers}</span>
 						</div>
 					</Link>
 				))}

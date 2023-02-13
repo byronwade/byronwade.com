@@ -28,7 +28,6 @@ export default async function handler(req: NextRequest) {
 						marginRight: 190,
 						display: "flex",
 						fontSize: 130,
-						fontFamily: "Kaisei Tokumin",
 						letterSpacing: "-0.05em",
 						fontStyle: "normal",
 						color: "white",
