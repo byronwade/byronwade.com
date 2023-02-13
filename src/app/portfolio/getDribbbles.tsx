@@ -1,31 +1,25 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getDribbble } from "src/lib/metrics";
 
-export default async function GetDribble() {
-	const [getDribbbles] = await Promise.all([getDribbble()]);
+export default function GetDribble() {
+	const [dribbbles, setDribbbles] = useState([]);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const dribbbles = await getDribbble();
+				setDribbbles(dribbbles);
+			} catch (error) {
+				setError(error);
+			}
+		})();
+	}, []);
+
 	return (
 		<>
-			{getDribbbles ? (
-				getDribbbles.map((repo, index) => {
-					return (
-						<Link
-							key={index}
-							href={repo.html_url}
-							className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
-						>
-							<figure className="m-0">
-								<img src={repo.images.hidpi} alt={repo.title} />
-							</figure>
-							<div className="card-body">
-								<h2 className="card-title m-0">{repo.title}</h2>
-								<p>
-									{repo.description.replace(/<[^>]*>/g, "")}
-								</p>
-							</div>
-						</Link>
-					);
-				})
-			) : (
+			{error && (
 				<div className="alert alert-error shadow-lg mb-4">
 					<div>
 						<svg
@@ -48,6 +42,23 @@ export default async function GetDribble() {
 					</div>
 				</div>
 			)}
+			{dribbbles &&
+				dribbbles.map((repo, index) => (
+					<div>{repo}</div>
+					// <Link
+					// 	key={index}
+					// 	href={repo.html_url}
+					// 	className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
+					// >
+					// 	<figure className="m-0">
+					// 		<img src={repo.images.hidpi} alt={repo.title} />
+					// 	</figure>
+					// 	<div className="card-body">
+					// 		<h2 className="card-title m-0">{repo.title}</h2>
+					// 		<p>{repo.description.replace(/<[^>]*>/g, "")}</p>
+					// 	</div>
+					// </Link>
+				))}
 		</>
 	);
 }

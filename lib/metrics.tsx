@@ -1,5 +1,7 @@
+import "server-only";
+
 import { Octokit } from "@octokit/rest";
-import { queryBuilder } from "./planetscale";
+import { queryBuilder } from "lib/planetscale";
 import { cache } from "react";
 
 export const getBlogViews = cache(async () => {
@@ -65,7 +67,6 @@ export const getRepos = cache(async () => {
 			watchers: req.data[key].watchers_count,
 			forks: req.data[key].forks_count,
 			full_name: req.data[key].full_name,
-			description: req.data[key].description,
 			language: req.data[key].language,
 			created_at: req.data[key].created_at,
 			updated_at: req.data[key].updated_at,

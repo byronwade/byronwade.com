@@ -1,43 +1,28 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { getRepos } from "src/lib/metrics";
 
-export default async function GetRepo() {
-	const [getRepo] = await Promise.all([getRepos()]);
+console.log(getRepos);
+
+export default function GetRepo() {
+	const [repos, setRepos] = useState([]);
+	const [error, setError] = useState(null);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const repoData = await getRepos();
+				console.log(repoData);
+				setRepos(repoData.getRepo);
+			} catch (error) {
+				setError(error);
+			}
+		})();
+	}, []);
 
 	return (
 		<>
-			{getRepo ? (
-				getRepo.getRepo.map((repo, index) => {
-					return (
-						<Link
-							key={index}
-							href={repo.url}
-							className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
-						>
-							<figure className="m-0">
-								<img
-									src="https://via.placeholder.com/600x300"
-									alt={repo.name}
-								/>
-							</figure>
-							<div className="card-body">
-								<h2 className="card-title m-0">{repo.name}</h2>
-								<span className="block">
-									Stars: {repo.stars} - Watchers:{" "}
-									{repo.watchers} - Forks {repo.forks}
-								</span>
-								<span className="block">{repo.language}</span>
-								<span className="block">
-									{new Date(repo.created_at).toLocaleString()}
-								</span>
-								<span className="block">
-									{new Date(repo.updated_at).toLocaleString()}
-								</span>
-							</div>
-						</Link>
-					);
-				})
-			) : (
+			{error && (
 				<div className="alert alert-error shadow-lg mb-4">
 					<div>
 						<svg
@@ -54,12 +39,28 @@ export default async function GetRepo() {
 							/>
 						</svg>
 						<span>
-							This is an error alert for my github feed, ive
-							probably hit my API limit
+							An error occurred while fetching repository data,
+							please try again later.
 						</span>
 					</div>
 				</div>
 			)}
+			{repos &&
+				repos.map((repo, index) => (
+					<Link
+						key={index}
+						href={repo.url}
+						className="mb-6 hover:scale-105 no-underline card card-compact bg-zinc-900 shadow-xl"
+					>
+						{/* <figure className="m-0">
+							<img src={repo.images.normal} alt={repo.title} />
+						</figure> */}
+						<div className="card-body">
+							<h2 className="card-title m-0">{repo.name}</h2>
+							{/* <p>{repo.description.replace(/<[^>]*>/g, "")}</p> */}
+						</div>
+					</Link>
+				))}
 		</>
 	);
 }

@@ -4,24 +4,7 @@ import GetDribble from "./getDribbbles";
 import GetRepo from "./getRepo";
 
 const TabMenu = () => {
-	const [activeTab, setActiveTab] = useState(0);
-
-	useEffect(() => {
-		const handleKeyDown = (event) => {
-			if (event.key === "ArrowRight") {
-				setActiveTab((prevActiveTab) => (prevActiveTab + 1) % 3);
-			}
-			if (event.key === "ArrowLeft") {
-				setActiveTab((prevActiveTab) => (prevActiveTab + 2) % 3);
-			}
-		};
-
-		document.addEventListener("keydown", handleKeyDown);
-
-		return () => {
-			document.removeEventListener("keydown", handleKeyDown);
-		};
-	}, []);
+	const [activeTab, setActiveTab] = useState(1);
 
 	return (
 		<div className="prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
@@ -47,8 +30,8 @@ const TabMenu = () => {
 					Dribble
 				</a>
 			</div>
-			{activeTab === 0 && <div>dribble</div>}
-			{activeTab === 1 && <div>githb</div>}
+			{activeTab === 0 && <GetDribble />}
+			{activeTab === 1 && <GetRepo />}
 		</div>
 	);
 };
