@@ -34,6 +34,7 @@ export default function Blogs() {
 				>
 					<div className="w-full flex flex-col">
 						<p>{post.title}</p>
+						<ViewCounter slug={post.slug} trackView={false} />
 					</div>
 				</Link>
 			))}
