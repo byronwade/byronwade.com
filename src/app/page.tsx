@@ -18,8 +18,12 @@ export default async function HomePage() {
 	return (
 		<section className="">
 			<h1 className="font-bold text-5xl">Byron Wade</h1>
-			<p className="my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200">
-				Im a pretty cool guy with some cool stuff
+			<p class="my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200">
+				My name is Byron, I am the{" "}
+				<b>
+					Owner of Wade's Inc., Wade's Plumbing and Septic, and Clog
+					Monsters Septic Pumping.
+				</b>
 			</p>
 			<div className="flex items-start md:items-center my-8 flex-col md:flex-row">
 				<div className="avatar">
