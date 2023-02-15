@@ -31,7 +31,7 @@ export default async function HomePage() {
 						<Image
 							alt="Byron Wade"
 							className="rounded-full grayscale"
-							src="./avatar.jpg"
+							src="/avatar.jpg"
 							placeholder="blur"
 							width={100}
 							priority
