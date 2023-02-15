@@ -9,6 +9,7 @@ export const GET_POST_BY_SLUG = gql`
 			title
 			excerpt
 			slug
+			viewCount
 			featuredImage {
 				node {
 					altText

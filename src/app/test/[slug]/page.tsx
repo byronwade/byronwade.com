@@ -11,7 +11,11 @@ import {
 } from "src/components/icons";
 
 export default function Blogs({ params }) {
-	const [post, setPost] = useState([]);
+	const [post, setPost] = useState({
+		title: "",
+		content: "",
+		// Add default values for any other post properties that you are using
+	});
 	useEffect(() => {
 		graphQLClient
 			.request(GET_POST_BY_SLUG, { slug: params.slug })
