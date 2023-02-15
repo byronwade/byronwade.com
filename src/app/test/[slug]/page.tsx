@@ -36,7 +36,6 @@ export default function Blogs({ params }) {
 			<div className="prose prose-xl mb-10">
 				<h1 className="mt-0">{post.title}</h1>
 				<div dangerouslySetInnerHTML={{ __html: post.content }} />
-				<ViewCounter slug={params.slug} trackView />
 			</div>
 
 			<div className="flex flex-col gap-2 md:flex-row md:gap-2 mb-40">
