@@ -5,7 +5,6 @@ import {
 	ViewsIcon,
 	YoutubeIcon,
 } from "src/components/icons";
-import { about, avatar, bio, name } from "src/lib/info";
 import { getBlogViews, getRepos, getTweetCount } from "src/lib/metrics";
 import Image from "next/image";
 
@@ -18,17 +17,17 @@ export default async function HomePage() {
 
 	return (
 		<section className="">
-			<h1 className="font-bold text-5xl">{name}</h1>
+			<h1 className="font-bold text-5xl">Byron Wade</h1>
 			<p className="my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200">
-				{about()}
+				Im a pretty cool guy with some cool stuff
 			</p>
 			<div className="flex items-start md:items-center my-8 flex-col md:flex-row">
 				<div className="avatar">
 					<div className="w-24 rounded-full ring ring-warning ring-offset-base-100 ring-offset-2">
 						<Image
-							alt={name}
+							alt="Byron Wade"
 							className="rounded-full grayscale"
-							src={avatar}
+							src="./avatar.jpg"
 							placeholder="blur"
 							width={100}
 							priority
@@ -60,7 +59,7 @@ export default async function HomePage() {
 			</div>
 			<div className="mb-[10em] prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
 				<p className="my-5 max-w-[600px] text-neutral-800 dark:text-neutral-200">
-					{bio()}
+					Stuff about me thats kinda cool
 				</p>
 				<p>
 					I'm currently the{" "}
