@@ -30,7 +30,7 @@ export default function Blogs() {
 				<Link
 					key={post.slug}
 					className="flex flex-col space-y-1 mb-4"
-					href={`/test/${post.slug}`}
+					href={`/blog/${post.slug}`}
 				>
 					<div className="w-full flex flex-col">
 						<p>{post.title}</p>
