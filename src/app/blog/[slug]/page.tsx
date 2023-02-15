@@ -19,6 +19,18 @@ export default function Blogs({ params }) {
 		slug: "",
 		// Add default values for any other post properties that you are using
 	});
+
+	const date = new Date(post.date);
+
+	const options = {
+		weekday: "short",
+		month: "short",
+		day: "numeric",
+		hour: "numeric",
+		minute: "numeric",
+	} as Intl.DateTimeFormatOptions;
+	const formattedDate = date.toLocaleDateString("en-US", options);
+
 	useEffect(() => {
 		graphQLClient
 			.request(GET_POST_BY_SLUG, { slug: params.slug })
@@ -41,7 +53,7 @@ export default function Blogs({ params }) {
 			</h1>
 			<div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm max-w-[650px]">
 				<div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
-					{post.date}
+					{formattedDate}
 				</div>
 				<div className="h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2" />
 				<ViewCounter slug={post.slug} trackView />
