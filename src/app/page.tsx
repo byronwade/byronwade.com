@@ -32,7 +32,8 @@ export default async function HomePage() {
 							alt="Byron Wade"
 							className="rounded-full grayscale"
 							src="/avatar.jpg"
-							placeholder="blur"
+							//placeholder="blur"
+							height={100}
 							width={100}
 							priority
 						/>
