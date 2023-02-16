@@ -7,6 +7,7 @@ import {
 } from "src/components/icons";
 import { getBlogViews, getRepos, getTweetCount } from "src/lib/metrics";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function HomePage() {
 	const [starCount, views, tweetCount] = await Promise.all([
@@ -19,11 +20,10 @@ export default async function HomePage() {
 		<section className="">
 			<h1 className="font-bold text-5xl">Byron Wade</h1>
 			<p className="my-5 max-w-[460px] text-neutral-800 dark:text-neutral-200">
-				My name is Byron, I am the{" "}
-				<b>
-					Owner of Wade's Inc., Wade's Plumbing and Septic, and Clog
-					Monsters Septic Pumping.
-				</b>
+				Hello, I'm Byron, the <b>CEO and Co-Owner of Wade's Inc</b>. As
+				an entrepreneur, I always seek new opportunities to expand my
+				company and create innovative solutions. I'm excited to share my
+				story and vision with you.
 			</p>
 			<div className="flex items-start md:items-center my-8 flex-col md:flex-row">
 				<div className="avatar">
@@ -55,45 +55,56 @@ export default async function HomePage() {
 				</div>
 			</div>
 			<div>
-				<button
+				{/* <button
 					type="button"
 					className="inline-flex items-center rounded-md border border-transparent bg-yellow-300 px-4 py-2 text-base font-medium text-black shadow-sm hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
 				>
 					buy my coffee
-				</button>
+				</button> */}
 			</div>
 			<div className="mb-[10em] prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
-				<p className="my-5 max-w-[600px] text-neutral-800 dark:text-neutral-200">
-					Stuff about me thats kinda cool
+				<p>
+					<b>Wade's Inc.</b> comprises two companies:{" "}
+					<Link href="https://wadesplumbingandseptic.com/">
+						Wade's Plumbing and Septic
+					</Link>{" "}
+					and{" "}
+					<Link href="https://clogmonsterssepticpumping.com/">
+						Clog Monsters Septic Pumping
+					</Link>
+					. In our first year, Wade's Plumbing and Septic generated an
+					impressive revenue of{" "}
+					<b className="text-green-700">$1.2 million</b>, and we're
+					projected to reach{" "}
+					<b className="text-green-700">$2.3 million</b> next year
+					with ten employees.
 				</p>
 				<p>
-					I'm currently the{" "}
-					<b>VP of Developer Experience at Vercel</b>, where I lead
-					our Developer Relations and Documentation teams. I focus on{" "}
-					<b>educating and growing</b> the Vercel and Next.js
-					communities.
-				</p>
-				<div className="divider"></div>
-				<p>
-					I'm passionate about many creative pursuits, including
-					music, photography, videography, and of course, coding. This
-					combination of interests is what ultimately led me to my
-					current role in building developer communities.
+					I'm studying Computer Science at Cabrillo College and plan
+					to transfer to San Jose State to acquire my degree.
+					Additionally, I'm considering pursuing degrees in Civil
+					Engineering, Aerospace Engineering, and Criminal Justice to
+					broaden my knowledge and expertise further.
 				</p>
 				<p>
-					I <b>love</b> building for the web. From something as simple
-					as a single HTML file – all the way to large Next.js
-					applications. The web is incredible. Anyone can become a
-					developer, writer, or creator – and no one has to ask for
-					permission. You can just build.
+					I'm always open to collaborations and new opportunities to
+					contribute to website technology projects. I'm currently
+					working on three innovative technology websites, including
+					<Link href="https://github.com/byronwade/wadesacademy.com">
+						{" "}
+						Wade's Academy
+					</Link>
+					, which has the potential to revolutionize online learning
+					in the construction industry.
 				</p>
 				<p className="mb-8">
-					Outside of Vercel, I <b>angel invest</b> in developer tools
-					companies and <b>advise early-stage startups</b>. I also do
-					Developer Relations consulting work, helping companies take
-					their DevRel function from 0 to 1, or provide guidance on
-					growing communities, content creation, and developer
-					marketing.
+					I'm a driven and passionate entrepreneur, continuously
+					seeking new and innovative ways to expand my company and
+					revolutionize the industry. I'm open to exploring
+					collaboration and investment opportunities and would be
+					honored to hear from you. Please don't hesitate to{" "}
+					<Link href="/contact">reach out </Link>
+					if you'd like to learn more about me and my vision.
 				</p>
 				<div className="flex flex-col gap-2 md:flex-row md:gap-2">
 					<a
