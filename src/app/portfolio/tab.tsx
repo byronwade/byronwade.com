@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import GetDribble from "./getDribbbles";
 import GetRepo from "./getRepo";
 
@@ -12,16 +12,6 @@ const TabMenu = () => {
 				<a
 					onClick={() => setActiveTab(1)}
 					className={`tab no-underline ${
-						activeTab === 1
-							? "tab-active !bg-yellow-500 !text-black"
-							: ""
-					}`}
-				>
-					Github
-				</a>
-				<a
-					onClick={() => setActiveTab(0)}
-					className={`tab no-underline ${
 						activeTab === 0
 							? "tab-active !bg-yellow-500 !text-black"
 							: ""
@@ -29,9 +19,19 @@ const TabMenu = () => {
 				>
 					Dribble
 				</a>
+				<a
+					onClick={() => setActiveTab(0)}
+					className={`tab no-underline ${
+						activeTab === 1
+							? "tab-active !bg-yellow-500 !text-black"
+							: ""
+					}`}
+				>
+					Github
+				</a>
 			</div>
-			{activeTab === 0 && <GetDribble />}
-			{activeTab === 1 && <GetRepo />}
+			{activeTab === 1 && <GetDribble />}
+			{activeTab === 0 && <GetRepo />}
 		</div>
 	);
 };
