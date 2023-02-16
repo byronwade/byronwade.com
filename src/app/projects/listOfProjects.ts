@@ -4,7 +4,7 @@ export const forFun = [
 		name: "Integrating Stripe",
 		description:
 			"Trying to learn how to integrate stripe into this website so I know how to do it in the future.",
-		link: "/playground/stripe",
+		link: "/projects/stripe",
 		imageUrl:
 			"https://images.ctfassets.net/fzn2n1nzq965/HTTOloNPhisV9P4hlMPNA/cacf1bb88b9fc492dfad34378d844280/Stripe_icon_-_square.svg?q=80&w=1082",
 	},
@@ -12,7 +12,7 @@ export const forFun = [
 		id: 2,
 		name: "SpaceX",
 		description: "Playing around with the SpaceX API",
-		link: "/playground/spacex",
+		link: "/projects/spacex",
 		imageUrl:
 			"https://infosec-jobs.com/media/cache/bb/cc/bbccd9053fcace2a080d3d539e04079a.jpg",
 	},
@@ -20,7 +20,7 @@ export const forFun = [
 		id: 3,
 		name: "Twilio SMS",
 		description: "I think twilios SMS is pretty cool",
-		link: "/playground/twilioSMS",
+		link: "/projects/twilioSMS",
 		imageUrl:
 			"https://www.twilio.com/assets/icons/twilio-icon-512_maskable.png",
 	},
@@ -28,7 +28,7 @@ export const forFun = [
 		id: 4,
 		name: "Guestbook",
 		description: "A github authorization to allow chatting on the website!",
-		link: "/playground/guestbook",
+		link: "/projects/guestbook",
 		imageUrl:
 			"https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU",
 	},

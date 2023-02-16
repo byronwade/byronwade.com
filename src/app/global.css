@@ -59,9 +59,11 @@ html {
 	border: initial;
 }
 
-.prose img {
+.prose img,
+.prose picture img {
 	/* Don't apply styles to next/image */
 	@apply m-0;
+	max-width: 100% !important;
 }
 
 .prose > :first-child {

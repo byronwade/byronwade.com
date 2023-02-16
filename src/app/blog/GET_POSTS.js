@@ -8,6 +8,7 @@ export const GET_POSTS = gql`
 				title
 				date
 				excerpt
+				isSticky
 				slug
 				featuredImage {
 					node {

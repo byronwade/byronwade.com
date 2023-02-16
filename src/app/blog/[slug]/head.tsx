@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import graphQLClient from "src/components/graphql-client";
+import graphQLClient from "src/lib/graphql-client";
 import { GET_POST_BY_SLUG } from "./GET_POST_BY_SLUG";
 
 export default function Head({ params }) {

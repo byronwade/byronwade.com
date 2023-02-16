@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { GET_POST_BY_SLUG } from "./GET_POST_BY_SLUG";
-import graphQLClient from "../../../components/graphql-client";
+import graphQLClient from "../../../lib/graphql-client";
 import ViewCounter from "../view-counter";
 import {
 	ArrowIcon,
