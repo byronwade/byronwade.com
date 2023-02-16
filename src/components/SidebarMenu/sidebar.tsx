@@ -40,9 +40,8 @@ export default function Navbar() {
 						<Image
 							width="60"
 							height="60"
-							x="0"
-							y="0"
 							src="/logo.png"
+							alt="Byron Wade's Personal Logo"
 						/>
 					</Link>
 				</div>
