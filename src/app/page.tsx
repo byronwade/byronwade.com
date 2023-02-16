@@ -62,7 +62,7 @@ export default async function HomePage() {
 					buy my coffee
 				</button> */}
 			</div>
-			<div className="mb-[10em] prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
+			<div className="mb-[10em] max-w-[460px] prose prose-neutral dark:prose-invert text-neutral-800 dark:text-neutral-200">
 				<p>
 					<b>Wade's Inc.</b> comprises two companies:{" "}
 					<Link href="https://wadesplumbingandseptic.com/">
