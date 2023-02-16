@@ -1,3 +1,4 @@
+export {};
 // // pages/server-sitemap-index.xml/index.tsx
 // import { getServerSideSitemapIndex } from "next-sitemap";
 // import { GetServerSideProps } from "next";
