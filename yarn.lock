@@ -9,6 +9,11 @@
   dependencies:
     "regenerator-runtime" "^0.13.11"
 
+"@corex/deepmerge@^4.0.29":
+  "integrity" "sha512-PX90bEnrLdxd5e6rSFWsghExMuSw0Uov3fWJuuaoFuUQIS/446diu/4seExK5b+43L+SOBbd2uBGwYUkG1JfCw=="
+  "resolved" "https://registry.npmjs.org/@corex/deepmerge/-/deepmerge-4.0.37.tgz"
+  "version" "4.0.37"
+
 "@eslint/eslintrc@^1.4.1":
   "integrity" "sha512-XXrH9Uarn0stsyldqDYq8r++mROmWRI1xKMXa640Bb//SY1+ECYX6VzT6Lcx5frD0V30XieqJ0oX9I2Xj5aoMA=="
   "resolved" "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-1.4.1.tgz"
@@ -48,7 +53,7 @@
   "resolved" "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   "version" "1.2.1"
 
-"@next/env@13.1.6":
+"@next/env@*", "@next/env@13.1.6":
   "integrity" "sha512-s+W9Fdqh5MFk6ECrbnVmmAOwxKQuhGMT7xXHrkYIBMBcTiOqNWhv5KbJIboKR5STXxNXl32hllnvKaffzFaWQg=="
   "resolved" "https://registry.npmjs.org/@next/env/-/env-13.1.6.tgz"
   "version" "13.1.6"
@@ -1878,7 +1883,7 @@
   dependencies:
     "brace-expansion" "^1.1.7"
 
-"minimist@^1.2.6":
+"minimist@^1.2.6", "minimist@^1.2.7":
   "integrity" "sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g=="
   "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.7.tgz"
   "version" "1.2.7"
@@ -1923,7 +1928,15 @@
   "resolved" "https://registry.npmjs.org/next-seo/-/next-seo-5.15.0.tgz"
   "version" "5.15.0"
 
-"next@^12.2.5 || ^13", "next@^13.1.6", "next@^8.1.1-canary.54 || >=9.0.0":
+"next-sitemap@^3.1.52":
+  "integrity" "sha512-tY469i4QRV1PwM9BoL+HdKYBCJ83IQl3PmUNapG/Hxp0MIYIw1hINU8E+Edf5Kr8vHXfVzPqDoul/Abu2P0vkw=="
+  "resolved" "https://registry.npmjs.org/next-sitemap/-/next-sitemap-3.1.52.tgz"
+  "version" "3.1.52"
+  dependencies:
+    "@corex/deepmerge" "^4.0.29"
+    "minimist" "^1.2.7"
+
+"next@*", "next@^12.2.5 || ^13", "next@^13.1.6", "next@^8.1.1-canary.54 || >=9.0.0":
   "integrity" "sha512-hHlbhKPj9pW+Cymvfzc15lvhaOZ54l+8sXDXJWm3OBNBzgrVj6hwGPmqqsXg40xO1Leq+kXpllzRPuncpC0Phw=="
   "resolved" "https://registry.npmjs.org/next/-/next-13.1.6.tgz"
   "version" "13.1.6"
