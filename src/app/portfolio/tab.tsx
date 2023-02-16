@@ -12,7 +12,7 @@ const TabMenu = () => {
 				<a
 					onClick={() => setActiveTab(1)}
 					className={`tab no-underline ${
-						activeTab === 0
+						activeTab === 1
 							? "tab-active !bg-yellow-500 !text-black"
 							: ""
 					}`}
@@ -22,7 +22,7 @@ const TabMenu = () => {
 				<a
 					onClick={() => setActiveTab(0)}
 					className={`tab no-underline ${
-						activeTab === 1
+						activeTab === 0
 							? "tab-active !bg-yellow-500 !text-black"
 							: ""
 					}`}
