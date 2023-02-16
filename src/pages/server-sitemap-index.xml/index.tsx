@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 	// Map blog post slugs to URLs
 	const urls = posts.edges.map(
-		({ node }) => `https://byronwade.com/${node.slug}`
+		({ node }) => `https://byronwade.com/blog/${node.slug}`
 	);
 
 	return getServerSideSitemapIndex(ctx, urls);
