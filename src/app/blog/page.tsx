@@ -1,5 +1,5 @@
 "use client";
-import graphQLClient from "../../components/graphql-client";
+import graphQLClient from "../../lib/graphql-client";
 import { useEffect, useState } from "react";
 import { GET_POSTS } from "./GET_POSTS";
 import ViewCounter from "./view-counter";
@@ -25,7 +25,7 @@ export default function Blogs() {
 
 	return (
 		<section className="pb-40">
-			<h1 className="font-bold text-3xl mb-5">Blog</h1>
+			<h1 className="font-bold text-4xl mb-5">Blog</h1>
 			{posts.map((post) => (
 				<Link
 					key={post.slug}
