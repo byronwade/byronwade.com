@@ -1,5 +1,4 @@
 "use client";
-import { ArticleJsonLd } from "next-seo";
 import { useEffect, useState } from "react";
 import graphQLClient from "src/lib/graphql-client";
 import { GET_POST_BY_SLUG } from "./GET_POST_BY_SLUG";
@@ -47,21 +46,6 @@ export default function Head({ params }) {
 			<meta name="twitter:description" content={excerpt} />
 			<meta name="twitter:image" content={ogImage} />
 			<meta property="article:published_time" content={post.date} />
-			<ArticleJsonLd
-				useAppDir={true}
-				type="BlogPosting"
-				url="https://example.com/blog"
-				title="Blog headline"
-				images={[
-					"https://example.com/photos/1x1/photo.jpg",
-					"https://example.com/photos/4x3/photo.jpg",
-					"https://example.com/photos/16x9/photo.jpg",
-				]}
-				datePublished="2015-02-05T08:00:00+08:00"
-				dateModified="2015-02-05T09:00:00+08:00"
-				authorName="Jane Blogs"
-				description="This is a mighty good description of this blog."
-			/>
 		</>
 	);
 }

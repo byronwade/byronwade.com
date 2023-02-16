@@ -1,8 +1,12 @@
+import JSONLD from "./JSONLD";
+
 export default function Themes() {
 	return (
-		<section>
-			<p>Coming soon...</p>
-			{/* <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-zinc-900 dark:border-zinc-700">
+		<>
+			<JSONLD />
+			<section>
+				<p>Coming soon...</p>
+				{/* <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-zinc-900 dark:border-zinc-700">
 				<a href="#">
 					<img
 						className="p-8 rounded-t-lg"
@@ -85,6 +89,7 @@ export default function Themes() {
 					</div>
 				</div>
 			</div> */}
-		</section>
+			</section>
+		</>
 	);
 }
