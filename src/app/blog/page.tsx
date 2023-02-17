@@ -1,9 +1,19 @@
+"use client";
 import { getPosts } from "../../lib/queries/getPosts";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default async function Blogs() {
-	const [posts] = await Promise.all([getPosts()]);
+export default function Blogs() {
+	const [posts, setPosts] = useState([]);
+
+	useEffect(() => {
+		async function fetchPosts() {
+			const data = await getPosts();
+			setPosts(data);
+		}
+
+		fetchPosts();
+	}, []);
 
 	return (
 		<section className="pb-40">
