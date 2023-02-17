@@ -19,20 +19,24 @@ export default async function Blogs({ params }) {
 			<Suspense fallback={<div>Loading...</div>}>
 				<div>
 					<h1 className="font-bold text-3xl max-w-[650px]">
-						<Balancer>{post.title}</Balancer>
+						<Balancer>{post?.title}</Balancer>
 					</h1>
 					<div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm max-w-[650px]">
 						<div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
-							{formatDate(post.date)}
+							{formatDate(post?.date)}
 						</div>
 						<div className="h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2" />
 						<p className="font-mono text-sm text-neutral-500 tracking-tighter">
-							{`${post.viewCount} views`}
+							{`${post?.viewCount} views`}
 						</p>
 					</div>
 					<div className="prose prose-xl mb-10">
 						<div
-							dangerouslySetInnerHTML={{ __html: post.content }}
+							dangerouslySetInnerHTML={{
+								__html: post?.content || (
+									<p>No content for some reason</p>
+								),
+							}}
 						/>
 					</div>
 
