@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import graphQLClient from "src/lib/graphql-client";
-import { GET_POST_BY_SLUG } from "../../../lib/queries/GET_POST_BY_SLUG";
+import { GET_POST_BY_SLUG } from "../../../lib/queries/getPostsWithArg";
 
 export default function Head({ params }) {
 	const [post, setPost] = useState({

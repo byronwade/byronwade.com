@@ -1,44 +1,30 @@
-"use client";
-import graphQLClient from "../../lib/graphql-client";
-import { useEffect, useState } from "react";
-import { GET_POSTS } from "../../lib/queries/GET_POSTS";
+import { getPosts } from "../../lib/queries/getPosts";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function Blogs() {
-	const [posts, setPosts] = useState([]);
-
-	useEffect(() => {
-		graphQLClient
-			.request(GET_POSTS)
-			.then((data) => {
-				setPosts(data.posts.nodes);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
-
-	if (!posts) {
-		return <div>Loading...</div>;
-	}
+export default async function Blogs() {
+	const postsRes = getPosts();
+	const [posts] = await Promise.all([postsRes]);
 
 	return (
 		<section className="pb-40">
 			<h1 className="font-bold text-4xl mb-5">Blog</h1>
-			{posts.map((post) => (
-				<Link
-					key={post.slug}
-					className="flex flex-col space-y-1 mb-4"
-					href={`/blog/${post.slug}`}
-				>
-					<div className="w-full flex flex-col">
-						<p>{post.title}</p>
-						<p className="font-mono text-sm text-neutral-500 tracking-tighter">
-							{`${post.viewCount} views`}
-						</p>
-					</div>
-				</Link>
-			))}
+			<Suspense fallback={<div>Loading...</div>}>
+				{posts.map((post) => (
+					<Link
+						key={post.slug}
+						className="flex flex-col space-y-1 mb-4"
+						href={`/blog/${post.slug}`}
+					>
+						<div className="w-full flex flex-col">
+							<p>{post.title}</p>
+							<p className="font-mono text-sm text-neutral-500 tracking-tighter">
+								{`${post.viewCount} views`}
+							</p>
+						</div>
+					</Link>
+				))}
+			</Suspense>
 		</section>
 	);
 }

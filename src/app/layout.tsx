@@ -1,5 +1,5 @@
 import AnalyticsWrapper from "../components/analytics";
-import Sidebar from "../components/SidebarMenu/sidebar";
+import Sidebar from "../components/sidebar";
 import "./global.css";
 
 export default function RootLayout({

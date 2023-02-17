@@ -1,6 +1,6 @@
-import { gql } from "graphql-request";
+import { graphqlQuery } from "../graphqlQuery";
 
-export const GET_POST_BY_SLUG = gql`
+export const GET_POST_BY_SLUG = `
 	query getPostBySlug($slug: String!) {
 		postBy(slug: $slug) {
 			content
@@ -20,3 +20,8 @@ export const GET_POST_BY_SLUG = gql`
 		}
 	}
 `;
+
+export async function getPost(params) {
+	const res = await graphqlQuery(GET_POST_BY_SLUG, { slug: params.slug });
+	return res.postBy;
+}

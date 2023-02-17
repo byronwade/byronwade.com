@@ -1,36 +1,28 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import graphQLClient from "../../lib/graphql-client";
-import { GET_MENU_ITEMS } from "../../lib/queries/GET_MENU_ITEMS";
+import { Suspense } from "react";
+import { getMenu } from "../lib/queries/getMenuItems";
 
 export default function Navbar() {
 	const [menuItems, setMenuItems] = useState([]);
-
-	useEffect(() => {
-		graphQLClient
-			.request(GET_MENU_ITEMS)
-			.then((data) => {
-				setMenuItems(data.menu.menuItems.nodes);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}, []);
-
-	const menuItemsSorted = menuItems.sort((a, b) => a.order - b.order);
-
-	let pathname = usePathname();
-	const secondSlashIndex = pathname.indexOf("/", 1); // Finds the index of the second slash
+	const pathname = usePathname();
+	const secondSlashIndex = pathname.indexOf("/", 1);
 	const pathnameAutomated =
 		secondSlashIndex === -1
 			? pathname
-			: pathname.substring(0, secondSlashIndex); // If there's no second slash, use the whole pathname, otherwise extract the substring as before
+			: pathname.substring(0, secondSlashIndex);
 
+	useEffect(() => {
+		async function fetchMenuItems() {
+			const menuRes = await getMenu();
+			setMenuItems(menuRes);
+		}
+		fetchMenuItems();
+	}, []);
 	return (
 		<aside className="md:w-[150px] md:flex-shrink-0 -mx-4 md:mx-0 md:px-0">
 			<div className="lg:sticky lg:top-20">
