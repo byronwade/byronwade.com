@@ -51,8 +51,8 @@ export default function Blogs({ params }) {
 						<div
 							dangerouslySetInnerHTML={{
 								__html:
-									typeof post.content === "string"
-										? post.content
+									typeof post?.content === "string"
+										? post?.content
 										: "",
 							}}
 						/>
