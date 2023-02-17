@@ -19,7 +19,12 @@ interface Post {
 }
 
 export default function Blogs({ params }) {
-	const [post, setPost] = useState<Post | null>(null);
+	const [post, setPost] = useState<Post>({
+		title: "",
+		date: "",
+		viewCount: 0,
+		content: "",
+	});
 
 	useEffect(() => {
 		async function fetchPost() {
