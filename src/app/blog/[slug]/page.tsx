@@ -11,8 +11,15 @@ import { formatDate } from "src/lib/helpers";
 import { getPost } from "../../../lib/queries/getPostsWithArg";
 import { Suspense, useEffect, useState } from "react";
 
+interface Post {
+	title: string;
+	date: string;
+	viewCount: number;
+	content: string;
+}
+
 export default function Blogs({ params }) {
-	const [post, setPost] = useState([]);
+	const [post, setPost] = useState<Post>({} as Post);
 
 	useEffect(() => {
 		async function fetchPost() {
