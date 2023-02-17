@@ -9,10 +9,11 @@ import { getRepos, getTweetCount } from "src/lib/metrics";
 import Image from "next/image";
 import Link from "next/link";
 import JSONLD from "./JSONLD";
-import TotalViews from "src/components/TotalViews";
+import { getAllViews } from "../lib/queries/getAllViews";
 
 export default async function HomePage() {
-	const [starCount, tweetCount] = await Promise.all([
+	const [views, starCount, tweetCount] = await Promise.all([
+		getAllViews(),
 		getRepos(),
 		getTweetCount(),
 	]);
@@ -51,7 +52,10 @@ export default async function HomePage() {
 							<GitHubIcon />
 							{`${starCount.totalStars.toLocaleString()} stars all time`}
 						</p>
-						<TotalViews />
+						<p className="flex items-center">
+							<ViewsIcon />
+							{`${views} blog views all time`}
+						</p>
 					</div>
 				</div>
 				<div>

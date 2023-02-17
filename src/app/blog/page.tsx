@@ -3,8 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export default async function Blogs() {
-	const postsRes = getPosts();
-	const [posts] = await Promise.all([postsRes]);
+	const [posts] = await Promise.all([getPosts()]);
 
 	return (
 		<section className="pb-40">

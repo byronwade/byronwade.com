@@ -11,8 +11,7 @@ import { getPost } from "../../../lib/queries/getPostsWithArg";
 import { Suspense } from "react";
 
 export default async function Blogs({ params }) {
-	const postRes = getPost(params);
-	const [post] = await Promise.all([postRes]);
+	const [post] = await Promise.all([getPost(params)]);
 
 	return (
 		<>
