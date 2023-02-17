@@ -15,11 +15,11 @@ interface Post {
 	title: string;
 	date: string;
 	viewCount: number;
-	content: Element;
+	content: string;
 }
 
 export default function Blogs({ params }) {
-	const [post, setPost] = useState<Post>({} as Post);
+	const [post, setPost] = useState<Post | null>(null);
 
 	useEffect(() => {
 		async function fetchPost() {
@@ -29,12 +29,6 @@ export default function Blogs({ params }) {
 
 		fetchPost();
 	}, []);
-
-	const elementToString = (element: Element) => {
-		const div = document.createElement("div");
-		div.appendChild(element.cloneNode(true));
-		return div.innerHTML;
-	};
 
 	return (
 		<>
@@ -56,9 +50,10 @@ export default function Blogs({ params }) {
 					<div className="prose prose-xl mb-10">
 						<div
 							dangerouslySetInnerHTML={{
-								__html: post?.content
-									? elementToString(post.content)
-									: "<p>No content for some reason</p>",
+								__html:
+									typeof post.content === "string"
+										? post.content
+										: "",
 							}}
 						/>
 					</div>
