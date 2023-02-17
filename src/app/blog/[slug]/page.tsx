@@ -15,7 +15,7 @@ interface Post {
 	title: string;
 	date: string;
 	viewCount: number;
-	content: string;
+	content: Element;
 }
 
 export default function Blogs({ params }) {
@@ -29,6 +29,10 @@ export default function Blogs({ params }) {
 
 		fetchPost();
 	}, []);
+
+	function renderToString(content: Element): string {
+		throw new Error("Function not implemented.");
+	}
 
 	return (
 		<>
@@ -50,9 +54,9 @@ export default function Blogs({ params }) {
 					<div className="prose prose-xl mb-10">
 						<div
 							dangerouslySetInnerHTML={{
-								__html: post?.content || (
-									<p>No content for some reason</p>
-								),
+								__html: post?.content
+									? renderToString(post.content)
+									: "<p>No content for some reason</p>",
 							}}
 						/>
 					</div>
