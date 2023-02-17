@@ -1,6 +1,6 @@
-import { gql } from "graphql-request";
+import { graphqlQuery } from "../graphqlQuery";
 
-export const GET_POSTS = gql`
+export const GET_POSTS = `
 	query {
 		posts {
 			nodes {
@@ -22,3 +22,8 @@ export const GET_POSTS = gql`
 		}
 	}
 `;
+
+export async function getPosts() {
+	const res = await graphqlQuery(GET_POSTS);
+	return res.posts.nodes;
+}

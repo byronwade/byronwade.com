@@ -2,6 +2,7 @@ const { get } = require("@vercel/edge-config");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	reactStrictMode: false,
 	images: {
 		formats: ["image/avif", "image/webp"],
 		domains: ["cdn.dribbble.com"],
