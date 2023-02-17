@@ -1,8 +1,7 @@
 "use client";
 import graphQLClient from "../../lib/graphql-client";
 import { useEffect, useState } from "react";
-import { GET_POSTS } from "./GET_POSTS";
-import ViewCounter from "./view-counter";
+import { GET_POSTS } from "../../lib/queries/GET_POSTS";
 import Link from "next/link";
 
 export default function Blogs() {
@@ -34,7 +33,9 @@ export default function Blogs() {
 				>
 					<div className="w-full flex flex-col">
 						<p>{post.title}</p>
-						<ViewCounter slug={post.slug} trackView={false} />
+						<p className="font-mono text-sm text-neutral-500 tracking-tighter">
+							{`${post.viewCount} views`}
+						</p>
 					</div>
 				</Link>
 			))}
