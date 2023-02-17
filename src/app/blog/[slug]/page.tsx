@@ -30,9 +30,11 @@ export default function Blogs({ params }) {
 		fetchPost();
 	}, []);
 
-	function renderToString(content: Element): string {
-		throw new Error("Function not implemented.");
-	}
+	const elementToString = (element: Element) => {
+		const div = document.createElement("div");
+		div.appendChild(element.cloneNode(true));
+		return div.innerHTML;
+	};
 
 	return (
 		<>
@@ -55,7 +57,7 @@ export default function Blogs({ params }) {
 						<div
 							dangerouslySetInnerHTML={{
 								__html: post?.content
-									? renderToString(post.content)
+									? elementToString(post.content)
 									: "<p>No content for some reason</p>",
 							}}
 						/>
