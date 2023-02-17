@@ -1,3 +1,4 @@
+"use client";
 import {
 	ArrowIcon,
 	GitHubIcon,
@@ -8,10 +9,19 @@ import Balancer from "react-wrap-balancer";
 import JSONLD from "./JSONLD";
 import { formatDate } from "src/lib/helpers";
 import { getPost } from "../../../lib/queries/getPostsWithArg";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default async function Blogs({ params }) {
-	const [post] = await Promise.all([getPost(params)]);
+export default function Blogs({ params }) {
+	const [post, setPost] = useState([]);
+
+	useEffect(() => {
+		async function fetchPost() {
+			const data = await getPost(params);
+			setPost(data);
+		}
+
+		fetchPost();
+	}, []);
 
 	return (
 		<>
