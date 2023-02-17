@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import graphQLClient from "../../lib/graphql-client";
-import { GET_MENU_ITEMS } from "./GET_MENU_ITEMS";
+import { GET_MENU_ITEMS } from "../../lib/queries/GET_MENU_ITEMS";
 
 export default function Navbar() {
 	const [menuItems, setMenuItems] = useState([]);
@@ -23,7 +23,6 @@ export default function Navbar() {
 	}, []);
 
 	const menuItemsSorted = menuItems.sort((a, b) => a.order - b.order);
-	console.log(menuItemsSorted);
 
 	let pathname = usePathname();
 	const secondSlashIndex = pathname.indexOf("/", 1); // Finds the index of the second slash

@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { GET_POST_BY_SLUG } from "./GET_POST_BY_SLUG";
+import { GET_POST_BY_SLUG } from "../../../lib/queries/GET_POST_BY_SLUG";
 import graphQLClient from "../../../lib/graphql-client";
-import ViewCounter from "../view-counter";
 import {
 	ArrowIcon,
 	GitHubIcon,
@@ -18,6 +17,7 @@ export default function Blogs({ params }) {
 		content: "",
 		date: "",
 		slug: "",
+		viewCount: 0,
 		// Add default values for any other post properties that you are using
 	});
 
@@ -41,7 +41,7 @@ export default function Blogs({ params }) {
 			.catch((error) => {
 				console.error(error);
 			});
-	}, [params.slug]);
+	}, []);
 
 	if (!post) {
 		return <div>Loading...</div>;
@@ -59,7 +59,9 @@ export default function Blogs({ params }) {
 						{formattedDate}
 					</div>
 					<div className="h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2" />
-					<ViewCounter slug={post.slug} trackView />
+					<p className="font-mono text-sm text-neutral-500 tracking-tighter">
+						{`${post.viewCount} views`}
+					</p>
 				</div>
 				<div className="prose prose-xl mb-10">
 					<div dangerouslySetInnerHTML={{ __html: post.content }} />

@@ -10,6 +10,7 @@ export const GET_POSTS = gql`
 				excerpt
 				isSticky
 				slug
+				viewCount(doNotRegister: true)
 				featuredImage {
 					node {
 						altText
