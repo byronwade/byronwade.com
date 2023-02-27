@@ -21,6 +21,7 @@
 		"dotenv": "^16.0.3",
 		"encoding": "^0.1.13",
 		"eslint": "^8.34.0",
+		"eslint-config-next": "^13.2.1",
 		"graphql": "^15.8.0",
 		"graphql-request": "^5.1.0",
 		"graphql-tag": "^2.12.6",
