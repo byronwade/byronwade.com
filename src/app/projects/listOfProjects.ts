@@ -38,9 +38,22 @@ export const projects = [
 	{
 		id: 1,
 		name: "Wade's Academy",
-		description:
-			"I want to teach the next round of young construction workers",
+		description: "I want to teach the next round of young construction workers",
 		link: "https://github.com/byronwade/wadesacademy.com",
-		imageUrl: "https://via.placeholder.com/150 ",
+		imageUrl: "https://via.placeholder.com/150",
+	},
+	{
+		id: 2,
+		name: "ReactPress",
+		description: "WordPress built on react to be exactly the same.",
+		link: "https://github.com/byronwade/ReactPress",
+		imageUrl: "https://raw.githubusercontent.com/byronwade/ReactPress/main/public/Favicon-02.png",
+	},
+	{
+		id: 3,
+		name: "emailmework.com",
+		description: "A simple but easy way to get leads.",
+		link: "https://github.com/byronwade/emailmework.com",
+		imageUrl: "https://via.placeholder.com/150",
 	},
 ];
