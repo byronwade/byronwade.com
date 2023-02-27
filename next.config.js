@@ -5,7 +5,7 @@ const nextConfig = {
 	reactStrictMode: false,
 	images: {
 		formats: ["image/avif", "image/webp"],
-		domains: ["cdn.dribbble.com"],
+		domains: ["cdn.dribbble.com", "raw.githubusercontent.com", "via.placeholder.com"],
 		// Twitter Profile Picture
 		remotePatterns: [
 			{
