@@ -29,7 +29,7 @@
 		"kysely": "^0.23.4",
 		"kysely-planetscale": "^1.2.1",
 		"next": "^13.1.6",
-		"next-auth": "^4.19.0",
+		"next-auth": "^4.20.1",
 		"next-seo": "^5.15.0",
 		"next-sitemap": "^3.1.52",
 		"react": "18.2.0",
