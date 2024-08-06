@@ -2,16 +2,16 @@
 import { useEffect, useState } from "react";
 import { signup, signinWithPassword, signout, signinWithGithub, signinWithGoogle, getUser } from "@/actions/auth";
 import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
+import { User, Session } from "@supabase/supabase-js";
 
 const supabase = createClient();
 
 export default function LoginPage() {
-	const [user, setUser] = useState<null | User>(null);
-	const [error, setError] = useState(null);
+	const [user, setUser] = useState<User | null>(null);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const { data } = supabase.auth.onAuthStateChange((event, session) => {
+		const { data } = supabase.auth.onAuthStateChange((event: string, session: Session | null) => {
 			if (event === "SIGNED_IN") {
 				setUser(session?.user ?? null);
 			} else if (event === "SIGNED_OUT") {
@@ -41,10 +41,10 @@ export default function LoginPage() {
 	const handleLogin: React.FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		setError(null);
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.currentTarget);
 		const { user, error } = await signinWithPassword(formData);
 		if (error) {
-			setError(error);
+			setError(error.message);
 		} else {
 			setUser(user);
 		}
@@ -53,10 +53,10 @@ export default function LoginPage() {
 	const handleSignup: React.FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		setError(null);
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.currentTarget);
 		const { user, error } = await signup(formData);
 		if (error) {
-			setError(error);
+			setError(error.message);
 		} else {
 			setUser(user);
 		}
@@ -70,7 +70,7 @@ export default function LoginPage() {
 	const handleGithubLogin = async () => {
 		const { url, error } = await signinWithGithub();
 		if (error) {
-			setError(error);
+			setError(error.message);
 		} else if (url) {
 			window.location.href = url;
 		}
@@ -79,7 +79,7 @@ export default function LoginPage() {
 	const handleGoogleLogin = async () => {
 		const { url, error } = await signinWithGoogle();
 		if (error) {
-			setError(error);
+			setError(error.message);
 		} else if (url) {
 			window.location.href = url;
 		}
@@ -87,7 +87,7 @@ export default function LoginPage() {
 
 	return (
 		<div>
-			{(error as string)?.includes("Email not confirmed") && <p>Please confirm your email address.</p>}
+			{error?.includes("Email not confirmed") && <p>Please confirm your email address.</p>}
 			<h1>{user?.email}</h1>
 			{!user ? (
 				<>
