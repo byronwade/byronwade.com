@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { signup, signinWithPassword, signout, signinWithGithub, signinWithGoogle, getUser } from "@/actions/auth";
 import { createClient } from "@/utils/supabase/client";
-import { User, Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
+import { AuthResponse } from "@/types/auth";
 
 const supabase = createClient();
 
@@ -11,7 +12,7 @@ export default function LoginPage() {
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const { data } = supabase.auth.onAuthStateChange((event: string, session: Session | null) => {
+		const { data } = supabase.auth.onAuthStateChange((event, session) => {
 			if (event === "SIGNED_IN") {
 				setUser(session?.user ?? null);
 			} else if (event === "SIGNED_OUT") {
@@ -20,11 +21,12 @@ export default function LoginPage() {
 		});
 
 		const fetchUser = async () => {
-			const { user, error } = await getUser();
-			if (error) {
-				console.log("Get User: ", error);
-			} else {
-				setUser(user);
+			const response: AuthResponse = await getUser();
+			if (response.error) {
+				console.log("Get User: ", response.error);
+				setError(response.error);
+			} else if (response.user) {
+				setUser(response.user);
 			}
 		};
 
@@ -42,11 +44,11 @@ export default function LoginPage() {
 		event.preventDefault();
 		setError(null);
 		const formData = new FormData(event.currentTarget);
-		const { user, error } = await signinWithPassword(formData);
-		if (error) {
-			setError(error.message);
-		} else {
-			setUser(user);
+		const response: AuthResponse = await signinWithPassword(formData);
+		if (response.error) {
+			setError(response.error);
+		} else if (response.user) {
+			setUser(response.user);
 		}
 	};
 
@@ -54,11 +56,11 @@ export default function LoginPage() {
 		event.preventDefault();
 		setError(null);
 		const formData = new FormData(event.currentTarget);
-		const { user, error } = await signup(formData);
-		if (error) {
-			setError(error.message);
-		} else {
-			setUser(user);
+		const response: AuthResponse = await signup(formData);
+		if (response.error) {
+			setError(response.error);
+		} else if (response.user) {
+			setUser(response.user);
 		}
 	};
 
@@ -68,20 +70,20 @@ export default function LoginPage() {
 	};
 
 	const handleGithubLogin = async () => {
-		const { url, error } = await signinWithGithub();
-		if (error) {
-			setError(error.message);
-		} else if (url) {
-			window.location.href = url;
+		const response: AuthResponse = await signinWithGithub();
+		if (response.error) {
+			setError(response.error);
+		} else if (response.url) {
+			window.location.href = response.url;
 		}
 	};
 
 	const handleGoogleLogin = async () => {
-		const { url, error } = await signinWithGoogle();
-		if (error) {
-			setError(error.message);
-		} else if (url) {
-			window.location.href = url;
+		const response: AuthResponse = await signinWithGoogle();
+		if (response.error) {
+			setError(response.error);
+		} else if (response.url) {
+			window.location.href = response.url;
 		}
 	};
 

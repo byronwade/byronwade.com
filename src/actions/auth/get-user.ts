@@ -13,7 +13,7 @@ export async function getUser(): Promise<AuthResponse> {
 
 	if (sessionError || !session) {
 		console.log(sessionError || "No active session found.");
-		return { user: null, error: sessionError ? sessionError.message : "No active session found." };
+		return { user: undefined, error: sessionError ? sessionError.message : "No active session found." };
 	}
 
 	// Fetch the user information
@@ -24,8 +24,8 @@ export async function getUser(): Promise<AuthResponse> {
 
 	if (userError) {
 		console.log(userError);
-		return { user: null, error: userError.message };
+		return { user: undefined, error: userError.message };
 	}
 
-	return { user, error: null };
+	return { user: user || undefined, error: undefined };
 }
