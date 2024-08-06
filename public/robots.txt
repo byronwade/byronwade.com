@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://byronwade.com
-
-# Sitemaps
-Sitemap: https://byronwade.com/sitemap.xml

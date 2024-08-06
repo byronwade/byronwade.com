@@ -1,65 +1,36 @@
-Collection 1: Pages
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-Document 1: Home
-Page Title: "Home"
-Page URL: "/"
-Document 2: Buy
-Page Title: "Buy"
-Page URL: "/buy"
-Document 3: Projects
-Page Title: "Projects"
-Page URL: "/projects"
-Document 4: Portfolio
-Page Title: "Portfolio"
-Page URL: "/portfolio"
-Document 5: Blog
-Page Title: "Blog"
-Page URL: "/blog"
-Document 6: Contact
-Page Title: "Contact"
-Page URL: "/contact"
-Collection 2: Blog
+## Getting Started
 
-Document 1: Blog ID
-Blog Title: "Title of the Blog"
-Blog Content: "Content of the Blog"
-Blog Author: "Author of the Blog"
-Blog Date: "Date of the Blog"
-Blog Image: "Image URL"
-Collection 3: Projects
+First, run the development server:
 
-Document 1: Project ID
-Project Title: "Title of the Project"
-Project Description: "Description of the Project"
-Project Image: "Image URL"
-Project URL: "Project URL"
-Collection 4: Portfolio
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-Document 1: Portfolio ID
-Portfolio Title: "Title of the Portfolio"
-Portfolio Description: "Description of the Portfolio"
-Portfolio Image: "Image URL"
-Portfolio URL: "Portfolio URL"
-Collection 5: Contact
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Document 1: Contact ID
-Name: "Name of the User"
-Email: "Email of the User"
-Message: "Message from the User"
-Collection 6: User
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Document 1: User ID
-Username: "Username of the User"
-Password: "Password of the User"
-Email: "Email of the User"
-Collection 7: Social Media
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-Document 1: Social Media ID
-Platform: "Platform Name"
-Profile URL: "URL of the Profile"
-Collection 8: Site Analytics
+## Learn More
 
-Document 1: Analytics ID
-Pageviews: "Number of Pageviews"
-Unique Visitors: "Number of Unique Visitors"
-Bounce Rate: "Bounce Rate Percentage"
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
