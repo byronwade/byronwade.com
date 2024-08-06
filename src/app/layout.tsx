@@ -1,24 +1,30 @@
-import AnalyticsWrapper from "../components/analytics";
-import Sidebar from "../components/sidebar";
-import "./global.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import "./globals.css";
+
+import { ThemeProvider } from "@/components/theme-provider";
+import { Header } from "@/components/header";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+	title: "Byron Wade",
+	description: "Fast Web Apps",
+};
 
 export default function RootLayout({
 	children,
-}: {
+}: Readonly<{
 	children: React.ReactNode;
-}) {
+}>) {
 	return (
-		<html
-			lang="en"
-			className="h-full text-black bg-white dark:text-white dark:bg-[#111010]"
-		>
-			<head />
-			<body className="h-full antialiased max-w-4xl mb-40 flex flex-col md:flex-row mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto">
-				<Sidebar />
-				<main className="flex-auto min-w-0 mt-6 md:mt-0 flex flex-col px-2 md:px-0 mb-40">
+		<html lang="en">
+			<body className={GeistSans.className}>
+				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+					<Header />
 					{children}
-					<AnalyticsWrapper />
-				</main>
+				</ThemeProvider>
 			</body>
 		</html>
 	);
