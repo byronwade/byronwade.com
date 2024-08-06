@@ -14,5 +14,5 @@ export async function signout(): Promise<SignoutResponse> {
 	}
 
 	console.log("User signed out");
-	return { error: null };
+	return { error: undefined };
 }
