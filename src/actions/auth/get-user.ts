@@ -1,7 +1,8 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { AuthResponse } from "@/types/auth";
 
-export async function getUser() {
+export async function getUser(): Promise<AuthResponse> {
 	const supabase = createClient();
 
 	// Check if there is an active session
