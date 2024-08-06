@@ -1,12 +1,10 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { AuthResponse } from "@/types/auth";
 
-export async function signinWithGoogle() {
+export async function signinWithGoogle(): Promise<AuthResponse> {
 	const supabase = createClient();
-
-	// type-casting here for convenience
-	// in practice, you should validate your inputs
 
 	const { data, error } = await supabase.auth.signInWithOAuth({
 		provider: "google",
@@ -17,10 +15,12 @@ export async function signinWithGoogle() {
 
 	if (error) {
 		console.log(error);
-		//redirect("/error");
+		return { error: error.message };
 	}
 
 	if (data && data.url) {
 		redirect(data.url);
 	}
+
+	return { url: data?.url };
 }

@@ -1,24 +1,18 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-
 import { createClient } from "@/utils/supabase/server";
+import { SignoutResponse } from "@/types/auth";
 
-export async function signout() {
+export async function signout(): Promise<SignoutResponse> {
 	const supabase = createClient();
 
-	// type-casting here for convenience
-	// in practice, you should validate your inputs
 	const { error } = await supabase.auth.signOut();
 
 	if (error) {
 		console.log(error);
-		//redirect("/error");
+		return { error: error.message };
 	}
 
 	console.log("User signed out");
-	// revalidatePath("/", "layout");
-	// redirect("/");
 	return { error: null };
 }
