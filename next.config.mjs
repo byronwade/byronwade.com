@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    
+	experimental: {
+		nextScriptWorkers: true,
+	},
     async headers() {
         return [
           {
