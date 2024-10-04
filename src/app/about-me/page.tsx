@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Twitter, Github, Youtube, ExternalLink, TrendingUp, Book, Briefcase, ArrowRight } from 'lucide-react'
 
 export default function AccessibleVIPAboutMePage() {
-  const sectionRefs = useRef([])
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,7 +22,9 @@ export default function AccessibleVIPAboutMePage() {
       { threshold: 0.1 }
     )
 
-    sectionRefs.current.forEach((ref) => observer.observe(ref))
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref)
+    })
 
     return () => observer.disconnect()
   }, [])
@@ -38,7 +40,7 @@ export default function AccessibleVIPAboutMePage() {
                 Byron Wade
               </h1>
               <p className="text-2xl mb-8 text-stone-600">
-                CEO and Co-Owner of Wade's Inc | Entrepreneur | Innovator
+                CEO and Co-Owner of Wade&apos;s Inc | Entrepreneur | Innovator
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
                 <Badge variant="secondary" className="text-lg py-2 px-4 bg-white/50 backdrop-blur-sm"><Briefcase className="w-5 h-5 mr-2 inline" /> Entrepreneur</Badge>
@@ -67,24 +69,31 @@ export default function AccessibleVIPAboutMePage() {
       <section className="py-20 -mt-20">
         <div className="container mx-auto px-4 space-y-20">
           {/* About Me Section */}
-          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={el => sectionRefs.current[0] = el}>
+          <Card 
+  className="bg-white shadow-xl rounded-3xl overflow-hidden" 
+  ref={(el) => {
+    if (el) sectionRefs.current[0] = el;
+  }}
+>
             <CardContent className="p-8">
               <h2 className="text-3xl font-serif font-bold mb-6">About Me</h2>
               <div className="space-y-4 text-xl text-stone-600">
                 <p>
-                  Hello, I'm Byron, an entrepreneur always seeking new opportunities to expand my company and create innovative solutions. I'm excited to share my story and vision with you.
+                  Hello, I&apos;m Byron, an entrepreneur always seeking new opportunities to expand my company and create innovative solutions. I&apos;m excited to share my story and vision with you.
                 </p>
                 <p>
-                  I'm studying Computer Science at Cabrillo College and plan to transfer to San Jose State. I'm also considering degrees in Civil Engineering, Aerospace Engineering, and Criminal Justice to broaden my knowledge and expertise further.
+                  I&apos;m studying Computer Science at Cabrillo College and plan to transfer to San Jose State. I&apos;m also considering degrees in Civil Engineering, Aerospace Engineering, and Criminal Justice to broaden my knowledge and expertise further.
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Wade's Inc Section */}
-          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={el => sectionRefs.current[1] = el}>
+          {/* Wade&apos;s Inc Section */}
+          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={(el) => {
+    if (el) sectionRefs.current[0] = el;
+  }}>
             <CardContent className="p-8">
-              <h2 className="text-3xl font-serif font-bold mb-6">Wade's Inc.</h2>
+              <h2 className="text-3xl font-serif font-bold mb-6">Wade&apos;s Inc.</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <Card className="bg-gradient-to-br from-green-50 to-green-100">
                   <CardContent className="p-6">
@@ -103,7 +112,7 @@ export default function AccessibleVIPAboutMePage() {
               <ul className="space-y-4">
                 <li>
                   <a href="https://wadesplumbingandseptic.com/" className="text-blue-600 hover:underline text-lg flex items-center">
-                    Wade's Plumbing and Septic <ArrowRight className="ml-2 w-4 h-4" />
+                    Wade&apos;s Plumbing and Septic <ArrowRight className="ml-2 w-4 h-4" />
                   </a>
                 </li>
                 <li>
@@ -116,12 +125,14 @@ export default function AccessibleVIPAboutMePage() {
           </Card>
 
           {/* Projects Section */}
-          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={el => sectionRefs.current[2] = el}>
+          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={(el) => {
+    if (el) sectionRefs.current[0] = el;
+  }}>
             <CardContent className="p-8">
               <h2 className="text-3xl font-serif font-bold mb-6">Current Projects</h2>
               <Card className="bg-gradient-to-br from-stone-50 to-stone-100 mb-6">
                 <CardContent className="p-6">
-                  <h3 className="text-2xl font-bold mb-4">Wade's Academy</h3>
+                  <h3 className="text-2xl font-bold mb-4">Wade&apos;s Academy</h3>
                   <p className="text-xl text-stone-600 mb-4">
                     An innovative online learning platform for the construction industry.
                   </p>
@@ -131,17 +142,19 @@ export default function AccessibleVIPAboutMePage() {
                 </CardContent>
               </Card>
               <p className="text-xl text-stone-600">
-                I'm currently working on three innovative technology websites, with Wade's Academy being the flagship project that has the potential to revolutionize online learning in the construction industry.
+                I&apos;m currently working on three innovative technology websites, with Wade&apos;s Academy being the flagship project that has the potential to revolutionize online learning in the construction industry.
               </p>
             </CardContent>
           </Card>
 
           {/* Connect Section */}
-          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={el => sectionRefs.current[3] = el}>
+          <Card className="bg-white shadow-xl rounded-3xl overflow-hidden" ref={(el) => {
+    if (el) sectionRefs.current[0] = el;
+  }}>
             <CardContent className="p-8">
               <h2 className="text-3xl font-serif font-bold mb-6">Connect with Me</h2>
               <p className="text-xl text-stone-600 mb-8">
-                I'm open to exploring collaboration and investment opportunities. Feel free to reach out!
+                I&apos;m open to exploring collaboration and investment opportunities. Feel free to reach out!
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <Button asChild variant="outline" className="w-full">

@@ -23,6 +23,13 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 
+// Update the NavItem type to match your menuItems structure
+type NavItem = {
+  title: string;
+  menu?: string;
+  href?: string;
+};
+
 export default function Header() {
   const { setTheme, theme } = useTheme()
   const [isOpen, setIsOpen] = useState(false)
@@ -35,8 +42,10 @@ export default function Header() {
 
 
   const toggleMenu = () => setIsOpen(!isOpen)
-  const toggleMegaMenu = (menu: string) => {
-    setActiveMegaMenu(prev => prev === menu ? null : menu)
+  const toggleMegaMenu = (menu: string | undefined) => {
+    if (menu) {
+      setActiveMegaMenu(prevMenu => prevMenu === menu ? null : menu);
+    }
   }
 
   useEffect(() => {
@@ -58,7 +67,7 @@ export default function Header() {
     }
   }, [])
 
-  const menuItems = [
+  const menuItems: NavItem[] = [
     { title: "Design", menu: "design" },
     { title: "Development", menu: "development" },
     { title: "Marketing", menu: "marketing" },
@@ -128,7 +137,7 @@ export default function Header() {
               </span>
             </motion.div>
             <nav className="hidden lg:flex items-center space-x-1">
-              {menuItems.map((item, index) => (
+              {menuItems.map((item: NavItem, index) => (
                 <motion.div
                   key={item.title}
                   initial={{ opacity: 0, y: -20 }}

@@ -39,7 +39,7 @@ export default function LandingPage() {
               Elevate Your Online Presence with Custom Web Design
             </h1>
             <p className="text-xl mb-8 text-stone-600">
-              Hi, I'm Byron Wade. I specialize in crafting bespoke websites that not only look stunning but also drive real results for your business.
+              Hi, I&apos;m Byron Wade. I specialize in crafting bespoke websites that not only look stunning but also drive real results for your business.
             </p>
             <div className="md:hidden">
               <Image 
@@ -63,7 +63,7 @@ export default function LandingPage() {
               </Button>
             </form>
             <p className="mt-4 text-center text-stone-600 text-sm">
-              I'll get back to you within 24 hours to discuss your web design needs.
+              I&apos;ll get back to you within 24 hours to discuss your web design needs.
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-2xl font-serif italic mb-4">
-              "Byron's web design approach is refreshing. He truly listens and delivers a website that exceeds expectations, perfectly capturing our brand essence."
+            &quot;Byron&apos;s web design approach is refreshing. He truly listens and delivers a website that exceeds expectations, perfectly capturing our brand essence.&quot;
             </p>
             <p className="font-semibold">- Sarah Johnson, E-commerce Entrepreneur</p>
           </div>
@@ -123,7 +123,7 @@ export default function LandingPage() {
             <div className="flex flex-col md:flex-row items-center">
               <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
                 <h3 className="text-2xl font-semibold mb-4">E-commerce Site Boosts Sales by 200%</h3>
-                <p className="mb-4"><strong>Challenge:</strong> An artisanal soap company struggled with an outdated website that wasn't mobile-friendly and had poor conversion rates.</p>
+                <p className="mb-4"><strong>Challenge:</strong> An artisanal soap company struggled with an outdated website that wasn&apos;t mobile-friendly and had poor conversion rates.</p>
                 <p className="mb-4"><strong>Solution:</strong> We redesigned their website with a responsive, user-friendly interface, optimized product pages, and a streamlined checkout process.</p>
                 <p className="mb-4"><strong>Result:</strong> Within 3 months, mobile traffic increased by 150%, and overall sales saw a 200% boost.</p>
               </div>
@@ -140,7 +140,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-2xl font-serif italic mb-4">
-              "Byron doesn't just design websites, he creates digital experiences. His attention to detail and focus on user experience transformed our online presence."
+            &quot;Byron doesn&apos;t just design websites, he creates digital experiences. His attention to detail and focus on user experience transformed our online presence.&quot;
             </p>
             <p className="font-semibold">- Michael Chen, Tech Startup Founder</p>
           </div>
@@ -163,13 +163,13 @@ export default function LandingPage() {
             <div className="md:w-2/3 md:pl-12">
               <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Meet Byron Wade</h2>
               <p className="text-xl mb-6 text-stone-600">
-                With over a decade of experience in web design and development, I've helped businesses of all sizes establish a strong online presence and achieve their digital goals.
+                With over a decade of experience in web design and development, I&apos;ve helped businesses of all sizes establish a strong online presence and achieve their digital goals.
               </p>
               <p className="text-xl mb-6 text-stone-600">
                 My approach is simple: I listen to your needs, understand your audience, and create a website that not only looks great but also delivers tangible results for your business.
               </p>
               <Button className="bg-stone-800 hover:bg-stone-700 text-white text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
-                Let's Design Your Dream Website
+                Let&apos;s Design Your Dream Website
               </Button>
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Ready to Transform Your Online Presence?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Whether you're starting from scratch or looking to revamp your existing website, I'm here to help you create a stunning and effective web presence.
+            Whether you&apos;re starting from scratch or looking to revamp your existing website, I&apos;m here to help you create a stunning and effective web presence.
           </p>
           <Button className="bg-white text-stone-800 hover:bg-stone-200 text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
             Start Your Free Web Design Consultation
