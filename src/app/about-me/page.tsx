@@ -52,7 +52,7 @@ export default function AccessibleVIPAboutMePage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-stone-400 to-stone-600 rounded-full blur-3xl opacity-20 animate-pulse"></div>
                 <Image 
-                  src="/placeholder.svg?height=400&width=400" 
+                  src="https://placehold.co/600x400" 
                   width={400} 
                   height={400} 
                   alt="Byron Wade" 
