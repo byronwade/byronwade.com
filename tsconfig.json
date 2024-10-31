@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/api/seo/functions/securityAnalysis.js"  ],
+, "app/api/seo/functions/securityAnalysis.js", "src/app/api/seo/functions/checkConsoleOutput.js"  ],
   "exclude": [
     "node_modules"
   ]
