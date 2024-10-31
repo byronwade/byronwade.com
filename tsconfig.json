@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node", "playwright"],
     "lib": [
       "dom",
       "dom.iterable",
@@ -33,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "src/app/api/seo/functions/securityAnalysis.js"  ],
   "exclude": [
     "node_modules"
   ]

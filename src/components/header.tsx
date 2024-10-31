@@ -196,270 +196,222 @@ export default function Header() {
   }
 
   return (
-    <>
-      <header ref={headerRef} className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollY > 50 ? 'bg-background/80 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <motion.div 
-              className="flex items-center"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Link href="/" className="flex items-center">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src="https://placehold.co/40x40" alt="Byron Wade" />
-                  <AvatarFallback>BW</AvatarFallback>
-                </Avatar>
-                <span className="ml-3 text-lg font-serif font-bold">
-                  Byron Wade
-                </span>
-              </Link>
-            </motion.div>
-            <nav className="hidden lg:flex items-center space-x-1">
-              {menuItems.map((item: NavItem, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  {item.href ? (
-                    <Link
-                      href={item.href}
-                      className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent cursor-pointer"
-                    >
-                      {item.title}
-                    </Link>
-                  ) : (
-                    <button 
-                      className="flex items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent cursor-pointer"
-                      onClick={() => toggleMegaMenu(item.menu)}
-                      aria-expanded={activeMegaMenu === item.menu}
-                      aria-haspopup="true"
-                    >
-                      {item.title}
-                      <ChevronDown className="ml-1 h-4 w-4" />
-                    </button>
-                  )}
-                </motion.div>
-              ))}
-            </nav>
-            <div className="flex items-center">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="cursor-pointer hidden lg: inline-flex">
-                    <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span className="sr-only">Toggle theme</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer">
-                    <Sun className="mr-2 h-4 w-4" />
-                    <span>Light</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer">
-                    <Moon className="mr-2 h-4 w-4" />
-                    <span>Dark</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer">
-                    <Laptop className="mr-2 h-4 w-4" />
-                    <span>System</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="cursor-pointer relative ml-2">
-                    <ShoppingCart className="h-5 w-5" />
-                    {cart.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                        {cart.reduce((total, item) => total + item.quantity, 0)}
-                      </span>
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-64">
-                  {cart.length === 0 ? (
-                    <p className="text-center py-4">Your cart is empty</p>
-                  ) : (
-                    <>
-                      {cart.map((item) => (
-                        <DropdownMenuItem key={item.id} className="flex justify-between">
-                          <span>{item.title} (x{item.quantity})</span>
-                          <span>${(item.price * item.quantity).toFixed(2)}</span>
-                        </DropdownMenuItem>
-                      ))}
-                      <DropdownMenuItem className="flex justify-between font-bold">
-                        <span>Total:</span>
-                        <span>${cartTotal.toFixed(2)}</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Button className="w-full" asChild>
-                          <Link href="/checkout">Checkout</Link>
-                        </Button>
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="cursor-pointer ml-2">
-                    <Grid className="h-5 w-5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[300px] p-4">
-                  <h3 className="font-semibold mb-3">Personal Projects</h3>
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    {personalProjects.map((project) => (
-                      <Link 
-                        key={project.id} 
-                        href={project.href}
-                        className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
-                          {project.icon}
-                        </div>
-                        <span className="text-xs text-center">{project.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                  <h3 className="font-semibold mb-3">Active Client Projects</h3>
-                  <div className="space-y-2">
-                    {projects.filter(p => p.status === 'active' && p.type === 'client').map((project) => (
-                      <Link 
-                        key={project.id} 
-                        href={project.link}
-                        className="block p-2 rounded-lg hover:bg-accent transition-colors"
-                      >
-                        <span className="font-medium">{project.title}</span>
-                        <p className="text-xs text-muted-foreground">{project.description}</p>
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link href="/projects">View All Projects</Link>
-                    </Button>
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="hidden lg:block ml-2"
-              >
-                <Button className="bg-gradient-to-r from-primary to-[hsl(44.2,98%,55%)] text-primary-foreground hover:from-primary/80 hover:to-[hsl(44.2,98%,45%)] cursor-pointer" asChild>
-                  <Link href="/contact">Work with me</Link>
-                </Button>
-              </motion.div>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={toggleMenu}
-                className="lg:hidden cursor-pointer ml-2"
-                aria-label="Toggle menu"
-              >
-                {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </div>
-          </div>
-        </div>
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden"
-            >
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-background border-t border-border">
-                {menuItems.map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href || `/${item.menu}`}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer"
-                  >
-                    {item.title}
-                  </Link>
-                ))}
-                <div className="px-3 py-2 space-y-2">
-                  <Button className="w-full bg-gradient-to-r from-primary to-[hsl(44.2,98%,55%)] text-primary-foreground hover:from-primary/80 hover:to-[hsl(44.2,98%,45%)] cursor-pointer" asChild>
-                    <Link href="/contact" className="flex items-center justify-center">
-                      <Mail className="w-4 h-4 mr-2" />
-                      <span>Work with me</span>
-                    </Link>
-                  </Button>
-                  <Button variant="outline" className="w-full cursor-pointer" asChild>
-                    <Link href="/coffee" className="flex items-center justify-center">
-                      <Coffee className="w-4 h-4 mr-2" />
-                      <span>Buy Me Coffee</span>
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
-      <AnimatePresence>
-        {activeMegaMenu && (
-          <motion.div
-            ref={megaMenuRef}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="fixed left-0 right-0 bg-background shadow-lg overflow-hidden z-40"
-            style={{
-              top: headerRef.current ? `${headerRef.current.offsetHeight}px` : '64px',
-            }}
-          >
-            <div className="container mx-auto px-4 py-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {megaMenuContent[activeMegaMenu as keyof typeof megaMenuContent].map((item, index) => (
-                  <div 
-                    key={item.title} 
-                    className="flex items-start space-x-3 p-2 rounded-md transition-colors hover:bg-accent cursor-pointer"
-                  >
-                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-medium">{item.title}</h4>
-                      <p className="text-xs text-muted-foreground">{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 pt-6 border-t border-border">
-                <h3 className="text-lg font-semibold mb-4">Featured {activeMegaMenu.charAt(0).toUpperCase() + activeMegaMenu.slice(1)} Projects</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center space-x-4 p-2 rounded-md transition-colors hover:bg-accent cursor-pointer">
-                      <Image
-                        src={`https://placehold.co/80x80`}
-                        alt={`Featured ${activeMegaMenu} Project ${i}`}
-                        width={80}
-                        height={80}
-                        className="rounded-md"
-                      />
-                      <div>
-                        <h4 className="text-sm font-medium">Project {i} Name</h4>
-                        <p className="text-xs text-muted-foreground">Brief description of the project</p>
-                        <Link href={`/${activeMegaMenu}-projects/${i}`} className="text-xs text-primary hover:underline">Learn More</Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  )
+		<>
+			<header ref={headerRef} className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${scrollY > 50 ? "bg-background/80 backdrop-blur-md shadow-md" : "bg-transparent"}`}>
+				<div className="container mx-auto px-4">
+					<div className="flex items-center justify-between h-16">
+						{/* @ts-ignore */}
+						<motion.div className="flex items-center" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
+							<Link href="/" className="flex items-center">
+								<Avatar className="h-10 w-10">
+									<AvatarImage src="https://placehold.co/40x40" alt="Byron Wade" />
+									<AvatarFallback>BW</AvatarFallback>
+								</Avatar>
+								<span className="ml-3 text-lg font-serif font-bold">Byron Wade</span>
+							</Link>
+						</motion.div>
+						<nav className="hidden lg:flex items-center space-x-1">
+							{menuItems.map((item: NavItem, index) => (
+								<motion.div key={item.title} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+									{item.href ? (
+										<Link href={item.href} className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent cursor-pointer">
+											{item.title}
+										</Link>
+									) : (
+										<button className="flex items-center px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-accent cursor-pointer" onClick={() => toggleMegaMenu(item.menu)} aria-expanded={activeMegaMenu === item.menu} aria-haspopup="true">
+											{item.title}
+											<ChevronDown className="ml-1 h-4 w-4" />
+										</button>
+									)}
+								</motion.div>
+							))}
+						</nav>
+						<div className="flex items-center">
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="ghost" size="icon" className="cursor-pointer hidden lg: inline-flex">
+										<Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+										<Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+										<span className="sr-only">Toggle theme</span>
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end">
+									<DropdownMenuItem onClick={() => setTheme("light")} className="cursor-pointer">
+										<Sun className="mr-2 h-4 w-4" />
+										<span>Light</span>
+									</DropdownMenuItem>
+									<DropdownMenuItem onClick={() => setTheme("dark")} className="cursor-pointer">
+										<Moon className="mr-2 h-4 w-4" />
+										<span>Dark</span>
+									</DropdownMenuItem>
+									<DropdownMenuItem onClick={() => setTheme("system")} className="cursor-pointer">
+										<Laptop className="mr-2 h-4 w-4" />
+										<span>System</span>
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="outline" size="icon" className="cursor-pointer relative ml-2">
+										<ShoppingCart className="h-5 w-5" />
+										{cart.length > 0 && <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs">{cart.reduce((total, item) => total + item.quantity, 0)}</span>}
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end" className="w-64">
+									{cart.length === 0 ? (
+										<p className="text-center py-4">Your cart is empty</p>
+									) : (
+										<>
+											{cart.map((item) => (
+												<DropdownMenuItem key={item.id} className="flex justify-between">
+													<span>
+														{item.title} (x{item.quantity})
+													</span>
+													<span>${(item.price * item.quantity).toFixed(2)}</span>
+												</DropdownMenuItem>
+											))}
+											<DropdownMenuItem className="flex justify-between font-bold">
+												<span>Total:</span>
+												<span>${cartTotal.toFixed(2)}</span>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Button className="w-full" asChild>
+													<Link href="/checkout">Checkout</Link>
+												</Button>
+											</DropdownMenuItem>
+										</>
+									)}
+								</DropdownMenuContent>
+							</DropdownMenu>
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="outline" size="icon" className="cursor-pointer ml-2">
+										<Grid className="h-5 w-5" />
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end" className="w-[300px] p-4">
+									<h3 className="font-semibold mb-3">Personal Projects</h3>
+									<div className="grid grid-cols-3 gap-4 mb-6">
+										{personalProjects.map((project) => (
+											<Link key={project.id} href={project.href} className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-accent transition-colors">
+												<div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">{project.icon}</div>
+												<span className="text-xs text-center">{project.title}</span>
+											</Link>
+										))}
+									</div>
+									<h3 className="font-semibold mb-3">Active Client Projects</h3>
+									<div className="space-y-2">
+										{projects
+											.filter((p) => p.status === "active" && p.type === "client")
+											.map((project) => (
+												<Link key={project.id} href={project.link} className="block p-2 rounded-lg hover:bg-accent transition-colors">
+													<span className="font-medium">{project.title}</span>
+													<p className="text-xs text-muted-foreground">{project.description}</p>
+												</Link>
+											))}
+									</div>
+									<div className="mt-4 pt-4 border-t border-border">
+										<Button variant="outline" className="w-full" asChild>
+											<Link href="/projects">View All Projects</Link>
+										</Button>
+									</div>
+								</DropdownMenuContent>
+							</DropdownMenu>
+
+							{/* @ts-ignore */}
+							<motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden lg:block ml-2">
+								<Button className="bg-gradient-to-r from-primary to-[hsl(44.2,98%,55%)] text-primary-foreground hover:from-primary/80 hover:to-[hsl(44.2,98%,45%)] cursor-pointer" asChild>
+									<Link href="/contact">Work with me</Link>
+								</Button>
+							</motion.div>
+							<Button variant="outline" size="icon" onClick={toggleMenu} className="lg:hidden cursor-pointer ml-2" aria-label="Toggle menu">
+								{isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+							</Button>
+						</div>
+					</div>
+				</div>
+				<AnimatePresence>
+					{isOpen && (
+						<motion.div
+							initial={{ opacity: 0, height: 0 }}
+							animate={{ opacity: 1, height: "auto" }}
+							exit={{ opacity: 0, height: 0 }}
+							transition={{ duration: 0.3 }}
+							/* @ts-ignore */
+							className="lg:hidden overflow-hidden"
+						>
+							<div className="px-2 pt-2 pb-3 space-y-1 bg-background border-t border-border">
+								{menuItems.map((item) => (
+									<Link key={item.title} href={item.href || `/${item.menu}`} className="block px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer">
+										{item.title}
+									</Link>
+								))}
+								<div className="px-3 py-2 space-y-2">
+									<Button className="w-full bg-gradient-to-r from-primary to-[hsl(44.2,98%,55%)] text-primary-foreground hover:from-primary/80 hover:to-[hsl(44.2,98%,45%)] cursor-pointer" asChild>
+										<Link href="/contact" className="flex items-center justify-center">
+											<Mail className="w-4 h-4 mr-2" />
+											<span>Work with me</span>
+										</Link>
+									</Button>
+									<Button variant="outline" className="w-full cursor-pointer" asChild>
+										<Link href="/coffee" className="flex items-center justify-center">
+											<Coffee className="w-4 h-4 mr-2" />
+											<span>Buy Me Coffee</span>
+										</Link>
+									</Button>
+								</div>
+							</div>
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</header>
+			<AnimatePresence>
+				{activeMegaMenu && (
+					<motion.div
+						ref={megaMenuRef}
+						initial={{ opacity: 0, y: -10 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -10 }}
+						transition={{ duration: 0.2 }}
+						/* @ts-ignore */
+						className="fixed left-0 right-0 bg-background shadow-lg overflow-hidden z-40"
+						style={{
+							top: headerRef.current ? `${headerRef.current.offsetHeight}px` : "64px",
+						}}
+					>
+						<div className="container mx-auto px-4 py-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+								{megaMenuContent[activeMegaMenu as keyof typeof megaMenuContent].map((item, index) => (
+									<div key={item.title} className="flex items-start space-x-3 p-2 rounded-md transition-colors hover:bg-accent cursor-pointer">
+										<div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">{item.icon}</div>
+										<div>
+											<h4 className="text-sm font-medium">{item.title}</h4>
+											<p className="text-xs text-muted-foreground">{item.description}</p>
+										</div>
+									</div>
+								))}
+							</div>
+							<div className="mt-8 pt-6 border-t border-border">
+								<h3 className="text-lg font-semibold mb-4">Featured {activeMegaMenu.charAt(0).toUpperCase() + activeMegaMenu.slice(1)} Projects</h3>
+								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+									{[1, 2, 3].map((i) => (
+										<div key={i} className="flex items-center space-x-4 p-2 rounded-md transition-colors hover:bg-accent cursor-pointer">
+											<Image src={`https://placehold.co/80x80`} alt={`Featured ${activeMegaMenu} Project ${i}`} width={80} height={80} className="rounded-md" />
+											<div>
+												<h4 className="text-sm font-medium">Project {i} Name</h4>
+												<p className="text-xs text-muted-foreground">Brief description of the project</p>
+												<Link href={`/${activeMegaMenu}-projects/${i}`} className="text-xs text-primary hover:underline">
+													Learn More
+												</Link>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</>
+  );
 }

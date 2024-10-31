@@ -174,108 +174,96 @@ export default function ProductsPage() {
       )
 
   return (
-    <div className="min-h-screen bg-background py-16">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <motion.h1 
-          className="text-4xl font-bold text-center mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Our Products and Projects
-        </motion.h1>
-        <Tabs defaultValue="all" className="w-full mb-12">
-          <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
-            <TabsTrigger value="all" onClick={() => setActiveTab("all")}>All</TabsTrigger>
-            <TabsTrigger value="products" onClick={() => setActiveTab("products")}>Our Products</TabsTrigger>
-            <TabsTrigger value="client_projects" onClick={() => setActiveTab("client_projects")}>Client Projects</TabsTrigger>
-            <TabsTrigger value="completed" onClick={() => setActiveTab("completed")}>Completed</TabsTrigger>
-            <TabsTrigger value="in_development" onClick={() => setActiveTab("in_development")}>In Development</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
-            <motion.div
-              key={product.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <Card className="h-full flex flex-col">
-                <CardHeader>
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <div className="p-2 bg-primary/10 rounded-full">
-                          {product.icon}
-                        </div>
-                        <CardTitle className="text-lg">{product.name}</CardTitle>
-                      </div>
-                      <Badge variant={product.status === "completed" ? "default" : "secondary"}>
-                        {product.status === "completed" ? "Completed" : "In Development"}
-                      </Badge>
-                    </div>
-                    <CardDescription>{product.description}</CardDescription>
-                  </div>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={600}
-                    height={400}
-                    className="w-full h-48 object-cover rounded-md mb-4"
-                  />
-                  <ul className="space-y-2">
-                    {product.features.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <ChevronRight className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-2">
-                  <Button asChild className="w-full">
-                    <Link href={product.link}>Learn More</Link>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link href={product.github} target="_blank" rel="noopener noreferrer">View on GitHub</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-        <motion.section 
-          className="mt-16"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h2 className="text-3xl font-bold text-center mb-8">Why Choose Our Products?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: <Globe className="h-10 w-10" />, title: "Modern Solutions", description: "Built for the needs of today's digital landscape" },
-              { icon: <Code className="h-10 w-10" />, title: "Developer-Friendly", description: "Full control and customization for developers" },
-              { icon: <Layers className="h-10 w-10" />, title: "Scalable Products", description: "From small businesses to enterprise-level applications" },
-              { icon: <Zap className="h-10 w-10" />, title: "High Performance", description: "Optimized for speed and efficiency" },
-            ].map((item, index) => (
-              <Card key={index} className="text-center">
-                <CardHeader>
-                  <div className="mx-auto bg-primary/10 p-3 rounded-full w-16 h-16 flex items-center justify-center text-primary">
-                    {item.icon}
-                  </div>
-                  <CardTitle className="mt-4">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>{item.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </motion.section>
-      </div>
-    </div>
-  )
+		<div className="min-h-screen bg-background py-16">
+			<div className="container mx-auto px-4 max-w-6xl">
+				{/* @ts-ignore */}
+				<motion.h1 className="text-4xl font-bold text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+					Our Products and Projects
+				</motion.h1>
+				<Tabs defaultValue="all" className="w-full mb-12">
+					<TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
+						<TabsTrigger value="all" onClick={() => setActiveTab("all")}>
+							All
+						</TabsTrigger>
+						<TabsTrigger value="products" onClick={() => setActiveTab("products")}>
+							Our Products
+						</TabsTrigger>
+						<TabsTrigger value="client_projects" onClick={() => setActiveTab("client_projects")}>
+							Client Projects
+						</TabsTrigger>
+						<TabsTrigger value="completed" onClick={() => setActiveTab("completed")}>
+							Completed
+						</TabsTrigger>
+						<TabsTrigger value="in_development" onClick={() => setActiveTab("in_development")}>
+							In Development
+						</TabsTrigger>
+					</TabsList>
+				</Tabs>
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{filteredProducts.map((product, index) => (
+						<motion.div key={product.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+							<Card className="h-full flex flex-col">
+								<CardHeader>
+									<div className="flex flex-col space-y-2">
+										<div className="flex items-center justify-between">
+											<div className="flex items-center space-x-2">
+												<div className="p-2 bg-primary/10 rounded-full">{product.icon}</div>
+												<CardTitle className="text-lg">{product.name}</CardTitle>
+											</div>
+											<Badge variant={product.status === "completed" ? "default" : "secondary"}>{product.status === "completed" ? "Completed" : "In Development"}</Badge>
+										</div>
+										<CardDescription>{product.description}</CardDescription>
+									</div>
+								</CardHeader>
+								<CardContent className="flex-grow">
+									<Image src={product.image} alt={product.name} width={600} height={400} className="w-full h-48 object-cover rounded-md mb-4" />
+									<ul className="space-y-2">
+										{product.features.map((feature, index) => (
+											<li key={index} className="flex items-start">
+												<ChevronRight className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+												<span>{feature}</span>
+											</li>
+										))}
+									</ul>
+								</CardContent>
+								<CardFooter className="flex flex-col space-y-2">
+									<Button asChild className="w-full">
+										<Link href={product.link}>Learn More</Link>
+									</Button>
+									<Button asChild variant="outline" className="w-full">
+										<Link href={product.github} target="_blank" rel="noopener noreferrer">
+											View on GitHub
+										</Link>
+									</Button>
+								</CardFooter>
+							</Card>
+						</motion.div>
+					))}
+				</div>
+
+				{/* @ts-ignore */}
+				<motion.section className="mt-16" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+					<h2 className="text-3xl font-bold text-center mb-8">Why Choose Our Products?</h2>
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+						{[
+							{ icon: <Globe className="h-10 w-10" />, title: "Modern Solutions", description: "Built for the needs of today's digital landscape" },
+							{ icon: <Code className="h-10 w-10" />, title: "Developer-Friendly", description: "Full control and customization for developers" },
+							{ icon: <Layers className="h-10 w-10" />, title: "Scalable Products", description: "From small businesses to enterprise-level applications" },
+							{ icon: <Zap className="h-10 w-10" />, title: "High Performance", description: "Optimized for speed and efficiency" },
+						].map((item, index) => (
+							<Card key={index} className="text-center">
+								<CardHeader>
+									<div className="mx-auto bg-primary/10 p-3 rounded-full w-16 h-16 flex items-center justify-center text-primary">{item.icon}</div>
+									<CardTitle className="mt-4">{item.title}</CardTitle>
+								</CardHeader>
+								<CardContent>
+									<p>{item.description}</p>
+								</CardContent>
+							</Card>
+						))}
+					</div>
+				</motion.section>
+			</div>
+		</div>
+  );
 }

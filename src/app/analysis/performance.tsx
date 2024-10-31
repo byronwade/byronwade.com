@@ -303,7 +303,7 @@ export default function PerformanceAnalysis() {
 	);
 }
 
-function StatisticCard({ title, description, source, icon: Icon }) {
+function StatisticCard({ title, description, source, icon: Icon }: { title: string; description: string; source: string; icon: React.ElementType }) {
 	return (
 		<div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
 			<div className="flex items-start gap-4">
