@@ -5,13 +5,14 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+.cursorignore
 
 # testing
 /coverage
 
 # next.js
 /.next/
-/out/
+/out/   
 
 # production
 /build
@@ -31,6 +32,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+
 
 # typescript
 *.tsbuildinfo
