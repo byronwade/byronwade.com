@@ -1,0 +1,11 @@
+{
+    "builds": [
+      {
+        "src": "index.js",
+        "use": "@vercel/node",
+        "config": {
+          "installCommand": "npm install && npx playwright install chromium"
+        }
+      }
+    ]
+  }
