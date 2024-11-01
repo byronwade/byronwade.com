@@ -1,0 +1,11 @@
+{
+    "builds": [
+      {
+        "src": "app/api/seo/route.ts",
+        "use": "@vercel/node",
+        "config": {
+          "installCommand": "bun install && bunx playwright install"
+        }
+      }
+    ]
+  }
