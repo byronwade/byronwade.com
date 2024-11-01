@@ -3,8 +3,8 @@ import { GeistSans } from "geist/font/sans";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
-import { ThemeProvider } from "../components/theme-provider";
-import Header from "../components/header";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
 	title: "Byron Wade",
