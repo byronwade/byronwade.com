@@ -1,4 +1,3 @@
-import { checkMobileFriendly } from "./checkMobileFriendly";
 import { checkSSLCertificate } from "./checkSSLCertificate";
 import { checkCustom404 } from "./checkCustom404";
 import { checkMetadata } from "./checkMetadata";
@@ -29,10 +28,6 @@ export const onPageSEOScore = async (domain: string, content: string, page: Page
 		const totalWordCount = keywordAnalysisResult.reduce((sum, item) => sum + item[1], 0);
 		score.keywordDensity = (totalWordCount > 0 ? keywordAnalysisResult[0][1] / totalWordCount : 0) * 100;
 	}
-
-	// Mobile Friendly Score (10 if mobile friendly, 0 otherwise)
-	const mobileFriendlyResult = await checkMobileFriendly(page);
-	score.mobileFriendly = mobileFriendlyResult.mobileFriendly ? 10 : 0;
 
 	// Secure Connection Score (10 if HTTPS, 0 otherwise)
 	const sslCertificateResult = await checkSSLCertificate(domain);
