@@ -1,5 +1,6 @@
+import { Page } from "@playwright/test";
 
-export const checkMetadata = async (page: import('playwright').Page): Promise<Record<string, any>> => {
+export const checkMetadata = async (page: Page): Promise<Record<string, any>> => {
 	await page.waitForTimeout(500);
 	await page.waitForSelector("body");
 	await page.waitForLoadState("load");

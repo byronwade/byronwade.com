@@ -1,12 +1,16 @@
+import { type Page } from '@playwright/test';
+
+
+
 // Function to fetch social media links from the page
-async function getSocialLinks(page: import('playwright').Page) {
+async function getSocialLinks(page: Page) {
 	return page.$$eval("a", (links) => {
 		return links.map((link) => link.href).filter((href) => href.includes("facebook.com") || href.includes("twitter.com") || href.includes("linkedin.com"));
 	});
 }
 
 // Function to fetch meta social links from the page
-async function getMetaSocialLinks(page: import('playwright').Page) {
+async function getMetaSocialLinks(page: Page) {
 	return page.$$eval("meta", (tags) => {
 		const metaLinks: { twitter?: string } = {};
 		tags.forEach((tag) => {
@@ -22,7 +26,7 @@ async function getMetaSocialLinks(page: import('playwright').Page) {
 	});
 }
 
-export const analyzeSocialSignals = async (page: import('playwright').Page) => {
+export const analyzeSocialSignals = async (page: Page) => {
 	const results = {
 		facebook: { link: null, profileName: null, sharedCount: null },
 		twitter: { link: null, profileName: null, sharedCount: null },

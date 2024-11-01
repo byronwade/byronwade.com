@@ -3,8 +3,9 @@ import { checkSSLCertificate } from "./checkSSLCertificate";
 import { checkCustom404 } from "./checkCustom404";
 import { checkMetadata } from "./checkMetadata";
 import { keywordAnalysis } from "./keywordAnalysis";
+import { Page } from "@playwright/test";
 
-export const onPageSEOScore = async (domain: string, content: string, page: import('playwright').Page) => {
+export const onPageSEOScore = async (domain: string, content: string, page: Page) => {
 	await page.waitForTimeout(500);
 	await page.waitForSelector("body");
 	await page.waitForLoadState("load");

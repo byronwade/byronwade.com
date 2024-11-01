@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
+import { Page } from '@playwright/test';
 
-export async function checkAccessibility(page: import('playwright').Page) {
+export async function checkAccessibility(page: Page) {
 	await page.waitForSelector('body');
 
 	const accessibilityScanResults = await new AxeBuilder({ page })

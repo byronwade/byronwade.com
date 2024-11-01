@@ -1,4 +1,6 @@
-export const checkBrowserCompatibility = async (page: import('playwright').Page) => {
+import { Page } from "@playwright/test";
+
+export const checkBrowserCompatibility = async (page: Page) => {
 	try {
 		await page.waitForLoadState("load");
 		await page.waitForSelector("body", { state: "attached" });

@@ -1,4 +1,6 @@
-export const checkBrokenLinks = async (page: import('playwright').Page): Promise<Record<string, any>> => {
+import { Page } from "@playwright/test";
+
+export const checkBrokenLinks = async (page: Page): Promise<Record<string, any>> => {
 	await page.waitForSelector("body");
 	await page.waitForLoadState("networkidle");
 	

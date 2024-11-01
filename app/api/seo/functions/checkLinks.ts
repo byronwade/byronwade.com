@@ -1,6 +1,8 @@
 
+import { Page } from "@playwright/test";
+
 export const checkLinks = async (
-	page: import('playwright').Page
+	page: Page
 ): Promise<{
 	externalLinks: {
 		count: number;

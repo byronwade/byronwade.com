@@ -1,4 +1,6 @@
-export const checkImageOptimization = async (page: import('playwright').Page) => {
+import { Page } from "@playwright/test";
+
+export const checkImageOptimization = async (page: Page) => {
 	await page.waitForTimeout(500);
 	await page.waitForSelector("body");
 	await page.waitForLoadState("load");

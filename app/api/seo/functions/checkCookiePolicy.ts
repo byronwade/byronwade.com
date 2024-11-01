@@ -1,4 +1,6 @@
-export async function checkCookiePolicy(page: import('playwright').Page) {
+import { Page } from "@playwright/test";
+
+export async function checkCookiePolicy(page: Page) {
 	await page.waitForTimeout(500);
 	await page.waitForSelector("body");
 	await page.waitForLoadState("load");
