@@ -1,4 +1,5 @@
 // import { takeScreenshot } from "./functions/takeScreenshot";
+
 import * as zlib from "zlib";
 import { chromium, Browser, type Page, request } from '@playwright/test';
 import { extractHeadingsWithText } from "./functions/extractHeadingsWithText";

@@ -11,8 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/ta
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip";
 import dynamic from "next/dynamic";
 
-export const runtime = "edge";
-
 const DynamicLineChart = dynamic<any>(() => import("recharts").then((mod) => mod.LineChart), {
 	ssr: false,
 	loading: () => <div className="h-[300px] animate-pulse bg-muted" />,
