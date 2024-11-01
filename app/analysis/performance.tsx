@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Activity, BarChart, CheckCircle, Clock, Globe, LayoutGrid, LineChart, MousePointer, PieChart, Search, Share2, Shield, Smartphone, Zap } from "lucide-react";
+import { Activity, BarChart, Clock, Globe, LayoutGrid, LineChart, MousePointer, PieChart, Search, Share2, Shield, Smartphone, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
-import { cn } from "../../lib/utils";
 
 interface MetricData {
 	value: number;

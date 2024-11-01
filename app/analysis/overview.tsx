@@ -1,4 +1,4 @@
-import { Lightbulb, Users, Globe, Zap, Target } from "lucide-react";
+import { Lightbulb, Users, Globe, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 
 export default function Component() {

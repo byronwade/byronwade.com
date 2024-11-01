@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Info, CheckCircle, ChevronRight, Clock, LayoutGrid, Menu, Search, Smartphone, Zap } from "lucide-react";
+import { Check, ArrowRight, Info, CheckCircle, Clock, LayoutGrid, Menu, Search, Smartphone, Zap } from "lucide-react";
 import { Bar, CartesianGrid, Legend, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";

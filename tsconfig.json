@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "types": ["node", "playwright"],
     "lib": [
       "dom",
       "dom.iterable",
@@ -24,7 +23,7 @@
     ],
     "paths": {
       "@/*": [
-        "./src/*"
+        "./*"
       ]
     },
     "target": "ES2017"
@@ -34,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "app/api/seo/functions/securityAnalysis.js", "src/app/api/seo/functions/checkConsoleOutput.js"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

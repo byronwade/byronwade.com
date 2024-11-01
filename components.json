@@ -16,7 +16,7 @@
 		"lib": "@/lib",
 		"data": "@/data",
 		"actions": "@/actions",
-		"utils": "@/utils",
+		"utils": "@/lib/utils",
 		"types": "@/types"
 	}
 }
