@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 
 interface Star {
 	x: number;
@@ -29,7 +29,7 @@ interface Meteor {
 	opacity: number;
 }
 
-export default function StarrySkyView() {
+const StarrySkyView = () => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
@@ -173,4 +173,6 @@ export default function StarrySkyView() {
 	}, []);
 
 	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-black" aria-hidden="true" />;
-}
+};
+
+export default memo(StarrySkyView);

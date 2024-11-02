@@ -4,7 +4,10 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/header";
+import dynamic from "next/dynamic";
+
+// Dynamically import and memoize the Header component
+const Header = dynamic(() => import("@/components/header"));
 
 export const metadata: Metadata = {
 	title: "Byron Wade",

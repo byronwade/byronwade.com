@@ -3,11 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Background from "./background";
-import { CodedText } from "@/components/CodedText";
+import dynamic from "next/dynamic";
+import { memo } from "react";
 
-export default function Hero() {
+// Dynamically import and memoize the CodedText component
+const CodedText = dynamic(() => import("@/components/CodedText"), { ssr: false });
+
+const Hero = () => {
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 	const [scrollPosition, setScrollPosition] = useState(0);
 	const [isVisible, setIsVisible] = useState(false);
@@ -15,15 +19,15 @@ export default function Hero() {
 	const sectionRef = useRef<HTMLElement>(null);
 	const textRef = useRef<HTMLDivElement>(null);
 
+	const handleMouseMove = useCallback((e: MouseEvent) => {
+		setMousePosition({ x: e.clientX, y: e.clientY });
+	}, []);
+
+	const handleScroll = useCallback(() => {
+		setScrollPosition(window.scrollY);
+	}, []);
+
 	useEffect(() => {
-		const handleMouseMove = (e: MouseEvent) => {
-			setMousePosition({ x: e.clientX, y: e.clientY });
-		};
-
-		const handleScroll = () => {
-			setScrollPosition(window.scrollY);
-		};
-
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				setIsVisible(entry.isIntersecting);
@@ -45,7 +49,7 @@ export default function Hero() {
 				observer.unobserve(textRef.current);
 			}
 		};
-	}, []);
+	}, [handleMouseMove, handleScroll]);
 
 	const calculateImageTransform = () => {
 		if (!imageRef.current || !sectionRef.current) return "";
@@ -126,4 +130,6 @@ export default function Hero() {
 			<Background />
 		</>
 	);
-}
+};
+
+export default memo(Hero);

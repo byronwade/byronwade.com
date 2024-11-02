@@ -6,7 +6,10 @@ import { usePathname } from "next/navigation";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { CodedText } from "@/components/CodedText";
+import dynamic from "next/dynamic";
+
+// Dynamically import and memoize the CodedText component
+const CodedText = dynamic(() => import("@/components/CodedText"));
 
 const navItems = [
 	{ name: "Design", href: "/design" },

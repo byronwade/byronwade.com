@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 
 const ANIMATION_DURATION = 500;
 const EXTRA_WIDTH = 5;
 
-export const CodedText: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const CodedText: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const elementRef = useRef<HTMLSpanElement>(null);
 
@@ -74,3 +74,5 @@ export const CodedText: React.FC<{ children: React.ReactNode }> = ({ children })
 		</div>
 	);
 };
+
+export default memo(CodedText);
