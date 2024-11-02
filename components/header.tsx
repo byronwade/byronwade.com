@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { CodedText } from "@/components/CodedText";
 
 const navItems = [
 	{ name: "Design", href: "/design" },
@@ -14,9 +15,6 @@ const navItems = [
 	{ name: "Tools", href: "/tools" },
 	{ name: "Shop", href: "/shop" },
 ];
-
-const ANIMATION_DURATION = 500; // Animation duration in milliseconds
-const EXTRA_WIDTH = 10; // Extra width in pixels to add to each menu item
 
 export default function Navbar() {
 	const [isScrolled, setIsScrolled] = React.useState(false);
@@ -31,81 +29,6 @@ export default function Navbar() {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
-
-	React.useEffect(() => {
-		const elements = document.querySelectorAll(".codedText");
-		elements.forEach((element) => {
-			element.addEventListener("mouseenter", handleMouseEnter);
-			element.addEventListener("mouseleave", handleMouseLeave);
-		});
-
-		// Set initial widths
-		setFixedWidths();
-
-		return () => {
-			elements.forEach((element) => {
-				element.removeEventListener("mouseenter", handleMouseEnter);
-				element.removeEventListener("mouseleave", handleMouseLeave);
-			});
-		};
-	}, []);
-
-	const setFixedWidths = () => {
-		const elements = document.querySelectorAll(".codedText");
-		elements.forEach((element) => {
-			const text = element.textContent || "";
-			const tempSpan = document.createElement("span");
-			tempSpan.style.visibility = "hidden";
-			tempSpan.style.position = "absolute";
-			tempSpan.style.whiteSpace = "nowrap";
-			tempSpan.textContent = text;
-			document.body.appendChild(tempSpan);
-			const width = tempSpan.offsetWidth;
-			document.body.removeChild(tempSpan);
-
-			const el = element as HTMLElement;
-			el.style.width = `${width + EXTRA_WIDTH}px`;
-			el.style.display = "inline-flex";
-			el.style.justifyContent = "center";
-			el.style.alignItems = "center";
-		});
-	};
-
-	const handleMouseEnter = (event: Event) => {
-		const target = event.target as HTMLElement;
-		const text = target.dataset.originalText || "";
-		const startTime = performance.now();
-
-		clearInterval(target.dataset.interval as unknown as number);
-
-		target.dataset.interval = setInterval(() => {
-			const elapsedTime = performance.now() - startTime;
-			const progress = Math.min(elapsedTime / ANIMATION_DURATION, 1);
-
-			target.innerText = text
-				.split("")
-				.map((letter, index) => {
-					if (index < text.length * progress) {
-						return text[index];
-					}
-					if (letter.match(/[a-zA-Z0-9]/)) {
-						return String.fromCharCode(65 + Math.floor(Math.random() * 26));
-					}
-					return letter;
-				})
-				.join("");
-
-			if (progress >= 1) {
-				clearInterval(target.dataset.interval as unknown as number);
-			}
-		}, 16) as unknown as string; // Run at approximately 60fps
-	};
-
-	const handleMouseLeave = (event: Event) => {
-		const target = event.target as HTMLElement;
-		clearInterval(target.dataset.interval as unknown as number);
-		target.innerText = target.dataset.originalText || target.innerText;
-	};
 
 	const toggleTheme = () => {
 		setTheme(theme === "light" ? "dark" : "light");
@@ -128,11 +51,13 @@ export default function Navbar() {
 					</Link>
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">
-						{navItems.map((item) => (
-							<Link key={item.name} href={item.href} className={cn("codedText text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-gold-400" : "text-white hover:text-gold-400")} data-original-text={item.name}>
-								{item.name}
-							</Link>
-						))}
+						{navItems.map((item, index) => {
+							return (
+								<Link key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-gold-400" : "text-white hover:text-gold-400")}>
+									<CodedText>{item.name}</CodedText>
+								</Link>
+							);
+						})}
 					</nav>
 
 					<div className="flex items-center space-x-2">
@@ -147,21 +72,23 @@ export default function Navbar() {
 						</Button>
 
 						<Button asChild variant="default" className="bg-white text-black hover:bg-primary hover:text-white">
-							<Link href="/contact">Work with me</Link>
+							<Link href="/contact">
+								<CodedText>Work with me</CodedText>
+							</Link>
 						</Button>
 					</div>
 				</div>
 			</div>
-
-			{/* Mobile Menu */}
 			{isMobileMenuOpen && (
 				<div className="lg:hidden bg-black">
 					<nav className="px-4 pt-2 pb-4 space-y-2">
-						{navItems.map((item) => (
-							<Link key={item.name} href={item.href} className={cn("codedText block py-2 text-sm font-medium transition-colors", pathname.startsWith(item.href) ? "text-gold-400" : "text-white hover:text-gold-400")} onClick={() => setIsMobileMenuOpen(false)} data-original-text={item.name}>
-								{item.name}
-							</Link>
-						))}
+						{navItems.map((item) => {
+							return (
+								<Link key={item.name} href={item.href} className={cn("block py-2 text-sm font-medium transition-colors", pathname.startsWith(item.href) ? "text-gold-400" : "text-white hover:text-gold-400")} onClick={() => setIsMobileMenuOpen(false)}>
+									{item.name}
+								</Link>
+							);
+						})}
 						<Link href="/contact" className="block py-2 text-sm font-medium text-white hover:text-gold-400" onClick={() => setIsMobileMenuOpen(false)}>
 							Work with me
 						</Link>

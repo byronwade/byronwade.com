@@ -56,12 +56,12 @@ export default function StarrySkyView() {
 		};
 
 		const initStars = () => {
-			const starCount = Math.floor((canvas.width * canvas.height) / 1000); // Increased star density
+			const starCount = Math.floor((canvas.width * canvas.height) / 1000);
 			const starColors = ["#FFFFFF", "#FFFFD4", "#FFE9B8", "#FFCAB0", "#FFB7B3"];
 			stars = Array.from({ length: starCount }, () => ({
 				x: Math.random() * canvas.width,
 				y: Math.random() * canvas.height,
-				radius: Math.random() * 1.2 + 0.1, // Slightly smaller stars
+				radius: Math.random() * 1.2 + 0.1,
 				color: starColors[Math.floor(Math.random() * starColors.length)],
 				magnitude: Math.random() * 2 + 3,
 				twinkleSpeed: Math.random() * 0.03 + 0.01,
@@ -70,14 +70,14 @@ export default function StarrySkyView() {
 		};
 
 		const initMovingStars = () => {
-			const movingStarCount = Math.floor(canvas.width / 15); // Increased moving star count
+			const movingStarCount = Math.floor(canvas.width / 15);
 			const starColors = ["#FFFFFF", "#FFFFD4", "#FFE9B8"];
 			movingStars = Array.from({ length: movingStarCount }, () => ({
 				x: Math.random() * canvas.width,
 				y: Math.random() * canvas.height,
-				radius: Math.random() * 0.8 + 0.3, // Slightly smaller moving stars
+				radius: Math.random() * 0.8 + 0.3,
 				color: starColors[Math.floor(Math.random() * starColors.length)],
-				speed: Math.random() * 0.3 + 0.05, // Slower moving stars
+				speed: Math.random() * 0.3 + 0.4,
 			}));
 		};
 
@@ -111,29 +111,33 @@ export default function StarrySkyView() {
 		};
 
 		const createMeteor = () => {
-			if (Math.random() > 0.997) {
+			if (Math.random() > 0.99) {
+				// Increased probability of meteor creation
 				meteors.push({
 					x: Math.random() * canvas.width,
 					y: 0,
-					length: Math.random() * 50 + 10,
-					angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2,
-					speed: Math.random() * 3 + 1,
+					length: Math.random() * 100 + 50, // Increased meteor length
+					angle: Math.PI / 4 + (Math.random() - 0.5) * 0.4, // Wider angle range
+					speed: Math.random() * 5 + 3, // Increased speed
 					opacity: 1,
 				});
 			}
 		};
 
 		const updateAndDrawMeteors = (ctx: CanvasRenderingContext2D) => {
-			meteors = meteors.filter((meteor) => meteor.opacity > 0);
+			meteors = meteors.filter((meteor) => meteor.opacity > 0 && meteor.y < canvas.height);
 			meteors.forEach((meteor) => {
 				meteor.x += Math.cos(meteor.angle) * meteor.speed;
 				meteor.y += Math.sin(meteor.angle) * meteor.speed;
-				meteor.opacity -= 0.02;
+				meteor.opacity -= 0.01; // Slower fade out
 
 				ctx.beginPath();
 				ctx.moveTo(meteor.x, meteor.y);
 				ctx.lineTo(meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
-				ctx.strokeStyle = `rgba(255, 255, 255, ${meteor.opacity})`;
+				const gradient = ctx.createLinearGradient(meteor.x, meteor.y, meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
+				gradient.addColorStop(0, `rgba(255, 255, 255, ${meteor.opacity})`);
+				gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+				ctx.strokeStyle = gradient;
 				ctx.lineWidth = 2;
 				ctx.stroke();
 			});
