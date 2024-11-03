@@ -1,42 +1,38 @@
-import CodedText from "@/components/ui/coded-text";
-import Background from "@/components/sections/background";
-import Marquee from "@/components/ui/marquee";
-import TextStroke from "@/components/ui/text-stroke";
+import PageHeader from "@/components/page-header";
 import Link from "next/link";
+import CodedText from "@/components/ui/coded-text";
+import TextStroke from "@/components/ui/text-stroke";
 
 export default function LocalWebDesign() {
 	return (
 		<>
-			<div className="relative">
-				<Background />
-				<div className="relative pb-20">
-					<Marquee pauseOnHover className="[--duration:20s]">
-						<h1 className="text-white text-9xl font-bold mr-20 hover:text-yellow-400 hover:underline">
-							<CodedText>Design</CodedText>
-						</h1>
-					</Marquee>
-					<Marquee pauseOnHover className="[--duration:20s] -mt-4">
-						<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
-							<CodedText className="hover:underline">Figma</CodedText>
-						</Link>
-						<Link href="https://www.shopify.com" className="text-[#96bf48] text-5xl font-bold hover:text-yellow-400">
-							<CodedText className="hover:underline">Shopify</CodedText>
-						</Link>
-						<Link href="https://www.svelte.dev" className="text-[#aa1e1e] text-5xl font-bold hover:text-yellow-400">
-							<CodedText className="hover:underline">Svelte</CodedText>
-						</Link>
-						<Link href="https://wordpress.org" className="text-[#21759b] text-5xl font-bold hover:text-yellow-400">
-							<CodedText className="hover:underline">WordPress</CodedText>
-						</Link>
-						<Link href="https://nextjs.org" className="text-[#21759b] text-5xl font-bold hover:text-yellow-400 hover:underline">
-							<TextStroke strokeColor="white" textColor="black" strokeWidth={1} className="text-black text-5xl font-bold">
-								<CodedText className="hover:underline">Next.js</CodedText>
-							</TextStroke>
-						</Link>
-					</Marquee>
-				</div>
-			</div>
-			<div className="relative h-screen bg-black overflow-hidden">test</div>
+			<PageHeader title="Design">
+				<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Figma</CodedText>
+				</Link>
+				<Link href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Sketch</CodedText>
+				</Link>
+				<Link href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Adobe XD</CodedText>
+				</Link>
+				<Link href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">InVision</CodedText>
+				</Link>
+				<Link href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Framer</CodedText>
+				</Link>
+				<Link href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Axure</CodedText>
+				</Link>
+				<Link href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">Flinto</CodedText>
+				</Link>
+				<Link href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
+					<CodedText className="hover:underline">ProtoPie</CodedText>
+				</Link>
+			</PageHeader>
+			{/* Rest of the page content */}
 		</>
 	);
 }
