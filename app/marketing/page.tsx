@@ -2,6 +2,7 @@ import PageHeader from "@/components/page-header";
 import Link from "next/link";
 import CodedText from "@/components/ui/coded-text";
 import TextStroke from "@/components/ui/text-stroke";
+import HeroPages from "@/components/sections/hero-pages";
 
 export default function LocalWebDesign() {
 	return (
@@ -34,7 +35,7 @@ export default function LocalWebDesign() {
 					<CodedText className="hover:underline">Canva</CodedText>
 				</Link>
 			</PageHeader>
-			{/* Rest of the page content */}
+			<HeroPages />
 		</>
 	);
 }
