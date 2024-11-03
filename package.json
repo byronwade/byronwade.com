@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && bunx playwright install --with-deps",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "playwright install"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.10.0",
