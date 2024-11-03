@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={GeistSans.className}>
+			<body className={`${GeistSans.className} bg-black`}>
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 					<Header />
 					{children}

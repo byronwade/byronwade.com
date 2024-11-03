@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import { memo } from "react";
 
 // Dynamically import and memoize the CodedText component
-const CodedText = dynamic(() => import("@/components/CodedText"), { ssr: false });
+const CodedText = dynamic(() => import("@/components/ui/coded-text"), { ssr: false });
 
 const Hero = () => {
 	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -98,11 +98,9 @@ const Hero = () => {
 									<CodedText>Launch Your Mission</CodedText>
 									<Zap className="ml-2 -mr-1 h-5 w-5" />
 								</Link>
-								<CodedText>
-									<Link href="/projects" className="inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out animate-pulse-fast">
-										Explore Our Galaxy of Work
-									</Link>
-								</CodedText>
+								<Link href="/projects" className="inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out animate-pulse-fast">
+									<CodedText>Explore Our Galaxy of Work</CodedText>
+								</Link>
 							</div>
 							<div className={`flex flex-col sm:flex-row items-center gap-4 text-sm transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
 								<div className="flex items-center animate-speed-left">

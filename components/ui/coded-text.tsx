@@ -1,9 +1,11 @@
+"use client";
+
 import { useEffect, useRef, memo } from "react";
 
 const ANIMATION_DURATION = 500;
 const EXTRA_WIDTH = 5;
 
-const CodedText: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const CodedText: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const elementRef = useRef<HTMLSpanElement>(null);
 
@@ -68,7 +70,7 @@ const CodedText: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 	return (
 		<div ref={containerRef} className="inline-block overflow-hidden">
-			<span ref={elementRef} className="text-center block">
+			<span ref={elementRef} className={`text-center block ${className}`}>
 				{children}
 			</span>
 		</div>

@@ -7,9 +7,10 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
+import { customFont } from "@/lib/fonts";
 
 // Dynamically import and memoize the CodedText component
-const CodedText = dynamic(() => import("@/components/CodedText"));
+const CodedText = dynamic(() => import("@/components/ui/coded-text"));
 
 const navItems = [
 	{ name: "Design", href: "/design" },
@@ -47,16 +48,13 @@ export default function Navbar() {
 			<div className="container mx-auto px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link href="/" className="flex items-center space-x-3">
-						<span className="relative flex shrink-0 overflow-hidden rounded-full h-10 w-10">
-							<img className="aspect-square h-full w-full" alt="Byron Wade" src="https://placehold.co/40x40" />
-						</span>
-						<span className="text-lg font-bold text-white">Byron Wade</span>
+						<span className={`text-3xl font-bold text-white ${customFont.className}`}>Byron Wade</span>
 					</Link>
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">
 						{navItems.map((item, index) => {
 							return (
-								<Link key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-gold-400" : "text-white hover:text-gold-400")}>
+								<Link key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-yellow-400 underline" : "text-white hover:text-yellow-400")}>
 									<CodedText>{item.name}</CodedText>
 								</Link>
 							);
