@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function HeroPages() {
 	return (
-		<section className="flex min-h-[80vh] flex-col items-center justify-center py-12 text-center">
+		<section className="flex flex-col items-center justify-center py-12 text-center text-white">
 			<div className="container px-4">
 				<div className="mb-8 flex justify-center">
 					<div className="h-12 w-12">
@@ -29,7 +29,7 @@ export default function HeroPages() {
 							Get started <ArrowRight className="ml-2 h-5 w-5" />
 						</Link>
 					</Button>
-					<Button asChild variant="outline" size="lg" className="h-12 px-6">
+					<Button asChild variant="outline" size="lg" className="h-12 px-6 text-black">
 						<Link href="/docs">
 							Read the docs <ArrowRight className="ml-2 h-5 w-5" />
 						</Link>

@@ -190,7 +190,7 @@ const Background = memo(() => {
 		});
 	}, []);
 
-	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-black" aria-hidden="true" />;
+	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-black -z-10" aria-hidden="true" />;
 });
 
 Background.displayName = "Background";

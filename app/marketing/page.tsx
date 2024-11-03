@@ -35,6 +35,7 @@ export default function LocalWebDesign() {
 					<CodedText className="hover:underline">Canva</CodedText>
 				</Link>
 			</PageHeader>
+
 			<HeroPages />
 		</>
 	);
