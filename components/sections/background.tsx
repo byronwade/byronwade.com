@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, memo, useCallback, useMemo } from "react";
+import { useTheme } from "next-themes";
 
 interface Star {
 	x: number;
@@ -37,6 +38,9 @@ const Background = memo(() => {
 	const meteorsRef = useRef<Meteor[]>([]);
 	const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 	const offscreenCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+	const { theme } = useTheme();
+
+	const isDarkMode = theme === "dark";
 
 	const resizeCanvas = useCallback(() => {
 		const canvas = canvasRef.current;
@@ -81,13 +85,22 @@ const Background = memo(() => {
 		resizeCanvas();
 		animationFrameIdRef.current = requestAnimationFrame(animate);
 
+		window.addEventListener("resize", resizeCanvas);
+
 		return () => {
 			window.removeEventListener("resize", resizeCanvas);
 			cancelAnimationFrame(animationFrameIdRef.current!);
 		};
 	}, [resizeCanvas, animate]);
 
-	const starColors = useMemo(() => ["#FFFFFF", "#FFFFD4", "#FFE9B8", "#FFCAB0", "#FFB7B3"], []);
+	useEffect(() => {
+		initStars();
+		initMovingStars();
+	}, [theme]);
+
+	const starColors = useMemo(() => {
+		return isDarkMode ? ["#FFFFFF", "#FFFFD4", "#FFE9B8", "#FFCAB0", "#FFB7B3"] : ["#000000", "#1A1A1A", "#333333", "#4D4D4D", "#666666"];
+	}, [isDarkMode]);
 
 	const initStars = useCallback(() => {
 		const canvas = canvasRef.current;
@@ -110,15 +123,15 @@ const Background = memo(() => {
 		if (!canvas) return;
 
 		const movingStarCount = Math.floor(canvas.width / 15);
-		const starColors = ["#FFFFFF", "#FFFFD4", "#FFE9B8"];
+		const movingStarColors = isDarkMode ? ["#FFFFFF", "#FFFFD4", "#FFE9B8"] : ["#000000", "#1A1A1A", "#333333"];
 		movingStarsRef.current = Array.from({ length: movingStarCount }, () => ({
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
 			radius: Math.random() * 0.8 + 0.3,
-			color: starColors[Math.floor(Math.random() * starColors.length)],
+			color: movingStarColors[Math.floor(Math.random() * movingStarColors.length)],
 			speed: Math.random() * 0.3 + 0.4,
 		}));
-	}, []);
+	}, [isDarkMode]);
 
 	const drawStar = (ctx: CanvasRenderingContext2D, star: Star, time: number) => {
 		const twinkle = Math.sin(time * star.twinkleSpeed + star.twinklePhase) * 0.2 + 0.8;
@@ -168,29 +181,33 @@ const Background = memo(() => {
 		}
 	}, []);
 
-	const updateAndDrawMeteors = useCallback((ctx: CanvasRenderingContext2D) => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
+	const updateAndDrawMeteors = useCallback(
+		(ctx: CanvasRenderingContext2D) => {
+			const canvas = canvasRef.current;
+			if (!canvas) return;
 
-		meteorsRef.current = meteorsRef.current.filter((meteor) => meteor.opacity > 0 && meteor.y < canvas.height);
-		meteorsRef.current.forEach((meteor) => {
-			meteor.x += Math.cos(meteor.angle) * meteor.speed;
-			meteor.y += Math.sin(meteor.angle) * meteor.speed;
-			meteor.opacity -= 0.01;
+			meteorsRef.current = meteorsRef.current.filter((meteor) => meteor.opacity > 0 && meteor.y < canvas.height);
+			meteorsRef.current.forEach((meteor) => {
+				meteor.x += Math.cos(meteor.angle) * meteor.speed;
+				meteor.y += Math.sin(meteor.angle) * meteor.speed;
+				meteor.opacity -= 0.01;
 
-			ctx.beginPath();
-			ctx.moveTo(meteor.x, meteor.y);
-			ctx.lineTo(meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
-			const gradient = ctx.createLinearGradient(meteor.x, meteor.y, meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
-			gradient.addColorStop(0, `rgba(255, 255, 255, ${meteor.opacity})`);
-			gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
-			ctx.strokeStyle = gradient;
-			ctx.lineWidth = 2;
-			ctx.stroke();
-		});
-	}, []);
+				ctx.beginPath();
+				ctx.moveTo(meteor.x, meteor.y);
+				ctx.lineTo(meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
+				const gradient = ctx.createLinearGradient(meteor.x, meteor.y, meteor.x - Math.cos(meteor.angle) * meteor.length, meteor.y - Math.sin(meteor.angle) * meteor.length);
+				const color = isDarkMode ? "255, 255, 255" : "0, 0, 0";
+				gradient.addColorStop(0, `rgba(${color}, ${meteor.opacity})`);
+				gradient.addColorStop(1, `rgba(${color}, 0)`);
+				ctx.strokeStyle = gradient;
+				ctx.lineWidth = 2;
+				ctx.stroke();
+			});
+		},
+		[isDarkMode]
+	);
 
-	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-black -z-10" aria-hidden="true" />;
+	return <canvas ref={canvasRef} className={`fixed inset-0 h-full w-full ${isDarkMode ? "bg-black" : "bg-white"} transition-colors duration-300 -z-10`} aria-hidden="true" />;
 });
 
 Background.displayName = "Background";

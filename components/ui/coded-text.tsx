@@ -70,7 +70,7 @@ const CodedText: React.FC<{ children: React.ReactNode; className?: string }> = (
 
 	return (
 		<div ref={containerRef} className="inline-block overflow-hidden">
-			<span ref={elementRef} className={`text-center block ${className}`}>
+			<span ref={elementRef} className={`text-center block ${className} h-full`}>
 				{children}
 			</span>
 		</div>

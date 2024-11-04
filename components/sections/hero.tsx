@@ -73,7 +73,7 @@ const Hero = () => {
 
 	return (
 		<>
-			<section ref={sectionRef} className="relative text-white">
+			<section ref={sectionRef} className="relative text-dark dark:text-light">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
 					<div className="grid md:grid-cols-2 gap-12 items-start">
 						<div ref={textRef} className="space-y-8">
@@ -88,7 +88,7 @@ const Hero = () => {
 									<span className="inline-block animate-speed-left">Websites</span>
 								</span>
 							</h1>
-							<p className={`text-xl md:text-2xl text-gray-300 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+							<p className={`text-xl md:text-2xl text-gray-700 dark:text-gray-300 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
 								<span className="inline-block overflow-hidden">
 									<span className="inline-block animate-speed-up">Propelling Jasper, Georgia businesses into the digital stratosphere with websites that load at light speed, outrank the competition, and convert visitors into loyal customers.</span>
 								</span>
@@ -120,7 +120,7 @@ const Hero = () => {
 								transform: calculateImageTransform(),
 							}}
 						>
-							<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="invert animate-float" priority />
+							<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert animate-float" priority />
 						</div>
 					</div>
 				</div>

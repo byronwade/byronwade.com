@@ -139,8 +139,8 @@ function Tool({
 	return (
 		// @ts-ignore
 		<motion.div ref={ref} style={{ opacity, scale }} className="min-h-[calc(100vh-64px)] md:-ml-32 flex items-center justify-center px-4">
-			<Card className="w-full mx-auto max-w-5xl bg-black border border-zinc-800 rounded-xl overflow-hidden z-10">
-				<CardHeader className="flex justify-between items-center py-10 border-b border-zinc-800">
+			<Card className="w-full mx-auto max-w-5xl bg-white dark:bg-black border dark:border-zinc-800 border-zinc-200 rounded-xl overflow-hidden z-10">
+				<CardHeader className="flex justify-between items-center py-10 border-b dark:border-zinc-800 border-zinc-200">
 					<div className="h-8 w-8 flex items-center justify-center">
 						<svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-zinc-500">
 							<path d="M12 2L2 19.7778H22L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -148,8 +148,8 @@ function Tool({
 					</div>
 				</CardHeader>
 				<CardContent className="space-y-4 p-6">
-					<h2 className="text-2xl font-semibold tracking-tight text-white">{tool.name}</h2>
-					<p className="text-zinc-400 text-sm">{tool.description}</p>
+					<h2 className="text-2xl font-semibold tracking-tight">{tool.name}</h2>
+					<p className="text-gray-700 dark:text-gray-300 text-sm">{tool.description}</p>
 					<div className="flex flex-wrap gap-2">
 						{tool.tags.map((tag: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
 							<Badge key={index} variant="secondary" className="bg-zinc-800 text-zinc-400">
@@ -157,12 +157,12 @@ function Tool({
 							</Badge>
 						))}
 					</div>
-					<Separator className="bg-zinc-800" />
+					<Separator className="dark:bg-zinc-800 bg-zinc-200" />
 					<div className="space-y-2">
 						<h3 className="text-sm font-medium text-white">Key Features:</h3>
 						<ul className="space-y-1">
 							{tool.keyFeatures.map((feature: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
-								<li key={index} className="flex items-center text-zinc-400 text-sm">
+								<li key={index} className="flex items-center dark:text-zinc-400 text-gray-700 text-sm">
 									<Check className="h-4 w-4 mr-2 text-green-500" />
 									{feature}
 								</li>
@@ -170,8 +170,8 @@ function Tool({
 						</ul>
 					</div>
 				</CardContent>
-				<CardFooter className="border-t border-zinc-800 p-6">
-					<a href="#" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors">
+				<CardFooter className="border-t dark:border-zinc-800 border-zinc-200 p-6">
+					<a href="#" className="inline-flex items-center gap-2 text-sm dark:text-zinc-400 text-gray-700 hover:text-yellow-400 transition-colors">
 						View Template
 						<ExternalLink className="h-4 w-4" />
 					</a>
@@ -187,16 +187,16 @@ export default function ToolsShowcase() {
 	return (
 		<>
 			<Background />
-			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] text-gray-100 z-10">
+			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] z-10">
 				{/* Left side - Title, Description, and Overview */}
 				<div className="w-full lg:w-1/4 flex flex-col justify-between p-6 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]">
 					<div className="max-w-xs mx-auto lg:mx-0">
 						{/* @ts-ignore */}
-						<motion.h1 className="text-3xl font-bold mb-4 text-white" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+						<motion.h1 className="text-3xl font-bold mb-4" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 							Our Toolkit
 						</motion.h1>
 						{/* @ts-ignore */}
-						<motion.p className="text-base text-gray-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+						<motion.p className="text-base dark:text-gray-300 text-gray-700 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							Explore the cutting-edge tools we leverage to build high-performance, SEO-optimized websites for businesses in Santa Cruz and beyond.
 						</motion.p>
 					</div>

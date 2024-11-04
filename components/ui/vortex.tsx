@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createNoise3D } from "simplex-noise";
 import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
 
 interface VortexProps {
 	children?: any;
@@ -22,6 +23,8 @@ interface VortexProps {
 export const Vortex = (props: VortexProps) => {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const containerRef = useRef(null);
+	const { resolvedTheme } = useTheme();
+	const [baseHue, setBaseHue] = useState(220);
 	const particleCount = props.particleCount || 700;
 	const particlePropCount = 9;
 	const particlePropsLength = particleCount * particlePropCount;
@@ -32,7 +35,6 @@ export const Vortex = (props: VortexProps) => {
 	const rangeSpeed = props.rangeSpeed || 1.5;
 	const baseRadius = props.baseRadius || 1;
 	const rangeRadius = props.rangeRadius || 2;
-	const baseHue = props.baseHue || 45;
 	const rangeHue = 20;
 	const noiseSteps = 3;
 	const xOff = 0.00125;
@@ -54,6 +56,10 @@ export const Vortex = (props: VortexProps) => {
 		return Math.abs(((t + hm) % m) - hm) / hm;
 	};
 	const lerp = (n1: number, n2: number, speed: number): number => (1 - speed) * n1 + speed * n2;
+
+	useEffect(() => {
+		setBaseHue(resolvedTheme === "dark" ? 45 : 270);
+	}, [resolvedTheme]);
 
 	const setup = () => {
 		const canvas = canvasRef.current;
@@ -178,7 +184,7 @@ export const Vortex = (props: VortexProps) => {
 		ctx.save();
 		ctx.lineCap = "round";
 		ctx.lineWidth = radius;
-		ctx.strokeStyle = `hsla(${hue},100%,60%,${fadeInOut(life, ttl)})`;
+		ctx.strokeStyle = `hsla(${hue},100%,${resolvedTheme === "dark" ? "60%" : "50%"},${fadeInOut(life, ttl)})`;
 		ctx.beginPath();
 		ctx.moveTo(x, y);
 		ctx.lineTo(x2, y2);
@@ -231,7 +237,7 @@ export const Vortex = (props: VortexProps) => {
 				resize(canvas, ctx);
 			}
 		});
-	}, []);
+	}, [baseHue]);
 
 	return (
 		<div className={cn("relative h-full w-full", props.containerClassName)}>
