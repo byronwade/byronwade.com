@@ -128,20 +128,8 @@ function Tool({ tool, index, setActiveToolIndex }: ToolProps) {
 	}, [scrollYProgress, index, setActiveToolIndex]);
 
 	return (
-		<motion.div
-			ref={ref}
-			style={{
-				opacity,
-				scale,
-				minHeight: "calc(100vh-64px)",
-				marginLeft: "-8rem",
-				display: "flex",
-				alignItems: "center",
-				justifyContent: "center",
-				paddingLeft: "1rem",
-				paddingRight: "1rem",
-			}}
-		>
+		// @ts-ignore
+		<motion.div ref={ref} style={{ opacity, scale }} className="min-h-[calc(100vh-64px)] md:-ml-32 flex items-center justify-center px-4">
 			<Card className="w-full mx-auto max-w-5xl bg-black border border-zinc-800 rounded-xl overflow-hidden z-10">
 				<CardHeader className="flex justify-between items-center py-10 border-b border-zinc-800">
 					<div className="h-8 w-8 flex items-center justify-center">
@@ -197,10 +185,12 @@ export default function ToolsShowcase() {
 						<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 							<Image src="/Impact-Logo.webp" alt="Impact Marine Group" width={1000} height={1000} className="w-full bg-white p-4 rounded-md mb-4" />
 						</motion.div>
-						<motion.h1 style={{ fontSize: "1.875rem", fontWeight: "bold", marginBottom: "1rem", color: "white" }} initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+						{/* @ts-ignore */}
+						<motion.h1 className="text-3xl font-bold mb-4 text-white" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 							Impact Marine Group
 						</motion.h1>
-						<motion.p style={{ fontSize: "1rem", color: "rgb(156, 163, 175)", marginBottom: "1.5rem" }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+						{/* @ts-ignore */}
+						<motion.p className="text-base text-gray-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							Impact Marine Group is a leading provider of marine services in Georgia, California. Case Study on website redesign and SEO optimization.
 						</motion.p>
 					</div>
