@@ -24,8 +24,8 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${GeistSans.className}`}>
 				<ThemeProvider attribute="class" defaultTheme="dark">
-					<Header />
-					{children}
+					<Header className="dark" />
+					<main className="dark">{children}</main>
 					<Background />
 				</ThemeProvider>
 				<GoogleAnalytics gaId="G-WE1RMQ935W" />

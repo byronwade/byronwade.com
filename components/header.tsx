@@ -22,7 +22,7 @@ const navItems = [
 	{ name: "Shop", href: "/shop" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ className }: { className?: string }) {
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 	const pathname = usePathname();
@@ -45,7 +45,7 @@ export default function Navbar() {
 	};
 
 	return (
-		<header className={cn("sticky top-0 left-0 right-0 z-50 transition-all duration-300", isScrolled ? "bg-white/50 dark:bg-black/50 backdrop-blur-sm" : "bg-transparent", "text-dark dark:text-light")}>
+		<header className={cn("sticky top-0 left-0 right-0 z-50 transition-all duration-300", isScrolled ? "bg-white/50 dark:bg-black/50 backdrop-blur-sm" : "bg-transparent", className)}>
 			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link href="/" className="flex items-center space-x-3">
