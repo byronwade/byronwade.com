@@ -254,7 +254,7 @@ export default function PerformanceCaseStudy() {
 										<span className="sr-only">Toggle navigation menu</span>
 									</Button>
 									<Button size="lg" className="hidden sm:flex">
-										Get Your Analysis
+										<CodedText>Get Your Analysis</CodedText>
 									</Button>
 								</div>
 							</header>

@@ -16,7 +16,9 @@ const navItems = [
 	{ name: "Design", href: "/design" },
 	{ name: "Development", href: "/development" },
 	{ name: "Marketing", href: "/marketing" },
-	{ name: "Tools", href: "/tools" },
+	//{ name: "Tools", href: "/tools" },
+	{ name: "Blog", href: "/blog" },
+	{ name: "Analysis", href: "/analysis" },
 	{ name: "Shop", href: "/shop" },
 ];
 
@@ -45,10 +47,10 @@ export default function Navbar() {
 
 	return (
 		<header className={cn("sticky top-0 left-0 right-0 z-50 transition-all duration-300", isScrolled ? "bg-black/50 backdrop-blur-sm" : "bg-transparent", "text-white")}>
-			<div className="container mx-auto px-4">
+			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link href="/" className="flex items-center space-x-3">
-						<span className={`text-3xl font-bold text-white ${customFont.className}`}>Byron Wade</span>
+						<span className={`text-3xl font-bold text-white ${customFont.className} hover:text-yellow-400`}>Byron Wade</span>
 					</Link>
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">

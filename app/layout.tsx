@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
-
-import { ThemeProvider } from "@/components/theme-provider";
 import dynamic from "next/dynamic";
 
 // Dynamically import and memoize the Header component
@@ -22,10 +20,8 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${GeistSans.className} bg-black`}>
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-					<Header />
-					{children}
-				</ThemeProvider>
+				<Header />
+				{children}
 				<GoogleAnalytics gaId="G-WE1RMQ935W" />
 			</body>
 		</html>
