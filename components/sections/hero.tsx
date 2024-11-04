@@ -73,8 +73,8 @@ const Hero = () => {
 
 	return (
 		<>
-			<section ref={sectionRef} className="relative text-dark dark:text-light">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
+			<section ref={sectionRef} className="relative">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
 					<div className="grid md:grid-cols-2 gap-12 items-start">
 						<div ref={textRef} className="space-y-8">
 							<h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"}`}>
