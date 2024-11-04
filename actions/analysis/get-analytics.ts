@@ -1,5 +1,5 @@
 import { Clock, Zap, Search, LayoutGrid, Smartphone } from "lucide-react";
-import { Benchmarks, PerformanceData, ConversionData, Stat } from "@/types/analysis";
+import { Benchmarks, Stat } from "@/types/analysis";
 
 export const benchmarks: Benchmarks = {
 	loadTime: { industry: 8.2, optimized: 2.1 },
@@ -26,7 +26,34 @@ export const stats: Stat[] = [
 		label: "Load Time",
 		improvement: calculateImprovement(benchmarks.loadTime.industry, benchmarks.loadTime.optimized),
 	},
-	// ... add other stats
+	{
+		icon: Zap,
+		industryValue: benchmarks.performanceScore.industry,
+		optimizedValue: benchmarks.performanceScore.optimized,
+		label: "Performance Score",
+		improvement: calculateImprovement(benchmarks.performanceScore.industry, benchmarks.performanceScore.optimized),
+	},
+	{
+		icon: Search,
+		industryValue: benchmarks.seoScore.industry,
+		optimizedValue: benchmarks.seoScore.optimized,
+		label: "SEO Score",
+		improvement: calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized),
+	},
+	{
+		icon: LayoutGrid,
+		industryValue: benchmarks.bestPractices.industry,
+		optimizedValue: benchmarks.bestPractices.optimized,
+		label: "Best Practices",
+		improvement: calculateImprovement(benchmarks.bestPractices.industry, benchmarks.bestPractices.optimized),
+	},
+	{
+		icon: Smartphone,
+		industryValue: benchmarks.mobileScore.industry,
+		optimizedValue: benchmarks.mobileScore.optimized,
+		label: "Mobile Score",
+		improvement: calculateImprovement(benchmarks.mobileScore.industry, benchmarks.mobileScore.optimized),
+	},
 ];
 
 export const sections = [

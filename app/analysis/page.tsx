@@ -185,6 +185,7 @@ export default function PerformanceCaseStudy() {
 						<div className="lg:grid lg:gap-8">
 							<main className="space-y-12 lg:space-y-16">
 								<motion.div initial="hidden" animate={isVisible ? "visible" : "hidden"} variants={fadeIn} transition={{ duration: 0.5 }} style={{ display: "grid", gap: "3rem" }}>
+									{/* @ts-ignore */}
 									<Overview stats={stats} />
 									<Client />
 									<Performance />

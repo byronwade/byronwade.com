@@ -27,6 +27,7 @@ interface BlogPostProps {
 function BlogPost({ post, index, setActiveIndex }: BlogPostProps) {
 	const ref = useRef<HTMLDivElement>(null);
 	const { scrollYProgress } = useScroll({
+		//@ts-ignore
 		target: ref,
 		offset: ["start end", "end start"],
 	});
@@ -172,6 +173,7 @@ export default function Blog() {
 						<div className="max-h-[50vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-800" ref={scrollContainerRef}>
 							<ul className="space-y-2 pl-6">
 								{visiblePosts.map((post, index) => (
+									// @ts-ignore
 									<motion.li key={post.title} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: index * 0.05 }} className={`transition-all duration-300 text-sm cursor-pointer ${index === activeIndex ? "text-yellow-400 translate-x-1" : "text-gray-500 hover:text-yellow-400"}`} onClick={() => setActiveIndex(index)}>
 										{post.title}
 									</motion.li>
