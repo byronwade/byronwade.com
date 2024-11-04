@@ -1,6 +1,5 @@
 "use client";
 
-import Background from "@/components/sections/background";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Code, Database, Globe, Palette, Server, Zap, Cloud, Lock, Smartphone, Cpu, ExternalLink, Check } from "lucide-react";
 import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, RefObject } from "react";
@@ -186,7 +185,6 @@ export default function ToolsShowcase() {
 
 	return (
 		<>
-			<Background />
 			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] z-10">
 				{/* Left side - Title, Description, and Overview */}
 				<div className="w-full lg:w-1/4 flex flex-col justify-between p-6 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]">

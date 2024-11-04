@@ -43,6 +43,7 @@ function BlogPost({ post, index, setActiveIndex }: BlogPostProps) {
 	}, [scrollYProgress, index, setActiveIndex]);
 
 	return (
+		// @ts-ignore
 		<motion.div ref={ref} style={{ opacity, scale }} className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-8 lg:pl-[calc(25%+1.5rem)]">
 			<Card className="w-full mx-auto max-w-3xl bg-black border border-zinc-800 rounded-xl overflow-hidden z-10">
 				<CardHeader className="flex justify-between items-center py-10 border-b border-zinc-800">
@@ -143,14 +144,16 @@ export default function Blog() {
 	}, [loading, hasMore]);
 
 	return (
-		<div className="min-h-screen bg-black text-gray-100 overflow-x-hidden">
+		<div className="min-h-screen overflow-x-hidden">
 			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] z-10">
 				{/* Left side - Title, Description, and Scroll Bar */}
 				<div className="w-full lg:w-1/4 lg:max-w-xs flex flex-col justify-between p-6 lg:fixed lg:left-0 lg:top-16 lg:h-[calc(100vh-64px)] overflow-y-auto">
 					<div className="max-w-xs mx-auto lg:mx-0">
-						<motion.h1 className="text-3xl font-bold mb-4 text-white" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+						{/* @ts-ignore */}
+						<motion.h1 className="text-3xl font-bold mb-4" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 							Blog
 						</motion.h1>
+						{/* @ts-ignore */}
 						<motion.p className="text-base text-gray-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							Stay up to date with the latest news and insights from our team.
 						</motion.p>
@@ -158,6 +161,7 @@ export default function Blog() {
 					<div className="mt-6 lg:mt-0 relative">
 						<div className="w-1 bg-gray-800 absolute left-0 top-0 bottom-0 rounded-full">
 							<motion.div
+								// @ts-ignore
 								className="w-full bg-yellow-500 rounded-full"
 								style={{
 									height: `${((activeIndex + 1) / visiblePosts.length) * 100}%`,

@@ -125,7 +125,6 @@ const Hero = () => {
 					</div>
 				</div>
 			</section>
-			<Background />
 		</>
 	);
 };

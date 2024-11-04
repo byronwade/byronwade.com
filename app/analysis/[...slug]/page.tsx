@@ -1,6 +1,5 @@
 "use client";
 
-import Background from "@/components/sections/background";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Code, Database, Globe, Palette, Server, Zap, Cloud, Lock, Smartphone, Cpu, ExternalLink, Check } from "lucide-react";
 import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, RefObject } from "react";
@@ -177,8 +176,7 @@ export default function ToolsShowcase() {
 
 	return (
 		<>
-			<Background />
-			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] text-gray-100 z-10">
+			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] z-10">
 				{/* Left side - Title, Description, and Overview */}
 				<div className="w-full lg:w-1/4 flex flex-col justify-between p-6 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]">
 					<div className="max-w-xs mx-auto lg:mx-0">
@@ -186,7 +184,7 @@ export default function ToolsShowcase() {
 							<Image src="/Impact-Logo.webp" alt="Impact Marine Group" width={1000} height={1000} className="w-full bg-white p-4 rounded-md mb-4" />
 						</motion.div>
 						{/* @ts-ignore */}
-						<motion.h1 className="text-3xl font-bold mb-4 text-white" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+						<motion.h1 className="text-3xl font-bold mb-4 " initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 							Impact Marine Group
 						</motion.h1>
 						{/* @ts-ignore */}

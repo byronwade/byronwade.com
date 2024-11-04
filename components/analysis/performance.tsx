@@ -2,21 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Activity, BarChart, Clock, Globe, LayoutGrid, LineChart, MousePointer, PieChart, Search, Share2, Shield, Smartphone, Zap } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card";
-
-interface MetricData {
-	value: number;
-	unit: string;
-	improvement: number;
-	icon: any;
-	description: string;
-	impact: string;
-	fact: string;
-}
-
-interface Metrics {
-	[key: string]: MetricData;
-}
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metrics } from "@/types/analysis";
 
 export default function PerformanceAnalysis() {
 	const currentMetrics: Metrics = {
