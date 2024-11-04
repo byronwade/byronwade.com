@@ -50,7 +50,7 @@ export default function Navbar() {
 			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link href="/" className="flex items-center space-x-3">
-						<span className={`text-3xl font-bold text-white ${customFont.className} hover:text-yellow-400`}>Byron Wade</span>
+						<span className={`text-3xl font-bold text-white ${customFont.className} hover:text-yellow-400 hover:underline`}>Byron Wade</span>
 					</Link>
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">
