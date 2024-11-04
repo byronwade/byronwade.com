@@ -21,8 +21,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={`${GeistSans.className}`}>
+		<html lang="en" className="dark" suppressHydrationWarning>
+			<body className={`${GeistSans.className} dark`}>
 				<ThemeProvider attribute="class" defaultTheme="dark">
 					<Header className="dark" />
 					<main className="dark">{children}</main>
