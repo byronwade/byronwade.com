@@ -5,7 +5,7 @@ import { Suspense, memo } from "react";
 const Hero = memo(dynamic(() => import("@/components/sections/hero")));
 const CTA = memo(dynamic(() => import("@/components/sections/cta")));
 const Features = memo(dynamic(() => import("@/components/sections/features")));
-// TODO: Add the rest of the sections
+
 const Home = () => {
 	return (
 		<>
