@@ -61,12 +61,12 @@ export default function Navbar({ className }: { className?: string }) {
 					</nav>
 
 					<div className="flex items-center space-x-2">
-						<Button variant="ghost" size="icon" onClick={toggleTheme} className="hover:bg-gray-200 dark:hover:bg-gray-800">
+						<Button variant="ghost" size="icon" onClick={toggleTheme} className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
 							{theme === "light" ? <Contrast className="h-4 w-4" /> : <SunMoon className="h-4 w-4" />}
 							<span className="sr-only">Toggle theme</span>
 						</Button>
 
-						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-gray-200 dark:hover:bg-gray-800" onClick={toggleMobileMenu}>
+						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-neutral-200 dark:hover:bg-neutral-800" onClick={toggleMobileMenu}>
 							{isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
 							<span className="sr-only">{isMobileMenuOpen ? "Close menu" : "Open menu"}</span>
 						</Button>

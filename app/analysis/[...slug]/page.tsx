@@ -188,7 +188,7 @@ export default function ToolsShowcase() {
 							Impact Marine Group
 						</motion.h1>
 						{/* @ts-ignore */}
-						<motion.p className="text-base text-gray-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+						<motion.p className="text-base text-neutral-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							Impact Marine Group is a leading provider of marine services in Georgia, California. Case Study on website redesign and SEO optimization.
 						</motion.p>
 					</div>
@@ -196,7 +196,7 @@ export default function ToolsShowcase() {
 						<h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-2">Overview</h3>
 						<ul className="space-y-2">
 							{caseStudyData.map((tool, index) => (
-								<li key={tool.name} className={`transition-all duration-300 text-sm ${index === activeToolIndex ? "text-yellow-400 translate-x-1" : "text-gray-500 hover:text-yellow-400"}`}>
+								<li key={tool.name} className={`transition-all duration-300 text-sm ${index === activeToolIndex ? "text-yellow-400 translate-x-1" : "text-neutral-500 hover:text-yellow-400"}`}>
 									<tool.icon className="w-3 h-3 inline-block mr-1" />
 									{tool.name}
 								</li>

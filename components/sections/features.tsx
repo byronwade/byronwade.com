@@ -39,7 +39,7 @@ const features = [
 		background: (
 			<Marquee pauseOnHover className="absolute top-10 [--duration:20s] [mask-image:linear-gradient(to_top,transparent_40%,#000_100%)]">
 				{services.map((service, idx) => (
-					<figure key={idx} className={cn("relative w-48 cursor-pointer overflow-hidden rounded-xl border p-4 mr-4", "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]", "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]", "transform-gpu blur-[1px] transition-all duration-300 ease-out hover:blur-none")}>
+					<figure key={idx} className={cn("relative w-48 cursor-pointer overflow-hidden rounded-xl border p-4 mr-4", "border-neutral-950/[.1] bg-neutral-950/[.01] hover:bg-neutral-950/[.05]", "dark:border-neutral-50/[.1] dark:bg-neutral-50/[.10] dark:hover:bg-neutral-50/[.15]", "transform-gpu blur-[1px] transition-all duration-300 ease-out hover:blur-none")}>
 						<div className="flex flex-col">
 							<figcaption className="text-sm font-medium dark:text-white">{service.name}</figcaption>
 							<blockquote className="mt-2 text-xs">{service.description}</blockquote>

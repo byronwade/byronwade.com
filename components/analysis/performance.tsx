@@ -264,7 +264,7 @@ export default function PerformanceAnalysis() {
 					<p className="text-muted-foreground mt-2">Research-backed impact of website performance on business success</p>
 				</div>
 
-				<Card className="bg-gray-50 dark:bg-gray-800/50">
+				<Card className="bg-neutral-50 dark:bg-neutral-800/50">
 					<CardHeader>
 						<CardTitle className="text-xl">Performance and Business Impact</CardTitle>
 						<CardDescription>How website performance affects user behavior and business metrics</CardDescription>
@@ -291,7 +291,7 @@ export default function PerformanceAnalysis() {
 
 function StatisticCard({ title, description, source, icon: Icon }: { title: string; description: string; source: string; icon: React.ElementType }) {
 	return (
-		<div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow-sm">
+		<div className="bg-white dark:bg-neutral-700 p-4 rounded-lg shadow-sm">
 			<div className="flex items-start gap-4">
 				<div className="p-2 bg-primary/10 rounded-full">
 					<Icon className="h-5 w-5 text-primary" />

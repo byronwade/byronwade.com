@@ -57,7 +57,7 @@ const ProductCard = ({ item, isMerchandise = false }: { item: any; isMerchandise
 			<CardHeader className="p-0">
 				<div className="relative">
 					<Image src={item.image} alt={item.title} width={500} height={300} className="w-full h-auto" />
-					<Badge className={`absolute top-2 right-2 ${isMerchandise ? "bg-indigo-500 text-white" : item.type === "Component" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "bg-white text-gray-800 dark:bg-gray-800 dark:text-white"}`}>
+					<Badge className={`absolute top-2 right-2 ${isMerchandise ? "bg-indigo-500 text-white" : item.type === "Component" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "bg-white text-neutral-800 dark:bg-neutral-800 dark:text-white"}`}>
 						<TypeIcon type={item.type} />
 						<span className="ml-1">{item.type}</span>
 					</Badge>
@@ -66,13 +66,13 @@ const ProductCard = ({ item, isMerchandise = false }: { item: any; isMerchandise
 			<CardContent className="p-4">
 				<CardTitle className="mb-2">{item.title}</CardTitle>
 				<div className="flex items-center justify-between mb-2">
-					<span className="text-2xl font-bold text-gray-800 dark:text-gray-200">${item.price}</span>
+					<span className="text-2xl font-bold text-neutral-800 dark:text-neutral-200">${item.price}</span>
 					<div className="flex items-center">
 						<Star className="h-5 w-5 text-yellow-400 fill-current" />
-						<span className="ml-1 text-sm text-gray-600 dark:text-gray-400">{item.rating}</span>
+						<span className="ml-1 text-sm text-neutral-600 dark:text-neutral-400">{item.rating}</span>
 					</div>
 				</div>
-				<p className="text-sm text-gray-600 dark:text-gray-400">{item.sales} sales</p>
+				<p className="text-sm text-neutral-600 dark:text-neutral-400">{item.sales} sales</p>
 			</CardContent>
 			<CardFooter className="flex justify-between">
 				<Button className="flex-1 mr-2">Add to Cart</Button>
@@ -108,8 +108,8 @@ export default function Shop() {
 						<div className="mb-6">
 							<h2 className="text-lg font-semibold mb-2">Search</h2>
 							<div className="relative">
-								<Input type="text" placeholder="Search products..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pr-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100" />
-								<Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+								<Input type="text" placeholder="Search products..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pr-10 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100" />
+								<Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 dark:text-neutral-500" />
 							</div>
 						</div>
 						<div>
@@ -146,7 +146,7 @@ export default function Shop() {
 										<ProductCard key={product.id} item={product} />
 									))}
 								</div>
-								{filteredProducts.length === 0 && <p className="text-center text-gray-500 dark:text-gray-400 mt-8">No products found matching your search criteria.</p>}
+								{filteredProducts.length === 0 && <p className="text-center text-neutral-500 dark:text-neutral-400 mt-8">No products found matching your search criteria.</p>}
 							</TabsContent>
 							<TabsContent value="merchandise">
 								<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -154,7 +154,7 @@ export default function Shop() {
 										<ProductCard key={item.id} item={item} isMerchandise={true} />
 									))}
 								</div>
-								{filteredProducts.length === 0 && <p className="text-center text-gray-500 dark:text-gray-400 mt-8">No merchandise found matching your search criteria.</p>}
+								{filteredProducts.length === 0 && <p className="text-center text-neutral-500 dark:text-neutral-400 mt-8">No merchandise found matching your search criteria.</p>}
 							</TabsContent>
 						</Tabs>
 

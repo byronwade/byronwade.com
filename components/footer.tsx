@@ -12,7 +12,7 @@ export default function Footer() {
 					<div className="grid lg:grid-cols-2 gap-12 items-center">
 						<div className="space-y-8">
 							<h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">Design and publish a site today.</h2>
-							<p className="text-lg text-gray-300 max-w-2xl">Get started with our website builder today. For seamless site migration and tailored support, explore enterprise.</p>
+							<p className="text-lg text-neutral-300 max-w-2xl">Get started with our website builder today. For seamless site migration and tailored support, explore enterprise.</p>
 							<div className="flex flex-wrap gap-4">
 								<Button asChild size="lg" className="bg-white text-black hover:bg-yellow-400 transition-colors duration-300">
 									<Link href="/launch">Launch Your Site</Link>
@@ -58,36 +58,36 @@ export default function Footer() {
 						<Link href="/" className="inline-block">
 							<h2 className="text-xl font-semibold">Byron Wade</h2>
 						</Link>
-						<p className="mt-2 text-sm text-gray-400">Building the fastest websites on the internet</p>
+						<p className="mt-2 text-sm text-neutral-400">Building the fastest websites on the internet</p>
 					</div>
 
 					{/* Navigation Grid */}
 					<div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-sm">
 						<div className="space-y-4">
-							<h3 className="text-gray-400 uppercase text-xs font-medium tracking-wider">Resources</h3>
+							<h3 className="text-neutral-400 uppercase text-xs font-medium tracking-wider">Resources</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link href="/academy" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/academy" className="text-neutral-300 hover:text-white transition-colors">
 										Academy
 									</Link>
 								</li>
 								<li>
-									<Link href="/marketplace" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/marketplace" className="text-neutral-300 hover:text-white transition-colors">
 										Marketplace
 									</Link>
 								</li>
 								<li>
-									<Link href="/app" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/app" className="text-neutral-300 hover:text-white transition-colors">
 										Desktop App
 									</Link>
 								</li>
 								<li>
-									<Link href="/brand" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/brand" className="text-neutral-300 hover:text-white transition-colors">
 										Brand
 									</Link>
 								</li>
 								<li>
-									<Link href="/resources" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/resources" className="text-neutral-300 hover:text-white transition-colors">
 										Resources
 									</Link>
 								</li>
@@ -95,25 +95,25 @@ export default function Footer() {
 						</div>
 
 						<div className="space-y-4">
-							<h3 className="text-gray-400 uppercase text-xs font-medium tracking-wider">Tools</h3>
+							<h3 className="text-neutral-400 uppercase text-xs font-medium tracking-wider">Tools</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link href="/next" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/next" className="text-neutral-300 hover:text-white transition-colors">
 										Next.js Tools
 									</Link>
 								</li>
 								<li>
-									<Link href="/sveltekit" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/sveltekit" className="text-neutral-300 hover:text-white transition-colors">
 										SvelteKit Tools
 									</Link>
 								</li>
 								<li>
-									<Link href="/developers" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/developers" className="text-neutral-300 hover:text-white transition-colors">
 										Developers
 									</Link>
 								</li>
 								<li>
-									<Link href="/starter" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/starter" className="text-neutral-300 hover:text-white transition-colors">
 										Starter Kit
 									</Link>
 								</li>
@@ -121,30 +121,30 @@ export default function Footer() {
 						</div>
 
 						<div className="space-y-4">
-							<h3 className="text-gray-400 uppercase text-xs font-medium tracking-wider">Company</h3>
+							<h3 className="text-neutral-400 uppercase text-xs font-medium tracking-wider">Company</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link href="/careers" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/careers" className="text-neutral-300 hover:text-white transition-colors">
 										Careers
 									</Link>
 								</li>
 								<li>
-									<Link href="/events" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/events" className="text-neutral-300 hover:text-white transition-colors">
 										Events
 									</Link>
 								</li>
 								<li>
-									<Link href="/status" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/status" className="text-neutral-300 hover:text-white transition-colors">
 										Status
 									</Link>
 								</li>
 								<li>
-									<Link href="/security" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/security" className="text-neutral-300 hover:text-white transition-colors">
 										Security
 									</Link>
 								</li>
 								<li>
-									<Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/privacy" className="text-neutral-300 hover:text-white transition-colors">
 										Privacy
 									</Link>
 								</li>
@@ -152,25 +152,25 @@ export default function Footer() {
 						</div>
 
 						<div className="space-y-4">
-							<h3 className="text-gray-400 uppercase text-xs font-medium tracking-wider">Compare</h3>
+							<h3 className="text-neutral-400 uppercase text-xs font-medium tracking-wider">Compare</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link href="/webflow" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/webflow" className="text-neutral-300 hover:text-white transition-colors">
 										Webflow
 									</Link>
 								</li>
 								<li>
-									<Link href="/wordpress" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/wordpress" className="text-neutral-300 hover:text-white transition-colors">
 										WordPress
 									</Link>
 								</li>
 								<li>
-									<Link href="/contentful" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/contentful" className="text-neutral-300 hover:text-white transition-colors">
 										Contentful
 									</Link>
 								</li>
 								<li>
-									<Link href="/shopify" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/shopify" className="text-neutral-300 hover:text-white transition-colors">
 										Shopify
 									</Link>
 								</li>
@@ -178,25 +178,25 @@ export default function Footer() {
 						</div>
 
 						<div className="space-y-4">
-							<h3 className="text-gray-400 uppercase text-xs font-medium tracking-wider">Legal</h3>
+							<h3 className="text-neutral-400 uppercase text-xs font-medium tracking-wider">Legal</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link href="/abuse" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/abuse" className="text-neutral-300 hover:text-white transition-colors">
 										Abuse
 									</Link>
 								</li>
 								<li>
-									<Link href="/charges" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/charges" className="text-neutral-300 hover:text-white transition-colors">
 										Charges
 									</Link>
 								</li>
 								<li>
-									<Link href="/cookies" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/cookies" className="text-neutral-300 hover:text-white transition-colors">
 										Cookies
 									</Link>
 								</li>
 								<li>
-									<Link href="/terms" className="text-gray-300 hover:text-white transition-colors">
+									<Link href="/terms" className="text-neutral-300 hover:text-white transition-colors">
 										Terms
 									</Link>
 								</li>
@@ -206,19 +206,19 @@ export default function Footer() {
 
 					{/* Social Links */}
 					<div className="mt-16 flex justify-end space-x-6">
-						<a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+						<a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
 							<span className="sr-only">Twitter</span>
 							<Twitter className="h-6 w-6" />
 						</a>
-						<a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+						<a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
 							<span className="sr-only">YouTube</span>
 							<Youtube className="h-6 w-6" />
 						</a>
-						<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+						<a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
 							<span className="sr-only">LinkedIn</span>
 							<Linkedin className="h-6 w-6" />
 						</a>
-						<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+						<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
 							<span className="sr-only">Instagram</span>
 							<Instagram className="h-6 w-6" />
 						</a>

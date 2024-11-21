@@ -148,7 +148,7 @@ function Tool({
 				</CardHeader>
 				<CardContent className="space-y-4 p-6">
 					<h2 className="text-2xl font-semibold tracking-tight">{tool.name}</h2>
-					<p className="text-gray-700 dark:text-gray-300 text-sm">{tool.description}</p>
+					<p className="text-neutral-700 dark:text-neutral-300 text-sm">{tool.description}</p>
 					<div className="flex flex-wrap gap-2">
 						{tool.tags.map((tag: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
 							<Badge key={index} variant="secondary" className="bg-zinc-800 text-zinc-400">
@@ -161,7 +161,7 @@ function Tool({
 						<h3 className="text-sm font-medium text-white">Key Features:</h3>
 						<ul className="space-y-1">
 							{tool.keyFeatures.map((feature: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
-								<li key={index} className="flex items-center dark:text-zinc-400 text-gray-700 text-sm">
+								<li key={index} className="flex items-center dark:text-zinc-400 text-neutral-700 text-sm">
 									<Check className="h-4 w-4 mr-2 text-green-500" />
 									{feature}
 								</li>
@@ -170,7 +170,7 @@ function Tool({
 					</div>
 				</CardContent>
 				<CardFooter className="border-t dark:border-zinc-800 border-zinc-200 p-6">
-					<a href="#" className="inline-flex items-center gap-2 text-sm dark:text-zinc-400 text-gray-700 hover:text-yellow-400 transition-colors">
+					<a href="#" className="inline-flex items-center gap-2 text-sm dark:text-zinc-400 text-neutral-700 hover:text-yellow-400 transition-colors">
 						View Template
 						<ExternalLink className="h-4 w-4" />
 					</a>
@@ -194,7 +194,7 @@ export default function ToolsShowcase() {
 							Our Toolkit
 						</motion.h1>
 						{/* @ts-ignore */}
-						<motion.p className="text-base dark:text-gray-300 text-gray-700 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
+						<motion.p className="text-base dark:text-neutral-300 text-neutral-700 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
 							Explore the cutting-edge tools we leverage to build high-performance, SEO-optimized websites for businesses in Santa Cruz and beyond.
 						</motion.p>
 					</div>
@@ -202,7 +202,7 @@ export default function ToolsShowcase() {
 						<h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-2">Overview</h3>
 						<ul className="space-y-2">
 							{tools.map((tool, index) => (
-								<li key={tool.name} className={`transition-all duration-300 text-sm ${index === activeToolIndex ? "text-yellow-400 translate-x-1" : "text-gray-500 hover:text-yellow-400"}`}>
+								<li key={tool.name} className={`transition-all duration-300 text-sm ${index === activeToolIndex ? "text-yellow-400 translate-x-1" : "text-neutral-500 hover:text-yellow-400"}`}>
 									<tool.icon className="w-3 h-3 inline-block mr-1" />
 									{tool.name}
 								</li>

@@ -94,7 +94,7 @@ const Hero = () => {
 							</motion.span>
 						</motion.h1>
 
-						<motion.p variants={itemVariants} className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-700 dark:text-gray-300">
+						<motion.p variants={itemVariants} className="text-base sm:text-lg lg:text-xl xl:text-2xl text-neutral-700 dark:text-neutral-300">
 							Propelling Jasper, Georgia businesses into the digital stratosphere with websites that load at light speed, outrank the competition, and convert visitors into loyal customers.
 						</motion.p>
 
