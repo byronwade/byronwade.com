@@ -118,6 +118,22 @@ const config = {
 						transform: "translateY(calc(-100% - var(--gap)))",
 					},
 				},
+				speedLeft: {
+					"0%": { transform: "translateX(-100%)", opacity: "0" },
+					"100%": { transform: "translateX(0)", opacity: "1" },
+				},
+				speedRight: {
+					"0%": { transform: "translateX(100%)", opacity: "0" },
+					"100%": { transform: "translateX(0)", opacity: "1" },
+				},
+				speedUp: {
+					"0%": { transform: "translateY(100%)", opacity: "0" },
+					"100%": { transform: "translateY(0)", opacity: "1" },
+				},
+				float: {
+					"0%, 100%": { transform: "translateY(0)" },
+					"50%": { transform: "translateY(-20px)" },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -125,6 +141,11 @@ const config = {
 				orbit: "orbit calc(var(--duration)*1s) linear infinite",
 				marquee: "marquee var(--duration) infinite linear",
 				"marquee-vertical": "marquee-vertical var(--duration) linear infinite",
+				"speed-left": "speedLeft 1s ease-out forwards",
+				"speed-right": "speedRight 1s ease-out forwards",
+				"speed-up": "speedUp 1s ease-out forwards",
+				"pulse-fast": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+				float: "float 6s ease-in-out infinite",
 			},
 		},
 	},

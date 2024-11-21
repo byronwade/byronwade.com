@@ -42,95 +42,8 @@ const Background = memo(() => {
 
 	const isDarkMode = theme === "dark";
 
-	const resizeCanvas = useCallback(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		offscreenCanvasRef.current!.width = canvas.width;
-		offscreenCanvasRef.current!.height = canvas.height;
-		initStars();
-		initMovingStars();
-	}, []);
-
-	const animate = useCallback((time: number) => {
-		const canvas = canvasRef.current;
-		const offscreenCtx = offscreenCtxRef.current;
-		if (!canvas || !offscreenCtx) return;
-
-		offscreenCtx.clearRect(0, 0, canvas.width, canvas.height);
-		starsRef.current.forEach((star) => drawStar(offscreenCtx, star, time));
-		updateMovingStars();
-		movingStarsRef.current.forEach((star) => drawMovingStar(offscreenCtx, star));
-		createMeteor();
-		updateAndDrawMeteors(offscreenCtx);
-
-		const ctx = canvas.getContext("2d");
-		if (ctx) {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			ctx.drawImage(offscreenCanvasRef.current!, 0, 0);
-		}
-
-		animationFrameIdRef.current = requestAnimationFrame(animate);
-	}, []);
-
-	useEffect(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		offscreenCanvasRef.current = document.createElement("canvas");
-		offscreenCtxRef.current = offscreenCanvasRef.current.getContext("2d");
-
-		resizeCanvas();
-		animationFrameIdRef.current = requestAnimationFrame(animate);
-
-		window.addEventListener("resize", resizeCanvas);
-
-		return () => {
-			window.removeEventListener("resize", resizeCanvas);
-			cancelAnimationFrame(animationFrameIdRef.current!);
-		};
-	}, [resizeCanvas, animate]);
-
-	useEffect(() => {
-		initStars();
-		initMovingStars();
-	}, [theme]);
-
 	const starColors = useMemo(() => {
 		return isDarkMode ? ["#FFFFFF", "#FFFFD4", "#FFE9B8", "#FFCAB0", "#FFB7B3"] : ["#000000", "#1A1A1A", "#333333", "#4D4D4D", "#666666"];
-	}, [isDarkMode]);
-
-	const initStars = useCallback(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		const starCount = Math.floor((canvas.width * canvas.height) / 1000);
-		starsRef.current = Array.from({ length: starCount }, () => ({
-			x: Math.random() * canvas.width,
-			y: Math.random() * canvas.height,
-			radius: Math.random() * 1.2 + 0.1,
-			color: starColors[Math.floor(Math.random() * starColors.length)],
-			magnitude: Math.random() * 2 + 3,
-			twinkleSpeed: Math.random() * 0.03 + 0.01,
-			twinklePhase: Math.random() * Math.PI * 2,
-		}));
-	}, [starColors]);
-
-	const initMovingStars = useCallback(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
-
-		const movingStarCount = Math.floor(canvas.width / 15);
-		const movingStarColors = isDarkMode ? ["#FFFFFF", "#FFFFD4", "#FFE9B8"] : ["#000000", "#1A1A1A", "#333333"];
-		movingStarsRef.current = Array.from({ length: movingStarCount }, () => ({
-			x: Math.random() * canvas.width,
-			y: Math.random() * canvas.height,
-			radius: Math.random() * 0.8 + 0.3,
-			color: movingStarColors[Math.floor(Math.random() * movingStarColors.length)],
-			speed: Math.random() * 0.3 + 0.4,
-		}));
 	}, [isDarkMode]);
 
 	const drawStar = (ctx: CanvasRenderingContext2D, star: Star, time: number) => {
@@ -152,6 +65,22 @@ const Background = memo(() => {
 		ctx.fill();
 	};
 
+	const initStars = useCallback(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+
+		const starCount = Math.floor((canvas.width * canvas.height) / 1000);
+		starsRef.current = Array.from({ length: starCount }, () => ({
+			x: Math.random() * canvas.width,
+			y: Math.random() * canvas.height,
+			radius: Math.random() * 1.2 + 0.1,
+			color: starColors[Math.floor(Math.random() * starColors.length)],
+			magnitude: Math.random() * 2 + 3,
+			twinkleSpeed: Math.random() * 0.03 + 0.01,
+			twinklePhase: Math.random() * Math.PI * 2,
+		}));
+	}, [starColors]);
+
 	const updateMovingStars = useCallback(() => {
 		const canvas = canvasRef.current;
 		if (!canvas) return;
@@ -164,6 +93,21 @@ const Background = memo(() => {
 			}
 		});
 	}, []);
+
+	const initMovingStars = useCallback(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+
+		const movingStarCount = Math.floor(canvas.width / 15);
+		const movingStarColors = isDarkMode ? ["#FFFFFF", "#FFFFD4", "#FFE9B8"] : ["#000000", "#1A1A1A", "#333333"];
+		movingStarsRef.current = Array.from({ length: movingStarCount }, () => ({
+			x: Math.random() * canvas.width,
+			y: Math.random() * canvas.height,
+			radius: Math.random() * 0.8 + 0.3,
+			color: movingStarColors[Math.floor(Math.random() * movingStarColors.length)],
+			speed: Math.random() * 0.3 + 0.4,
+		}));
+	}, [isDarkMode]);
 
 	const createMeteor = useCallback(() => {
 		const canvas = canvasRef.current;
@@ -187,6 +131,7 @@ const Background = memo(() => {
 			if (!canvas) return;
 
 			meteorsRef.current = meteorsRef.current.filter((meteor) => meteor.opacity > 0 && meteor.y < canvas.height);
+
 			meteorsRef.current.forEach((meteor) => {
 				meteor.x += Math.cos(meteor.angle) * meteor.speed;
 				meteor.y += Math.sin(meteor.angle) * meteor.speed;
@@ -206,6 +151,67 @@ const Background = memo(() => {
 		},
 		[isDarkMode]
 	);
+
+	const resizeCanvas = useCallback(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		offscreenCanvasRef.current!.width = canvas.width;
+		offscreenCanvasRef.current!.height = canvas.height;
+		initStars();
+		initMovingStars();
+	}, [initStars, initMovingStars]);
+
+	const animate = useCallback(
+		(time: number) => {
+			const canvas = canvasRef.current;
+			const offscreenCtx = offscreenCtxRef.current;
+			if (!canvas || !offscreenCtx) return;
+
+			offscreenCtx.clearRect(0, 0, canvas.width, canvas.height);
+			starsRef.current.forEach((star) => drawStar(offscreenCtx, star, time));
+			updateMovingStars();
+			movingStarsRef.current.forEach((star) => drawMovingStar(offscreenCtx, star));
+			createMeteor();
+			updateAndDrawMeteors(offscreenCtx);
+
+			const ctx = canvas.getContext("2d");
+			if (ctx) {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.drawImage(offscreenCanvasRef.current!, 0, 0);
+			}
+
+			animationFrameIdRef.current = requestAnimationFrame(animate);
+		},
+		[createMeteor, updateAndDrawMeteors, updateMovingStars]
+	);
+
+	useEffect(() => {
+		const canvas = canvasRef.current;
+		if (!canvas) return;
+
+		offscreenCanvasRef.current = document.createElement("canvas");
+		offscreenCtxRef.current = offscreenCanvasRef.current.getContext("2d");
+
+		resizeCanvas();
+		animationFrameIdRef.current = requestAnimationFrame(animate);
+
+		window.addEventListener("resize", resizeCanvas);
+
+		return () => {
+			window.removeEventListener("resize", resizeCanvas);
+			if (animationFrameIdRef.current) {
+				cancelAnimationFrame(animationFrameIdRef.current);
+			}
+		};
+	}, [resizeCanvas, animate]);
+
+	useEffect(() => {
+		initStars();
+		initMovingStars();
+	}, [theme, initStars, initMovingStars]);
 
 	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-white dark:bg-black transition-colors duration-300 -z-10" aria-hidden="true" />;
 });

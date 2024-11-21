@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { createNoise3D } from "simplex-noise";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -61,7 +61,7 @@ export const Vortex = (props: VortexProps) => {
 		setBaseHue(resolvedTheme === "dark" ? 45 : 270);
 	}, [resolvedTheme]);
 
-	const setup = () => {
+	const setup = useCallback(() => {
 		const canvas = canvasRef.current;
 		const ctx = canvas?.getContext("2d");
 
@@ -89,7 +89,7 @@ export const Vortex = (props: VortexProps) => {
 
 			draw(canvas, ctx, particleProps, baseHue, baseSpeed, rangeSpeed, baseRadius, rangeRadius);
 		}
-	};
+	}, [resize]);
 
 	const initParticles = () => {
 		tick = 0;
@@ -197,15 +197,24 @@ export const Vortex = (props: VortexProps) => {
 		return x > canvas.width || x < 0 || y > canvas.height || y < 0;
 	};
 
-	const resize = (canvas: HTMLCanvasElement, ctx?: CanvasRenderingContext2D) => {
-		const { innerWidth, innerHeight } = window;
+	const resize = useCallback(
+		(width?: number, height?: number) => {
+			if (!canvasRef.current) return;
 
-		canvas.width = innerWidth;
-		canvas.height = innerHeight;
+			const canvas = canvasRef.current;
+			const w = width || window.innerWidth;
+			const h = height || window.innerHeight;
 
-		center[0] = 0.5 * canvas.width;
-		center[1] = 0.5 * canvas.height;
-	};
+			canvas.width = w;
+			canvas.height = h;
+
+			// Reinitialize particles if needed
+			initParticles();
+		},
+		[
+			/* dependencies */
+		]
+	);
 
 	const renderGlow = (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
 		ctx.save();
@@ -230,14 +239,15 @@ export const Vortex = (props: VortexProps) => {
 
 	useEffect(() => {
 		setup();
-		window.addEventListener("resize", () => {
-			const canvas = canvasRef.current;
-			const ctx = canvas?.getContext("2d");
-			if (canvas && ctx) {
-				resize(canvas, ctx);
+		resize(window.innerWidth, window.innerHeight);
+
+		return () => {
+			window.removeEventListener("resize", () => resize(window.innerWidth, window.innerHeight));
+			if (frameRef.current) {
+				cancelAnimationFrame(frameRef.current);
 			}
-		});
-	}, [baseHue]);
+		};
+	}, [setup, resize]);
 
 	return (
 		<div className={cn("relative h-full w-full", props.containerClassName)}>

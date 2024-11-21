@@ -131,6 +131,12 @@ export default function PerformanceCaseStudy() {
 		[]
 	);
 
+	const memoizedStats = useMemo(() => {
+		return {
+			// ... stats calculation
+		};
+	}, []);
+
 	return (
 		<>
 			<PageHeader title="Impact Marine Group">

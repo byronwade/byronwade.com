@@ -9,6 +9,7 @@ import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
+import Image from "next/image";
 
 const products = [
 	{ id: 1, title: "Modern Blog", price: 49, rating: 4.5, sales: 1234, image: "https://placehold.co/600x400", type: "WordPress" },
@@ -55,7 +56,7 @@ const ProductCard = ({ item, isMerchandise = false }: { item: any; isMerchandise
 		<Card className="transition-transform duration-300 hover:scale-105">
 			<CardHeader className="p-0">
 				<div className="relative">
-					<img src={item.image} alt={item.title} className="w-full h-48 object-cover rounded-t-lg" />
+					<Image src={item.image} alt={item.title} width={500} height={300} className="w-full h-auto" />
 					<Badge className={`absolute top-2 right-2 ${isMerchandise ? "bg-indigo-500 text-white" : item.type === "Component" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "bg-white text-gray-800 dark:bg-gray-800 dark:text-white"}`}>
 						<TypeIcon type={item.type} />
 						<span className="ml-1">{item.type}</span>

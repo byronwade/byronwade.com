@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { Checkbox } from "../../../components/ui/checkbox";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card";
 import { Label } from "../../../components/ui/label";
+import Image from "next/image";
 
 const product = {
 	id: 1,
@@ -109,7 +110,13 @@ export default function Component() {
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 					<div className="lg:sticky lg:top-12 space-y-8">
 						<div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-							<img src={product.images[currentImageIndex]} alt={`${product.title} - Image ${currentImageIndex + 1}`} className="w-full h-full object-cover" />
+							<Image
+								src={product.images[currentImageIndex]}
+								alt={`${product.title} - Image ${currentImageIndex + 1}`}
+								width={500} // Adjust based on your needs
+								height={500} // Adjust based on your needs
+								className="w-full h-auto object-cover"
+							/>
 							<Button variant="outline" size="icon" className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-background/80 hover:bg-background" onClick={prevImage}>
 								<ChevronLeft className="h-6 w-6" />
 							</Button>
