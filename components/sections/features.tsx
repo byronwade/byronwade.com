@@ -120,7 +120,7 @@ const features = [
 
 export default function Features() {
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
+		<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
 			<BentoGrid>
 				{features.map((feature, idx) => (
 					<BentoCard key={idx} {...feature} className="bg-[#090909] border border-[#111111]" />

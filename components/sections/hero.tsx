@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { useEffect, useRef, useState, useCallback } from "react";
-import Background from "./background";
 import dynamic from "next/dynamic";
 import { memo } from "react";
 
@@ -72,60 +71,58 @@ const Hero = () => {
 	};
 
 	return (
-		<>
-			<section ref={sectionRef} className="relative">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
-					<div className="grid md:grid-cols-2 gap-12 items-start">
-						<div ref={textRef} className="space-y-8">
-							<h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"}`}>
-								<span className="inline-block overflow-hidden">
-									<span className="inline-block animate-speed-left">Launch Your Business with</span>
-								</span>{" "}
-								<span className="inline-block overflow-hidden">
-									<span className="inline-block animate-speed-right bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">Warp-Speed</span>
-								</span>{" "}
-								<span className="inline-block overflow-hidden">
-									<span className="inline-block animate-speed-left">Websites</span>
-								</span>
-							</h1>
-							<p className={`text-xl md:text-2xl text-gray-700 dark:text-gray-300 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-								<span className="inline-block overflow-hidden">
-									<span className="inline-block animate-speed-up">Propelling Jasper, Georgia businesses into the digital stratosphere with websites that load at light speed, outrank the competition, and convert visitors into loyal customers.</span>
-								</span>
-							</p>
-							<div className={`flex flex-wrap gap-4 items-center transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-								<Link href="/contact" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out animate-pulse-fast">
-									<CodedText>Launch Your Mission</CodedText>
-									<Zap className="ml-2 -mr-1 h-5 w-5" />
-								</Link>
-								<Link href="/projects" className="inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out animate-pulse-fast">
-									<CodedText>Explore Our Galaxy of Work</CodedText>
-								</Link>
-							</div>
-							<div className={`flex flex-col sm:flex-row items-center gap-4 text-sm transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-								<div className="flex items-center animate-speed-left">
-									<Zap className="h-5 w-5 text-yellow-400 mr-2" />
-									<span>50% Faster Than Light-Speed Loading</span>
-								</div>
-								<div className="flex items-center animate-speed-right">
-									<Zap className="h-5 w-5 text-yellow-400 mr-2" />
-									<span>200% Boost in Orbital Rankings</span>
-								</div>
-							</div>
+		<section ref={sectionRef} className="min-h-[calc(100dvh-100px)] flex items-center justify-center py-8 md:py-16 lg:py-0">
+			<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
+				<div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+					<div ref={textRef} className="space-y-4 md:space-y-6 lg:space-y-8">
+						<h1 className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full"}`}>
+							<span className="inline-block overflow-hidden">
+								<span className="inline-block animate-speed-left">Launch Your Business with</span>
+							</span>{" "}
+							<span className="inline-block overflow-hidden">
+								<span className="inline-block animate-speed-right bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600">Warp-Speed</span>
+							</span>{" "}
+							<span className="inline-block overflow-hidden">
+								<span className="inline-block animate-speed-left">Websites</span>
+							</span>
+						</h1>
+						<p className={`text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-700 dark:text-gray-300 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+							<span className="inline-block overflow-hidden">
+								<span className="inline-block animate-speed-up">Propelling Jasper, Georgia businesses into the digital stratosphere with websites that load at light speed, outrank the competition, and convert visitors into loyal customers.</span>
+							</span>
+						</p>
+						<div className={`flex flex-col sm:flex-row gap-4 items-start sm:items-center transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+							<Link href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out animate-pulse-fast">
+								<CodedText>Launch Your Mission</CodedText>
+								<Zap className="ml-2 -mr-1 h-5 w-5" />
+							</Link>
+							<Link href="/projects" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out animate-pulse-fast">
+								<CodedText>Explore Our Galaxy of Work</CodedText>
+							</Link>
 						</div>
-						<div
-							ref={imageRef}
-							className="transition-transform duration-300 ease-out sticky top-24"
-							style={{
-								transform: calculateImageTransform(),
-							}}
-						>
-							<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert animate-float" priority />
+						<div className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 text-xs sm:text-sm transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+							<div className="flex items-center animate-speed-left">
+								<Zap className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0" />
+								<span>50% Faster Than Light-Speed Loading</span>
+							</div>
+							<div className="flex items-center animate-speed-right">
+								<Zap className="h-5 w-5 text-yellow-400 mr-2 flex-shrink-0" />
+								<span>200% Boost in Orbital Rankings</span>
+							</div>
 						</div>
 					</div>
+					<div
+						ref={imageRef}
+						className="transition-transform duration-300 ease-out md:sticky md:top-24 mt-4 md:mt-0"
+						style={{
+							transform: calculateImageTransform(),
+						}}
+					>
+						<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert animate-float max-w-full h-auto" priority />
+					</div>
 				</div>
-			</section>
-		</>
+			</div>
+		</section>
 	);
 };
 

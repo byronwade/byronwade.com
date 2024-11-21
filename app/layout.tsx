@@ -3,10 +3,10 @@ import { GeistSans } from "geist/font/sans";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
-import { ThemeProvider } from "../components/theme-provider";
+import { ThemeProvider } from "next-themes";
 import dynamic from "next/dynamic";
+import Footer from "@/components/footer";
 
-// Dynamically import and memoize the Header component
 const Header = dynamic(() => import("@/components/header"));
 const Background = dynamic(() => import("@/components/sections/background"));
 
@@ -22,11 +22,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${GeistSans.className}`}>
-				<ThemeProvider attribute="class" defaultTheme="dark">
+			<body className={`${GeistSans.className} antialiased`}>
+				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
 					<Header />
-					<main>{children}</main>
-					<Background />
+					<main>
+						{children}
+						<Background />
+					</main>
+					<Footer />
 				</ThemeProvider>
 				<GoogleAnalytics gaId="G-WE1RMQ935W" />
 			</body>
