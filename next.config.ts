@@ -15,10 +15,7 @@ const nextConfig: import("next").NextConfig = {
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
 	experimental: {
-		serverActions: true,
-		serverComponentsExternalPackages: ["sharp"],
 		optimizeCss: true,
-		streaming: true,
 	},
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
@@ -46,8 +43,6 @@ const nextConfig: import("next").NextConfig = {
 	},
 	poweredByHeader: false,
 	compress: true,
-	reactStrictMode: true,
-	swcMinify: true,
 };
 
 export default nextConfig;
