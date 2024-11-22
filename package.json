@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"postinstall": "playwright install"
+		"postinstall": "node -e \"process.env.SKIP_PLAYWRIGHT || require('child_process').execSync('playwright install --with-deps')\""
 	},
 	"dependencies": {
 		"@axe-core/playwright": "^4.10.0",

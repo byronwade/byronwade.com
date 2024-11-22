@@ -31,19 +31,21 @@ const getShopStats = unstable_cache(
 
 function ProductGridSkeleton() {
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-			{[...Array(6)].map((_, i) => (
-				<Card key={i}>
-					<CardContent className="p-0">
-						<Skeleton className="h-[300px] w-full" />
-						<div className="p-4">
-							<Skeleton className="h-4 w-3/4 mb-2" />
-							<Skeleton className="h-4 w-1/4" />
-						</div>
-					</CardContent>
-				</Card>
-			))}
-		</div>
+		<Suspense>
+			<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+				{[...Array(6)].map((_, i) => (
+					<Card key={i}>
+						<CardContent className="p-0">
+							<Skeleton className="h-[300px] w-full" />
+							<div className="p-4">
+								<Skeleton className="h-4 w-3/4 mb-2" />
+								<Skeleton className="h-4 w-1/4" />
+							</div>
+						</CardContent>
+					</Card>
+				))}
+			</div>
+		</Suspense>
 	);
 }
 
@@ -51,32 +53,40 @@ async function ShopStats() {
 	const stats = await getShopStats();
 
 	return (
-		<div className="grid sm:grid-cols-3 gap-4 mb-8">
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-sm font-medium">Total Products</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<div className="text-2xl font-bold">{stats.totalProducts}</div>
-				</CardContent>
-			</Card>
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-sm font-medium">Average Price</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<div className="text-2xl font-bold">${stats.averagePrice.toFixed(2)}</div>
-				</CardContent>
-			</Card>
-			<Card>
-				<CardHeader>
-					<CardTitle className="text-sm font-medium">In Stock</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<div className="text-2xl font-bold">{stats.inStock}</div>
-				</CardContent>
-			</Card>
-		</div>
+		<Suspense
+			fallback={
+				<div className="grid sm:grid-cols-3 gap-4 mb-8">
+					<Skeleton className="h-[120px]" />
+				</div>
+			}
+		>
+			<div className="grid sm:grid-cols-3 gap-4 mb-8">
+				<Card>
+					<CardHeader>
+						<CardTitle className="text-sm font-medium">Total Products</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="text-2xl font-bold">{stats.totalProducts}</div>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader>
+						<CardTitle className="text-sm font-medium">Average Price</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="text-2xl font-bold">${stats.averagePrice.toFixed(2)}</div>
+					</CardContent>
+				</Card>
+				<Card>
+					<CardHeader>
+						<CardTitle className="text-sm font-medium">In Stock</CardTitle>
+					</CardHeader>
+					<CardContent>
+						<div className="text-2xl font-bold">{stats.inStock}</div>
+					</CardContent>
+				</Card>
+			</div>
+		</Suspense>
 	);
 }
 
@@ -84,12 +94,14 @@ async function ProductSection() {
 	const products = await getProducts();
 
 	return (
-		<div className="space-y-4">
-			<div className="flex justify-between items-center">
-				<h2 className="text-2xl font-bold">Products</h2>
+		<Suspense fallback={<ProductGridSkeleton />}>
+			<div className="space-y-4">
+				<div className="flex justify-between items-center">
+					<h2 className="text-2xl font-bold">Products</h2>
+				</div>
+				<ProductGrid products={products} />
 			</div>
-			<ProductGrid products={products} />
-		</div>
+		</Suspense>
 	);
 }
 
