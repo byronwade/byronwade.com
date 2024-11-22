@@ -6,14 +6,12 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"postinstall": "node -e \"process.env.SKIP_PLAYWRIGHT || require('child_process').execSync('playwright install --with-deps')\""
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@axe-core/playwright": "^4.10.0",
 		"@hookform/resolvers": "^3.9.1",
 		"@next/third-parties": "15.0.2",
-		"@playwright/test": "^1.48.2",
 		"@radix-ui/react-accordion": "^1.2.1",
 		"@radix-ui/react-alert-dialog": "^1.1.2",
 		"@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -107,7 +105,9 @@
 		"postcss": "^8",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5",
-		"playwright": "^1.27.1"
+		"playwright": "^1.27.1",
+		"@playwright/test": "^1.48.2",
+		"playwright-core": "^1.48.2"
 	},
 	"overrides": {
 		"@types/react": "npm:types-react@19.0.0-rc.1",
