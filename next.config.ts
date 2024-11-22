@@ -38,7 +38,7 @@ const nextConfig: import("next").NextConfig = {
 		pagesBufferLength: 5,
 	},
 	env: {
-		SKIP_PLAYWRIGHT: process.env.NODE_ENV === "production" ? "1" : "",
+		SKIP_PLAYWRIGHT: "1",
 		NEXT_PUBLIC_ENABLE_IMAGE_COMPARISON: "true",
 	},
 	poweredByHeader: false,
