@@ -14,6 +14,9 @@ const nextConfig: import("next").NextConfig = {
 		dangerouslyAllowSVG: true,
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
+	env: {
+		SKIP_PLAYWRIGHT: process.env.NODE_ENV === "production" ? "1" : "",
+	},
 };
 
 export default nextConfig;
