@@ -12,6 +12,8 @@ interface ShopStats {
 	inStock: number;
 }
 
+export const dynamic = "force-dynamic";
+
 // Cache the shop stats
 const getShopStats = unstable_cache(
 	async (): Promise<ShopStats> => {
