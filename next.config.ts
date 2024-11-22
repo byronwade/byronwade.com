@@ -14,9 +14,40 @@ const nextConfig: import("next").NextConfig = {
 		dangerouslyAllowSVG: true,
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
+	experimental: {
+		serverActions: true,
+		serverComponentsExternalPackages: ["sharp"],
+		optimizeCss: true,
+		streaming: true,
+	},
+	webpack: (config, { isServer }) => {
+		if (!isServer) {
+			config.resolve.alias = {
+				...config.resolve.alias,
+				sharp$: false,
+				"image-trace-loader$": false,
+			};
+		}
+
+		config.watchOptions = {
+			...config.watchOptions,
+			ignored: ["**/tests/**", "**/analysis/**", "**/playwright/**"],
+		};
+
+		return config;
+	},
+	onDemandEntries: {
+		maxInactiveAge: 60 * 60 * 1000,
+		pagesBufferLength: 5,
+	},
 	env: {
 		SKIP_PLAYWRIGHT: process.env.NODE_ENV === "production" ? "1" : "",
+		NEXT_PUBLIC_ENABLE_IMAGE_COMPARISON: "true",
 	},
+	poweredByHeader: false,
+	compress: true,
+	reactStrictMode: true,
+	swcMinify: true,
 };
 
 export default nextConfig;
