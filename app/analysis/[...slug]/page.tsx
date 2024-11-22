@@ -1,217 +1,287 @@
-"use client";
+import { Suspense } from "react";
+import { unstable_cache } from "@/lib/unstable-cache";
+import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import Link from "next/link";
+import PageHeader from "@/components/page-header";
+import CodedText from "@/components/ui/coded-text";
+import dynamic from "next/dynamic";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Code, Database, Globe, Palette, Server, Zap, Cloud, Lock, Smartphone, Cpu, ExternalLink, Check } from "lucide-react";
-import { useRef, useState, useEffect, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, RefObject } from "react";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import Image from "next/image";
-// Define the case study data type
-type CaseStudyItem = {
-	name: string;
-	icon: any;
-	description: string;
-	tags: string[];
-	keyFeatures: string[];
-	url: string;
-	businessMetrics?: string[];
-	businessImpact?: string[];
-	improvements?: string[];
-	infrastructure?: string[];
-	businessResults?: string[];
-	marketingResults?: string[];
-	satisfactionMetrics?: string[];
-	financialMetrics?: string[];
-	image?: string;
-};
+// Dynamic imports for client components
+const Overview = dynamic(() => import("@/components/analysis/overview"));
+const Client = dynamic(() => import("@/components/analysis/client"));
+const Performance = dynamic(() => import("@/components/analysis/performance"));
+const SEO = dynamic(() => import("@/components/analysis/seo"));
+const Market = dynamic(() => import("@/components/analysis/market"));
+const Design = dynamic(() => import("@/components/analysis/design"));
+const Impact = dynamic(() => import("@/components/analysis/impact"));
+const Technical = dynamic(() => import("@/components/analysis/technical"));
+const Conclusion = dynamic(() => import("@/components/analysis/conclusion"));
+const Investment = dynamic(() => import("@/components/analysis/investment"));
 
-const caseStudyData: CaseStudyItem[] = [
+// Create a client-side component for the navigation button
+const NavigationButton = dynamic(() => import("@/components/navigation-button"));
+
+// Cache the analytics data
+const getAnalyticsData = unstable_cache(
+	async () => {
+		const stats = [
+			{
+				label: "Load Time",
+				industryValue: 4.2,
+				optimizedValue: 1.8,
+				improvement: 57,
+				iconName: "clock" as const,
+			},
+			{
+				label: "Performance Score",
+				industryValue: 65,
+				optimizedValue: 95,
+				improvement: 46,
+				iconName: "zap" as const,
+			},
+			{
+				label: "SEO Score",
+				industryValue: 72,
+				optimizedValue: 98,
+				improvement: 36,
+				iconName: "search" as const,
+			},
+			{
+				label: "Layout Shifts",
+				industryValue: 0.25,
+				optimizedValue: 0.05,
+				improvement: 80,
+				iconName: "layout" as const,
+			},
+			{
+				label: "Mobile Score",
+				industryValue: 60,
+				optimizedValue: 94,
+				improvement: 57,
+				iconName: "smartphone" as const,
+			},
+		];
+
+		return {
+			benchmarks: {
+				loadTime: { industry: 4.2, optimized: 1.8 },
+				performanceScore: { industry: 65, optimized: 95 },
+				seoScore: { industry: 72, optimized: 98 },
+				mobileScore: { industry: 60, optimized: 94 },
+				bounceRate: { industry: 55, optimized: 25 },
+				conversionRate: { industry: 2.1, optimized: 4.5 },
+				averageTimeOnPage: { industry: 120, optimized: 280 },
+				bestPractices: { industry: 60, optimized: 95 },
+				organicTrafficIncrease: 150,
+			},
+			stats,
+			performanceData: [
+				{ month: "Jan", industry: 50, optimized: 90 },
+				{ month: "Feb", industry: 52, optimized: 91 },
+				{ month: "Mar", industry: 51, optimized: 92 },
+				{ month: "Apr", industry: 53, optimized: 93 },
+				{ month: "May", industry: 52, optimized: 94 },
+				{ month: "Jun", industry: 54, optimized: 95 },
+			],
+			conversionData: [
+				{ category: "E-commerce", industry: 2.3, optimized: 3.9 },
+				{ category: "Marine", industry: 2.5, optimized: 4.5 },
+				{ category: "B2B", industry: 2.7, optimized: 4.8 },
+			],
+		};
+	},
+	["analytics-data"],
+	{ revalidate: 3600 }
+);
+
+// Cache the technical data
+const getTechnicalData = unstable_cache(
+	async () => {
+		return {
+			performanceOptimizations: ["Advanced caching strategies implementation", "Image optimization with WebP format and lazy loading", "Code splitting and bundle optimization", "CDN integration for global content delivery"],
+			securityEnhancements: ["SSL/TLS implementation with A+ rating", "Advanced firewall protection", "Regular security audits and monitoring", "Automated backup systems"],
+		};
+	},
+	["technical-data"],
+	{ revalidate: 3600 }
+);
+
+// Cache the client data
+const getClientData = unstable_cache(
+	async () => {
+		return {
+			name: "Impact Marine Group",
+			industry: "Marine Industry",
+			duration: "8 weeks",
+			completionDate: "Q4 2023",
+			goals: ["Increase conversions", "Reduce bounce rates", "Improve user experience"],
+		};
+	},
+	["client-data"],
+	{ revalidate: 3600 }
+);
+
+export default async function PerformanceCaseStudy() {
+	const queryClient = new QueryClient();
+
+	// Fetch all data in parallel
+	const [analyticsData, technicalData, clientData] = await Promise.all([getAnalyticsData(), getTechnicalData(), getClientData()]);
+
+	// Prefetch queries
+	await Promise.all([
+		queryClient.prefetchQuery({
+			queryKey: ["analytics"],
+			queryFn: () => analyticsData,
+		}),
+		queryClient.prefetchQuery({
+			queryKey: ["technical"],
+			queryFn: () => technicalData,
+		}),
+		queryClient.prefetchQuery({
+			queryKey: ["client"],
+			queryFn: () => clientData,
+		}),
+	]);
+
+	const { benchmarks, stats, performanceData, conversionData } = analyticsData;
+	const seo = `${calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized)} increase in SEO score`;
+
+	const seoMetrics = {
+		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
+	};
+
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Suspense fallback={<div>Loading...</div>}>
+				<PageHeader title="Impact Marine Group">
+					<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Figma</CodedText>
+					</Link>
+					<Link href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Sketch</CodedText>
+					</Link>
+					<Link href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Adobe XD</CodedText>
+					</Link>
+					<Link href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">InVision</CodedText>
+					</Link>
+					<Link href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Framer</CodedText>
+					</Link>
+					<Link href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Axure</CodedText>
+					</Link>
+					<Link href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">Flinto</CodedText>
+					</Link>
+					<Link href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
+						<CodedText className="hover:underline">ProtoPie</CodedText>
+					</Link>
+				</PageHeader>
+				<TooltipProvider>
+					<div className="min-h-screen bg-gradient-to-b bg-white dark:bg-black">
+						<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-y">
+							<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+								<header className="py-4">
+									<div className="flex items-center justify-between">
+										<div className="flex flex-col">
+											<h3 className="text-sm text-muted-foreground">Analysis #346</h3>
+											<h1 className="text-2xl font-bold">Impact Marine Group</h1>
+										</div>
+										<NavigationButton />
+										<Button size="lg" className="hidden sm:flex">
+											<CodedText>Get Your Analysis</CodedText>
+										</Button>
+									</div>
+								</header>
+							</div>
+						</div>
+
+						<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+							<div className="lg:grid lg:gap-8">
+								<main className="space-y-12 lg:space-y-16">
+									<Overview stats={stats} />
+									<Client clientData={clientData} />
+									<Performance />
+									<SEO seo={seo} benchmarks={benchmarks} seoMetrics={seoMetrics} />
+									<Design benchmarks={benchmarks} />
+									<Market performanceData={performanceData} conversionData={conversionData} />
+									<Impact benchmarks={benchmarks} />
+									<Technical data={technicalData} />
+									<Conclusion benchmarks={benchmarks} />
+									<Investment mainFeatures={mainFeatures} monthlyServices={monthlyServices} addOns={addOns} />
+								</main>
+							</div>
+						</div>
+					</div>
+				</TooltipProvider>
+			</Suspense>
+		</HydrationBoundary>
+	);
+}
+
+// Helper function
+function calculateImprovement(industry: number, optimized: number): string {
+	const improvement = ((optimized - industry) / industry) * 100;
+	return `${improvement.toFixed(1)}%`;
+}
+
+// Constants
+const mainFeatures = ["Fully responsive design", "SEO optimization", "Performance optimization", "Security implementation", "Analytics integration", "Content management system", "Contact forms", "Social media integration", "Basic email setup", "30-day support"];
+const monthlyServices = [
 	{
-		name: "Company Overview",
-		icon: Globe,
-		description: "Impact Marine Group is a leading marine services provider specializing in boat sales, repairs, and marina operations.",
-		tags: ["Marine Industry", "B2C", "Service-Based", "Local Business", "Established 1985"],
-		keyFeatures: ["Multiple Locations", "Full-Service Marina", "Sales & Service", "Expert Staff", "Premium Brands"],
-		businessMetrics: ["$12M Annual Revenue", "4 Locations", "45+ Employees", "2000+ Customers", "85% Customer Retention"],
-		url: "https://impactmarinegroup.com",
-		image: "/images/impact-marine.jpg",
+		feature: "24/7 monitoring",
+		included: true,
 	},
 	{
-		name: "Website Challenges",
-		icon: Code,
-		description: "The original website faced several critical issues affecting business performance and customer experience.",
-		tags: ["Outdated Design", "Poor Mobile Experience", "Slow Loading", "Low Conversion", "Limited Functionality"],
-		keyFeatures: ["5+ Second Load Time", "15% Bounce Rate", "2% Conversion Rate", "No Online Booking", "Limited Inventory Search"],
-		businessImpact: ["Lost Sales Opportunities", "Poor Customer Experience", "Reduced Market Reach", "Inefficient Operations"],
-		url: "/original-site-metrics",
+		feature: "Security updates",
+		included: true,
 	},
 	{
-		name: "Solution Implementation",
-		icon: Palette,
-		description: "Complete digital transformation with modern technology stack and user-centered design approach.",
-		tags: ["Modern Design", "Mobile-First", "Performance Optimized", "SEO Enhanced", "Custom Features"],
-		keyFeatures: ["Responsive Design", "Inventory Management", "Online Booking System", "Customer Portal", "Real-time Updates"],
-		improvements: ["Fast page loads", "Intuitive navigation", "Streamlined booking", "Enhanced inventory display", "Integrated CRM"],
-		url: "/implementation-details",
+		feature: "Daily backups",
+		included: true,
 	},
 	{
-		name: "Technical Architecture",
-		icon: Server,
-		description: "Enterprise-grade infrastructure ensuring reliability, security, and scalability.",
-		tags: ["Cloud Hosting", "API Integration", "Database Design", "Security", "Performance"],
-		keyFeatures: ["99.9% Uptime", "SSL Security", "Data Encryption", "API-First Design", "Automated Backups"],
-		infrastructure: ["AWS Cloud", "CDN Integration", "Load Balancing", "Database Clustering", "Monitoring Tools"],
-		url: "/technical-specs",
+		feature: "CDN service",
+		included: true,
 	},
 	{
-		name: "Performance Metrics",
-		icon: Database,
-		description: "Quantifiable improvements in key performance indicators after website redesign.",
-		tags: ["Analytics", "Conversion Rate", "Page Speed", "User Engagement", "SEO Rankings"],
-		keyFeatures: ["Sub-2s Load Time", "45% Bounce Rate Reduction", "3x Conversion Rate", "Mobile Traffic +85%", "Search Rankings +40%"],
-		businessResults: ["Online Bookings +150%", "Lead Generation +200%", "Customer Satisfaction +60%", "Operational Efficiency +40%"],
-		url: "/performance-data",
+		feature: "SSL certificate",
+		included: true,
 	},
 	{
-		name: "Marketing Integration",
-		icon: Zap,
-		description: "Comprehensive digital marketing strategy leveraging the new website capabilities.",
-		tags: ["SEO", "Content Marketing", "Social Media", "Email Campaigns", "PPC"],
-		keyFeatures: ["Local SEO Optimization", "Content Strategy", "Social Integration", "Email Automation", "Analytics Dashboard"],
-		marketingResults: ["Organic Traffic +120%", "Social Engagement +85%", "Email Subscribers +200%", "PPC Conversion +65%"],
-		url: "/marketing-metrics",
+		feature: "Database management",
+		included: true,
 	},
 	{
-		name: "Customer Experience",
-		icon: Cloud,
-		description: "Enhanced user journey and customer satisfaction through digital touchpoints.",
-		tags: ["UX Design", "Customer Service", "Feedback System", "Support Portal", "Personalization"],
-		keyFeatures: ["Intuitive Navigation", "24/7 Support Access", "Customer Dashboard", "Feedback Integration", "Personalized Content"],
-		satisfactionMetrics: ["Customer Satisfaction +45%", "Support Tickets -30%", "Self-Service Usage +80%", "Repeat Visits +60%"],
-		url: "/customer-experience",
+		feature: "Performance optimization",
+		included: true,
 	},
 	{
-		name: "Business Impact",
-		icon: Lock,
-		description: "Overall business improvements and ROI from the digital transformation project.",
-		tags: ["Revenue Growth", "Cost Reduction", "Market Share", "Operational Efficiency", "Customer Retention"],
-		keyFeatures: ["Revenue Increase +35%", "Operating Costs -25%", "Market Share +15%", "Customer Base +40%", "Staff Productivity +30%"],
-		financialMetrics: ["ROI 285%", "Revenue Growth $4.2M", "Cost Savings $850K", "Marketing Efficiency +65%"],
-		url: "/business-impact",
+		feature: "Content updates (2/month)",
+		included: true,
 	},
 ];
-
-interface ToolProps {
-	tool: CaseStudyItem;
-	index: number;
-	setActiveToolIndex: (index: number) => void;
-}
-
-function Tool({ tool, index, setActiveToolIndex }: ToolProps) {
-	const ref = useRef<HTMLDivElement>(null);
-	const { scrollYProgress } = useScroll({
-		target: ref as RefObject<HTMLElement>,
-		offset: ["start end", "end start"],
-	});
-	const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
-	const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
-
-	useEffect(() => {
-		const unsubscribe = scrollYProgress.onChange((v) => {
-			if (v > 0.3 && v < 0.7) {
-				setActiveToolIndex(index);
-			}
-		});
-		return () => unsubscribe();
-	}, [scrollYProgress, index, setActiveToolIndex]);
-
-	return (
-		// @ts-ignore
-		<motion.div ref={ref} style={{ opacity, scale }} className="min-h-[calc(100vh-64px)] md:-ml-32 flex items-center justify-center px-4">
-			<Card className="w-full mx-auto max-w-5xl bg-black border border-zinc-800 rounded-xl overflow-hidden z-10">
-				<CardHeader className="flex justify-between items-center py-10 border-b border-zinc-800">
-					<div className="h-8 w-8 flex items-center justify-center">
-						<svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-zinc-500">
-							<path d="M12 2L2 19.7778H22L12 2Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-						</svg>
-					</div>
-				</CardHeader>
-				<CardContent className="space-y-4 p-6">
-					<h2 className="text-2xl font-semibold tracking-tight text-white">{tool.name}</h2>
-					<p className="text-zinc-400 text-sm">{tool.description}</p>
-					<div className="flex flex-wrap gap-2">
-						{tool.tags.map((tag, tagIndex) => (
-							<Badge key={tagIndex} variant="secondary" className="bg-zinc-800 text-zinc-400">
-								{tag}
-							</Badge>
-						))}
-					</div>
-					<Separator className="bg-zinc-800" />
-					<div className="space-y-2">
-						<h3 className="text-sm font-medium text-white">Key Features:</h3>
-						<ul className="space-y-1">
-							{tool.keyFeatures.map((feature, featureIndex) => (
-								<li key={featureIndex} className="flex items-center text-zinc-400 text-sm">
-									<Check className="h-4 w-4 mr-2 text-green-500" />
-									{feature}
-								</li>
-							))}
-						</ul>
-					</div>
-				</CardContent>
-				<CardFooter className="border-t border-zinc-800 p-6">
-					<a href="#" className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors">
-						View Template
-						<ExternalLink className="h-4 w-4" />
-					</a>
-				</CardFooter>
-			</Card>
-		</motion.div>
-	);
-}
-
-export default function ToolsShowcase() {
-	const [activeToolIndex, setActiveToolIndex] = useState(0);
-
-	return (
-		<>
-			<div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] z-10">
-				{/* Left side - Title, Description, and Overview */}
-				<div className="w-full lg:w-1/4 flex flex-col justify-between p-6 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)]">
-					<div className="max-w-xs mx-auto lg:mx-0">
-						<motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-							<Image src="/Impact-Logo.webp" alt="Impact Marine Group" width={1000} height={1000} className="w-full bg-white p-4 rounded-md mb-4" />
-						</motion.div>
-						{/* @ts-ignore */}
-						<motion.h1 className="text-3xl font-bold mb-4 " initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-							Impact Marine Group
-						</motion.h1>
-						{/* @ts-ignore */}
-						<motion.p className="text-base text-neutral-400 mb-6" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-							Impact Marine Group is a leading provider of marine services in Georgia, California. Case Study on website redesign and SEO optimization.
-						</motion.p>
-					</div>
-					<div className="mt-6 lg:mt-0">
-						<h3 className="text-xs font-semibold text-white uppercase tracking-wider mb-2">Overview</h3>
-						<ul className="space-y-2">
-							{caseStudyData.map((tool, index) => (
-								<li key={tool.name} className={`transition-all duration-300 text-sm ${index === activeToolIndex ? "text-yellow-400 translate-x-1" : "text-neutral-500 hover:text-yellow-400"}`}>
-									<tool.icon className="w-3 h-3 inline-block mr-1" />
-									{tool.name}
-								</li>
-							))}
-						</ul>
-					</div>
-				</div>
-
-				{/* Right side - Scrolling Tools */}
-				<div className="w-full lg:w-3/4">
-					{caseStudyData.map((tool, index) => (
-						<Tool key={tool.name} tool={tool} index={index} setActiveToolIndex={setActiveToolIndex} />
-					))}
-				</div>
-			</div>
-		</>
-	);
-}
+const addOns = [
+	{
+		title: "Landing Pages",
+		description: "Custom designed, high-converting landing pages",
+		price: "$799",
+		features: ["Conversion-optimized design", "A/B testing setup", "Analytics integration", "Lead capture forms", "Mobile optimization"],
+	},
+	{
+		title: "E-commerce Integration",
+		description: "Full e-commerce functionality",
+		price: "$2,499",
+		features: ["Product catalog", "Shopping cart", "Payment gateway", "Inventory management", "Order processing"],
+	},
+	{
+		title: "Custom Features",
+		description: "Tailored functionality for your business",
+		price: "From $999",
+		features: ["Custom database design", "API integration", "Advanced search", "User authentication", "Custom reporting"],
+	},
+];

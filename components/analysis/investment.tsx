@@ -1,11 +1,24 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-export default function Investment({ mainFeatures, monthlyServices, addOns }: { mainFeatures: string[]; monthlyServices: { feature: string }[]; addOns: { title: string; price: string; features: string[]; description: string }[] }) {
+interface InvestmentProps {
+	mainFeatures: string[];
+	monthlyServices: { feature: string }[];
+	addOns: {
+		title: string;
+		price: string;
+		features: string[];
+		description: string;
+	}[];
+}
+
+export default function Investment({ mainFeatures, monthlyServices, addOns }: InvestmentProps) {
 	return (
-		<section id="investment" className="max-w-6xl mx-auto px-4 py-12 space-y-16">
+		<section id="investment" className="max-w-screen-2xl mx-auto px-4 py-12 space-y-16">
 			<div className="text-center space-y-4">
 				<h1 className="text-4xl font-bold">Investment Options</h1>
 				<p className="text-xl text-muted-foreground">Choose the perfect plan for your business</p>

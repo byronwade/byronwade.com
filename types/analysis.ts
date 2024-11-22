@@ -70,3 +70,8 @@ export interface SEOProps {
 		}>;
 	};
 }
+
+export interface MarketProps {
+	performanceData: PerformanceData[];
+	conversionData: ConversionData[];
+}

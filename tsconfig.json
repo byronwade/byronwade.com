@@ -20,7 +20,11 @@
 			}
 		],
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["./*"],
+			"@/lib/*": ["./lib/*"],
+			"@/queries/*": ["./lib/queries/*"],
+			"@/components/*": ["./components/*"],
+			"@/types/*": ["./types/*"]
 		}
   },
   "include": [

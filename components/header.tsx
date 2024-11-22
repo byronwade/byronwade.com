@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, Menu, X, SunMoon, Contrast } from "lucide-react";
+import { Menu, X, SunMoon, Contrast, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
@@ -44,8 +44,26 @@ export default function Navbar({ className }: { className?: string }) {
 		setIsMobileMenuOpen(!isMobileMenuOpen);
 	};
 
+	// Move theme icon rendering to a separate component
+	const ThemeIcon = () => {
+		const mounted = React.useRef(false);
+		const [icon, setIcon] = React.useState<React.ReactNode>(<Contrast className="h-4 w-4" />);
+
+		React.useEffect(() => {
+			mounted.current = true;
+			setIcon(theme === "light" ? <Contrast className="h-4 w-4" /> : <SunMoon className="h-4 w-4" />);
+		}, [theme]);
+
+		// Return default icon until mounted
+		if (!mounted.current) {
+			return <Contrast className="h-4 w-4" />;
+		}
+
+		return icon;
+	};
+
 	return (
-		<header className={cn("sticky top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-black", className)}>
+		<header className={cn("sticky top-0 left-0 right-0 z-50 bg-white dark:bg-black", className)}>
 			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link href="/" className="flex items-center space-x-3">
@@ -62,8 +80,13 @@ export default function Navbar({ className }: { className?: string }) {
 
 					<div className="flex items-center space-x-2">
 						<Button variant="ghost" size="icon" onClick={toggleTheme} className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
-							{theme === "light" ? <Contrast className="h-4 w-4" /> : <SunMoon className="h-4 w-4" />}
+							<ThemeIcon />
 							<span className="sr-only">Toggle theme</span>
+						</Button>
+
+						<Button variant="ghost" size="icon" className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
+							<ShoppingCart className="h-4 w-4" />
+							<span className="sr-only">Cart</span>
 						</Button>
 
 						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-neutral-200 dark:hover:bg-neutral-800" onClick={toggleMobileMenu}>

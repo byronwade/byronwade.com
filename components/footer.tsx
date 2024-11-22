@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { customFont } from "@/lib/fonts";
 import { Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
 
 export default function Footer() {
@@ -55,8 +56,8 @@ export default function Footer() {
 				<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
 					{/* Logo and Tagline */}
 					<div className="mb-16">
-						<Link href="/" className="inline-block">
-							<h2 className="text-xl font-semibold">Byron Wade</h2>
+						<Link href="/" className="flex items-center space-x-3">
+							<span className={`text-3xl font-bold ${customFont.className} hover:text-yellow-400 hover:underline`}>Byron Wade</span>
 						</Link>
 						<p className="mt-2 text-sm text-neutral-400">Building the fastest websites on the internet</p>
 					</div>

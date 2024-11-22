@@ -78,7 +78,7 @@ const Hero = () => {
 	};
 
 	return (
-		<section className="min-h-[calc(100dvh-100px)] flex items-center justify-center py-8 md:py-16 lg:py-0">
+		<section className="min-h-[calc(100dvh-100px)] flex items-center justify-center py-8 md:py-16 lg:py-0 overflow-hidden">
 			<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
 				<div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
 					<motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-4 md:space-y-6 lg:space-y-8">

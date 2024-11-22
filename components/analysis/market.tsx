@@ -1,18 +1,14 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line, Bar } from "recharts";
-import dynamic from "next/dynamic";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, BarChart, Bar, ResponsiveContainer } from "@/components/charts";
 
-const DynamicLineChart = dynamic<any>(() => import("recharts").then((mod) => mod.LineChart), {
-	ssr: false,
-	loading: () => <div className="h-[300px] animate-pulse bg-muted" />,
-});
+interface MarketProps {
+	performanceData: any[];
+	conversionData: any[];
+}
 
-const DynamicBarChart = dynamic<any>(() => import("recharts").then((mod) => mod.BarChart), {
-	ssr: false,
-	loading: () => <div className="h-[300px] animate-pulse bg-muted" />,
-});
-
-export default function Market({ performanceData, conversionData }: { performanceData: any[]; conversionData: any[] }) {
+export default function Market({ performanceData, conversionData }: MarketProps) {
 	return (
 		<section id="market-research" className="scroll-mt-28">
 			<Card>
@@ -25,7 +21,7 @@ export default function Market({ performanceData, conversionData }: { performanc
 						<h3 className="font-semibold mb-4">Performance Trends</h3>
 						<div className="h-[300px]">
 							<ResponsiveContainer width="100%" height="100%">
-								<DynamicLineChart data={performanceData}>
+								<LineChart data={performanceData}>
 									<CartesianGrid strokeDasharray="3 3" />
 									<XAxis dataKey="month" />
 									<YAxis />
@@ -33,7 +29,7 @@ export default function Market({ performanceData, conversionData }: { performanc
 									<Legend />
 									<Line type="monotone" dataKey="industry" name="Industry Average" stroke="hsl(var(--muted-foreground))" />
 									<Line type="monotone" dataKey="optimized" name="Optimized Website" stroke="hsl(var(--primary))" />
-								</DynamicLineChart>
+								</LineChart>
 							</ResponsiveContainer>
 						</div>
 					</div>
@@ -41,7 +37,7 @@ export default function Market({ performanceData, conversionData }: { performanc
 						<h3 className="font-semibold mb-4">Conversion Rate Comparison</h3>
 						<div className="h-[300px]">
 							<ResponsiveContainer width="100%" height="100%">
-								<DynamicBarChart data={conversionData}>
+								<BarChart data={conversionData}>
 									<CartesianGrid strokeDasharray="3 3" />
 									<XAxis dataKey="category" />
 									<YAxis />
@@ -49,7 +45,7 @@ export default function Market({ performanceData, conversionData }: { performanc
 									<Legend />
 									<Bar dataKey="industry" name="Industry Average" fill="hsl(var(--muted-foreground))" />
 									<Bar dataKey="optimized" name="Optimized Website" fill="hsl(var(--primary))" />
-								</DynamicBarChart>
+								</BarChart>
 							</ResponsiveContainer>
 						</div>
 					</div>

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function HeroPages() {
 	return (
-		<section className="flex flex-col items-center justify-center py-12 text-center">
+		<section className="flex flex-col items-center justify-center py-12 text-center overflow-hidden">
 			<div className="container px-4">
 				<div className="mb-8 flex justify-center">
 					<div className="h-12 w-12">
