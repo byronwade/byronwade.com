@@ -1,27 +1,33 @@
-import { convert } from "html-to-text";
+export async function keywordAnalysis(content: string) {
+	try {
+		// Remove HTML tags and convert to lowercase
+		const text = content.replace(/<[^>]*>/g, "").toLowerCase();
 
-export const keywordAnalysis = async (content: string) => {
-	// Remove HTML tags and undesired strings
-	const cleanedContent = convert(content);
+		// Split into words and count frequencies
+		const words = text.match(/\b\w+\b/g) || [];
+		const frequencies: Record<string, number> = {};
 
-	// Tokenize the text content by splitting on whitespace and/or punctuation
-	const words = cleanedContent.split(/\W+/).filter((word) => word.length > 0);
+		words.forEach((word) => {
+			frequencies[word] = (frequencies[word] || 0) + 1;
+		});
 
-	// Create an object to hold the frequency of each word
-	let frequency: Record<string, number> = {};
+		// Sort by frequency
+		const sortedKeywords = Object.entries(frequencies)
+			.sort(([, a], [, b]) => b - a)
+			.slice(0, 20);
 
-	// Iterate over the words, updating the frequency count
-	for (let word of words) {
-		word = word.toLowerCase(); // Convert word to lowercase
-		if (!frequency[word]) {
-			frequency[word] = 0;
-		}
-		frequency[word]++;
+		return {
+			keywords: sortedKeywords,
+			totalWords: words.length,
+			uniqueWords: Object.keys(frequencies).length,
+		};
+	} catch (error) {
+		console.error("Error in keyword analysis:", error);
+		return {
+			keywords: [],
+			totalWords: 0,
+			uniqueWords: 0,
+			error: "Failed to analyze keywords",
+		};
 	}
-
-	// Convert the frequency object to an array of [keyword, frequency] tuples,
-	// sort them in descending order of frequency.
-	const sortedKeywords = Object.entries(frequency).sort(([, a], [, b]) => b - a);
-
-	return sortedKeywords;
-};
+}

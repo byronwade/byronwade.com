@@ -99,11 +99,11 @@ const Hero = () => {
 						</motion.p>
 
 						<motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-							<Link href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out">
+							<Link prefetch={true} href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out">
 								<CodedText>Launch Your Mission</CodedText>
 								<Zap className="ml-2 -mr-1 h-5 w-5" />
 							</Link>
-							<Link href="/projects" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out">
+							<Link prefetch={true} href="/projects" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out">
 								<CodedText>Explore Our Galaxy of Work</CodedText>
 							</Link>
 						</motion.div>
@@ -129,7 +129,7 @@ const Hero = () => {
 						animate={{ opacity: 1, scale: 1 }}
 						className="relative md:sticky md:top-24 mt-4 md:mt-0"
 					>
-						<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert max-w-full h-auto" priority />
+						<Image loading="eager" decoding="sync" quality={65} src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert max-w-full h-auto" priority />
 					</motion.div>
 				</div>
 			</div>

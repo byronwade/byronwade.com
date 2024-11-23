@@ -1,110 +1,69 @@
-import { shopifyClient, type ShopifyResponse } from "@/lib/shopify";
-import { getBlogPostsQuery } from "@/lib/queries/blog";
-import type { Post } from "@/app/blog/types";
+export const runtime = "edge";
 
-interface ArticleNode {
+import { unstable_cache } from "@/lib/unstable-cache";
+import { shopifyClient } from "@/lib/shopify";
+import { getBlogPostsQuery } from "@/lib/queries/blog";
+
+interface BlogPost {
 	id: string;
 	title: string;
 	handle: string;
 	excerpt: string;
 	publishedAt: string;
-	image: {
+	image?: {
 		url: string;
-		altText: string | null;
-		width: number;
-		height: number;
-	} | null;
+	};
 	content: string;
-	author: {
-		name: string;
-	};
 }
 
-interface ArticlesResponse {
-	articles: {
-		pageInfo: {
-			hasNextPage: boolean;
-			endCursor: string | null;
-		};
-		edges: Array<{
-			cursor: string;
-			node: ArticleNode;
-		}>;
-	};
+interface ProcessedBlogPost {
+	id: string;
+	title: string;
+	handle: string;
+	excerpt: string;
+	date: string;
+	image: string;
+	content: string;
 }
 
-interface ShopifyArticlesResponse {
-	data: {
-		articles: {
-			pageInfo: {
-				hasNextPage: boolean;
-				endCursor: string | null;
-			};
-			edges: Array<{
-				cursor: string;
-				node: ArticleNode;
-			}>;
-		};
-	};
-}
+export const getBlogPosts = unstable_cache(
+	async (first: number = 50): Promise<ProcessedBlogPost[]> => {
+		const { data } = await shopifyClient.request(getBlogPostsQuery, {
+			variables: {
+				first: Math.min(first, 50),
+			},
+		});
 
-const DEFAULT_BLOG_IMAGE = "https://cdn.shopify.com/s/files/1/0402/7626/3079/files/default-blog-image.jpg";
+		console.log("Raw blog response:", JSON.stringify(data, null, 2));
 
-export async function getBlogPosts(first: number = 10) {
-	try {
-		const allPosts: Post[] = [];
-		let hasNextPage = true;
-		let afterCursor: string | null = null;
-		let retryCount = 0;
-		const maxRetries = 3;
-
-		while (hasNextPage && retryCount < maxRetries) {
-			try {
-				const response: ShopifyResponse<ShopifyArticlesResponse> = await shopifyClient.request(getBlogPostsQuery, {
-					variables: {
-						first: Math.min(first, 50),
-						after: afterCursor,
-					},
-				});
-
-				const articles = response?.data?.data?.articles;
-				if (!articles?.edges?.length) {
-					console.log("No articles found");
-					return [];
-				}
-
-				const posts = articles.edges.map(({ node }: { node: ArticleNode }) => ({
-					id: node.id,
-					title: node.title,
-					image: node.image?.url || DEFAULT_BLOG_IMAGE,
-					excerpt: node.excerpt || node.content.substring(0, 150) + "...",
-					date: node.publishedAt,
-				}));
-
-				allPosts.push(...posts);
-				hasNextPage = articles.pageInfo.hasNextPage && allPosts.length < first;
-				afterCursor = articles.pageInfo.endCursor;
-
-				if (allPosts.length >= first) {
-					break;
-				}
-			} catch (error) {
-				retryCount++;
-				console.error(`Attempt ${retryCount} failed:`, error);
-
-				if (retryCount === maxRetries) {
-					console.log("Max retries reached");
-					return [];
-				}
-
-				const delay = Math.min(1000 * Math.pow(2, retryCount), 10000);
-				await new Promise((resolve) => setTimeout(resolve, delay));
-			}
+		if (!data?.blog?.articles?.edges) {
+			console.log("No articles found");
+			return [];
 		}
 
-		return allPosts;
-	} catch (error) {
-		console.error("Error fetching blog posts:", error);
-		return [];
+		return data.blog.articles.edges.map(({ node }: { node: BlogPost }) => ({
+			id: node.id,
+			title: node.title,
+			handle: node.handle,
+			excerpt: node.excerpt || node.content.substring(0, 150) + "...",
+			date: node.publishedAt,
+			image: node.image?.url || "/next.svg",
+			content: node.content,
+		}));
+	},
+	["blog-posts"],
+	{
+		revalidate: 60 * 60 * 2, // Cache for 2 hours
 	}
-}
+);
+
+export const getBlogPost = unstable_cache(
+	async (handle: string): Promise<ProcessedBlogPost | undefined> => {
+		const posts = await getBlogPosts(50);
+		return posts.find((post) => post.handle === handle);
+	},
+	["blog-post"],
+	{
+		revalidate: 60 * 60 * 2, // Cache for 2 hours
+	}
+);

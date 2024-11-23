@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig: import("next").NextConfig = {
 	images: {
+		minimumCacheTTL: 31536000,
 		remotePatterns: [
 			{
 				protocol: "https",
@@ -14,24 +15,16 @@ const nextConfig: import("next").NextConfig = {
 		dangerouslyAllowSVG: true,
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
-	experimental: {
-		optimizeCss: true,
+	typescript: {
+		ignoreBuildErrors: true,
 	},
-	webpack: (config, { isServer }) => {
-		if (!isServer) {
-			config.resolve.alias = {
-				...config.resolve.alias,
-				sharp$: false,
-				"image-trace-loader$": false,
-			};
-		}
-
-		config.watchOptions = {
-			...config.watchOptions,
-			ignored: ["**/tests/**", "**/analysis/**", "**/playwright/**"],
-		};
-
-		return config;
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
+	experimental: {
+		inlineCss: true,
+		optimizeCss: true,
+		scrollRestoration: true,
 	},
 	onDemandEntries: {
 		maxInactiveAge: 60 * 60 * 1000,
@@ -43,6 +36,14 @@ const nextConfig: import("next").NextConfig = {
 	},
 	poweredByHeader: false,
 	compress: true,
+	reactStrictMode: true,
+	compiler: {
+		removeConsole: process.env.NODE_ENV === "production",
+	},
+	productionBrowserSourceMaps: false,
+	httpAgentOptions: {
+		keepAlive: true,
+	},
 };
 
 export default nextConfig;

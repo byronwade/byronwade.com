@@ -1,27 +1,25 @@
-import Link from "next/link";
-import Image from "next/image";
-import { type Product } from "@/types/shopify";
-import { formatPrice } from "@/lib/utils";
+"use client";
+
+import { motion } from "framer-motion";
+import { ProductCard } from "./product-card";
+import type { Product } from "@/types/shopify";
+
+const container = {
+	hidden: { opacity: 0 },
+	show: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.1,
+		},
+	},
+};
 
 export default function ProductGrid({ products }: { products: Product[] }) {
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-			{products.map((product) => (
-				<Link key={product.id} href={`/shop/${product.handle}`} className="group">
-					<div className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-						{product.image && (
-							<div className="aspect-square relative">
-								<Image src={product.image.url} alt={product.image.altText || product.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" priority />
-							</div>
-						)}
-						<div className="p-4">
-							<h2 className="text-lg font-semibold">{product.title}</h2>
-							<p className="text-gray-600">{formatPrice(product.price)}</p>
-							{!product.availableForSale && <span className="text-red-500 text-sm">Out of stock</span>}
-						</div>
-					</div>
-				</Link>
+		<motion.div variants={container} initial="hidden" animate="show" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			{products.map((product, index) => (
+				<ProductCard key={product.id} product={product} priority={index < 6} />
 			))}
-		</div>
+		</motion.div>
 	);
 }

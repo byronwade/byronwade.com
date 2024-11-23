@@ -1,6 +1,12 @@
 import dynamic from "next/dynamic";
 import { Suspense, memo } from "react";
 
+// Enable edge runtime for this page
+export const runtime = 'edge';
+
+// Specify preferred regions
+export const preferredRegion = 'auto';
+
 // Dynamically import and memoize the Hero component
 const Hero = memo(dynamic(() => import("@/components/sections/hero")));
 const CTA = memo(dynamic(() => import("@/components/sections/cta")));

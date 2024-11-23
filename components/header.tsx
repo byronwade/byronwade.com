@@ -66,13 +66,13 @@ export default function Navbar({ className }: { className?: string }) {
 		<header className={cn("sticky top-0 left-0 right-0 z-50 bg-white dark:bg-black", className)}>
 			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
-					<Link href="/" className="flex items-center space-x-3">
+					<Link prefetch={true} href="/" className="flex items-center space-x-3">
 						<span className={`text-3xl font-bold ${customFont.className} hover:text-yellow-400 hover:underline`}>Byron Wade</span>
 					</Link>
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">
 						{navItems.map((item) => (
-							<Link key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-yellow-400 underline" : "hover:text-yellow-400")}>
+							<Link prefetch={true} key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-yellow-400 underline" : "hover:text-yellow-400")}>
 								<CodedText>{item.name}</CodedText>
 							</Link>
 						))}
@@ -95,7 +95,7 @@ export default function Navbar({ className }: { className?: string }) {
 						</Button>
 
 						<Button asChild variant="default" className="bg-black text-white dark:bg-white dark:text-black hover:bg-yellow-400 hover:text-black dark:hover:bg-yellow-400 dark:hover:text-black">
-							<Link href="/contact">
+							<Link prefetch={true} href="/contact">
 								<CodedText>Work with me</CodedText>
 							</Link>
 						</Button>
@@ -106,11 +106,11 @@ export default function Navbar({ className }: { className?: string }) {
 				<div className="lg:hidden bg-white dark:bg-black">
 					<nav className="px-4 pt-2 pb-4 space-y-2">
 						{navItems.map((item) => (
-							<Link key={item.name} href={item.href} className={cn("block py-2 text-sm font-medium transition-colors", pathname.startsWith(item.href) ? "text-yellow-400" : "hover:text-yellow-400")} onClick={() => setIsMobileMenuOpen(false)}>
+							<Link prefetch={true} key={item.name} href={item.href} className={cn("block py-2 text-sm font-medium transition-colors", pathname.startsWith(item.href) ? "text-yellow-400" : "hover:text-yellow-400")} onClick={() => setIsMobileMenuOpen(false)}>
 								{item.name}
 							</Link>
 						))}
-						<Link href="/contact" className="block py-2 text-sm font-medium hover:text-yellow-400" onClick={() => setIsMobileMenuOpen(false)}>
+						<Link prefetch={true} href="/contact" className="block py-2 text-sm font-medium hover:text-yellow-400" onClick={() => setIsMobileMenuOpen(false)}>
 							Work with me
 						</Link>
 					</nav>

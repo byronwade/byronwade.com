@@ -20,7 +20,7 @@ export default async function ProductPage({ params }: PageProps) {
 		<div className="container mx-auto px-4 py-8">
 			<div className="grid md:grid-cols-2 gap-8">
 				<div className="aspect-square relative">
-					<Image src={product.images[0].url} alt={product.images[0].altText || product.title} fill className="object-cover rounded-lg" sizes="(max-width: 768px) 100vw, 50vw" priority />
+					<Image loading="eager" decoding="sync" quality={65} src={product.images[0].url} alt={product.images[0].altText || product.title} fill className="object-cover rounded-lg" sizes="(max-width: 768px) 100vw, 50vw" priority />
 				</div>
 
 				<div>

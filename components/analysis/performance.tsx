@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Activity, BarChart, Clock, Globe, LayoutGrid, LineChart, MousePointer, PieChart, Search, Share2, Shield, Smartphone, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metrics } from "@/types/analysis";
@@ -117,191 +116,71 @@ export default function PerformanceAnalysis() {
 		},
 	};
 
-	const fadeIn = {
-		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0 },
-	};
-
 	return (
-		<div className="space-y-16 py-12">
-			<div className="space-y-4">
-				<h2 className="text-3xl font-semibold tracking-tight">Technical Implementation Analysis</h2>
-				<p className="text-muted-foreground max-w-3xl">Comprehensive breakdown of implemented improvements and their measurable impact on website performance, infrastructure, and search visibility.</p>
-			</div>
-
-			<section className="space-y-8">
-				<div className="border-b pb-4">
-					<h3 className="text-2xl font-semibold">Performance Metrics</h3>
-					<p className="text-muted-foreground mt-2">Current performance compared to industry standards and targets</p>
-				</div>
-
-				<div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-6">
-					{Object.entries(currentMetrics).map(([key, data], index) => (
-						<motion.div key={key} initial="hidden" animate="visible" variants={fadeIn} transition={{ duration: 0.5, delay: index * 0.1 }}>
-							<Card className="h-full">
-								<CardHeader className="pb-2">
-									<div className="flex items-center justify-between">
-										<div className="flex items-center gap-3">
-											<div className="p-2 rounded-md bg-muted">
-												<data.icon className="h-5 w-5 text-muted-foreground" />
-											</div>
-											<div>
-												<div className="flex items-center gap-2">
-													<CardTitle className="text-lg font-semibold capitalize">{key.replace(/([A-Z])/g, " $1").trim()}</CardTitle>
-													<span className="text-sm font-medium text-green-600">+{data.improvement}% improved</span>
-												</div>
-												<CardDescription className="text-sm">{data.description}</CardDescription>
-											</div>
-										</div>
+		<div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-6">
+			{Object.entries(currentMetrics).map(([key, data], index) => (
+				<div key={key} className="opacity-0 animate-in fade-in-0 duration-500" style={{ animationDelay: `${index * 100}ms` }}>
+					<Card className="h-full">
+						<CardHeader className="pb-2">
+							<div className="flex items-center justify-between">
+								<div className="flex items-center gap-3">
+									<div className="p-2 rounded-md bg-muted">
+										<data.icon className="h-5 w-5 text-muted-foreground" />
 									</div>
-								</CardHeader>
-								<CardContent>
-									<div className="space-y-4">
-										<div className="grid grid-cols-3 gap-2 pt-2">
-											<div className="space-y-1">
-												<p className="text-xs text-muted-foreground font-medium">Current</p>
-												<p className="text-2xl font-semibold tabular-nums">
-													{data.value}
-													{data.unit}
-												</p>
-											</div>
-											<div className="space-y-1">
-												<p className="text-xs text-muted-foreground font-medium">Industry</p>
-												<p className="text-2xl font-semibold text-muted-foreground tabular-nums">
-													{Math.round(data.value * 1.2)}
-													{data.unit}
-												</p>
-											</div>
-											<div className="space-y-1">
-												<p className="text-xs text-muted-foreground font-medium">Target</p>
-												<div className="flex items-baseline gap-1.5">
-													<p className="text-2xl font-semibold text-primary tabular-nums">
-														{Math.round(data.value * 0.4)}
-														{data.unit}
-													</p>
-												</div>
-											</div>
+									<div>
+										<div className="flex items-center gap-2">
+											<CardTitle className="text-lg font-semibold capitalize">{key.replace(/([A-Z])/g, " $1").trim()}</CardTitle>
+											<span className="text-sm font-medium text-green-600">+{data.improvement}% improved</span>
 										</div>
-										<div className="pt-4 border-t space-y-3">
-											<p className="text-sm text-muted-foreground">
-												<span className="font-medium text-foreground">Impact: </span>
-												{data.impact}
+										<CardDescription className="text-sm">{data.description}</CardDescription>
+									</div>
+								</div>
+							</div>
+						</CardHeader>
+						<CardContent>
+							<div className="space-y-4">
+								<div className="grid grid-cols-3 gap-2 pt-2">
+									<div className="space-y-1">
+										<p className="text-xs text-muted-foreground font-medium">Current</p>
+										<p className="text-2xl font-semibold tabular-nums">
+											{data.value}
+											{data.unit}
+										</p>
+									</div>
+									<div className="space-y-1">
+										<p className="text-xs text-muted-foreground font-medium">Industry</p>
+										<p className="text-2xl font-semibold text-muted-foreground tabular-nums">
+											{Math.round(data.value * 1.2)}
+											{data.unit}
+										</p>
+									</div>
+									<div className="space-y-1">
+										<p className="text-xs text-muted-foreground font-medium">Target</p>
+										<div className="flex items-baseline gap-1.5">
+											<p className="text-2xl font-semibold text-primary tabular-nums">
+												{Math.round(data.value * 0.4)}
+												{data.unit}
 											</p>
-											<div className="bg-muted/50 rounded-lg p-3">
-												<p className="text-sm text-muted-foreground">
-													<span className="font-medium text-foreground">Did you know? </span>
-													{data.fact}
-												</p>
-											</div>
 										</div>
 									</div>
-								</CardContent>
-							</Card>
-						</motion.div>
-					))}
-				</div>
-			</section>
-
-			<section className="space-y-8">
-				<div className="border-b pb-4">
-					<h3 className="text-2xl font-semibold">Overall Performance Impact</h3>
-					<p className="text-muted-foreground mt-2">Cumulative improvements across all metrics</p>
-				</div>
-
-				<Card className="bg-muted/50">
-					<CardContent className="py-6">
-						<div className="grid md:grid-cols-2 gap-8">
-							<div className="space-y-4">
-								<h4 className="font-medium text-lg">Key Performance Gains</h4>
-								<div className="grid gap-4">
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Average Load Time Reduction</span>
-										<span className="text-green-600 font-bold">85.5%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Overall Performance Score Increase</span>
-										<span className="text-green-600 font-bold">111.1%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Mobile Experience Enhancement</span>
-										<span className="text-green-600 font-bold">63.8%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">SEO Improvement</span>
-										<span className="text-green-600 font-bold">72.7%</span>
+								</div>
+								<div className="pt-4 border-t space-y-3">
+									<p className="text-sm text-muted-foreground">
+										<span className="font-medium text-foreground">Impact: </span>
+										{data.impact}
+									</p>
+									<div className="bg-muted/50 rounded-lg p-3">
+										<p className="text-sm text-muted-foreground">
+											<span className="font-medium text-foreground">Did you know? </span>
+											{data.fact}
+										</p>
 									</div>
 								</div>
 							</div>
-							<div className="space-y-4">
-								<h4 className="font-medium text-lg">Business Impact</h4>
-								<div className="grid gap-4">
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Conversion Rate Increase</span>
-										<span className="text-green-600 font-bold">114.3%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Bounce Rate Reduction</span>
-										<span className="text-green-600 font-bold">46.2%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">User Engagement Improvement</span>
-										<span className="text-green-600 font-bold">133.3%</span>
-									</div>
-									<div className="flex items-center justify-between p-3 bg-background rounded-lg">
-										<span className="text-sm font-medium">Overall ROI</span>
-										<span className="text-green-600 font-bold">89.4%</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</CardContent>
-				</Card>
-			</section>
-
-			<section className="space-y-8">
-				<div className="border-b pb-4">
-					<h3 className="text-2xl font-semibold">Why This Matters</h3>
-					<p className="text-muted-foreground mt-2">Research-backed impact of website performance on business success</p>
+						</CardContent>
+					</Card>
 				</div>
-
-				<Card className="bg-neutral-50 dark:bg-neutral-800/50">
-					<CardHeader>
-						<CardTitle className="text-xl">Performance and Business Impact</CardTitle>
-						<CardDescription>How website performance affects user behavior and business metrics</CardDescription>
-					</CardHeader>
-					<CardContent className="space-y-6">
-						<div className="grid gap-4 sm:grid-cols-2">
-							<StatisticCard title="Bounce Rate Impact" description="As page load time increases from 1s to 5s, the probability of bounce increases by 90%" source="Google Research (2023)" icon={BarChart} />
-							<StatisticCard title="Conversion Rate Boost" description="Every 0.1s improvement in site speed can increase conversion rates by 8%" source="Deloitte Digital (2023)" icon={LineChart} />
-							<StatisticCard title="User Retention" description="85% of users won't return to a site after a poor performance experience" source="Forrester Research" icon={PieChart} />
-							<StatisticCard title="Revenue Growth" description="B2B companies with superior digital experiences generate 5x more revenue" source="McKinsey & Company" icon={LineChart} />
-							<StatisticCard title="Conversion Sensitivity" description="A 100ms delay in website load time can hurt conversion rates by 7%" source="Akamai Technologies" icon={BarChart} />
-							<StatisticCard title="Customer Loyalty" description="88% of users are less likely to return after a poor website experience" source="Forbes Insights" icon={PieChart} />
-						</div>
-						<div className="pt-4 border-t">
-							<h4 className="text-sm font-semibold mb-2">Sources</h4>
-							<p className="text-sm text-muted-foreground">Google Web Performance Studies, Deloitte Digital Performance Research, Forrester Customer Experience Index, McKinsey B2B Digital Experience Report, Akamai Performance Studies, Forbes Digital Transformation Insights</p>
-						</div>
-					</CardContent>
-				</Card>
-			</section>
-		</div>
-	);
-}
-
-function StatisticCard({ title, description, source, icon: Icon }: { title: string; description: string; source: string; icon: React.ElementType }) {
-	return (
-		<div className="bg-white dark:bg-neutral-700 p-4 rounded-lg shadow-sm">
-			<div className="flex items-start gap-4">
-				<div className="p-2 bg-primary/10 rounded-full">
-					<Icon className="h-5 w-5 text-primary" />
-				</div>
-				<div className="space-y-1">
-					<h5 className="font-medium">{title}</h5>
-					<p className="text-sm text-muted-foreground">{description}</p>
-					<p className="text-xs text-primary">{source}</p>
-				</div>
-			</div>
+			))}
 		</div>
 	);
 }

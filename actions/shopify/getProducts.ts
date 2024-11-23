@@ -1,7 +1,8 @@
-import { unstable_cache } from "next/cache";
+export const runtime = "edge";
+
+import { unstable_cache } from "@/lib/unstable-cache";
 import { shopifyClient } from "@/lib/shopify";
 import { getAllProductsQuery, getProductByHandleQuery } from "@/lib/queries/products";
-import type { Product } from "@/types/shopify";
 
 export const getProducts = unstable_cache(
 	async () => {
@@ -18,8 +19,7 @@ export const getProducts = unstable_cache(
 	},
 	["all-products"],
 	{
-		revalidate: 60, // Cache for 1 minute
-		tags: ["products"],
+		revalidate: 60 * 60 * 2, // two hours,
 	}
 );
 
@@ -44,7 +44,6 @@ export const getProduct = unstable_cache(
 	},
 	["product"],
 	{
-		revalidate: 60,
-		tags: ["products"],
+		revalidate: 60 * 60 * 2, // two hours,
 	}
 );

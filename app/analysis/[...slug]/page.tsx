@@ -123,11 +123,61 @@ const getClientData = unstable_cache(
 	{ revalidate: 3600 }
 );
 
+// Add type definitions
+interface PerformanceData {
+	date: string;
+	value: number;
+	category: string;
+}
+
+// Add to the type definitions
+interface ConversionData {
+	date: string;
+	value: number;
+	type: string;
+}
+
+// Transform the data to match the expected type
+const transformPerformanceData = (data: { month: string; industry: number; optimized: number; }[]): PerformanceData[] => {
+	return data.flatMap(item => [
+		{
+			date: item.month,
+			value: item.industry,
+			category: 'Industry'
+		},
+		{
+			date: item.month,
+			value: item.optimized,
+			category: 'Optimized'
+		}
+	]);
+};
+
+// Add new transformation function for conversion data
+const transformConversionData = (data: { category: string; industry: number; optimized: number; }[]): ConversionData[] => {
+	return data.flatMap(item => [
+		{
+			date: item.category,
+			value: item.industry,
+			type: 'Industry'
+		},
+		{
+			date: item.category,
+			value: item.optimized,
+			type: 'Optimized'
+		}
+	]);
+};
+
 export default async function PerformanceCaseStudy() {
 	const queryClient = new QueryClient();
 
 	// Fetch all data in parallel
 	const [analyticsData, technicalData, clientData] = await Promise.all([getAnalyticsData(), getTechnicalData(), getClientData()]);
+
+	// Transform both performance and conversion data
+	const transformedPerformanceData = transformPerformanceData(analyticsData.performanceData);
+	const transformedConversionData = transformConversionData(analyticsData.conversionData);
 
 	// Prefetch queries
 	await Promise.all([
@@ -156,28 +206,28 @@ export default async function PerformanceCaseStudy() {
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<Suspense fallback={<div>Loading...</div>}>
 				<PageHeader title="Impact Marine Group">
-					<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Figma</CodedText>
 					</Link>
-					<Link href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Sketch</CodedText>
 					</Link>
-					<Link href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Adobe XD</CodedText>
 					</Link>
-					<Link href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">InVision</CodedText>
 					</Link>
-					<Link href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Framer</CodedText>
 					</Link>
-					<Link href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Axure</CodedText>
 					</Link>
-					<Link href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Flinto</CodedText>
 					</Link>
-					<Link href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">ProtoPie</CodedText>
 					</Link>
 				</PageHeader>
@@ -208,7 +258,7 @@ export default async function PerformanceCaseStudy() {
 									<Performance />
 									<SEO seo={seo} benchmarks={benchmarks} seoMetrics={seoMetrics} />
 									<Design benchmarks={benchmarks} />
-									<Market performanceData={performanceData} conversionData={conversionData} />
+									<Market performanceData={transformedPerformanceData} conversionData={transformedConversionData} />
 									<Impact benchmarks={benchmarks} />
 									<Technical data={technicalData} />
 									<Conclusion benchmarks={benchmarks} />

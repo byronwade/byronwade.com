@@ -38,7 +38,7 @@ export default function LandingPage() {
 						<h1 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">Elevate Your Online Presence with Custom Web Design</h1>
 						<p className="text-xl mb-8 text-stone-600">Hi, I&apos;m Byron Wade. I specialize in crafting bespoke websites that not only look stunning but also drive real results for your business.</p>
 						<div className="md:hidden">
-							<Image src="/placeholder.svg?height=300&width=300" width={300} height={300} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white mx-auto mb-8" />
+							<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=300&width=300" width={300} height={300} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white mx-auto mb-8" />
 						</div>
 					</div>
 					<div className="md:w-1/2 bg-white p-8 rounded-lg shadow-xl">
@@ -78,7 +78,7 @@ export default function LandingPage() {
 						].map((service, index) => (
 							<div key={index} className={`flex flex-col ${service.align === "right" ? "md:flex-row-reverse" : "md:flex-row"} items-center`}>
 								<div className="md:w-1/2 mb-8 md:mb-0">
-									<Image src={service.image} width={600} height={400} alt={service.title} className="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto" />
+									<Image loading="eager" decoding="sync" quality={65} src={service.image} width={600} height={400} alt={service.title} className="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto" />
 								</div>
 								<div className={`md:w-1/2 ${service.align === "right" ? "md:pr-12" : "md:pl-12"}`}>
 									<div className="flex items-center mb-4">
@@ -112,7 +112,7 @@ export default function LandingPage() {
 								</p>
 							</div>
 							<div className="md:w-1/2 flex justify-center">
-								<Image src="/placeholder.svg?height=300&width=500" width={500} height={300} alt="E-commerce Website Transformation" className="rounded-lg shadow-md" />
+								<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=300&width=500" width={500} height={300} alt="E-commerce Website Transformation" className="rounded-lg shadow-md" />
 							</div>
 						</div>
 					</div>
@@ -134,7 +134,7 @@ export default function LandingPage() {
 				<div className="container mx-auto px-4">
 					<div className="flex flex-col md:flex-row items-center">
 						<div className="md:w-1/3 mb-8 md:mb-0">
-							<Image src="/placeholder.svg?height=400&width=400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-stone-200" />
+							<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=400&width=400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-stone-200" />
 						</div>
 						<div className="md:w-2/3 md:pl-12">
 							<h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Meet Byron Wade</h2>
