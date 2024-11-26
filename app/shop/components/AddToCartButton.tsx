@@ -4,6 +4,7 @@ import { useState } from "react";
 import { shopifyClient } from "@/lib/shopify";
 import { addToCartMutation } from "@/lib/queries/cart";
 import { toast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 interface AddToCartButtonProps {
 	variantId: string;
@@ -45,13 +46,8 @@ export default function AddToCartButton({ variantId, disabled }: AddToCartButton
 	};
 
 	return (
-		<button
-			onClick={addToCart}
-			disabled={isLoading || disabled}
-			className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 
-					 disabled:opacity-50 disabled:cursor-not-allowed"
-		>
-			{isLoading ? "Adding to Cart..." : "Add to Cart"}
-		</button>
+		<Button onClick={addToCart} disabled={isLoading || disabled} variant="outline" size="sm" className="w-full sm:w-auto">
+			{isLoading ? "Adding..." : "Add to Cart"}
+		</Button>
 	);
 }

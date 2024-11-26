@@ -129,7 +129,7 @@ const Hero = () => {
 						animate={{ opacity: 1, scale: 1 }}
 						className="relative md:sticky md:top-24 mt-4 md:mt-0"
 					>
-						<Image src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert max-w-full h-auto" priority />
+						<Image loading="eager" decoding="sync" quality={65} src="/astronaut.svg" alt="Astronaut piloting blazing fast websites for Jasper, Georgia businesses" width={600} height={600} className="dark:invert max-w-full h-auto" priority />
 					</motion.div>
 				</div>
 			</div>

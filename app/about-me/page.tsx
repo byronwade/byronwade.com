@@ -53,7 +53,7 @@ export default function AccessibleVIPAboutMePage() {
 						<div className="md:w-1/2 flex justify-center">
 							<div className="relative">
 								<div className="absolute inset-0 bg-gradient-to-br from-stone-400 to-stone-600 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-								<Image src="https://placehold.co/600x400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white relative z-10" />
+								<Image loading="eager" decoding="sync" quality={65} src="https://placehold.co/600x400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white relative z-10" />
 							</div>
 						</div>
 					</div>
