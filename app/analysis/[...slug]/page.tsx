@@ -152,6 +152,48 @@ export default async function PerformanceCaseStudy() {
 		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
 	};
 
+	// Add these type definitions
+	type PerformanceDataPoint = {
+		date: string;
+		value: number;
+		type: string; // Changed from 'category' to 'type' to match expected type
+	};
+
+	type ConversionDataPoint = {
+		date: string;
+		value: number;
+		type: string;
+	};
+
+	// Update the data transformation
+	const transformedPerformanceData: PerformanceDataPoint[] = performanceData
+		.map((point) => ({
+			date: point.month,
+			value: point.optimized,
+			type: "Optimized",
+		}))
+		.concat(
+			performanceData.map((point) => ({
+				date: point.month,
+				value: point.industry,
+				type: "Industry",
+			}))
+		);
+
+	// Add conversion data transformation
+	const transformedConversionData: ConversionDataPoint[] = conversionData.flatMap((point) => [
+		{
+			date: point.category,
+			value: point.optimized,
+			type: "Optimized",
+		},
+		{
+			date: point.category,
+			value: point.industry,
+			type: "Industry",
+		},
+	]);
+
 	return (
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<Suspense fallback={<div>Loading...</div>}>
@@ -208,7 +250,7 @@ export default async function PerformanceCaseStudy() {
 									<Performance />
 									<SEO seo={seo} benchmarks={benchmarks} seoMetrics={seoMetrics} />
 									<Design benchmarks={benchmarks} />
-									<Market performanceData={performanceData} conversionData={conversionData} />
+									<Market performanceData={transformedPerformanceData} conversionData={transformedConversionData} />
 									<Impact benchmarks={benchmarks} />
 									<Technical data={technicalData} />
 									<Conclusion benchmarks={benchmarks} />
