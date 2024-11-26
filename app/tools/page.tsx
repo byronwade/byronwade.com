@@ -138,7 +138,7 @@ function Tool({
 	return (
 		// @ts-ignore
 		<motion.div ref={ref} style={{ opacity, scale }} className="min-h-[calc(100vh-64px)] md:-ml-32 flex items-center justify-center px-4">
-			<Card className="w-full mx-auto max-w-5xl bg-white dark:bg-black border dark:border-zinc-800 border-zinc-200 rounded-xl overflow-hidden z-10">
+			<Card className="w-full mx-auto max-w-5xl bg-zinc-50 dark:bg-black border dark:border-zinc-800 border-zinc-200 rounded-xl overflow-hidden z-10">
 				<CardHeader className="flex justify-between items-center py-10 border-b dark:border-zinc-800 border-zinc-200">
 					<div className="h-8 w-8 flex items-center justify-center">
 						<svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-zinc-500">

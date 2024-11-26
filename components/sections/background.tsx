@@ -213,7 +213,7 @@ const Background = memo(() => {
 		initMovingStars();
 	}, [theme, initStars, initMovingStars]);
 
-	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-white dark:bg-black transition-colors duration-300 -z-10" aria-hidden="true" />;
+	return <canvas ref={canvasRef} className="fixed inset-0 h-full w-full bg-zinc-50 dark:bg-black transition-colors duration-300 -z-10" aria-hidden="true" />;
 });
 
 Background.displayName = "Background";

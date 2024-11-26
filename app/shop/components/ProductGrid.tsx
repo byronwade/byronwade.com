@@ -7,7 +7,7 @@ export default function ProductGrid({ products }: { products: Product[] }) {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 			{products.map((product) => (
-				<Link key={product.id} href={`/shop/${product.handle}`} className="group">
+				<Link prefetch={true} key={product.id} href={`/shop/${product.handle}`} className="group">
 					<div className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
 						{product.image && (
 							<div className="aspect-square relative">
@@ -16,7 +16,7 @@ export default function ProductGrid({ products }: { products: Product[] }) {
 						)}
 						<div className="p-4">
 							<h2 className="text-lg font-semibold">{product.title}</h2>
-							<p className="text-gray-600">{formatPrice(product.price)}</p>
+							<p className="text-neutral-600">{formatPrice(product.price)}</p>
 							{!product.availableForSale && <span className="text-red-500 text-sm">Out of stock</span>}
 						</div>
 					</div>

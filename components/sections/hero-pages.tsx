@@ -25,12 +25,12 @@ export default function HeroPages() {
 
 				<div className="mb-12 flex flex-wrap justify-center gap-4">
 					<Button asChild size="lg" className="h-12 px-6">
-						<Link href="/">
+						<Link prefetch={true} href="/">
 							Get started <ArrowRight className="ml-2 h-5 w-5" />
 						</Link>
 					</Button>
 					<Button asChild variant="outline" size="lg" className="h-12 px-6">
-						<Link href="/docs">
+						<Link prefetch={true} href="/docs">
 							Read the docs <ArrowRight className="ml-2 h-5 w-5" />
 						</Link>
 					</Button>

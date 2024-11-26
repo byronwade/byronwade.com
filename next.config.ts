@@ -15,6 +15,8 @@ const nextConfig: import("next").NextConfig = {
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},
 	experimental: {
+		inlineCss: true,
+		ppr: true,
 		optimizeCss: true,
 	},
 	webpack: (config, { isServer }) => {

@@ -99,11 +99,11 @@ const Hero = () => {
 						</motion.p>
 
 						<motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-							<Link href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out">
+							<Link prefetch={true} href="/contact" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-400 hover:bg-yellow-500 transition duration-150 ease-in-out">
 								<CodedText>Launch Your Mission</CodedText>
 								<Zap className="ml-2 -mr-1 h-5 w-5" />
 							</Link>
-							<Link href="/projects" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out">
+							<Link prefetch={true} href="/projects" className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-yellow-400 text-base font-medium rounded-md text-yellow-400 hover:bg-yellow-400 hover:text-black transition duration-150 ease-in-out">
 								<CodedText>Explore Our Galaxy of Work</CodedText>
 							</Link>
 						</motion.div>

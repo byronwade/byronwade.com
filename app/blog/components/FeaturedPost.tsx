@@ -16,7 +16,7 @@ export default function FeaturedPost({ post }: Props) {
 				<div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
 					<div className="absolute bottom-0 p-8">
 						<h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-						<p className="text-lg text-gray-200">{post.excerpt}</p>
+						<p className="text-lg text-neutral-200">{post.excerpt}</p>
 					</div>
 				</div>
 			</motion.div>

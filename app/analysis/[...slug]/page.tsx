@@ -156,35 +156,35 @@ export default async function PerformanceCaseStudy() {
 		<HydrationBoundary state={dehydrate(queryClient)}>
 			<Suspense fallback={<div>Loading...</div>}>
 				<PageHeader title="Impact Marine Group">
-					<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Figma</CodedText>
 					</Link>
-					<Link href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Sketch</CodedText>
 					</Link>
-					<Link href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Adobe XD</CodedText>
 					</Link>
-					<Link href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">InVision</CodedText>
 					</Link>
-					<Link href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Framer</CodedText>
 					</Link>
-					<Link href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Axure</CodedText>
 					</Link>
-					<Link href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">Flinto</CodedText>
 					</Link>
-					<Link href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
+					<Link prefetch={true} href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
 						<CodedText className="hover:underline">ProtoPie</CodedText>
 					</Link>
 				</PageHeader>
 				<TooltipProvider>
-					<div className="min-h-screen bg-gradient-to-b bg-white dark:bg-black">
+					<div className="min-h-screen bg-gradient-to-b bg-zinc-50 dark:bg-black">
 						<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-y">
-							<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 								<header className="py-4">
 									<div className="flex items-center justify-between">
 										<div className="flex flex-col">
@@ -200,7 +200,7 @@ export default async function PerformanceCaseStudy() {
 							</div>
 						</div>
 
-						<div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+						<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 							<div className="lg:grid lg:gap-8">
 								<main className="space-y-12 lg:space-y-16">
 									<Overview stats={stats} />

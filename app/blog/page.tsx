@@ -28,7 +28,7 @@ export default async function BlogPage() {
 
 	if (!posts.length) {
 		return (
-			<div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
+			<div className="min-h-screen bg-zinc-50 text-black dark:bg-black dark:text-white">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 					<h1 className="text-3xl font-bold">Blog</h1>
 					<p className="mt-4">No posts available at the moment.</p>
@@ -38,7 +38,7 @@ export default async function BlogPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
+		<div className="min-h-screen bg-zinc-50 text-black dark:bg-black dark:text-white">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				<Suspense fallback={<div>Loading featured post...</div>}>
 					<FeaturedPost post={posts[0]} />
@@ -52,8 +52,8 @@ export default async function BlogPage() {
 							</div>
 							<div className="p-6">
 								<h2 className="text-xl font-bold mb-2">{post.title}</h2>
-								<p className="text-gray-400">{post.excerpt}</p>
-								<time className="text-sm text-gray-500 mt-2 block">{new Date(post.date).toLocaleDateString()}</time>
+								<p className="text-neutral-400">{post.excerpt}</p>
+								<time className="text-sm text-neutral-500 mt-2 block">{new Date(post.date).toLocaleDateString()}</time>
 							</div>
 						</div>
 					))}

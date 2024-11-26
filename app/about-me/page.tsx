@@ -39,13 +39,13 @@ export default function AccessibleVIPAboutMePage() {
 							<h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-stone-700 to-stone-900">Byron Wade</h1>
 							<p className="text-2xl mb-8 text-stone-600">CEO and Co-Owner of Wade&apos;s Inc | Entrepreneur | Innovator</p>
 							<div className="flex flex-wrap gap-3 mb-8">
-								<Badge variant="secondary" className="text-lg py-2 px-4 bg-white/50 backdrop-blur-sm">
+								<Badge variant="secondary" className="text-lg py-2 px-4 bg-zinc-50/50 backdrop-blur-sm">
 									<Briefcase className="w-5 h-5 mr-2 inline" /> Entrepreneur
 								</Badge>
-								<Badge variant="secondary" className="text-lg py-2 px-4 bg-white/50 backdrop-blur-sm">
+								<Badge variant="secondary" className="text-lg py-2 px-4 bg-zinc-50/50 backdrop-blur-sm">
 									<Book className="w-5 h-5 mr-2 inline" /> CS Student
 								</Badge>
-								<Badge variant="secondary" className="text-lg py-2 px-4 bg-white/50 backdrop-blur-sm">
+								<Badge variant="secondary" className="text-lg py-2 px-4 bg-zinc-50/50 backdrop-blur-sm">
 									<TrendingUp className="w-5 h-5 mr-2 inline" /> Innovator
 								</Badge>
 							</div>
@@ -66,7 +66,7 @@ export default function AccessibleVIPAboutMePage() {
 				<div className="container mx-auto px-4 space-y-20">
 					{/* About Me Section */}
 					<Card
-						className="bg-white shadow-xl rounded-3xl overflow-hidden"
+						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
 						ref={(el) => {
 							if (el) sectionRefs.current[0] = el;
 						}}
@@ -82,7 +82,7 @@ export default function AccessibleVIPAboutMePage() {
 
 					{/* Wade&apos;s Inc Section */}
 					<Card
-						className="bg-white shadow-xl rounded-3xl overflow-hidden"
+						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
 						ref={(el) => {
 							if (el) sectionRefs.current[0] = el;
 						}}
@@ -121,7 +121,7 @@ export default function AccessibleVIPAboutMePage() {
 
 					{/* Projects Section */}
 					<Card
-						className="bg-white shadow-xl rounded-3xl overflow-hidden"
+						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
 						ref={(el) => {
 							if (el) sectionRefs.current[0] = el;
 						}}
@@ -143,7 +143,7 @@ export default function AccessibleVIPAboutMePage() {
 
 					{/* Connect Section */}
 					<Card
-						className="bg-white shadow-xl rounded-3xl overflow-hidden"
+						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
 						ref={(el) => {
 							if (el) sectionRefs.current[0] = el;
 						}}
