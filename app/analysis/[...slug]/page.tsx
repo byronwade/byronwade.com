@@ -152,35 +152,35 @@ export default async function PerformanceCaseStudy() {
 		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
 	};
 
-	// Add these type definitions
+	// Update the type definitions to match the Market component's expectations
 	type PerformanceDataPoint = {
 		date: string;
 		value: number;
-		type: string; // Changed from 'category' to 'type' to match expected type
+		category: string; // For performanceData
 	};
 
 	type ConversionDataPoint = {
 		date: string;
 		value: number;
-		type: string;
+		type: string; // Changed back to 'type' for conversionData
 	};
 
-	// Update the data transformation
+	// Update the data transformations to use 'category' instead of 'type'
 	const transformedPerformanceData: PerformanceDataPoint[] = performanceData
 		.map((point) => ({
 			date: point.month,
 			value: point.optimized,
-			type: "Optimized",
+			category: "Optimized",
 		}))
 		.concat(
 			performanceData.map((point) => ({
 				date: point.month,
 				value: point.industry,
-				type: "Industry",
+				category: "Industry",
 			}))
 		);
 
-	// Add conversion data transformation
+	// Update conversion data transformation to use 'type' instead of 'category'
 	const transformedConversionData: ConversionDataPoint[] = conversionData.flatMap((point) => [
 		{
 			date: point.category,

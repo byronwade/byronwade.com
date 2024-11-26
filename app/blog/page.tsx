@@ -3,6 +3,7 @@ import { unstable_cache } from "@/lib/unstable-cache";
 import FeaturedPost from "./components/FeaturedPost";
 import { type Post } from "./types";
 import { getBlogPosts } from "@/actions/shopify/getBlogPosts";
+import Image from "next/image";
 
 const getAllPosts = unstable_cache(
 	async (): Promise<Post[]> => {
@@ -48,7 +49,7 @@ export default async function BlogPage() {
 					{posts.slice(1).map((post) => (
 						<div key={post.id} className="rounded-lg overflow-hidden">
 							<div className="aspect-video relative">
-								<img src={post.image} alt={post.title} className="object-cover w-full h-full" />
+								<Image src={post.image} alt={post.title} width={500} height={300} priority={true} />
 							</div>
 							<div className="p-6">
 								<h2 className="text-xl font-bold mb-2">{post.title}</h2>
