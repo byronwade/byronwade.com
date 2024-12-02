@@ -1,7 +1,18 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 
-export default function Technical() {
+interface TechnicalMetrics {
+	performanceOptimizations: string[];
+	securityEnhancements: string[];
+}
+
+interface TechnicalProps {
+	data: TechnicalMetrics;
+}
+
+export default function Technical({ data }: TechnicalProps) {
 	return (
 		<section id="technical" className="scroll-mt-28">
 			<Card>
@@ -13,19 +24,17 @@ export default function Technical() {
 					<div>
 						<h3 className="font-semibold mb-2">Performance Optimizations</h3>
 						<ul className="grid gap-2">
-							<TechItem text="Advanced caching strategies implementation" />
-							<TechItem text="Image optimization with WebP format and lazy loading" />
-							<TechItem text="Code splitting and bundle optimization" />
-							<TechItem text="CDN integration for global content delivery" />
+							{data.performanceOptimizations.map((text, i) => (
+								<TechItem key={i} text={text} />
+							))}
 						</ul>
 					</div>
 					<div>
 						<h3 className="font-semibold mb-2">Security Enhancements</h3>
 						<ul className="grid gap-2">
-							<TechItem text="SSL/TLS implementation with A+ rating" />
-							<TechItem text="Advanced firewall protection" />
-							<TechItem text="Regular security audits and monitoring" />
-							<TechItem text="Automated backup systems" />
+							{data.securityEnhancements.map((text, i) => (
+								<TechItem key={i} text={text} />
+							))}
 						</ul>
 					</div>
 				</CardContent>

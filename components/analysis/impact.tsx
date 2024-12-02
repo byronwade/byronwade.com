@@ -1,33 +1,44 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { benchmarks, calculateImprovement } from "@/actions/analysis/get-analytics";
-import { useMemo } from "react";
+"use client";
 
-export default function Impact() {
-	const metrics = useMemo(
-		() => [
-			{
-				title: "Bounce Rate",
-				value: `-${benchmarks.bounceRate.industry - benchmarks.bounceRate.optimized}%`,
-				trend: "decrease" as const,
-			},
-			{
-				title: "Conversion Rate",
-				value: `+${calculateImprovement(benchmarks.conversionRate.industry, benchmarks.conversionRate.optimized)}`,
-				trend: "increase" as const,
-			},
-			{
-				title: "Organic Traffic",
-				value: `+${benchmarks.organicTrafficIncrease}%`,
-				trend: "increase" as const,
-			},
-			{
-				title: "Mobile Score",
-				value: `+${calculateImprovement(benchmarks.mobileScore.industry, benchmarks.mobileScore.optimized)}`,
-				trend: "increase" as const,
-			},
-		],
-		[]
-	);
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+interface ImpactProps {
+	benchmarks: {
+		bounceRate: { industry: number; optimized: number };
+		conversionRate: { industry: number; optimized: number };
+		organicTrafficIncrease: number;
+		mobileScore: { industry: number; optimized: number };
+	};
+}
+
+const calculateImprovement = (industry: number, optimized: number): string => {
+	const improvement = ((optimized - industry) / industry) * 100;
+	return `${improvement.toFixed(1)}%`;
+};
+
+export default function Impact({ benchmarks }: ImpactProps) {
+	const metrics = [
+		{
+			title: "Bounce Rate",
+			value: `-${benchmarks.bounceRate.industry - benchmarks.bounceRate.optimized}%`,
+			trend: "decrease" as const,
+		},
+		{
+			title: "Conversion Rate",
+			value: `+${calculateImprovement(benchmarks.conversionRate.industry, benchmarks.conversionRate.optimized)}`,
+			trend: "increase" as const,
+		},
+		{
+			title: "Organic Traffic",
+			value: `+${benchmarks.organicTrafficIncrease}%`,
+			trend: "increase" as const,
+		},
+		{
+			title: "Mobile Score",
+			value: `+${calculateImprovement(benchmarks.mobileScore.industry, benchmarks.mobileScore.optimized)}`,
+			trend: "increase" as const,
+		},
+	];
 
 	return (
 		<section id="impact" className="scroll-mt-28">

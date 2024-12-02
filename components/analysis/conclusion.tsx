@@ -1,19 +1,19 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
-import { benchmarks, calculateImprovement } from "@/actions/analysis/get-analytics";
-import { useMemo } from "react";
 
-export default function Conclusion() {
-	const improvements = useMemo(
-		() => ({
-			loadTime: calculateImprovement(benchmarks.loadTime.industry, benchmarks.loadTime.optimized),
-			performanceScore: calculateImprovement(benchmarks.performanceScore.industry, benchmarks.performanceScore.optimized),
-			seoScore: calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized),
-			mobileScore: calculateImprovement(benchmarks.mobileScore.industry, benchmarks.mobileScore.optimized),
-		}),
-		[]
-	);
+interface ConclusionProps {
+	benchmarks: {
+		loadTime: { industry: number; optimized: number };
+		performanceScore: { industry: number; optimized: number };
+		seoScore: { industry: number; optimized: number };
+		mobileScore: { industry: number; optimized: number };
+		organicTrafficIncrease: number;
+	};
+}
 
+export default function Conclusion({ benchmarks }: ConclusionProps) {
 	return (
 		<section id="conclusion" className="scroll-mt-28">
 			<Card>
@@ -25,10 +25,10 @@ export default function Conclusion() {
 					<div className="space-y-4">
 						<p className="text-muted-foreground">Our premium redesign offers exceptional improvements across all key performance indicators:</p>
 						<ul className="grid gap-2">
-							<TechItem text={`${improvements.loadTime} reduction in load time`} />
-							<TechItem text={`${improvements.performanceScore} increase in performance score`} />
-							<TechItem text={`${improvements.seoScore} improvement in SEO score`} />
-							<TechItem text={`${improvements.mobileScore} boost in mobile responsiveness`} />
+							<TechItem text={`${benchmarks.loadTime.industry} reduction in load time`} />
+							<TechItem text={`${benchmarks.performanceScore.industry} increase in performance score`} />
+							<TechItem text={`${benchmarks.seoScore.industry} improvement in SEO score`} />
+							<TechItem text={`${benchmarks.mobileScore.industry} boost in mobile responsiveness`} />
 						</ul>
 					</div>
 					<div className="bg-muted rounded-lg p-4">

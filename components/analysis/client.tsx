@@ -1,6 +1,18 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardTitle, CardHeader } from "@/components/ui/card";
 
-export default function Client() {
+interface ClientProps {
+	clientData?: {
+		name: string;
+		industry: string;
+		duration: string;
+		completionDate: string;
+		goals: string[];
+	};
+}
+
+export default function Client({ clientData }: ClientProps) {
 	return (
 		<section id="client" className="scroll-mt-28">
 			<Card>
@@ -12,20 +24,20 @@ export default function Client() {
 					<div className="grid sm:grid-cols-3 gap-6">
 						<div className="space-y-2">
 							<h3 className="font-semibold">Client</h3>
-							<p className="text-sm text-muted-foreground">Impact Marine Group</p>
-							<p className="text-sm text-muted-foreground">Marine Industry</p>
+							<p className="text-sm text-muted-foreground">{clientData?.name}</p>
+							<p className="text-sm text-muted-foreground">{clientData?.industry}</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-semibold">Timeline</h3>
-							<p className="text-sm text-muted-foreground">Project Duration: 8 weeks</p>
-							<p className="text-sm text-muted-foreground">Completed: Q4 2023</p>
+							<p className="text-sm text-muted-foreground">Project Duration: {clientData?.duration}</p>
+							<p className="text-sm text-muted-foreground">Completed: {clientData?.completionDate}</p>
 						</div>
 						<div className="space-y-2">
 							<h3 className="font-semibold">Goals</h3>
 							<ul className="text-sm text-muted-foreground space-y-1">
-								<li>Increase conversions</li>
-								<li>Reduce bounce rates</li>
-								<li>Improve user experience</li>
+								{clientData?.goals.map((goal, index) => (
+									<li key={index}>{goal}</li>
+								))}
 							</ul>
 						</div>
 					</div>

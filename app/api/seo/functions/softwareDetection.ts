@@ -105,7 +105,7 @@ export const softwareDetection = async (content: string, headers: any[]) => {
 					},
 					{
 						name: "Next.js Page CSS Pattern",
-						pattern: /<link rel="stylesheet"[^>]*href="\/_next\/static\/css\//,
+						pattern: /<Link prefetch={true} rel="stylesheet"[^>]*href="\/_next\/static\/css\//,
 					},
 					{
 						name: "Next.js Image Component Pattern",

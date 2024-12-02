@@ -21,7 +21,7 @@ export default function LandingPage() {
 	return (
 		<div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
 			{/* Header */}
-			<header className={`fixed w-full z-10 transition-all duration-300 ${isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-4"}`}>
+			<header className={`fixed w-full z-10 transition-all duration-300 ${isScrolled ? "bg-zinc-50 shadow-md py-2" : "bg-transparent py-4"}`}>
 				<div className="container mx-auto px-4 flex justify-between items-center">
 					<div className="text-2xl font-serif font-bold">Byron Wade</div>
 					<Button className="bg-stone-800 hover:bg-stone-700 text-white transition-colors duration-300">
@@ -38,10 +38,10 @@ export default function LandingPage() {
 						<h1 className="text-4xl md:text-5xl font-serif font-bold mb-6 leading-tight">Elevate Your Online Presence with Custom Web Design</h1>
 						<p className="text-xl mb-8 text-stone-600">Hi, I&apos;m Byron Wade. I specialize in crafting bespoke websites that not only look stunning but also drive real results for your business.</p>
 						<div className="md:hidden">
-							<Image src="/placeholder.svg?height=300&width=300" width={300} height={300} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white mx-auto mb-8" />
+							<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=300&width=300" width={300} height={300} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-white mx-auto mb-8" />
 						</div>
 					</div>
-					<div className="md:w-1/2 bg-white p-8 rounded-lg shadow-xl">
+					<div className="md:w-1/2 bg-zinc-50 p-8 rounded-lg shadow-xl">
 						<h2 className="text-2xl font-serif font-bold mb-6 text-center">Start Your Free Web Design Consultation</h2>
 						<form className="space-y-4">
 							<Input placeholder="Your Name" className="bg-stone-50" />
@@ -56,7 +56,7 @@ export default function LandingPage() {
 			</section>
 
 			{/* Testimonial */}
-			<section className="py-16 bg-white">
+			<section className="py-16 bg-zinc-50">
 				<div className="container mx-auto px-4">
 					<div className="max-w-3xl mx-auto text-center">
 						<p className="text-2xl font-serif italic mb-4">&quot;Byron&apos;s web design approach is refreshing. He truly listens and delivers a website that exceeds expectations, perfectly capturing our brand essence.&quot;</p>
@@ -78,7 +78,7 @@ export default function LandingPage() {
 						].map((service, index) => (
 							<div key={index} className={`flex flex-col ${service.align === "right" ? "md:flex-row-reverse" : "md:flex-row"} items-center`}>
 								<div className="md:w-1/2 mb-8 md:mb-0">
-									<Image src={service.image} width={600} height={400} alt={service.title} className="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto" />
+									<Image loading="eager" decoding="sync" quality={65} src={service.image} width={600} height={400} alt={service.title} className="rounded-lg shadow-lg object-cover w-full h-64 md:h-auto" />
 								</div>
 								<div className={`md:w-1/2 ${service.align === "right" ? "md:pr-12" : "md:pl-12"}`}>
 									<div className="flex items-center mb-4">
@@ -94,7 +94,7 @@ export default function LandingPage() {
 			</section>
 
 			{/* Case Study */}
-			<section className="py-20 bg-white">
+			<section className="py-20 bg-zinc-50">
 				<div className="container mx-auto px-4">
 					<h2 className="text-3xl md:text-4xl font-serif font-bold mb-12 text-center">Web Design Success Story</h2>
 					<div className="bg-stone-100 p-8 rounded-lg shadow-lg">
@@ -112,7 +112,7 @@ export default function LandingPage() {
 								</p>
 							</div>
 							<div className="md:w-1/2 flex justify-center">
-								<Image src="/placeholder.svg?height=300&width=500" width={500} height={300} alt="E-commerce Website Transformation" className="rounded-lg shadow-md" />
+								<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=300&width=500" width={500} height={300} alt="E-commerce Website Transformation" className="rounded-lg shadow-md" />
 							</div>
 						</div>
 					</div>
@@ -130,11 +130,11 @@ export default function LandingPage() {
 			</section>
 
 			{/* About Byron */}
-			<section className="py-20 bg-white">
+			<section className="py-20 bg-zinc-50">
 				<div className="container mx-auto px-4">
 					<div className="flex flex-col md:flex-row items-center">
 						<div className="md:w-1/3 mb-8 md:mb-0">
-							<Image src="/placeholder.svg?height=400&width=400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-stone-200" />
+							<Image loading="eager" decoding="sync" quality={65} src="/placeholder.svg?height=400&width=400" width={400} height={400} alt="Byron Wade" className="rounded-full shadow-2xl border-4 border-stone-200" />
 						</div>
 						<div className="md:w-2/3 md:pl-12">
 							<h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Meet Byron Wade</h2>
@@ -151,7 +151,7 @@ export default function LandingPage() {
 				<div className="container mx-auto px-4 text-center">
 					<h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Ready to Transform Your Online Presence?</h2>
 					<p className="text-xl mb-8 max-w-2xl mx-auto">Whether you&apos;re starting from scratch or looking to revamp your existing website, I&apos;m here to help you create a stunning and effective web presence.</p>
-					<Button className="bg-white text-stone-800 hover:bg-stone-200 text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">Start Your Free Web Design Consultation</Button>
+					<Button className="bg-zinc-50 text-stone-800 hover:bg-stone-200 text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">Start Your Free Web Design Consultation</Button>
 					<p className="mt-6 text-lg">
 						Or call me directly at <strong>831-430-6011</strong>
 					</p>

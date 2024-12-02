@@ -20,7 +20,11 @@
 			}
 		],
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["./*"],
+			"@/lib/*": ["./lib/*"],
+			"@/queries/*": ["./lib/queries/*"],
+			"@/components/*": ["./components/*"],
+			"@/types/*": ["./types/*"]
 		}
   },
   "include": [
@@ -28,7 +32,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "hooks/sections/hero.tjsx"  ],
+, "hooks/sections/hero.tjsx", "next.config.mjs"  ],
   "exclude": [
     "node_modules"
   ]

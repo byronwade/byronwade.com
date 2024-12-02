@@ -1,223 +1,140 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import Link from "next/link";
-import PageHeader from "@/components/page-header";
-import CodedText from "@/components/ui/coded-text";
-import { benchmarks, calculateImprovement, stats, performanceData, conversionData } from "@/actions/analysis/get-analytics";
+import { ExternalLink, ArrowRight, TrendingUp, Clock, Star } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
-import dynamic from "next/dynamic";
-
-const Overview = dynamic(() => import("@/components/analysis/overview"));
-const Client = dynamic(() => import("@/components/analysis/client"));
-const Performance = dynamic(() => import("@/components/analysis/performance"));
-const SEO = dynamic(() => import("@/components/analysis/seo"));
-const Market = dynamic(() => import("@/components/analysis/market"));
-const Design = dynamic(() => import("@/components/analysis/design"));
-const Impact = dynamic(() => import("@/components/analysis/impact"));
-const Technical = dynamic(() => import("@/components/analysis/technical"));
-const Conclusion = dynamic(() => import("@/components/analysis/conclusion"));
-const Investment = dynamic(() => import("@/components/analysis/investment"));
-
-export default function PerformanceCaseStudy() {
-	const [isVisible, setIsVisible] = useState(false);
-	const [activeSection, setActiveSection] = useState("overview");
-	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-	useEffect(() => {
-		setIsVisible(true);
-		const handleScroll = () => {
-			const sections = document.querySelectorAll("section");
-			const scrollPosition = window.scrollY;
-
-			sections.forEach((section) => {
-				if (section instanceof HTMLElement && section.offsetTop <= scrollPosition + 150) {
-					setActiveSection(section.id);
-				}
-			});
-		};
-
-		window.addEventListener("scroll", handleScroll);
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
-	const mainFeatures = ["Fully responsive design", "SEO optimization", "Performance optimization", "Security implementation", "Analytics integration", "Content management system", "Contact forms", "Social media integration", "Basic email setup", "30-day support"];
-
-	const monthlyServices = [
-		{
-			feature: "24/7 monitoring",
-			included: true,
+const analyses = [
+	{
+		id: 341,
+		clientName: "Santa Cruz Surf School",
+		description: "Redesigned and optimized the website for a local surf school, improving user experience and SEO.",
+		technologies: ["Next.js", "Tailwind CSS", "Vercel"],
+		improvements: ["70% faster load time", "Mobile-responsive design", "Online booking integration", "SEO optimization"],
+		originalUrl: "https://old-santacruzsurfschool.com",
+		newUrl: "https://www.santacruzsurfschool.com",
+		metrics: {
+			performanceIncrease: 70,
+			completionTime: 3,
+			clientSatisfaction: 4.9,
 		},
-		{
-			feature: "Security updates",
-			included: true,
+	},
+	{
+		id: 342,
+		clientName: "Coastal Eats Restaurant",
+		description: "Developed a modern, performance-focused website for a popular local restaurant, enhancing online presence.",
+		technologies: ["SvelteKit", "Shopify", "Cloudflare"],
+		improvements: ["Online ordering system", "Real-time menu updates", "95/100 PageSpeed score", "Reservation integration"],
+		originalUrl: "https://old-coastaleats.com",
+		newUrl: "https://www.coastaleatssc.com",
+		metrics: {
+			performanceIncrease: 95,
+			completionTime: 4,
+			clientSatisfaction: 5.0,
 		},
-		{
-			feature: "Daily backups",
-			included: true,
+	},
+	{
+		id: 343,
+		clientName: "Pacific Grove Yoga Studio",
+		description: "Created a serene and functional website for a yoga studio, focusing on class schedules and online bookings.",
+		technologies: ["Next.js", "Supabase", "Stripe"],
+		improvements: ["Class booking system", "Membership portal", "Virtual class integration", "Newsletter signup"],
+		originalUrl: "https://old-pacificgroveyoga.com",
+		newUrl: "https://www.pgroveyoga.com",
+		metrics: {
+			performanceIncrease: 85,
+			completionTime: 2,
+			clientSatisfaction: 4.8,
 		},
-		{
-			feature: "CDN service",
-			included: true,
-		},
-		{
-			feature: "SSL certificate",
-			included: true,
-		},
-		{
-			feature: "Database management",
-			included: true,
-		},
-		{
-			feature: "Performance optimization",
-			included: true,
-		},
-		{
-			feature: "Content updates (2/month)",
-			included: true,
-		},
-	];
+	},
+];
 
-	const addOns = [
-		{
-			title: "Landing Pages",
-			description: "Custom designed, high-converting landing pages",
-			price: "$799",
-			features: ["Conversion-optimized design", "A/B testing setup", "Analytics integration", "Lead capture forms", "Mobile optimization"],
-		},
-		{
-			title: "E-commerce Integration",
-			description: "Full e-commerce functionality",
-			price: "$2,499",
-			features: ["Product catalog", "Shopping cart", "Payment gateway", "Inventory management", "Order processing"],
-		},
-		{
-			title: "Custom Features",
-			description: "Tailored functionality for your business",
-			price: "From $999",
-			features: ["Custom database design", "API integration", "Advanced search", "User authentication", "Custom reporting"],
-		},
-	];
-
-	const performanceMetrics = useMemo(() => {
-		return stats.map((stat) => ({
-			...stat,
-			improvement: calculateImprovement(typeof stat.industryValue === "string" ? parseFloat(stat.industryValue) : stat.industryValue, typeof stat.optimizedValue === "string" ? parseFloat(stat.optimizedValue) : stat.optimizedValue),
-		}));
-	}, [stats]);
-
-	const fadeIn = {
-		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0 },
-	};
-
-	const seo = `${calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized)} increase in SEO score, from ${benchmarks.seoScore.industry} to ${benchmarks.seoScore.optimized}`;
-
-	const seoMetrics = {
-		ctrImprovement: 25,
-		clarityImprovement: 40,
-		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
-	};
-
-	const memoizedData = useMemo(
-		() => ({
-			performanceData,
-			conversionData,
-		}),
-		[]
-	);
-
-	const memoizedStats = useMemo(() => {
-		return {
-			// ... stats calculation
-		};
-	}, []);
-
+export default function Component() {
 	return (
-		<>
-			<PageHeader title="Impact Marine Group">
-				<Link href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Figma</CodedText>
-				</Link>
-				<Link href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Sketch</CodedText>
-				</Link>
-				<Link href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Adobe XD</CodedText>
-				</Link>
-				<Link href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">InVision</CodedText>
-				</Link>
-				<Link href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Framer</CodedText>
-				</Link>
-				<Link href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Axure</CodedText>
-				</Link>
-				<Link href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">Flinto</CodedText>
-				</Link>
-				<Link href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
-					<CodedText className="hover:underline">ProtoPie</CodedText>
-				</Link>
-			</PageHeader>
-			<TooltipProvider>
-				<div className="min-h-screen bg-gradient-to-b bg-white dark:bg-black">
-					<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-y">
-						<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-							<header className="py-4">
-								<div className="flex items-center justify-between">
-									<div className="flex flex-col">
-										<h3 className="text-sm text-muted-foreground">Analysis #346</h3>
-										<h1 className="text-2xl font-bold">Impact Marine Group</h1>
-									</div>
-									<Button variant="outline" size="icon" className="lg:hidden" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-										<Menu className="h-4 w-4" />
-										<span className="sr-only">Toggle navigation menu</span>
+		<div className="w-full min-h-screen bg-neutral-100 dark:bg-black p-4 sm:p-6 space-y-6">
+			<h1 className="text-2xl sm:text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-6">300 of a planned 567 Analyses Completed</h1>
+			{analyses.map((analysis) => (
+				<Card key={analysis.id} className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors">
+					<div className="flex flex-col lg:flex-row">
+						<CardHeader className="lg:w-1/4 lg:border-r lg:border-neutral-200 dark:lg:border-neutral-700">
+							<div className="space-y-1">
+								<p className="text-sm text-neutral-500 dark:text-neutral-400">Analysis #{analysis.id}</p>
+								<h2 className="text-lg sm:text-xl font-semibold text-neutral-800 dark:text-neutral-100">{analysis.clientName}</h2>
+							</div>
+							<p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2">{analysis.description}</p>
+							<div className="flex flex-wrap gap-2 mt-2">
+								{analysis.technologies.map((tech, techIndex) => (
+									<Badge key={techIndex} variant="secondary" className="bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300">
+										{tech}
+									</Badge>
+								))}
+							</div>
+						</CardHeader>
+						<CardContent className="lg:w-3/4 p-6 space-y-6 lg:space-y-0 lg:flex lg:space-x-6">
+							<div className="lg:w-1/3 space-y-2">
+								<h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-100">Key Improvements</h3>
+								<ul className="space-y-1">
+									{analysis.improvements.map((improvement, improvementIndex) => (
+										<li key={improvementIndex} className="flex items-center text-neutral-600 dark:text-neutral-300 text-sm">
+											<ArrowRight className="h-3 w-3 mr-2 text-green-600 dark:text-green-400 flex-shrink-0" />
+											<span>{improvement}</span>
+										</li>
+									))}
+								</ul>
+							</div>
+							<div className="lg:w-1/3 space-y-2">
+								<h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-100 mb-2">Website Comparison</h3>
+								<div className="space-y-2">
+									<Button variant="secondary" className="w-full justify-start bg-neutral-100 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-neutral-600" asChild>
+										<a href={analysis.originalUrl} target="_blank" rel="noopener noreferrer">
+											<ExternalLink className="h-4 w-4 mr-2" />
+											Original Website
+										</a>
 									</Button>
-									<Button size="lg" className="hidden sm:flex">
-										<CodedText>Get Your Analysis</CodedText>
+									<Button variant="outline" className="w-full justify-start border-neutral-300 dark:border-neutral-600 text-neutral-700 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-700" asChild>
+										<a href={analysis.newUrl} target="_blank" rel="noopener noreferrer">
+											<ExternalLink className="h-4 w-4 mr-2" />
+											New Website
+										</a>
 									</Button>
 								</div>
-							</header>
-						</div>
+							</div>
+							<div className="lg:w-1/3 space-y-4">
+								<h3 className="text-sm font-medium text-neutral-800 dark:text-neutral-100">Project Metrics</h3>
+								<div className="space-y-2">
+									<div className="flex items-center justify-between">
+										<span className="text-sm text-neutral-600 dark:text-neutral-300 flex items-center">
+											<TrendingUp className="h-4 w-4 mr-2 text-green-500" />
+											Performance Increase
+										</span>
+										<span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{analysis.metrics.performanceIncrease}%</span>
+									</div>
+									<div className="flex items-center justify-between">
+										<span className="text-sm text-neutral-600 dark:text-neutral-300 flex items-center">
+											<Clock className="h-4 w-4 mr-2 text-blue-500" />
+											Completion Time
+										</span>
+										<span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{analysis.metrics.completionTime} weeks</span>
+									</div>
+									<div className="flex items-center justify-between">
+										<span className="text-sm text-neutral-600 dark:text-neutral-300 flex items-center">
+											<Star className="h-4 w-4 mr-2 text-yellow-500" />
+											Client Satisfaction
+										</span>
+										<span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">{analysis.metrics.clientSatisfaction}/5.0</span>
+									</div>
+								</div>
+								<Button variant="link" className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 p-0 mt-4">
+									<Link prefetch={true} className="flex items-center" href={`/analysis/${analysis.id}`}>
+										View Full Analysis
+										<ArrowRight className="h-4 w-4 ml-2" />
+									</Link>
+								</Button>
+							</div>
+						</CardContent>
 					</div>
-
-					<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-						<div className="lg:grid lg:gap-8">
-							<main className="space-y-12 lg:space-y-16">
-								<motion.div initial="hidden" animate={isVisible ? "visible" : "hidden"} variants={fadeIn} transition={{ duration: 0.5 }} style={{ display: "grid", gap: "3rem" }}>
-									{/* @ts-ignore */}
-									<Overview stats={stats} />
-									<Client />
-									<Performance />
-									<SEO seo={seo} benchmarks={benchmarks} seoMetrics={seoMetrics} />
-									<Design />
-									<Market performanceData={memoizedData.performanceData} conversionData={memoizedData.conversionData} />
-									<Impact />
-									<Technical />
-									<Conclusion />
-									<Investment mainFeatures={mainFeatures} monthlyServices={monthlyServices} addOns={addOns} />
-
-									<section className="text-center space-y-6">
-										<h2 className="text-3xl font-bold">Ready to Get Started?</h2>
-										<p className="text-xl text-muted-foreground">Let&apos;s discuss how we can help transform your online presence</p>
-										<Button size="lg" className="bg-primary hover:bg-primary/90">
-											Schedule a Consultation
-										</Button>
-									</section>
-								</motion.div>
-							</main>
-						</div>
-					</div>
-				</div>
-			</TooltipProvider>
-		</>
+				</Card>
+			))}
+		</div>
 	);
 }
-
-

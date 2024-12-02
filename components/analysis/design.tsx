@@ -1,8 +1,21 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
-import { benchmarks, calculateImprovement } from "@/actions/analysis/get-analytics";
 
-export default function Design() {
+interface DesignProps {
+	benchmarks: {
+		bounceRate: { optimized: number };
+		averageTimeOnPage: { industry: number; optimized: number };
+	};
+}
+
+const calculateImprovement = (industry: number, optimized: number): string => {
+	const improvement = ((optimized - industry) / industry) * 100;
+	return `${improvement.toFixed(1)}%`;
+};
+
+export default function Design({ benchmarks }: DesignProps) {
 	return (
 		<section id="design" className="scroll-mt-28">
 			<Card>

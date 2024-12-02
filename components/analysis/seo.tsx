@@ -1,6 +1,22 @@
+"use client";
+
 import { CheckCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SEOProps } from "@/types/analysis";
+
+interface SEOProps {
+	seo: string;
+	benchmarks: {
+		seoScore: {
+			optimized: number;
+		};
+	};
+	seoMetrics: {
+		keyOptimizations: {
+			title: string;
+			improvement?: string;
+		}[];
+	};
+}
 
 export default function SEO({ seo, benchmarks, seoMetrics }: SEOProps) {
 	const { keyOptimizations } = seoMetrics;

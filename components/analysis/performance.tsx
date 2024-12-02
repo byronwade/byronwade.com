@@ -291,7 +291,7 @@ export default function PerformanceAnalysis() {
 
 function StatisticCard({ title, description, source, icon: Icon }: { title: string; description: string; source: string; icon: React.ElementType }) {
 	return (
-		<div className="bg-white dark:bg-neutral-700 p-4 rounded-lg shadow-sm">
+		<div className="bg-zinc-50 dark:bg-neutral-700 p-4 rounded-lg shadow-sm">
 			<div className="flex items-start gap-4">
 				<div className="p-2 bg-primary/10 rounded-full">
 					<Icon className="h-5 w-5 text-primary" />
