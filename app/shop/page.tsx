@@ -3,10 +3,7 @@ import { getProducts } from "@/actions/shopify/getProducts";
 import { ProductGrid } from "./components";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
-// Enable edge runtime
-export const runtime = "edge";
 export const preferredRegion = "auto";
-export const dynamic = "force-dynamic";
 
 export default async function ShopPage() {
 	return (

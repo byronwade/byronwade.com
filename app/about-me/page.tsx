@@ -1,34 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Twitter, Github, Youtube, ExternalLink, TrendingUp, Book, Briefcase, ArrowRight } from "lucide-react";
+import AnimatedSection from "@/components/ui/animated-section";
 
 export default function AccessibleVIPAboutMePage() {
-	const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-	useEffect(() => {
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add("animate-fade-in-up");
-					}
-				});
-			},
-			{ threshold: 0.1 }
-		);
-
-		sectionRefs.current.forEach((ref) => {
-			if (ref) observer.observe(ref);
-		});
-
-		return () => observer.disconnect();
-	}, []);
-
 	return (
 		<div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
 			{/* Hero Section */}
@@ -65,116 +44,104 @@ export default function AccessibleVIPAboutMePage() {
 			<section className="py-20 -mt-20">
 				<div className="container mx-auto px-4 space-y-20">
 					{/* About Me Section */}
-					<Card
-						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
-						ref={(el) => {
-							if (el) sectionRefs.current[0] = el;
-						}}
-					>
-						<CardContent className="p-8">
-							<h2 className="text-3xl font-serif font-bold mb-6">About Me</h2>
-							<div className="space-y-4 text-xl text-stone-600">
-								<p>Hello, I&apos;m Byron, an entrepreneur always seeking new opportunities to expand my company and create innovative solutions. I&apos;m excited to share my story and vision with you.</p>
-								<p>I&apos;m studying Computer Science at Cabrillo College and plan to transfer to San Jose State. I&apos;m also considering degrees in Civil Engineering, Aerospace Engineering, and Criminal Justice to broaden my knowledge and expertise further.</p>
-							</div>
-						</CardContent>
-					</Card>
+					<AnimatedSection>
+						<Card className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden">
+							<CardContent className="p-8">
+								<h2 className="text-3xl font-serif font-bold mb-6">About Me</h2>
+								<div className="space-y-4 text-xl text-stone-600">
+									<p>Hello, I&apos;m Byron, an entrepreneur always seeking new opportunities to expand my company and create innovative solutions. I&apos;m excited to share my story and vision with you.</p>
+									<p>I&apos;m studying Computer Science at Cabrillo College and plan to transfer to San Jose State. I&apos;m also considering degrees in Civil Engineering, Aerospace Engineering, and Criminal Justice to broaden my knowledge and expertise further.</p>
+								</div>
+							</CardContent>
+						</Card>
+					</AnimatedSection>
 
-					{/* Wade&apos;s Inc Section */}
-					<Card
-						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
-						ref={(el) => {
-							if (el) sectionRefs.current[0] = el;
-						}}
-					>
-						<CardContent className="p-8">
-							<h2 className="text-3xl font-serif font-bold mb-6">Wade&apos;s Inc.</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-								<Card className="bg-gradient-to-br from-green-50 to-green-100">
-									<CardContent className="p-6">
-										<h3 className="text-2xl font-bold mb-4 text-green-800">First Year Revenue</h3>
-										<p className="text-4xl font-bold text-green-600">$1.2 million</p>
-									</CardContent>
-								</Card>
-								<Card className="bg-gradient-to-br from-blue-50 to-blue-100">
-									<CardContent className="p-6">
-										<h3 className="text-2xl font-bold mb-4 text-blue-800">Projected Next Year</h3>
-										<p className="text-4xl font-bold text-blue-600">$2.3 million</p>
-									</CardContent>
-								</Card>
-							</div>
-							<h3 className="text-2xl font-bold mb-4">Our Companies</h3>
-							<ul className="space-y-4">
-								<li>
-									<a href="https://wadesplumbingandseptic.com/" className="text-blue-600 hover:underline text-lg flex items-center">
-										Wade&apos;s Plumbing and Septic <ArrowRight className="ml-2 w-4 h-4" />
-									</a>
-								</li>
-								<li>
-									<a href="https://clogmonsterssepticpumping.com/" className="text-blue-600 hover:underline text-lg flex items-center">
-										Clog Monsters Septic Pumping <ArrowRight className="ml-2 w-4 h-4" />
-									</a>
-								</li>
-							</ul>
-						</CardContent>
-					</Card>
+					{/* Wade's Inc Section */}
+					<AnimatedSection>
+						<Card className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden">
+							<CardContent className="p-8">
+								<h2 className="text-3xl font-serif font-bold mb-6">Wade&apos;s Inc.</h2>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+									<Card className="bg-gradient-to-br from-green-50 to-green-100">
+										<CardContent className="p-6">
+											<h3 className="text-2xl font-bold mb-4 text-green-800">First Year Revenue</h3>
+											<p className="text-4xl font-bold text-green-600">$1.2 million</p>
+										</CardContent>
+									</Card>
+									<Card className="bg-gradient-to-br from-blue-50 to-blue-100">
+										<CardContent className="p-6">
+											<h3 className="text-2xl font-bold mb-4 text-blue-800">Projected Next Year</h3>
+											<p className="text-4xl font-bold text-blue-600">$2.3 million</p>
+										</CardContent>
+									</Card>
+								</div>
+								<h3 className="text-2xl font-bold mb-4">Our Companies</h3>
+								<ul className="space-y-4">
+									<li>
+										<a href="https://wadesplumbingandseptic.com/" className="text-blue-600 hover:underline text-lg flex items-center">
+											Wade&apos;s Plumbing and Septic <ArrowRight className="ml-2 w-4 h-4" />
+										</a>
+									</li>
+									<li>
+										<a href="https://clogmonsterssepticpumping.com/" className="text-blue-600 hover:underline text-lg flex items-center">
+											Clog Monsters Septic Pumping <ArrowRight className="ml-2 w-4 h-4" />
+										</a>
+									</li>
+								</ul>
+							</CardContent>
+						</Card>
+					</AnimatedSection>
 
 					{/* Projects Section */}
-					<Card
-						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
-						ref={(el) => {
-							if (el) sectionRefs.current[0] = el;
-						}}
-					>
-						<CardContent className="p-8">
-							<h2 className="text-3xl font-serif font-bold mb-6">Current Projects</h2>
-							<Card className="bg-gradient-to-br from-stone-50 to-stone-100 mb-6">
-								<CardContent className="p-6">
-									<h3 className="text-2xl font-bold mb-4">Wade&apos;s Academy</h3>
-									<p className="text-xl text-stone-600 mb-4">An innovative online learning platform for the construction industry.</p>
-									<a href="https://github.com/byronwade/wadesacademy.com" className="text-blue-600 hover:underline text-lg flex items-center">
-										View Project <ArrowRight className="ml-2 w-4 h-4" />
-									</a>
-								</CardContent>
-							</Card>
-							<p className="text-xl text-stone-600">I&apos;m currently working on three innovative technology websites, with Wade&apos;s Academy being the flagship project that has the potential to revolutionize online learning in the construction industry.</p>
-						</CardContent>
-					</Card>
+					<AnimatedSection>
+						<Card className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden">
+							<CardContent className="p-8">
+								<h2 className="text-3xl font-serif font-bold mb-6">Current Projects</h2>
+								<Card className="bg-gradient-to-br from-stone-50 to-stone-100 mb-6">
+									<CardContent className="p-6">
+										<h3 className="text-2xl font-bold mb-4">Wade&apos;s Academy</h3>
+										<p className="text-xl text-stone-600 mb-4">An innovative online learning platform for the construction industry.</p>
+										<a href="https://github.com/byronwade/wadesacademy.com" className="text-blue-600 hover:underline text-lg flex items-center">
+											View Project <ArrowRight className="ml-2 w-4 h-4" />
+										</a>
+									</CardContent>
+								</Card>
+								<p className="text-xl text-stone-600">I&apos;m currently working on three innovative technology websites, with Wade&apos;s Academy being the flagship project that has the potential to revolutionize online learning in the construction industry.</p>
+							</CardContent>
+						</Card>
+					</AnimatedSection>
 
 					{/* Connect Section */}
-					<Card
-						className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden"
-						ref={(el) => {
-							if (el) sectionRefs.current[0] = el;
-						}}
-					>
-						<CardContent className="p-8">
-							<h2 className="text-3xl font-serif font-bold mb-6">Connect with Me</h2>
-							<p className="text-xl text-stone-600 mb-8">I&apos;m open to exploring collaboration and investment opportunities. Feel free to reach out!</p>
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-								<Button asChild variant="outline" className="w-full">
-									<a href="https://twitter.com/leeerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-										<Twitter className="w-5 h-5 mr-2" /> Twitter
-									</a>
-								</Button>
-								<Button asChild variant="outline" className="w-full">
-									<a href="https://github.com/leerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-										<Github className="w-5 h-5 mr-2" /> GitHub
-									</a>
-								</Button>
-								<Button asChild variant="outline" className="w-full">
-									<a href="https://www.youtube.com/@leerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
-										<Youtube className="w-5 h-5 mr-2" /> YouTube
-									</a>
-								</Button>
-							</div>
-							<div className="text-center">
-								<Button asChild className="bg-stone-800 hover:bg-stone-700 text-white text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
-									<a href="/contact">Contact Me</a>
-								</Button>
-							</div>
-						</CardContent>
-					</Card>
+					<AnimatedSection>
+						<Card className="bg-zinc-50 shadow-xl rounded-3xl overflow-hidden">
+							<CardContent className="p-8">
+								<h2 className="text-3xl font-serif font-bold mb-6">Connect with Me</h2>
+								<p className="text-xl text-stone-600 mb-8">I&apos;m open to exploring collaboration and investment opportunities. Feel free to reach out!</p>
+								<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+									<Button asChild variant="outline" className="w-full">
+										<a href="https://twitter.com/leeerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+											<Twitter className="w-5 h-5 mr-2" /> Twitter
+										</a>
+									</Button>
+									<Button asChild variant="outline" className="w-full">
+										<a href="https://github.com/leerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+											<Github className="w-5 h-5 mr-2" /> GitHub
+										</a>
+									</Button>
+									<Button asChild variant="outline" className="w-full">
+										<a href="https://www.youtube.com/@leerob" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+											<Youtube className="w-5 h-5 mr-2" /> YouTube
+										</a>
+									</Button>
+								</div>
+								<div className="text-center">
+									<Button asChild className="bg-stone-800 hover:bg-stone-700 text-white text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">
+										<a href="/contact">Contact Me</a>
+									</Button>
+								</div>
+							</CardContent>
+						</Card>
+					</AnimatedSection>
 				</div>
 			</section>
 

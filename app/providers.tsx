@@ -1,14 +1,16 @@
 "use client";
 
-import { isServer, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import * as React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import * as React from "react";
 
 function makeQueryClient() {
 	return new QueryClient({
 		defaultOptions: {
 			queries: {
 				staleTime: 60 * 1000,
+				refetchOnWindowFocus: false,
+				refetchOnReconnect: false,
 			},
 		},
 	});
@@ -17,7 +19,7 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 function getQueryClient() {
-	if (isServer) {
+	if (typeof window === "undefined") {
 		return makeQueryClient();
 	}
 	if (!browserQueryClient) browserQueryClient = makeQueryClient();
@@ -25,7 +27,7 @@ function getQueryClient() {
 }
 
 export function Providers({ children }: { children: React.ReactNode }) {
-	const queryClient = getQueryClient();
+	const [queryClient] = React.useState(() => getQueryClient());
 
 	return (
 		<QueryClientProvider client={queryClient}>

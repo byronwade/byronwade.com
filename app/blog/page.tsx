@@ -1,27 +1,26 @@
+"use cache";
+
 import { Suspense } from "react";
-import { unstable_cache } from "@/lib/unstable-cache";
 import FeaturedPost from "./components/FeaturedPost";
 import { type Post } from "./types";
 import { getBlogPosts } from "@/actions/shopify/getBlogPosts";
 import Image from "next/image";
 
-const getAllPosts = unstable_cache(
-	async (): Promise<Post[]> => {
-		try {
-			const posts = await getBlogPosts(50);
-			if (!posts.length) {
-				console.log("No blog posts found");
-				return [];
-			}
-			return posts;
-		} catch (error) {
-			console.error("Error fetching blog posts:", error);
+export async function getAllPosts(): Promise<Post[]> {
+	const start = performance.now();
+	try {
+		const posts = await getBlogPosts(50);
+		console.log("Cache fetch time:", performance.now() - start);
+		if (!posts.length) {
+			console.log("No blog posts found");
 			return [];
 		}
-	},
-	["blog-posts"],
-	{ revalidate: 60 }
-);
+		return posts;
+	} catch (error) {
+		console.error("Error fetching blog posts:", error);
+		return [];
+	}
+}
 
 export default async function BlogPage() {
 	const posts = await getAllPosts();

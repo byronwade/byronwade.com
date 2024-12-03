@@ -11,6 +11,7 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.1",
+		"@next/bundle-analyzer": "^15.0.3",
 		"@radix-ui/react-accordion": "^1.2.1",
 		"@radix-ui/react-alert-dialog": "^1.1.2",
 		"@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -44,8 +45,8 @@
 		"@shopify/storefront-api-client": "^1.0.3",
 		"@supabase/ssr": "^0.4.0",
 		"@supabase/supabase-js": "^2.45.0",
-		"@tanstack/react-query": "^5.61.0",
-		"@tanstack/react-query-next-experimental": "^5.61.0",
+		"@tanstack/react-query": "^5.17.0",
+		"@tanstack/react-query-next-experimental": "^5.17.0",
 		"@types/animejs": "^3.1.12",
 		"@types/html-to-text": "^9.0.4",
 		"@types/jsdom": "^21.1.7",
@@ -74,9 +75,9 @@
 		"openai": "^4.69.0",
 		"pa11y": "^8.0.0",
 		"prisma": "^5.17.0",
-		"react": "^19.0.0-rc-c11c9510-20241120",
+		"react": "^19.0.0-rc-1b1283ad-20241203",
 		"react-day-picker": "8.10.1",
-		"react-dom": "^19.0.0-rc-c11c9510-20241120",
+		"react-dom": "^19.0.0-rc-1b1283ad-20241203",
 		"react-feather": "^2.0.10",
 		"react-hook-form": "^7.53.1",
 		"react-resizable-panels": "^2.1.6",
@@ -95,6 +96,7 @@
 		"zustand": "^4.5.4"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.8.5",
 		"@playwright/test": "^1.48.2",
 		"@tailwindcss/typography": "^0.5.13",
 		"@types/node": "^20",

@@ -1,5 +1,6 @@
+"use cache";
+
 import { Suspense } from "react";
-import { unstable_cache } from "@/lib/unstable-cache";
 import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,105 +24,99 @@ const Investment = dynamic(() => import("@/components/analysis/investment"));
 // Create a client-side component for the navigation button
 const NavigationButton = dynamic(() => import("@/components/navigation-button"));
 
-// Cache the analytics data
-const getAnalyticsData = unstable_cache(
-	async () => {
-		const stats = [
-			{
-				label: "Load Time",
-				industryValue: 4.2,
-				optimizedValue: 1.8,
-				improvement: 57,
-				iconName: "clock" as const,
-			},
-			{
-				label: "Performance Score",
-				industryValue: 65,
-				optimizedValue: 95,
-				improvement: 46,
-				iconName: "zap" as const,
-			},
-			{
-				label: "SEO Score",
-				industryValue: 72,
-				optimizedValue: 98,
-				improvement: 36,
-				iconName: "search" as const,
-			},
-			{
-				label: "Layout Shifts",
-				industryValue: 0.25,
-				optimizedValue: 0.05,
-				improvement: 80,
-				iconName: "layout" as const,
-			},
-			{
-				label: "Mobile Score",
-				industryValue: 60,
-				optimizedValue: 94,
-				improvement: 57,
-				iconName: "smartphone" as const,
-			},
-		];
+export async function getAnalyticsData() {
+	const start = performance.now();
+	const stats = [
+		{
+			label: "Load Time",
+			industryValue: 4.2,
+			optimizedValue: 1.8,
+			improvement: 57,
+			iconName: "clock" as const,
+		},
+		{
+			label: "Performance Score",
+			industryValue: 65,
+			optimizedValue: 95,
+			improvement: 46,
+			iconName: "zap" as const,
+		},
+		{
+			label: "SEO Score",
+			industryValue: 72,
+			optimizedValue: 98,
+			improvement: 36,
+			iconName: "search" as const,
+		},
+		{
+			label: "Layout Shifts",
+			industryValue: 0.25,
+			optimizedValue: 0.05,
+			improvement: 80,
+			iconName: "layout" as const,
+		},
+		{
+			label: "Mobile Score",
+			industryValue: 60,
+			optimizedValue: 94,
+			improvement: 57,
+			iconName: "smartphone" as const,
+		},
+	];
 
-		return {
-			benchmarks: {
-				loadTime: { industry: 4.2, optimized: 1.8 },
-				performanceScore: { industry: 65, optimized: 95 },
-				seoScore: { industry: 72, optimized: 98 },
-				mobileScore: { industry: 60, optimized: 94 },
-				bounceRate: { industry: 55, optimized: 25 },
-				conversionRate: { industry: 2.1, optimized: 4.5 },
-				averageTimeOnPage: { industry: 120, optimized: 280 },
-				bestPractices: { industry: 60, optimized: 95 },
-				organicTrafficIncrease: 150,
-			},
-			stats,
-			performanceData: [
-				{ month: "Jan", industry: 50, optimized: 90 },
-				{ month: "Feb", industry: 52, optimized: 91 },
-				{ month: "Mar", industry: 51, optimized: 92 },
-				{ month: "Apr", industry: 53, optimized: 93 },
-				{ month: "May", industry: 52, optimized: 94 },
-				{ month: "Jun", industry: 54, optimized: 95 },
-			],
-			conversionData: [
-				{ category: "E-commerce", industry: 2.3, optimized: 3.9 },
-				{ category: "Marine", industry: 2.5, optimized: 4.5 },
-				{ category: "B2B", industry: 2.7, optimized: 4.8 },
-			],
-		};
-	},
-	["analytics-data"],
-	{ revalidate: 3600 }
-);
+	const data = {
+		benchmarks: {
+			loadTime: { industry: 4.2, optimized: 1.8 },
+			performanceScore: { industry: 65, optimized: 95 },
+			seoScore: { industry: 72, optimized: 98 },
+			mobileScore: { industry: 60, optimized: 94 },
+			bounceRate: { industry: 55, optimized: 25 },
+			conversionRate: { industry: 2.1, optimized: 4.5 },
+			averageTimeOnPage: { industry: 120, optimized: 280 },
+			bestPractices: { industry: 60, optimized: 95 },
+			organicTrafficIncrease: 150,
+		},
+		stats,
+		performanceData: [
+			{ month: "Jan", industry: 50, optimized: 90 },
+			{ month: "Feb", industry: 52, optimized: 91 },
+			{ month: "Mar", industry: 51, optimized: 92 },
+			{ month: "Apr", industry: 53, optimized: 93 },
+			{ month: "May", industry: 52, optimized: 94 },
+			{ month: "Jun", industry: 54, optimized: 95 },
+		],
+		conversionData: [
+			{ category: "E-commerce", industry: 2.3, optimized: 3.9 },
+			{ category: "Marine", industry: 2.5, optimized: 4.5 },
+			{ category: "B2B", industry: 2.7, optimized: 4.8 },
+		],
+	};
+	console.log("Cache fetch time:", performance.now() - start);
+	return data;
+}
 
-// Cache the technical data
-const getTechnicalData = unstable_cache(
-	async () => {
-		return {
-			performanceOptimizations: ["Advanced caching strategies implementation", "Image optimization with WebP format and lazy loading", "Code splitting and bundle optimization", "CDN integration for global content delivery"],
-			securityEnhancements: ["SSL/TLS implementation with A+ rating", "Advanced firewall protection", "Regular security audits and monitoring", "Automated backup systems"],
-		};
-	},
-	["technical-data"],
-	{ revalidate: 3600 }
-);
+export async function getTechnicalData() {
+	const start = performance.now();
+	const data = {
+		performanceOptimizations: ["Advanced caching strategies implementation", "Image optimization with WebP format and lazy loading", "Code splitting and bundle optimization", "CDN integration for global content delivery"],
+		securityEnhancements: ["SSL/TLS implementation with A+ rating", "Advanced firewall protection", "Regular security audits and monitoring", "Automated backup systems"],
+	};
+	console.log("Cache fetch time:", performance.now() - start);
+	return data;
+}
 
-// Cache the client data
-const getClientData = unstable_cache(
-	async () => {
-		return {
-			name: "Impact Marine Group",
-			industry: "Marine Industry",
-			duration: "8 weeks",
-			completionDate: "Q4 2023",
-			goals: ["Increase conversions", "Reduce bounce rates", "Improve user experience"],
-		};
-	},
-	["client-data"],
-	{ revalidate: 3600 }
-);
+export async function getClientData() {
+	const start = performance.now();
+	const data = {
+		name: "Impact Marine Group",
+		industry: "Marine Industry",
+		duration: "8 weeks",
+		completionDate: "Q4 2023",
+		goals: ["Increase conversions", "Reduce bounce rates", "Improve user experience"],
+	};
+	console.log("Cache fetch time:", performance.now() - start);
+	return data;
+}
 
 export default async function PerformanceCaseStudy() {
 	const queryClient = new QueryClient();

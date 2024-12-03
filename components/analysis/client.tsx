@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardDescription, CardTitle, CardHeader } from "@/components/ui/card";
 
 interface ClientProps {

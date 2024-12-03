@@ -1,72 +1,68 @@
+"use cache";
+
 import { ExternalLink, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
-// Using server-side data fetching for better performance
-import { unstable_cache } from "next/cache";
-
-const getProjects = unstable_cache(
-	async () => {
-		// This would typically fetch from a database or CMS
-		return {
-			clientProjects: [
-				{
-					title: "Lanier Plumbing Services",
-					description: "A modern web platform for a plumbing business featuring service booking, emergency requests, and customer management.",
-					technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-					features: ["Online Booking", "Service Management", "Payment Integration", "Admin Dashboard"],
-					link: "/lanier-plumbing-services",
-					icon: "🔧",
-					status: "under_development",
-				},
-				{
-					title: "Impact Marine Service",
-					description: "A modern web platform for a marine service business featuring boat maintenance scheduling, emergency repairs, and customer management.",
-					technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-					features: ["Online Scheduling", "Service Management", "Payment Integration", "Admin Dashboard"],
-					link: "/impact-marine-service",
-					icon: "⚓",
-					status: "under_development",
-				},
-				{
-					title: "Zugzology",
-					description: "A modern e-commerce platform for a gourmet mushroom cultivation company featuring product ordering, grow kit tutorials, and subscription management.",
-					technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-					features: ["Online Store", "Subscription Service", "Growing Guides", "Admin Dashboard"],
-					link: "/zugzology",
-					icon: "🍄",
-					status: "under_development",
-				},
-			],
-			hobbyProjects: [
-				{
-					title: "Thorbis",
-					description: "A comprehensive website orchestration platform designed for freelancers, business owners and agencies to streamline their web development workflow.",
-					technologies: ["Next.js 14", "TanStack Query", "Prisma", "tRPC", "Stripe Connect"],
-					features: ["Client Management", "Project Automation", "Team Collaboration", "Billing & Invoicing"],
-					link: "https://thorbis.com",
-					icon: "⚡",
-					status: "under_development",
-				},
-				{
-					title: "EmailMeWork",
-					description: "A minimalist email-based lead platform that simplifies client communication and project inquiries through a streamlined email workflow.",
-					technologies: ["Next.js 14", "TanStack Query", "Resend", "Prisma", "Stripe"],
-					features: ["Email-Based Leads", "Automated Responses", "Simple Dashboard", "Lead Tracking"],
-					link: "https://emailmework.com",
-					icon: "📧",
-					status: "under_development",
-				},
-			],
-		};
-	},
-	["projects"],
-	{
-		revalidate: 3600, // Revalidate every hour
-	}
-);
+export async function getProjects() {
+	const start = performance.now();
+	// This would typically fetch from a database or CMS
+	const data = {
+		clientProjects: [
+			{
+				title: "Lanier Plumbing Services",
+				description: "A modern web platform for a plumbing business featuring service booking, emergency requests, and customer management.",
+				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
+				features: ["Online Booking", "Service Management", "Payment Integration", "Admin Dashboard"],
+				link: "/lanier-plumbing-services",
+				icon: "🔧",
+				status: "under_development",
+			},
+			{
+				title: "Impact Marine Service",
+				description: "A modern web platform for a marine service business featuring boat maintenance scheduling, emergency repairs, and customer management.",
+				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
+				features: ["Online Scheduling", "Service Management", "Payment Integration", "Admin Dashboard"],
+				link: "/impact-marine-service",
+				icon: "⚓",
+				status: "under_development",
+			},
+			{
+				title: "Zugzology",
+				description: "A modern e-commerce platform for a gourmet mushroom cultivation company featuring product ordering, grow kit tutorials, and subscription management.",
+				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
+				features: ["Online Store", "Subscription Service", "Growing Guides", "Admin Dashboard"],
+				link: "/zugzology",
+				icon: "🍄",
+				status: "under_development",
+			},
+		],
+		hobbyProjects: [
+			{
+				title: "Thorbis",
+				description: "A comprehensive website orchestration platform designed for freelancers, business owners and agencies to streamline their web development workflow.",
+				technologies: ["Next.js 14", "TanStack Query", "Prisma", "tRPC", "Stripe Connect"],
+				features: ["Client Management", "Project Automation", "Team Collaboration", "Billing & Invoicing"],
+				link: "https://thorbis.com",
+				icon: "⚡",
+				status: "under_development",
+			},
+			{
+				title: "EmailMeWork",
+				description: "A minimalist email-based lead platform that simplifies client communication and project inquiries through a streamlined email workflow.",
+				technologies: ["Next.js 14", "TanStack Query", "Resend", "Prisma", "Stripe"],
+				features: ["Email-Based Leads", "Automated Responses", "Simple Dashboard", "Lead Tracking"],
+				link: "https://emailmework.com",
+				icon: "📧",
+				status: "under_development",
+			},
+		],
+	};
+	console.log("Cache fetch time:", performance.now() - start);
+	return data;
+}
 
 const getStatusBadge = (status: string) => {
 	const statusConfig = {

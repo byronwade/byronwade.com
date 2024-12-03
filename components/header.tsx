@@ -52,10 +52,10 @@ export default function Navbar({ className }: { className?: string }) {
 
 		React.useEffect(() => {
 			mounted.current = true;
-			setIcon(theme === "light" ? <Contrast className="h-4 w-4" /> : <SunMoon className="h-4 w-4" />);
-		}, [theme]);
+			const currentTheme = theme;
+			setIcon(currentTheme === "light" ? <Contrast className="h-4 w-4" /> : <SunMoon className="h-4 w-4" />);
+		}, []);
 
-		// Return default icon until mounted
 		if (!mounted.current) {
 			return <Contrast className="h-4 w-4" />;
 		}
