@@ -1,24 +1,60 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { unstable_precompute as precompute } from "@vercel/flags/next";
+import { pageFlags, showBlog, showAnalysis, showShop } from "@/lib/feature-flags";
 
+// Match all routes
 export const config = {
-	runtime: "experimental-edge",
-	matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+	matcher: [
+		// Match all paths except static files and API routes
+		"/((?!api|_next/static|_next/image|favicon.ico).*)",
+	],
 };
 
-export function middleware(request: NextRequest) {
-	const response = NextResponse.next();
+export async function middleware(request: NextRequest) {
+	const path = request.nextUrl.pathname;
 
-	// Edge caching headers
-	response.headers.set("Cache-Control", "public, max-age=31536000, immutable");
-	response.headers.set("CDN-Cache-Control", "public, max-age=31536000, immutable");
-	response.headers.set("Vercel-CDN-Cache-Control", "public, max-age=31536000, immutable");
+	// Skip middleware for non-feature flag paths
+	if (!path.includes("/blog") && !path.includes("/analysis") && !path.includes("/shop")) {
+		return NextResponse.next();
+	}
 
-	// Edge security headers
-	response.headers.set("X-Frame-Options", "DENY");
-	response.headers.set("X-Content-Type-Options", "nosniff");
-	response.headers.set("Referrer-Policy", "origin-when-cross-origin");
-	response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+	// Check feature flags based on the path
+	if (path.includes("/blog")) {
+		const blogEnabled = await showBlog();
+		if (!blogEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
+
+	if (path.includes("/analysis")) {
+		const analysisEnabled = await showAnalysis();
+		if (!analysisEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
+
+	if (path.includes("/shop")) {
+		const shopEnabled = await showShop();
+		if (!shopEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
+
+	// Precompute flags for the current request
+	const code = await precompute(pageFlags);
+
+	// Add environment variables to response headers
+	const response = NextResponse.rewrite(new URL(`/${code}${request.nextUrl.pathname}${request.nextUrl.search}`, request.url));
+
+	// Add feature flag environment variables to response
+	response.headers.set(
+		"x-env",
+		JSON.stringify({
+			NEXT_PUBLIC_BLOG_ENABLED: process.env.NEXT_PUBLIC_BLOG_ENABLED,
+			NEXT_PUBLIC_ANALYSIS_ENABLED: process.env.NEXT_PUBLIC_ANALYSIS_ENABLED,
+			NEXT_PUBLIC_SHOP_ENABLED: process.env.NEXT_PUBLIC_SHOP_ENABLED,
+		})
+	);
 
 	return response;
 }

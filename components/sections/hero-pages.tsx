@@ -1,6 +1,6 @@
 import { ArrowRight, Zap, Paintbrush, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 
 export default function HeroPages() {
 	return (

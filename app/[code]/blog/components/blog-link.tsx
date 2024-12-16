@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 import Image, { getImageProps } from "next/image";
-import type { Post } from "@/app/blog/types";
+import type { Post } from "@/app/[code]/blog/types";
 
 // Define a proper type for the DOM image element
 interface ExtendedHTMLImageElement extends HTMLImageElement {
@@ -32,7 +32,7 @@ export function BlogLink({ post, loading = "lazy", priority = false }: BlogLinkP
 		width: 256,
 		quality: 80,
 		src: post.image ?? "/placeholder.svg",
-			alt: `Blog post image for ${post.title}`,
+		alt: `Blog post image for ${post.title}`,
 	});
 
 	useEffect(() => {
@@ -46,7 +46,7 @@ export function BlogLink({ post, loading = "lazy", priority = false }: BlogLinkP
 			// Set image properties
 			imgElement.fetchPriority = "low";
 			imgElement.decoding = "async";
-				imgElement.src = imgProps.src as string;
+			imgElement.src = imgProps.src as string;
 
 			if (imgProps.sizes) {
 				imgElement.sizes = imgProps.sizes;
@@ -71,24 +71,13 @@ export function BlogLink({ post, loading = "lazy", priority = false }: BlogLinkP
 	return (
 		<Link prefetch={true} href={`/blog/${post.handle}`} className="group flex h-[130px] w-full flex-row border px-4 py-2 hover:bg-muted/50">
 			<div className="py-2">
-				<Image 
-					src={post.image ?? "/placeholder.svg"} 
-					alt={`Blog post image for ${post.title}`} 
-					width={48} 
-					height={48} 
-					quality={65} 
-					loading={loading} 
-					priority={priority} 
-					className="h-auto w-12 flex-shrink-0 object-cover" 
-				/>
+				<Image src={post.image ?? "/placeholder.svg"} alt={`Blog post image for ${post.title}`} width={48} height={48} quality={65} loading={loading} priority={priority} className="h-auto w-12 flex-shrink-0 object-cover" />
 			</div>
 			<div className="px-2" />
 			<div className="flex flex-grow flex-col items-start py-2">
 				<div className="text-sm font-medium group-hover:underline">{post.title}</div>
 				<p className="text-xs text-muted-foreground line-clamp-2">{post.excerpt}</p>
-				<div className="mt-auto text-sm text-muted-foreground">
-					{new Date(post.date).toLocaleDateString()}
-				</div>
+				<div className="mt-auto text-sm text-muted-foreground">{new Date(post.date).toLocaleDateString()}</div>
 			</div>
 		</Link>
 	);

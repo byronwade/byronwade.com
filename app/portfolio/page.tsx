@@ -4,7 +4,7 @@ import { ExternalLink, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 
 export async function getProjects() {
 	const start = performance.now();

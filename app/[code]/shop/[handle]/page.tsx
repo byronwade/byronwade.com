@@ -1,5 +1,5 @@
 import { getProduct } from "@/actions/shopify/getProducts";
-import AddToCartButton from "@/app/shop/components/AddToCartButton";
+import AddToCartButton from "@/app/[code]/shop/components/AddToCartButton";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";

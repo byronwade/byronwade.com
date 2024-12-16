@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 import { customFont } from "@/lib/fonts";
 import { Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
 
