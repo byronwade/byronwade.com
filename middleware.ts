@@ -1,12 +1,26 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { unstable_precompute as precompute } from "@vercel/flags/next";
 import { pageFlags, showBlog, showAnalysis, showShop } from "@/lib/feature-flags";
 
 // Match all routes
 export const config = {
 	matcher: [
-		// Match all paths except static files and API routes
-		"/((?!api|_next/static|_next/image|favicon.ico).*)",
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - api (API routes)
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 * - robots.txt (SEO file)
+		 * - sitemap.xml (SEO file)
+		 * - manifest.json (PWA file)
+		 */
+		{
+			source: "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json).*)",
+			missing: [
+				{ type: "header", key: "next-router-prefetch" },
+				{ type: "header", key: "purpose", value: "prefetch" },
+			],
+		},
 	],
 };
 
@@ -40,13 +54,8 @@ export async function middleware(request: NextRequest) {
 		}
 	}
 
-	// Precompute flags for the current request
-	const code = await precompute(pageFlags);
-
 	// Add environment variables to response headers
-	const response = NextResponse.rewrite(new URL(`/${code}${request.nextUrl.pathname}${request.nextUrl.search}`, request.url));
-
-	// Add feature flag environment variables to response
+	const response = NextResponse.next();
 	response.headers.set(
 		"x-env",
 		JSON.stringify({
@@ -58,25 +67,3 @@ export async function middleware(request: NextRequest) {
 
 	return response;
 }
-
-export const config = {
-	matcher: [
-		/*
-		 * Match all request paths except for the ones starting with:
-		 * - api (API routes)
-		 * - _next/static (static files)
-		 * - _next/image (image optimization files)
-		 * - favicon.ico (favicon file)
-		 * - robots.txt (SEO file)
-		 * - sitemap.xml (SEO file)
-		 * - manifest.json (PWA file)
-		 */
-		{
-			source: "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json).*)",
-			missing: [
-				{ type: "header", key: "next-router-prefetch" },
-				{ type: "header", key: "purpose", value: "prefetch" },
-			],
-		},
-	],
-};

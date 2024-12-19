@@ -3,33 +3,40 @@
 import * as React from "react";
 import { Link } from "@/components/ui/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, SunMoon, Contrast, ShoppingCart } from "lucide-react";
+import { Menu, X, SunMoon, Contrast } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { customFont } from "@/lib/fonts";
 import { useTheme } from "next-themes";
-import { isFeatureEnabled } from "@/lib/config/features";
+import { showBlog, showAnalysis, showShop } from "@/lib/feature-flags";
 
 // Dynamically import and memoize the CodedText component
 const CodedText = dynamic(() => import("@/components/ui/coded-text"));
 
-const getNavItems = () => {
-	const items = [
+interface NavItem {
+	name: string;
+	href: string;
+}
+
+const getNavItems = async () => {
+	const items: NavItem[] = [
 		{ name: "Design", href: "/design" },
 		{ name: "Development", href: "/development" },
 		{ name: "Marketing", href: "/marketing" },
 	];
 
-	if (isFeatureEnabled("enablePortfolio")) {
-		items.push({ name: "Portfolio", href: "/portfolio" });
+	const [blogEnabled, analysisEnabled, shopEnabled] = await Promise.all([showBlog(), showAnalysis(), showShop()]);
+
+	if (blogEnabled) {
+		items.push({ name: "Blog", href: "/blog" });
 	}
 
-	if (isFeatureEnabled("enableAnalysis")) {
+	if (analysisEnabled) {
 		items.push({ name: "Analysis", href: "/analysis" });
 	}
 
-	if (isFeatureEnabled("enableShop")) {
+	if (shopEnabled) {
 		items.push({ name: "Shop", href: "/shop" });
 	}
 
@@ -39,9 +46,9 @@ const getNavItems = () => {
 export default function Navbar({ className }: { className?: string }) {
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+	const [navItems, setNavItems] = React.useState<NavItem[]>([]);
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
-	const navItems = React.useMemo(() => getNavItems(), []);
 
 	React.useEffect(() => {
 		const handleScroll = () => {
@@ -49,6 +56,10 @@ export default function Navbar({ className }: { className?: string }) {
 		};
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
+
+	React.useEffect(() => {
+		getNavItems().then(setNavItems);
 	}, []);
 
 	const toggleTheme = () => {
@@ -109,13 +120,6 @@ export default function Navbar({ className }: { className?: string }) {
 							<ThemeIcon />
 							<span className="sr-only">Toggle theme</span>
 						</Button>
-
-						{isFeatureEnabled("enableShop") && (
-							<Button variant="ghost" size="icon" className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
-								<ShoppingCart className="h-4 w-4" />
-								<span className="sr-only">Cart</span>
-							</Button>
-						)}
 
 						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-neutral-200 dark:hover:bg-neutral-800" onClick={toggleMobileMenu}>
 							{isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

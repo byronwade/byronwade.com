@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { getProducts } from "@/actions/shopify/getProducts";
-import { ProductGrid } from "./components/product-grid";
+import { getProducts } from "@/app/actions/shopify/getProducts";
+import { ProductGrid } from "./components/ProductGrid";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { unstable_cache } from "next/cache";
 import { type Product } from "@/types/shopify";

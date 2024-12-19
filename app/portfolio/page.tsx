@@ -1,16 +1,8 @@
 "use client";
 
-<<<<<<< HEAD
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, ArrowUpRight, Tag, Github, ChartBar } from "lucide-react";
-=======
-import { ExternalLink, Check } from "lucide-react";
-import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Link } from "@/components/ui/link";
->>>>>>> 06477deeb9617c74a7dd15e792c25f430d0bcd74
 
 interface Project {
 	id: number;

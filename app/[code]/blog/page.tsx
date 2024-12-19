@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import FeaturedPost from "./components/FeaturedPost";
 import { type Post } from "./types";
-import { getBlogPosts } from "@/actions/shopify/getBlogPosts";
+import { getBlogPosts } from "@/app/actions/shopify/getBlogPosts";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { unstable_cache } from "next/cache";
 import { showBlog, pageFlags } from "@/lib/feature-flags";

@@ -1,4 +1,4 @@
-import { unstable_flag as flag } from "@vercel/flags/next";
+import { unstable_flag as flag } from "@vercel/flags";
 
 export const showBlog = flag({
 	key: "blog-enabled",
