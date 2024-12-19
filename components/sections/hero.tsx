@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/components/ui/link";
 import { Zap } from "lucide-react";
 import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";

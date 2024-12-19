@@ -1,81 +1,60 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { unstable_precompute as precompute } from "@vercel/flags/next";
+import { pageFlags, showBlog, showAnalysis, showShop } from "@/lib/feature-flags";
 
-export function middleware(request: NextRequest) {
-	const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-	const cspHeader = `
-		default-src 'self';
-		script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https: 'unsafe-inline';
-		style-src 'self' 'unsafe-inline';
-		img-src 'self' blob: data: https:;
-		font-src 'self' data:;
-		connect-src 'self' https:;
-		media-src 'self';
-		object-src 'none';
-		base-uri 'self';
-		form-action 'self';
-		frame-ancestors 'none';
-		block-all-mixed-content;
-		upgrade-insecure-requests;
-	`;
+// Match all routes
+export const config = {
+	matcher: [
+		// Match all paths except static files and API routes
+		"/((?!api|_next/static|_next/image|favicon.ico).*)",
+	],
+};
 
-	// Clone the response so we can modify headers
-	const response = NextResponse.next();
+export async function middleware(request: NextRequest) {
+	const path = request.nextUrl.pathname;
 
-	// Add security headers
-	const headers = response.headers;
-
-	// CSP Header
-	headers.set("Content-Security-Policy", cspHeader.replace(/\s{2,}/g, " ").trim());
-
-	// HSTS Header
-	headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-
-	// X-Frame-Options Header
-	headers.set("X-Frame-Options", "DENY");
-
-	// X-Content-Type-Options Header
-	headers.set("X-Content-Type-Options", "nosniff");
-
-	// Referrer-Policy Header
-	headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-
-	// Permissions-Policy Header
-	headers.set(
-		"Permissions-Policy",
-		"accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), navigation-override=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(), clipboard-write=(), gamepad=(), speaker-selection=(), conversion-measurement=(), focus-without-user-activation=(), hid=(), idle-detection=(), interest-cohort=(), serial=(), trust-token-redemption=(), window-placement=(), vertical-scroll=()"
-	);
-
-	// X-XSS-Protection Header
-	headers.set("X-XSS-Protection", "1; mode=block");
-
-	// Cache Control for Static Assets
-	if (request.nextUrl.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg)$/)) {
-		headers.set("Cache-Control", "public, max-age=31536000, immutable");
+	// Skip middleware for non-feature flag paths
+	if (!path.includes("/blog") && !path.includes("/analysis") && !path.includes("/shop")) {
+		return NextResponse.next();
 	}
 
-	// Add Server-Timing Header for Performance Monitoring
-	headers.set("Server-Timing", "cdn-cache;desc=HIT, edge;dur=50");
+	// Check feature flags based on the path
+	if (path.includes("/blog")) {
+		const blogEnabled = await showBlog();
+		if (!blogEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
 
-	// Add Feature-Policy Header
-	headers.set("Feature-Policy", "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'");
+	if (path.includes("/analysis")) {
+		const analysisEnabled = await showAnalysis();
+		if (!analysisEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
 
-	// Add Cross-Origin Headers
-	headers.set("Cross-Origin-Opener-Policy", "same-origin");
-	headers.set("Cross-Origin-Resource-Policy", "same-origin");
-	headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+	if (path.includes("/shop")) {
+		const shopEnabled = await showShop();
+		if (!shopEnabled) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+	}
 
-	// Add Timing-Allow-Origin Header
-	headers.set("Timing-Allow-Origin", "*");
+	// Precompute flags for the current request
+	const code = await precompute(pageFlags);
 
-	// Add X-DNS-Prefetch-Control Header
-	headers.set("X-DNS-Prefetch-Control", "on");
+	// Add environment variables to response headers
+	const response = NextResponse.rewrite(new URL(`/${code}${request.nextUrl.pathname}${request.nextUrl.search}`, request.url));
 
-	// Add X-Download-Options Header
-	headers.set("X-Download-Options", "noopen");
-
-	// Add X-Permitted-Cross-Domain-Policies Header
-	headers.set("X-Permitted-Cross-Domain-Policies", "none");
+	// Add feature flag environment variables to response
+	response.headers.set(
+		"x-env",
+		JSON.stringify({
+			NEXT_PUBLIC_BLOG_ENABLED: process.env.NEXT_PUBLIC_BLOG_ENABLED,
+			NEXT_PUBLIC_ANALYSIS_ENABLED: process.env.NEXT_PUBLIC_ANALYSIS_ENABLED,
+			NEXT_PUBLIC_SHOP_ENABLED: process.env.NEXT_PUBLIC_SHOP_ENABLED,
+		})
+	);
 
 	return response;
 }

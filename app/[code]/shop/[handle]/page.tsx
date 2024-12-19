@@ -1,5 +1,10 @@
+<<<<<<< HEAD:app/shop/[handle]/page.tsx
 import { getProduct } from "@/app/actions/shopify/getProducts";
 import AddToCartButton from "@/app/shop/components/AddToCartButton";
+=======
+import { getProduct } from "@/actions/shopify/getProducts";
+import AddToCartButton from "@/app/[code]/shop/components/AddToCartButton";
+>>>>>>> 06477deeb9617c74a7dd15e792c25f430d0bcd74:app/[code]/shop/[handle]/page.tsx
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
