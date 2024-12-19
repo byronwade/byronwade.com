@@ -1,13 +1,15 @@
-"use cache";
+"use client";
 
-import { Suspense } from "react";
-import { QueryClient, HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Link } from "@/components/ui/link";
 import PageHeader from "@/components/page-header";
 import CodedText from "@/components/ui/coded-text";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { investmentData } from "@/lib/investment-data";
+
 // Dynamic imports for client components
 const Overview = dynamic(() => import("@/components/analysis/overview"));
 const Client = dynamic(() => import("@/components/analysis/client"));
@@ -18,13 +20,25 @@ const Design = dynamic(() => import("@/components/analysis/design"));
 const Impact = dynamic(() => import("@/components/analysis/impact"));
 const Technical = dynamic(() => import("@/components/analysis/technical"));
 const Conclusion = dynamic(() => import("@/components/analysis/conclusion"));
-const Investment = dynamic(() => import("@/components/analysis/investment"));
+const Investment = dynamic(() => import("@/components/analysis/investment"), {
+	ssr: false,
+	loading: () => <div>Loading investment details...</div>,
+});
 
 // Create a client-side component for the navigation button
 const NavigationButton = dynamic(() => import("@/components/navigation-button"));
 
-export async function getAnalyticsData() {
-	const start = performance.now();
+// Create a new QueryClient instance
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 60 * 1000, // 1 minute
+			cacheTime: 5 * 60 * 1000, // 5 minutes
+		},
+	},
+});
+
+async function getAnalyticsData() {
 	const stats = [
 		{
 			label: "Load Time",
@@ -90,22 +104,18 @@ export async function getAnalyticsData() {
 			{ category: "B2B", industry: 2.7, optimized: 4.8 },
 		],
 	};
-	console.log("Cache fetch time:", performance.now() - start);
 	return data;
 }
 
-export async function getTechnicalData() {
-	const start = performance.now();
+async function getTechnicalData() {
 	const data = {
 		performanceOptimizations: ["Advanced caching strategies implementation", "Image optimization with WebP format and lazy loading", "Code splitting and bundle optimization", "CDN integration for global content delivery"],
 		securityEnhancements: ["SSL/TLS implementation with A+ rating", "Advanced firewall protection", "Regular security audits and monitoring", "Automated backup systems"],
 	};
-	console.log("Cache fetch time:", performance.now() - start);
 	return data;
 }
 
-export async function getClientData() {
-	const start = performance.now();
+async function getClientData() {
 	const data = {
 		name: "Impact Marine Group",
 		industry: "Marine Industry",
@@ -113,32 +123,42 @@ export async function getClientData() {
 		completionDate: "Q4 2023",
 		goals: ["Increase conversions", "Reduce bounce rates", "Improve user experience"],
 	};
-	console.log("Cache fetch time:", performance.now() - start);
 	return data;
 }
 
-export default async function PerformanceCaseStudy() {
-	const queryClient = new QueryClient();
+function AnalysisDetailContent() {
+	const [data, setData] = useState<{
+		analyticsData: Awaited<ReturnType<typeof getAnalyticsData>>;
+		technicalData: Awaited<ReturnType<typeof getTechnicalData>>;
+		clientData: Awaited<ReturnType<typeof getClientData>>;
+	} | null>(null);
 
-	// Fetch all data in parallel
-	const [analyticsData, technicalData, clientData] = await Promise.all([getAnalyticsData(), getTechnicalData(), getClientData()]);
+	useEffect(() => {
+		async function fetchData() {
+			const [analyticsData, technicalData, clientData] = await Promise.all([getAnalyticsData(), getTechnicalData(), getClientData()]);
 
-	// Prefetch queries
-	await Promise.all([
-		queryClient.prefetchQuery({
-			queryKey: ["analytics"],
-			queryFn: () => analyticsData,
-		}),
-		queryClient.prefetchQuery({
-			queryKey: ["technical"],
-			queryFn: () => technicalData,
-		}),
-		queryClient.prefetchQuery({
-			queryKey: ["client"],
-			queryFn: () => clientData,
-		}),
-	]);
+			await queryClient.prefetchQuery({
+				queryKey: ["analytics"],
+				queryFn: () => analyticsData,
+			});
+			await queryClient.prefetchQuery({
+				queryKey: ["technical"],
+				queryFn: () => technicalData,
+			});
+			await queryClient.prefetchQuery({
+				queryKey: ["client"],
+				queryFn: () => clientData,
+			});
 
+			setData({ analyticsData, technicalData, clientData });
+		}
+
+		fetchData();
+	}, []);
+
+	if (!data) return <div>Loading...</div>;
+
+	const { analyticsData, technicalData, clientData } = data;
 	const { benchmarks, stats, performanceData, conversionData } = analyticsData;
 	const seo = `${calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized)} increase in SEO score`;
 
@@ -146,20 +166,18 @@ export default async function PerformanceCaseStudy() {
 		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
 	};
 
-	// Update the type definitions to match the Market component's expectations
 	type PerformanceDataPoint = {
 		date: string;
 		value: number;
-		category: string; // For performanceData
+		category: string;
 	};
 
 	type ConversionDataPoint = {
 		date: string;
 		value: number;
-		type: string; // Changed back to 'type' for conversionData
+		type: string;
 	};
 
-	// Update the data transformations to use 'category' instead of 'type'
 	const transformedPerformanceData: PerformanceDataPoint[] = performanceData
 		.map((point) => ({
 			date: point.month,
@@ -174,7 +192,6 @@ export default async function PerformanceCaseStudy() {
 			}))
 		);
 
-	// Update conversion data transformation to use 'type' instead of 'category'
 	const transformedConversionData: ConversionDataPoint[] = conversionData.flatMap((point) => [
 		{
 			date: point.category,
@@ -189,34 +206,8 @@ export default async function PerformanceCaseStudy() {
 	]);
 
 	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Suspense fallback={<div>Loading...</div>}>
-				<PageHeader title="Impact Marine Group">
-					<Link prefetch={true} href="https://www.figma.com" className="text-[#f24e1e] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Figma</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.sketch.com" className="text-[#fdad00] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Sketch</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.adobe.com/products/xd.html" className="text-[#ff61f6] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Adobe XD</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.invisionapp.com" className="text-[#ff3366] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">InVision</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.framer.com" className="text-[#05f] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Framer</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.axure.com" className="text-[#008d7d] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Axure</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.flinto.com" className="text-[#00d6bf] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">Flinto</CodedText>
-					</Link>
-					<Link prefetch={true} href="https://www.protopie.io" className="text-[#6200ee] text-5xl font-bold hover:text-yellow-400">
-						<CodedText className="hover:underline">ProtoPie</CodedText>
-					</Link>
-				</PageHeader>
+		<QueryClientProvider client={queryClient}>
+			<HydrationBoundary state={dehydrate(queryClient)}>
 				<TooltipProvider>
 					<div className="min-h-screen bg-gradient-to-b bg-zinc-50 dark:bg-black">
 						<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-y">
@@ -248,14 +239,14 @@ export default async function PerformanceCaseStudy() {
 									<Impact benchmarks={benchmarks} />
 									<Technical data={technicalData} />
 									<Conclusion benchmarks={benchmarks} />
-									<Investment mainFeatures={mainFeatures} monthlyServices={monthlyServices} addOns={addOns} />
+									<Investment />
 								</main>
 							</div>
 						</div>
 					</div>
 				</TooltipProvider>
-			</Suspense>
-		</HydrationBoundary>
+			</HydrationBoundary>
+		</QueryClientProvider>
 	);
 }
 
@@ -265,59 +256,4 @@ function calculateImprovement(industry: number, optimized: number): string {
 	return `${improvement.toFixed(1)}%`;
 }
 
-// Constants
-const mainFeatures = ["Fully responsive design", "SEO optimization", "Performance optimization", "Security implementation", "Analytics integration", "Content management system", "Contact forms", "Social media integration", "Basic email setup", "30-day support"];
-const monthlyServices = [
-	{
-		feature: "24/7 monitoring",
-		included: true,
-	},
-	{
-		feature: "Security updates",
-		included: true,
-	},
-	{
-		feature: "Daily backups",
-		included: true,
-	},
-	{
-		feature: "CDN service",
-		included: true,
-	},
-	{
-		feature: "SSL certificate",
-		included: true,
-	},
-	{
-		feature: "Database management",
-		included: true,
-	},
-	{
-		feature: "Performance optimization",
-		included: true,
-	},
-	{
-		feature: "Content updates (2/month)",
-		included: true,
-	},
-];
-const addOns = [
-	{
-		title: "Landing Pages",
-		description: "Custom designed, high-converting landing pages",
-		price: "$799",
-		features: ["Conversion-optimized design", "A/B testing setup", "Analytics integration", "Lead capture forms", "Mobile optimization"],
-	},
-	{
-		title: "E-commerce Integration",
-		description: "Full e-commerce functionality",
-		price: "$2,499",
-		features: ["Product catalog", "Shopping cart", "Payment gateway", "Inventory management", "Order processing"],
-	},
-	{
-		title: "Custom Features",
-		description: "Tailored functionality for your business",
-		price: "From $999",
-		features: ["Custom database design", "API integration", "Advanced search", "User authentication", "Custom reporting"],
-	},
-];
+export default AnalysisDetailContent;

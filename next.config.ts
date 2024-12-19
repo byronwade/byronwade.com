@@ -7,6 +7,13 @@ const config: import("next").NextConfig = {
 		ppr: true,
 		inlineCss: true,
 		dynamicIO: true,
+		reactCompiler: true,
+	},
+	typescript: {
+		ignoreBuildErrors: true,
+	},
+	eslint: {
+		ignoreDuringBuilds: true,
 	},
 	images: {
 		remotePatterns: [

@@ -1,181 +1,131 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, ArrowUpRight, Tag, Github, ChartBar } from "lucide-react";
+import { Tag, Github, ExternalLink, BarChart } from "lucide-react";
 
-interface Project {
+interface PortfolioProject {
 	id: number;
 	year: string;
 	title: string;
 	description: string;
 	image: string;
-	tags: string[];
 	url?: string;
 	github?: string;
 	analysis?: string;
-	status?: "completed" | "in-progress" | "planned";
 	category?: string;
 }
 
-const projects: Project[] = [
+const projects: PortfolioProject[] = [
 	{
 		id: 1,
 		year: "2023",
 		title: "rebuzzle.byronwade.com",
 		description: "My personal website, built with Next.js, Tailwind CSS, and Framer Motion.",
-		image: "https://placehold.co/600x400",
-		tags: ["Next.js", "Tailwind CSS", "Framer Motion"],
+		image: "https://placehold.co/1200x800",
 		url: "https://rebuzzle.byronwade.com",
 		github: "https://github.com/username/rebuzzle",
 		analysis: "/analysis/rebuzzle",
-		status: "completed",
-		category: "AI & Machine Learning",
+		category: "Personal Projects",
 	},
 	{
 		id: 2,
 		year: "2023",
 		title: "wadesplumbingandseptic.com",
 		description: "My plumbing and septic business website, built with Next.js, Tailwind CSS, and Framer Motion.",
-		image: "https://placehold.co/600x400",
-		tags: ["Next.js", "Tailwind CSS", "Framer Motion"],
+		image: "https://placehold.co/1200x800",
 		url: "https://wadesplumbingandseptic.com",
 		github: "https://github.com/username/wadesplumbingandseptic",
-		status: "in-progress",
-		category: "Travel & Lifestyle",
 		analysis: "/analysis/wadesplumbingandseptic",
+		category: "Client Work",
 	},
 	{
 		id: 3,
 		year: "2023",
 		title: "reacpress.io",
 		description: "A simple, fast, and fun way to generate greeting cards with AI. (Go make carrrds!)",
-		image: "https://placehold.co/600x400",
-		tags: ["Next.js"],
+		image: "https://placehold.co/1200x800",
 		url: "https://carrrd.com",
-		status: "planned",
-		category: "Creative Tools",
-		analysis: "/analysis/carrrd",
+		category: "Side Projects",
 	},
 	{
 		id: 4,
 		year: "2022",
 		title: "NV /",
 		description: 'My first try at writing shaders, using the Frame Buffer Object technique to animate lots of particles. A project to explore Chinese characters that have "女" (woman) in them as a component.',
-		image: "https://placehold.co/600x400",
-		tags: ["WebGL", "Three.js"],
+		image: "https://placehold.co/1200x800",
 		url: "https://nv.com",
 		github: "https://github.com/username/nv",
-		status: "completed",
-		category: "Graphics & Animation",
-		analysis: "/analysis/nv",
+		category: "Experiments",
 	},
 ];
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
-	const cardVariants = {
-		hidden: { opacity: 0 },
-		visible: {
-			opacity: 1,
-			transition: {
-				duration: 0.5,
-				staggerChildren: 0.1,
-			},
-		},
-	};
-
-	const itemVariants = {
-		hidden: { opacity: 0, y: 20 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				duration: 0.5,
-			},
-		},
-	};
-
-	const getStatusColor = (status?: string) => {
-		switch (status) {
-			case "completed":
-				return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
-			case "in-progress":
-				return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
-			case "planned":
-				return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400";
-			default:
-				return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400";
-		}
-	};
-
+const PortfolioProjectCard = ({ project }: { project: PortfolioProject }) => {
 	return (
-		<motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40% 0px -40% 0px" }} className="group relative mt-12">
-			{/* Category Label */}
-			<motion.div variants={itemVariants} className="absolute -top-8 left-0">
-				<span className="text-sm text-muted-foreground flex items-center gap-2">
-					<Tag className="w-4 h-4" />
-					{project.category}
-				</span>
-			</motion.div>
-
-			<motion.div className="relative p-4 -m-4 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-900/50 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800">
-				<motion.div variants={itemVariants} className="flex items-baseline justify-between mb-6">
-					<div className="flex items-center gap-4">
-						<h2 className="text-3xl font-bold">{project.title}</h2>
-						<span className="text-sm text-muted-foreground"># {project.id}</span>
-						<span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(project.status)}`}>{project.status}</span>
+		<motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} viewport={{ once: true, margin: "-100px" }} className="bg-zinc-50 dark:bg-black border-t border-gray-200 dark:border-gray-800 py-16">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="lg:flex lg:items-center lg:justify-between">
+					<div className="lg:w-1/2 pr-8">
+						<div className="flex items-center justify-between mb-4">
+							<h2 className="text-3xl font-extrabold text-black dark:text-white">{project.title}</h2>
+							<span className="text-2xl font-bold text-gray-400 dark:text-gray-600">#{project.id}</span>
+						</div>
+						<div className="flex items-center gap-4 mb-4">
+							<span className="text-sm text-gray-500 dark:text-gray-400">/{project.year}</span>
+							<span className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+								<Tag className="w-4 h-4" />
+								{project.category}
+							</span>
+						</div>
+						<p className="text-lg text-gray-600 dark:text-gray-400 mb-6">{project.description}</p>
+						<div className="flex flex-wrap gap-4">
+							{project.url && (
+								<Link href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800 dark:text-black dark:bg-zinc-50 dark:hover:bg-gray-200 transition-colors duration-150 ease-in-out">
+									Visit Project
+									<ExternalLink className="ml-2 h-5 w-5" />
+								</Link>
+							)}
+							{project.github && (
+								<Link href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
+									<Github className="mr-2 h-5 w-5" />
+									View Code
+								</Link>
+							)}
+							{project.analysis && (
+								<Link href={project.analysis} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
+									<BarChart className="mr-2 h-5 w-5" />
+									View Analysis
+								</Link>
+							)}
+						</div>
 					</div>
-					<span className="text-sm text-muted-foreground flex items-center gap-1">/{project.year}</span>
-				</motion.div>
-
-				<motion.div variants={itemVariants} className="relative aspect-[16/9] overflow-hidden rounded-lg transition-all group-hover:ring-2 ring-zinc-200 dark:ring-zinc-800">
-					<Image src={project.image} alt={`Preview of ${project.title}`} fill className="object-cover rounded-lg transition-transform group-hover:scale-[1.02]" />
-					<div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-						{project.url && (
-							<a href={project.url} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
-								<span>Visit Site</span>
-								<ArrowUpRight className="w-4 h-4" />
-							</a>
-						)}
-						{project.github && (
-							<a href={project.github} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
-								<Github className="w-4 h-4" />
-								<span>View Code</span>
-							</a>
-						)}
-						{project.analysis && (
-							<a href={project.analysis} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
-								<ChartBar className="w-4 h-4" />
-								<span>View Analysis</span>
-							</a>
-						)}
+					<div className="mt-10 lg:mt-0 lg:w-1/2">
+						<div className="relative rounded-lg overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-105">
+							<Image src={project.image} alt={`${project.title} preview`} width={1200} height={800} layout="responsive" className="object-cover" quality={90} />
+							<div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+								<span className="text-white text-xl font-semibold">View Project</span>
+							</div>
+						</div>
 					</div>
-				</motion.div>
-
-				<motion.p variants={itemVariants} className="text-lg text-muted-foreground mt-6">
-					{project.description}
-				</motion.p>
-
-				<motion.div variants={itemVariants} className="flex flex-wrap gap-2 mt-4">
-					{project.tags.map((tag, tagIndex) => (
-						<motion.span key={tagIndex} variants={itemVariants} className="px-2 py-1 bg-muted text-muted-foreground text-sm rounded-full">
-							{tag}
-						</motion.span>
-					))}
-				</motion.div>
-			</motion.div>
+				</div>
+			</div>
 		</motion.div>
 	);
 };
 
-export default function ProjectList() {
+export default function PortfolioProjectList() {
 	return (
-		<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="dark:bg-black dark:text-white w-full bg-zinc-50 text-black min-h-screen">
-			<div className="max-w-7xl mx-auto py-12 px-4 space-y-24">
-				{projects.map((project, index) => (
-					<ProjectCard key={index} project={project} index={index} />
-				))}
+		<div className="bg-zinc-50 dark:bg-black text-black dark:text-white min-h-screen">
+			<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+				<h1 className="text-4xl font-extrabold text-center mb-16">My Portfolio</h1>
+				<div className="space-y-24">
+					{projects.map((project) => (
+						<PortfolioProjectCard key={project.id} project={project} />
+					))}
+				</div>
 			</div>
-		</motion.div>
+		</div>
 	);
 }
+

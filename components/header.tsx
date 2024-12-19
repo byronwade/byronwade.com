@@ -9,44 +9,23 @@ import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { customFont } from "@/lib/fonts";
 import { useTheme } from "next-themes";
-import { showBlog, showAnalysis, showShop } from "@/lib/feature-flags";
 
 // Dynamically import and memoize the CodedText component
 const CodedText = dynamic(() => import("@/components/ui/coded-text"));
 
-interface NavItem {
-	name: string;
-	href: string;
-}
-
-const getNavItems = async () => {
-	const items: NavItem[] = [
-		{ name: "Design", href: "/design" },
-		{ name: "Development", href: "/development" },
-		{ name: "Marketing", href: "/marketing" },
-	];
-
-	const [blogEnabled, analysisEnabled, shopEnabled] = await Promise.all([showBlog(), showAnalysis(), showShop()]);
-
-	if (blogEnabled) {
-		items.push({ name: "Blog", href: "/blog" });
-	}
-
-	if (analysisEnabled) {
-		items.push({ name: "Analysis", href: "/analysis" });
-	}
-
-	if (shopEnabled) {
-		items.push({ name: "Shop", href: "/shop" });
-	}
-
-	return items;
-};
+const navItems = [
+	{ name: "Design", href: "/design" },
+	{ name: "Development", href: "/development" },
+	{ name: "Marketing", href: "/marketing" },
+	{ name: "Portfolio", href: "/portfolio" },
+	//{ name: "Blog", href: "/blog" },
+	//{ name: "Analysis", href: "/analysis" },
+	//{ name: "Shop", href: "/shop" },
+];
 
 export default function Navbar({ className }: { className?: string }) {
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-	const [navItems, setNavItems] = React.useState<NavItem[]>([]);
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
 
@@ -56,10 +35,6 @@ export default function Navbar({ className }: { className?: string }) {
 		};
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
-
-	React.useEffect(() => {
-		getNavItems().then(setNavItems);
 	}, []);
 
 	const toggleTheme = () => {
@@ -122,7 +97,9 @@ export default function Navbar({ className }: { className?: string }) {
 						</Button>
 
 						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-neutral-200 dark:hover:bg-neutral-800" onClick={toggleMobileMenu}>
-							{isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+							{isMobileMenuOpen ?
+								<X className="h-4 w-4" />
+							:	<Menu className="h-4 w-4" />}
 							<span className="sr-only">{isMobileMenuOpen ? "Close menu" : "Open menu"}</span>
 						</Button>
 

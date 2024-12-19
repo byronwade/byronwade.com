@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import AnalysisContent from "@/components/analysis/analysis-content";
+import AnalysisDetailContent from "@/components/analysis/analysis-detail-content";
 
-export default function AnalysisPage() {
+export default async function AnalysisDetailPage() {
 	return (
 		<Suspense fallback={<LoadingSpinner />}>
-			<AnalysisContent />
+			<AnalysisDetailContent />
 		</Suspense>
 	);
 }
