@@ -1,0 +1,14 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://byronwade.com/sitemap.xml
+
+# Disallow admin and private routes
+Disallow: /api/*
+Disallow: /admin/*
+Disallow: /private/*
+
+# Crawl delay for better server performance
+Crawl-delay: 1 

@@ -9,25 +9,39 @@ import { cn } from "@/lib/utils";
 import dynamic from "next/dynamic";
 import { customFont } from "@/lib/fonts";
 import { useTheme } from "next-themes";
+import { isFeatureEnabled } from "@/lib/config/features";
 
 // Dynamically import and memoize the CodedText component
 const CodedText = dynamic(() => import("@/components/ui/coded-text"));
 
-const navItems = [
-	{ name: "Design", href: "/design" },
-	{ name: "Development", href: "/development" },
-	{ name: "Marketing", href: "/marketing" },
-	{ name: "Portfolio", href: "/portfolio" },
-	{ name: "Analysis", href: "/analysis" },
-	{ name: "Blog", href: "/blog" },
-	{ name: "Shop", href: "/shop" },
-];
+const getNavItems = () => {
+	const items = [
+		{ name: "Design", href: "/design" },
+		{ name: "Development", href: "/development" },
+		{ name: "Marketing", href: "/marketing" },
+	];
+
+	if (isFeatureEnabled("enablePortfolio")) {
+		items.push({ name: "Portfolio", href: "/portfolio" });
+	}
+
+	if (isFeatureEnabled("enableAnalysis")) {
+		items.push({ name: "Analysis", href: "/analysis" });
+	}
+
+	if (isFeatureEnabled("enableShop")) {
+		items.push({ name: "Shop", href: "/shop" });
+	}
+
+	return items;
+};
 
 export default function Navbar({ className }: { className?: string }) {
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 	const pathname = usePathname();
 	const { theme, setTheme } = useTheme();
+	const navItems = React.useMemo(() => getNavItems(), []);
 
 	React.useEffect(() => {
 		const handleScroll = () => {
@@ -63,8 +77,19 @@ export default function Navbar({ className }: { className?: string }) {
 		return icon;
 	};
 
+	const isPortfolioPage = pathname.startsWith("/portfolio");
+	const headerClasses = cn(
+		"sticky top-0 left-0 right-0 z-50",
+		{
+			"border-b-4 border-zinc-100 dark:border-zinc-800": isPortfolioPage || isScrolled,
+			"bg-zinc-50 dark:bg-black": isScrolled,
+			"bg-transparent": !isScrolled,
+		},
+		className
+	);
+
 	return (
-		<header className={cn("sticky top-0 left-0 right-0 z-50 transition-all duration-200", isScrolled ? "bg-zinc-50 dark:bg-black border-b-4 border-zinc-100 dark:border-zinc-800" : "bg-transparent", className)}>
+		<header role="banner" aria-label="Site header" className={headerClasses}>
 			<div className="px-4">
 				<div className="flex items-center justify-between h-16">
 					<Link prefetch={true} href="/" className="flex items-center space-x-3">
@@ -73,7 +98,7 @@ export default function Navbar({ className }: { className?: string }) {
 
 					<nav className="hidden lg:flex items-center absolute left-1/2 transform -translate-x-1/2 space-x-4">
 						{navItems.map((item) => (
-							<Link prefetch={true} key={item.name} href={item.href} className={cn("text-sm font-medium transition-colors px-3 py-2", pathname.startsWith(item.href) ? "text-yellow-400 underline" : "hover:text-yellow-400")}>
+							<Link prefetch={true} key={item.name} href={item.href} className={cn("text-sm font-medium px-3 py-2", pathname.startsWith(item.href) ? "text-yellow-400 underline" : "hover:text-yellow-400")}>
 								<CodedText>{item.name}</CodedText>
 							</Link>
 						))}
@@ -85,10 +110,12 @@ export default function Navbar({ className }: { className?: string }) {
 							<span className="sr-only">Toggle theme</span>
 						</Button>
 
-						<Button variant="ghost" size="icon" className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
-							<ShoppingCart className="h-4 w-4" />
-							<span className="sr-only">Cart</span>
-						</Button>
+						{isFeatureEnabled("enableShop") && (
+							<Button variant="ghost" size="icon" className="hover:bg-neutral-200 dark:hover:bg-neutral-900">
+								<ShoppingCart className="h-4 w-4" />
+								<span className="sr-only">Cart</span>
+							</Button>
+						)}
 
 						<Button variant="ghost" size="icon" className="lg:hidden hover:bg-neutral-200 dark:hover:bg-neutral-800" onClick={toggleMobileMenu}>
 							{isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -107,7 +134,7 @@ export default function Navbar({ className }: { className?: string }) {
 				<div className="lg:hidden bg-zinc-50 dark:bg-black">
 					<nav className="px-4 pt-2 pb-4 space-y-2">
 						{navItems.map((item) => (
-							<Link prefetch={true} key={item.name} href={item.href} className={cn("block py-2 text-sm font-medium transition-colors", pathname.startsWith(item.href) ? "text-yellow-400" : "hover:text-yellow-400")} onClick={() => setIsMobileMenuOpen(false)}>
+							<Link prefetch={true} key={item.name} href={item.href} className={cn("block py-2 text-sm font-medium", pathname.startsWith(item.href) ? "text-yellow-400" : "hover:text-yellow-400")} onClick={() => setIsMobileMenuOpen(false)}>
 								{item.name}
 							</Link>
 						))}

@@ -1,210 +1,181 @@
-"use cache";
+"use client";
 
-import { ExternalLink, Check } from "lucide-react";
-import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Calendar, ArrowUpRight, Tag, Github, ChartBar } from "lucide-react";
 
-export async function getProjects() {
-	const start = performance.now();
-	// This would typically fetch from a database or CMS
-	const data = {
-		clientProjects: [
-			{
-				title: "Lanier Plumbing Services",
-				description: "A modern web platform for a plumbing business featuring service booking, emergency requests, and customer management.",
-				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-				features: ["Online Booking", "Service Management", "Payment Integration", "Admin Dashboard"],
-				link: "/lanier-plumbing-services",
-				icon: "🔧",
-				status: "under_development",
-			},
-			{
-				title: "Impact Marine Service",
-				description: "A modern web platform for a marine service business featuring boat maintenance scheduling, emergency repairs, and customer management.",
-				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-				features: ["Online Scheduling", "Service Management", "Payment Integration", "Admin Dashboard"],
-				link: "/impact-marine-service",
-				icon: "⚓",
-				status: "under_development",
-			},
-			{
-				title: "Zugzology",
-				description: "A modern e-commerce platform for a gourmet mushroom cultivation company featuring product ordering, grow kit tutorials, and subscription management.",
-				technologies: ["Next.js 14", "TypeScript", "TanStack Query", "Tailwind CSS", "Stripe"],
-				features: ["Online Store", "Subscription Service", "Growing Guides", "Admin Dashboard"],
-				link: "/zugzology",
-				icon: "🍄",
-				status: "under_development",
-			},
-		],
-		hobbyProjects: [
-			{
-				title: "Thorbis",
-				description: "A comprehensive website orchestration platform designed for freelancers, business owners and agencies to streamline their web development workflow.",
-				technologies: ["Next.js 14", "TanStack Query", "Prisma", "tRPC", "Stripe Connect"],
-				features: ["Client Management", "Project Automation", "Team Collaboration", "Billing & Invoicing"],
-				link: "https://thorbis.com",
-				icon: "⚡",
-				status: "under_development",
-			},
-			{
-				title: "EmailMeWork",
-				description: "A minimalist email-based lead platform that simplifies client communication and project inquiries through a streamlined email workflow.",
-				technologies: ["Next.js 14", "TanStack Query", "Resend", "Prisma", "Stripe"],
-				features: ["Email-Based Leads", "Automated Responses", "Simple Dashboard", "Lead Tracking"],
-				link: "https://emailmework.com",
-				icon: "📧",
-				status: "under_development",
-			},
-		],
-	};
-	console.log("Cache fetch time:", performance.now() - start);
-	return data;
+interface Project {
+	id: number;
+	year: string;
+	title: string;
+	description: string;
+	image: string;
+	tags: string[];
+	url?: string;
+	github?: string;
+	analysis?: string;
+	status?: "completed" | "in-progress" | "planned";
+	category?: string;
 }
 
-const getStatusBadge = (status: string) => {
-	const statusConfig = {
-		under_development: {
-			label: "Under Development",
-			className: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20",
+const projects: Project[] = [
+	{
+		id: 1,
+		year: "2023",
+		title: "rebuzzle.byronwade.com",
+		description: "My personal website, built with Next.js, Tailwind CSS, and Framer Motion.",
+		image: "https://placehold.co/600x400",
+		tags: ["Next.js", "Tailwind CSS", "Framer Motion"],
+		url: "https://rebuzzle.byronwade.com",
+		github: "https://github.com/username/rebuzzle",
+		analysis: "/analysis/rebuzzle",
+		status: "completed",
+		category: "AI & Machine Learning",
+	},
+	{
+		id: 2,
+		year: "2023",
+		title: "wadesplumbingandseptic.com",
+		description: "My plumbing and septic business website, built with Next.js, Tailwind CSS, and Framer Motion.",
+		image: "https://placehold.co/600x400",
+		tags: ["Next.js", "Tailwind CSS", "Framer Motion"],
+		url: "https://wadesplumbingandseptic.com",
+		github: "https://github.com/username/wadesplumbingandseptic",
+		status: "in-progress",
+		category: "Travel & Lifestyle",
+		analysis: "/analysis/wadesplumbingandseptic",
+	},
+	{
+		id: 3,
+		year: "2023",
+		title: "reacpress.io",
+		description: "A simple, fast, and fun way to generate greeting cards with AI. (Go make carrrds!)",
+		image: "https://placehold.co/600x400",
+		tags: ["Next.js"],
+		url: "https://carrrd.com",
+		status: "planned",
+		category: "Creative Tools",
+		analysis: "/analysis/carrrd",
+	},
+	{
+		id: 4,
+		year: "2022",
+		title: "NV /",
+		description: 'My first try at writing shaders, using the Frame Buffer Object technique to animate lots of particles. A project to explore Chinese characters that have "女" (woman) in them as a component.',
+		image: "https://placehold.co/600x400",
+		tags: ["WebGL", "Three.js"],
+		url: "https://nv.com",
+		github: "https://github.com/username/nv",
+		status: "completed",
+		category: "Graphics & Animation",
+		analysis: "/analysis/nv",
+	},
+];
+
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+	const cardVariants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			transition: {
+				duration: 0.5,
+				staggerChildren: 0.1,
+			},
 		},
-		live: {
-			label: "Live",
-			className: "bg-green-500/10 text-green-500 hover:bg-green-500/20",
+	};
+
+	const itemVariants = {
+		hidden: { opacity: 0, y: 20 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.5,
+			},
 		},
-		maintenance: {
-			label: "Maintenance",
-			className: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20",
-		},
-		archived: {
-			label: "Archived",
-			className: "bg-neutral-500/10 text-neutral-500 hover:bg-neutral-500/20",
-		},
-	}[status] || { label: "Unknown", className: "bg-neutral-500/10 text-neutral-500" };
+	};
+
+	const getStatusColor = (status?: string) => {
+		switch (status) {
+			case "completed":
+				return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+			case "in-progress":
+				return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+			case "planned":
+				return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400";
+			default:
+				return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400";
+		}
+	};
 
 	return (
-		<Badge variant="secondary" className={`${statusConfig.className} ml-2`}>
-			{statusConfig.label}
-		</Badge>
+		<motion.div variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-40% 0px -40% 0px" }} className="group relative mt-12">
+			{/* Category Label */}
+			<motion.div variants={itemVariants} className="absolute -top-8 left-0">
+				<span className="text-sm text-muted-foreground flex items-center gap-2">
+					<Tag className="w-4 h-4" />
+					{project.category}
+				</span>
+			</motion.div>
+
+			<motion.div className="relative p-4 -m-4 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-900/50 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-800">
+				<motion.div variants={itemVariants} className="flex items-baseline justify-between mb-6">
+					<div className="flex items-center gap-4">
+						<h2 className="text-3xl font-bold">{project.title}</h2>
+						<span className="text-sm text-muted-foreground"># {project.id}</span>
+						<span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(project.status)}`}>{project.status}</span>
+					</div>
+					<span className="text-sm text-muted-foreground flex items-center gap-1">/{project.year}</span>
+				</motion.div>
+
+				<motion.div variants={itemVariants} className="relative aspect-[16/9] overflow-hidden rounded-lg transition-all group-hover:ring-2 ring-zinc-200 dark:ring-zinc-800">
+					<Image src={project.image} alt={`Preview of ${project.title}`} fill className="object-cover rounded-lg transition-transform group-hover:scale-[1.02]" />
+					<div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+						{project.url && (
+							<a href={project.url} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+								<span>Visit Site</span>
+								<ArrowUpRight className="w-4 h-4" />
+							</a>
+						)}
+						{project.github && (
+							<a href={project.github} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+								<Github className="w-4 h-4" />
+								<span>View Code</span>
+							</a>
+						)}
+						{project.analysis && (
+							<a href={project.analysis} target="_blank" rel="noopener noreferrer" className="bg-zinc-50/10 backdrop-blur-sm hover:bg-zinc-50/20 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+								<ChartBar className="w-4 h-4" />
+								<span>View Analysis</span>
+							</a>
+						)}
+					</div>
+				</motion.div>
+
+				<motion.p variants={itemVariants} className="text-lg text-muted-foreground mt-6">
+					{project.description}
+				</motion.p>
+
+				<motion.div variants={itemVariants} className="flex flex-wrap gap-2 mt-4">
+					{project.tags.map((tag, tagIndex) => (
+						<motion.span key={tagIndex} variants={itemVariants} className="px-2 py-1 bg-muted text-muted-foreground text-sm rounded-full">
+							{tag}
+						</motion.span>
+					))}
+				</motion.div>
+			</motion.div>
+		</motion.div>
 	);
 };
 
-const isExternalUrl = (url: string) => {
-	return url.startsWith("http") || url.startsWith("https");
-};
-
-export default async function PortfolioPage() {
-	const { clientProjects, hobbyProjects } = await getProjects();
-
+export default function ProjectList() {
 	return (
-		<div className="bg-zinc-50 dark:bg-[#121212] min-h-screen px-4 py-8 space-y-12">
-			{/* Client Projects Section */}
-			<section>
-				<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">Client Projects</h1>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					{clientProjects.map((project, index) => (
-						<Card key={index} className="bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
-							<CardHeader className="flex justify-between items-center py-6 border-b border-zinc-200 dark:border-zinc-800">
-								<div className="flex items-center">
-									<div className="h-8 w-8 flex items-center justify-center text-2xl">{project.icon}</div>
-								</div>
-							</CardHeader>
-							<CardContent className="space-y-4 p-6">
-								<h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{project.title}</h2>
-								<p className="text-zinc-500 dark:text-zinc-400 text-sm">{project.description}</p>
-								<div className="flex flex-wrap gap-2">
-									{project.technologies.map((tech, i) => (
-										<Badge key={i} variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-											{tech}
-										</Badge>
-									))}
-								</div>
-								<Separator className="bg-zinc-200 dark:bg-zinc-800" />
-								<div className="space-y-2">
-									<h3 className="text-sm font-medium text-zinc-900 dark:text-white">Key Features:</h3>
-									<ul className="space-y-1">
-										{project.features.map((feature, i) => (
-											<li key={i} className="flex items-center text-zinc-500 dark:text-zinc-400 text-sm">
-												<Check className="h-4 w-4 mr-2 text-green-500" />
-												{feature}
-											</li>
-										))}
-									</ul>
-								</div>
-							</CardContent>
-							<CardFooter className="border-t border-zinc-200 dark:border-zinc-800 p-6 flex justify-between items-center">
-								{isExternalUrl(project.link) ? (
-									<a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-										View Project
-										<ExternalLink className="h-4 w-4" />
-									</a>
-								) : (
-									<Link prefetch={true} href={project.link} className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-										View Project
-										<ExternalLink className="h-4 w-4" />
-									</Link>
-								)}
-								{project.status && getStatusBadge(project.status)}
-							</CardFooter>
-						</Card>
-					))}
-				</div>
-			</section>
-
-			{/* Hobby Projects Section */}
-			<section>
-				<h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-6">Hobby Projects</h1>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					{hobbyProjects.map((project, index) => (
-						<Card key={index} className="bg-zinc-50 dark:bg-black border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
-							<CardHeader className="flex justify-between items-center py-6 border-b border-zinc-200 dark:border-zinc-800">
-								<div className="flex items-center">
-									<div className="h-8 w-8 flex items-center justify-center text-2xl">{project.icon}</div>
-								</div>
-							</CardHeader>
-							<CardContent className="space-y-4 p-6">
-								<h2 className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">{project.title}</h2>
-								<p className="text-zinc-500 dark:text-zinc-400 text-sm">{project.description}</p>
-								<div className="flex flex-wrap gap-2">
-									{project.technologies.map((tech, i) => (
-										<Badge key={i} variant="secondary" className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-											{tech}
-										</Badge>
-									))}
-								</div>
-								<Separator className="bg-zinc-200 dark:bg-zinc-800" />
-								<div className="space-y-2">
-									<h3 className="text-sm font-medium text-zinc-900 dark:text-white">Key Features:</h3>
-									<ul className="space-y-1">
-										{project.features.map((feature, i) => (
-											<li key={i} className="flex items-center text-zinc-500 dark:text-zinc-400 text-sm">
-												<Check className="h-4 w-4 mr-2 text-green-500" />
-												{feature}
-											</li>
-										))}
-									</ul>
-								</div>
-							</CardContent>
-							<CardFooter className="border-t border-zinc-200 dark:border-zinc-800 p-6 flex justify-between items-center">
-								{isExternalUrl(project.link) ? (
-									<a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-										View Project
-										<ExternalLink className="h-4 w-4" />
-									</a>
-								) : (
-									<Link prefetch={true} href={project.link} className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
-										View Project
-										<ExternalLink className="h-4 w-4" />
-									</Link>
-								)}
-								{project.status && getStatusBadge(project.status)}
-							</CardFooter>
-						</Card>
-					))}
-				</div>
-			</section>
-		</div>
+		<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="dark:bg-black dark:text-white w-full bg-zinc-50 text-black min-h-screen">
+			<div className="max-w-7xl mx-auto py-12 px-4 space-y-24">
+				{projects.map((project, index) => (
+					<ProjectCard key={index} project={project} index={index} />
+				))}
+			</div>
+		</motion.div>
 	);
 }

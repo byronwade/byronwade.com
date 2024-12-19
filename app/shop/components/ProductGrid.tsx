@@ -1,9 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
-import { type Product } from "@/types/shopify";
 import { formatPrice } from "@/lib/utils";
 
-export default function ProductGrid({ products }: { products: Product[] }) {
+interface ProcessedProduct {
+	id: string;
+	title: string;
+	handle: string;
+	description: string;
+	price: {
+		amount: string;
+		currencyCode: string;
+	};
+	image: {
+		url: string;
+		altText: string | null;
+	} | null;
+}
+
+export default function ProductGrid({ products }: { products: ProcessedProduct[] }) {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 			{products.map((product) => (
@@ -17,7 +31,6 @@ export default function ProductGrid({ products }: { products: Product[] }) {
 						<div className="p-4">
 							<h2 className="text-lg font-semibold">{product.title}</h2>
 							<p className="text-neutral-600">{formatPrice(product.price)}</p>
-							{!product.availableForSale && <span className="text-red-500 text-sm">Out of stock</span>}
 						</div>
 					</div>
 				</Link>

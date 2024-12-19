@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getBlogPost } from "@/actions/shopify/getBlogPosts";
+import { getBlogPost } from "@/app/actions/shopify/getBlogPosts";
 
 interface PageProps {
 	params: Promise<{ handle: string }>;
@@ -40,7 +40,3 @@ export async function generateMetadata({ params }: PageProps) {
 		description: post.excerpt || `Read ${post.title} on Byron Wade's blog`,
 	};
 }
-
-export const runtime = "edge";
-export const preferredRegion = "auto";
-export const dynamic = "force-dynamic";

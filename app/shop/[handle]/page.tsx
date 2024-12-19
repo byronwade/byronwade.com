@@ -1,4 +1,4 @@
-import { getProduct } from "@/actions/shopify/getProducts";
+import { getProduct } from "@/app/actions/shopify/getProducts";
 import AddToCartButton from "@/app/shop/components/AddToCartButton";
 import { notFound } from "next/navigation";
 import Image from "next/image";

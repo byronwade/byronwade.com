@@ -51,10 +51,10 @@ const analyses = [
 
 export default function Component() {
 	return (
-		<div className="w-full min-h-screen bg-neutral-100 dark:bg-black p-4 sm:p-6 space-y-6">
+		<div className="max-w-7xl mx-auto py-12 px-4 space-y-24">
 			<h1 className="text-2xl sm:text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-6">300 of a planned 567 Analyses Completed</h1>
 			{analyses.map((analysis) => (
-				<Card key={analysis.id} className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors">
+				<Card key={analysis.id} className="bg-zinc-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors">
 					<div className="flex flex-col lg:flex-row">
 						<CardHeader className="lg:w-1/4 lg:border-r lg:border-neutral-200 dark:lg:border-neutral-700">
 							<div className="space-y-1">

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getProducts } from "@/actions/shopify/getProducts";
+import { getProducts } from "@/app/actions/shopify/getProducts";
 import { ProductGrid } from "./components";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 

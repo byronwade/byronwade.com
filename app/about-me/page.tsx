@@ -1,15 +1,59 @@
-"use client";
-
 import Image from "next/image";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import { Twitter, Github, Youtube, ExternalLink, TrendingUp, Book, Briefcase, ArrowRight } from "lucide-react";
 import AnimatedSection from "@/components/ui/animated-section";
+import Footer from "@/components/footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "About Byron Wade - Entrepreneur & Tech Innovator",
+	description: "Learn about Byron Wade, CEO of Wade's Inc, entrepreneur, and Computer Science student. Discover my journey, achievements, and vision for innovation in technology and construction.",
+	openGraph: {
+		title: "About Byron Wade - Entrepreneur & Tech Innovator",
+		description: "Learn about Byron Wade, CEO of Wade's Inc, entrepreneur, and Computer Science student. Discover my journey, achievements, and vision for innovation in technology and construction.",
+		images: [{ url: "/about-og.jpg", width: 1200, height: 630, alt: "Byron Wade - Entrepreneur & Innovator" }],
+		type: "profile",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "About Byron Wade - Entrepreneur & Tech Innovator",
+		description: "Learn about Byron Wade, CEO of Wade's Inc, entrepreneur, and Computer Science student. Discover my journey, achievements, and vision for innovation in technology and construction.",
+		images: ["/about-og.jpg"],
+	},
+};
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "AboutPage",
+	mainEntity: {
+		"@type": "Person",
+		name: "Byron Wade",
+		jobTitle: "CEO and Co-Owner",
+		worksFor: {
+			"@type": "Organization",
+			name: "Wade's Inc",
+			description: "A multi-million dollar construction and technology company",
+			sameAs: ["https://wadesplumbingandseptic.com/", "https://clogmonsterssepticpumping.com/"],
+		},
+		alumniOf: {
+			"@type": "CollegeOrUniversity",
+			name: "Cabrillo College",
+		},
+		description: "Entrepreneur, Computer Science student, and innovator in construction and technology industries",
+		url: "https://byronwade.com/about-me",
+		sameAs: ["https://twitter.com/byronwade", "https://github.com/byronwade", "https://www.youtube.com/@byronwade"],
+	},
+};
+
+// Get the current year for the footer
+const currentYear = new Date().getFullYear();
 
 export default function AccessibleVIPAboutMePage() {
 	return (
 		<div className="min-h-screen bg-stone-50 text-stone-800 font-sans">
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 			{/* Hero Section */}
 			<section className="pt-20 pb-32 bg-gradient-to-br from-stone-100 to-stone-200 relative overflow-hidden">
 				<div className="container mx-auto px-4 relative z-10">
@@ -145,12 +189,7 @@ export default function AccessibleVIPAboutMePage() {
 				</div>
 			</section>
 
-			{/* Footer */}
-			<footer className="bg-stone-100 py-8 mt-20">
-				<div className="container mx-auto px-4 text-center text-stone-600">
-					<p>&copy; {new Date().getFullYear()} Byron Wade. All rights reserved.</p>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	);
 }
