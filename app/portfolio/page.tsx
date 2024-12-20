@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Tag, Github, ExternalLink, BarChart } from "lucide-react";
+import { Tag, ExternalLink, BarChart, ArrowUpRight } from "lucide-react";
 
 interface PortfolioProject {
 	id: number;
@@ -13,8 +13,10 @@ interface PortfolioProject {
 	image: string;
 	url?: string;
 	github?: string;
+	seemore?: string;
 	analysis?: string;
 	category?: string;
+	status: "completed" | "in-progress" | "coming-soon";
 }
 
 const projects: PortfolioProject[] = [
@@ -25,9 +27,11 @@ const projects: PortfolioProject[] = [
 		description: "My personal website, built with Next.js, Tailwind CSS, and Framer Motion.",
 		image: "https://placehold.co/1200x800",
 		url: "https://rebuzzle.byronwade.com",
-		github: "https://github.com/username/rebuzzle",
+		github: "https://github.com/byronwade/rebuzzle",
+		seemore: "/portfolio/rebuzzle",
 		analysis: "/analysis/rebuzzle",
 		category: "Personal Projects",
+		status: "completed",
 	},
 	{
 		id: 2,
@@ -35,10 +39,11 @@ const projects: PortfolioProject[] = [
 		title: "wadesplumbingandseptic.com",
 		description: "My plumbing and septic business website, built with Next.js, Tailwind CSS, and Framer Motion.",
 		image: "https://placehold.co/1200x800",
-		url: "https://wadesplumbingandseptic.com",
-		github: "https://github.com/username/wadesplumbingandseptic",
+		github: "https://github.com/byronwade/wadesplumbingandseptic",
+		seemore: "/portfolio/wadesplumbingandseptic",
 		analysis: "/analysis/wadesplumbingandseptic",
 		category: "Client Work",
+		status: "in-progress",
 	},
 	{
 		id: 3,
@@ -46,8 +51,10 @@ const projects: PortfolioProject[] = [
 		title: "reacpress.io",
 		description: "A simple, fast, and fun way to generate greeting cards with AI. (Go make carrrds!)",
 		image: "https://placehold.co/1200x800",
-		url: "https://carrrd.com",
+		seemore: "/portfolio/carrrd",
+		analysis: "/analysis/carrrd",
 		category: "Side Projects",
+		status: "coming-soon",
 	},
 	{
 		id: 4,
@@ -55,9 +62,11 @@ const projects: PortfolioProject[] = [
 		title: "NV /",
 		description: 'My first try at writing shaders, using the Frame Buffer Object technique to animate lots of particles. A project to explore Chinese characters that have "女" (woman) in them as a component.',
 		image: "https://placehold.co/1200x800",
-		url: "https://nv.com",
-		github: "https://github.com/username/nv",
+		github: "https://github.com/byronwade/nv",
+		seemore: "/portfolio/nv",
+		analysis: "/analysis/nv",
 		category: "Experiments",
+		status: "completed",
 	},
 ];
 
@@ -80,20 +89,33 @@ const PortfolioProjectCard = ({ project }: { project: PortfolioProject }) => {
 						</div>
 						<p className="text-lg text-gray-600 dark:text-gray-400 mb-6">{project.description}</p>
 						<div className="flex flex-wrap gap-4">
-							{project.url && (
+							{project.status === "completed" && project.url && (
 								<Link href={project.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800 dark:text-black dark:bg-zinc-50 dark:hover:bg-gray-200 transition-colors duration-150 ease-in-out">
-									Visit Project
+									Live Link
 									<ExternalLink className="ml-2 h-5 w-5" />
 								</Link>
 							)}
-							{project.github && (
-								<Link href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
-									<Github className="mr-2 h-5 w-5" />
-									View Code
+							{project.status === "completed" && !project.url && project.github && (
+								<Link href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800 dark:text-black dark:bg-zinc-50 dark:hover:bg-gray-200 transition-colors duration-150 ease-in-out">
+									View on GitHub
+									<ExternalLink className="ml-2 h-5 w-5" />
+								</Link>
+							)}
+							{project.status === "in-progress" && (
+								<span className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">
+									In Progress
+									<span className="ml-2 h-2 w-2 bg-yellow-400 rounded-full animate-pulse"></span>
+								</span>
+							)}
+							{project.status === "coming-soon" && <span className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-gray-500 bg-gray-100 dark:text-gray-400 dark:bg-gray-800">Coming Soon</span>}
+							{project.seemore && (
+								<Link href={project.seemore} rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
+									<ArrowUpRight className="mr-2 h-5 w-5" />
+									Case Study
 								</Link>
 							)}
 							{project.analysis && (
-								<Link href={project.analysis} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
+								<Link href={project.analysis} rel="noopener noreferrer" className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-black bg-zinc-50 hover:bg-gray-100 dark:text-white dark:bg-black dark:hover:bg-gray-900 transition-colors duration-150 ease-in-out">
 									<BarChart className="mr-2 h-5 w-5" />
 									View Analysis
 								</Link>

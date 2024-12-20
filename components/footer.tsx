@@ -5,7 +5,7 @@ import { Twitter, Youtube, Linkedin, Instagram } from "lucide-react";
 export default function Footer() {
 	return (
 		<>
-			<section className="relative bg-zinc-50 dark:bg-black overflow-hidden h-96">
+			<section className="relative bg-transparent overflow-hidden h-96 border-t-4 border-yellow-600">
 				<div className="absolute inset-x-0 bottom-0 z-20 pointer-events-none h-1/2 bg-gradient-to-t from-yellow-600/60 to-transparent border-b-4 border-yellow-600" aria-hidden="true" />
 			</section>
 
