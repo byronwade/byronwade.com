@@ -11,7 +11,7 @@ interface ShotCardProps {
 
 export function ShotCard({ shot }: ShotCardProps) {
 	const imageUrl = shot.images.four_x || shot.images.hidpi || shot.images.two_x || shot.images.normal || shot.images.teaser;
-	const formattedDate = new Date(shot.published_at).getFullYear();
+	const formattedDate = shot.published_at ? new Date(shot.published_at).getFullYear() : new Date().getFullYear();
 
 	const handleCardClick = () => {
 		window.location.href = `/portfolio/dribbble/${shot.id}`;

@@ -4,6 +4,9 @@ import { FigmaFile, FigmaComprehensiveAnalytics } from "@/types/figma";
 import { unstable_cache } from "next/cache";
 import * as Figma from "figma-js";
 
+// Export types for use in other files
+export type { GitHubRepo } from "@/types/github";
+
 // Utility function to add timeout to fetch requests
 const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: number } = {}) => {
 	const { timeout = 3000, ...fetchOptions } = options; // Reduced to 3s for speed
