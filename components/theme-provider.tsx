@@ -16,7 +16,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 	}, []);
 
 	if (!mounted) {
-		return null;
+		return <div className="dark">{children}</div>;
 	}
 
 	return <NextThemesProvider {...props}>{children}</NextThemesProvider>;

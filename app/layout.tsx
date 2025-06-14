@@ -72,10 +72,10 @@ export { metadata };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className="h-full" suppressHydrationWarning dir="ltr">
+		<html lang="en" className="h-full dark" suppressHydrationWarning dir="ltr">
 			<body className={`${inter.className} min-h-screen bg-background font-sans antialiased`}>
 				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+				<ThemeProvider attribute="class" forcedTheme="dark" disableTransitionOnChange>
 					<Background />
 					<div className="relative flex min-h-screen flex-col">
 						<Header />
