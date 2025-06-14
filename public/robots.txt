@@ -2,13 +2,54 @@
 User-agent: *
 Allow: /
 
+# Slow down aggressive crawlers
+Crawl-delay: 1
+
+# Block known bad bots and scrapers
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot  
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-agent: facebookexternalhit
+Disallow: /
+
+# Allow legitimate search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
 # Sitemap location
 Sitemap: https://byronwade.com/sitemap.xml
 
 # Disallow admin and private routes
 Disallow: /api/*
 Disallow: /admin/*
-Disallow: /private/*
-
-# Crawl delay for better server performance
-Crawl-delay: 1 
+Disallow: /private/* 

@@ -1,7 +1,7 @@
+@import 'highlight.js/styles/github-dark.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -63,5 +63,25 @@
   }
                 body {
     @apply bg-background text-foreground;
+  }
+}
+@layer utilities {
+
+  /* Gradient animations for hero section */
+  @keyframes gradient-x {
+
+    0%,
+    100% {
+      transform: translateX(0%);
+    }
+
+    50% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 3s ease infinite;
   }
 }

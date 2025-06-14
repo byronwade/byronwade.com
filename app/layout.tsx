@@ -1,54 +1,71 @@
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Providers } from "./providers";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { Toaster } from "@/components/ui/sonner";
+// import { PerformanceMonitor } from "@/components/performance-monitor";
+// import { PerformanceOptimizer } from "@/components/performance-optimizer";
+// import { ServiceWorkerRegistration } from "@/components/service-worker-registration";
+// import ErrorBoundary from "@/components/error-boundary";
+import Background from "@/components/sections/background";
 import { metadata } from "./metadata.config";
+// import { Suspense } from "react";
 
-// Dynamically import heavy components
-const Header = dynamic(() => import("@/components/header"), {
-	loading: () => <LoadingSpinner />,
-	ssr: true,
-});
+// Force static rendering to fix streaming issue
+export const dynamic = "force-static";
+export const revalidate = false;
 
-const Background = dynamic(() => import("@/components/sections/background"), {
-	loading: () => <LoadingSpinner />,
-	ssr: true,
-});
-
-const Footer = dynamic(() => import("@/components/footer"), {
-	loading: () => <LoadingSpinner />,
-	ssr: true,
+const inter = Inter({
+	subsets: ["latin"],
+	display: "swap",
+	preload: true,
+	fallback: ["system-ui", "arial"],
 });
 
 const jsonLd = {
 	"@context": "https://schema.org",
-	"@type": "WebSite",
+	"@type": "Person",
 	name: "Byron Wade",
-	alternateName: "Byron Wade Portfolio",
 	url: "https://byronwade.com",
-	description: "Expert full-stack developer specializing in high-performance web applications and modern solutions.",
-	sameAs: ["https://twitter.com/byronwade", "https://github.com/byronwade", "https://linkedin.com/in/byronwade"],
-	publisher: {
+	image: "https://byronwade.com/avatar.avif",
+	sameAs: ["https://github.com/byronwade", "https://linkedin.com/in/byronwade", "https://twitter.com/byronwade"],
+	jobTitle: "Full Stack Developer",
+	worksFor: {
 		"@type": "Organization",
-		name: "Byron Wade",
-		logo: {
-			"@type": "ImageObject",
-			url: "https://byronwade.com/logo.png",
+		name: "Byron Wade Development",
+	},
+	knowsAbout: ["Web Development", "JavaScript", "React", "Next.js", "Node.js", "TypeScript", "Performance Optimization", "SEO"],
+	description: "Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions.",
+	address: {
+		"@type": "PostalAddress",
+		addressLocality: "Santa Cruz",
+		addressRegion: "CA",
+		addressCountry: "US",
+	},
+	email: "byron@byronwade.com",
+	telephone: "+1-831-295-8460",
+	alumniOf: {
+		"@type": "Organization",
+		name: "Self-Taught Developer",
+	},
+	hasOccupation: {
+		"@type": "Occupation",
+		name: "Full Stack Developer",
+		occupationLocation: {
+			"@type": "City",
+			name: "Santa Cruz, CA",
+		},
+		skills: "JavaScript, TypeScript, React, Next.js, Node.js, Python, Web Performance, SEO, Accessibility",
+	},
+	offers: {
+		"@type": "Offer",
+		itemOffered: {
+			"@type": "Service",
+			name: "Web Development Services",
+			description: "Custom web application development, performance optimization, and technical consulting",
 		},
 	},
-	potentialAction: {
-		"@type": "SearchAction",
-		target: {
-			"@type": "EntryPoint",
-			urlTemplate: "https://byronwade.com/search?q={search_term_string}",
-		},
-		"query-input": "required name=search_term_string",
-	},
-	accessibilityFeature: ["highContrastDisplay", "readingOrder", "structuralNavigation", "tableOfContents", "alternativeText"],
-	accessibilityControl: ["fullKeyboardControl", "fullMouseControl", "fullTouchControl"],
-	accessibilityHazard: "noFlashingHazard",
 };
 
 export { metadata };
@@ -56,74 +73,17 @@ export { metadata };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" className="h-full" suppressHydrationWarning dir="ltr">
-			<head>
-				<meta charSet="utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-				<link rel="preconnect" href="https://cdn.shopify.com" crossOrigin="anonymous" />
-				<link rel="dns-prefetch" href="https://cdn.shopify.com" />
-				<link rel="alternate" type="application/rss+xml" title="Byron Wade's Blog RSS Feed" href="/feed.xml" />
-				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-				<meta name="theme-color" content="#000000" />
-				<meta name="color-scheme" content="dark light" />
+			<body className={`${inter.className} min-h-screen bg-background font-sans antialiased`}>
 				<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-			</head>
-			<body className={`${GeistSans.className} antialiased min-h-screen`}>
-				<a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-zinc-50 focus:text-black" role="navigation" aria-label="Skip to main content">
-					Skip to main content
-				</a>
-
-				<Providers>
-					<Suspense
-						fallback={
-							<div role="status" aria-label="Loading header">
-								<LoadingSpinner />
-							</div>
-						}
-					>
+				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+					<Background />
+					<div className="relative flex min-h-screen flex-col">
 						<Header />
-					</Suspense>
-
-					<main id="main-content" role="main" tabIndex={-1} aria-label="Main content">
-						<Suspense
-							fallback={
-								<div role="status" aria-label="Loading content">
-									<LoadingSpinner />
-								</div>
-							}
-						>
-							<div role="region" aria-label="Page content">
-								{children}
-							</div>
-						</Suspense>
-
-						<Suspense
-							fallback={
-								<div role="status" aria-label="Loading background">
-									<LoadingSpinner />
-								</div>
-							}
-						>
-							<section role="complementary" aria-label="Background decoration">
-								<Background />
-							</section>
-						</Suspense>
-					</main>
-
-					<Suspense
-						fallback={
-							<div role="status" aria-label="Loading footer">
-								<LoadingSpinner />
-							</div>
-						}
-					>
-						<footer role="contentinfo" aria-label="Site footer">
-							<Footer />
-						</footer>
-					</Suspense>
-				</Providers>
-
-				<div role="status" aria-live="polite" aria-atomic="true" className="sr-only" id="live-announcements"></div>
+						<main className="flex-1">{children}</main>
+						<Footer />
+					</div>
+					<Toaster />
+				</ThemeProvider>
 			</body>
 		</html>
 	);

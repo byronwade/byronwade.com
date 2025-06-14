@@ -1,0 +1,52 @@
+import { NextRequest, NextResponse } from "next/server";
+
+// Match all routes except API and static files
+export const config = {
+	matcher: [
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - api (API routes)
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 * - robots.txt (SEO file)
+		 * - sitemap.xml (SEO file)
+		 * - manifest.json (PWA file)
+		 */
+		{
+			source: "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.json).*)",
+			missing: [
+				{ type: "header", key: "next-router-prefetch" },
+				{ type: "header", key: "purpose", value: "prefetch" },
+			],
+		},
+	],
+};
+
+export function middleware(request: NextRequest) {
+	const response = NextResponse.next();
+	const { pathname } = request.nextUrl;
+
+	// Add security headers
+	response.headers.set("X-Frame-Options", "DENY");
+	response.headers.set("X-Content-Type-Options", "nosniff");
+	response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+	response.headers.set("X-XSS-Protection", "1; mode=block");
+
+	// Add preload hints for critical resources
+	if (pathname === "/") {
+		response.headers.set("Link", "</fonts/Modelistasignature-ownAV.otf>; rel=preload; as=font; type=font/otf; crossorigin=anonymous");
+	}
+
+	// Handle API routes with proper caching
+	if (pathname.startsWith("/api/")) {
+		response.headers.set("Cache-Control", "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400");
+	}
+
+	// Handle static assets with long-term caching
+	if (pathname.startsWith("/_next/static/") || pathname.startsWith("/fonts/") || pathname.startsWith("/images/")) {
+		response.headers.set("Cache-Control", "public, max-age=31536000, immutable");
+	}
+
+	return response;
+}

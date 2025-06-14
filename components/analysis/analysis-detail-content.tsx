@@ -1,259 +1,108 @@
 "use client";
 
-import { QueryClient, QueryClientProvider, HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Link } from "@/components/ui/link";
-import PageHeader from "@/components/page-header";
-import CodedText from "@/components/ui/coded-text";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { investmentData } from "@/lib/investment-data";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import { analyses, type Analysis } from "@/lib/analysis-data";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckCircle, TrendingUp, TrendingDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
-// Dynamic imports for client components
-const Overview = dynamic(() => import("@/components/analysis/overview"));
-const Client = dynamic(() => import("@/components/analysis/client"));
-const Performance = dynamic(() => import("@/components/analysis/performance"));
-const SEO = dynamic(() => import("@/components/analysis/seo"));
-const Market = dynamic(() => import("@/components/analysis/market"));
-const Design = dynamic(() => import("@/components/analysis/design"));
-const Impact = dynamic(() => import("@/components/analysis/impact"));
-const Technical = dynamic(() => import("@/components/analysis/technical"));
-const Conclusion = dynamic(() => import("@/components/analysis/conclusion"));
-const Investment = dynamic(() => import("@/components/analysis/investment"), {
-	ssr: false,
-	loading: () => <div>Loading investment details...</div>,
-});
+export default function AnalysisDetailContent({ slug }: { slug: string }) {
+	const analysis = analyses.find((a) => a.slug === slug);
 
-// Create a client-side component for the navigation button
-const NavigationButton = dynamic(() => import("@/components/navigation-button"));
-
-// Create a new QueryClient instance
-const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			staleTime: 60 * 1000, // 1 minute
-			cacheTime: 5 * 60 * 1000, // 5 minutes
-		},
-	},
-});
-
-async function getAnalyticsData() {
-	const stats = [
-		{
-			label: "Load Time",
-			industryValue: 4.2,
-			optimizedValue: 1.8,
-			improvement: 57,
-			iconName: "clock" as const,
-		},
-		{
-			label: "Performance Score",
-			industryValue: 65,
-			optimizedValue: 95,
-			improvement: 46,
-			iconName: "zap" as const,
-		},
-		{
-			label: "SEO Score",
-			industryValue: 72,
-			optimizedValue: 98,
-			improvement: 36,
-			iconName: "search" as const,
-		},
-		{
-			label: "Layout Shifts",
-			industryValue: 0.25,
-			optimizedValue: 0.05,
-			improvement: 80,
-			iconName: "layout" as const,
-		},
-		{
-			label: "Mobile Score",
-			industryValue: 60,
-			optimizedValue: 94,
-			improvement: 57,
-			iconName: "smartphone" as const,
-		},
-	];
-
-	const data = {
-		benchmarks: {
-			loadTime: { industry: 4.2, optimized: 1.8 },
-			performanceScore: { industry: 65, optimized: 95 },
-			seoScore: { industry: 72, optimized: 98 },
-			mobileScore: { industry: 60, optimized: 94 },
-			bounceRate: { industry: 55, optimized: 25 },
-			conversionRate: { industry: 2.1, optimized: 4.5 },
-			averageTimeOnPage: { industry: 120, optimized: 280 },
-			bestPractices: { industry: 60, optimized: 95 },
-			organicTrafficIncrease: 150,
-		},
-		stats,
-		performanceData: [
-			{ month: "Jan", industry: 50, optimized: 90 },
-			{ month: "Feb", industry: 52, optimized: 91 },
-			{ month: "Mar", industry: 51, optimized: 92 },
-			{ month: "Apr", industry: 53, optimized: 93 },
-			{ month: "May", industry: 52, optimized: 94 },
-			{ month: "Jun", industry: 54, optimized: 95 },
-		],
-		conversionData: [
-			{ category: "E-commerce", industry: 2.3, optimized: 3.9 },
-			{ category: "Marine", industry: 2.5, optimized: 4.5 },
-			{ category: "B2B", industry: 2.7, optimized: 4.8 },
-		],
-	};
-	return data;
-}
-
-async function getTechnicalData() {
-	const data = {
-		performanceOptimizations: ["Advanced caching strategies implementation", "Image optimization with WebP format and lazy loading", "Code splitting and bundle optimization", "CDN integration for global content delivery"],
-		securityEnhancements: ["SSL/TLS implementation with A+ rating", "Advanced firewall protection", "Regular security audits and monitoring", "Automated backup systems"],
-	};
-	return data;
-}
-
-async function getClientData() {
-	const data = {
-		name: "Impact Marine Group",
-		industry: "Marine Industry",
-		duration: "8 weeks",
-		completionDate: "Q4 2023",
-		goals: ["Increase conversions", "Reduce bounce rates", "Improve user experience"],
-	};
-	return data;
-}
-
-function AnalysisDetailContent() {
-	const [data, setData] = useState<{
-		analyticsData: Awaited<ReturnType<typeof getAnalyticsData>>;
-		technicalData: Awaited<ReturnType<typeof getTechnicalData>>;
-		clientData: Awaited<ReturnType<typeof getClientData>>;
-	} | null>(null);
-
-	useEffect(() => {
-		async function fetchData() {
-			const [analyticsData, technicalData, clientData] = await Promise.all([getAnalyticsData(), getTechnicalData(), getClientData()]);
-
-			await queryClient.prefetchQuery({
-				queryKey: ["analytics"],
-				queryFn: () => analyticsData,
-			});
-			await queryClient.prefetchQuery({
-				queryKey: ["technical"],
-				queryFn: () => technicalData,
-			});
-			await queryClient.prefetchQuery({
-				queryKey: ["client"],
-				queryFn: () => clientData,
-			});
-
-			setData({ analyticsData, technicalData, clientData });
-		}
-
-		fetchData();
-	}, []);
-
-	if (!data) return <div>Loading...</div>;
-
-	const { analyticsData, technicalData, clientData } = data;
-	const { benchmarks, stats, performanceData, conversionData } = analyticsData;
-	const seo = `${calculateImprovement(benchmarks.seoScore.industry, benchmarks.seoScore.optimized)} increase in SEO score`;
-
-	const seoMetrics = {
-		keyOptimizations: [{ title: "Strategic optimization of meta titles and descriptions", improvement: "25% CTR" }, { title: "Implementation of semantic HTML structure", improvement: "40% clarity" }, { title: "Enhancement of internal linking architecture" }, { title: "Mobile responsiveness optimization" }, { title: "Implementation of schema markup for rich snippets" }, { title: "URL structure refinement for maximum SEO impact" }],
-	};
-
-	type PerformanceDataPoint = {
-		date: string;
-		value: number;
-		category: string;
-	};
-
-	type ConversionDataPoint = {
-		date: string;
-		value: number;
-		type: string;
-	};
-
-	const transformedPerformanceData: PerformanceDataPoint[] = performanceData
-		.map((point) => ({
-			date: point.month,
-			value: point.optimized,
-			category: "Optimized",
-		}))
-		.concat(
-			performanceData.map((point) => ({
-				date: point.month,
-				value: point.industry,
-				category: "Industry",
-			}))
-		);
-
-	const transformedConversionData: ConversionDataPoint[] = conversionData.flatMap((point) => [
-		{
-			date: point.category,
-			value: point.optimized,
-			type: "Optimized",
-		},
-		{
-			date: point.category,
-			value: point.industry,
-			type: "Industry",
-		},
-	]);
+	if (!analysis) {
+		notFound();
+	}
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				<TooltipProvider>
-					<div className="min-h-screen bg-gradient-to-b bg-zinc-50 dark:bg-black">
-						<div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-y">
-							<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-								<header className="py-4">
-									<div className="flex items-center justify-between">
-										<div className="flex flex-col">
-											<h3 className="text-sm text-muted-foreground">Analysis #346</h3>
-											<h1 className="text-2xl font-bold">Impact Marine Group</h1>
-										</div>
-										<NavigationButton />
-										<Button size="lg" className="hidden sm:flex">
-											<CodedText>Get Your Analysis</CodedText>
-										</Button>
-									</div>
-								</header>
+		<div className="bg-background text-foreground">
+			{/* Hero Section */}
+			<div className="relative bg-secondary/50">
+				<div className="container mx-auto px-4 py-24 sm:py-32">
+					<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+						<div className="flex flex-wrap gap-2">
+							{analysis.tags.map((tag) => (
+								<Badge key={tag} variant="outline">
+									{tag}
+								</Badge>
+							))}
+						</div>
+						<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mt-4">{analysis.title}</h1>
+						<p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl">{analysis.longDescription}</p>
+					</motion.div>
+				</div>
+			</div>
+
+			{/* Main Content */}
+			<div className="container mx-auto px-4 py-16 sm:py-24">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+					{/* Left Column */}
+					<div className="lg:col-span-2">
+						{/* Gallery */}
+						<div className="mb-16">
+							<h2 className="text-3xl font-bold mb-8">Gallery</h2>
+							<div className="grid grid-cols-1 gap-8">
+								{analysis.gallery.map((src, index) => (
+									<motion.div key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.1 }}>
+										<Image src={src} alt={`${analysis.title} gallery image ${index + 1}`} width={1200} height={800} className="rounded-lg shadow-lg object-cover" />
+									</motion.div>
+								))}
 							</div>
 						</div>
 
-						<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-							<div className="lg:grid lg:gap-8">
-								<main className="space-y-12 lg:space-y-16">
-									<Overview stats={stats} />
-									<Client clientData={clientData} />
-									<Performance />
-									<SEO seo={seo} benchmarks={benchmarks} seoMetrics={seoMetrics} />
-									<Design benchmarks={benchmarks} />
-									<Market performanceData={transformedPerformanceData} conversionData={transformedConversionData} />
-									<Impact benchmarks={benchmarks} />
-									<Technical data={technicalData} />
-									<Conclusion benchmarks={benchmarks} />
-									<Investment />
-								</main>
+						<Separator className="my-16" />
+
+						{/* Project Deep Dive */}
+						<div>
+							<h2 className="text-3xl font-bold mb-8">Case Study Details</h2>
+							<div className="space-y-12">
+								<div>
+									<h3 className="text-2xl font-semibold mb-4 text-primary">The Problem</h3>
+									<p className="text-lg text-muted-foreground leading-relaxed">{analysis.problem}</p>
+								</div>
+								<div>
+									<h3 className="text-2xl font-semibold mb-4 text-primary">The Solution</h3>
+									<p className="text-lg text-muted-foreground leading-relaxed">{analysis.solution}</p>
+								</div>
+								<div>
+									<h3 className="text-2xl font-semibold mb-4 text-primary">The Outcome</h3>
+									<p className="text-lg text-muted-foreground leading-relaxed">{analysis.outcome}</p>
+								</div>
 							</div>
 						</div>
 					</div>
-				</TooltipProvider>
-			</HydrationBoundary>
-		</QueryClientProvider>
+
+					{/* Right Column (Sidebar) */}
+					<aside>
+						<div className="sticky top-24 space-y-12">
+							{/* Key Metrics */}
+							<div>
+								<h3 className="text-2xl font-semibold mb-4">Key Metrics</h3>
+								<div className="space-y-4">
+									{analysis.keyMetrics.map((metric) => (
+										<Card key={metric.label}>
+											<CardHeader className="pb-2">
+												<CardTitle className="text-lg">{metric.label}</CardTitle>
+											</CardHeader>
+											<CardContent>
+												<div className="flex items-baseline gap-2">
+													<p className="text-3xl font-bold">{metric.value}</p>
+													<div className={`flex items-center text-sm font-semibold ${metric.improvement.startsWith("+") ? "text-green-500" : "text-red-500"}`}>
+														{metric.improvement.startsWith("+") ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+														{metric.improvement}
+													</div>
+												</div>
+											</CardContent>
+										</Card>
+									))}
+								</div>
+							</div>
+						</div>
+					</aside>
+				</div>
+			</div>
+		</div>
 	);
 }
-
-// Helper function
-function calculateImprovement(industry: number, optimized: number): string {
-	const improvement = ((optimized - industry) / industry) * 100;
-	return `${improvement.toFixed(1)}%`;
-}
-
-export default AnalysisDetailContent;

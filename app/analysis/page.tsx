@@ -1,11 +1,6 @@
-import { Suspense } from "react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import AnalysisContent from "@/components/analysis/analysis-content";
+import { notFound } from "next/navigation";
 
 export default function AnalysisPage() {
-	return (
-		<Suspense fallback={<LoadingSpinner />}>
-			<AnalysisContent />
-		</Suspense>
-	);
+	// Temporarily disabled for build optimization
+	notFound();
 }

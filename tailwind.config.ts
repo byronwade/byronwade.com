@@ -134,6 +134,22 @@ const config = {
 					"0%, 100%": { transform: "translateY(0)" },
 					"50%": { transform: "translateY(-20px)" },
 				},
+				"fade-in": {
+					"0%": { opacity: "0" },
+					"100%": { opacity: "1" },
+				},
+				"slide-in-from-left": {
+					"0%": { transform: "translateX(-100%)", opacity: "0" },
+					"100%": { transform: "translateX(0)", opacity: "1" },
+				},
+				"slide-in-from-right": {
+					"0%": { transform: "translateX(100%)", opacity: "0" },
+					"100%": { transform: "translateX(0)", opacity: "1" },
+				},
+				"slide-in-from-bottom": {
+					"0%": { transform: "translateY(100%)", opacity: "0" },
+					"100%": { transform: "translateY(0)", opacity: "1" },
+				},
 			},
 			animation: {
 				"accordion-down": "accordion-down 0.2s ease-out",
@@ -146,7 +162,20 @@ const config = {
 				"speed-up": "speedUp 1s ease-out forwards",
 				"pulse-fast": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
 				float: "float 6s ease-in-out infinite",
+				"fade-in": "fade-in 0.6s ease-out forwards",
+				"slide-in-from-left-4": "slide-in-from-left 0.6s ease-out forwards",
+				"slide-in-from-right-4": "slide-in-from-right 0.6s ease-out forwards",
+				"slide-in-from-bottom-4": "slide-in-from-bottom 0.6s ease-out forwards",
 			},
+			typography: ({ theme }: any) => ({
+				DEFAULT: {
+					css: {
+						"a > img": {
+							display: "inline-block",
+						},
+					},
+				},
+			}),
 		},
 	},
 	plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],

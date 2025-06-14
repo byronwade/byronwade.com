@@ -2,22 +2,20 @@
 
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export interface EmailProps {
 	name: string;
 	email: string;
-	phone: string;
-	company: string;
 	message: string;
-	projectType: string[];
-	budget: string;
-	timeline: string;
-	monthlyBudget: string;
+	phone?: string;
+	company?: string;
+	projectType?: string[];
+	budget?: string;
+	timeline?: string;
+	monthlyBudget?: string;
 	websiteUrl?: string;
-	hearAboutUs: string;
-	inspiration: string;
-	attachments: Array<{
+	hearAboutUs?: string;
+	inspiration?: string;
+	attachments?: Array<{
 		name: string;
 		type: string;
 		size: number;
@@ -30,20 +28,23 @@ interface EmailTemplate {
 	html: string;
 }
 
-function formatProjectTypes(types: string[]): string {
+function formatProjectTypes(types: string[] | undefined): string {
+	if (!types || types.length === 0) return "Not specified";
 	return types.join(", ");
 }
 
-function formatBudget(budget: string): string {
+function formatBudget(budget: string | undefined): string {
+	if (!budget) return "Not specified";
 	return budget === "na" ? "N/A - Just reaching out" : budget;
 }
 
-function formatMonthlyBudget(budget: string): string {
+function formatMonthlyBudget(budget: string | undefined): string {
+	if (!budget) return "Not specified";
 	return budget === "na" ? "N/A - No maintenance needed" : budget;
 }
 
 function formatAttachmentsList(attachments: EmailProps["attachments"]): string {
-	if (attachments.length === 0) return "";
+	if (!attachments || attachments.length === 0) return "";
 
 	const attachmentItems = attachments
 		.map((file) => {
@@ -68,6 +69,7 @@ function formatAttachmentsList(attachments: EmailProps["attachments"]): string {
 }
 
 function prepareAttachments(attachments: EmailProps["attachments"]) {
+	if (!attachments) return [];
 	return attachments.map((file) => {
 		// Remove the "data:image/jpeg;base64," or similar prefix
 		const base64Data = file.data.split(";base64,").pop() || "";
@@ -111,7 +113,7 @@ function generateUserEmailTemplate(data: EmailProps): EmailTemplate {
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${formatBudget(budget)}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Timeline:</p>
-								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${timeline}</p>
+								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${timeline || "Not specified"}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Monthly Budget:</p>
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${formatMonthlyBudget(monthlyBudget)}</p>
@@ -165,7 +167,7 @@ function generateAdminEmailTemplate(data: EmailProps): EmailTemplate {
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${email}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Phone:</p>
-								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${phone}</p>
+								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${phone || "Not provided"}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Company:</p>
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${company || "Not provided"}</p>
@@ -189,13 +191,13 @@ function generateAdminEmailTemplate(data: EmailProps): EmailTemplate {
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${formatBudget(budget)}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Timeline:</p>
-								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${timeline}</p>
+								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${timeline || "Not specified"}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">Monthly Budget:</p>
 								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${formatMonthlyBudget(monthlyBudget)}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 4px;">How did they hear about us?</p>
-								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${hearAboutUs}</p>
+								<p style="font-size: 16px; color: #111827; margin: 0 0 16px;">${hearAboutUs || "Not specified"}</p>
 								
 								<p style="font-size: 14px; color: #6b7280; margin: 0 0 8px;">Project Inspiration:</p>
 								<p style="font-size: 16px; color: #111827; white-space: pre-wrap; margin: 0 0 16px;">${inspiration || "Not provided"}</p>
@@ -224,9 +226,10 @@ interface SendEmailResponse {
 
 export async function sendEmail(formData: EmailProps): Promise<SendEmailResponse> {
 	try {
+		const resend = new Resend(process.env.RESEND_API_KEY);
 		const userTemplate = generateUserEmailTemplate(formData);
 		const adminTemplate = generateAdminEmailTemplate(formData);
-		const emailAttachments = prepareAttachments(formData.attachments);
+		const emailAttachments = prepareAttachments(formData.attachments || []);
 
 		// Send both emails concurrently
 		const [userEmail, adminEmail] = await Promise.all([
@@ -248,23 +251,24 @@ export async function sendEmail(formData: EmailProps): Promise<SendEmailResponse
 			}),
 		]);
 
-		if (userEmail.error || adminEmail.error) {
-			console.error("Email sending error:", userEmail.error || adminEmail.error);
-			return {
-				success: false,
-				error: "Failed to send email. Please try again.",
-			};
+		if (adminEmail.error) {
+			console.error("Error sending admin email:", adminEmail.error);
+			return { success: false, error: "Failed to send message." };
+		}
+		if (userEmail.error) {
+			console.warn("Error sending user confirmation email:", userEmail.error);
+			// Don't block success if only user email fails
 		}
 
-		return {
-			success: true,
-			data: { userEmail: userEmail.data, adminEmail: adminEmail.data },
-		};
-	} catch (error: any) {
-		console.error("Email sending error:", error);
-		return {
-			success: false,
-			error: "An unexpected error occurred. Please try again.",
-		};
+		return { success: true, data: { adminEmail, userEmail } };
+	} catch (error: unknown) {
+		console.error("Error in sendEmail function:", error);
+		if (error instanceof Error) {
+			if (error.message.includes("Missing API key")) {
+				return { success: false, error: "Email service is not configured. Please contact support." };
+			}
+			return { success: false, error: `An unexpected error occurred: ${error.message}` };
+		}
+		return { success: false, error: "An unexpected error occurred." };
 	}
 }

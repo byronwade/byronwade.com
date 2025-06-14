@@ -3,39 +3,33 @@ import { MetadataRoute } from "next";
 type ChangeFrequency = "daily" | "weekly" | "monthly" | "yearly" | "always" | "hourly" | "never";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const baseUrl = "https://byronwade.com";
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const currentDate = new Date().toISOString();
 
-	// Define static pages first
+	// Define static pages with optimized priorities
 	const staticPages: MetadataRoute.Sitemap = [
 		{
 			url: baseUrl,
 			lastModified: currentDate,
 			changeFrequency: "daily" as ChangeFrequency,
-			priority: 1,
+			priority: 1.0,
 		},
 		{
-			url: `${baseUrl}/about-me`,
+			url: `${baseUrl}/portfolio`,
 			lastModified: currentDate,
-			changeFrequency: "monthly" as ChangeFrequency,
-			priority: 0.8,
-		},
-		{
-			url: `${baseUrl}/blog`,
-			lastModified: currentDate,
-			changeFrequency: "daily" as ChangeFrequency,
+			changeFrequency: "weekly" as ChangeFrequency,
 			priority: 0.9,
 		},
 		{
 			url: `${baseUrl}/contact`,
 			lastModified: currentDate,
 			changeFrequency: "monthly" as ChangeFrequency,
-			priority: 0.8,
+			priority: 0.9,
 		},
 		{
-			url: `${baseUrl}/portfolio`,
+			url: `${baseUrl}/resume`,
 			lastModified: currentDate,
-			changeFrequency: "weekly" as ChangeFrequency,
+			changeFrequency: "monthly" as ChangeFrequency,
 			priority: 0.8,
 		},
 		{
@@ -44,12 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			changeFrequency: "monthly" as ChangeFrequency,
 			priority: 0.8,
 		},
-		{
-			url: `${baseUrl}/tools`,
-			lastModified: currentDate,
-			changeFrequency: "weekly" as ChangeFrequency,
-			priority: 0.7,
-		},
+		// Service pages
 		{
 			url: `${baseUrl}/development`,
 			lastModified: currentDate,
@@ -69,13 +58,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			priority: 0.7,
 		},
 		{
+			url: `${baseUrl}/tools`,
+			lastModified: currentDate,
+			changeFrequency: "weekly" as ChangeFrequency,
+			priority: 0.6,
+		},
+		{
 			url: `${baseUrl}/analysis`,
 			lastModified: currentDate,
 			changeFrequency: "weekly" as ChangeFrequency,
+			priority: 0.6,
+		},
+		// Location-specific pages
+		{
+			url: `${baseUrl}/plumbing-santa-cruz`,
+			lastModified: currentDate,
+			changeFrequency: "monthly" as ChangeFrequency,
 			priority: 0.7,
+		},
+		{
+			url: `${baseUrl}/plumbing-jasper`,
+			lastModified: currentDate,
+			changeFrequency: "monthly" as ChangeFrequency,
+			priority: 0.7,
+		},
+		{
+			url: `${baseUrl}/virtual-plumbing`,
+			lastModified: currentDate,
+			changeFrequency: "monthly" as ChangeFrequency,
+			priority: 0.6,
+		},
+		{
+			url: `${baseUrl}/local/website-design`,
+			lastModified: currentDate,
+			changeFrequency: "monthly" as ChangeFrequency,
+			priority: 0.6,
 		},
 	];
 
-	// Return only static pages for now until we fix the blog posts fetching
 	return staticPages;
 }

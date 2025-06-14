@@ -75,7 +75,7 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions) {
 }
 
 // Custom hook for managing focus trap
-export function useFocusTrap(containerRef: React.RefObject<HTMLElement>) {
+export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>) {
 	useEffect(() => {
 		const container = containerRef.current;
 		if (!container) return;
@@ -109,7 +109,7 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement>) {
 }
 
 // Custom hook for managing focus lists (e.g., menu items)
-export function useFocusList(itemRefs: React.RefObject<HTMLElement>[]) {
+export function useFocusList(itemRefs: React.RefObject<HTMLElement | null>[]) {
 	const [focusIndex, setFocusIndex] = useState<number>(0);
 
 	const handleKeyDown = useCallback(

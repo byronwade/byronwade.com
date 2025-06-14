@@ -5,10 +5,8 @@ import Image from "next/image";
 import { Link } from "@/components/ui/link";
 import { Zap } from "lucide-react";
 import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-
-const CodedText = dynamic(() => import("@/components/ui/coded-text"), { ssr: false });
+import CodedText from "@/components/ui/coded-text";
 
 const Hero = () => {
 	const mouseX = useMotionValue(0);

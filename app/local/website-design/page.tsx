@@ -6,6 +6,7 @@ import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
 import { Phone, Layout, Search, PenTool, BarChart } from "lucide-react";
 import Image from "next/image";
+import { ObfuscatedPhone } from "../../../components/ui/obfuscated-contact";
 
 export default function LandingPage() {
 	const [isScrolled, setIsScrolled] = useState(false);
@@ -24,10 +25,9 @@ export default function LandingPage() {
 			<header className={`fixed w-full z-10 transition-all duration-300 ${isScrolled ? "bg-zinc-50 shadow-md py-2" : "bg-transparent py-4"}`}>
 				<div className="container mx-auto px-4 flex justify-between items-center">
 					<div className="text-2xl font-serif font-bold">Byron Wade</div>
-					<Button className="bg-stone-800 hover:bg-stone-700 text-white transition-colors duration-300">
-						<Phone className="mr-2 h-4 w-4" />
-						831-430-6011
-					</Button>
+					<div className="bg-stone-800 hover:bg-stone-700 text-white transition-colors duration-300 px-4 py-2 rounded-md">
+						<ObfuscatedPhone showIcon={true} className="text-white hover:text-white" />
+					</div>
 				</div>
 			</header>
 
@@ -152,9 +152,7 @@ export default function LandingPage() {
 					<h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">Ready to Transform Your Online Presence?</h2>
 					<p className="text-xl mb-8 max-w-2xl mx-auto">Whether you&apos;re starting from scratch or looking to revamp your existing website, I&apos;m here to help you create a stunning and effective web presence.</p>
 					<Button className="bg-zinc-50 text-stone-800 hover:bg-stone-200 text-lg px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105">Start Your Free Web Design Consultation</Button>
-					<p className="mt-6 text-lg">
-						Or call me directly at <strong>831-430-6011</strong>
-					</p>
+					<p className="mt-6 text-lg">Or call me directly by clicking the phone link above</p>
 				</div>
 			</section>
 
