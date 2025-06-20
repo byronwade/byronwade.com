@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 	},
 	openGraph: {
 		title: "Contact Byron Wade - Digital & Plumbing Expert",
-		description: "Get expert help with web development or plumbing services. Free consultations available. Serving Santa Cruz, CA and Jasper, GA for plumbing, worldwide for digital solutions.",
+		description: "Get expert help with web development or plumbing services. Free consultations available. Serving Santa Cruz, CA for plumbing, worldwide for digital solutions.",
 		url: `${process.env.NEXT_PUBLIC_BASE_URL}/contact`,
 		type: "website",
 	},

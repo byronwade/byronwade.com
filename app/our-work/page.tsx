@@ -314,7 +314,7 @@ export default function OurWorkPage() {
 				<div className="container mx-auto px-4">
 					<div className="text-center mb-16">
 						<h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">Service Areas</h2>
-						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">We proudly serve customers across California and Georgia with professional plumbing and septic services.</p>
+						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">We proudly serve customers in California with professional plumbing and septic services.</p>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
@@ -342,35 +342,6 @@ export default function OurWorkPage() {
 									<li className="flex items-center gap-2">
 										<CheckCircle className="w-4 h-4 text-yellow-600" />
 										Ben Lomond, Felton
-									</li>
-								</ul>
-							</CardContent>
-						</Card>
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
-							<CardHeader>
-								<CardTitle className="text-2xl text-foreground flex items-center gap-3">
-									<MapPin className="w-6 h-6 text-yellow-600" />
-									Georgia
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<p className="text-muted-foreground mb-4">Serving Pickens County and surrounding areas</p>
-								<ul className="space-y-2 text-sm text-muted-foreground">
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-yellow-600" />
-										Pickens County
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-yellow-600" />
-										Jasper, Dawsonville, Dahlonega
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-yellow-600" />
-										Cleveland, Ball Ground, Cumming
-									</li>
-									<li className="flex items-center gap-2">
-										<CheckCircle className="w-4 h-4 text-yellow-600" />
-										Gainesville, Commerce
 									</li>
 								</ul>
 							</CardContent>

@@ -9,7 +9,7 @@ export const plumbingProjects = [
 	},
 	{
 		id: "septic-1",
-		title: "New Septic System Installation in Jasper",
+		title: "New Septic System Installation in Santa Cruz",
 		description: "Designed and installed a new, high-efficiency septic system for a rural property. The system was engineered to handle a large household and protect the local groundwater, meeting all county environmental standards.",
 		imageUrl: "/images/plumbing/septic-1.jpg", // Placeholder image path
 		category: "Septic",

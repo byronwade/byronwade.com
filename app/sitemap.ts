@@ -77,12 +77,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			priority: 0.7,
 		},
 		{
-			url: `${baseUrl}/plumbing-jasper`,
-			lastModified: currentDate,
-			changeFrequency: "monthly" as ChangeFrequency,
-			priority: 0.7,
-		},
-		{
 			url: `${baseUrl}/virtual-plumbing`,
 			lastModified: currentDate,
 			changeFrequency: "monthly" as ChangeFrequency,

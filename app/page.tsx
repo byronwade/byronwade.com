@@ -179,7 +179,7 @@ const testimonials = [
 	},
 	{
 		name: "Tom Wilson",
-		role: "Property Manager, Jasper",
+		role: "Property Manager",
 		content: "Byron has handled plumbing for three of our rental properties. Always reliable, communicates well with tenants, and his work lasts. Highly recommend.",
 		rating: 5,
 		project: "Multi-Property Maintenance",
@@ -205,7 +205,6 @@ const testimonials = [
 
 const serviceAreas = [
 	{ location: "Santa Cruz, CA", services: "Full Plumbing & Digital Services", icon: MapPin },
-	{ location: "Jasper, GA", services: "Full Plumbing & Digital Services", icon: MapPin },
 	{ location: "Worldwide", services: "Digital Services & Virtual Consultations", icon: Globe },
 ];
 
@@ -364,12 +363,11 @@ const HomePage = () => {
 								</div>
 							</CardHeader>
 							<CardContent className="space-y-4 relative z-10">
-								<p className="text-muted-foreground leading-relaxed">Expert plumbing and septic services across Santa Cruz, CA and Jasper, GA. From emergency repairs to complete system installations.</p>
+								<p className="text-muted-foreground leading-relaxed">Licensed and insured plumbing and septic services for Santa Cruz, CA. Professional solutions that protect your home and provide lasting peace of mind.</p>
 
 								{/* Service Areas */}
 								<div className="flex flex-wrap gap-2 mb-4">
 									<span className="px-3 py-1 bg-orange-600/10 text-orange-700 dark:text-orange-300 rounded-full text-xs font-medium">Santa Cruz, CA</span>
-									<span className="px-3 py-1 bg-red-600/10 text-red-700 dark:text-red-300 rounded-full text-xs font-medium">Jasper, GA</span>
 									<span className="px-3 py-1 bg-pink-600/10 text-pink-700 dark:text-pink-300 rounded-full text-xs font-medium">Emergency Service</span>
 								</div>
 
@@ -642,7 +640,7 @@ const HomePage = () => {
 								<Wrench className="w-10 h-10 text-yellow-600" />
 							</div>
 							<h3 className="text-3xl font-bold mb-4">Reliable Home Services</h3>
-							<p className="text-muted-foreground max-w-2xl mx-auto text-lg">Licensed and insured plumbing and septic services for Santa Cruz, CA and Jasper, GA. Professional solutions that protect your home and provide lasting peace of mind.</p>
+							<p className="text-muted-foreground max-w-2xl mx-auto text-lg">Licensed and insured plumbing and septic services for Santa Cruz, CA. Professional solutions that protect your home and provide lasting peace of mind.</p>
 						</div>
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
 							{plumbingServices.map((service, index) => (

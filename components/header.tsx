@@ -46,12 +46,6 @@ const plumbingServicesLinks = [
 		icon: MapPin,
 	},
 	{
-		name: "Wade's Plumbing & Septic (Jasper, GA)",
-		href: "/plumbing-jasper",
-		description: "Reliable plumbing services in Jasper",
-		icon: MapPin,
-	},
-	{
 		name: "Virtual Consultations",
 		href: "/virtual-plumbing",
 		description: "Expert plumbing advice online",

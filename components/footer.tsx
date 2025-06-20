@@ -80,7 +80,7 @@ export default function Footer() {
 							<div className="space-y-3">
 								<div className="flex items-center gap-3 text-sm text-muted-foreground">
 									<MapPin className="w-4 h-4 text-yellow-600" />
-									<span>Santa Cruz, CA & Jasper, GA</span>
+									<span>Santa Cruz, CA</span>
 								</div>
 								<div className="flex items-center gap-3 text-sm text-muted-foreground">
 									<Mail className="w-4 h-4 text-yellow-600" />
@@ -138,11 +138,6 @@ export default function Footer() {
 								<li>
 									<Link prefetch={true} href="/plumbing-santa-cruz" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
 										Santa Cruz, CA
-									</Link>
-								</li>
-								<li>
-									<Link prefetch={true} href="/plumbing-jasper" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Jasper, GA
 									</Link>
 								</li>
 								<li>
