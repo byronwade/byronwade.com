@@ -1,12 +1,67 @@
 "use client";
 
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Wrench, Code, Zap, Shield, Users, CheckCircle, Star, Award, TrendingUp, Smartphone, Globe, Database, Palette, Search, Settings, Droplets, Home, Phone, Calendar, MapPin, BadgeCheck, ExternalLink, Github, Linkedin, Twitter } from "lucide-react";
+import {
+	ArrowRight,
+	Wrench,
+	Code,
+	Zap,
+	Shield,
+	Users,
+	CheckCircle,
+	Star,
+	Award,
+	TrendingUp,
+	Smartphone,
+	Globe,
+	Database,
+	Palette,
+	Search,
+	Settings,
+	Droplets,
+	Home,
+	Phone,
+	Calendar,
+	MapPin,
+	BadgeCheck,
+	ExternalLink,
+	Github,
+	Linkedin,
+	Twitter,
+	GitFork,
+	Eye,
+	Heart,
+	Dribbble,
+	Figma,
+	Lightbulb,
+	Rocket,
+	Brain,
+	Target,
+	Hammer,
+	Cpu,
+	MonitorSpeaker,
+	MessageSquare,
+	Mail,
+	FileText,
+	BarChart3,
+	ShoppingCart,
+	MapPinIcon,
+	Briefcase,
+	Zap as Lightning,
+	AlertCircle,
+	GitBranch,
+	MessageCircle,
+	Layers,
+} from "lucide-react";
 import { OptimizedImage } from "@/components/optimized-image";
+import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { customFont } from "@/lib/fonts";
+import CodedText from "@/components/ui/coded-text";
+import { ClientImage } from "@/components/ui/client-image";
 
 // Temporarily disable ISR to fix streaming issue
 // export const revalidate = 21600; // 6 hours
@@ -208,634 +263,727 @@ const serviceAreas = [
 	{ location: "Worldwide", services: "Digital Services & Virtual Consultations", icon: Globe },
 ];
 
-const HomePage = () => {
+// Icon mapping for portfolio stats
+const iconMap: { [key: string]: any } = {
+	Award,
+	Github,
+	Figma,
+	Users,
+};
+
+// Remove all mock data - using real API data only
+
+// Business concepts showcasing "From Code To Copper" philosophy
+const businessConcepts = [
+	{
+		id: 1,
+		title: "CMS Platform",
+		subtitle: "cms.byronwade.com",
+		description: "Modern headless content management system built with Next.js, showcasing how content creation can be simplified for businesses.",
+		progress: 75,
+		status: "Design Concept",
+		category: "Digital Solutions",
+		icon: FileText,
+		features: ["Drag & Drop Editor", "API-First Architecture", "Multi-site Management", "Real-time Collaboration"],
+		demoUrl: "https://cms.byronwade.com",
+		concept: "Exploring how modern CMS architecture can empower content creators without technical barriers.",
+		color: "from-blue-500 to-cyan-500",
+		figmaKey: "cms-design-system",
+		dribbbleId: "cms-dashboard",
+		githubRepo: "cms.byronwade.com",
+		stats: { views: 2847, likes: 234, stars: 8, forks: 2 },
+		tags: ["CMS", "Next.js", "TypeScript", "Design System"],
+		lastUpdated: "2024-01-15",
+	},
+	{
+		id: 2,
+		title: "Local Business Directory",
+		subtitle: "local.byronwade.com",
+		description: "Location-based business discovery platform connecting local services with customers in their area.",
+		progress: 60,
+		status: "Design Concept",
+		category: "Local Commerce",
+		icon: MapPinIcon,
+		features: ["Geolocation Search", "Business Profiles", "Review System", "Service Booking"],
+		demoUrl: "https://local.byronwade.com",
+		concept: "Bridging the gap between digital discovery and local service businesses.",
+		color: "from-green-500 to-emerald-500",
+		figmaKey: "local-business-flow",
+		dribbbleId: "local-directory",
+		githubRepo: "local.byronwade.com",
+		stats: { views: 1923, likes: 187, stars: 5, forks: 1 },
+		tags: ["Local Business", "Maps", "React", "Geolocation"],
+		lastUpdated: "2024-01-12",
+	},
+	{
+		id: 3,
+		title: "Real-time Chat Platform",
+		subtitle: "chat.byronwade.com",
+		description: "WebSocket-powered communication platform exploring modern real-time messaging patterns and user experience.",
+		progress: 45,
+		status: "Design Concept",
+		category: "Communication",
+		icon: MessageSquare,
+		features: ["Real-time Messaging", "File Sharing", "Group Channels", "Voice Messages"],
+		demoUrl: "https://chat.byronwade.com",
+		concept: "Investigating how real-time communication can enhance business collaboration.",
+		color: "from-purple-500 to-pink-500",
+		figmaKey: "chat-interface-system",
+		dribbbleId: "chat-app-ui",
+		githubRepo: "chat.byronwade.com",
+		stats: { views: 3456, likes: 298, stars: 12, forks: 3 },
+		tags: ["Chat", "WebSocket", "Real-time", "Communication"],
+		lastUpdated: "2024-01-10",
+	},
+	{
+		id: 4,
+		title: "Modern Blogging Platform",
+		subtitle: "reactpress.byronwade.com",
+		description: "React-based WordPress alternative focusing on performance, modern editing experience, and developer-friendly architecture.",
+		progress: 30,
+		status: "Design Concept",
+		category: "Content Publishing",
+		icon: Briefcase,
+		features: ["Block Editor", "SEO Optimization", "Performance First", "Plugin Architecture"],
+		demoUrl: "https://reactpress.byronwade.com",
+		concept: "Reimagining content publishing with modern web technologies.",
+		color: "from-orange-500 to-red-500",
+		figmaKey: "reactpress-editor",
+		dribbbleId: "blog-platform",
+		githubRepo: "reactpress.byronwade.com",
+		stats: { views: 1678, likes: 145, stars: 7, forks: 1 },
+		tags: ["Blogging", "CMS", "React", "Publishing"],
+		lastUpdated: "2024-01-08",
+	},
+	{
+		id: 5,
+		title: "Social Content Aggregator",
+		subtitle: "rebuzzle.byronwade.com",
+		description: "Social media reblog platform exploring content curation, sharing mechanisms, and community building features.",
+		progress: 55,
+		status: "Design Concept",
+		category: "Social Media",
+		icon: Rocket,
+		features: ["Content Curation", "Social Sharing", "Community Features", "Trending Topics"],
+		demoUrl: "https://rebuzzle.byronwade.com",
+		concept: "Exploring how content aggregation can create meaningful social connections.",
+		color: "from-indigo-500 to-purple-500",
+		figmaKey: "social-aggregator",
+		dribbbleId: "rebuzzle-social",
+		githubRepo: "rebuzzle.byronwade.com",
+		stats: { views: 2234, likes: 189, stars: 9, forks: 2 },
+		tags: ["Social Media", "Aggregation", "Community", "Content"],
+		lastUpdated: "2024-01-05",
+	},
+	{
+		id: 6,
+		title: "Email Marketing Suite",
+		subtitle: "emailmework.com",
+		description: "Comprehensive email marketing automation tool demonstrating campaign management, analytics, and user engagement strategies.",
+		progress: 40,
+		status: "Design Concept",
+		category: "Marketing Automation",
+		icon: Mail,
+		features: ["Campaign Builder", "Automation Workflows", "Analytics Dashboard", "A/B Testing"],
+		demoUrl: "https://emailmework.com",
+		concept: "Researching how email marketing can be more intuitive and effective for small businesses.",
+		color: "from-teal-500 to-cyan-500",
+		figmaKey: "email-marketing-dashboard",
+		dribbbleId: "email-automation",
+		githubRepo: "emailmework.com",
+		stats: { views: 4123, likes: 367, stars: 11, forks: 4 },
+		tags: ["Email Marketing", "Automation", "Analytics", "SaaS"],
+		lastUpdated: "2024-01-02",
+	},
+	{
+		id: 7,
+		title: "Field Data Collection",
+		subtitle: "feildra.byronwade.com",
+		description: "Mobile-first data capture application researching offline sync patterns and field service management workflows.",
+		progress: 25,
+		status: "Design Concept",
+		category: "Field Services",
+		icon: BarChart3,
+		features: ["Offline Sync", "Mobile Forms", "GPS Tracking", "Data Visualization"],
+		demoUrl: "https://feildra.byronwade.com",
+		concept: "Investigating how mobile apps can bridge the gap between field work and digital data.",
+		color: "from-yellow-500 to-orange-500",
+		figmaKey: "field-data-mobile",
+		dribbbleId: "field-collection",
+		githubRepo: "feildra.byronwade.com",
+		stats: { views: 1456, likes: 123, stars: 6, forks: 1 },
+		tags: ["Mobile", "Data Collection", "Offline", "Field Work"],
+		lastUpdated: "2023-12-28",
+	},
+];
+
+const philosophyPoints = [
+	{
+		title: "Code to Concept",
+		description: "Every line of code serves a purpose - solving real problems for real people.",
+		icon: Code,
+	},
+	{
+		title: "Design to Delivery",
+		description: "Beautiful interfaces mean nothing without thoughtful user experiences.",
+		icon: Palette,
+	},
+	{
+		title: "Digital to Physical",
+		description: "Technology should enhance real-world interactions, not replace them.",
+		icon: Lightning,
+	},
+	{
+		title: "Ideas to Impact",
+		description: "The best solutions come from understanding the problem deeply.",
+		icon: Lightbulb,
+	},
+];
+
+const conceptStats = [
+	{ number: "15+", label: "Active Projects", icon: Lightbulb },
+	{ number: "100%", label: "Design Focused", icon: Palette },
+	{ number: "8+", label: "Years Experience", icon: TrendingUp },
+	{ number: "∞", label: "Ideas Brewing", icon: Brain },
+];
+
+// Helper function to strip HTML tags from text
+const stripHtml = (html: string) => {
+	if (typeof window !== "undefined") {
+		const doc = new DOMParser().parseFromString(html, "text/html");
+		return doc.body.textContent || "";
+	}
+	// Fallback for server-side rendering
+	return html.replace(/<[^>]*>/g, "");
+};
+
+export default function HomePage() {
+	const [repos, setRepos] = useState<any[]>([]);
+	const [shots, setShots] = useState<any[]>([]);
+	const [figmaFiles, setFigmaFiles] = useState<any[]>([]);
+	const [conceptStats, setConceptStats] = useState<any[]>([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		const loadData = async () => {
+			try {
+				// Fetch data from API route
+				const response = await fetch("/api/portfolio");
+				if (!response.ok) {
+					throw new Error("Failed to fetch portfolio data");
+				}
+
+				const data = await response.json();
+
+				// Use only real API data
+				setRepos(data.repos || []);
+				setShots(data.shots || []);
+				setFigmaFiles(data.figmaFiles || []);
+
+				// Set dynamic stats based on actual data
+				setConceptStats([
+					{ number: `${(data.repos || []).length}`, label: "GitHub Projects", icon: Github },
+					{ number: `${(data.shots || []).length}`, label: "Design Shots", icon: Dribbble },
+					{ number: `${(data.figmaFiles || []).length}`, label: "Figma Files", icon: Figma },
+					{ number: "100%", label: "Concept Focus", icon: Lightbulb },
+				]);
+			} catch (error) {
+				console.error("Error loading portfolio data:", error);
+				// Set empty arrays on error - no mock data fallback
+				setRepos([]);
+				setShots([]);
+				setFigmaFiles([]);
+				setConceptStats([
+					{ number: "0", label: "GitHub Projects", icon: Github },
+					{ number: "0", label: "Design Shots", icon: Dribbble },
+					{ number: "0", label: "Figma Files", icon: Figma },
+					{ number: "100%", label: "Concept Focus", icon: Lightbulb },
+				]);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		loadData();
+	}, []);
+
 	return (
 		<div className="min-h-screen">
-			{/* Modern Hero Section with Bento Grid */}
-			<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-					{/* Main Hero Content */}
+			{/* Hero Section - From Code To Copper */}
+			<section className="relative min-h-[90vh] flex items-center justify-center px-4 py-24">
+				<div className="container mx-auto max-w-7xl">
+					{/* Hero Content */}
 					<div className="text-center mb-16">
-						<div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-yellow-400/10 text-yellow-600 border border-yellow-400/20 mb-8">
-							<Zap className="w-4 h-4 mr-2" />
-							Available for Projects
+						<div className="flex items-center justify-center gap-4 mb-8">
+							<div className="p-3 bg-yellow-600/10 rounded-full">
+								<Code className="w-8 h-8 text-yellow-600" />
+							</div>
+							<ArrowRight className="w-6 h-6 text-muted-foreground" />
+							<div className="p-3 bg-yellow-600/10 rounded-full">
+								<Hammer className="w-8 h-8 text-yellow-600" />
+							</div>
+						</div>
+						<h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground">From Code To Copper</h1>
+						<div className="w-24 h-1 bg-yellow-600 mx-auto mb-8"></div>
+						<p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">Where digital innovation meets real-world solutions. I explore business ideas through design and development, creating concepts that bridge the gap between technology and practical application.</p>
+					</div>
+
+					{/* Bento Grid Layout */}
+					<div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-4 mb-16">
+						{/* Main Philosophy Card */}
+						<div className="md:col-span-6 lg:col-span-8 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl p-8 text-black">
+							<div className="flex items-center gap-3 mb-4">
+								<div className="p-2 bg-black/10 rounded-lg">
+									<Brain className="w-6 h-6" />
+								</div>
+								<h3 className="text-2xl font-bold">Design Thinking</h3>
+							</div>
+							<p className="text-lg leading-relaxed mb-6">I transform abstract business ideas into tangible design concepts, focusing on user experience and practical implementation. Each project represents a journey from concept to prototype.</p>
+							<div className="flex flex-wrap gap-2">
+								<span className="px-3 py-1 bg-black/10 rounded-full text-sm font-medium">Frontend Development</span>
+								<span className="px-3 py-1 bg-black/10 rounded-full text-sm font-medium">UI/UX Design</span>
+								<span className="px-3 py-1 bg-black/10 rounded-full text-sm font-medium">Prototyping</span>
+							</div>
 						</div>
 
-						<h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-8">
-							<span className="block text-foreground">From Code to</span>
-							<span className="block bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent">Copper</span>
-						</h1>
+						{/* Stats Cards */}
+						<div className="md:col-span-3 lg:col-span-2 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="text-center">
+								<div className="w-12 h-12 mx-auto mb-4 bg-blue-500/10 rounded-lg flex items-center justify-center">
+									<Code className="w-6 h-6 text-blue-500" />
+								</div>
+								<div className="text-3xl font-bold text-foreground mb-1">8+</div>
+								<div className="text-sm text-muted-foreground">Years Experience</div>
+							</div>
+						</div>
 
-						<p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">Expert craftsmanship for your digital presence and home infrastructure. Delivering high-performance web solutions and reliable plumbing services.</p>
+						<div className="md:col-span-3 lg:col-span-2 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="text-center">
+								<div className="w-12 h-12 mx-auto mb-4 bg-purple-500/10 rounded-lg flex items-center justify-center">
+									<Lightbulb className="w-6 h-6 text-purple-500" />
+								</div>
+								<div className="text-3xl font-bold text-foreground mb-1">7+</div>
+								<div className="text-sm text-muted-foreground">Business Concepts</div>
+							</div>
+						</div>
 
-						<div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-							<Button asChild size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold px-8 py-4 text-lg">
-								<Link href="/contact">
-									Start Your Project
-									<ArrowRight className="ml-2 h-5 w-5" />
-								</Link>
-							</Button>
-							<Button asChild variant="outline" size="lg" className="border-yellow-600/50 hover:bg-yellow-600 hover:text-black text-yellow-600 px-8 py-4 text-lg">
-								<Link href="/portfolio">
-									View My Work
-									<ExternalLink className="ml-2 h-5 w-5" />
-								</Link>
-							</Button>
+						{/* Process Cards */}
+						<div className="md:col-span-3 lg:col-span-3 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="flex items-center gap-3 mb-3">
+								<div className="p-2 bg-green-500/10 rounded-lg">
+									<Target className="w-5 h-5 text-green-500" />
+								</div>
+								<h4 className="font-semibold text-foreground">Code to Concept</h4>
+							</div>
+							<p className="text-sm text-muted-foreground">Transforming technical possibilities into business opportunities through thoughtful design.</p>
+						</div>
+
+						<div className="md:col-span-3 lg:col-span-3 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="flex items-center gap-3 mb-3">
+								<div className="p-2 bg-orange-500/10 rounded-lg">
+									<Rocket className="w-5 h-5 text-orange-500" />
+								</div>
+								<h4 className="font-semibold text-foreground">Design to Delivery</h4>
+							</div>
+							<p className="text-sm text-muted-foreground">From wireframes to working prototypes, bringing ideas to life with modern tools.</p>
+						</div>
+
+						<div className="md:col-span-3 lg:col-span-3 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="flex items-center gap-3 mb-3">
+								<div className="p-2 bg-red-500/10 rounded-lg">
+									<Lightning className="w-5 h-5 text-red-500" />
+								</div>
+								<h4 className="font-semibold text-foreground">Digital to Physical</h4>
+							</div>
+							<p className="text-sm text-muted-foreground">Bridging the gap between digital experiences and real-world applications.</p>
+						</div>
+
+						<div className="md:col-span-3 lg:col-span-3 bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+							<div className="flex items-center gap-3 mb-3">
+								<div className="p-2 bg-pink-500/10 rounded-lg">
+									<Heart className="w-5 h-5 text-pink-500" />
+								</div>
+								<h4 className="font-semibold text-foreground">Ideas to Impact</h4>
+							</div>
+							<p className="text-sm text-muted-foreground">Creating meaningful solutions that solve real problems for real people.</p>
 						</div>
 					</div>
 
-					{/* Enhanced Bento Grid Layout */}
-					<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
-						{/* Hero Feature Card - Digital Services */}
-						<Card className="md:col-span-2 lg:col-span-3 lg:row-span-3 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/30 dark:via-indigo-950/20 dark:to-purple-950/30 border-blue-200/50 dark:border-blue-800/50 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-							{/* Subtle background pattern */}
-							<div className="absolute inset-0 opacity-5 dark:opacity-10">
-								<div className="absolute top-4 right-4 w-32 h-32 bg-blue-600 rounded-full blur-3xl"></div>
-								<div className="absolute bottom-4 left-4 w-24 h-24 bg-purple-600 rounded-full blur-2xl"></div>
+					{/* Important Disclaimer */}
+					<div className="bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800/30 rounded-xl p-6 mb-16">
+						<div className="flex items-start gap-3">
+							<div className="p-2 bg-yellow-600/20 rounded-lg mt-0.5">
+								<Lightbulb className="w-5 h-5 text-yellow-600" />
 							</div>
-							<CardHeader className="pb-4 relative z-10">
-								<div className="flex items-center gap-3 mb-6">
-									<div className="p-4 bg-blue-600/10 rounded-2xl group-hover:bg-blue-600/20 transition-all duration-300 group-hover:scale-110">
-										<Code className="w-8 h-8 text-blue-600" />
-									</div>
-									<div>
-										<CardTitle className="text-2xl font-bold">Digital Solutions</CardTitle>
-										<p className="text-sm text-muted-foreground">Modern Web Development</p>
-									</div>
-								</div>
-							</CardHeader>
-							<CardContent className="space-y-6 relative z-10">
-								<p className="text-muted-foreground leading-relaxed">Crafting high-performance web applications, e-commerce platforms, and digital experiences that convert visitors into customers and drive measurable business growth.</p>
-
-								{/* Tech Stack Icons */}
-								<div className="flex flex-wrap gap-2 mb-4">
-									<span className="px-3 py-1 bg-blue-600/10 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Next.js</span>
-									<span className="px-3 py-1 bg-purple-600/10 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">React</span>
-									<span className="px-3 py-1 bg-green-600/10 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">TypeScript</span>
-									<span className="px-3 py-1 bg-yellow-600/10 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-medium">Tailwind</span>
-								</div>
-
-								<div className="grid grid-cols-2 gap-3">
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>E-commerce Solutions</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>SEO Optimization</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>Performance Audits</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>UI/UX Design</span>
-									</div>
-								</div>
-
-								<div className="flex gap-3 pt-4">
-									<Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700 text-white flex-1">
-										<Link href="/development">
-											View Projects
-											<ArrowRight className="ml-2 h-4 w-4" />
-										</Link>
-									</Button>
-									<Button asChild variant="outline" size="sm" className="border-blue-600/50 hover:bg-blue-50 dark:hover:bg-blue-950/20">
-										<Link href="/portfolio">
-											<ExternalLink className="h-4 w-4" />
-										</Link>
-									</Button>
-								</div>
-							</CardContent>
-						</Card>
-
-						{/* Stats Cards Row */}
-						<Card className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950/30 dark:to-emerald-950/20 border-green-200/50 dark:border-green-800/50 hover:shadow-xl transition-all duration-300 group">
-							<CardContent className="p-6 text-center relative overflow-hidden">
-								<div className="absolute top-0 right-0 w-16 h-16 bg-green-400/10 rounded-full blur-xl"></div>
-								<div className="relative z-10">
-									<div className="text-4xl font-bold text-green-600 mb-2 group-hover:scale-110 transition-transform duration-300">150+</div>
-									<div className="text-sm text-muted-foreground font-medium">Projects</div>
-									<div className="text-xs text-green-600 mt-1">Completed</div>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-950/30 dark:to-violet-950/20 border-purple-200/50 dark:border-purple-800/50 hover:shadow-xl transition-all duration-300 group">
-							<CardContent className="p-6 text-center relative overflow-hidden">
-								<div className="absolute top-0 right-0 w-16 h-16 bg-purple-400/10 rounded-full blur-xl"></div>
-								<div className="relative z-10">
-									<div className="text-4xl font-bold text-purple-600 mb-2 group-hover:scale-110 transition-transform duration-300">8+</div>
-									<div className="text-sm text-muted-foreground font-medium">Years</div>
-									<div className="text-xs text-purple-600 mt-1">Experience</div>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="bg-gradient-to-br from-yellow-50 to-amber-100 dark:from-yellow-950/30 dark:to-amber-950/20 border-yellow-200/50 dark:border-yellow-800/50 hover:shadow-xl transition-all duration-300 group">
-							<CardContent className="p-6 text-center relative overflow-hidden">
-								<div className="absolute top-0 right-0 w-16 h-16 bg-yellow-400/10 rounded-full blur-xl"></div>
-								<div className="relative z-10">
-									<div className="text-4xl font-bold text-yellow-600 mb-2 group-hover:scale-110 transition-transform duration-300">24/7</div>
-									<div className="text-sm text-muted-foreground font-medium">Support</div>
-									<div className="text-xs text-yellow-600 mt-1">Available</div>
-								</div>
-							</CardContent>
-						</Card>
-
-						{/* Plumbing Services Card */}
-						<Card className="md:col-span-2 lg:col-span-3 lg:row-span-2 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 dark:from-orange-950/30 dark:via-red-950/20 dark:to-pink-950/30 border-orange-200/50 dark:border-orange-800/50 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-							{/* Subtle background pattern */}
-							<div className="absolute inset-0 opacity-5 dark:opacity-10">
-								<div className="absolute top-4 left-4 w-28 h-28 bg-orange-600 rounded-full blur-3xl"></div>
-								<div className="absolute bottom-4 right-4 w-20 h-20 bg-red-600 rounded-full blur-2xl"></div>
+							<div>
+								<h3 className="font-semibold text-foreground mb-2">Design Concepts & Prototypes</h3>
+								<p className="text-muted-foreground text-sm leading-relaxed">
+									The projects below are <strong>design concepts and prototypes</strong> - not fully functional applications. They represent my exploration of business ideas, user experience patterns, and technical architectures. While I excel at frontend development and design, I'm not a backend developer, so these demos focus on showcasing the user interface and concept rather than complete functionality.
+								</p>
 							</div>
-							<CardHeader className="pb-4 relative z-10">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="p-4 bg-orange-600/10 rounded-2xl group-hover:bg-orange-600/20 transition-all duration-300 group-hover:scale-110">
-										<Wrench className="w-8 h-8 text-orange-600" />
-									</div>
-									<div>
-										<CardTitle className="text-2xl font-bold">Plumbing Services</CardTitle>
-										<p className="text-sm text-muted-foreground">Professional & Reliable</p>
-									</div>
-								</div>
-							</CardHeader>
-							<CardContent className="space-y-4 relative z-10">
-								<p className="text-muted-foreground leading-relaxed">Licensed and insured plumbing and septic services for Santa Cruz, CA. Professional solutions that protect your home and provide lasting peace of mind.</p>
-
-								{/* Service Areas */}
-								<div className="flex flex-wrap gap-2 mb-4">
-									<span className="px-3 py-1 bg-orange-600/10 text-orange-700 dark:text-orange-300 rounded-full text-xs font-medium">Santa Cruz, CA</span>
-									<span className="px-3 py-1 bg-pink-600/10 text-pink-700 dark:text-pink-300 rounded-full text-xs font-medium">Emergency Service</span>
-								</div>
-
-								<div className="grid grid-cols-2 gap-3">
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>Septic Systems</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>Licensed & Insured</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>Virtual Consultations</span>
-									</div>
-									<div className="flex items-center gap-2 text-sm">
-										<div className="w-2 h-2 bg-green-500 rounded-full"></div>
-										<span>Upfront Pricing</span>
-									</div>
-								</div>
-
-								<Button asChild className="w-full bg-orange-600 hover:bg-orange-700 text-white mt-4">
-									<Link href="/plumbing-santa-cruz">
-										View Services
-										<ArrowRight className="ml-2 h-4 w-4" />
-									</Link>
-								</Button>
-							</CardContent>
-						</Card>
-
-						{/* Enhanced Portfolio Showcase */}
-						<Card className="md:col-span-1 lg:col-span-2 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-cyan-950/30 border-emerald-200/50 dark:border-emerald-800/50 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-							{/* Animated background elements */}
-							<div className="absolute inset-0 opacity-20 dark:opacity-10">
-								<div className="absolute top-2 right-2 w-16 h-16 bg-emerald-500 rounded-full blur-2xl animate-pulse"></div>
-								<div className="absolute bottom-2 left-2 w-12 h-12 bg-teal-500 rounded-full blur-xl animate-pulse delay-1000"></div>
-								<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/30 rounded-full blur-3xl animate-pulse delay-500"></div>
-							</div>
-
-							<CardContent className="p-6 text-center relative z-10">
-								{/* Header with icon and title */}
-								<div className="flex items-center justify-center mb-6">
-									<div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-										<Palette className="w-7 h-7 text-white" />
-									</div>
-								</div>
-
-								<div className="text-center mb-6">
-									<h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">My Portfolio</h3>
-									<p className="text-sm text-muted-foreground">Explore my latest creative work</p>
-								</div>
-
-								{/* Portfolio stats/features */}
-								<div className="grid grid-cols-2 gap-3 mb-6">
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-										<span className="text-muted-foreground">Web Apps</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse delay-300"></div>
-										<span className="text-muted-foreground">UI/UX Design</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse delay-600"></div>
-										<span className="text-muted-foreground">Mobile Apps</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse delay-900"></div>
-										<span className="text-muted-foreground">Branding</span>
-									</div>
-								</div>
-
-								<Button asChild size="sm" className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white border-0 group-hover:scale-105 transition-all duration-300 shadow-lg">
-									<Link href="/portfolio">
-										<ExternalLink className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-										View Portfolio
-									</Link>
-								</Button>
-							</CardContent>
-						</Card>
-
-						{/* Enhanced Contact/Get Started Card */}
-						<Card className="md:col-span-1 lg:col-span-2 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-orange-950/30 border-amber-200/50 dark:border-amber-800/50 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-							{/* Animated background elements */}
-							<div className="absolute inset-0 opacity-20 dark:opacity-10">
-								<div className="absolute top-2 right-2 w-16 h-16 bg-amber-500 rounded-full blur-2xl animate-pulse"></div>
-								<div className="absolute bottom-2 left-2 w-12 h-12 bg-yellow-500 rounded-full blur-xl animate-pulse delay-1000"></div>
-								<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-orange-500/30 rounded-full blur-3xl animate-pulse delay-500"></div>
-							</div>
-
-							<CardContent className="p-6 text-center relative z-10">
-								{/* Header with icon and title */}
-								<div className="flex items-center justify-center mb-6">
-									<div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-										<Phone className="w-7 h-7 text-white" />
-									</div>
-								</div>
-
-								<div className="text-center mb-6">
-									<h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-amber-600 via-yellow-600 to-orange-600 bg-clip-text text-transparent">Let's Get Started</h3>
-									<p className="text-sm text-muted-foreground">Ready to bring your vision to life?</p>
-								</div>
-
-								{/* Contact features */}
-								<div className="grid grid-cols-2 gap-3 mb-6">
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-										<span className="text-muted-foreground">Free Consultation</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse delay-300"></div>
-										<span className="text-muted-foreground">Quick Response</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse delay-600"></div>
-										<span className="text-muted-foreground">Custom Solutions</span>
-									</div>
-									<div className="flex items-center gap-2 text-xs">
-										<div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse delay-900"></div>
-										<span className="text-muted-foreground">Fair Pricing</span>
-									</div>
-								</div>
-
-								<Button asChild size="sm" className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white border-0 group-hover:scale-105 transition-all duration-300 shadow-lg">
-									<Link href="/contact">
-										<ArrowRight className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-										Start Project
-									</Link>
-								</Button>
-							</CardContent>
-						</Card>
-
-						{/* Enhanced Social Links/Connect Card */}
-						<Card className="md:col-span-1 lg:col-span-2 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-pink-950/30 border-indigo-200/50 dark:border-indigo-800/50 hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-							{/* Animated background elements */}
-							<div className="absolute inset-0 opacity-20 dark:opacity-10">
-								<div className="absolute top-2 right-2 w-16 h-16 bg-indigo-500 rounded-full blur-2xl animate-pulse"></div>
-								<div className="absolute bottom-2 left-2 w-12 h-12 bg-purple-500 rounded-full blur-xl animate-pulse delay-1000"></div>
-								<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-pink-500/30 rounded-full blur-3xl animate-pulse delay-500"></div>
-							</div>
-
-							<CardContent className="p-6 relative z-10">
-								{/* Header with icon and title */}
-								<div className="flex items-center justify-center mb-6">
-									<div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-										<Users className="w-7 h-7 text-white" />
-									</div>
-								</div>
-
-								<div className="text-center mb-6">
-									<h3 className="font-bold text-lg mb-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Let's Connect</h3>
-									<p className="text-sm text-muted-foreground">Follow my journey & connect with me</p>
-								</div>
-
-								{/* Social links with enhanced styling */}
-								<div className="grid grid-cols-3 gap-3 mb-4">
-									<Button size="sm" variant="outline" asChild className="group/btn p-3 h-auto flex-col gap-2 hover:bg-gradient-to-br hover:from-gray-900 hover:to-black hover:text-white dark:hover:from-gray-100 dark:hover:to-white dark:hover:text-black border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-										<Link href="https://github.com/byronwade" target="_blank">
-											<Github className="w-5 h-5 group-hover/btn:animate-bounce" />
-											<span className="text-xs font-medium">GitHub</span>
-										</Link>
-									</Button>
-									<Button size="sm" variant="outline" asChild className="group/btn p-3 h-auto flex-col gap-2 hover:bg-gradient-to-br hover:from-blue-600 hover:to-blue-700 hover:text-white border-blue-200 dark:border-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-										<Link href="https://linkedin.com/in/byronwade" target="_blank">
-											<Linkedin className="w-5 h-5 group-hover/btn:animate-bounce" />
-											<span className="text-xs font-medium">LinkedIn</span>
-										</Link>
-									</Button>
-									<Button size="sm" variant="outline" asChild className="group/btn p-3 h-auto flex-col gap-2 hover:bg-gradient-to-br hover:from-sky-400 hover:to-blue-500 hover:text-white border-sky-200 dark:border-sky-700 transition-all duration-300 hover:scale-105 hover:shadow-lg">
-										<Link href="https://twitter.com/byronwade" target="_blank">
-											<Twitter className="w-5 h-5 group-hover/btn:animate-bounce" />
-											<span className="text-xs font-medium">Twitter</span>
-										</Link>
-									</Button>
-								</div>
-
-								{/* Additional engagement elements */}
-								<div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-									<div className="flex items-center gap-1">
-										<div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-										<span>Available for projects</span>
-									</div>
-								</div>
-							</CardContent>
-						</Card>
+						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Rest of existing content with improved spacing and modern cards */}
-			<section className="py-24 bg-secondary/10">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center mb-16">
-						<h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
-							Why Choose <span className="text-yellow-600">Byron Wade</span>?
-						</h2>
-						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">Combining technical expertise with hands-on craftsmanship to deliver solutions that work.</p>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-						{stats.map((stat, index) => (
-							<Card key={index} className="text-center bg-background/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
-								<CardContent className="p-8">
-									<div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 bg-yellow-600/10 rounded-full">
-										<stat.icon className="w-8 h-8 text-yellow-600" />
-									</div>
-									<div className="text-4xl font-bold mb-2 text-foreground">{stat.number}</div>
-									<div className="text-muted-foreground font-medium">{stat.label}</div>
-								</CardContent>
-							</Card>
+			{/* Stats Section */}
+			<section className="py-16 bg-gray-50 dark:bg-gray-900/50">
+				<div className="container mx-auto px-4">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+						{conceptStats.map((stat, index) => (
+							<div key={index} className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-800 text-center">
+								<div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-yellow-600/10 rounded-lg">
+									<stat.icon className="w-6 h-6 text-yellow-600" />
+								</div>
+								<div className="text-3xl font-bold mb-2 text-foreground">{stat.number}</div>
+								<div className="text-muted-foreground font-medium text-sm">{stat.label}</div>
+							</div>
 						))}
 					</div>
 				</div>
 			</section>
 
-			{/* Services Overview */}
-			<section id="services" className="py-24">
-				<div className="container mx-auto px-4">
-					<div className="text-center mb-20">
-						<h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">Two Paths. One Standard of Excellence.</h2>
-						<p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">Whether your project involves pixels or pipes, I bring the same meticulous attention to detail and commitment to lasting solutions. Every project is approached with professional expertise, clear communication, and a focus on exceeding expectations.</p>
-					</div>
-
-					{/* Digital Services */}
-					<div className="mb-24">
-						<div className="text-center mb-16">
-							<div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-600/10 rounded-full mb-6">
-								<Code className="w-10 h-10 text-yellow-600" />
-							</div>
-							<h3 className="text-3xl font-bold mb-4">Digital Craftsmanship</h3>
-							<p className="text-muted-foreground max-w-2xl mx-auto text-lg">Cutting-edge web development and digital marketing solutions that drive business growth, enhance user experience, and deliver measurable results for your bottom line.</p>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-							{digitalServices.map((service, index) => (
-								<Card key={index} className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30 group">
-									<CardHeader>
-										<div className="flex items-center gap-4 mb-2">
-											<div className="bg-yellow-600/10 p-3 rounded-lg group-hover:bg-yellow-600/20 transition-colors">
-												<service.icon className="w-6 h-6 text-yellow-600" />
-											</div>
-											<CardTitle className="text-xl">{service.title}</CardTitle>
-										</div>
-									</CardHeader>
-									<CardContent>
-										<p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
-										<ul className="space-y-3">
-											{service.features.map((feature, idx) => (
-												<li key={idx} className="flex items-center text-sm">
-													<CheckCircle className="w-4 h-4 text-yellow-600 mr-3 flex-shrink-0" />
-													<span className="text-muted-foreground">{feature}</span>
-												</li>
-											))}
-										</ul>
-									</CardContent>
-								</Card>
-							))}
-						</div>
-						<div className="text-center mt-12">
-							<Button asChild size="lg">
-								<Link href="/portfolio">Explore Digital Services</Link>
-							</Button>
-						</div>
-					</div>
-
-					{/* Plumbing Services */}
-					<div className="bg-gradient-to-br from-secondary/20 to-yellow-50/20 rounded-3xl p-12 border border-yellow-600/10">
-						<div className="text-center mb-16">
-							<div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-600/10 rounded-full mb-6">
-								<Wrench className="w-10 h-10 text-yellow-600" />
-							</div>
-							<h3 className="text-3xl font-bold mb-4">Reliable Home Services</h3>
-							<p className="text-muted-foreground max-w-2xl mx-auto text-lg">Licensed and insured plumbing and septic services for Santa Cruz, CA. Professional solutions that protect your home and provide lasting peace of mind.</p>
-						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-							{plumbingServices.map((service, index) => (
-								<Card key={index} className="bg-background/80 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30 group backdrop-blur-sm">
-									<CardHeader>
-										<div className="flex items-center gap-4 mb-2">
-											<div className="bg-yellow-600/10 p-3 rounded-lg group-hover:bg-yellow-600/20 transition-colors">
-												<service.icon className="w-6 h-6 text-yellow-600" />
-											</div>
-											<CardTitle className="text-xl">{service.title}</CardTitle>
-										</div>
-									</CardHeader>
-									<CardContent>
-										<p className="text-muted-foreground mb-6 leading-relaxed">{service.description}</p>
-										<ul className="space-y-3">
-											{service.features.map((feature, idx) => (
-												<li key={idx} className="flex items-center text-sm">
-													<CheckCircle className="w-4 h-4 text-yellow-600 mr-3 flex-shrink-0" />
-													<span className="text-muted-foreground">{feature}</span>
-												</li>
-											))}
-										</ul>
-									</CardContent>
-								</Card>
-							))}
-						</div>
-						<div className="text-center mt-12">
-							<Button asChild size="lg" variant="outline">
-								<Link href="/our-work">Explore Plumbing Services</Link>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* How I Work Section */}
-			<section className="py-24 bg-gradient-to-br from-background to-secondary/20">
-				<div className="container mx-auto px-4">
-					<div className="text-center mb-20">
-						<h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">How I Work</h2>
-						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">Whether it&apos;s a digital project or plumbing service, I follow a proven process that ensures quality results, clear communication, and complete satisfaction.</p>
-					</div>
-
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
-						{/* Digital Process */}
-						<div>
-							<div className="text-center mb-12">
-								<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-600/10 rounded-full mb-4">
-									<Code className="w-8 h-8 text-yellow-600" />
-								</div>
-								<h3 className="text-2xl font-bold mb-2">Digital Development Process</h3>
-								<p className="text-muted-foreground">Strategic approach to web development and digital solutions</p>
-							</div>
-							<div className="space-y-8">
-								{digitalProcess.map((step, index) => (
-									<div key={index} className="flex gap-6">
-										<div className="flex flex-col items-center">
-											<div className="bg-yellow-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">{step.step}</div>
-											{index < digitalProcess.length - 1 && <div className="w-0.5 h-16 bg-yellow-600/20 mt-4" />}
-										</div>
-										<div className="flex-1 pb-8">
-											<div className="flex items-center gap-3 mb-3">
-												<step.icon className="w-5 h-5 text-yellow-600" />
-												<h4 className="text-xl font-semibold">{step.title}</h4>
-											</div>
-											<p className="text-muted-foreground leading-relaxed">{step.description}</p>
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
-
-						{/* Plumbing Process */}
-						<div>
-							<div className="text-center mb-12">
-								<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-600/10 rounded-full mb-4">
-									<Wrench className="w-8 h-8 text-yellow-600" />
-								</div>
-								<h3 className="text-2xl font-bold mb-2">Plumbing Service Process</h3>
-								<p className="text-muted-foreground">Professional approach to plumbing and septic services</p>
-							</div>
-							<div className="space-y-8">
-								{plumbingProcess.map((step, index) => (
-									<div key={index} className="flex gap-6">
-										<div className="flex flex-col items-center">
-											<div className="bg-yellow-600 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">{step.step}</div>
-											{index < plumbingProcess.length - 1 && <div className="w-0.5 h-16 bg-yellow-600/20 mt-4" />}
-										</div>
-										<div className="flex-1 pb-8">
-											<div className="flex items-center gap-3 mb-3">
-												<step.icon className="w-5 h-5 text-yellow-600" />
-												<h4 className="text-xl font-semibold">{step.title}</h4>
-											</div>
-											<p className="text-muted-foreground leading-relaxed">{step.description}</p>
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* Philosophy Section */}
-			<section className="py-24 bg-gradient-to-br from-secondary/20 to-background">
-				<div className="container mx-auto px-4 text-center max-w-4xl">
-					<h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-8">A Philosophy of Quality</h2>
-					<div className="prose prose-lg dark:prose-invert mx-auto text-muted-foreground mb-12">
-						<p className="text-xl leading-relaxed">You might wonder what a web developer and a plumber have in common. For me, the answer is simple: an unwavering commitment to quality and a passion for solving complex problems. Whether I&apos;m architecting a scalable web application or designing a durable plumbing system, my focus is on building things that last.</p>
-						<p className="text-lg">I believe in meticulous planning, transparent communication, and leaving every client with a solution they can trust for years to come. That&apos;s the standard I bring to every project, from code to copper.</p>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-						<div className="text-center">
-							<div className="bg-yellow-600/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-								<Shield className="w-8 h-8 text-yellow-600" />
-							</div>
-							<h3 className="text-xl font-semibold mb-2">Quality First</h3>
-							<p className="text-muted-foreground">Every project meets the highest standards of craftsmanship and reliability.</p>
-						</div>
-						<div className="text-center">
-							<div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-								<Users className="w-8 h-8 text-primary" />
-							</div>
-							<h3 className="text-xl font-semibold mb-2">Client Partnership</h3>
-							<p className="text-muted-foreground">Transparent communication and collaboration throughout every project.</p>
-						</div>
-						<div className="text-center">
-							<div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-								<Zap className="w-8 h-8 text-primary" />
-							</div>
-							<h3 className="text-xl font-semibold mb-2">Built to Last</h3>
-							<p className="text-muted-foreground">Solutions designed for longevity, scalability, and future growth.</p>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* Testimonials Section */}
+			{/* Portfolio Section */}
 			<section className="py-24">
 				<div className="container mx-auto px-4">
 					<div className="text-center mb-16">
-						<h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-4">What Clients Say</h2>
-						<p className="text-lg text-muted-foreground max-w-2xl mx-auto">Real feedback from real clients across both digital and plumbing projects. See the impact of quality work and professional service.</p>
+						<h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">Featured Work</h2>
+						<p className="text-lg text-muted-foreground max-w-3xl mx-auto">A collection of development projects, design explorations, and creative concepts across multiple platforms.</p>
 					</div>
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-						{testimonials.map((testimonial, index) => (
-							<Card key={index} className="bg-secondary/50 border-border/30 hover:shadow-lg transition-shadow">
-								<CardHeader>
-									<div className="flex items-center space-x-1 mb-3">
-										{[...Array(testimonial.rating)].map((_, i) => (
-											<Star key={i} className="w-4 h-4 fill-yellow-600 text-yellow-600" />
+
+					{loading ? (
+						<div className="text-center py-16">
+							<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+							<p className="text-muted-foreground">Loading portfolio...</p>
+						</div>
+					) : (
+						<div className="space-y-16">
+							{/* GitHub Projects */}
+							<div>
+								<div className="flex items-center gap-3 mb-8">
+									<div className="p-2 bg-gray-900 dark:bg-white rounded-lg">
+										<Github className="w-5 h-5 text-white dark:text-black" />
+									</div>
+									<div>
+										<h3 className="text-2xl font-bold">Development Projects</h3>
+										<p className="text-muted-foreground">Open source projects and concept applications</p>
+									</div>
+								</div>
+								{repos.length > 0 ? (
+									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+										{repos.map((repo) => (
+											<div key={repo.id} className="relative flex flex-col gap-3 p-4 leading-5 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-950 hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+												{/* Main content */}
+												<div className="flex flex-row items-center gap-4">
+													<div className="flex min-w-0 flex-1 flex-col justify-between gap-0.5">
+														<Link href={repo.homepage || repo.html_url} target="_blank" className="min-w-0 no-underline hover:underline font-medium text-gray-900 dark:text-gray-100 h-5 truncate w-fit max-w-full">
+															{repo.name.replace(".byronwade.com", "")}
+														</Link>
+														<Link href={repo.homepage || repo.html_url} target="_blank" className="min-w-0 no-underline hover:underline text-gray-600 dark:text-gray-400 h-5 truncate leading-5 max-w-full flex items-center gap-1">
+															{repo.homepage ? new URL(repo.homepage).hostname : "github.com"}
+															<ExternalLink className="w-3 h-3" />
+														</Link>
+													</div>
+												</div>
+
+												{/* Repository info */}
+												<div className="flex h-5 w-fit items-center">
+													<Link href={repo.html_url} target="_blank" className="flex min-w-0 flex-none flex-row items-center gap-0.5 rounded-full bg-gray-200 dark:bg-gray-800 p-0.5 pr-1.5 w-fit hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+														<Github className="w-3 h-3 m-0.5 shrink-0" />
+														<span className="text-xs truncate font-medium">{repo.full_name || `byronwade/${repo.name}`}</span>
+													</Link>
+												</div>
+
+												{/* Description */}
+												<p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-5">{repo.description}</p>
+
+												{/* Demo Button */}
+												{repo.homepage && (
+													<div className="flex gap-2">
+														<Button size="sm" variant="outline" asChild className="text-xs hover:bg-yellow-600/10 hover:border-yellow-600/30">
+															<Link href={repo.homepage} target="_blank">
+																<ExternalLink className="w-3 h-3 mr-1" />
+																Demo
+															</Link>
+														</Button>
+													</div>
+												)}
+
+												{/* Stats */}
+												<div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
+													<div className="flex items-center gap-1">
+														<Star className="w-3 h-3" />
+														<span>{repo.stargazers_count}</span>
+													</div>
+													<div className="flex items-center gap-1">
+														<GitFork className="w-3 h-3" />
+														<span>{repo.forks_count}</span>
+													</div>
+													{repo.language && (
+														<div className="flex items-center gap-1">
+															<div className="w-2 h-2 rounded-full bg-blue-500"></div>
+															<span>{repo.language}</span>
+														</div>
+													)}
+													<div className="flex items-center gap-1">
+														<Calendar className="w-3 h-3" />
+														<span>{new Date(repo.updated_at).toLocaleDateString()}</span>
+													</div>
+												</div>
+
+												{/* Additional GitHub info */}
+												{(repo.open_issues_count !== undefined || repo.size !== undefined) && (
+													<div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-800">
+														{repo.open_issues_count !== undefined && (
+															<div className="flex items-center gap-1">
+																<AlertCircle className="w-3 h-3" />
+																<span>{repo.open_issues_count} issues</span>
+															</div>
+														)}
+														{repo.size !== undefined && (
+															<div className="flex items-center gap-1">
+																<Database className="w-3 h-3" />
+																<span>{Math.round(repo.size / 1024)} MB</span>
+															</div>
+														)}
+														{repo.default_branch && (
+															<div className="flex items-center gap-1">
+																<GitBranch className="w-3 h-3" />
+																<span>{repo.default_branch}</span>
+															</div>
+														)}
+													</div>
+												)}
+											</div>
 										))}
 									</div>
-									<CardTitle className="text-lg">{testimonial.name}</CardTitle>
-									<div className="text-sm text-muted-foreground">
-										<p>{testimonial.role}</p>
-										<p className="text-yellow-600 font-medium mt-1">{testimonial.project}</p>
+								) : (
+									<div className="text-center py-12">
+										<Github className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+										<p className="text-muted-foreground">No GitHub projects available. Please check your API configuration.</p>
 									</div>
-								</CardHeader>
-								<CardContent>
-									<p className="text-muted-foreground italic mb-4">&ldquo;{testimonial.content}&rdquo;</p>
-									<div className="bg-yellow-50 dark:bg-yellow-600/10 p-3 rounded-lg border-l-4 border-yellow-600">
-										<p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">{testimonial.result}</p>
+								)}
+							</div>
+
+							{/* Dribbble Shots */}
+							<div>
+								<div className="flex items-center gap-3 mb-8">
+									<div className="p-2 bg-pink-500 rounded-lg">
+										<Dribbble className="w-5 h-5 text-white" />
 									</div>
-								</CardContent>
-							</Card>
-						))}
-					</div>
+									<div>
+										<h3 className="text-2xl font-bold">Design Explorations</h3>
+										<p className="text-muted-foreground">Visual design concepts and UI explorations</p>
+									</div>
+								</div>
+								{shots.length > 0 ? (
+									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+										{shots.map((shot) => (
+											<div key={shot.id} className="relative flex flex-col gap-3 p-4 leading-5 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-950 hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+												{/* Shot Image */}
+												<div className="aspect-video w-full bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/20 dark:to-purple-900/20 rounded-md overflow-hidden relative">
+													{shot.images?.hidpi ? (
+														<OptimizedImage src={shot.images.hidpi} alt={shot.title} width={400} height={300} className="w-full h-full object-cover" />
+													) : (
+														<div className="absolute inset-0 flex items-center justify-center">
+															<div className="w-8 h-8 rounded bg-pink-200 dark:bg-pink-800 flex items-center justify-center">
+																<Dribbble className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+															</div>
+														</div>
+													)}
+												</div>
+
+												{/* Main content */}
+												<div className="flex flex-row items-center gap-4">
+													<div className="flex min-w-0 flex-1 flex-col justify-between gap-0.5">
+														<Link href={shot.html_url} target="_blank" className="min-w-0 no-underline hover:underline font-medium text-gray-900 dark:text-gray-100 h-5 truncate w-fit max-w-full">
+															{shot.title}
+														</Link>
+														<Link href={shot.html_url} target="_blank" className="min-w-0 no-underline hover:underline text-gray-600 dark:text-gray-400 h-5 truncate leading-5 max-w-full flex items-center gap-1">
+															dribbble.com
+															<ExternalLink className="w-3 h-3" />
+														</Link>
+													</div>
+												</div>
+
+												{/* Dribbble info */}
+												<div className="flex h-5 w-fit items-center">
+													<Link href={shot.html_url} target="_blank" className="flex min-w-0 flex-none flex-row items-center gap-0.5 rounded-full bg-pink-100 dark:bg-pink-900/30 p-0.5 pr-1.5 w-fit hover:bg-pink-200 dark:hover:bg-pink-900/50 transition-colors">
+														<Dribbble className="w-3 h-3 m-0.5 shrink-0 text-pink-600" />
+														<span className="text-xs truncate font-medium text-pink-700 dark:text-pink-400">Dribbble Shot</span>
+													</Link>
+												</div>
+
+												{/* Description */}
+												<p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-5">{stripHtml(shot.description || "")}</p>
+
+												{/* Stats */}
+												<div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
+													<div className="flex items-center gap-1">
+														<Eye className="w-3 h-3" />
+														<span>{shot.views_count?.toLocaleString() || 0}</span>
+													</div>
+													<div className="flex items-center gap-1">
+														<Heart className="w-3 h-3" />
+														<span>{shot.likes_count?.toLocaleString() || 0}</span>
+													</div>
+													{shot.comments_count !== undefined && (
+														<div className="flex items-center gap-1">
+															<MessageCircle className="w-3 h-3" />
+															<span>{shot.comments_count}</span>
+														</div>
+													)}
+													<div className="flex items-center gap-1">
+														<Calendar className="w-3 h-3" />
+														<span>{new Date(shot.published_at || shot.created_at).toLocaleDateString()}</span>
+													</div>
+												</div>
+
+												{/* Tags */}
+												{shot.tags && shot.tags.length > 0 && (
+													<div className="flex flex-wrap gap-1 pt-2 border-t border-gray-100 dark:border-gray-800">
+														{shot.tags.slice(0, 4).map((tag: string) => (
+															<span key={tag} className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400">
+																{tag}
+															</span>
+														))}
+														{shot.tags.length > 4 && <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400">+{shot.tags.length - 4}</span>}
+													</div>
+												)}
+											</div>
+										))}
+									</div>
+								) : (
+									<div className="text-center py-12">
+										<Dribbble className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+										<p className="text-muted-foreground">No Dribbble shots available. Please check your API configuration.</p>
+									</div>
+								)}
+							</div>
+
+							{/* Figma Files */}
+							<div>
+								<div className="flex items-center gap-3 mb-8">
+									<div className="p-2 bg-purple-500 rounded-lg">
+										<Figma className="w-5 h-5 text-white" />
+									</div>
+									<div>
+										<h3 className="text-2xl font-bold">Design Systems</h3>
+										<p className="text-muted-foreground">Component libraries and design system documentation</p>
+									</div>
+								</div>
+								{figmaFiles.length > 0 ? (
+									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+										{figmaFiles.map((file) => (
+											<div key={file.key} className="relative flex flex-col gap-3 p-4 leading-5 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-950 hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+												{/* File Image */}
+												<div className="aspect-video w-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-md overflow-hidden relative">
+													{file.thumbnail_url ? (
+														<OptimizedImage src={file.thumbnail_url} alt={file.name} width={400} height={300} className="w-full h-full object-cover" />
+													) : (
+														<div className="absolute inset-0 flex items-center justify-center">
+															<div className="w-8 h-8 rounded bg-purple-200 dark:bg-purple-800 flex items-center justify-center">
+																<Figma className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+															</div>
+														</div>
+													)}
+													{/* Status indicator */}
+													{file.status && (
+														<div className="absolute top-2 right-2">
+															<div className={`w-3 h-3 rounded-full ${file.status === "Active" ? "bg-green-500" : file.status === "Published" ? "bg-blue-500" : "bg-gray-500"}`}></div>
+														</div>
+													)}
+												</div>
+
+												{/* Main content */}
+												<div className="flex flex-row items-center gap-4">
+													<div className="flex min-w-0 flex-1 flex-col justify-between gap-0.5">
+														<Link href={`https://www.figma.com/file/${file.key}`} target="_blank" className="min-w-0 no-underline hover:underline font-medium text-gray-900 dark:text-gray-100 h-5 truncate w-fit max-w-full">
+															{file.name}
+														</Link>
+														<Link href={`https://www.figma.com/file/${file.key}`} target="_blank" className="min-w-0 no-underline hover:underline text-gray-600 dark:text-gray-400 h-5 truncate leading-5 max-w-full flex items-center gap-1">
+															figma.com
+															<ExternalLink className="w-3 h-3" />
+														</Link>
+													</div>
+												</div>
+
+												{/* Figma info */}
+												<div className="flex h-5 w-fit items-center">
+													<Link href={`https://www.figma.com/file/${file.key}`} target="_blank" className="flex min-w-0 flex-none flex-row items-center gap-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 p-0.5 pr-1.5 w-fit hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors">
+														<Figma className="w-3 h-3 m-0.5 shrink-0 text-purple-600" />
+														<span className="text-xs truncate font-medium text-purple-700 dark:text-purple-400">Figma File</span>
+													</Link>
+												</div>
+
+												{/* Description */}
+												<p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-5">{file.description}</p>
+
+												{/* Stats */}
+												<div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
+													{file.components && (
+														<div className="flex items-center gap-1">
+															<Layers className="w-3 h-3" />
+															<span>{file.components} components</span>
+														</div>
+													)}
+													{file.collaborators && (
+														<div className="flex items-center gap-1">
+															<Users className="w-3 h-3" />
+															<span>{file.collaborators}</span>
+														</div>
+													)}
+													<div className="flex items-center gap-1">
+														<Calendar className="w-3 h-3" />
+														<span>{new Date(file.last_modified).toLocaleDateString()}</span>
+													</div>
+												</div>
+
+												{/* Version and status */}
+												{(file.version || file.status) && (
+													<div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+														{file.version && <span className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded text-gray-600 dark:text-gray-400">v{file.version}</span>}
+														{file.status && <span className={`text-xs px-2 py-1 rounded text-white ${file.status === "Active" ? "bg-green-600" : file.status === "Published" ? "bg-blue-600" : "bg-gray-600"}`}>{file.status}</span>}
+													</div>
+												)}
+											</div>
+										))}
+									</div>
+								) : (
+									<div className="text-center py-12">
+										<Figma className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+										<p className="text-muted-foreground">No Figma files available. Please check your API configuration.</p>
+									</div>
+								)}
+							</div>
+						</div>
+					)}
 				</div>
 			</section>
 
-			{/* Service Areas */}
-			<section className="py-24 bg-secondary/30">
+			{/* Call to Action */}
+			<section className="py-24 bg-gray-50 dark:bg-gray-900/50">
 				<div className="container mx-auto px-4 text-center">
-					<h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">Where I Work</h2>
-					<p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">Serving clients locally and globally with tailored solutions for every need.</p>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-						{serviceAreas.map((area, index) => (
-							<Card key={index} className="bg-background border-border/30 hover:shadow-lg transition-shadow text-center">
-								<CardHeader>
-									<div className="bg-yellow-600/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-										<area.icon className="w-8 h-8 text-yellow-600" />
-									</div>
-									<CardTitle className="text-xl">{area.location}</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className="text-muted-foreground">{area.services}</p>
-								</CardContent>
-							</Card>
-						))}
+					<div className="max-w-3xl mx-auto">
+						<h2 className="text-3xl font-bold mb-6">Ready to Turn Your Idea Into Reality?</h2>
+						<p className="text-lg text-muted-foreground mb-8">These concepts represent just the beginning. If you have a business idea that needs design exploration, user experience research, or frontend development, let's collaborate to bring it to life.</p>
+						<div className="flex flex-col sm:flex-row gap-4 justify-center">
+							<Button asChild size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold shadow-lg">
+								<Link href="/work-with-me">
+									<Calendar className="w-4 h-4 mr-2" />
+									Work With Me
+								</Link>
+							</Button>
+							<Button asChild size="lg" variant="outline" className="border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">
+								<Link href="/contact">
+									<Mail className="w-4 h-4 mr-2" />
+									Get In Touch
+								</Link>
+							</Button>
+						</div>
 					</div>
 				</div>
 			</section>
 		</div>
 	);
-};
-
-export default HomePage;
+}

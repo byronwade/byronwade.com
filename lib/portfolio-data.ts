@@ -69,7 +69,8 @@ export const getDribbbleShot = (id: string) =>
 		async () => {
 			const accessToken = process.env.DRIBBBLE_ACCESS_TOKEN;
 			if (!accessToken) {
-				throw new Error("Dribbble access token not found.");
+				console.warn("Dribbble access token not found - skipping Dribbble shot");
+				return null;
 			}
 
 			try {
@@ -91,7 +92,7 @@ export const getDribbbleShot = (id: string) =>
 				return shot;
 			} catch (error) {
 				console.error(`Failed to fetch Dribbble shot with id ${id}:`, error);
-				throw error;
+				return null;
 			}
 		},
 		["dribbble-shot", id],
@@ -189,7 +190,8 @@ export const getFigmaFile = (key: string) =>
 			const accessToken = process.env.FIGMA_ACCESS_TOKEN;
 
 			if (!accessToken) {
-				throw new Error("Figma access token not found.");
+				console.warn("Figma access token not found - skipping Figma file");
+				return null;
 			}
 
 			const client = Figma.Client({
@@ -420,6 +422,20 @@ export const getGitHubStats = unstable_cache(
 
 // GitHub Repository Interface (moved to types/github.ts)
 
+// Priority projects to show first
+const PRIORITY_PROJECTS = ["cms.byronwade.com", "local.byronwade.com", "chat.byronwade.com", "reactpress.byronwade.com", "rebuzzle.byronwade.com", "emailmework.com", "feildra.byronwade.com"];
+
+// Project progress and status information
+const PROJECT_STATUS = {
+	"cms.byronwade.com": { progress: 75, status: "In Development", concept: "Headless CMS built with Next.js - showcasing modern content management concepts" },
+	"local.byronwade.com": { progress: 60, status: "In Development", concept: "Local business directory platform - demonstrating location-based services architecture" },
+	"chat.byronwade.com": { progress: 45, status: "In Development", concept: "Real-time chat application - exploring WebSocket and real-time communication patterns" },
+	"reactpress.byronwade.com": { progress: 30, status: "In Development", concept: "React-based WordPress alternative - researching modern blogging platform concepts" },
+	"rebuzzle.byronwade.com": { progress: 55, status: "In Development", concept: "Social media reblog platform - exploring content aggregation and sharing mechanisms" },
+	"emailmework.com": { progress: 40, status: "In Development", concept: "Email marketing automation tool - demonstrating campaign management and analytics concepts" },
+	"feildra.byronwade.com": { progress: 25, status: "In Development", concept: "Field data collection app - researching mobile-first data capture and offline sync patterns" },
+};
+
 // Fetch all GitHub repositories
 export const getGitHubRepositories = unstable_cache(
 	async (): Promise<GitHubRepo[]> => {
@@ -447,15 +463,42 @@ export const getGitHubRepositories = unstable_cache(
 
 			const repos: GitHubRepo[] = await response.json();
 
-			return repos
+			// Filter and enhance repos with project status
+			const filteredRepos = repos
 				.filter(
 					(repo) =>
 						repo.name !== "byronwade.com" &&
 						!repo.name.startsWith(".") && // Filter out hidden repos
 						!repo.name.includes("fork") // Filter out obvious forks
 				)
-				.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-				.slice(0, 20); // Show more projects
+				.map((repo) => ({
+					...repo,
+					// Add progress and status info for priority projects
+					...(PROJECT_STATUS[repo.name as keyof typeof PROJECT_STATUS] && {
+						progress: PROJECT_STATUS[repo.name as keyof typeof PROJECT_STATUS].progress,
+						status: PROJECT_STATUS[repo.name as keyof typeof PROJECT_STATUS].status,
+						concept: PROJECT_STATUS[repo.name as keyof typeof PROJECT_STATUS].concept,
+					}),
+				}));
+
+			// Sort with priority projects first
+			const sortedRepos = filteredRepos.sort((a, b) => {
+				const aIsPriority = PRIORITY_PROJECTS.includes(a.name);
+				const bIsPriority = PRIORITY_PROJECTS.includes(b.name);
+
+				if (aIsPriority && !bIsPriority) return -1;
+				if (!aIsPriority && bIsPriority) return 1;
+
+				// If both are priority, sort by priority order
+				if (aIsPriority && bIsPriority) {
+					return PRIORITY_PROJECTS.indexOf(a.name) - PRIORITY_PROJECTS.indexOf(b.name);
+				}
+
+				// For non-priority projects, sort by update date
+				return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+			});
+
+			return sortedRepos.slice(0, 20); // Show more projects
 		} catch (error) {
 			console.error("Failed to fetch GitHub repos:", error);
 			return [];

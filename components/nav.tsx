@@ -7,10 +7,7 @@ import { useEffect, useState } from "react";
 
 export const navLinks = [
 	{ name: "Resume", href: "/resume" },
-	{ name: "Design", href: "/design" },
-	{ name: "Development", href: "/development" },
-	{ name: "Marketing", href: "/marketing" },
-	{ name: "Portfolio", href: "/portfolio" },
+	{ name: "Tools", href: "/tools" },
 ];
 
 export function Navigation() {

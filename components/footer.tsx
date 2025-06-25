@@ -14,8 +14,8 @@ export default function Footer() {
 
 				<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
 					<div className="max-w-4xl mx-auto">
-						<h2 className={`text-4xl md:text-6xl font-bold text-black mb-6 ${customFont.className}`}>Ready to Build Something Amazing?</h2>
-						<p className="text-xl text-black/80 mb-8 max-w-2xl mx-auto leading-relaxed">From cutting-edge web applications to reliable plumbing solutions, I bring expertise and passion to every project.</p>
+						<h2 className={`text-4xl md:text-6xl font-bold text-black mb-6 ${customFont.className}`}>From Code To Copper</h2>
+						<p className="text-xl text-black/80 mb-8 max-w-2xl mx-auto leading-relaxed">Transforming ideas into reality through innovative design concepts, frontend development expertise, and reliable craftsmanship.</p>
 
 						<div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
 							<Button asChild size="lg" className="bg-black text-yellow-400 hover:bg-gray-900 font-semibold px-8 py-4 text-lg shadow-xl">
@@ -26,9 +26,9 @@ export default function Footer() {
 								</Link>
 							</Button>
 							<Button asChild variant="outline" size="lg" className="border-black/20 bg-white/10 backdrop-blur-sm text-black hover:bg-white/20 font-semibold px-8 py-4 text-lg">
-								<Link prefetch={true} href="/portfolio">
-									<Star className="mr-2 h-5 w-5" />
-									View My Work
+								<Link prefetch={true} href="/tools">
+									<Code className="mr-2 h-5 w-5" />
+									Explore Concepts
 								</Link>
 							</Button>
 						</div>
@@ -37,8 +37,8 @@ export default function Footer() {
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
 							<Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300">
 								<CardContent className="p-4 text-center">
-									<div className="text-2xl font-bold text-black mb-1">150+</div>
-									<div className="text-sm text-black/70">Projects Completed</div>
+									<div className="text-2xl font-bold text-black mb-1">7+</div>
+									<div className="text-sm text-black/70">Business Concepts</div>
 								</CardContent>
 							</Card>
 							<Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300">
@@ -50,13 +50,13 @@ export default function Footer() {
 							<Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300">
 								<CardContent className="p-4 text-center">
 									<div className="text-2xl font-bold text-black mb-1">100%</div>
-									<div className="text-sm text-black/70">Client Satisfaction</div>
+									<div className="text-sm text-black/70">Frontend Focus</div>
 								</CardContent>
 							</Card>
 							<Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 transition-all duration-300">
 								<CardContent className="p-4 text-center">
-									<div className="text-2xl font-bold text-black mb-1">5★</div>
-									<div className="text-sm text-black/70">Average Rating</div>
+									<div className="text-2xl font-bold text-black mb-1">∞</div>
+									<div className="text-sm text-black/70">Ideas Brewing</div>
 								</CardContent>
 							</Card>
 						</div>
@@ -74,7 +74,7 @@ export default function Footer() {
 							<Link prefetch={true} href="/" className="flex items-center space-x-3 group">
 								<span className={`text-3xl font-bold ${customFont.className} hover:text-yellow-600 transition-colors duration-300`}>Byron Wade</span>
 							</Link>
-							<p className="text-muted-foreground leading-relaxed">Expert craftsmanship for your digital presence and home infrastructure. From code to copper, delivering solutions that work.</p>
+							<p className="text-muted-foreground leading-relaxed">Bridging the gap between digital innovation and practical solutions. From design concepts to functional implementations, creating experiences that matter.</p>
 
 							{/* Contact Info */}
 							<div className="space-y-3">
@@ -93,16 +93,16 @@ export default function Footer() {
 							</div>
 						</div>
 
-						{/* Digital Services */}
+						{/* Design & Development */}
 						<div className="space-y-6">
 							<h3 className="text-foreground font-semibold text-lg flex items-center gap-2">
 								<Code className="w-5 h-5 text-yellow-600" />
-								Digital Services
+								Design & Development
 							</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link prefetch={true} href="/portfolio" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Portfolio & Projects
+									<Link prefetch={true} href="/tools" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
+										Business Concepts
 									</Link>
 								</li>
 								<li>
@@ -112,17 +112,17 @@ export default function Footer() {
 								</li>
 								<li>
 									<Link prefetch={true} href="/development" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Web Development
+										Frontend Development
 									</Link>
 								</li>
 								<li>
 									<Link prefetch={true} href="/marketing" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Digital Marketing
+										Digital Strategy
 									</Link>
 								</li>
 								<li>
-									<Link prefetch={true} href="/tools" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Developer Tools
+									<Link prefetch={true} href="/resume" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
+										Experience & Skills
 									</Link>
 								</li>
 							</ul>
@@ -158,23 +158,23 @@ export default function Footer() {
 							</ul>
 						</div>
 
-						{/* Resources & Connect */}
+						{/* Connect & Collaborate */}
 						<div className="space-y-6">
-							<h3 className="text-foreground font-semibold text-lg">Resources</h3>
+							<h3 className="text-foreground font-semibold text-lg">Connect & Collaborate</h3>
 							<ul className="space-y-3">
 								<li>
-									<Link prefetch={true} href="/resume" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										My Resume
+									<Link prefetch={true} href="/work-with-me" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
+										Work With Me
 									</Link>
 								</li>
 								<li>
 									<Link prefetch={true} href="/contact" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Contact Me
+										Get In Touch
 									</Link>
 								</li>
 								<li>
-									<Link prefetch={true} href="/work-with-me" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
-										Work With Me
+									<Link prefetch={true} href="/resume" className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm">
+										View Resume
 									</Link>
 								</li>
 							</ul>

@@ -61,6 +61,10 @@ export interface GitHubRepo {
 		spdx_id: string;
 		url: string;
 	};
+	// Priority project properties
+	progress?: number;
+	status?: string;
+	concept?: string;
 }
 
 // Repository statistics and analytics
