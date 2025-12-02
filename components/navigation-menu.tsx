@@ -1,6 +1,6 @@
+import { Link } from "@/components/ui/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NavigationButton from "./navigation-button";
-import { Link } from "@/components/ui/link";
 
 interface NavigationMenuProps {
 	searchParams: { menu?: string };

@@ -27,11 +27,14 @@ Disallow: /
 User-agent: PetalBot
 Disallow: /
 
+# Note: YandexBot is Yandex search engine - allow for international SEO
 User-agent: YandexBot
-Disallow: /
+Allow: /
+Crawl-delay: 2
 
+# Allow Facebook for social sharing previews
 User-agent: facebookexternalhit
-Disallow: /
+Allow: /
 
 # Allow legitimate search engines
 User-agent: Googlebot

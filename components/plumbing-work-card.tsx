@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wrench } from "lucide-react";
+import Image from "next/image";
 
 export interface PlumbingProject {
 	id: string;
@@ -23,13 +23,22 @@ export const PlumbingWorkCard = ({ project }: { project: PlumbingProject }) => {
 			</CardHeader>
 			<CardContent className="flex-grow">
 				<div className="aspect-video relative mb-4">
-					<Image src={project.imageUrl} alt={project.title} fill className="rounded-md object-cover" />
+					<Image
+						src={project.imageUrl}
+						alt={project.title}
+						fill
+						className="rounded-md object-cover"
+					/>
 				</div>
 				<p className="text-muted-foreground mb-4 text-sm">{project.description}</p>
-				<span className="px-2 py-1 text-xs font-semibold rounded-full bg-secondary text-secondary-foreground">{project.category}</span>
+				<span className="px-2 py-1 text-xs font-semibold rounded-full bg-secondary text-secondary-foreground">
+					{project.category}
+				</span>
 			</CardContent>
 			<CardFooter className="flex justify-end items-center bg-muted/50 py-3 px-4 text-sm">
-				<span className="text-muted-foreground">{new Date(project.date).toLocaleDateString("en-US", { year: "numeric", month: "long" })}</span>
+				<span className="text-muted-foreground">
+					{new Date(project.date).toLocaleDateString("en-US", { year: "numeric", month: "long" })}
+				</span>
 			</CardFooter>
 		</Card>
 	);

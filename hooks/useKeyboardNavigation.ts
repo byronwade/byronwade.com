@@ -1,4 +1,4 @@
-import { useEffect, useCallback, KeyboardEvent as ReactKeyboardEvent, useState } from "react";
+import { type KeyboardEvent as ReactKeyboardEvent, useCallback, useEffect, useState } from "react";
 
 interface KeyboardNavigationOptions {
 	onEnter?: () => void;
@@ -80,7 +80,9 @@ export function useFocusTrap(containerRef: React.RefObject<HTMLElement | null>) 
 		const container = containerRef.current;
 		if (!container) return;
 
-		const focusableElements = container.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		const focusableElements = container.querySelectorAll<HTMLElement>(
+			'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+		);
 		const firstFocusable = focusableElements[0];
 		const lastFocusable = focusableElements[focusableElements.length - 1];
 

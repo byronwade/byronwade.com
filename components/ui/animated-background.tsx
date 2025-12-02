@@ -20,7 +20,13 @@ interface AnimatedBackgroundProps {
 	className?: string;
 }
 
-export default function AnimatedBackground({ variant = "particles", particleCount = 50, colors = ["#fbbf24", "#f59e0b", "#d97706", "#92400e"], speed = 1, className = "" }: AnimatedBackgroundProps) {
+export default function AnimatedBackground({
+	variant = "particles",
+	particleCount = 50,
+	colors = ["#fbbf24", "#f59e0b", "#d97706", "#92400e"],
+	speed = 1,
+	className = "",
+}: AnimatedBackgroundProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const animationRef = useRef<number>(undefined);
 	const particlesRef = useRef<Particle[]>([]);
@@ -122,7 +128,14 @@ export default function AnimatedBackground({ variant = "particles", particleCoun
 				const time = Date.now() * 0.001;
 
 				// Create animated gradient
-				const gradient = ctx.createRadialGradient(canvas.width / 2 + Math.cos(time) * 100, canvas.height / 2 + Math.sin(time) * 100, 0, canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height));
+				const gradient = ctx.createRadialGradient(
+					canvas.width / 2 + Math.cos(time) * 100,
+					canvas.height / 2 + Math.sin(time) * 100,
+					0,
+					canvas.width / 2,
+					canvas.height / 2,
+					Math.max(canvas.width, canvas.height)
+				);
 
 				gradient.addColorStop(0, `${colors[0]}10`);
 				gradient.addColorStop(0.5, `${colors[1]}05`);
@@ -167,8 +180,14 @@ export default function AnimatedBackground({ variant = "particles", particleCoun
 
 	return (
 		<div className={`fixed inset-0 -z-10 ${className}`}>
-			<canvas ref={canvasRef} className="absolute inset-0 w-full h-full" style={{ background: "transparent" }} />
-			{variant === "gradient" && <div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-50/5 to-transparent dark:via-yellow-900/5" />}
+			<canvas
+				ref={canvasRef}
+				className="absolute inset-0 w-full h-full"
+				style={{ background: "transparent" }}
+			/>
+			{variant === "gradient" && (
+				<div className="absolute inset-0 bg-gradient-to-br from-transparent via-yellow-50/5 to-transparent dark:via-yellow-900/5" />
+			)}
 		</div>
 	);
 }

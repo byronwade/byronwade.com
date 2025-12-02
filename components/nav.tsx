@@ -1,8 +1,8 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 export const navLinks = [
@@ -21,7 +21,15 @@ export function Navigation() {
 	if (!mounted) {
 		return (
 			<nav className="flex space-x-4">
-				<Link href="/" className={cn("px-3 py-2 rounded-md text-sm font-medium transition-colors", pathname === "/" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent")}>
+				<Link
+					href="/"
+					className={cn(
+						"px-3 py-2 rounded-md text-sm font-medium transition-colors",
+						pathname === "/"
+							? "bg-primary text-primary-foreground"
+							: "text-muted-foreground hover:text-foreground hover:bg-accent"
+					)}
+				>
 					Home
 				</Link>
 			</nav>
@@ -31,7 +39,16 @@ export function Navigation() {
 	return (
 		<nav className="flex space-x-4">
 			{navLinks.map((item) => (
-				<Link key={item.href} href={item.href} className={cn("px-3 py-2 rounded-md text-sm font-medium transition-colors", pathname === item.href ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent")}>
+				<Link
+					key={item.href}
+					href={item.href}
+					className={cn(
+						"px-3 py-2 rounded-md text-sm font-medium transition-colors",
+						pathname === item.href
+							? "bg-primary text-primary-foreground"
+							: "text-muted-foreground hover:text-foreground hover:bg-accent"
+					)}
+				>
 					{item.name}
 				</Link>
 			))}

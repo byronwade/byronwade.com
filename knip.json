@@ -1,0 +1,48 @@
+{
+	"$schema": "https://unpkg.com/knip@6/schema.json",
+	"entry": [
+		"app/**/*.{ts,tsx}",
+		"next.config.{js,ts,mjs}",
+		"tailwind.config.{ts,js}",
+		"postcss.config.{js,mjs}",
+		"components/**/*.{ts,tsx}",
+		"lib/**/*.{ts,tsx}",
+		"hooks/**/*.{ts,tsx}"
+	],
+	"project": [
+		"app/**/*.{ts,tsx}",
+		"components/**/*.{ts,tsx}",
+		"lib/**/*.{ts,tsx}",
+		"hooks/**/*.{ts,tsx}",
+		"types/**/*.{ts,tsx}"
+	],
+	"ignore": [
+		"**/*.test.{ts,tsx}",
+		"**/*.spec.{ts,tsx}",
+		"**/__tests__/**",
+		"**/node_modules/**",
+		".next/**",
+		"dist/**",
+		"build/**"
+	],
+	"ignoreDependencies": [
+		"@next/bundle-analyzer",
+		"@playwright/test",
+		"@axe-core/playwright",
+		"playwright",
+		"playwright-core",
+		"sharp",
+		"puppeteer",
+		"@types/puppeteer"
+	],
+	"next": {
+		"entry": ["app/**/*.{ts,tsx}", "next.config.{js,ts,mjs}"],
+		"project": [
+			"app/**/*.{ts,tsx}",
+			"components/**/*.{ts,tsx}",
+			"lib/**/*.{ts,tsx}",
+			"hooks/**/*.{ts,tsx}"
+		]
+	},
+	"ignoreBinaries": ["next", "tsc", "biome", "knip"]
+}

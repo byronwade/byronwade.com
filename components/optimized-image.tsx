@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface OptimizedImageProps {
 	src: string;
@@ -18,7 +18,21 @@ interface OptimizedImageProps {
 	style?: React.CSSProperties;
 }
 
-export function OptimizedImage({ src, alt, width, height, className = "", priority = false, sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw", quality = 85, placeholder = "empty", blurDataURL, fill = false, style, ...props }: OptimizedImageProps) {
+export function OptimizedImage({
+	src,
+	alt,
+	width,
+	height,
+	className = "",
+	priority = false,
+	sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+	quality = 85,
+	placeholder = "empty",
+	blurDataURL,
+	fill = false,
+	style,
+	...props
+}: OptimizedImageProps) {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [hasError, setHasError] = useState(false);
 
@@ -38,8 +52,8 @@ export function OptimizedImage({ src, alt, width, height, className = "", priori
 	const defaultBlurDataURL = width && height ? generateBlurDataURL(width, height) : undefined;
 
 	// Detect WebP/AVIF support
-	const [supportsWebP, setSupportsWebP] = useState(false);
-	const [supportsAVIF, setSupportsAVIF] = useState(false);
+	const [_supportsWebP, setSupportsWebP] = useState(false);
+	const [_supportsAVIF, setSupportsAVIF] = useState(false);
 
 	useEffect(() => {
 		// Check WebP support
@@ -47,14 +61,16 @@ export function OptimizedImage({ src, alt, width, height, className = "", priori
 		webpTest.onload = webpTest.onerror = () => {
 			setSupportsWebP(webpTest.height === 2);
 		};
-		webpTest.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+		webpTest.src =
+			"data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
 
 		// Check AVIF support
 		const avifTest = new window.Image();
 		avifTest.onload = avifTest.onerror = () => {
 			setSupportsAVIF(avifTest.height === 2);
 		};
-		avifTest.src = "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=";
+		avifTest.src =
+			"data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=";
 	}, []);
 
 	// Optimize image URL based on format support
@@ -78,7 +94,10 @@ export function OptimizedImage({ src, alt, width, height, className = "", priori
 
 	if (hasError) {
 		return (
-			<div className={`bg-gray-200 flex items-center justify-center ${className}`} style={{ width, height, ...style }}>
+			<div
+				className={`bg-gray-200 flex items-center justify-center ${className}`}
+				style={{ width, height, ...style }}
+			>
 				<span className="text-gray-500 text-sm">Failed to load image</span>
 			</div>
 		);

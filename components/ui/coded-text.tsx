@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useRef, memo } from "react";
+import { memo, useEffect, useRef } from "react";
 
 const ANIMATION_DURATION = 500;
 const EXTRA_WIDTH = 5;
 
-const CodedText: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
+const CodedText: React.FC<{ children: React.ReactNode; className?: string }> = ({
+	children,
+	className,
+}) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const elementRef = useRef<HTMLSpanElement>(null);
 
@@ -27,7 +30,7 @@ const CodedText: React.FC<{ children: React.ReactNode; className?: string }> = (
 
 				element.innerText = originalText
 					.split("")
-					.map((char, index) => {
+					.map((_char, index) => {
 						if (index < originalText.length * progress) {
 							return originalText[index];
 						}

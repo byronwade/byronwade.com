@@ -1,5 +1,5 @@
-import React from "react";
 import { cn } from "@/lib/utils";
+import type React from "react";
 
 interface MarqueeProps {
 	className?: string;
@@ -11,7 +11,15 @@ interface MarqueeProps {
 	[key: string]: any;
 }
 
-export default function Marquee({ className, reverse, pauseOnHover = false, children, vertical = false, repeat = 4, ...props }: MarqueeProps) {
+export default function Marquee({
+	className,
+	reverse,
+	pauseOnHover = false,
+	children,
+	vertical = false,
+	repeat = 4,
+	...props
+}: MarqueeProps) {
 	return (
 		<div
 			{...props}

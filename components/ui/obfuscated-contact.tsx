@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Mail, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
 
 // Base64 encoded contact info (additional layer of obfuscation)
 const ENCODED_EMAIL = "YmN3MTk5NUBnbWFpbC5jb20="; // bcw1995@gmail.com
@@ -18,7 +18,7 @@ const decode = (encoded: string): string => {
 };
 
 // Additional obfuscation: split and reverse parts
-const obfuscateEmail = (email: string): { user: string; domain: string } => {
+const _obfuscateEmail = (email: string): { user: string; domain: string } => {
 	const [user, domain] = email.split("@");
 	return {
 		user: user.split("").reverse().join(""),
@@ -49,7 +49,11 @@ interface ObfuscatedEmailProps {
 	variant?: "link" | "text";
 }
 
-export const ObfuscatedEmail = ({ className = "", showIcon = false, variant = "link" }: ObfuscatedEmailProps) => {
+export const ObfuscatedEmail = ({
+	className = "",
+	showIcon = false,
+	variant = "link",
+}: ObfuscatedEmailProps) => {
 	const [revealed, setRevealed] = useState(false);
 	const [email, setEmail] = useState("");
 
@@ -98,7 +102,11 @@ export const ObfuscatedEmail = ({ className = "", showIcon = false, variant = "l
 						{email}
 					</a>
 				) : (
-					<button onClick={handleReveal} className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline" type="button">
+					<button
+						onClick={handleReveal}
+						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						type="button"
+					>
 						Click to reveal email
 					</button>
 				)}
@@ -114,7 +122,12 @@ interface ObfuscatedPhoneProps {
 	displayFormat?: boolean;
 }
 
-export const ObfuscatedPhone = ({ className = "", showIcon = false, variant = "link", displayFormat = true }: ObfuscatedPhoneProps) => {
+export const ObfuscatedPhone = ({
+	className = "",
+	showIcon = false,
+	variant = "link",
+	displayFormat = true,
+}: ObfuscatedPhoneProps) => {
 	const [revealed, setRevealed] = useState(false);
 	const [phone, setPhone] = useState("");
 	const [displayPhone, setDisplayPhone] = useState("");
@@ -165,7 +178,11 @@ export const ObfuscatedPhone = ({ className = "", showIcon = false, variant = "l
 						{displayPhone}
 					</a>
 				) : (
-					<button onClick={handleReveal} className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline" type="button">
+					<button
+						onClick={handleReveal}
+						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						type="button"
+					>
 						Click to reveal phone
 					</button>
 				)}
@@ -178,7 +195,7 @@ export const ObfuscatedPhone = ({ className = "", showIcon = false, variant = "l
 export const getObfuscatedContactForSchema = () => {
 	// Return partially obfuscated data for structured data
 	return {
-		email: "contact" + String.fromCharCode(64) + "byronwade" + ".com", // Use a business email format
+		email: `contact${String.fromCharCode(64)}byronwade.com`, // Use a business email format
 		telephone: "+1-8xx-xxx-xxxx", // Partially obfuscated
 	};
 };

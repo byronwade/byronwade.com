@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 const config = {
 	darkMode: ["selector"],
-	content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+	content: [
+		"./pages/**/*.{ts,tsx}",
+		"./components/**/*.{ts,tsx}",
+		"./app/**/*.{ts,tsx}",
+		"./src/**/*.{ts,tsx}",
+	],
 	prefix: "",
 	theme: {
 		screens: {
@@ -167,7 +172,7 @@ const config = {
 				"slide-in-from-right-4": "slide-in-from-right 0.6s ease-out forwards",
 				"slide-in-from-bottom-4": "slide-in-from-bottom 0.6s ease-out forwards",
 			},
-			typography: ({ theme }: any) => ({
+			typography: () => ({
 				DEFAULT: {
 					css: {
 						"a > img": {

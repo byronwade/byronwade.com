@@ -1,12 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Target, Users, Lightbulb, Palette, Code, TrendingUp, CheckCircle, Clock, Zap, Heart, Eye, MessageCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+	CheckCircle,
+	ChevronDown,
+	ChevronUp,
+	Clock,
+	Code,
+	Eye,
+	Heart,
+	Lightbulb,
+	MessageCircle,
+	Palette,
+	Target,
+	TrendingUp,
+	Users,
+	Zap,
+} from "lucide-react";
+import { useState } from "react";
 
 interface CaseStudySection {
 	title: string;
@@ -50,10 +65,23 @@ interface DesignCaseStudyProps {
 	className?: string;
 }
 
-export function DesignCaseStudy({ title, description, challenge, solution, process = [], results = [], metrics, technical, colors = [], tags = [], testimonial, className }: DesignCaseStudyProps) {
+export function DesignCaseStudy({
+	title,
+	description,
+	challenge,
+	solution,
+	process = [],
+	results = [],
+	metrics,
+	technical,
+	colors = [],
+	tags = [],
+	testimonial,
+	className,
+}: DesignCaseStudyProps) {
 	const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
 
-	const toggleSection = (sectionId: string) => {
+	const _toggleSection = (sectionId: string) => {
 		const newExpanded = new Set(expandedSections);
 		if (newExpanded.has(sectionId)) {
 			newExpanded.delete(sectionId);
@@ -66,17 +94,20 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 	const defaultProcess: CaseStudySection[] = [
 		{
 			title: "Research & Discovery",
-			content: "Understanding user needs, market research, and competitive analysis to inform design decisions.",
+			content:
+				"Understanding user needs, market research, and competitive analysis to inform design decisions.",
 			icon: <Users className="w-5 h-5" />,
 		},
 		{
 			title: "Ideation & Concepts",
-			content: "Brainstorming sessions, sketching initial concepts, and exploring different design directions.",
+			content:
+				"Brainstorming sessions, sketching initial concepts, and exploring different design directions.",
 			icon: <Lightbulb className="w-5 h-5" />,
 		},
 		{
 			title: "Design & Iteration",
-			content: "Creating high-fidelity designs, gathering feedback, and iterating based on user testing.",
+			content:
+				"Creating high-fidelity designs, gathering feedback, and iterating based on user testing.",
 			icon: <Palette className="w-5 h-5" />,
 		},
 		{
@@ -153,7 +184,9 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 											<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mx-auto mb-2">
 												<Eye className="w-6 h-6 text-yellow-600" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">{metrics.views.toLocaleString()}</div>
+											<div className="text-2xl font-bold text-foreground">
+												{metrics.views.toLocaleString()}
+											</div>
 											<div className="text-sm text-muted-foreground">Views</div>
 										</div>
 									)}
@@ -162,7 +195,9 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 											<div className="flex items-center justify-center w-12 h-12 bg-red-500/10 rounded-lg mx-auto mb-2">
 												<Heart className="w-6 h-6 text-red-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">{metrics.likes.toLocaleString()}</div>
+											<div className="text-2xl font-bold text-foreground">
+												{metrics.likes.toLocaleString()}
+											</div>
 											<div className="text-sm text-muted-foreground">Likes</div>
 										</div>
 									)}
@@ -171,7 +206,9 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 											<div className="flex items-center justify-center w-12 h-12 bg-blue-500/10 rounded-lg mx-auto mb-2">
 												<MessageCircle className="w-6 h-6 text-blue-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">{metrics.comments.toLocaleString()}</div>
+											<div className="text-2xl font-bold text-foreground">
+												{metrics.comments.toLocaleString()}
+											</div>
 											<div className="text-sm text-muted-foreground">Comments</div>
 										</div>
 									)}
@@ -180,7 +217,9 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 											<div className="flex items-center justify-center w-12 h-12 bg-green-500/10 rounded-lg mx-auto mb-2">
 												<TrendingUp className="w-6 h-6 text-green-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">{metrics.shares.toLocaleString()}</div>
+											<div className="text-2xl font-bold text-foreground">
+												{metrics.shares.toLocaleString()}
+											</div>
 											<div className="text-sm text-muted-foreground">Shares</div>
 										</div>
 									)}
@@ -189,7 +228,9 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 											<div className="flex items-center justify-center w-12 h-12 bg-purple-500/10 rounded-lg mx-auto mb-2">
 												<Zap className="w-6 h-6 text-purple-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">{metrics.downloads.toLocaleString()}</div>
+											<div className="text-2xl font-bold text-foreground">
+												{metrics.downloads.toLocaleString()}
+											</div>
 											<div className="text-sm text-muted-foreground">Downloads</div>
 										</div>
 									)}
@@ -211,10 +252,15 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 								<div className="flex flex-wrap gap-4">
 									{colors.map((color, index) => (
 										<div key={index} className="flex items-center gap-3">
-											<div className="w-12 h-12 rounded-lg border border-border shadow-sm" style={{ backgroundColor: color }} />
+											<div
+												className="w-12 h-12 rounded-lg border border-border shadow-sm"
+												style={{ backgroundColor: color }}
+											/>
 											<div>
 												<div className="font-mono text-sm text-foreground">{color}</div>
-												<div className="text-xs text-muted-foreground">{color.startsWith("#") ? "HEX" : "RGB"}</div>
+												<div className="text-xs text-muted-foreground">
+													{color.startsWith("#") ? "HEX" : "RGB"}
+												</div>
 											</div>
 										</div>
 									))}
@@ -227,7 +273,11 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 					{tags.length > 0 && (
 						<div className="flex flex-wrap gap-2">
 							{tags.map((tag) => (
-								<Badge key={tag} variant="secondary" className="bg-yellow-600/10 border border-yellow-600/30 text-yellow-600 hover:bg-yellow-600/20 transition-colors">
+								<Badge
+									key={tag}
+									variant="secondary"
+									className="bg-yellow-600/10 border border-yellow-600/30 text-yellow-600 hover:bg-yellow-600/20 transition-colors"
+								>
 									{tag}
 								</Badge>
 							))}
@@ -239,10 +289,15 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 				<TabsContent value="process" className="space-y-6">
 					<div className="space-y-4">
 						{processSteps.map((step, index) => (
-							<Card key={index} className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+							<Card
+								key={index}
+								className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300"
+							>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-3 text-foreground">
-										<div className="flex items-center justify-center w-8 h-8 bg-yellow-600/10 rounded-full text-yellow-600 text-sm font-bold">{index + 1}</div>
+										<div className="flex items-center justify-center w-8 h-8 bg-yellow-600/10 rounded-full text-yellow-600 text-sm font-bold">
+											{index + 1}
+										</div>
 										{step.icon}
 										{step.title}
 									</CardTitle>
@@ -271,7 +326,11 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 									<CardContent>
 										<div className="flex flex-wrap gap-2">
 											{technical.tools.map((tool) => (
-												<Badge key={tool} variant="outline" className="border-yellow-600/30 text-yellow-600">
+												<Badge
+													key={tool}
+													variant="outline"
+													className="border-yellow-600/30 text-yellow-600"
+												>
 													{tool}
 												</Badge>
 											))}
@@ -366,11 +425,15 @@ export function DesignCaseStudy({ title, description, challenge, solution, proce
 					{testimonial && (
 						<Card className="bg-gradient-to-br from-yellow-600/5 to-yellow-600/10 border-yellow-600/20 hover:shadow-xl transition-all duration-300">
 							<CardContent className="p-8">
-								<blockquote className="text-lg italic text-foreground mb-4">"{testimonial.quote}"</blockquote>
+								<blockquote className="text-lg italic text-foreground mb-4">
+									"{testimonial.quote}"
+								</blockquote>
 								<div className="flex items-center gap-3">
 									<div>
 										<div className="font-semibold text-foreground">{testimonial.author}</div>
-										{testimonial.role && <div className="text-sm text-muted-foreground">{testimonial.role}</div>}
+										{testimonial.role && (
+											<div className="text-sm text-muted-foreground">{testimonial.role}</div>
+										)}
 									</div>
 								</div>
 							</CardContent>

@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import { AlertTriangle, Home, RefreshCw } from "lucide-react";
+import React from "react";
 
 interface ErrorBoundaryState {
 	hasError: boolean;
@@ -77,13 +77,15 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 			const { error } = this.state;
 
 			// Use custom fallback if provided
-			if (this.props.fallback) {
+			if (this.props.fallback && error) {
 				const FallbackComponent = this.props.fallback;
-				return <FallbackComponent error={error!} retry={this.handleRetry} />;
+				return <FallbackComponent error={error} retry={this.handleRetry} />;
 			}
 
 			// Check if this is the specific webpack error
-			const isWebpackError = error?.message.includes("Cannot read properties of undefined (reading 'call')");
+			const isWebpackError = error?.message.includes(
+				"Cannot read properties of undefined (reading 'call')"
+			);
 
 			return (
 				<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
@@ -92,8 +94,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 							<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
 								<AlertTriangle className="h-6 w-6 text-destructive" />
 							</div>
-							<CardTitle className="text-xl">{isWebpackError ? "Loading Error" : "Something went wrong"}</CardTitle>
-							<CardDescription>{isWebpackError ? "There was an issue loading the page. This usually resolves with a refresh." : "An unexpected error occurred. Please try again."}</CardDescription>
+							<CardTitle className="text-xl">
+								{isWebpackError ? "Loading Error" : "Something went wrong"}
+							</CardTitle>
+							<CardDescription>
+								{isWebpackError
+									? "There was an issue loading the page. This usually resolves with a refresh."
+									: "An unexpected error occurred. Please try again."}
+							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4">
 							{process.env.NODE_ENV === "development" && error && (
@@ -113,7 +121,11 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 								</Button>
 							</div>
 
-							{isWebpackError && <p className="text-xs text-muted-foreground text-center">If this error persists, try clearing your browser cache or refreshing the page.</p>}
+							{isWebpackError && (
+								<p className="text-xs text-muted-foreground text-center">
+									If this error persists, try clearing your browser cache or refreshing the page.
+								</p>
+							)}
 						</CardContent>
 					</Card>
 				</div>
@@ -138,7 +150,10 @@ export function useErrorHandler() {
 }
 
 // Higher-order component for wrapping components with error boundary
-export function withErrorBoundary<P extends object>(Component: React.ComponentType<P>, fallback?: React.ComponentType<{ error: Error; retry: () => void }>) {
+export function withErrorBoundary<P extends object>(
+	Component: React.ComponentType<P>,
+	fallback?: React.ComponentType<{ error: Error; retry: () => void }>
+) {
 	const WrappedComponent = (props: P) => (
 		<ErrorBoundary fallback={fallback}>
 			<Component {...props} />

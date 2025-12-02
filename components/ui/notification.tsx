@@ -1,9 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle, Rocket, Code, Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, AlertTriangle, CheckCircle, Code, Info, Rocket, X, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export interface NotificationProps {
@@ -40,7 +40,8 @@ const variantStyles = {
 		accent: "border-l-red-600",
 	},
 	warning: {
-		container: "bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800 shadow-lg",
+		container:
+			"bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800 shadow-lg",
 		icon: AlertTriangle,
 		iconColor: "text-yellow-600",
 		accent: "border-l-yellow-600",
@@ -52,14 +53,24 @@ const variantStyles = {
 		accent: "border-l-blue-600",
 	},
 	tech: {
-		container: "bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20 border-yellow-200 dark:border-yellow-800 shadow-xl",
+		container:
+			"bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20 border-yellow-200 dark:border-yellow-800 shadow-xl",
 		icon: Rocket,
 		iconColor: "text-yellow-600",
 		accent: "border-l-yellow-600",
 	},
 };
 
-export function Notification({ id, title, description, variant = "default", duration = 5000, onClose, action, persistent = false }: NotificationProps) {
+export function Notification({
+	id,
+	title,
+	description,
+	variant = "default",
+	duration = 5000,
+	onClose,
+	action,
+	persistent = false,
+}: NotificationProps) {
 	const [isVisible, setIsVisible] = useState(true);
 	const [progress, setProgress] = useState(100);
 
@@ -95,11 +106,26 @@ export function Notification({ id, title, description, variant = "default", dura
 	return (
 		<AnimatePresence>
 			{isVisible && (
-				<motion.div initial={{ opacity: 0, y: -50, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -20, scale: 0.95 }} transition={{ duration: 0.3, ease: "easeOut" }} className={cn("relative overflow-hidden rounded-lg border border-l-4 p-4 shadow-lg backdrop-blur-sm", styles.container, styles.accent)}>
+				<motion.div
+					initial={{ opacity: 0, y: -50, scale: 0.95 }}
+					animate={{ opacity: 1, y: 0, scale: 1 }}
+					exit={{ opacity: 0, y: -20, scale: 0.95 }}
+					transition={{ duration: 0.3, ease: "easeOut" }}
+					className={cn(
+						"relative overflow-hidden rounded-lg border border-l-4 p-4 shadow-lg backdrop-blur-sm",
+						styles.container,
+						styles.accent
+					)}
+				>
 					{/* Progress bar */}
 					{!persistent && (
 						<div className="absolute bottom-0 left-0 h-1 bg-black/10 dark:bg-white/10 w-full">
-							<motion.div className="h-full bg-current opacity-30" initial={{ width: "100%" }} animate={{ width: `${progress}%` }} transition={{ duration: 0.1, ease: "linear" }} />
+							<motion.div
+								className="h-full bg-current opacity-30"
+								initial={{ width: "100%" }}
+								animate={{ width: `${progress}%` }}
+								transition={{ duration: 0.1, ease: "linear" }}
+							/>
 						</div>
 					)}
 
@@ -107,7 +133,10 @@ export function Notification({ id, title, description, variant = "default", dura
 						{/* Icon */}
 						<div className="flex-shrink-0 mt-0.5">
 							{variant === "tech" ? (
-								<motion.div animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
+								<motion.div
+									animate={{ rotate: 360 }}
+									transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+								>
 									<Icon className={cn("h-5 w-5", styles.iconColor)} />
 								</motion.div>
 							) : (
@@ -118,10 +147,17 @@ export function Notification({ id, title, description, variant = "default", dura
 						{/* Content */}
 						<div className="flex-1 min-w-0">
 							<h4 className="text-sm font-semibold text-foreground">{title}</h4>
-							{description && <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{description}</p>}
+							{description && (
+								<p className="mt-1 text-sm text-muted-foreground leading-relaxed">{description}</p>
+							)}
 							{action && (
 								<div className="mt-3">
-									<Button size="sm" variant="outline" onClick={action.onClick} className="h-8 px-3 text-xs font-medium">
+									<Button
+										size="sm"
+										variant="outline"
+										onClick={action.onClick}
+										className="h-8 px-3 text-xs font-medium"
+									>
 										{action.label}
 									</Button>
 								</div>
@@ -129,7 +165,12 @@ export function Notification({ id, title, description, variant = "default", dura
 						</div>
 
 						{/* Close button */}
-						<Button variant="ghost" size="sm" onClick={handleClose} className="flex-shrink-0 h-6 w-6 p-0 hover:bg-black/10 dark:hover:bg-white/10">
+						<Button
+							variant="ghost"
+							size="sm"
+							onClick={handleClose}
+							className="flex-shrink-0 h-6 w-6 p-0 hover:bg-black/10 dark:hover:bg-white/10"
+						>
 							<X className="h-4 w-4" />
 							<span className="sr-only">Close</span>
 						</Button>
@@ -146,7 +187,14 @@ export function NotificationContainer({ notifications }: { notifications: Notifi
 		<div className="fixed top-4 right-4 z-50 space-y-3 max-w-sm w-full">
 			<AnimatePresence mode="popLayout">
 				{notifications.map((notification, index) => (
-					<motion.div key={notification.id || index} layout initial={{ opacity: 0, x: 300 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 300 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+					<motion.div
+						key={notification.id || index}
+						layout
+						initial={{ opacity: 0, x: 300 }}
+						animate={{ opacity: 1, x: 0 }}
+						exit={{ opacity: 0, x: 300 }}
+						transition={{ duration: 0.3, ease: "easeOut" }}
+					>
 						<Notification {...notification} />
 					</motion.div>
 				))}
@@ -179,15 +227,20 @@ export function useNotifications() {
 	};
 
 	// Convenience methods
-	const success = (title: string, description?: string, options?: Partial<NotificationProps>) => addNotification({ title, description, variant: "success", ...options });
+	const success = (title: string, description?: string, options?: Partial<NotificationProps>) =>
+		addNotification({ title, description, variant: "success", ...options });
 
-	const error = (title: string, description?: string, options?: Partial<NotificationProps>) => addNotification({ title, description, variant: "error", ...options });
+	const error = (title: string, description?: string, options?: Partial<NotificationProps>) =>
+		addNotification({ title, description, variant: "error", ...options });
 
-	const warning = (title: string, description?: string, options?: Partial<NotificationProps>) => addNotification({ title, description, variant: "warning", ...options });
+	const warning = (title: string, description?: string, options?: Partial<NotificationProps>) =>
+		addNotification({ title, description, variant: "warning", ...options });
 
-	const info = (title: string, description?: string, options?: Partial<NotificationProps>) => addNotification({ title, description, variant: "info", ...options });
+	const info = (title: string, description?: string, options?: Partial<NotificationProps>) =>
+		addNotification({ title, description, variant: "info", ...options });
 
-	const tech = (title: string, description?: string, options?: Partial<NotificationProps>) => addNotification({ title, description, variant: "tech", ...options });
+	const tech = (title: string, description?: string, options?: Partial<NotificationProps>) =>
+		addNotification({ title, description, variant: "tech", ...options });
 
 	return {
 		notifications,

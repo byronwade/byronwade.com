@@ -1,14 +1,34 @@
-import { ReactNode } from "react";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import type { ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const BentoGrid = ({ children, className }: { children: ReactNode; className?: string }) => {
-	return <div className={cn("grid w-full auto-rows-[22rem] grid-cols-3 gap-4", className)}>{children}</div>;
+	return (
+		<div className={cn("grid w-full auto-rows-[22rem] grid-cols-3 gap-4", className)}>
+			{children}
+		</div>
+	);
 };
 
-const BentoCard = ({ name, className, background, Icon, description, href, cta }: { name: string; className: string; background: ReactNode; Icon: any; description: string; href: string; cta: string }) => (
+const BentoCard = ({
+	name,
+	className,
+	background,
+	Icon,
+	description,
+	href,
+	cta,
+}: {
+	name: string;
+	className: string;
+	background: ReactNode;
+	Icon: any;
+	description: string;
+	href: string;
+	cta: string;
+}) => (
 	<div
 		key={name}
 		className={cn(
@@ -27,7 +47,11 @@ const BentoCard = ({ name, className, background, Icon, description, href, cta }
 			<p className="max-w-lg text-neutral-400">{description}</p>
 		</div>
 
-		<div className={cn("pointer-events-none absolute bottom-0 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100")}>
+		<div
+			className={cn(
+				"pointer-events-none absolute bottom-0 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+			)}
+		>
 			<Button variant="ghost" asChild size="sm" className="pointer-events-auto">
 				<a href={href}>
 					{cta}

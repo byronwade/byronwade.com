@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 interface TextStrokeProps {
 	strokeColor?: string;
@@ -8,7 +8,13 @@ interface TextStrokeProps {
 	children: React.ReactNode;
 }
 
-export default function TextStroke({ strokeColor = "white", textColor = "black", strokeWidth = 1, className = "", children }: TextStrokeProps) {
+export default function TextStroke({
+	strokeColor = "white",
+	textColor = "black",
+	strokeWidth = 1,
+	className = "",
+	children,
+}: TextStrokeProps) {
 	const strokeStyle = {
 		WebkitTextStroke: `${strokeWidth}px ${strokeColor}`,
 		textStroke: `${strokeWidth}px ${strokeColor}`,

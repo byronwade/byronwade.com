@@ -1,11 +1,23 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
-import Image from "next/image";
-import { ZoomIn, ZoomOut, RotateCw, Maximize, Minimize, Download, Share2, Move, RotateCcw, RefreshCw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import {
+	Download,
+	Maximize,
+	Minimize,
+	Move,
+	RefreshCw,
+	RotateCcw,
+	RotateCw,
+	Share2,
+	X,
+	ZoomIn,
+	ZoomOut,
+} from "lucide-react";
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface InteractiveImageViewerProps {
 	src: string;
@@ -15,14 +27,20 @@ interface InteractiveImageViewerProps {
 	downloadUrl?: string;
 }
 
-export function InteractiveImageViewer({ src, alt, title, className, downloadUrl }: InteractiveImageViewerProps) {
+export function InteractiveImageViewer({
+	src,
+	alt,
+	title,
+	className,
+	downloadUrl,
+}: InteractiveImageViewerProps) {
 	const [scale, setScale] = useState(1);
 	const [rotation, setRotation] = useState(0);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isDragging, setIsDragging] = useState(false);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-	const [showControls, setShowControls] = useState(true);
+	const [showControls, _setShowControls] = useState(true);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const imageRef = useRef<HTMLDivElement>(null);
@@ -166,24 +184,53 @@ export function InteractiveImageViewer({ src, alt, title, className, downloadUrl
 
 		window.addEventListener("keydown", handleKeyDown);
 		return () => window.removeEventListener("keydown", handleKeyDown);
-	}, [handleZoomIn, handleZoomOut, handleRotateRight, handleRotateLeft, handleReset, handleFullscreen, isFullscreen]);
+	}, [
+		handleZoomIn,
+		handleZoomOut,
+		handleRotateRight,
+		handleRotateLeft,
+		handleReset,
+		handleFullscreen,
+		isFullscreen,
+	]);
 
 	const controlsContent = (
 		<div className="flex flex-wrap items-center gap-2 p-3 bg-background/95 backdrop-blur-sm border border-border rounded-lg shadow-lg">
 			<div className="flex items-center gap-1">
-				<Button size="sm" variant="outline" onClick={handleZoomOut} disabled={scale <= 0.1} className="h-8 w-8 p-0">
+				<Button
+					size="sm"
+					variant="outline"
+					onClick={handleZoomOut}
+					disabled={scale <= 0.1}
+					className="h-8 w-8 p-0"
+				>
 					<ZoomOut className="h-4 w-4" />
 				</Button>
 
 				<div className="w-20 mx-2">
-					<Slider value={[scale]} onValueChange={([value]) => setScale(value)} min={0.1} max={5} step={0.1} className="w-full" />
+					<Slider
+						value={[scale]}
+						onValueChange={([value]) => setScale(value)}
+						min={0.1}
+						max={5}
+						step={0.1}
+						className="w-full"
+					/>
 				</div>
 
-				<Button size="sm" variant="outline" onClick={handleZoomIn} disabled={scale >= 5} className="h-8 w-8 p-0">
+				<Button
+					size="sm"
+					variant="outline"
+					onClick={handleZoomIn}
+					disabled={scale >= 5}
+					className="h-8 w-8 p-0"
+				>
 					<ZoomIn className="h-4 w-4" />
 				</Button>
 
-				<span className="text-xs text-muted-foreground ml-1 min-w-[3rem]">{Math.round(scale * 100)}%</span>
+				<span className="text-xs text-muted-foreground ml-1 min-w-[3rem]">
+					{Math.round(scale * 100)}%
+				</span>
 			</div>
 
 			<div className="h-4 w-px bg-border" />
@@ -218,26 +265,63 @@ export function InteractiveImageViewer({ src, alt, title, className, downloadUrl
 
 	return (
 		<>
-			<div ref={containerRef} className={cn("relative overflow-hidden bg-secondary/50 border border-border rounded-lg group", isFullscreen && "fixed inset-0 z-50 bg-background rounded-none", className)} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} onWheel={handleWheel}>
+			<div
+				ref={containerRef}
+				className={cn(
+					"relative overflow-hidden bg-secondary/50 border border-border rounded-lg group",
+					isFullscreen && "fixed inset-0 z-50 bg-background rounded-none",
+					className
+				)}
+				onMouseMove={handleMouseMove}
+				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseUp}
+				onWheel={handleWheel}
+			>
 				{/* Image Container */}
 				<div
 					ref={imageRef}
-					className={cn("relative w-full h-full flex items-center justify-center cursor-grab", isDragging && "cursor-grabbing", !isFullscreen && "aspect-[4/3]", isFullscreen && "min-h-screen")}
+					className={cn(
+						"relative w-full h-full flex items-center justify-center cursor-grab",
+						isDragging && "cursor-grabbing",
+						!isFullscreen && "aspect-[4/3]",
+						isFullscreen && "min-h-screen"
+					)}
 					onMouseDown={handleMouseDown}
 					style={{
 						transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
 						transition: isDragging ? "none" : "transform 0.2s ease-out",
 					}}
 				>
-					<Image src={src} alt={alt} fill className="object-contain pointer-events-none select-none" sizes={isFullscreen ? "100vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"} priority />
+					<Image
+						src={src}
+						alt={alt}
+						fill
+						className="object-contain pointer-events-none select-none"
+						sizes={
+							isFullscreen ? "100vw" : "(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+						}
+						priority
+					/>
 				</div>
 
 				{/* Controls */}
-				<div className={cn("absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-opacity duration-200", showControls ? "opacity-100" : "opacity-0 group-hover:opacity-100")}>{controlsContent}</div>
+				<div
+					className={cn(
+						"absolute bottom-4 left-1/2 transform -translate-x-1/2 transition-opacity duration-200",
+						showControls ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+					)}
+				>
+					{controlsContent}
+				</div>
 
 				{/* Fullscreen Close Button */}
 				{isFullscreen && (
-					<Button size="sm" variant="outline" onClick={() => setIsFullscreen(false)} className="absolute top-4 right-4 h-8 w-8 p-0 bg-background/95 backdrop-blur-sm">
+					<Button
+						size="sm"
+						variant="outline"
+						onClick={() => setIsFullscreen(false)}
+						className="absolute top-4 right-4 h-8 w-8 p-0 bg-background/95 backdrop-blur-sm"
+					>
 						<X className="h-4 w-4" />
 					</Button>
 				)}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 interface ClientImageProps extends ComponentProps<typeof Image> {
 	onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;

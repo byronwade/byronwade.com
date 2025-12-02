@@ -1,10 +1,28 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Code, Palette, Database, Cloud, Smartphone, Globe, Zap, Shield, Star, TrendingUp, Award, Target, CheckCircle, ArrowRight, Filter, Search } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	ArrowRight,
+	Award,
+	CheckCircle,
+	Cloud,
+	Code,
+	Database,
+	Filter,
+	Globe,
+	Palette,
+	Search,
+	Shield,
+	Smartphone,
+	Star,
+	Target,
+	TrendingUp,
+	Zap,
+} from "lucide-react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Skill {
 	name: string;
@@ -174,7 +192,9 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 
 	const filteredSkills = skills.filter((skill) => {
 		const matchesCategory = selectedCategory === "all" || skill.category === selectedCategory;
-		const matchesSearch = skill.name.toLowerCase().includes(searchTerm.toLowerCase()) || skill.description.toLowerCase().includes(searchTerm.toLowerCase());
+		const matchesSearch =
+			skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			skill.description.toLowerCase().includes(searchTerm.toLowerCase());
 		return matchesCategory && matchesSearch;
 	});
 
@@ -241,18 +261,27 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 	};
 
 	return (
-        <div className={`space-y-8 ${className}`}>
-            {/* Header */}
-            <div className="text-center space-y-4">
+		<div className={`space-y-8 ${className}`}>
+			{/* Header */}
+			<div className="text-center space-y-4">
 				<h2 className="text-4xl font-bold text-foreground">Skills & Expertise</h2>
-				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">A comprehensive overview of my technical skills, design capabilities, and professional experience</p>
+				<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+					A comprehensive overview of my technical skills, design capabilities, and professional
+					experience
+				</p>
 			</div>
-            {/* Search and Filters */}
-            <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+			{/* Search and Filters */}
+			<div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
 				{/* Search */}
 				<div className="relative flex-1 max-w-md">
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-					<input type="text" placeholder="Search skills..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-yellow-600/50 focus:border-yellow-600" />
+					<input
+						type="text"
+						placeholder="Search skills..."
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-yellow-600/50 focus:border-yellow-600"
+					/>
 				</div>
 
 				{/* Category Filters */}
@@ -260,7 +289,13 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 					{categories.map((category) => {
 						const Icon = category.icon;
 						return (
-							<Button key={category.id} variant={selectedCategory === category.id ? "default" : "outline"} size="sm" onClick={() => setSelectedCategory(category.id)} className={`${selectedCategory === category.id ? "bg-yellow-600 text-white hover:bg-yellow-700" : "border-border hover:border-yellow-600/50 hover:text-yellow-600"}`}>
+							<Button
+								key={category.id}
+								variant={selectedCategory === category.id ? "default" : "outline"}
+								size="sm"
+								onClick={() => setSelectedCategory(category.id)}
+								className={`${selectedCategory === category.id ? "bg-yellow-600 text-white hover:bg-yellow-700" : "border-border hover:border-yellow-600/50 hover:text-yellow-600"}`}
+							>
 								<Icon className="w-4 h-4 mr-2" />
 								{category.label}
 							</Button>
@@ -268,17 +303,22 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 					})}
 				</div>
 			</div>
-            {/* Skills Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+			{/* Skills Grid */}
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{filteredSkills.map((skill) => {
 					const Icon = skill.icon;
 					const isAnimated = animatedSkills.has(skill.name);
 
 					return (
-                        <Card key={skill.name} ref={el => {
-                            setSkillRef(skill.name, el);
-                        }} data-skill={skill.name} className="group bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30 overflow-hidden">
-                            <CardHeader className="pb-4">
+						<Card
+							key={skill.name}
+							ref={(el) => {
+								setSkillRef(skill.name, el);
+							}}
+							data-skill={skill.name}
+							className="group bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30 overflow-hidden"
+						>
+							<CardHeader className="pb-4">
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-3">
 										<div className="p-2 rounded-lg bg-yellow-600/10 group-hover:bg-yellow-600/20 transition-colors">
@@ -310,7 +350,7 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 									</div>
 								</div>
 							</CardHeader>
-                            <CardContent className="space-y-4">
+							<CardContent className="space-y-4">
 								{/* Progress Bar */}
 								<div className="space-y-2">
 									<div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
@@ -339,12 +379,12 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 									</div>
 								</div>
 							</CardContent>
-                        </Card>
-                    );
+						</Card>
+					);
 				})}
 			</div>
-            {/* Summary Stats */}
-            <Card className="bg-gradient-to-r from-yellow-600/10 to-yellow-600/5 border-yellow-600/20">
+			{/* Summary Stats */}
+			<Card className="bg-gradient-to-r from-yellow-600/10 to-yellow-600/5 border-yellow-600/20">
 				<CardContent className="p-8">
 					<div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
 						<div>
@@ -352,22 +392,28 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 							<div className="text-sm text-muted-foreground">Total Skills</div>
 						</div>
 						<div>
-							<div className="text-3xl font-bold text-foreground mb-2">{Math.round(skills.reduce((acc, skill) => acc + skill.level, 0) / skills.length)}%</div>
+							<div className="text-3xl font-bold text-foreground mb-2">
+								{Math.round(skills.reduce((acc, skill) => acc + skill.level, 0) / skills.length)}%
+							</div>
 							<div className="text-sm text-muted-foreground">Average Proficiency</div>
 						</div>
 						<div>
-							<div className="text-3xl font-bold text-foreground mb-2">{skills.reduce((acc, skill) => acc + skill.years, 0)}</div>
+							<div className="text-3xl font-bold text-foreground mb-2">
+								{skills.reduce((acc, skill) => acc + skill.years, 0)}
+							</div>
 							<div className="text-sm text-muted-foreground">Total Years Experience</div>
 						</div>
 						<div>
-							<div className="text-3xl font-bold text-foreground mb-2">{skills.reduce((acc, skill) => acc + skill.projects, 0)}</div>
+							<div className="text-3xl font-bold text-foreground mb-2">
+								{skills.reduce((acc, skill) => acc + skill.projects, 0)}
+							</div>
 							<div className="text-sm text-muted-foreground">Projects Completed</div>
 						</div>
 					</div>
 				</CardContent>
 			</Card>
-            {/* No Results */}
-            {filteredSkills.length === 0 && (
+			{/* No Results */}
+			{filteredSkills.length === 0 && (
 				<div className="text-center py-12">
 					<div className="text-muted-foreground mb-4">
 						<Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
@@ -386,6 +432,6 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 					</Button>
 				</div>
 			)}
-        </div>
-    );
+		</div>
+	);
 }

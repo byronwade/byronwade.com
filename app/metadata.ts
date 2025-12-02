@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 const metadata: Metadata = {
 	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"),
@@ -6,11 +6,25 @@ const metadata: Metadata = {
 		template: "%s | Byron Wade",
 		default: "Byron Wade - Full Stack Developer & Web Performance Expert",
 	},
-	description: "Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions. Transform your digital presence with cutting-edge development.",
+	description:
+		"Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions. Transform your digital presence with cutting-edge development.",
 	applicationName: "Byron Wade Portfolio",
 	authors: [{ name: "Byron Wade", url: "https://byronwade.com" }],
 	generator: "Next.js",
-	keywords: ["Full Stack Developer", "Web Development", "JavaScript Expert", "React Developer", "NextJS Developer", "Web Performance", "SEO Optimization", "Byron Wade", "California Developer", "Tech Entrepreneur", "Accessibility", "Web Standards"],
+	keywords: [
+		"Full Stack Developer",
+		"Web Development",
+		"JavaScript Expert",
+		"React Developer",
+		"NextJS Developer",
+		"Web Performance",
+		"SEO Optimization",
+		"Byron Wade",
+		"California Developer",
+		"Tech Entrepreneur",
+		"Accessibility",
+		"Web Standards",
+	],
 	referrer: "origin-when-cross-origin",
 	creator: "Byron Wade",
 	publisher: "Byron Wade",
@@ -40,14 +54,14 @@ const metadata: Metadata = {
 		},
 	},
 	icons: {
-		icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
-		apple: [{ url: "/apple-icon.png" }, { url: "/apple-icon-72x72.png", sizes: "72x72", type: "image/png" }, { url: "/apple-icon-114x114.png", sizes: "114x114", type: "image/png" }],
-		other: [
-			{
-				rel: "apple-touch-icon-precomposed",
-				url: "/apple-touch-icon-precomposed.png",
-			},
+		icon: [
+			{ url: "/favicon.ico" },
+			{ url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+			{ url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+			{ url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+			{ url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
 		],
+		apple: [{ url: "/apple-touch-icon.png" }],
 	},
 	manifest: "/manifest.json",
 	openGraph: {
@@ -56,11 +70,15 @@ const metadata: Metadata = {
 		alternateLocale: "en_GB",
 		siteName: "Byron Wade",
 		title: "Byron Wade - Full Stack Developer & Web Performance Expert",
-		description: "Expert full-stack developer specializing in high-performance web applications and modern solutions.",
+		description:
+			"Expert full-stack developer specializing in high-performance web applications and modern solutions.",
 		url: "https://byronwade.com",
 		images: [
 			{
-				url: new URL("/api/og?title=Byron Wade&description=Full Stack Developer %26 Web Performance Expert&type=website", process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com").toString(),
+				url: new URL(
+					"/api/og?title=Byron Wade&description=Full Stack Developer %26 Web Performance Expert&type=website",
+					process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"
+				).toString(),
 				width: 1200,
 				height: 630,
 				alt: "Byron Wade - Full Stack Development Services",
@@ -70,10 +88,16 @@ const metadata: Metadata = {
 	twitter: {
 		card: "summary_large_image",
 		title: "Byron Wade - Full Stack Developer & Web Performance Expert",
-		description: "Expert full-stack developer specializing in high-performance web applications and modern solutions.",
+		description:
+			"Expert full-stack developer specializing in high-performance web applications and modern solutions.",
 		creator: "@byronwade",
 		creatorId: "1234567890",
-		images: [new URL("/api/og?title=Byron Wade&description=Full Stack Developer %26 Web Performance Expert&type=website", process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com").toString()],
+		images: [
+			new URL(
+				"/api/og?title=Byron Wade&description=Full Stack Developer %26 Web Performance Expert&type=website",
+				process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"
+			).toString(),
+		],
 	},
 	verification: {
 		google: "your-google-verification-code",

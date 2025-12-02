@@ -1,10 +1,32 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, Users, Globe, Code, Zap, Activity, BarChart3, PieChart, LineChart, Monitor, Smartphone, Tablet, Clock, CheckCircle, AlertCircle, Star, ArrowUpRight, ArrowDownRight, RefreshCw } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+	Activity,
+	AlertCircle,
+	ArrowDownRight,
+	ArrowUpRight,
+	BarChart3,
+	CheckCircle,
+	Clock,
+	Code,
+	Globe,
+	LineChart,
+	Monitor,
+	PieChart,
+	RefreshCw,
+	Smartphone,
+	Star,
+	Tablet,
+	TrendingDown,
+	TrendingUp,
+	Users,
+	Zap,
+} from "lucide-react";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 interface DashboardProps {
 	className?: string;
@@ -151,7 +173,13 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 					</p>
 				</div>
 				<div className="flex items-center gap-3">
-					<Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing} className="border-yellow-600/50 text-yellow-600 hover:bg-yellow-600 hover:text-white">
+					<Button
+						variant="outline"
+						size="sm"
+						onClick={handleRefresh}
+						disabled={isRefreshing}
+						className="border-yellow-600/50 text-yellow-600 hover:bg-yellow-600 hover:text-white"
+					>
 						<RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
 						Refresh
 					</Button>
@@ -165,7 +193,11 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 			{/* Tabs */}
 			<div className="flex space-x-1 bg-secondary/50 p-1 rounded-lg">
 				{["overview", "projects", "analytics"].map((tab) => (
-					<button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-md text-sm font-medium transition-all capitalize ${activeTab === tab ? "bg-yellow-600 text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"}`}>
+					<button
+						key={tab}
+						onClick={() => setActiveTab(tab)}
+						className={`px-4 py-2 rounded-md text-sm font-medium transition-all capitalize ${activeTab === tab ? "bg-yellow-600 text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"}`}
+					>
 						{tab}
 					</button>
 				))}
@@ -181,13 +213,18 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 							const TrendIcon = metric.trend === "up" ? ArrowUpRight : ArrowDownRight;
 
 							return (
-								<Card key={index} className="bg-secondary/50 border-border/30 hover:shadow-lg transition-all duration-300 hover:border-yellow-600/30">
+								<Card
+									key={index}
+									className="bg-secondary/50 border-border/30 hover:shadow-lg transition-all duration-300 hover:border-yellow-600/30"
+								>
 									<CardContent className="p-6">
 										<div className="flex items-center justify-between mb-4">
-											<div className={`p-2 rounded-lg bg-yellow-600/10`}>
+											<div className={"p-2 rounded-lg bg-yellow-600/10"}>
 												<Icon className={`w-5 h-5 ${metric.color}`} />
 											</div>
-											<div className={`flex items-center text-sm ${metric.trend === "up" ? "text-green-600" : "text-red-600"}`}>
+											<div
+												className={`flex items-center text-sm ${metric.trend === "up" ? "text-green-600" : "text-red-600"}`}
+											>
 												<TrendIcon className="w-4 h-4 mr-1" />
 												{Math.abs(metric.change)}%
 											</div>
@@ -224,9 +261,14 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 												</div>
 												<div className="flex items-center gap-3">
 													<div className="w-24 h-2 bg-secondary rounded-full overflow-hidden">
-														<div className={`h-full ${stat.color} transition-all duration-1000`} style={{ width: `${stat.percentage}%` }} />
+														<div
+															className={`h-full ${stat.color} transition-all duration-1000`}
+															style={{ width: `${stat.percentage}%` }}
+														/>
 													</div>
-													<span className="text-sm font-medium w-10 text-right">{stat.percentage}%</span>
+													<span className="text-sm font-medium w-10 text-right">
+														{stat.percentage}%
+													</span>
 												</div>
 											</div>
 										);
@@ -247,8 +289,13 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 								<div className="flex items-end justify-between h-32 gap-2">
 									{[40, 65, 45, 80, 55, 70, 85].map((height, index) => (
 										<div key={index} className="flex-1 flex flex-col items-center gap-2">
-											<div className="w-full bg-yellow-600/20 rounded-t-sm transition-all duration-1000 hover:bg-yellow-600/40" style={{ height: `${height}%` }} />
-											<span className="text-xs text-muted-foreground">{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index]}</span>
+											<div
+												className="w-full bg-yellow-600/20 rounded-t-sm transition-all duration-1000 hover:bg-yellow-600/40"
+												style={{ height: `${height}%` }}
+											/>
+											<span className="text-xs text-muted-foreground">
+												{["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][index]}
+											</span>
 										</div>
 									))}
 								</div>
@@ -266,7 +313,10 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 							const StatusIcon = getStatusIcon(project.status);
 
 							return (
-								<Card key={index} className="bg-secondary/50 border-border/30 hover:shadow-lg transition-all duration-300">
+								<Card
+									key={index}
+									className="bg-secondary/50 border-border/30 hover:shadow-lg transition-all duration-300"
+								>
 									<CardContent className="p-6">
 										<div className="flex items-center justify-between mb-4">
 											<div className="flex items-center gap-3">
@@ -275,7 +325,9 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 												</div>
 												<div>
 													<h3 className="font-semibold text-foreground">{project.name}</h3>
-													<p className="text-sm text-muted-foreground capitalize">{project.status.replace("-", " ")}</p>
+													<p className="text-sm text-muted-foreground capitalize">
+														{project.status.replace("-", " ")}
+													</p>
 												</div>
 											</div>
 											<Badge variant="outline" className="text-xs">
@@ -288,7 +340,10 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 												<span className="font-medium">{project.progress}%</span>
 											</div>
 											<div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
-												<div className="h-full bg-yellow-600 transition-all duration-1000" style={{ width: `${project.progress}%` }} />
+												<div
+													className="h-full bg-yellow-600 transition-all duration-1000"
+													style={{ width: `${project.progress}%` }}
+												/>
 											</div>
 										</div>
 									</CardContent>
@@ -368,7 +423,10 @@ export default function InteractiveDashboard({ className = "" }: DashboardProps)
 									<div key={index} className="text-center">
 										<div className="text-2xl font-bold text-foreground mb-1">{metric.value}</div>
 										<div className="text-sm text-muted-foreground mb-2">{metric.label}</div>
-										<Badge variant="outline" className={`text-xs ${metric.status === "excellent" ? "border-green-500/50 text-green-600" : "border-yellow-500/50 text-yellow-600"}`}>
+										<Badge
+											variant="outline"
+											className={`text-xs ${metric.status === "excellent" ? "border-green-500/50 text-green-600" : "border-yellow-500/50 text-yellow-600"}`}
+										>
 											{metric.status}
 										</Badge>
 									</div>
