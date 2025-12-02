@@ -29,3 +29,4 @@ Continuously improving the puzzle generation algorithms and adding new puzzle ty
 
 Visit [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) to start solving today's puzzle.
 
+

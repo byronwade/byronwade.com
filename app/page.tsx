@@ -40,8 +40,8 @@ export default function HomePage() {
 				<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
 
 				{/* Main content */}
-				<div className="relative flex justify-center py-12 px-4 sm:py-16 md:py-20 safe-top safe-bottom">
-					<div className="flex flex-col gap-8 sm:gap-12 md:gap-16 items-center w-full max-w-2xl">
+				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
+					<div className="flex flex-col gap-8 sm:gap-12 md:gap-16 lg:gap-20 items-center w-full max-w-2xl">
 						<HomeInteractive />
 
 						{/* Projects Section */}

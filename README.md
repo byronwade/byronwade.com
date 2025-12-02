@@ -97,6 +97,7 @@ Required environment variables (add to your Vercel project settings):
 
 Optional:
 - `NEXT_PUBLIC_ENABLE_WEB_VITALS` - Set to `"1"` to enable web vitals tracking in development mode
+- `GITHUB_API_TOKEN` - GitHub personal access token for higher API rate limits (recommended). Create one at https://github.com/settings/tokens with `public_repo` scope (also supports `GITHUB_TOKEN` as fallback)
 
 ### Performance Monitoring
 

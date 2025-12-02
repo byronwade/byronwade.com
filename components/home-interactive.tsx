@@ -1,7 +1,15 @@
 "use client";
 
+import { SocialLinkPreview } from "@/components/social-link-preview";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import { customFont } from "@/lib/fonts";
-import { Check, Github, Globe, Linkedin, Mail, Moon, Sun, Twitter } from "lucide-react";
+import { Check, Copy, Github, Globe, Linkedin, Mail, Moon, Send, Sun, Twitter } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,10 +19,17 @@ export function HomeInteractive() {
 	const { theme, resolvedTheme, setTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 	const [copiedButton, setCopiedButton] = useState<string | null>(null);
+	const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
 	const email = "byron@byronwade.com";
 
 	useEffect(() => {
 		setMounted(true);
+		// Check if mobile on mount and resize
+		const checkMobile = () => setIsMobile(window.innerWidth < 640);
+		checkMobile();
+		window.addEventListener("resize", checkMobile);
+		return () => window.removeEventListener("resize", checkMobile);
 	}, []);
 
 	const toggleTheme = () => {
@@ -37,8 +52,96 @@ export function HomeInteractive() {
 		}
 	};
 
+	const handleEmailClick = (buttonId: string) => {
+		if (isMobile) {
+			setEmailDialogOpen(true);
+		} else {
+			copyEmail(buttonId);
+		}
+	};
+
 	return (
 		<>
+			{/* Email Dialog for Mobile */}
+			<Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
+				<DialogContent className="w-[calc(100%-2rem)] max-w-sm rounded-xl bg-background border-yellow-800/30 shadow-2xl p-0 overflow-hidden">
+					{/* Header */}
+					<div className="bg-gradient-to-br from-yellow-950/50 to-yellow-900/30 px-5 py-4 border-b border-yellow-800/30">
+						<DialogHeader className="space-y-1">
+							<DialogTitle className="flex items-center gap-2.5 text-base font-semibold text-foreground">
+								<div className="p-1.5 bg-yellow-600/20 rounded-lg">
+									<Mail className="size-4 text-yellow-500" />
+								</div>
+								Get in Touch
+							</DialogTitle>
+							<DialogDescription className="text-xs text-muted-foreground">
+								Choose how you'd like to reach out
+							</DialogDescription>
+						</DialogHeader>
+					</div>
+
+					<div className="p-5 space-y-4">
+						{/* Email display */}
+						<div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border/50">
+							<code className="flex-1 text-sm font-mono text-yellow-500 truncate">{email}</code>
+							<button
+								type="button"
+								onClick={() => copyEmail("dialog")}
+								className="shrink-0 p-2 rounded-md bg-background hover:bg-muted border border-border/50 transition-colors"
+								aria-label="Copy email"
+							>
+								{copiedButton === "dialog" ? (
+									<Check className="size-4 text-green-500" />
+								) : (
+									<Copy className="size-4 text-muted-foreground" />
+								)}
+							</button>
+						</div>
+
+						{/* Action buttons */}
+						<div className="grid grid-cols-2 gap-2.5">
+							<a
+								href={`mailto:${email}`}
+								className="flex items-center justify-center gap-2 px-3 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-black text-sm font-medium rounded-lg transition-colors"
+							>
+								<Send className="size-4" />
+								<span>Send</span>
+							</a>
+							<button
+								type="button"
+								onClick={() => copyEmail("dialog")}
+								className="flex items-center justify-center gap-2 px-3 py-2.5 bg-muted/50 hover:bg-muted text-foreground text-sm font-medium rounded-lg border border-border/50 transition-colors"
+							>
+								{copiedButton === "dialog" ? (
+									<>
+										<Check className="size-4 text-green-500" />
+										<span>Copied!</span>
+									</>
+								) : (
+									<>
+										<Copy className="size-4" />
+										<span>Copy</span>
+									</>
+								)}
+							</button>
+						</div>
+
+						{/* Availability indicators */}
+						<div className="flex flex-wrap gap-x-4 gap-y-1 justify-center pt-1">
+							{["Projects", "Consultations", "Conversations"].map((item) => (
+								<span
+									key={item}
+									className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
+								>
+									<span className="size-1 rounded-full bg-yellow-500" />
+									{item}
+								</span>
+							))}
+						</div>
+					</div>
+				</DialogContent>
+			</Dialog>
+
 			{/* Header Section */}
 			<div className="animate-in w-full">
 				<div className="flex flex-col gap-6 items-start w-full">
@@ -80,31 +183,31 @@ export function HomeInteractive() {
 
 						{/* Navigation - enhanced */}
 						<nav
-							className="flex flex-wrap gap-4 sm:gap-6 items-center"
+							className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 items-center"
 							aria-label="Main navigation"
 						>
 							<Link
 								href="/projects"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Projects
 							</Link>
 							<Link
 								href="/blog"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Blog
 							</Link>
 							<Link
 								href="/resume"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Resume
 							</Link>
 							<button
 								type="button"
-								onClick={() => copyEmail("nav")}
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 cursor-pointer bg-transparent border-none p-1 button-press focus-ring touch-target"
+								onClick={() => handleEmailClick("nav")}
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 cursor-pointer bg-transparent border-none py-0.5 sm:py-1 px-0 button-press focus-ring inline-flex items-center"
 								aria-label="Copy email to clipboard"
 							>
 								<span className={copiedButton === "nav" ? "bounce-subtle" : ""}>
@@ -114,7 +217,7 @@ export function HomeInteractive() {
 							<div className="group/tooltip relative inline-block">
 								<button
 									type="button"
-									className="relative cursor-pointer bg-transparent border-none p-2 sm:p-1.5 rounded-md transition-all duration-200 text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)]/50 theme-toggle button-press focus-ring touch-target"
+									className="relative cursor-pointer bg-transparent border-none p-1.5 sm:p-1.5 rounded-md transition-all duration-200 text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--muted)]/50 theme-toggle button-press focus-ring"
 									aria-label={
 										mounted
 											? resolvedTheme === "dark"
@@ -202,7 +305,7 @@ export function HomeInteractive() {
 					for service businesses.{" "}
 					<button
 						type="button"
-						onClick={() => copyEmail("say-hello")}
+						onClick={() => handleEmailClick("say-hello")}
 						className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] hover:decoration-[var(--foreground)] transition-colors duration-200 cursor-pointer bg-transparent border-none p-0 text-base"
 						aria-label="Copy email to clipboard"
 					>
@@ -211,14 +314,16 @@ export function HomeInteractive() {
 						</span>
 					</button>{" "}
 					or follow me on{" "}
-					<a
-						href="https://github.com/byronwade"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] hover:decoration-[var(--foreground)] transition-colors duration-200"
-					>
-						GitHub
-					</a>
+					<SocialLinkPreview platform="github">
+						<a
+							href="https://github.com/byronwade"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] hover:decoration-[var(--foreground)] transition-colors duration-200"
+						>
+							GitHub
+						</a>
+					</SocialLinkPreview>
 					,{" "}
 					<a
 						href="https://linkedin.com/in/byronwade"
@@ -230,7 +335,7 @@ export function HomeInteractive() {
 					</a>
 					, or{" "}
 					<a
-						href="https://twitter.com/byronwade"
+						href="https://twitter.com/byron_c_wade"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] hover:decoration-[var(--foreground)] transition-colors duration-200"
@@ -243,56 +348,62 @@ export function HomeInteractive() {
 
 			{/* Social Links - new section */}
 			<div className="animate-in animate-delay-7 w-full">
-				<div className="flex flex-wrap gap-3 sm:gap-4 items-center justify-center py-4 sm:py-6">
-					<a
-						href="https://github.com/byronwade"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="group flex items-center gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring touch-target"
-						aria-label="GitHub"
-					>
-						<Github className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors" />
-						<span className="text-xs font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
-							GitHub
-						</span>
-					</a>
-					<a
-						href="https://linkedin.com/in/byronwade"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="group flex items-center gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring touch-target"
-						aria-label="LinkedIn"
-					>
-						<Linkedin className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors" />
-						<span className="text-xs font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
-							LinkedIn
-						</span>
-					</a>
-					<a
-						href="https://twitter.com/byronwade"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="group flex items-center gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring touch-target"
-						aria-label="X (Twitter)"
-					>
-						<Twitter className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors" />
-						<span className="text-xs font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
-							X
-						</span>
-					</a>
+				<div className="flex flex-wrap gap-2 sm:gap-3 items-center justify-center py-4 sm:py-6">
+					<SocialLinkPreview platform="github">
+						<a
+							href="https://github.com/byronwade"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							aria-label="GitHub"
+						>
+							<Github className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+								GitHub
+							</span>
+						</a>
+					</SocialLinkPreview>
+					<SocialLinkPreview platform="linkedin">
+						<a
+							href="https://linkedin.com/in/byronwade"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							aria-label="LinkedIn"
+						>
+							<Linkedin className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+								LinkedIn
+							</span>
+						</a>
+					</SocialLinkPreview>
+					<SocialLinkPreview platform="twitter">
+						<a
+							href="https://twitter.com/byron_c_wade"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							aria-label="X (Twitter)"
+						>
+							<Twitter className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+								X
+							</span>
+						</a>
+					</SocialLinkPreview>
 					<button
 						type="button"
-						onClick={() => copyEmail("social")}
-						className="group flex items-center gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring touch-target"
-						aria-label="Copy email to clipboard"
+						onClick={() => handleEmailClick("social")}
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
+						aria-label="Contact via email"
 					>
 						{copiedButton === "social" ? (
-							<Check className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors bounce-subtle" />
+							<Check className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors bounce-subtle" />
 						) : (
-							<Mail className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors" />
+							<Mail className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
 						)}
 						<span
-							className={`text-xs font-medium text-yellow-700 dark:text-yellow-400 transition-colors ${copiedButton === "social" ? "bounce-subtle" : ""}`}
+							className={`text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors ${copiedButton === "social" ? "bounce-subtle" : ""}`}
 						>
 							{copiedButton === "social" ? "Copied!" : "Email"}
 						</span>
@@ -301,11 +412,11 @@ export function HomeInteractive() {
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="group flex items-center gap-1.5 px-3 py-2 sm:px-2.5 sm:py-1 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring touch-target"
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
 						aria-label="Thorbis"
 					>
-						<Globe className="size-3 text-yellow-700 dark:text-yellow-400 transition-colors" />
-						<span className="text-xs font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+						<Globe className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
+						<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
 							Thorbis
 						</span>
 					</a>

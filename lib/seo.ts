@@ -293,7 +293,7 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
-			"https://twitter.com/byronwade",
+			"https://twitter.com/byron_c_wade",
 		],
 		contactPoint: {
 			"@type": "ContactPoint",
@@ -318,7 +318,7 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
-			"https://twitter.com/byronwade",
+			"https://twitter.com/byron_c_wade",
 		],
 		jobTitle: "Full Stack Developer",
 		worksFor: {

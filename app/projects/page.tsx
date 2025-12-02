@@ -64,7 +64,7 @@ async function ProjectsList() {
 	});
 
 	return (
-		<div className="flex flex-col gap-3 sm:gap-4">
+		<div className="flex flex-col gap-4 sm:gap-4">
 			{sortedProjects.length === 0 ? (
 				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
 					No projects yet. Check back soon!
@@ -76,26 +76,26 @@ async function ProjectsList() {
 						<Link
 							key={project.slug}
 							href={`/projects/${project.slug}`}
-							className="flex flex-col gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-1"
+							className="flex flex-col gap-3 sm:gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-3 sm:py-2"
 						>
-							<div className="flex items-start justify-between gap-4">
-								<div className="flex-1">
-									<div className="flex items-center gap-2">
-										<span className={`text-xs ${typeColors[projectType]}`}>
+							<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
+								<div className="flex-1 min-w-0">
+									<div className="flex items-center gap-2 flex-wrap">
+										<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
 											{typeLabels[projectType]}
 										</span>
-										<p className="font-medium text-[var(--foreground)] text-base underline-animate mobile-text">
+										<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
 											{project.title}
 										</p>
 									</div>
 									{project.excerpt && (
-										<p className="text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors mt-1">
+										<p className="text-sm sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors mt-2 sm:mt-1 leading-relaxed">
 											{project.excerpt}
 										</p>
 									)}
 								</div>
 								{project.date && (
-									<p className="text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors whitespace-nowrap ml-2">
+									<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors shrink-0 sm:ml-2">
 										{format(new Date(project.date), "MMM d, yyyy")}
 									</p>
 								)}
@@ -137,11 +137,11 @@ export default async function ProjectsPage() {
 				<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
 
 				{/* Main content */}
-				<div className="relative flex justify-center py-12 px-4 sm:py-16 md:py-20 safe-top safe-bottom">
-					<div className="flex flex-col gap-8 sm:gap-12 md:gap-16 items-center w-full max-w-2xl">
+				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
+					<div className="flex flex-col gap-6 sm:gap-10 md:gap-12 lg:gap-16 items-center w-full max-w-2xl">
 						{/* Header Section */}
 						<div className="animate-in w-full">
-							<div className="flex flex-col gap-6 items-start w-full">
+							<div className="flex flex-col gap-4 sm:gap-6 items-start w-full">
 								<Link
 									className="group flex items-center gap-2 w-full touch-target"
 									aria-label="Go to home"

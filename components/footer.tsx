@@ -1,3 +1,4 @@
+import { SocialLinkPreview } from "@/components/social-link-preview";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
@@ -270,40 +271,48 @@ export default function Footer() {
 							<div className="space-y-4">
 								<h4 className="text-foreground font-medium">Connect</h4>
 								<div className="flex gap-4">
-									<a
-										href="https://github.com/byronwade"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
-									>
-										<Github className="h-5 w-5" />
-										<span className="sr-only">GitHub</span>
-									</a>
-									<a
-										href="https://linkedin.com/in/byronwade"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
-									>
-										<Linkedin className="h-5 w-5" />
-										<span className="sr-only">LinkedIn</span>
-									</a>
-									<a
-										href="https://twitter.com/byronwade"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
-									>
-										<Twitter className="h-5 w-5" />
-										<span className="sr-only">Twitter</span>
-									</a>
-									<a
-										href="mailto:byron@byronwade.com"
-										className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
-									>
-										<Mail className="h-5 w-5" />
-										<span className="sr-only">Email</span>
-									</a>
+									<SocialLinkPreview platform="github">
+										<a
+											href="https://github.com/byronwade"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+										>
+											<Github className="h-5 w-5" />
+											<span className="sr-only">GitHub</span>
+										</a>
+									</SocialLinkPreview>
+									<SocialLinkPreview platform="linkedin">
+										<a
+											href="https://linkedin.com/in/byronwade"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+										>
+											<Linkedin className="h-5 w-5" />
+											<span className="sr-only">LinkedIn</span>
+										</a>
+									</SocialLinkPreview>
+									<SocialLinkPreview platform="twitter">
+										<a
+											href="https://twitter.com/byron_c_wade"
+											target="_blank"
+											rel="noopener noreferrer"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+										>
+											<Twitter className="h-5 w-5" />
+											<span className="sr-only">Twitter</span>
+										</a>
+									</SocialLinkPreview>
+									<SocialLinkPreview platform="email">
+										<a
+											href="mailto:byron@byronwade.com"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+										>
+											<Mail className="h-5 w-5" />
+											<span className="sr-only">Email</span>
+										</a>
+									</SocialLinkPreview>
 								</div>
 							</div>
 						</div>

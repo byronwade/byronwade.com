@@ -31,7 +31,7 @@ async function ProjectsList() {
 	});
 
 	return (
-		<div className="flex flex-col gap-3 sm:gap-4">
+		<div className="flex flex-col gap-2 sm:gap-3">
 			{sortedProjects.length === 0 ? (
 				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
 					No projects yet. Check back soon!
@@ -39,23 +39,28 @@ async function ProjectsList() {
 			) : (
 				sortedProjects.map((project) => {
 					const projectType = project.type || "hobby";
+					const cleanUrl = project.url
+						? project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+						: "";
 					return (
 						<Link
 							key={project.slug}
 							href={`/projects/${project.slug}`}
-							className="flex items-center justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-1"
+							className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-3 gap-2 sm:gap-4"
 						>
-							<div className="flex items-center gap-2">
-								<span className={`text-xs ${typeColors[projectType]}`}>
-									{typeLabels[projectType]}
-								</span>
-								<p className="font-medium text-[var(--foreground)] text-base underline-animate mobile-text">
-									{project.title}
-								</p>
+							<div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
+								<div className="flex items-center gap-2 min-w-0">
+									<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
+										{typeLabels[projectType]}
+									</span>
+									<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text truncate">
+										{project.title}
+									</p>
+								</div>
 							</div>
-							{project.url && (
-								<p className="text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors whitespace-nowrap ml-2">
-									{project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+							{project.url && cleanUrl && (
+								<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors truncate sm:whitespace-nowrap sm:ml-2 sm:shrink-0 max-w-full sm:max-w-none">
+									{cleanUrl}
 								</p>
 							)}
 						</Link>
@@ -69,7 +74,14 @@ async function ProjectsList() {
 export function HomeProjects() {
 	return (
 		<div className="animate-in animate-delay-5 w-full">
-			<ProjectsList />
+			<div className="flex flex-col gap-6 sm:gap-7 md:gap-8 w-full">
+				<div className="flex flex-col gap-2 sm:gap-3">
+					<h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)] tracking-tight">
+						Projects
+					</h2>
+				</div>
+				<ProjectsList />
+			</div>
 		</div>
 	);
 }
