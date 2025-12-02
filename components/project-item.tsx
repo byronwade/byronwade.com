@@ -66,7 +66,7 @@ export function ProjectItem({ slug, title, url, category, date, excerpt }: Proje
 							href={url}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 text-sm font-medium text-yellow-600 dark:text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 transition-all duration-200 touch-target py-2 px-3 rounded-md hover:bg-yellow-600/10 dark:hover:bg-yellow-500/10 group/link border border-yellow-600/20 dark:border-yellow-500/20 hover:border-yellow-600/40 dark:hover:border-yellow-500/40"
+							className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:text-accent/90 transition-all duration-200 touch-target py-2 px-3 rounded-md hover:bg-accent/10 group/link border border-accent/20 hover:border-accent/40"
 							onClick={(e) => {
 								e.stopPropagation();
 								analytics.externalLinkClick(url, `Visit ${domain}`);

@@ -64,13 +64,13 @@ export function HomeInteractive() {
 		<>
 			{/* Email Dialog for Mobile */}
 			<Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
-				<DialogContent className="w-[calc(100%-2rem)] max-w-sm rounded-xl bg-background border-yellow-800/30 shadow-2xl p-0 overflow-hidden">
+				<DialogContent className="w-[calc(100%-2rem)] max-w-sm rounded-xl bg-background border-accent/30 shadow-2xl p-0 overflow-hidden">
 					{/* Header */}
-					<div className="bg-gradient-to-br from-yellow-950/50 to-yellow-900/30 px-5 py-4 border-b border-yellow-800/30">
+					<div className="bg-gradient-to-br from-accent/20 to-accent/10 px-5 py-4 border-b border-accent/30">
 						<DialogHeader className="space-y-1">
 							<DialogTitle className="flex items-center gap-2.5 text-base font-semibold text-foreground">
-								<div className="p-1.5 bg-yellow-600/20 rounded-lg">
-									<Mail className="size-4 text-yellow-500" />
+								<div className="p-1.5 bg-accent/20 rounded-lg">
+									<Mail className="size-4 text-accent" />
 								</div>
 								Get in Touch
 							</DialogTitle>
@@ -83,7 +83,7 @@ export function HomeInteractive() {
 					<div className="p-5 space-y-4">
 						{/* Email display */}
 						<div className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg border border-border/50">
-							<code className="flex-1 text-sm font-mono text-yellow-500 truncate">{email}</code>
+							<code className="flex-1 text-sm font-mono text-accent truncate">{email}</code>
 							<button
 								type="button"
 								onClick={() => copyEmail("dialog")}
@@ -102,7 +102,7 @@ export function HomeInteractive() {
 						<div className="grid grid-cols-2 gap-2.5">
 							<a
 								href={`mailto:${email}`}
-								className="flex items-center justify-center gap-2 px-3 py-2.5 bg-yellow-600 hover:bg-yellow-700 text-black text-sm font-medium rounded-lg transition-colors"
+								className="flex items-center justify-center gap-2 px-3 py-2.5 bg-accent hover:bg-accent/90 text-accent-foreground text-sm font-medium rounded-lg transition-colors"
 							>
 								<Send className="size-4" />
 								<span>Send</span>
@@ -133,7 +133,7 @@ export function HomeInteractive() {
 									key={item}
 									className="flex items-center gap-1.5 text-[11px] text-muted-foreground"
 								>
-									<span className="size-1 rounded-full bg-yellow-500" />
+									<span className="size-1 rounded-full bg-accent" />
 									{item}
 								</span>
 							))}
@@ -153,7 +153,7 @@ export function HomeInteractive() {
 					>
 						<div className="relative">
 							<div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-500/20 via-yellow-600/10 to-transparent blur-xl group-hover:blur-2xl transition-all duration-500" />
-							<div className="relative rounded-full size-16 sm:size-20 md:size-24 ring-2 ring-yellow-600/20 dark:ring-yellow-500/30 group-hover:ring-yellow-600/40 dark:group-hover:ring-yellow-500/50 transition-all duration-300 overflow-hidden profile-hover">
+							<div className="relative rounded-full size-16 sm:size-20 md:size-24 ring-2 ring-accent/20 dark:ring-accent/30 group-hover:ring-accent/40 dark:group-hover:ring-accent/50 transition-all duration-300 overflow-hidden profile-hover">
 								<Image
 									alt="Byron Wade - Full Stack Developer and Web Performance Expert"
 									className="object-cover rounded-full size-full"
@@ -175,7 +175,7 @@ export function HomeInteractive() {
 							href="/"
 						>
 							<h1
-								className={`${customFont.className} text-2xl sm:text-3xl font-medium leading-tight text-[var(--foreground)] group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors duration-300 mobile-text`}
+								className={`${customFont.className} text-2xl sm:text-3xl font-medium leading-tight text-[var(--foreground)] group-hover:text-accent transition-colors duration-300 mobile-text`}
 							>
 								Byron Wade
 							</h1>
@@ -188,19 +188,19 @@ export function HomeInteractive() {
 						>
 							<Link
 								href="/projects"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-accent transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Projects
 							</Link>
 							<Link
 								href="/blog"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-accent transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Blog
 							</Link>
 							<Link
 								href="/resume"
-								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
+								className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-accent transition-all duration-200 py-0.5 sm:py-1 inline-flex items-center"
 							>
 								Resume
 							</Link>
@@ -354,11 +354,11 @@ export function HomeInteractive() {
 							href="https://github.com/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="GitHub"
 						>
-							<Github className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
-							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+							<Github className="size-3.5 sm:size-4 text-accent transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								GitHub
 							</span>
 						</a>
@@ -368,11 +368,11 @@ export function HomeInteractive() {
 							href="https://linkedin.com/in/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="LinkedIn"
 						>
-							<Linkedin className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
-							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+							<Linkedin className="size-3.5 sm:size-4 text-accent transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								LinkedIn
 							</span>
 						</a>
@@ -382,11 +382,11 @@ export function HomeInteractive() {
 							href="https://twitter.com/byron_c_wade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="X (Twitter)"
 						>
-							<Twitter className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
-							<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+							<Twitter className="size-3.5 sm:size-4 text-accent transition-colors" />
+							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								X
 							</span>
 						</a>
@@ -394,16 +394,16 @@ export function HomeInteractive() {
 					<button
 						type="button"
 						onClick={() => handleEmailClick("social")}
-						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
 						aria-label="Contact via email"
 					>
 						{copiedButton === "social" ? (
-							<Check className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors bounce-subtle" />
+							<Check className="size-3.5 sm:size-4 text-accent transition-colors bounce-subtle" />
 						) : (
-							<Mail className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
+							<Mail className="size-3.5 sm:size-4 text-accent transition-colors" />
 						)}
 						<span
-							className={`text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors ${copiedButton === "social" ? "bounce-subtle" : ""}`}
+							className={`text-xs sm:text-sm font-medium text-accent transition-colors ${copiedButton === "social" ? "bounce-subtle" : ""}`}
 						>
 							{copiedButton === "social" ? "Copied!" : "Email"}
 						</span>
@@ -412,11 +412,11 @@ export function HomeInteractive() {
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/30 dark:to-yellow-900/20 border border-yellow-200/50 dark:border-yellow-800/30 hover:from-yellow-100 hover:to-yellow-200/50 dark:hover:from-yellow-900/40 dark:hover:to-yellow-800/30 hover:border-yellow-300/50 dark:hover:border-yellow-700/40 transition-all duration-300 social-button focus-ring"
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 						aria-label="Thorbis"
 					>
-						<Globe className="size-3.5 sm:size-4 text-yellow-700 dark:text-yellow-400 transition-colors" />
-						<span className="text-xs sm:text-sm font-medium text-yellow-700 dark:text-yellow-400 transition-colors">
+						<Globe className="size-3.5 sm:size-4 text-accent transition-colors" />
+						<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 							Thorbis
 						</span>
 					</a>

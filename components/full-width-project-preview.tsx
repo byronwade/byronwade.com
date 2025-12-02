@@ -365,16 +365,14 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		>
 			{/* Frame container */}
 			<div
-				className={`relative overflow-hidden bg-white dark:bg-neutral-900 ${isFullscreen ? "rounded-none border-0 h-full flex flex-col" : "rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm"}`}
+				className={`relative overflow-hidden bg-background ${isFullscreen ? "rounded-none border-0 h-full flex flex-col" : "rounded-xl border border-border shadow-sm"}`}
 			>
 				{/* Top toolbar */}
-				<div className="flex items-center justify-between h-10 px-3 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+				<div className="flex items-center justify-between h-10 px-3 border-b border-border bg-secondary">
 					{/* Left side - URL */}
 					<div className="flex items-center gap-2 min-w-0 flex-1">
-						<Globe className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-						<span className="text-xs text-neutral-500 dark:text-neutral-400 truncate font-mono">
-							{url}
-						</span>
+						<Globe className="w-3.5 h-3.5 text-foreground shrink-0" strokeWidth={1.5} />
+						<span className="text-xs text-foreground truncate font-mono">{url}</span>
 					</div>
 
 					{/* Center - Device toggles (hidden in fullscreen) */}
@@ -391,12 +389,12 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 										disabled={displayMode === "screenshot"}
 										className={`p-1.5 rounded-md transition-all ${
 											isActive
-												? "bg-neutral-900 dark:bg-white text-white dark:text-neutral-900"
-												: "text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+												? "bg-primary text-primary-foreground"
+												: "text-foreground hover:text-accent hover:bg-accent/10"
 										} ${displayMode === "screenshot" ? "opacity-50 cursor-not-allowed" : ""}`}
 										title={`${label} (${width}×${height})`}
 									>
-										<Icon className="w-3.5 h-3.5" />
+										<Icon className="w-3.5 h-3.5" strokeWidth={1.5} />
 									</button>
 								);
 							})}
@@ -407,8 +405,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					<div className="flex items-center gap-1 shrink-0">
 						{/* Screenshot indicator */}
 						{displayMode === "screenshot" && (
-							<div className="hidden sm:flex items-center gap-1.5 px-2 py-1 mr-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400">
-								<ImageIcon className="w-3 h-3" />
+							<div className="hidden sm:flex items-center gap-1.5 px-2 py-1 mr-1 rounded-md bg-secondary text-foreground">
+								<ImageIcon className="w-3 h-3" strokeWidth={1.5} />
 								<span className="text-[10px] font-medium uppercase tracking-wide">Static</span>
 							</div>
 						)}
@@ -418,10 +416,10 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							<button
 								type="button"
 								onClick={handleTryIframe}
-								className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+								className="p-1.5 rounded-md text-foreground hover:text-accent hover:bg-accent/10 transition-all"
 								title="Try interactive preview"
 							>
-								<Play className="w-3.5 h-3.5" />
+								<Play className="w-3.5 h-3.5" strokeWidth={1.5} />
 							</button>
 						)}
 
@@ -430,10 +428,10 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							<button
 								type="button"
 								onClick={handleResetWidth}
-								className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+								className="p-1.5 rounded-md text-foreground hover:text-accent hover:bg-accent/10 transition-all"
 								title="Reset width"
 							>
-								<RotateCcw className="w-3.5 h-3.5" />
+								<RotateCcw className="w-3.5 h-3.5" strokeWidth={1.5} />
 							</button>
 						)}
 
@@ -441,24 +439,28 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 						<button
 							type="button"
 							onClick={handleToggleFullscreen}
-							className="p-1.5 rounded-md text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all"
+							className="p-1.5 rounded-md text-foreground hover:text-accent hover:bg-accent/10 transition-all"
 							title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
 						>
-							{isFullscreen ? <X className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+							{isFullscreen ? (
+								<X className="w-3.5 h-3.5" strokeWidth={1.5} />
+							) : (
+								<Maximize2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+							)}
 						</button>
 
 						{/* Divider */}
-						<div className="w-px h-4 bg-neutral-200 dark:bg-neutral-700 mx-1" />
+						<div className="w-px h-4 bg-border mx-1" />
 
 						{/* Visit link */}
 						<a
 							href={href}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-700 dark:hover:bg-neutral-200 transition-all"
+							className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm"
 						>
 							<span className="hidden sm:inline">Visit</span>
-							<ExternalLink className="w-3 h-3" />
+							<ExternalLink className="w-3 h-3" strokeWidth={1.5} />
 						</a>
 					</div>
 				</div>
@@ -466,7 +468,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				{/* Preview area */}
 				<div
 					ref={iframeContainerRef}
-					className={`relative w-full bg-neutral-100 dark:bg-neutral-950 overflow-hidden ${isFullscreen ? "flex-1" : "flex items-start justify-center"}`}
+					className={`relative w-full bg-background overflow-hidden ${isFullscreen ? "flex-1" : "flex items-start justify-center"}`}
 					style={
 						isFullscreen
 							? {}
@@ -479,12 +481,12 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				>
 					{/* Loading state */}
 					{isLoading && (
-						<div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-900 z-10 gap-4">
+						<div className="absolute inset-0 flex flex-col items-center justify-center bg-background z-10 gap-4">
 							<div className="relative">
-								<div className="w-8 h-8 rounded-full border-2 border-neutral-200 dark:border-neutral-700" />
-								<div className="absolute inset-0 w-8 h-8 rounded-full border-2 border-transparent border-t-neutral-900 dark:border-t-white animate-spin" />
+								<div className="w-8 h-8 rounded-full border-2 border-border" />
+								<div className="absolute inset-0 w-8 h-8 rounded-full border-2 border-transparent border-t-accent animate-spin" />
 							</div>
-							<p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+							<p className="text-xs text-muted-foreground font-medium">
 								{displayMode === "iframe" ? "Loading preview..." : "Loading screenshot..."}
 							</p>
 						</div>
@@ -514,8 +516,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							{/* Hover overlay */}
 							<div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
 								<div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-									<div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-sm font-medium shadow-xl">
-										<ExternalLink className="w-4 h-4" />
+									<div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-card text-card-foreground text-sm font-medium shadow-xl border border-border">
+										<ExternalLink className="w-4 h-4" strokeWidth={1.5} />
 										<span>Visit Website</span>
 									</div>
 								</div>
@@ -523,11 +525,9 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 							{/* Error state */}
 							{screenshotState === "error" && (
-								<div className="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100 dark:bg-neutral-900 gap-3">
-									<ImageIcon className="w-10 h-10 text-neutral-300 dark:text-neutral-600" />
-									<p className="text-sm text-neutral-500 dark:text-neutral-400">
-										Screenshot unavailable
-									</p>
+								<div className="absolute inset-0 flex flex-col items-center justify-center bg-background gap-3">
+									<ImageIcon className="w-10 h-10 text-muted-foreground" />
+									<p className="text-sm text-muted-foreground">Screenshot unavailable</p>
 								</div>
 							)}
 						</a>
@@ -591,8 +591,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							onClick={handleToggleFullscreen}
 							aria-label="Click to interact with preview"
 						>
-							<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-4 py-2 rounded-lg bg-neutral-900/90 dark:bg-white/90 text-white dark:text-neutral-900 text-sm font-medium backdrop-blur-sm flex items-center gap-2">
-								<Maximize2 className="w-4 h-4" />
+							<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-4 py-2 rounded-lg bg-primary/90 text-primary-foreground text-sm font-medium backdrop-blur-sm flex items-center gap-2 shadow-lg">
+								<Maximize2 className="w-4 h-4" strokeWidth={1.5} />
 								<span>Click to interact</span>
 							</div>
 						</button>
@@ -600,18 +600,16 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				</div>
 
 				{/* Bottom bar */}
-				<div className="flex items-center justify-between h-7 px-3 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
-					<div className="flex items-center gap-2 text-[10px] text-neutral-400 font-mono">
+				<div className="flex items-center justify-between h-7 px-3 border-t border-border bg-secondary">
+					<div className="flex items-center gap-2 text-[10px] text-foreground font-mono">
 						{displayMode === "iframe" ? (
 							<>
-								<span className={isResizing ? "text-blue-500" : ""}>
+								<span className={isResizing ? "text-accent" : ""}>
 									{displayViewport.width}×{displayViewport.height}
 								</span>
-								<span className="text-neutral-300 dark:text-neutral-600">•</span>
+								<span className="text-muted-foreground">•</span>
 								<span>{Math.round(scale * 100)}%</span>
-								{isResizing && (
-									<span className="text-blue-500 animate-pulse">Release to apply</span>
-								)}
+								{isResizing && <span className="text-accent animate-pulse">Release to apply</span>}
 							</>
 						) : (
 							<span>Static screenshot</span>
@@ -620,12 +618,9 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 					{/* Keyboard hint */}
 					{isFullscreen && (
-						<div className="text-[10px] text-neutral-400 font-mono">
-							Press{" "}
-							<kbd className="px-1 py-0.5 rounded bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300">
-								ESC
-							</kbd>{" "}
-							to exit
+						<div className="text-[10px] text-foreground font-mono">
+							Press <kbd className="px-1 py-0.5 rounded bg-secondary text-foreground">ESC</kbd> to
+							exit
 						</div>
 					)}
 				</div>
@@ -643,18 +638,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 						} transition-opacity duration-200`}
 					>
 						<div
-							className={`flex items-center justify-center w-6 h-12 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shadow-md transition-all ${
-								isResizing
-									? "bg-neutral-900 dark:bg-white border-neutral-900 dark:border-white"
-									: "group-hover:border-neutral-300 dark:group-hover:border-neutral-600"
+							className={`flex items-center justify-center w-6 h-12 rounded-full border border-border bg-background shadow-md transition-all ${
+								isResizing ? "bg-primary border-primary" : "group-hover:border-accent/50"
 							}`}
 						>
 							<Grip
 								className={`w-3 h-3 transition-colors ${
-									isResizing
-										? "text-white dark:text-neutral-900"
-										: "text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300"
+									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-accent"
 								}`}
+								strokeWidth={1.5}
 							/>
 						</div>
 					</div>
@@ -668,18 +660,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 						} transition-opacity duration-200`}
 					>
 						<div
-							className={`flex items-center justify-center w-6 h-12 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 shadow-md transition-all ${
-								isResizing
-									? "bg-neutral-900 dark:bg-white border-neutral-900 dark:border-white"
-									: "group-hover:border-neutral-300 dark:group-hover:border-neutral-600"
+							className={`flex items-center justify-center w-6 h-12 rounded-full border border-border bg-background shadow-md transition-all ${
+								isResizing ? "bg-primary border-primary" : "group-hover:border-accent/50"
 							}`}
 						>
 							<Grip
 								className={`w-3 h-3 transition-colors ${
-									isResizing
-										? "text-white dark:text-neutral-900"
-										: "text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300"
+									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-accent"
 								}`}
+								strokeWidth={1.5}
 							/>
 						</div>
 					</div>

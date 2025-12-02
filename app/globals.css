@@ -4,57 +4,107 @@
 @tailwind utilities;
 @layer base {
 	:root {
-		--background: 0 0% 100%;
-		--foreground: 0 0% 9%;
-		--card: 0 0% 100%;
-		--card-foreground: 0 0% 9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 0 0% 9%;
-		--primary: 0 0% 9%;
-		--primary-foreground: 0 0% 98%;
-		--secondary: 0 0% 96%;
-		--secondary-foreground: 0 0% 9%;
-		--muted: 0 0% 96%;
-		--muted-foreground: 0 0% 40%;
-		--accent: 0 0% 96%;
-		--accent-foreground: 0 0% 9%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 88%;
-		--input: 0 0% 88%;
-		--ring: 0 0% 9%;
-		--chart-1: 12 76% 61%;
-		--chart-2: 173 58% 39%;
-		--chart-3: 197 37% 24%;
-		--chart-4: 43 74% 66%;
-		--chart-5: 27 87% 67%;
+		/* Cursor.com retro color palette - warm beige/cream backgrounds */
+		--background: 42 30% 97%;
+		--foreground: 35 28% 25%;
+		--card: 42 35% 98%;
+		--card-foreground: 35 28% 25%;
+		--popover: 42 35% 98%;
+		--popover-foreground: 35 28% 25%;
+		--primary: 35 32% 40%;
+		--primary-foreground: 42 30% 98%;
+		--secondary: 42 25% 92%;
+		--secondary-foreground: 35 28% 30%;
+		--muted: 42 20% 94%;
+		--muted-foreground: 35 20% 45%;
+		--accent: 38 55% 65%;
+		--accent-foreground: 35 28% 15%;
+		--destructive: 0 70% 55%;
+		--destructive-foreground: 42 30% 98%;
+		--border: 42 15% 85%;
+		--input: 42 15% 88%;
+		--ring: 35 32% 40%;
+		--chart-1: 38 65% 70%;
+		--chart-2: 95 25% 60%;
+		--chart-3: 35 32% 40%;
+		--chart-4: 38 55% 65%;
+		--chart-5: 42 30% 50%;
 		--radius: 0.5rem;
+		/* Semantic Color Tokens */
+		--success: 142 71% 45%;
+		--success-foreground: 0 0% 98%;
+		--warning: 38 92% 50%;
+		--warning-foreground: 0 0% 9%;
+		--info: 199 89% 48%;
+		--info-foreground: 0 0% 98%;
+		/* Opacity Scale for Color Overlays */
+		--opacity-10: 0.1;
+		--opacity-20: 0.2;
+		--opacity-30: 0.3;
+		--opacity-40: 0.4;
+		--opacity-50: 0.5;
+		--opacity-60: 0.6;
+		--opacity-70: 0.7;
+		--opacity-80: 0.8;
+		--opacity-90: 0.9;
+		/* Elevation/Shadow System - Material Design inspired */
+		--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+		--shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+		--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+		--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+		--shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+		--shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+		--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 	}
 	.dark {
-		--background: 0 0% 4%;
-		--foreground: 0 0% 95%;
-		--card: 0 0% 6%;
-		--card-foreground: 0 0% 95%;
-		--popover: 0 0% 6%;
-		--popover-foreground: 0 0% 95%;
-		--primary: 0 0% 95%;
-		--primary-foreground: 0 0% 9%;
-		--secondary: 0 0% 12%;
-		--secondary-foreground: 0 0% 95%;
-		--muted: 0 0% 12%;
-		--muted-foreground: 0 0% 60%;
-		--accent: 0 0% 12%;
-		--accent-foreground: 0 0% 95%;
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 0 0% 18%;
-		--input: 0 0% 18%;
-		--ring: 0 0% 80%;
-		--chart-1: 220 70% 50%;
-		--chart-2: 160 60% 45%;
-		--chart-3: 30 80% 55%;
-		--chart-4: 280 65% 60%;
-		--chart-5: 340 75% 55%;
+		/* Cursor.com retro dark mode - warmer tones */
+		--background: 35 15% 12%;
+		--foreground: 42 20% 88%;
+		--card: 35 18% 15%;
+		--card-foreground: 42 20% 88%;
+		--popover: 35 18% 15%;
+		--popover-foreground: 42 20% 88%;
+		--primary: 25 55% 65%;
+		--primary-foreground: 35 15% 12%;
+		--secondary: 35 20% 18%;
+		--secondary-foreground: 42 20% 88%;
+		--muted: 35 18% 20%;
+		--muted-foreground: 42 15% 65%;
+		--accent: 38 50% 60%;
+		--accent-foreground: 42 20% 88%;
+		--destructive: 0 60% 50%;
+		--destructive-foreground: 42 20% 88%;
+		--border: 35 20% 25%;
+		--input: 35 20% 25%;
+		--ring: 38 55% 65%;
+		--chart-1: 38 65% 70%;
+		--chart-2: 95 25% 60%;
+		--chart-3: 35 32% 50%;
+		--chart-4: 38 55% 65%;
+		--chart-5: 42 30% 60%;
+		/* Dark mode semantic colors */
+		--success: 142 71% 55%;
+		--success-foreground: 0 0% 9%;
+		--warning: 38 92% 60%;
+		--warning-foreground: 0 0% 9%;
+		--info: 199 89% 58%;
+		--info-foreground: 0 0% 9%;
+		/* Dark mode shadows - softer, more subtle */
+		--shadow-sm-dark: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+		--shadow-dark: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+		--shadow-md-dark: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+		--shadow-lg-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+		--shadow-xl-dark: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+		--shadow-2xl-dark: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+		/* Motion System - Standardized easing and durations */
+		--ease-in: cubic-bezier(0.4, 0, 1, 1);
+		--ease-out: cubic-bezier(0, 0, 0.2, 1);
+		--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+		--ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		--duration-fast: 150ms;
+		--duration-normal: 200ms;
+		--duration-slow: 300ms;
+		--duration-slower: 500ms;
 	}
 }
 
@@ -147,30 +197,135 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
-	/* Typography refinements */
+	/* Comprehensive Typography Scale - Modern Design System */
+	/* Font Weight Scale */
+	.font-thin {
+		font-weight: 100;
+	}
+	.font-extralight {
+		font-weight: 200;
+	}
+	.font-light {
+		font-weight: 300;
+	}
+	.font-normal {
+		font-weight: 400;
+	}
+	.font-medium {
+		font-weight: 500;
+	}
+	.font-semibold {
+		font-weight: 600;
+	}
+	.font-bold {
+		font-weight: 700;
+	}
+	.font-extrabold {
+		font-weight: 800;
+	}
+	.font-black {
+		font-weight: 900;
+	}
+
+	/* Typography refinements - Cursor.com style */
 	h1,
 	h2,
 	h3,
 	h4,
 	h5,
 	h6 {
-		letter-spacing: -0.02em;
-		font-feature-settings: "kern" 1;
+		letter-spacing: -0.01em;
+		font-feature-settings: "kern" 1, "liga" 1;
+		font-weight: 600;
 	}
 	h1 {
-		line-height: 1.1;
+		line-height: 1.2;
+		font-size: 2.5rem;
 	}
 	h2 {
-		line-height: 1.15;
+		line-height: 1.3;
+		font-size: 2rem;
 	}
-	h3,
+	h3 {
+		line-height: 1.4;
+		font-size: 1.5rem;
+	}
 	h4 {
-		line-height: 1.2;
+		line-height: 1.5;
+		font-size: 1.25rem;
+	}
+	h5 {
+		line-height: 1.5;
+		font-size: 1.125rem;
+		font-weight: 600;
+	}
+	h6 {
+		line-height: 1.5;
+		font-size: 1rem;
+		font-weight: 600;
 	}
 	p {
-		line-height: 1.6;
-		letter-spacing: -0.01em;
+		line-height: 1.75;
+		letter-spacing: 0;
+		font-size: 1rem;
 	}
+
+	/* Semantic Text Styles */
+	.text-display {
+		font-size: 4rem;
+		line-height: 1.1;
+		letter-spacing: -0.02em;
+		font-weight: 700;
+	}
+	.text-headline {
+		font-size: 2.5rem;
+		line-height: 1.2;
+		letter-spacing: -0.01em;
+		font-weight: 600;
+	}
+	.text-title {
+		font-size: 1.5rem;
+		line-height: 1.4;
+		letter-spacing: -0.01em;
+		font-weight: 600;
+	}
+	.text-body {
+		font-size: 1rem;
+		line-height: 1.75;
+		letter-spacing: 0;
+		font-weight: 400;
+	}
+	.text-body-sm {
+		font-size: 0.875rem;
+		line-height: 1.6;
+		letter-spacing: 0;
+		font-weight: 400;
+	}
+	.text-caption {
+		font-size: 0.875rem;
+		line-height: 1.5;
+		letter-spacing: 0.01em;
+		font-weight: 400;
+	}
+	.text-label {
+		font-size: 0.75rem;
+		line-height: 1.5;
+		letter-spacing: 0.02em;
+		font-weight: 500;
+		text-transform: uppercase;
+	}
+	/* Reduced motion support for accessibility */
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
+
 	/* Mobile optimizations */
 	html {
 		-webkit-text-size-adjust: 100%;
@@ -192,6 +347,61 @@
 	}
 }
 @layer utilities {
+	/* Cursor.com retro painted landscape wallpaper background */
+	.retro-wallpaper {
+		background: linear-gradient(
+			180deg,
+			hsl(200, 40%, 85%) 0%,
+			hsl(180, 35%, 80%) 15%,
+			hsl(160, 30%, 75%) 30%,
+			hsl(140, 25%, 70%) 45%,
+			hsl(120, 20%, 75%) 60%,
+			hsl(100, 25%, 80%) 75%,
+			hsl(80, 30%, 85%) 90%,
+			hsl(60, 35%, 90%) 100%
+		);
+		background-size: 100% 100%;
+		position: relative;
+	}
+
+	.retro-wallpaper::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(circle at 20% 30%, hsl(25, 40%, 70%) 0%, transparent 50%),
+			radial-gradient(circle at 80% 60%, hsl(95, 30%, 65%) 0%, transparent 50%),
+			radial-gradient(circle at 50% 80%, hsl(35, 35%, 75%) 0%, transparent 50%);
+		opacity: 0.3;
+		pointer-events: none;
+	}
+
+	.retro-wallpaper-overlay {
+		position: relative;
+		background: linear-gradient(
+			to bottom,
+			hsla(42, 30%, 97%, 0.95) 0%,
+			hsla(42, 30%, 97%, 0.98) 100%
+		);
+	}
+
+	.dark .retro-wallpaper-overlay {
+		background: linear-gradient(
+			to bottom,
+			hsla(35, 15%, 12%, 0.95) 0%,
+			hsla(35, 15%, 12%, 0.98) 100%
+		);
+	}
+
+	/* Dark mode shadow overrides */
+	.dark {
+		--shadow-sm: var(--shadow-sm-dark);
+		--shadow: var(--shadow-dark);
+		--shadow-md: var(--shadow-md-dark);
+		--shadow-lg: var(--shadow-lg-dark);
+		--shadow-xl: var(--shadow-xl-dark);
+		--shadow-2xl: var(--shadow-2xl-dark);
+	}
+
 	/* Gradient animations for hero section */
 	@keyframes gradient-x {
 		0%,
@@ -296,15 +506,42 @@
 		animation: bounce-subtle 0.4s ease;
 	}
 
-	/* Smooth focus states */
-	.focus-ring:focus {
-		outline: 2px solid hsl(var(--foreground));
+	/* Enhanced Focus States - WCAG AA/AAA compliant */
+	.focus-ring:focus-visible {
+		outline: 2px solid hsl(var(--ring));
 		outline-offset: 2px;
-		border-radius: 4px;
+		border-radius: calc(var(--radius) - 2px);
+		box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
 	}
 
 	.focus-ring:focus:not(:focus-visible) {
 		outline: none;
+	}
+
+	/* Skip link for keyboard navigation */
+	.skip-link {
+		position: absolute;
+		top: -40px;
+		left: 0;
+		background: hsl(var(--primary));
+		color: hsl(var(--primary-foreground));
+		padding: 8px 16px;
+		text-decoration: none;
+		z-index: 1600;
+		border-radius: var(--radius);
+	}
+
+	.skip-link:focus {
+		top: 0;
+	}
+
+	/* Enhanced ARIA patterns */
+	/* Note: Do NOT use display:none for [aria-hidden="true"] as it hides SVG icons */
+
+	[aria-disabled="true"] {
+		opacity: 0.5;
+		pointer-events: none;
+		cursor: not-allowed;
 	}
 
 	/* Smooth button press effect */

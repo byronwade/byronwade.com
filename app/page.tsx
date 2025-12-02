@@ -36,8 +36,9 @@ export default function HomePage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageStructuredData) }}
 			/>
 			<div className="relative min-h-screen w-full bg-[var(--background)]">
-				{/* Subtle background gradient */}
-				<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
+				{/* Cursor.com retro painted landscape wallpaper */}
+				<div className="fixed inset-0 retro-wallpaper pointer-events-none" />
+				<div className="fixed inset-0 retro-wallpaper-overlay pointer-events-none" />
 
 				{/* Main content */}
 				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
@@ -76,7 +77,7 @@ export default function HomePage() {
 										href="https://nextjs.org"
 										target="_blank"
 										rel="noopener noreferrer"
-										className="font-medium text-yellow-600 dark:text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 transition-colors"
+										className="font-medium text-accent hover:text-accent/90 transition-colors"
 									>
 										Next.js
 									</a>{" "}
@@ -85,7 +86,7 @@ export default function HomePage() {
 										href="https://tailwindcss.com"
 										target="_blank"
 										rel="noopener noreferrer"
-										className="font-medium text-yellow-600 dark:text-yellow-500 hover:text-yellow-700 dark:hover:text-yellow-400 transition-colors"
+										className="font-medium text-accent hover:text-accent/90 transition-colors"
 									>
 										Tailwind CSS
 									</a>

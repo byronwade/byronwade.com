@@ -39,7 +39,7 @@ export async function generateMetadata() {
 // Color classes for project types - subtle differentiation
 const typeColors: Record<ProjectType, string> = {
 	client: "text-blue-600 dark:text-blue-400",
-	product: "text-yellow-600 dark:text-yellow-500",
+	product: "text-accent",
 	hobby: "text-purple-600 dark:text-purple-400",
 };
 
@@ -64,7 +64,7 @@ async function ProjectsList() {
 	});
 
 	return (
-		<div className="flex flex-col gap-4 sm:gap-4">
+		<div className="flex flex-col gap-1.5 sm:gap-2">
 			{sortedProjects.length === 0 ? (
 				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
 					No projects yet. Check back soon!
@@ -76,7 +76,7 @@ async function ProjectsList() {
 						<Link
 							key={project.slug}
 							href={`/projects/${project.slug}`}
-							className="flex flex-col gap-3 sm:gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-3 sm:py-2"
+							className="flex flex-col gap-3 sm:gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-1.5"
 						>
 							<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
 								<div className="flex-1 min-w-0">

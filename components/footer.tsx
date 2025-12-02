@@ -45,7 +45,7 @@ export default function Footer() {
 							<Button
 								asChild
 								size="lg"
-								className="bg-black text-yellow-400 hover:bg-gray-900 font-semibold px-8 py-4 text-lg shadow-xl"
+								className="bg-primary text-accent hover:bg-primary/90 font-semibold px-8 py-4 text-lg shadow-xl"
 							>
 								<Link prefetch={true} href="/contact">
 									<Calendar className="mr-2 h-5 w-5" />
@@ -106,7 +106,7 @@ export default function Footer() {
 						<div className="lg:col-span-1 space-y-6">
 							<Link prefetch={true} href="/" className="flex items-center space-x-3 group">
 								<span
-									className={`text-3xl font-bold ${customFont.className} hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors duration-300`}
+									className={`text-3xl font-bold ${customFont.className} hover:text-accent transition-colors duration-300`}
 								>
 									Byron Wade
 								</span>
@@ -119,15 +119,15 @@ export default function Footer() {
 							{/* Contact Info */}
 							<div className="space-y-3">
 								<div className="flex items-center gap-3 text-sm text-muted-foreground">
-									<MapPin className="w-4 h-4 text-yellow-600" />
+									<MapPin className="w-4 h-4 text-accent" />
 									<span>Santa Cruz, CA</span>
 								</div>
 								<div className="flex items-center gap-3 text-sm text-muted-foreground">
-									<Mail className="w-4 h-4 text-yellow-600" />
+									<Mail className="w-4 h-4 text-accent" />
 									<span>byron@byronwade.com</span>
 								</div>
 								<div className="flex items-center gap-3 text-sm text-muted-foreground">
-									<Phone className="w-4 h-4 text-yellow-600" />
+									<Phone className="w-4 h-4 text-accent" />
 									<span>Available for consultations</span>
 								</div>
 							</div>
@@ -136,7 +136,7 @@ export default function Footer() {
 						{/* Design & Development */}
 						<div className="space-y-6">
 							<h3 className="text-foreground font-semibold text-lg flex items-center gap-2">
-								<Code className="w-5 h-5 text-yellow-600" />
+								<Code className="w-5 h-5 text-accent" />
 								Design & Development
 							</h3>
 							<ul className="space-y-3">
@@ -144,7 +144,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/tools"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Business Concepts
 									</Link>
@@ -153,7 +153,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/design"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										UI/UX Design
 									</Link>
@@ -162,7 +162,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/development"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Frontend Development
 									</Link>
@@ -171,7 +171,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/marketing"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Digital Strategy
 									</Link>
@@ -180,7 +180,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/resume"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Experience & Skills
 									</Link>
@@ -191,7 +191,7 @@ export default function Footer() {
 						{/* Plumbing Services */}
 						<div className="space-y-6">
 							<h3 className="text-foreground font-semibold text-lg flex items-center gap-2">
-								<Wrench className="w-5 h-5 text-yellow-600" />
+								<Wrench className="w-5 h-5 text-accent" />
 								Plumbing Services
 							</h3>
 							<ul className="space-y-3">
@@ -199,7 +199,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/plumbing-santa-cruz"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Santa Cruz, CA
 									</Link>
@@ -208,7 +208,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/virtual-plumbing"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Virtual Consultations
 									</Link>
@@ -217,7 +217,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/our-work"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Our Work
 									</Link>
@@ -226,7 +226,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/contact"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Get a Quote
 									</Link>
@@ -242,7 +242,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/work-with-me"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Work With Me
 									</Link>
@@ -251,7 +251,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/contact"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										Get In Touch
 									</Link>
@@ -260,7 +260,7 @@ export default function Footer() {
 									<Link
 										prefetch={true}
 										href="/resume"
-										className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200 text-sm"
+										className="text-muted-foreground hover:text-accent transition-colors duration-200 text-sm"
 									>
 										View Resume
 									</Link>
@@ -276,7 +276,7 @@ export default function Footer() {
 											href="https://github.com/byronwade"
 											target="_blank"
 											rel="noopener noreferrer"
-											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
 										>
 											<Github className="h-5 w-5" />
 											<span className="sr-only">GitHub</span>
@@ -287,7 +287,7 @@ export default function Footer() {
 											href="https://linkedin.com/in/byronwade"
 											target="_blank"
 											rel="noopener noreferrer"
-											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
 										>
 											<Linkedin className="h-5 w-5" />
 											<span className="sr-only">LinkedIn</span>
@@ -298,7 +298,7 @@ export default function Footer() {
 											href="https://twitter.com/byron_c_wade"
 											target="_blank"
 											rel="noopener noreferrer"
-											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
 										>
 											<Twitter className="h-5 w-5" />
 											<span className="sr-only">Twitter</span>
@@ -307,7 +307,7 @@ export default function Footer() {
 									<SocialLinkPreview platform="email">
 										<a
 											href="mailto:byron@byronwade.com"
-											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-yellow-600 hover:bg-yellow-600/10 transition-all duration-200"
+											className="p-2 bg-secondary/50 rounded-lg text-muted-foreground hover:text-accent hover:bg-accent/10 transition-all duration-200"
 										>
 											<Mail className="h-5 w-5" />
 											<span className="sr-only">Email</span>
@@ -331,14 +331,14 @@ export default function Footer() {
 							<Link
 								prefetch={true}
 								href="/privacy"
-								className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200"
+								className="text-muted-foreground hover:text-accent transition-colors duration-200"
 							>
 								Privacy Policy
 							</Link>
 							<Link
 								prefetch={true}
 								href="/terms"
-								className="text-muted-foreground hover:text-yellow-600 transition-colors duration-200"
+								className="text-muted-foreground hover:text-accent transition-colors duration-200"
 							>
 								Terms of Service
 							</Link>

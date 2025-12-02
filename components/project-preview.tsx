@@ -172,7 +172,7 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 					}}
 				>
 					<div
-						className="w-[600px] h-[400px] p-0 overflow-hidden border-yellow-600/20 bg-[var(--background)] shadow-xl rounded-lg pointer-events-auto"
+						className="w-[600px] h-[400px] p-0 overflow-hidden border-accent/20 bg-[var(--background)] shadow-xl rounded-lg pointer-events-auto"
 						style={{
 							maxWidth: "calc(100vw - 40px)",
 							maxHeight: "calc(100vh - 40px)",
@@ -183,7 +183,7 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 							<div className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700">
 								<div className="flex gap-1.5">
 									<div className="w-3 h-3 rounded-full bg-red-500" />
-									<div className="w-3 h-3 rounded-full bg-yellow-500" />
+									<div className="w-3 h-3 rounded-full bg-accent" />
 									<div className="w-3 h-3 rounded-full bg-green-500" />
 								</div>
 								<div className="flex-1 mx-3 px-3 py-1 bg-white dark:bg-gray-700 rounded text-xs text-gray-600 dark:text-gray-300 truncate">
@@ -206,29 +206,29 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 										}}
 									>
 										<div className="relative">
-											<div className="w-5 h-5 border-2 border-yellow-600 dark:border-yellow-500 rounded-full bg-yellow-600/30 dark:bg-yellow-500/30 shadow-lg backdrop-blur-sm">
-												<div className="w-1.5 h-1.5 bg-yellow-600 dark:bg-yellow-500 rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+											<div className="w-5 h-5 border-2 border-accent rounded-full bg-accent/30 shadow-lg backdrop-blur-sm">
+												<div className="w-1.5 h-1.5 bg-accent rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
 											</div>
-											<div className="absolute inset-0 w-5 h-5 border border-yellow-400/50 dark:border-yellow-400/50 rounded-full animate-ping" />
+											<div className="absolute inset-0 w-5 h-5 border border-accent/50 rounded-full animate-ping" />
 										</div>
 									</div>
 								)}
 								{iframeLoading && !iframeError && (
-									<div className="absolute inset-0 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-										<Loader2 className="w-6 h-6 text-yellow-600 dark:text-yellow-500 animate-spin" />
+									<div className="absolute inset-0 flex items-center justify-center bg-background">
+										<Loader2 className="w-6 h-6 text-accent animate-spin" strokeWidth={1.5} />
 									</div>
 								)}
 								{iframeError ? (
-									<div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 dark:bg-gray-900">
-										<ExternalLink className="w-8 h-8 text-gray-400 dark:text-gray-600" />
-										<p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+									<div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 bg-background">
+										<ExternalLink className="w-8 h-8 text-muted-foreground" strokeWidth={1.5} />
+										<p className="text-sm text-muted-foreground text-center">
 											Preview unavailable. Click to visit the website.
 										</p>
 										<a
 											href={href}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="px-4 py-2 text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 rounded-md transition-colors"
+											className="px-4 py-2 text-sm font-medium bg-accent text-accent-foreground hover:bg-accent/90 rounded-md transition-colors shadow-sm"
 										>
 											Visit {url}
 										</a>
