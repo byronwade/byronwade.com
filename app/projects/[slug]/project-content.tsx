@@ -86,7 +86,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 									aria-label="Go to projects"
 									href="/projects"
 								>
-									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200">
+									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200">
 										← Back to projects
 									</span>
 								</Link>
@@ -171,7 +171,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 											if (isInline) {
 												return (
 													<code
-														className="text-yellow-600 dark:text-yellow-500 bg-[var(--muted)] px-1.5 py-0.5 rounded text-sm font-mono"
+														className="text-amber-700 dark:text-yellow-500 bg-[var(--muted)] px-1.5 py-0.5 rounded text-sm font-mono"
 														{...props}
 													>
 														{children}
@@ -241,7 +241,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 										),
 										blockquote: ({ children, ...props }) => (
 											<blockquote
-												className="border-l-2 border-yellow-600 dark:border-yellow-500 pl-4 py-1 text-[var(--muted-foreground)] italic my-4"
+												className="border-l-2 border-amber-700 dark:border-yellow-500 pl-4 py-1 text-[var(--muted-foreground)] italic my-4"
 												{...props}
 											>
 												{children}
@@ -262,7 +262,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 								aria-label="Go to projects"
 								href="/projects"
 							>
-								<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200">
+								<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200">
 									← Back to projects
 								</span>
 							</Link>

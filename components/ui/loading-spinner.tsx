@@ -31,7 +31,11 @@ export function LoadingSpinner({
 	className,
 	text,
 }: LoadingSpinnerProps) {
-	const baseClasses = cn("animate-spin text-yellow-600", sizeClasses[size], className);
+	const baseClasses = cn(
+		"animate-spin text-amber-700 dark:text-yellow-600",
+		sizeClasses[size],
+		className
+	);
 
 	if (variant === "default") {
 		return (
@@ -52,7 +56,7 @@ export function LoadingSpinner({
 						<motion.div
 							key={i}
 							className={cn(
-								"bg-yellow-600 rounded-full",
+								"bg-amber-700 dark:bg-yellow-600 rounded-full",
 								size === "sm"
 									? "w-2 h-2"
 									: size === "md"
@@ -86,7 +90,7 @@ export function LoadingSpinner({
 			<div className="flex flex-col items-center gap-4">
 				<motion.div
 					className={cn(
-						"bg-yellow-600 rounded-full",
+						"bg-amber-700 dark:bg-yellow-600 rounded-full",
 						size === "sm"
 							? "w-8 h-8"
 							: size === "md"
@@ -120,7 +124,7 @@ export function LoadingSpinner({
 						<motion.div
 							key={i}
 							className={cn(
-								"bg-yellow-600 rounded-full",
+								"bg-amber-700 dark:bg-yellow-600 rounded-full",
 								size === "sm"
 									? "w-2 h-2"
 									: size === "md"
@@ -175,7 +179,7 @@ export function LoadingSpinner({
 								},
 							}}
 						>
-							<Icon className={cn("text-yellow-600", sizeClasses[size])} />
+							<Icon className={cn("text-amber-700 dark:text-yellow-600", sizeClasses[size])} />
 						</motion.div>
 					))}
 				</div>
@@ -205,7 +209,7 @@ export function PageLoader({ text = "Loading..." }: { text?: string }) {
 				{/* Progress bar */}
 				<div className="w-64 h-2 bg-secondary rounded-full overflow-hidden">
 					<motion.div
-						className="h-full bg-gradient-to-r from-yellow-600 to-yellow-500"
+						className="h-full bg-gradient-to-r from-amber-700 to-amber-600 dark:from-yellow-600 dark:to-yellow-500"
 						initial={{ width: "0%" }}
 						animate={{ width: "100%" }}
 						transition={{

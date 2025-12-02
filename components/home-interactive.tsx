@@ -237,7 +237,7 @@ export function HomeInteractive() {
 										)}
 									</div>
 								</button>
-								<div className="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[var(--foreground)] text-[var(--background)] text-xs rounded-md opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg">
+								<div className="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs rounded-md opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg">
 									{mounted
 										? resolvedTheme === "dark"
 											? "Use System"
@@ -245,7 +245,7 @@ export function HomeInteractive() {
 												? "Go Dark"
 												: "Go Light"
 										: "Toggle theme"}
-									<div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-[var(--foreground)]" />
+									<div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-zinc-900 dark:border-t-white" />
 								</div>
 							</div>
 						</nav>
@@ -354,7 +354,7 @@ export function HomeInteractive() {
 							href="https://github.com/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="GitHub"
 						>
 							<Github className="size-3.5 sm:size-4 text-accent transition-colors" />
@@ -368,7 +368,7 @@ export function HomeInteractive() {
 							href="https://linkedin.com/in/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="LinkedIn"
 						>
 							<Linkedin className="size-3.5 sm:size-4 text-accent transition-colors" />
@@ -382,7 +382,7 @@ export function HomeInteractive() {
 							href="https://twitter.com/byron_c_wade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
+							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="X (Twitter)"
 						>
 							<Twitter className="size-3.5 sm:size-4 text-accent transition-colors" />
@@ -394,7 +394,7 @@ export function HomeInteractive() {
 					<button
 						type="button"
 						onClick={() => handleEmailClick("social")}
-						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
 						aria-label="Contact via email"
 					>
 						{copiedButton === "social" ? (
@@ -412,7 +412,7 @@ export function HomeInteractive() {
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 dark:from-accent/20 dark:to-accent/10 border border-accent/20 dark:border-accent/30 hover:from-accent/15 hover:to-accent/10 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/30 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
+						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 						aria-label="Thorbis"
 					>
 						<Globe className="size-3.5 sm:size-4 text-accent transition-colors" />

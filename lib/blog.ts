@@ -8,6 +8,13 @@ export interface BlogPost {
 	date: string;
 	excerpt?: string;
 	content: string;
+	readingTime: number; // in minutes
+}
+
+function calculateReadingTime(content: string): number {
+	const wordsPerMinute = 200;
+	const words = content.trim().split(/\s+/).length;
+	return Math.max(1, Math.ceil(words / wordsPerMinute));
 }
 
 const blogDirectory = join(process.cwd(), "content/blog");
@@ -30,6 +37,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 					date: data.date || new Date().toISOString(),
 					excerpt: data.excerpt,
 					content,
+					readingTime: calculateReadingTime(content),
 				};
 			})
 		);
@@ -56,6 +64,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 			date: data.date || new Date().toISOString(),
 			excerpt: data.excerpt,
 			content,
+			readingTime: calculateReadingTime(content),
 		};
 	} catch (error) {
 		console.error(`Error reading blog post ${slug}:`, error);

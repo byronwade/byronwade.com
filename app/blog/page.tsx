@@ -6,6 +6,7 @@ import {
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import { format } from "date-fns";
+import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -56,9 +57,15 @@ async function BlogList() {
 					>
 						<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
 							<div className="flex-1 min-w-0">
-								<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
-									{post.title}
-								</p>
+								<div className="flex items-center gap-2 flex-wrap">
+									<span className="inline-flex items-center gap-1 text-xs shrink-0 text-teal-600 dark:text-teal-400">
+										<Clock className="size-3" />
+										{post.readingTime} min
+									</span>
+									<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
+										{post.title}
+									</p>
+								</div>
 								{post.excerpt && (
 									<p className="text-sm sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors mt-2 sm:mt-1 leading-relaxed">
 										{post.excerpt}

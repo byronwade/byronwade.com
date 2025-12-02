@@ -147,7 +147,7 @@ export default async function ProjectsPage() {
 									aria-label="Go to home"
 									href="/"
 								>
-									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200">
+									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200">
 										← Back to home
 									</span>
 								</Link>

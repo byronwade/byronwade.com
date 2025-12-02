@@ -65,11 +65,11 @@ const itemVariants = {
 };
 
 const levelColors = [
-	"bg-zinc-800",
-	"bg-emerald-900/70",
-	"bg-emerald-600/80",
-	"bg-emerald-500",
-	"bg-emerald-400",
+	"bg-muted",
+	"bg-emerald-900/70 dark:bg-emerald-900/70",
+	"bg-emerald-600/80 dark:bg-emerald-600/80",
+	"bg-emerald-500 dark:bg-emerald-500",
+	"bg-emerald-400 dark:bg-emerald-400",
 ];
 
 export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps) {
@@ -115,9 +115,9 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 		>
 			{/* Header */}
 			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-3">
-				<Github className="h-4 w-4 text-zinc-400" />
-				<span className="text-xs font-medium text-white">byronwade</span>
-				<span className="text-[10px] text-zinc-500 ml-auto">Code Activity</span>
+				<Github className="h-4 w-4 text-muted-foreground" />
+				<span className="text-xs font-medium text-foreground">byronwade</span>
+				<span className="text-[10px] text-muted-foreground ml-auto">Code Activity</span>
 			</motion.div>
 
 			{isLoading ? (
@@ -137,12 +137,9 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 							{ icon: Folder, value: githubStats.totalRepos, label: "repos" },
 							{ icon: Flame, value: githubStats.currentStreak, label: "streak" },
 						].map((stat) => (
-							<div
-								key={stat.label}
-								className="flex-1 bg-zinc-800/60 rounded px-2 py-1.5 text-center"
-							>
-								<p className="text-xs font-semibold text-white">{stat.value}</p>
-								<p className="text-[9px] text-zinc-500">{stat.label}</p>
+							<div key={stat.label} className="flex-1 bg-muted/60 rounded px-2 py-1.5 text-center">
+								<p className="text-xs font-semibold text-foreground">{stat.value}</p>
+								<p className="text-[9px] text-muted-foreground">{stat.label}</p>
 							</div>
 						))}
 					</motion.div>
@@ -168,7 +165,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 					{/* Languages Bar */}
 					{githubStats.topLanguages.length > 0 && (
 						<motion.div variants={itemVariants}>
-							<div className="flex h-1.5 rounded-full overflow-hidden bg-zinc-800 mb-1.5">
+							<div className="flex h-1.5 rounded-full overflow-hidden bg-muted mb-1.5">
 								{githubStats.topLanguages.slice(0, 4).map((lang) => (
 									<motion.div
 										key={lang.name}
@@ -186,7 +183,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 											className="w-1.5 h-1.5 rounded-full"
 											style={{ backgroundColor: lang.color }}
 										/>
-										<span className="text-[9px] text-zinc-500">{lang.name}</span>
+										<span className="text-[9px] text-muted-foreground">{lang.name}</span>
 									</span>
 								))}
 							</div>
@@ -201,7 +198,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				href="https://github.com/byronwade"
 				target="_blank"
 				rel="noopener noreferrer"
-				className="mt-3 block w-full text-center py-1.5 bg-zinc-800 hover:bg-zinc-700 text-white text-[10px] font-medium rounded transition-colors"
+				className="mt-3 block w-full text-center py-1.5 bg-muted hover:bg-muted/80 text-foreground text-[10px] font-medium rounded transition-colors"
 			>
 				View Profile
 			</motion.a>
@@ -220,15 +217,15 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-3">
 				<Linkedin className="h-4 w-4 text-[#0a66c2]" />
 				<div>
-					<p className="text-xs font-medium text-white">Byron Wade</p>
-					<p className="text-[10px] text-zinc-500">Full Stack Developer</p>
+					<p className="text-xs font-medium text-foreground">Byron Wade</p>
+					<p className="text-[10px] text-muted-foreground">Full Stack Developer</p>
 				</div>
 			</motion.div>
 
 			{/* Experience */}
-			<motion.div variants={itemVariants} className="bg-zinc-800/60 rounded px-2.5 py-2 mb-2.5">
-				<p className="text-sm font-semibold text-white">8+ Years</p>
-				<p className="text-[10px] text-zinc-400">Web Development & Business</p>
+			<motion.div variants={itemVariants} className="bg-muted/60 rounded px-2.5 py-2 mb-2.5">
+				<p className="text-sm font-semibold text-foreground">8+ Years</p>
+				<p className="text-[10px] text-muted-foreground">Web Development & Business</p>
 			</motion.div>
 
 			{/* Skills */}
@@ -239,7 +236,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ delay: idx * 0.03 }}
-						className="px-1.5 py-0.5 bg-zinc-800 text-zinc-300 text-[10px] rounded"
+						className="px-1.5 py-0.5 bg-muted text-foreground text-[10px] rounded"
 					>
 						{skill}
 					</motion.span>
@@ -269,17 +266,17 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 		>
 			{/* Header */}
 			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-2.5">
-				<Twitter className="h-4 w-4 text-white" />
+				<Twitter className="h-4 w-4 text-foreground" />
 				<div>
-					<p className="text-xs font-medium text-white">Byron Wade</p>
-					<p className="text-[10px] text-zinc-500">@byron_c_wade</p>
+					<p className="text-xs font-medium text-foreground">Byron Wade</p>
+					<p className="text-[10px] text-muted-foreground">@byron_c_wade</p>
 				</div>
 			</motion.div>
 
 			{/* Bio */}
 			<motion.p
 				variants={itemVariants}
-				className="text-[11px] text-zinc-300 leading-relaxed mb-2.5"
+				className="text-[11px] text-foreground/80 leading-relaxed mb-2.5"
 			>
 				Building tools for service professionals. Always shipping.
 			</motion.p>
@@ -292,7 +289,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ delay: idx * 0.03 }}
-						className="px-1.5 py-0.5 bg-zinc-800 text-zinc-400 text-[10px] rounded"
+						className="px-1.5 py-0.5 bg-muted text-muted-foreground text-[10px] rounded"
 					>
 						{tag}
 					</motion.span>
@@ -305,7 +302,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				href="https://twitter.com/byron_c_wade"
 				target="_blank"
 				rel="noopener noreferrer"
-				className="block w-full text-center py-1.5 bg-white hover:bg-zinc-100 text-black text-[10px] font-medium rounded transition-colors"
+				className="block w-full text-center py-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-[10px] font-medium rounded transition-colors"
 			>
 				Follow on X
 			</motion.a>
@@ -331,23 +328,25 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			>
 				{/* Header */}
 				<motion.div variants={itemVariants} className="flex items-center gap-2 mb-2.5">
-					<Mail className="h-4 w-4 text-amber-500" />
+					<Mail className="h-4 w-4 text-amber-700 dark:text-amber-500" />
 					<div>
-						<p className="text-xs font-medium text-white">Contact Me</p>
-						<p className="text-[10px] text-zinc-500">Let's connect</p>
+						<p className="text-xs font-medium text-foreground">Contact Me</p>
+						<p className="text-[10px] text-muted-foreground">Let's connect</p>
 					</div>
 				</motion.div>
 
 				{/* Email */}
-				<motion.div variants={itemVariants} className="bg-zinc-800/60 rounded px-2.5 py-2 mb-2.5">
-					<code className="text-[11px] text-amber-400 font-mono">byron@byronwade.com</code>
+				<motion.div variants={itemVariants} className="bg-muted/60 rounded px-2.5 py-2 mb-2.5">
+					<code className="text-[11px] text-amber-700 dark:text-amber-400 font-mono">
+						byron@byronwade.com
+					</code>
 				</motion.div>
 
 				{/* Availability */}
 				<motion.div variants={itemVariants} className="space-y-1 mb-3">
 					{["Available for projects", "Quick response"].map((item) => (
-						<div key={item} className="flex items-center gap-1.5 text-[10px] text-zinc-400">
-							<span className="text-amber-500 text-[8px]">●</span>
+						<div key={item} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+							<span className="text-amber-700 dark:text-amber-500 text-[8px]">●</span>
 							<span>{item}</span>
 						</div>
 					))}
@@ -358,7 +357,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 					variants={itemVariants}
 					onClick={copyEmail}
 					type="button"
-					className="w-full py-1.5 bg-amber-500 hover:bg-amber-600 text-black text-[10px] font-medium rounded transition-colors"
+					className="w-full py-1.5 bg-amber-700 dark:bg-amber-500 hover:bg-amber-800 dark:hover:bg-amber-600 text-white dark:text-black text-[10px] font-medium rounded transition-colors"
 				>
 					<AnimatePresence mode="wait">
 						{copied ? (
@@ -415,7 +414,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 		>
 			<HoverCardTrigger asChild>{children}</HoverCardTrigger>
 			<HoverCardContent
-				className="p-3 bg-zinc-900 border border-zinc-800 shadow-2xl rounded-lg z-[9999]"
+				className="p-3 bg-popover border border-border shadow-2xl rounded-lg z-[9999]"
 				sideOffset={8}
 			>
 				<AnimatePresence mode="wait">{renderContent()}</AnimatePresence>

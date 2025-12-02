@@ -219,8 +219,8 @@ export default function WorkGallery() {
 						onClick={() => handleCategoryChange(category)}
 						className={
 							selectedCategory === category
-								? "bg-yellow-600 hover:bg-yellow-700 text-black"
-								: "border-yellow-600/50 hover:bg-yellow-600 hover:text-black text-yellow-600"
+								? "bg-amber-700 dark:bg-yellow-600 hover:bg-amber-800 dark:hover:bg-yellow-700 text-white dark:text-black"
+								: "border-amber-700/50 dark:border-yellow-600/50 hover:bg-amber-700 dark:hover:bg-yellow-600 hover:text-white dark:hover:text-black text-amber-700 dark:text-yellow-600"
 						}
 					>
 						{category}
@@ -233,7 +233,7 @@ export default function WorkGallery() {
 				{displayedItems.map((item) => (
 					<Card
 						key={item.id}
-						className="group overflow-hidden bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30"
+						className="group overflow-hidden bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-amber-700/30 dark:hover:border-yellow-600/30"
 					>
 						<div className="relative aspect-[4/3] overflow-hidden">
 							<Image
@@ -245,27 +245,32 @@ export default function WorkGallery() {
 							/>
 							<div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
 							<div className="absolute top-4 left-4">
-								<Badge className="bg-yellow-600 text-black font-medium">{item.category}</Badge>
+								<Badge className="bg-amber-700 dark:bg-yellow-600 text-white dark:text-black font-medium">
+									{item.category}
+								</Badge>
 							</div>
 							<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-								<Button size="sm" className="bg-yellow-600 hover:bg-yellow-700 text-black">
+								<Button
+									size="sm"
+									className="bg-amber-700 dark:bg-yellow-600 hover:bg-amber-800 dark:hover:bg-yellow-700 text-white dark:text-black"
+								>
 									<Eye className="w-4 h-4 mr-2" />
 									View Details
 								</Button>
 							</div>
 						</div>
 						<CardContent className="p-6">
-							<h3 className="font-semibold text-lg mb-2 text-foreground group-hover:text-yellow-600 transition-colors">
+							<h3 className="font-semibold text-lg mb-2 text-foreground group-hover:text-amber-700 dark:group-hover:text-yellow-600 transition-colors">
 								{item.title}
 							</h3>
 							<p className="text-muted-foreground text-sm mb-4 line-clamp-2">{item.description}</p>
 							<div className="flex items-center justify-between text-sm text-muted-foreground">
 								<div className="flex items-center gap-1">
-									<MapPin className="w-4 h-4 text-yellow-600" />
+									<MapPin className="w-4 h-4 text-amber-700 dark:text-yellow-600" />
 									<span>{item.location}</span>
 								</div>
 								<div className="flex items-center gap-1">
-									<Calendar className="w-4 h-4 text-yellow-600" />
+									<Calendar className="w-4 h-4 text-amber-700 dark:text-yellow-600" />
 									<span>{item.date}</span>
 								</div>
 							</div>
@@ -280,7 +285,7 @@ export default function WorkGallery() {
 					<Button
 						onClick={loadMore}
 						size="lg"
-						className="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold px-8"
+						className="bg-amber-700 dark:bg-yellow-600 hover:bg-amber-800 dark:hover:bg-yellow-700 text-white dark:text-black font-semibold px-8"
 					>
 						Load More Projects
 						<ArrowRight className="w-4 h-4 ml-2" />

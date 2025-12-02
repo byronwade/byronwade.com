@@ -232,7 +232,7 @@ export default function Navbar({ className }: { className?: string }) {
 							<Button
 								asChild
 								variant="ghost"
-								className="w-full justify-start text-left hover:bg-yellow-400/10 hover:text-yellow-400 transition-all duration-300 min-h-[48px] py-3 touch-target"
+								className="w-full justify-start text-left hover:bg-amber-700/10 dark:hover:bg-yellow-400/10 hover:text-amber-700 dark:hover:text-yellow-400 transition-all duration-300 min-h-[48px] py-3 touch-target"
 							>
 								<Link prefetch={true} href="/tools" onClick={() => setIsMobileMenuOpen(false)}>
 									<Code className="w-4 h-4 sm:w-4 sm:h-4 mr-3" />

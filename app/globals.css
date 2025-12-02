@@ -17,18 +17,18 @@
 		--secondary-foreground: 35 28% 30%;
 		--muted: 42 20% 94%;
 		--muted-foreground: 35 20% 45%;
-		--accent: 38 55% 65%;
-		--accent-foreground: 35 28% 15%;
+		--accent: 38 70% 42%;
+		--accent-foreground: 0 0% 100%;
 		--destructive: 0 70% 55%;
 		--destructive-foreground: 42 30% 98%;
 		--border: 42 15% 85%;
 		--input: 42 15% 88%;
 		--ring: 35 32% 30%;
-		--chart-1: 38 65% 70%;
-		--chart-2: 95 25% 60%;
+		--chart-1: 38 70% 45%;
+		--chart-2: 95 35% 45%;
 		--chart-3: 35 32% 40%;
-		--chart-4: 38 55% 65%;
-		--chart-5: 42 30% 50%;
+		--chart-4: 38 70% 42%;
+		--chart-5: 42 40% 45%;
 		--radius: 0.5rem;
 		/* Semantic Color Tokens */
 		--success: 142 71% 45%;

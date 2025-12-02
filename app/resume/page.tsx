@@ -152,7 +152,7 @@ export default function ResumePage() {
 							<div className="flex flex-col gap-6 items-start w-full">
 								<Link
 									href="/"
-									className="group flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors"
+									className="group flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
 								>
 									<ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />
 									<span>Back</span>
@@ -187,7 +187,7 @@ export default function ResumePage() {
 									<button
 										type="button"
 										onClick={copyEmail}
-										className="flex items-center gap-2 hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors cursor-pointer bg-transparent border-none p-0"
+										className="flex items-center gap-2 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors cursor-pointer bg-transparent border-none p-0"
 									>
 										{emailCopied ? (
 											<Check className="size-4 text-green-600 dark:text-green-500" />
@@ -204,7 +204,7 @@ export default function ResumePage() {
 										href="/api/resume-pdf"
 										download="Byron_Wade_Resume.pdf"
 										onClick={() => analytics.resumeDownload("pdf")}
-										className="flex items-center gap-2 hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors"
+										className="flex items-center gap-2 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
 									>
 										<Download className="size-4" />
 										<span>Download PDF</span>
@@ -223,16 +223,14 @@ export default function ResumePage() {
 										href="https://thorbis.com"
 										target="_blank"
 										rel="noopener noreferrer"
-										className="text-yellow-600 dark:text-yellow-500 hover:underline underline-offset-2"
+										className="text-amber-700 dark:text-yellow-500 hover:underline underline-offset-2"
 									>
 										Thorbis
 									</a>
 									, a field management system for service professionals.
 								</p>
 								<p className="text-[var(--muted-foreground)] leading-relaxed">
-									<span className="text-yellow-600 dark:text-yellow-500">
-										Open to opportunities
-									</span>{" "}
+									<span className="text-amber-700 dark:text-yellow-500">Open to opportunities</span>{" "}
 									— Looking for full-time roles in software development, technical leadership, or
 									positions where I can leverage both my development skills and hands-on business
 									experience.
@@ -252,7 +250,7 @@ export default function ResumePage() {
 											<h3 className="font-medium text-[var(--foreground)]">
 												{job.role}
 												{job.current && (
-													<span className="ml-2 text-xs font-normal text-yellow-600 dark:text-yellow-500">
+													<span className="ml-2 text-xs font-normal text-amber-700 dark:text-yellow-500">
 														Current
 													</span>
 												)}
@@ -267,7 +265,7 @@ export default function ResumePage() {
 													href={job.companyUrl}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="inline-flex items-center gap-1 hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors underline decoration-[var(--muted-foreground)]/30 underline-offset-2 hover:decoration-yellow-600 dark:hover:decoration-yellow-500"
+													className="inline-flex items-center gap-1 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors underline decoration-[var(--muted-foreground)]/30 underline-offset-2 hover:decoration-amber-700 dark:hover:decoration-yellow-500"
 												>
 													{job.company}
 													<ExternalLink className="size-3" />
@@ -320,7 +318,7 @@ export default function ResumePage() {
 									>
 										<span className="text-[var(--foreground)]">{cert.name}</span>
 										<span
-											className={`text-sm shrink-0 tabular-nums ${cert.pending ? "text-yellow-600 dark:text-yellow-500" : "text-[var(--muted-foreground)]"}`}
+											className={`text-sm shrink-0 tabular-nums ${cert.pending ? "text-amber-700 dark:text-yellow-500" : "text-[var(--muted-foreground)]"}`}
 										>
 											{cert.year}
 										</span>
@@ -334,7 +332,7 @@ export default function ResumePage() {
 							<div className="flex items-center justify-between">
 								<Link
 									href="/"
-									className="text-sm text-[var(--muted-foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-colors"
+									className="text-sm text-[var(--muted-foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
 								>
 									← Back to home
 								</Link>

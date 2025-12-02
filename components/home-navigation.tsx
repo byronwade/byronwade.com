@@ -38,26 +38,26 @@ export function HomeNavigation({ copiedButton, onCopyEmail }: HomeNavigationProp
 		<nav className="flex flex-wrap gap-4 sm:gap-6 items-center" aria-label="Main navigation">
 			<Link
 				href="/projects"
-				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
 			>
 				Projects
 			</Link>
 			<Link
 				href="/blog"
-				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
 			>
 				Blog
 			</Link>
 			<Link
 				href="/resume"
-				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
+				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200 touch-target py-1"
 			>
 				Resume
 			</Link>
 			<button
 				type="button"
 				onClick={() => copyEmail("nav")}
-				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200 cursor-pointer bg-transparent border-none p-1 button-press focus-ring touch-target"
+				className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200 cursor-pointer bg-transparent border-none p-1 button-press focus-ring touch-target"
 				aria-label="Copy email to clipboard"
 			>
 				<span className={copiedButton === "nav" ? "bounce-subtle" : ""}>
@@ -79,9 +79,9 @@ export function HomeNavigation({ copiedButton, onCopyEmail }: HomeNavigationProp
 						)}
 					</div>
 				</button>
-				<div className="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[var(--foreground)] text-[var(--background)] text-xs rounded-md opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg">
+				<div className="hidden sm:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs rounded-md opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg">
 					{mounted && theme === "dark" ? "Go Light" : "Go Dark"}
-					<div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-[var(--foreground)]" />
+					<div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-l-transparent border-r-transparent border-t-zinc-900 dark:border-t-white" />
 				</div>
 			</div>
 		</nav>
