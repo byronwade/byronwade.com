@@ -1,12 +1,12 @@
 ---
 title: "From 'Nice Guy' to Wise Leader: The Hard-Won Evolution of Wade's Plumbing & Septic"
 date: 2024-02-20
-excerpt: "How I scaled a plumbing business to $2.4M, nearly lost it all to the chaos of growth, and rebuilt it with wisdom and sustainable systems."
+excerpt: "How I scaled a plumbing business to $2.4M, lost it all to the chaos of growth, and learned the hard lessons too late—after the company had already closed."
 ---
 
 In the high-stakes world of contracting, the gap between a hard worker and a business owner is often a canyon filled with debt, stress, and hard lessons. For Wade's Plumbing & Septic, bridging that gap wasn't just a business pivot, it was a personal transformation.
 
-Building a company at 25 is a feat of energy; rebuilding it with wisdom is a feat of character. This is the story of how I scaled a plumbing business to $2.4 million in sales, nearly lost it all to the chaos of growth, and returned with a blueprint for sustainable success.
+Building a company at 25 is a feat of energy; learning to run it properly is a feat of wisdom. This is the story of how I scaled a plumbing business to $2.4 million in sales, lost it all to the chaos of growth, and learned the hard lessons after it was too late—after the company had already closed.
 
 ## Filling the Void: The Rapid Rise
 
@@ -44,29 +44,25 @@ I learned:
 
 **Leadership**: The crucial shift from being the "nice person" who is liked, to the "wise person" who is respected.
 
-## Wade's Plumbing & Septic Reborn
+## The Hard Truth
 
-Today, Wade's Plumbing & Septic operates with a renewed vision. The company that once thrived on chaos now thrives on structure. The brand's public promise, "Real People, Real Service," is now backed by real systems.
+The education came too late. By the time I learned these lessons, Wade's Plumbing & Septic had already closed its doors. The company that had reached $2.4 million in revenue was gone, not because the work wasn't good, but because the business wasn't sustainable.
 
-The changes are visible in how we operate:
+This is the hardest part of the story to tell: I learned what I should have done, but I learned it after it was too late to save the company. The specialized expertise we developed, the transparent client relations we built, the operational discipline we tried to implement—all of it came after the damage was done.
 
-**Specialized Expertise**: Instead of just "showing up," the company now dominates niche markets like **alternative septic system design** for difficult terrains (steep slopes, poor soil) and advanced **leak detection**.
-
-**Transparent Client Relations**: The "nice guy" fear of charging money has been replaced by professional transparency. Customers receive honest, "no-sales-pressure" recommendations that solve problems for the long term, rather than cheap band-aid fixes.
-
-**Operational Discipline**: With a footprint that spans from the California coast to the Georgia mountains, the logistics are now handled with the precision of a technology-driven company, a nod to my background in tech.
+Today, Wade's Plumbing & Septic is closed. Not because we didn't know how to fix pipes or install septic systems, but because I didn't know how to run a business. The lessons I learned from the Million Dollar Plumbing course, from working for other companies, from seeing how successful operations actually function—these came after the company had already failed.
 
 ## The Lesson
 
-The journey of Wade's Plumbing & Septic is a case study for every young tradesperson. Hard work can get you to your first million, but only wisdom can keep you there.
+The journey of Wade's Plumbing & Septic is a case study for every young tradesperson. Hard work can get you to your first million, but only wisdom can keep you there. And sometimes, you learn the wisdom too late.
 
-"I quickly realized what I had messed up and where and why my company failed when I could have done so much better for myself, my family, my business partner, and my community," I reflect.
+"I quickly realized what I had messed up and where and why my company failed when I could have done so much better for myself, my family, my business partner, and my community," I reflect. "But by then, it was too late. The company was already closed."
 
-But this realization wasn't the end, it was the beginning of the real company. Wade's Plumbing & Septic is no longer just a group of guys who show up; it is a professional institution built to last, led by an owner who learned that the kindest thing you can do for your employees and customers is to run a profitable, well-managed business.
+This realization wasn't the end of a success story, it was the beginning of understanding what went wrong. Wade's Plumbing & Septic could have been a professional institution built to last, led by an owner who understood that the kindest thing you can do for your employees and customers is to run a profitable, well-managed business. But I learned that lesson after the company was already gone.
 
 ## Applying These Lessons to Software
 
-The principles that saved my plumbing business directly inform how I build software today. Building [Thorbis](https://thorbis.com) is my way of applying these lessons to help other service professionals succeed:
+The principles I learned too late for my plumbing business now directly inform how I build software today. Building [Thorbis](https://thorbis.com) is my way of applying these hard-won lessons to help other service professionals avoid the same mistakes:
 
 - **Systems over chaos**: Just like in plumbing, field service software needs proper architecture and structure
 - **Transparency over confusion**: Clear pricing, honest recommendations, and straightforward workflows
