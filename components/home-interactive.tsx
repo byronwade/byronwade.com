@@ -301,6 +301,12 @@ export function HomeInteractive() {
 				</p>
 
 				<p className="leading-relaxed animate-in animate-delay-4">
+					I'm a huge vibecoder, and Claude Code is my AI of choice currently. I love the craft of
+					coding, the process of building, and collaborating with AI tools that understand the art
+					of software development.
+				</p>
+
+				<p className="leading-relaxed animate-in animate-delay-5">
 					Always open to interesting conversations about development, design, and building software
 					for service businesses.{" "}
 					<button
