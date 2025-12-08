@@ -7,8 +7,8 @@ const nextConfig = {
 	// React Compiler disabled (requires babel-plugin-react-compiler)
 	// reactCompiler: true,
 
-	// Enable cache components for explicit caching control
-	cacheComponents: true,
+	// Disable cache components so dynamic API route configs are allowed
+	cacheComponents: false,
 
 	// Enhanced image optimization
 	images: {

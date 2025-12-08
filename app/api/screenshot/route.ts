@@ -1,19 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
 	try {
 		const searchParams = request.nextUrl.searchParams;
 		const url = searchParams.get("url");
-	const width = Math.min(parseInt(searchParams.get("width") || "1920", 10), 1920);
-	const height = Math.min(parseInt(searchParams.get("height") || "1080", 10), 1200);
+		const width = Math.min(parseInt(searchParams.get("width") || "1920", 10), 1920);
+		const height = Math.min(parseInt(searchParams.get("height") || "1080", 10), 1200);
 		const mode = searchParams.get("mode") || "static";
-	const format = searchParams.get("format") || (mode === "scroll" ? "webm" : "jpg");
-	const imageQuality = parseInt(searchParams.get("quality") || (mode === "scroll" ? "85" : "90"), 10);
-	const delay = parseInt(searchParams.get("delay") || "0", 10);
-	const duration = parseInt(searchParams.get("duration") || "3", 10);
-	const scrollDelay = parseInt(searchParams.get("scrollDelay") || "200", 10);
-	const scrollDuration = parseInt(searchParams.get("scrollDuration") || "1000", 10);
-	const scrollBy = parseInt(searchParams.get("scrollBy") || "800", 10);
+		const format = searchParams.get("format") || (mode === "scroll" ? "webm" : "jpg");
+		const imageQuality = parseInt(searchParams.get("quality") || (mode === "scroll" ? "85" : "90"), 10);
+		const delay = parseInt(searchParams.get("delay") || "0", 10);
+		const duration = parseInt(searchParams.get("duration") || "3", 10);
+		const scrollDelay = parseInt(searchParams.get("scrollDelay") || "200", 10);
+		const scrollDuration = parseInt(searchParams.get("scrollDuration") || "1000", 10);
+		const scrollBy = parseInt(searchParams.get("scrollBy") || "800", 10);
 
 		if (!url) {
 			return NextResponse.json({ error: "URL parameter is required" }, { status: 400 });

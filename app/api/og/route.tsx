@@ -3,6 +3,9 @@ import { join } from "node:path";
 import { ImageResponse } from "@vercel/og";
 import type { NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 // Load font file - using Node.js file system since we can't use edge runtime with cacheComponents
 async function getFontData(): Promise<ArrayBuffer> {
 	try {

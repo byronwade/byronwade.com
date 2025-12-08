@@ -1,25 +1,23 @@
 import { NextResponse } from "next/server";
-import type { Browser } from "puppeteer";
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer, { Browser } from "puppeteer-core";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
 	let browser: Browser | undefined;
 	try {
-		// Launch puppeteer browser with optimized settings
+		// Launch chromium that works in serverless environments (Vercel)
+		const executablePath = await chromium.executablePath();
 		browser = await puppeteer.launch({
+			args: chromium.args,
 			headless: true,
-			args: [
-				"--no-sandbox",
-				"--disable-setuid-sandbox",
-				"--disable-dev-shm-usage",
-				"--disable-gpu",
-			],
+			executablePath,
+			defaultViewport: { width: 1200, height: 1600 },
 		});
 
 		const page = await browser.newPage();
-
-		// Set viewport for consistent rendering
-		await page.setViewport({ width: 1200, height: 1600 });
 
 		// Determine the base URL - use production URL or localhost with correct port
 		const baseUrl =
@@ -87,16 +85,6 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("PDF generation error:", error);
-
-		// Ensure browser is closed even on error
-		if (browser) {
-			try {
-				await browser.close();
-			} catch (closeError) {
-				console.error("Error closing browser:", closeError);
-			}
-		}
-
 		return NextResponse.json(
 			{
 				error: "Failed to generate PDF",
@@ -104,5 +92,14 @@ export async function GET() {
 			},
 			{ status: 500 }
 		);
+	} finally {
+		// Ensure browser is always closed to avoid leaks
+		if (browser) {
+			try {
+				await browser.close();
+			} catch (closeError) {
+				console.error("Error closing browser:", closeError);
+			}
+		}
 	}
 }
