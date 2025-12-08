@@ -17,7 +17,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 // Simple in-memory cache to avoid duplicate requests for the same URL/size
-const previewCache = new Map<string, Promise<string>>();
+const previewCache = new Map<string, Promise<string | null>>();
 
 interface FullWidthProjectPreviewProps {
 	href: string;

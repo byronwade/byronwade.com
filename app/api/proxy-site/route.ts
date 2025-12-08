@@ -99,18 +99,19 @@ export async function GET(request: NextRequest) {
 			redirect: "follow",
 		});
 
+		const contentType = response.headers.get("content-type") || "";
 		void agentLog(
 			"fetch:response",
 			{
 				target: targetUrl.toString(),
 				status: response.status,
 				resourceType,
-				contentType: response.headers.get("content-type") || "",
-			contentLength: Number(response.headers.get("content-length") || 0),
-			contentEncoding: response.headers.get("content-encoding") || null,
-			cacheControl: response.headers.get("cache-control") || null,
-			etag: response.headers.get("etag") || null,
-			lastModified: response.headers.get("last-modified") || null,
+				contentType,
+				contentLength: Number(response.headers.get("content-length") || 0),
+				contentEncoding: response.headers.get("content-encoding") || null,
+				cacheControl: response.headers.get("cache-control") || null,
+				etag: response.headers.get("etag") || null,
+				lastModified: response.headers.get("last-modified") || null,
 			},
 			"H2"
 		);
@@ -148,8 +149,6 @@ export async function GET(request: NextRequest) {
 				{ status: response.status }
 			);
 		}
-
-		const contentType = response.headers.get("content-type") || "";
 
 		const isHTML = contentType.includes("text/html");
 
