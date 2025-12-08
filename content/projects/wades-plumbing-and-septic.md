@@ -8,11 +8,9 @@ excerpt: "A conversion-focused website built on trust, speed, and local authenti
 
 # Building Wade's Plumbing and Septic: Designing for Trust in a Skeptical Industry
 
-When I set out to build the website for Wade's Plumbing and Septic, I wasn't just creating a brochure. I was building a conversion funnel designed around the specific anxiety homeowners feel when they need a plumber.
 
-This project taught me something important: in service industries where trust is broken, the design strategy isn't about looking flashy, it's about disarming skepticism and making it effortless for stressed customers to take action.
+--- 
 
----
 
 ## The Design Strategy: Anti-Corporate and Built for Speed
 

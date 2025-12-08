@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"),
@@ -116,15 +116,16 @@ export const metadata: Metadata = {
 		title: "Byron Wade",
 		statusBarStyle: "black-translucent",
 	},
-	viewport: {
-		width: "device-width",
-		initialScale: 1,
-		maximumScale: 5,
-		userScalable: true,
-		viewportFit: "cover",
-	},
 	other: {
 		"msapplication-TileColor": "#000000",
 		"theme-color": "#000000",
 	},
+};
+
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+	maximumScale: 5,
+	userScalable: true,
+	viewportFit: "cover",
 };

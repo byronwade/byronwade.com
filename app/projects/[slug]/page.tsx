@@ -5,9 +5,15 @@ import {
 	generateProjectStructuredData,
 	generateMetadata as generateSEOMetadata,
 } from "@/lib/seo";
+import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ProjectContent } from "./project-content";
+
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+};
 
 interface ProjectPageProps {
 	params: Promise<{ slug: string }>;

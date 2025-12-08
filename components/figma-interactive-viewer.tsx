@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Image as ImageIcon, Monitor } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface FigmaInteractiveViewerProps {
 	fileKey: string;
@@ -17,6 +17,28 @@ export function FigmaInteractiveViewer({
 	imageUrl,
 }: FigmaInteractiveViewerProps) {
 	const [viewMode, setViewMode] = useState<"interactive" | "static">("interactive");
+	const [isIframeVisible, setIsIframeVisible] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	// Lazy-mount iframe when it enters the viewport
+	useEffect(() => {
+		if (viewMode !== "interactive" || isIframeVisible) return;
+		const node = containerRef.current;
+		if (!node || typeof IntersectionObserver === "undefined") {
+			setIsIframeVisible(true);
+			return;
+		}
+		const observer = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) {
+					setIsIframeVisible(true);
+					observer.disconnect();
+				}
+			}
+		}, { rootMargin: "200px" });
+		observer.observe(node);
+		return () => observer.disconnect();
+	}, [viewMode, isIframeVisible]);
 
 	return (
 		<div className="space-y-6">
@@ -54,20 +76,26 @@ export function FigmaInteractiveViewer({
 
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
-				<div className="relative group">
+				<div className="relative group" ref={containerRef}>
 					<div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
 					<div className="relative bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800">
 						<div className="relative w-full h-[700px] sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
-							<iframe
-								style={{ border: "none" }}
-								width="100%"
-								height="100%"
-								src={`https://www.figma.com/embed?embed_host=share&url=https%3A//www.figma.com/file/${fileKey}`}
-								allowFullScreen
-								className="rounded-xl"
-								title={`Interactive ${fileName} Figma Design`}
-								loading="lazy"
-							/>
+							{isIframeVisible ? (
+								<iframe
+									style={{ border: "none" }}
+									width="100%"
+									height="100%"
+									src={`https://www.figma.com/embed?embed_host=share&url=https%3A//www.figma.com/file/${fileKey}`}
+									allowFullScreen
+									className="rounded-xl"
+									title={`Interactive ${fileName} Figma Design`}
+									loading="lazy"
+								/>
+							) : (
+								<div className="flex h-full w-full items-center justify-center text-gray-400 text-sm">
+									Loading interactive preview…
+								</div>
+							)}
 						</div>
 					</div>
 				</div>

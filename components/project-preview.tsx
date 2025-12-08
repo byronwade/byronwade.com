@@ -3,6 +3,10 @@
 import { cn } from "@/lib/utils";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
+// Simple in-memory cache to avoid duplicate requests per URL/size
+const previewCache = new Map<string, Promise<string>>();
 
 interface ProjectPreviewProps {
 	href: string;
@@ -13,37 +17,74 @@ interface ProjectPreviewProps {
 }
 
 export function ProjectPreview({ href, title, url, children, className }: ProjectPreviewProps) {
-	const [iframeError, setIframeError] = useState(false);
-	const [iframeLoading, setIframeLoading] = useState(true);
+	const [screenshotError, setScreenshotError] = useState(false);
+	const [screenshotLoading, setScreenshotLoading] = useState(true);
+	const [staticUrl, setStaticUrl] = useState<string | null>(null);
+	const [animatedUrl, setAnimatedUrl] = useState<string | null>(null);
 	const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
 	const [cursorPosition, setCursorPosition] = useState<{ x: number; y: number } | null>(null);
 	const [isOpen, setIsOpen] = useState(false);
 	const previewRef = useRef<HTMLDivElement>(null);
-	const iframeContainerRef = useRef<HTMLDivElement>(null);
-	const iframeRef = useRef<HTMLIFrameElement>(null);
+	const imageContainerRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLAnchorElement>(null);
 
-	// Check if URL is a byronwade.com subdomain
-	const isByronWadeSubdomain = (url: string) => {
-		try {
-			const urlObj = new URL(url);
-			return urlObj.hostname.endsWith(".byronwade.com") || urlObj.hostname === "byronwade.com";
-		} catch {
-			return false;
-		}
-	};
+	const VIRTUAL_WIDTH = 1920;
+	const VIRTUAL_HEIGHT = 1080;
+	// Request a single canonical size to avoid multiple network calls
+	const REQUEST_WIDTH = 1920;
+	const REQUEST_HEIGHT = 1080;
 
-	// Get the iframe src - use proxy for byronwade.com subdomains
-	const getIframeSrc = () => {
-		if (isByronWadeSubdomain(href)) {
-			// Use proxy API route for subdomains to bypass CSP restrictions
-			return `/api/proxy-site?url=${encodeURIComponent(href)}`;
-		}
-		return href;
-	};
+	// Fetch static first, then scrolling (background) when preview opens
+	useEffect(() => {
+		if (!isOpen) return;
+
+		const staticKey = `${href}|${REQUEST_WIDTH}x${REQUEST_HEIGHT}|static`;
+		// always reset any previous animation when reopening
+		setAnimatedUrl(null);
+
+		const loadStatic = async () => {
+			const loader = async () => {
+				const resp = await fetch(
+					`/api/screenshot?mode=static&url=${encodeURIComponent(
+						href
+					)}&width=${REQUEST_WIDTH}&height=${REQUEST_HEIGHT}&format=jpg&quality=88`
+				);
+				if (!resp.ok) throw new Error("static request failed");
+				const data = await resp.json();
+				if (!data?.url || typeof data.url !== "string" || data.url.trim() === "") {
+					throw new Error("static request returned empty url");
+				}
+				return data.url as string;
+			};
+			const promise = previewCache.get(staticKey) ?? loader();
+			if (!previewCache.has(staticKey)) previewCache.set(staticKey, promise);
+			return promise;
+		};
+
+		let mounted = true;
+		(async () => {
+			try {
+				setScreenshotLoading(true);
+				setScreenshotError(false);
+				const staticUrlValue = await loadStatic();
+				if (mounted) setStaticUrl(staticUrlValue);
+			} catch (error) {
+				console.error("Error fetching screenshot:", error);
+				if (mounted) setScreenshotError(true);
+			} finally {
+				if (mounted) setScreenshotLoading(false);
+			}
+		})();
+
+		return () => {
+			mounted = false;
+		};
+	}, [isOpen, href]);
 
 	// Track global mouse position
 	useEffect(() => {
+		if (!isOpen) return;
+
 		const handleDocumentMouseMove = (e: MouseEvent) => {
 			// Use clientX/clientY which are relative to viewport
 			setCursorPosition({
@@ -57,7 +98,7 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 		return () => {
 			document.removeEventListener("mousemove", handleDocumentMouseMove);
 		};
-	}, []);
+	}, [isOpen]);
 
 	// Handle trigger hover
 	useEffect(() => {
@@ -97,17 +138,18 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 				trigger.removeEventListener("mouseenter", handleTriggerMouseEnter);
 				trigger.removeEventListener("mouseleave", handleTriggerMouseLeave);
 			}
+
 		};
 	}, []);
 
 	// Track mouse position inside preview for cursor indicator
 	useEffect(() => {
 		const handleMouseMove = (e: MouseEvent) => {
-			if (iframeContainerRef.current) {
-				const rect = iframeContainerRef.current.getBoundingClientRect();
+			if (imageContainerRef.current) {
+				const rect = imageContainerRef.current.getBoundingClientRect();
 				const x = e.clientX - rect.left;
 				const y = e.clientY - rect.top;
-				// Only show cursor if it's within the iframe container bounds
+				// Only show cursor if it's within the image container bounds
 				if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
 					setMousePosition({ x, y });
 				} else {
@@ -120,7 +162,7 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 			setMousePosition(null);
 		};
 
-		const container = iframeContainerRef.current;
+		const container = imageContainerRef.current;
 		if (container) {
 			container.addEventListener("mousemove", handleMouseMove);
 			container.addEventListener("mouseleave", handleMouseLeave);
@@ -190,9 +232,9 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 									{url}
 								</div>
 							</div>
-							{/* Website preview iframe */}
+							{/* Website preview (scrolling video) */}
 							<div
-								ref={iframeContainerRef}
+								ref={imageContainerRef}
 								className="relative w-full h-[calc(100%-40px)] overflow-hidden bg-white dark:bg-gray-950"
 							>
 								{/* Cursor indicator */}
@@ -213,12 +255,13 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 										</div>
 									</div>
 								)}
-								{iframeLoading && !iframeError && (
+								{screenshotLoading && !screenshotError && (
 									<div className="absolute inset-0 flex items-center justify-center bg-background">
-										<Loader2 className="w-6 h-6 text-accent animate-spin" strokeWidth={1.5} />
+										<div className="absolute inset-0 bg-gradient-to-br from-muted/60 via-muted/30 to-muted/10 animate-pulse" />
+										<Loader2 className="w-6 h-6 text-accent animate-spin relative" strokeWidth={1.5} />
 									</div>
 								)}
-								{iframeError ? (
+								{screenshotError ? (
 									<div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 bg-background">
 										<ExternalLink className="w-8 h-8 text-muted-foreground" strokeWidth={1.5} />
 										<p className="text-sm text-muted-foreground text-center">
@@ -233,107 +276,48 @@ export function ProjectPreview({ href, title, url, children, className }: Projec
 											Visit {url}
 										</a>
 									</div>
-								) : (
-									<div
-										style={{
-											width: "100%",
-											height: "100%",
-											position: "relative",
-											overflow: "hidden",
-										}}
-									>
-										<div
+								) : animatedUrl && animatedUrl.trim() !== "" ? (
+									<div className="relative w-full h-full">
+										<video
+											key={animatedUrl}
+											src={animatedUrl}
 											style={{
-												width: "1920px", // Fixed desktop width
-												height: "1080px", // Fixed desktop height
-												transform: `scale(${Math.min(600 / 1920, 400 / 1080)})`, // Scale to fit 600x400 container
-												transformOrigin: "top left",
-												position: "absolute",
-												top: 0,
-												left: 0,
+												width: "100%",
+												height: "100%",
+												border: "none",
+												display: "block",
+												objectFit: "cover",
 											}}
-										>
-											<iframe
-												ref={iframeRef}
-												src={getIframeSrc()}
-												style={{
-													width: "1920px",
-													height: "1080px",
-													border: "none",
-													display: "block",
-													pointerEvents: "none",
-												}}
-												title={`Preview of ${title}`}
-												loading="eager"
-												sandbox={(() => {
-													try {
-														const urlObj = new URL(href);
-														const isSubdomain =
-															urlObj.hostname.endsWith(".byronwade.com") ||
-															urlObj.hostname === "byronwade.com";
-														return isSubdomain
-															? "allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation-by-user-activation"
-															: "allow-same-origin allow-scripts allow-popups allow-forms";
-													} catch {
-														return "allow-same-origin allow-scripts allow-popups allow-forms";
-													}
-												})()}
-												onLoad={() => {
-													// Check if iframe actually loaded content after a delay
-													setTimeout(() => {
-														if (iframeRef.current && !iframeError) {
-															try {
-																const iframe = iframeRef.current;
-																const iframeDoc =
-																	iframe.contentDocument || iframe.contentWindow?.document;
-																if (iframeDoc) {
-																	const body = iframeDoc.body;
-																	if (
-																		body &&
-																		(body.children.length === 0 || body.textContent?.trim() === "")
-																	) {
-																		// Blank iframe - likely blocked
-																		setIframeError(true);
-																		setIframeLoading(false);
-																		return;
-																	}
-																}
-															} catch (_e) {
-																// Cross-origin - check if it's a subdomain that might be blocked
-																try {
-																	const urlObj = new URL(href);
-																	const isSubdomain =
-																		urlObj.hostname.endsWith(".byronwade.com") ||
-																		urlObj.hostname === "byronwade.com";
-																	if (isSubdomain) {
-																		// Give subdomains extra time, then check
-																		setTimeout(() => {
-																			if (iframeRef.current && !iframeError) {
-																				// Still no content accessible - likely blocked
-																				setIframeError(true);
-																				setIframeLoading(false);
-																			}
-																		}, 3000);
-																		return;
-																	}
-																} catch {
-																	// Invalid URL, continue normally
-																}
-															}
-														}
-														if (!iframeError) {
-															setIframeLoading(false);
-														}
-													}, 500);
-												}}
-												onError={() => {
-													setIframeError(true);
-													setIframeLoading(false);
-												}}
-											/>
-										</div>
+											className="object-cover"
+											title={`Scrolling preview of ${title}`}
+											playsInline
+											autoPlay
+											muted
+											loop
+											onLoadedMetadata={() => setScreenshotLoading(false)}
+											onError={() => {
+												setScreenshotError(true);
+												setScreenshotLoading(false);
+											}}
+										/>
 									</div>
-								)}
+								) : staticUrl ? (
+									<div className="relative w-full h-full">
+										<Image
+											src={staticUrl}
+											alt={`Screenshot of ${title}`}
+											fill
+											className="object-cover"
+											onLoad={() => setScreenshotLoading(false)}
+											onError={() => {
+												setScreenshotError(true);
+												setScreenshotLoading(false);
+											}}
+											priority
+											unoptimized
+										/>
+									</div>
+								) : null}
 							</div>
 						</div>
 					</div>

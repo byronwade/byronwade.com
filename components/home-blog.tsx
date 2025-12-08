@@ -22,20 +22,20 @@ async function BlogList() {
 						href={`/blog/${post.slug}`}
 						className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-1.5 sm:py-2 gap-2 sm:gap-4"
 					>
-						<div className="flex items-center gap-2 flex-1 min-w-0">
-							<span className="inline-flex items-center gap-1 text-xs shrink-0 text-teal-600 dark:text-teal-400">
+						<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text flex-1 min-w-0">
+							{post.title}
+						</p>
+						<div className="flex items-center gap-3 shrink-0 sm:ml-4">
+							<span className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400">
 								<Clock className="size-3" />
 								{post.readingTime} min
 							</span>
-							<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
-								{post.title}
-							</p>
+							{post.date && (
+								<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors">
+									{format(new Date(post.date), "MMM d, yyyy")}
+								</p>
+							)}
 						</div>
-						{post.date && (
-							<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors shrink-0 sm:ml-2">
-								{format(new Date(post.date), "MMM d, yyyy")}
-							</p>
-						)}
 					</Link>
 				))
 			)}

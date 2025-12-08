@@ -1,4 +1,10 @@
+import type { Viewport } from "next";
 import Link from "next/link";
+
+export const viewport: Viewport = {
+	width: "device-width",
+	initialScale: 1,
+};
 
 export default function NotFound() {
 	return (

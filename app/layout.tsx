@@ -8,13 +8,13 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { plusJakartaSans } from "@/lib/fonts";
-import { metadata } from "./metadata.config";
+import { metadata, viewport } from "./metadata.config";
 
 const personJsonLd = generatePersonStructuredData();
 const organizationJsonLd = generateOrganizationStructuredData();
 const websiteJsonLd = generateWebSiteStructuredData();
 
-export { metadata };
+export { metadata, viewport };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
