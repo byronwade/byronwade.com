@@ -277,7 +277,7 @@ export default function SkillsShowcase({ className = "" }: SkillsShowcaseProps) 
 					<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
 					<input
 						type="text"
-						placeholder="Search skills..."
+						placeholder="Search skills…"
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
 						className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-yellow-600/50 focus:border-yellow-600"

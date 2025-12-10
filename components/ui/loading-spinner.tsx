@@ -194,7 +194,8 @@ export function LoadingSpinner({
 }
 
 // Full page loading component
-export function PageLoader({ text = "Loading..." }: { text?: string }) {
+// AGENTS.md: SHOULD use ellipsis character (…) for loading states
+export function PageLoader({ text = "Loading…" }: { text?: string }) {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center">
 			<div className="text-center space-y-8">

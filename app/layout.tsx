@@ -5,6 +5,7 @@ import {
 } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { plusJakartaSans } from "@/lib/fonts";
@@ -50,9 +51,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					enableSystem
 					disableTransitionOnChange
 				>
-					<main id="main-content" className="flex-1">
-						{children}
-					</main>
+					{/* AGENTS.md: URL reflects state - nuqs for deep-link filters/tabs/pagination */}
+					<NuqsAdapter>
+						<main id="main-content" className="flex-1">
+							{children}
+						</main>
+					</NuqsAdapter>
 				</ThemeProvider>
 				<Analytics />
 				<SpeedInsights />

@@ -190,12 +190,33 @@
 	* {
 		@apply border-border;
 	}
+
+	/* AGENTS.md: Global touch-action to prevent double-tap zoom */
+	html {
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: hsl(var(--accent) / 0.1);
+	}
+
 	body {
 		@apply bg-background text-foreground;
 		font-feature-settings: "kern" 1, "liga" 1;
 		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* AGENTS.md: Mobile input font-size ≥16px to prevent iOS zoom on focus */
+	input,
+	select,
+	textarea {
+		font-size: 16px;
+	}
+	@media (min-width: 640px) {
+		input,
+		select,
+		textarea {
+			font-size: inherit;
+		}
 	}
 	/* Comprehensive Typography Scale - Modern Design System */
 	/* Font Weight Scale */
@@ -228,6 +249,7 @@
 	}
 
 	/* Typography refinements - Cursor.com style */
+	/* AGENTS.md: scroll-margin-top on headings for anchored links */
 	h1,
 	h2,
 	h3,
@@ -237,6 +259,7 @@
 		letter-spacing: -0.01em;
 		font-feature-settings: "kern" 1, "liga" 1;
 		font-weight: 600;
+		scroll-margin-top: 5rem;
 	}
 	h1 {
 		line-height: 1.2;
@@ -660,5 +683,20 @@
 		.safe-right {
 			padding-right: max(1rem, env(safe-area-inset-right));
 		}
+	}
+
+	/* AGENTS.md: overscroll-behavior: contain for modals/drawers */
+	.overscroll-contain {
+		overscroll-behavior: contain;
+	}
+
+	/* AGENTS.md: Tabular numbers for comparisons and data displays */
+	.tabular-nums {
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* AGENTS.md: Non-breaking space utility - use with CSS content or apply to wrapper */
+	.nowrap {
+		white-space: nowrap;
 	}
 }

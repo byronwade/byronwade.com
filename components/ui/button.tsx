@@ -1,5 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -43,13 +44,46 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
+	/** AGENTS.md: Loading buttons show spinner and keep original label */
+	isLoading?: boolean;
+	/** Optional loading text - defaults to children if not provided */
+	loadingText?: string;
 }
 
+/**
+ * Button component following AGENTS.md guidelines:
+ * - MUST: Loading buttons show spinner and keep original label
+ * - MUST: Keep submit enabled until request starts; then disable, show spinner
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, ...props }, ref) => {
+	({ className, variant, size, asChild = false, isLoading = false, loadingText, children, disabled, ...props }, ref) => {
 		const Comp = asChild ? Slot : "button";
+
+		// When loading, show spinner + original label (or loadingText if provided)
+		if (isLoading && !asChild) {
+			return (
+				<button
+					className={cn(buttonVariants({ variant, size, className }))}
+					ref={ref}
+					disabled
+					aria-busy="true"
+					{...props}
+				>
+					<Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+					<span>{loadingText ?? children}</span>
+				</button>
+			);
+		}
+
 		return (
-			<Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+			<Comp
+				className={cn(buttonVariants({ variant, size, className }))}
+				ref={ref}
+				disabled={disabled}
+				{...props}
+			>
+				{children}
+			</Comp>
 		);
 	}
 );
