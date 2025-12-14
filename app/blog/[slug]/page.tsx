@@ -1,4 +1,7 @@
 import { BlogPostViewTracker } from "@/components/analytics-tracker";
+import { ReadingProgress } from "@/components/reading-progress";
+import { RelatedPosts } from "@/components/related-posts";
+import { SocialShare } from "@/components/social-share";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import {
 	generateArticleStructuredData,
@@ -143,6 +146,13 @@ async function BlogPostContent({ slug }: { slug: string }) {
 								{format(new Date(post.date), "MMMM d, yyyy")}
 							</p>
 						)}
+						{/* Social Share Buttons */}
+						<SocialShare
+							url={url}
+							title={post.title}
+							description={post.excerpt}
+							className="mt-4"
+						/>
 					</div>
 				</div>
 			</div>
@@ -271,10 +281,19 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				</div>
 			</article>
 
-			{/* Back to blog link at bottom */}
-			<div className="animate-in animate-delay-2 w-full">
+			{/* Related Posts */}
+			<RelatedPosts currentSlug={post.slug} limit={3} />
+
+			{/* Social Share and Back to blog at bottom */}
+			<div className="animate-in animate-delay-2 w-full flex flex-col gap-4 mt-8">
+				<SocialShare
+					url={url}
+					title={post.title}
+					description={post.excerpt}
+					className="justify-center"
+				/>
 				<Link
-					className="group flex items-center gap-2 w-full touch-target"
+					className="group flex items-center gap-2 w-full touch-target justify-center"
 					aria-label="Go to blog"
 					href="/blog"
 				>
@@ -292,6 +311,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
 	return (
 		<div className="relative min-h-screen w-full bg-[var(--background)]">
+			{/* Reading Progress Bar */}
+			<ReadingProgress />
+
 			{/* Subtle background gradient */}
 			<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
 

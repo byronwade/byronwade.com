@@ -1,3 +1,6 @@
+import { Card3DTilt } from "@/components/card-3d-tilt";
+import { GradientText } from "@/components/gradient-text";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { getProjects } from "@/lib/projects";
 import type { Project, ProjectType } from "@/lib/projects";
 import Link from "next/link";
@@ -37,33 +40,36 @@ async function ProjectsList() {
 					No projects yet. Check back soon!
 				</p>
 			) : (
-				sortedProjects.map((project) => {
+				sortedProjects.map((project, index) => {
 					const projectType = project.type || "hobby";
 					const cleanUrl = project.url
 						? project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")
 						: "";
 					return (
-						<Link
-							key={project.slug}
-							href={`/projects/${project.slug}`}
-							className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-1.5 sm:py-2 gap-2 sm:gap-4"
-						>
-							<div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
-								<div className="flex items-center gap-2 min-w-0">
-									<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
-										{typeLabels[projectType]}
-									</span>
-									<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text truncate">
-										{project.title}
-									</p>
-								</div>
-							</div>
-							{project.url && cleanUrl && (
-								<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors truncate sm:whitespace-nowrap sm:ml-2 sm:shrink-0 max-w-full sm:max-w-none">
-									{cleanUrl}
-								</p>
-							)}
-						</Link>
+						<ScrollReveal key={project.slug} direction="up" delay={index * 50}>
+							<Card3DTilt intensity={3}>
+								<Link
+									href={`/projects/${project.slug}`}
+									className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-1.5 sm:py-2 gap-2 sm:gap-4"
+								>
+									<div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
+										<div className="flex items-center gap-2 min-w-0">
+											<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
+												{typeLabels[projectType]}
+											</span>
+											<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text truncate">
+												{project.title}
+											</p>
+										</div>
+									</div>
+									{project.url && cleanUrl && (
+										<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors truncate sm:whitespace-nowrap sm:ml-2 sm:shrink-0 max-w-full sm:max-w-none">
+											{cleanUrl}
+										</p>
+									)}
+								</Link>
+							</Card3DTilt>
+						</ScrollReveal>
 					);
 				})
 			)}
@@ -73,15 +79,21 @@ async function ProjectsList() {
 
 export function HomeProjects() {
 	return (
-		<div className="animate-in animate-delay-5 w-full">
-			<div className="flex flex-col gap-6 sm:gap-7 md:gap-8 w-full">
-				<div className="flex flex-col gap-2 sm:gap-3">
-					<h2 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)] tracking-tight">
-						Projects
-					</h2>
+		<ScrollReveal direction="up" delay={100}>
+			<div className="animate-in animate-delay-5 w-full">
+				<div className="flex flex-col gap-6 sm:gap-7 md:gap-8 w-full items-start">
+					<div className="flex flex-col gap-2 sm:gap-3 w-full">
+						<GradientText
+							as="h2"
+							variant="accent"
+							className="text-2xl sm:text-3xl font-semibold tracking-tight"
+						>
+							Projects
+						</GradientText>
+					</div>
+					<ProjectsList />
 				</div>
-				<ProjectsList />
 			</div>
-		</div>
+		</ScrollReveal>
 	);
 }

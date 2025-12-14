@@ -81,16 +81,6 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						{/* Header Section */}
 						<div className="animate-in w-full">
 							<div className="flex flex-col gap-6 items-start w-full">
-								<Link
-									className="group flex items-center gap-2 w-full touch-target"
-									aria-label="Go to projects"
-									href="/projects"
-								>
-									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200">
-										← Back to projects
-									</span>
-								</Link>
-
 								<div className="flex flex-col gap-3 w-full">
 									<h1 className="text-3xl sm:text-4xl font-semibold text-[var(--foreground)] tracking-tight">
 										{project.title}

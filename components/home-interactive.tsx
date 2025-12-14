@@ -1,5 +1,8 @@
 "use client";
 
+import { GradientText } from "@/components/gradient-text";
+import { LiveStatus } from "@/components/live-status";
+import { MagneticButton } from "@/components/magnetic-button";
 import { SocialLinkPreview } from "@/components/social-link-preview";
 import {
 	Dialog,
@@ -174,12 +177,16 @@ export function HomeInteractive() {
 							aria-label="Byron Wade home"
 							href="/"
 						>
-							<h1
-								className={`${customFont.className} text-2xl sm:text-3xl font-medium leading-tight text-[var(--foreground)] group-hover:text-accent transition-colors duration-300 mobile-text`}
+							<GradientText
+								as="h1"
+								variant="accent"
+								className={`${customFont.className} text-2xl sm:text-3xl font-medium leading-tight group-hover:opacity-90 transition-opacity duration-300 mobile-text`}
 							>
 								Byron Wade
-							</h1>
+							</GradientText>
 						</Link>
+						{/* Live Status Indicator */}
+						<LiveStatus status="Available for conversations" className="mt-1" />
 
 						{/* Navigation - enhanced */}
 						<nav
@@ -356,52 +363,60 @@ export function HomeInteractive() {
 			<div className="animate-in animate-delay-7 w-full">
 				<div className="flex flex-wrap gap-2 sm:gap-3 items-center justify-center py-4 sm:py-6">
 					<SocialLinkPreview platform="github">
-						<a
+						<MagneticButton
+							as="a"
 							href="https://github.com/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="GitHub"
+							strength={0.2}
 						>
 							<Github className="size-3.5 sm:size-4 text-accent transition-colors" />
 							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								GitHub
 							</span>
-						</a>
+						</MagneticButton>
 					</SocialLinkPreview>
 					<SocialLinkPreview platform="linkedin">
-						<a
+						<MagneticButton
+							as="a"
 							href="https://linkedin.com/in/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="LinkedIn"
+							strength={0.2}
 						>
 							<Linkedin className="size-3.5 sm:size-4 text-accent transition-colors" />
 							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								LinkedIn
 							</span>
-						</a>
+						</MagneticButton>
 					</SocialLinkPreview>
 					<SocialLinkPreview platform="twitter">
-						<a
+						<MagneticButton
+							as="a"
 							href="https://twitter.com/byron_c_wade"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 							aria-label="X (Twitter)"
+							strength={0.2}
 						>
 							<Twitter className="size-3.5 sm:size-4 text-accent transition-colors" />
 							<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 								X
 							</span>
-						</a>
+						</MagneticButton>
 					</SocialLinkPreview>
-					<button
+					<MagneticButton
+						as="button"
 						type="button"
 						onClick={() => handleEmailClick("social")}
 						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 cursor-pointer social-button button-press focus-ring"
 						aria-label="Contact via email"
+						strength={0.2}
 					>
 						{copiedButton === "social" ? (
 							<Check className="size-3.5 sm:size-4 text-accent transition-colors bounce-subtle" />
@@ -413,19 +428,21 @@ export function HomeInteractive() {
 						>
 							{copiedButton === "social" ? "Copied!" : "Email"}
 						</span>
-					</button>
-					<a
+					</MagneticButton>
+					<MagneticButton
+						as="a"
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="group inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 social-button focus-ring"
 						aria-label="Thorbis"
+						strength={0.2}
 					>
 						<Globe className="size-3.5 sm:size-4 text-accent transition-colors" />
 						<span className="text-xs sm:text-sm font-medium text-accent transition-colors">
 							Thorbis
 						</span>
-					</a>
+					</MagneticButton>
 				</div>
 			</div>
 		</>
