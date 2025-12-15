@@ -28,7 +28,7 @@ async function BlogList() {
 								{post.title}
 							</p>
 							<div className="flex items-center gap-3 shrink-0 sm:ml-4">
-								<span className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400">
+								<span className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 metadata-pill">
 									<Clock className="size-3" />
 									{post.readingTime} min
 								</span>

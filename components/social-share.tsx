@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, Linkedin, Share2, Twitter } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SocialShareProps {
 	url: string;
@@ -16,9 +16,15 @@ interface SocialShareProps {
  */
 export function SocialShare({ url, title, description, className }: SocialShareProps) {
 	const [copied, setCopied] = useState(false);
+	const [canShare, setCanShare] = useState(false);
 	const encodedUrl = encodeURIComponent(url);
 	const encodedTitle = encodeURIComponent(title);
 	const encodedDescription = encodeURIComponent(description || "");
+
+	useEffect(() => {
+		// Check for native share support on mount
+		setCanShare(typeof navigator !== "undefined" && !!navigator.share);
+	}, []);
 
 	const shareLinks = {
 		twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}${encodedDescription ? `&via=byronwade` : ""}`,
@@ -56,7 +62,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	return (
 		<div className={`flex flex-wrap items-center gap-2 ${className || ""}`}>
 			{/* Native Share (mobile) */}
-			{navigator.share && (
+			{canShare && (
 				<button
 					type="button"
 					onClick={handleNativeShare}

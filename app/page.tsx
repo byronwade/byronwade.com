@@ -52,12 +52,18 @@ export default function HomePage() {
 							<HomeProjects />
 						</Suspense>
 
+						{/* Subtle section divider */}
+						<div className="section-divider my-2" aria-hidden="true" />
+
 						{/* Blog Section */}
 						<Suspense
 							fallback={<div className="animate-pulse w-full h-24 bg-[var(--muted)] rounded" />}
 						>
 							<HomeBlog />
 						</Suspense>
+
+						{/* Subtle section divider */}
+						<div className="section-divider my-2" aria-hidden="true" />
 
 						{/* Footer - enhanced */}
 						<div className="animate-in animate-delay-8 w-full">
@@ -71,8 +77,8 @@ export default function HomePage() {
 										height={32}
 									/>
 								</div>
-								<p className="text-xs sm:text-sm text-center text-[var(--muted-foreground)]">
-									Built with{" "}
+								<p className="text-xs sm:text-sm text-center text-[var(--muted-foreground)] flex items-center gap-1.5 flex-wrap justify-center">
+									<span>Built with</span>{" "}
 									<a
 										href="https://nextjs.org"
 										target="_blank"
@@ -81,7 +87,7 @@ export default function HomePage() {
 									>
 										Next.js
 									</a>{" "}
-									and{" "}
+									<span>and</span>{" "}
 									<a
 										href="https://tailwindcss.com"
 										target="_blank"

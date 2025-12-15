@@ -699,4 +699,82 @@
 	.nowrap {
 		white-space: nowrap;
 	}
+
+	/* Section divider - subtle decorative separator */
+	.section-divider {
+		position: relative;
+		height: 1px;
+		width: 100%;
+		max-width: 120px;
+		margin: 0 auto;
+		background: linear-gradient(
+			to right,
+			transparent,
+			hsl(var(--border)),
+			transparent
+		);
+	}
+
+	.section-divider::before {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 6px;
+		height: 6px;
+		background: hsl(var(--accent) / 0.5);
+		border-radius: 50%;
+	}
+
+	/* Pulsing heart animation for footer */
+	@keyframes heart-beat {
+		0%, 100% {
+			transform: scale(1);
+		}
+		14% {
+			transform: scale(1.15);
+		}
+		28% {
+			transform: scale(1);
+		}
+		42% {
+			transform: scale(1.1);
+		}
+		56% {
+			transform: scale(1);
+		}
+	}
+
+	.heart-beat {
+		animation: heart-beat 2s ease-in-out infinite;
+	}
+
+	/* Subtle pill/chip styling for metadata */
+	.metadata-pill {
+		padding: 0.125rem 0.5rem;
+		border-radius: 9999px;
+		background: hsl(var(--muted));
+		transition: background-color 0.2s ease;
+	}
+
+	.metadata-pill:hover {
+		background: hsl(var(--muted-foreground) / 0.15);
+	}
+
+	/* Type badge hover background */
+	.type-badge {
+		padding: 0.125rem 0.375rem;
+		border-radius: 0.25rem;
+		transition: background-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.type-badge:hover {
+		background: hsl(var(--accent) / 0.1);
+	}
+
+	.group:hover .type-badge {
+		background: hsl(var(--accent) / 0.1);
+		transform: translateX(2px);
+	}
 }

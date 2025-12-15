@@ -1,12 +1,13 @@
 "use client";
 
+import type { ElementType } from "react";
 import { useEffect, useRef, useState } from "react";
 
 interface MagneticButtonProps {
 	children: React.ReactNode;
 	className?: string;
 	strength?: number;
-	as?: keyof JSX.IntrinsicElements;
+	as?: ElementType;
 	href?: string;
 	onClick?: () => void;
 	[key: string]: unknown;

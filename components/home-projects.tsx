@@ -54,7 +54,7 @@ async function ProjectsList() {
 								>
 									<div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
 										<div className="flex items-center gap-2 min-w-0">
-											<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
+											<span className={`text-xs shrink-0 type-badge ${typeColors[projectType]}`}>
 												{typeLabels[projectType]}
 											</span>
 											<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text truncate">
