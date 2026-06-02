@@ -16,7 +16,7 @@ const LAST_UPDATED = "June 1, 2026";
 export default function PrivacyPage() {
 	return (
 		<SiteShell>
-			<article className="prose prose-invert mx-auto max-w-3xl py-16 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-accent">
+			<article className="prose dark:prose-invert mx-auto max-w-3xl py-16 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-brand hover:prose-a:text-brand">
 				<header className="not-prose mb-10">
 					<h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Privacy Policy</h1>
 					<p className="mt-3 text-sm text-muted-foreground">Last updated: {LAST_UPDATED}</p>

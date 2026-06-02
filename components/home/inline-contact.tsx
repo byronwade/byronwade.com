@@ -30,24 +30,24 @@ export function InlineContact({
 
 	return (
 		<section
-			className="animate-in w-full overflow-hidden rounded-xl border border-accent/30 bg-card shadow-lg"
+			className="reveal w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
-			<div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+			<div className="flex items-center justify-between border-b border-border px-4 py-3">
 				<span className="text-sm font-medium">Contact</span>
 				<button
 					type="button"
 					onClick={onClose}
-					className="rounded-md p-1 hover:bg-muted"
+					className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 					aria-label="Close"
 				>
 					<X className="h-4 w-4" />
 				</button>
 			</div>
-			<div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+			<div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
 				<a
 					href={`mailto:${email}`}
-					className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
+					className="inline-flex items-center gap-2 text-sm font-medium text-brand hover:underline"
 				>
 					<Mail className="h-4 w-4" />
 					{email}
@@ -56,14 +56,14 @@ export function InlineContact({
 					<button
 						type="button"
 						onClick={copyEmail}
-						className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm hover:bg-muted"
+						className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
 					>
-						{copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+						{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
 						{copied ? "Copied" : "Copy"}
 					</button>
 					<a
 						href={`mailto:${email}`}
-						className="inline-flex items-center gap-2 rounded-md bg-accent px-3 py-2 text-sm font-medium text-accent-foreground"
+						className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80"
 					>
 						<Send className="h-4 w-4" />
 						Email

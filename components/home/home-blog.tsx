@@ -1,67 +1,56 @@
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
-import { GradientText, ScrollReveal } from "@/components/common";
+import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 
 async function BlogList() {
 	const posts = await getBlogPosts();
-
-	// Limit to most recent posts (e.g., 3-5)
 	const recentPosts = posts.slice(0, 5);
 
+	if (recentPosts.length === 0) {
+		return <p className="text-sm text-muted-foreground">No blog posts yet. Check back soon.</p>;
+	}
+
 	return (
-		<div className="flex flex-col gap-1 sm:gap-1.5">
-			{recentPosts.length === 0 ? (
-				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
-					No blog posts yet. Check back soon!
-				</p>
-			) : (
-				recentPosts.map((post, index) => (
-					<ScrollReveal key={post.slug} direction="up" delay={index * 50}>
-						<Link
-							href={`/blog/${post.slug}`}
-							className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-1.5 sm:py-2 gap-2 sm:gap-4"
-						>
-							<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text flex-1 min-w-0">
-								{post.title}
-							</p>
-							<div className="flex items-center gap-3 shrink-0 sm:ml-4">
-								<span className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400 metadata-pill">
-									<Clock className="size-3" />
-									{post.readingTime} min
-								</span>
-								{post.date && (
-									<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors">
-										{format(new Date(post.date), "MMM d, yyyy")}
-									</p>
-								)}
-							</div>
-						</Link>
-					</ScrollReveal>
-				))
-			)}
+		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+			{recentPosts.map((post) => (
+				<Link
+					key={post.slug}
+					href={`/blog/${post.slug}`}
+					className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
+				>
+					<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+						{post.title}
+					</span>
+					<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+						<Badge variant="outline">
+							<Clock />
+							{post.readingTime} min
+						</Badge>
+						{post.date && (
+							<span className="hidden sm:inline">{format(new Date(post.date), "MMM d, yyyy")}</span>
+						)}
+					</div>
+				</Link>
+			))}
 		</div>
 	);
 }
 
 export function HomeBlog() {
 	return (
-		<ScrollReveal direction="up" delay={100}>
-			<div className="animate-in animate-delay-6 w-full">
-				<div className="flex flex-col gap-6 sm:gap-7 md:gap-8 w-full items-start">
-					<div className="flex flex-col gap-2 sm:gap-3 w-full">
-						<GradientText
-							as="h2"
-							variant="accent"
-							className="font-display text-2xl font-normal tracking-tight sm:text-3xl"
-						>
-							Blog
-						</GradientText>
-					</div>
-					<BlogList />
-				</div>
+		<section className="reveal reveal-delay-7 flex w-full flex-col gap-5">
+			<div className="flex items-baseline justify-between">
+				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Writing</h2>
+				<Link
+					href="/blog"
+					className="text-sm text-muted-foreground transition-colors hover:text-brand"
+				>
+					All posts →
+				</Link>
 			</div>
-		</ScrollReveal>
+			<BlogList />
+		</section>
 	);
 }

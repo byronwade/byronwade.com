@@ -66,7 +66,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				<button
 					type="button"
 					onClick={handleNativeShare}
-					className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 text-sm font-medium text-accent focus-ring"
+					className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
 					aria-label="Share via native share"
 				>
 					<Share2 className="size-4" />
@@ -79,7 +79,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				href={shareLinks.twitter}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 text-sm font-medium text-accent focus-ring"
+				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
 				aria-label="Share on Twitter"
 			>
 				<Twitter className="size-4" />
@@ -91,7 +91,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				href={shareLinks.linkedin}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 text-sm font-medium text-accent focus-ring"
+				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
 				aria-label="Share on LinkedIn"
 			>
 				<Linkedin className="size-4" />
@@ -102,7 +102,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 			<button
 				type="button"
 				onClick={handleCopy}
-				className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-gradient-to-br from-accent/25 to-accent/15 dark:from-accent/20 dark:to-accent/10 border border-accent/40 dark:border-accent/30 hover:from-accent/35 hover:to-accent/25 dark:hover:from-accent/25 dark:hover:to-accent/15 hover:border-accent/50 dark:hover:border-accent/40 transition-all duration-300 text-sm font-medium text-accent focus-ring"
+				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
 				aria-label="Copy link"
 			>
 				{copied ? (

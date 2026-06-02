@@ -55,21 +55,18 @@ export default function ContactClient() {
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
-				<div className="animate-in w-full">
-					<BreadcrumbNav
-						items={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-						className="mb-4"
-					/>
-					<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
+				<header className="reveal flex w-full flex-col gap-3">
+					<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
+					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 						Get in touch
 					</h1>
-					<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+					<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
 						Have a project in mind, a question, or just want to say hello? Send a note below and
 						I'll reply as soon as I can.
 					</p>
-				</div>
+				</header>
 
-				<div className="grid animate-in animate-delay-1 gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
+				<div className="grid reveal reveal-delay-1 gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
 						<div className="grid gap-5 sm:grid-cols-2">
 							<div className="flex flex-col gap-2">
@@ -125,13 +122,13 @@ export default function ContactClient() {
 						</div>
 					</form>
 
-					<aside className="flex flex-col gap-6 rounded-xl border border-border/60 bg-card/50 p-6">
+					<aside className="flex h-fit flex-col gap-6 rounded-2xl border border-border bg-card p-6 shadow-card">
 						<div className="flex flex-col gap-1.5">
 							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
 								Email
 							</span>
 							<ObfuscatedEmail
-								className="text-sm text-foreground hover:text-accent"
+								className="text-sm text-foreground hover:text-brand"
 								showIcon={false}
 								variant="link"
 							/>
@@ -141,7 +138,7 @@ export default function ContactClient() {
 								Location
 							</span>
 							<span className="inline-flex items-center gap-2 text-sm text-foreground">
-								<MapPin className="size-4 text-accent" />
+								<MapPin className="size-4 text-brand" />
 								Jasper, GA
 							</span>
 						</div>
@@ -149,7 +146,7 @@ export default function ContactClient() {
 							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
 								Elsewhere
 							</span>
-							<div className="flex gap-2">
+							<div className="flex gap-1.5">
 								{socials.map((social) => (
 									<a
 										key={social.name}
@@ -157,14 +154,14 @@ export default function ContactClient() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={social.name}
-										className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-ring"
+										className="inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
 									>
-										<social.icon className="size-[1.1rem]" />
+										<social.icon className="size-[1.05rem]" />
 									</a>
 								))}
 							</div>
 						</div>
-						<div className="flex items-center gap-2 border-t border-border/60 pt-4 text-xs text-muted-foreground">
+						<div className="flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
 							<Mail className="size-3.5" />
 							Usually replies within a day or two.
 						</div>

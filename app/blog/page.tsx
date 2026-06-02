@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 import {
 	generateBreadcrumbStructuredData,
@@ -44,45 +45,45 @@ export async function generateMetadata() {
 async function BlogList() {
 	const posts = await getBlogPosts();
 
+	if (posts.length === 0) {
+		return (
+			<p className="text-sm leading-relaxed text-muted-foreground">
+				No blog posts yet. Check back soon.
+			</p>
+		);
+	}
+
 	return (
-		<div className="flex flex-col gap-1.5 sm:gap-2">
-			{posts.length === 0 ? (
-				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
-					No blog posts yet. Check back soon!
-				</p>
-			) : (
-				posts.map((post) => (
-					<Link
-						key={post.slug}
-						href={`/blog/${post.slug}`}
-						className="flex flex-col gap-3 sm:gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-1.5"
-					>
-						<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
-							<div className="flex-1 min-w-0">
-								<div className="flex items-center gap-2 flex-wrap">
-									<span className="inline-flex items-center gap-1 text-xs shrink-0 text-teal-600 dark:text-teal-400">
-										<Clock className="size-3" />
-										{post.readingTime} min
-									</span>
-									<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
-										{post.title}
-									</p>
-								</div>
-								{post.excerpt && (
-									<p className="text-sm sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors mt-2 sm:mt-1 leading-relaxed">
-										{post.excerpt}
-									</p>
-								)}
-							</div>
+		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+			{posts.map((post) => (
+				<Link
+					key={post.slug}
+					href={`/blog/${post.slug}`}
+					className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
+				>
+					<div className="flex items-start justify-between gap-4">
+						<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+							{post.title}
+						</span>
+						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+							<Badge variant="outline">
+								<Clock />
+								{post.readingTime} min
+							</Badge>
 							{post.date && (
-								<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors shrink-0 sm:ml-2">
+								<time className="hidden sm:inline">
 									{format(new Date(post.date), "MMM d, yyyy")}
-								</p>
+								</time>
 							)}
 						</div>
-					</Link>
-				))
-			)}
+					</div>
+					{post.excerpt && (
+						<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+							{post.excerpt}
+						</p>
+					)}
+				</Link>
+			))}
 		</div>
 	);
 }
@@ -113,27 +114,24 @@ export default function BlogPage() {
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
-					<div className="animate-in w-full">
-						<BreadcrumbNav
-							items={[{ label: "Home", href: "/" }, { label: "Blog" }]}
-							className="mb-4"
-						/>
-						<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
-							Blog
+					<header className="reveal flex w-full flex-col gap-3">
+						<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
+						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+							Writing
 						</h1>
-						<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
 							Insights on web development, React, Next.js, performance, and building software for
 							service businesses.
 						</p>
-					</div>
+					</header>
 
-					<div className="animate-in animate-delay-1 w-full">
+					<div className="reveal reveal-delay-1 w-full">
 						<Suspense
 							fallback={
-								<div className="animate-pulse space-y-4">
-									<div className="h-16 rounded-lg bg-muted" />
-									<div className="h-16 rounded-lg bg-muted" />
-									<div className="h-16 rounded-lg bg-muted" />
+								<div className="animate-pulse space-y-2">
+									<div className="h-16 rounded-2xl bg-muted" />
+									<div className="h-16 rounded-2xl bg-muted" />
+									<div className="h-16 rounded-2xl bg-muted" />
 								</div>
 							}
 						>

@@ -101,11 +101,11 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
 					<div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-						<Link href="/portfolio" className="hover:text-yellow-600 transition-colors">
+						<Link href="/portfolio" className="hover:text-brand transition-colors">
 							Portfolio
 						</Link>
 						<ChevronRight className="w-4 h-4" />
-						<Link href="/portfolio?tab=figma" className="hover:text-yellow-600 transition-colors">
+						<Link href="/portfolio?tab=figma" className="hover:text-brand transition-colors">
 							Figma
 						</Link>
 						<ChevronRight className="w-4 h-4" />
@@ -116,7 +116,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						<h1 className="text-4xl font-bold text-foreground mb-4">{fileData.name}</h1>
 						<div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
 							<div className="flex items-center gap-1">
-								<Calendar className="w-4 h-4 text-yellow-600" />
+								<Calendar className="w-4 h-4 text-brand" />
 								<span>
 									Updated{" "}
 									{new Date(fileData.lastModified || fileData.last_modified).toLocaleDateString()}
@@ -124,7 +124,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</div>
 							{fileData.editorType && (
 								<div className="flex items-center gap-1">
-									<Figma className="w-4 h-4 text-yellow-600" />
+									<Figma className="w-4 h-4 text-brand" />
 									<span className="capitalize">{fileData.editorType}</span>
 								</div>
 							)}
@@ -133,10 +133,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 					{/* Metrics Overview */}
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mr-4">
-									<FileText className="w-6 h-6 text-yellow-600" />
+								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
+									<FileText className="w-6 h-6 text-brand" />
 								</div>
 								<div>
 									<p className="text-2xl font-bold text-foreground">{pagesCount}</p>
@@ -145,10 +145,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mr-4">
-									<Palette className="w-6 h-6 text-yellow-600" />
+								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
+									<Palette className="w-6 h-6 text-brand" />
 								</div>
 								<div>
 									<p className="text-2xl font-bold text-foreground">{componentsCount}</p>
@@ -157,10 +157,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mr-4">
-									<Zap className="w-6 h-6 text-yellow-600" />
+								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
+									<Zap className="w-6 h-6 text-brand" />
 								</div>
 								<div>
 									<p className="text-2xl font-bold text-foreground">{stylesCount}</p>
@@ -169,10 +169,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mr-4">
-									<BarChart3 className="w-6 h-6 text-yellow-600" />
+								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
+									<BarChart3 className="w-6 h-6 text-brand" />
 								</div>
 								<div>
 									<p className="text-2xl font-bold text-foreground">{simpleComplexityScore}</p>
@@ -198,10 +198,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Components Library */}
 						{fileData.components && Object.keys(fileData.components || {}).length > 0 && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
-										<Palette className="w-5 h-5 text-yellow-600" />
+										<Palette className="w-5 h-5 text-brand" />
 										Components ({Object.keys(fileData.components || {}).length})
 									</CardTitle>
 								</CardHeader>
@@ -217,7 +217,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 												>
 													<CardContent className="p-4">
 														<div className="flex items-center gap-3 mb-3">
-															<div className="w-10 h-10 bg-yellow-600/10 border border-yellow-600/30 rounded flex items-center justify-center text-yellow-600 text-xs font-medium">
+															<div className="w-10 h-10 bg-brand/10 border border-brand/30 rounded flex items-center justify-center text-brand text-xs font-medium">
 																{component.name?.charAt(0)?.toUpperCase() || "C"}
 															</div>
 															<div className="flex-1 min-w-0">
@@ -263,18 +263,19 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						{/* Action Buttons */}
 						<div className="flex flex-wrap gap-3">
 							<Button
-								asChild
+								render={
+									// biome-ignore lint/a11y/useAnchorContent: label is injected via Button's render prop (base-ui)
+									<a
+										href={`https://www.figma.com/file/${key}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label="Open in Figma"
+									/>
+								}
 								size="lg"
-								className="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold transition-colors"
 							>
-								<a
-									href={`https://www.figma.com/file/${key}`}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<ExternalLink className="w-4 h-4 mr-2" />
-									Open in Figma
-								</a>
+								<ExternalLink className="w-4 h-4 mr-2" />
+								Open in Figma
 							</Button>
 						</div>
 
@@ -346,13 +347,13 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 					{/* Sidebar */}
 					<div className="space-y-6">
 						{/* File Information */}
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardHeader>
 								<CardTitle className="text-foreground">File Information</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex items-center gap-2 text-muted-foreground">
-									<Calendar className="w-4 h-4 text-yellow-600" />
+									<Calendar className="w-4 h-4 text-brand" />
 									<span className="text-sm">Last Modified</span>
 								</div>
 								<p className="text-foreground font-medium">
@@ -362,7 +363,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								{fileData.version && (
 									<div>
 										<div className="flex items-center gap-2 text-muted-foreground mb-1">
-											<GitBranch className="w-4 h-4 text-yellow-600" />
+											<GitBranch className="w-4 h-4 text-brand" />
 											<span className="text-sm">Version</span>
 										</div>
 										<p className="text-foreground font-medium">{fileData.version}</p>
@@ -372,7 +373,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</Card>
 
 						{/* Quick Stats */}
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 							<CardHeader>
 								<CardTitle className="text-foreground">Quick Stats</CardTitle>
 							</CardHeader>
@@ -400,14 +401,14 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Complexity Assessment */}
 						{complexityAssessment && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-yellow-600/30">
+							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
 								<CardHeader>
 									<CardTitle className="text-foreground">Complexity Assessment</CardTitle>
 								</CardHeader>
 								<CardContent>
 									<Card className="bg-background/80 border-border/30">
 										<CardContent className="text-center p-4">
-											<div className="text-lg font-bold text-yellow-600 mb-1">
+											<div className="text-lg font-bold text-brand mb-1">
 												{complexityAssessment.level}
 											</div>
 											<div className="text-sm text-muted-foreground">

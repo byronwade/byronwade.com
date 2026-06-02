@@ -24,6 +24,7 @@
 		"docker:production:down": "docker-compose down"
 	},
 	"dependencies": {
+		"@base-ui/react": "^1.5.0",
 		"@next/bundle-analyzer": "^16.0.0-beta.0",
 		"@radix-ui/react-accordion": "^1.2.11",
 		"@radix-ui/react-alert-dialog": "^1.1.14",
@@ -85,21 +86,21 @@
 		"sharp": "^0.34.2",
 		"sonner": "^2.0.5",
 		"tailwind-merge": "^3.3.1",
-		"tailwindcss-animate": "^1.0.7",
+		"tw-animate-css": "^1.4.0",
 		"vaul": "^1.1.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.2.6",
+		"@tailwindcss/postcss": "^4.1.13",
 		"@tailwindcss/typography": "^0.5.16",
 		"@types/node": "^24.0.1",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
-		"autoprefixer": "^10.4.21",
 		"knip": "^5.0.0",
 		"lighthouse": "^12.6.1",
 		"postcss": "^8.5.5",
 		"rimraf": "^6.0.1",
-		"tailwindcss": "^3.4.17",
+		"tailwindcss": "^4.1.13",
 		"typescript": "^5.8.3"
 	}
 }

@@ -10,7 +10,7 @@ import "./globals.css";
 import { ErrorBoundary, ThemeProvider } from "@/components/common";
 import SiteLayout from "@/components/layout/conditional-layout";
 import { Toaster } from "@/components/ui/sonner";
-import { customFont, instrumentSerif, plusJakartaSans } from "@/lib/fonts";
+import { customFont, geistMono, geistSans } from "@/lib/fonts";
 import { metadata, viewport } from "./metadata.config";
 
 const personJsonLd = generatePersonStructuredData();
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="dns-prefetch" href="//api.figma.com" />
 			</head>
 			<body
-				className={`${plusJakartaSans.variable} ${instrumentSerif.variable} ${customFont.variable} min-h-screen bg-background font-sans antialiased touch-pan-y`}
+				className={`${geistSans.variable} ${geistMono.variable} ${customFont.variable} min-h-screen bg-background font-sans antialiased touch-pan-y`}
 			>
 				<a href="#main-content" className="skip-link">
 					Skip to main content
@@ -48,7 +48,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
 				/>
-				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="light"
+					enableSystem
+					disableTransitionOnChange
+				>
 					<ErrorBoundary>
 						<NuqsAdapter>
 							<SiteLayout>{children}</SiteLayout>

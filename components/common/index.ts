@@ -1,12 +1,8 @@
 export { BlogPostViewTracker, ProjectViewTracker } from "./analytics-tracker";
 export type { BreadcrumbItem } from "./breadcrumb-nav";
 export { BreadcrumbNav } from "./breadcrumb-nav";
-export { Card3DTilt } from "./card-3d-tilt";
 export { default as ErrorBoundary } from "./error-boundary";
-export { GradientText } from "./gradient-text";
-export { LiveStatus } from "./live-status";
-export { MagneticButton } from "./magnetic-button";
-export { ScrollReveal } from "./scroll-reveal";
+export { Markdown } from "./markdown";
 export { SocialLinkPreview } from "./social-link-preview";
 export { ThemeProvider } from "./theme-provider";
 export { ThemeToggle } from "./theme-toggle";

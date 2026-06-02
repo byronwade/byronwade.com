@@ -143,7 +143,7 @@ export function DesignCaseStudy({
 							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
-										<Target className="w-5 h-5 text-yellow-600" />
+										<Target className="w-5 h-5 text-brand" />
 										The Challenge
 									</CardTitle>
 								</CardHeader>
@@ -173,7 +173,7 @@ export function DesignCaseStudy({
 						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<TrendingUp className="w-5 h-5 text-yellow-600" />
+									<TrendingUp className="w-5 h-5 text-brand" />
 									Project Impact
 								</CardTitle>
 							</CardHeader>
@@ -181,8 +181,8 @@ export function DesignCaseStudy({
 								<div className="grid grid-cols-2 md:grid-cols-5 gap-4">
 									{metrics.views && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-yellow-600/10 rounded-lg mx-auto mb-2">
-												<Eye className="w-6 h-6 text-yellow-600" />
+											<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mx-auto mb-2">
+												<Eye className="w-6 h-6 text-brand" />
 											</div>
 											<div className="text-2xl font-bold text-foreground">
 												{metrics.views.toLocaleString()}
@@ -204,7 +204,7 @@ export function DesignCaseStudy({
 									{metrics.comments && (
 										<div className="text-center">
 											<div className="flex items-center justify-center w-12 h-12 bg-blue-500/10 rounded-lg mx-auto mb-2">
-												<MessageCircle className="w-6 h-6 text-blue-500" />
+												<MessageCircle className="w-6 h-6 text-brand" />
 											</div>
 											<div className="text-2xl font-bold text-foreground">
 												{metrics.comments.toLocaleString()}
@@ -226,7 +226,7 @@ export function DesignCaseStudy({
 									{metrics.downloads && (
 										<div className="text-center">
 											<div className="flex items-center justify-center w-12 h-12 bg-purple-500/10 rounded-lg mx-auto mb-2">
-												<Zap className="w-6 h-6 text-purple-500" />
+												<Zap className="w-6 h-6 text-brand" />
 											</div>
 											<div className="text-2xl font-bold text-foreground">
 												{metrics.downloads.toLocaleString()}
@@ -244,7 +244,7 @@ export function DesignCaseStudy({
 						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<Palette className="w-5 h-5 text-yellow-600" />
+									<Palette className="w-5 h-5 text-brand" />
 									Color Palette
 								</CardTitle>
 							</CardHeader>
@@ -276,7 +276,7 @@ export function DesignCaseStudy({
 								<Badge
 									key={tag}
 									variant="secondary"
-									className="bg-yellow-600/10 border border-yellow-600/30 text-yellow-600 hover:bg-yellow-600/20 transition-colors"
+									className="bg-brand/10 border border-brand/30 text-brand hover:bg-brand/20 transition-colors"
 								>
 									{tag}
 								</Badge>
@@ -295,7 +295,7 @@ export function DesignCaseStudy({
 							>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-3 text-foreground">
-										<div className="flex items-center justify-center w-8 h-8 bg-yellow-600/10 rounded-full text-yellow-600 text-sm font-bold">
+										<div className="flex items-center justify-center w-8 h-8 bg-brand/10 rounded-full text-brand text-sm font-bold">
 											{index + 1}
 										</div>
 										{step.icon}
@@ -319,18 +319,14 @@ export function DesignCaseStudy({
 								<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
-											<Code className="w-5 h-5 text-yellow-600" />
+											<Code className="w-5 h-5 text-brand" />
 											Tools Used
 										</CardTitle>
 									</CardHeader>
 									<CardContent>
 										<div className="flex flex-wrap gap-2">
 											{technical.tools.map((tool) => (
-												<Badge
-													key={tool}
-													variant="outline"
-													className="border-yellow-600/30 text-yellow-600"
-												>
+												<Badge key={tool} variant="outline" className="border-brand/30 text-brand">
 													{tool}
 												</Badge>
 											))}
@@ -341,7 +337,7 @@ export function DesignCaseStudy({
 								<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
-											<Clock className="w-5 h-5 text-yellow-600" />
+											<Clock className="w-5 h-5 text-brand" />
 											Project Duration
 										</CardTitle>
 									</CardHeader>
@@ -357,7 +353,7 @@ export function DesignCaseStudy({
 									<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
-												<Zap className="w-5 h-5 text-yellow-600" />
+												<Zap className="w-5 h-5 text-brand" />
 												Techniques
 											</CardTitle>
 										</CardHeader>
@@ -377,7 +373,7 @@ export function DesignCaseStudy({
 									<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
-												<Users className="w-5 h-5 text-yellow-600" />
+												<Users className="w-5 h-5 text-brand" />
 												Team
 											</CardTitle>
 										</CardHeader>
@@ -404,7 +400,7 @@ export function DesignCaseStudy({
 						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<TrendingUp className="w-5 h-5 text-yellow-600" />
+									<TrendingUp className="w-5 h-5 text-brand" />
 									Key Results
 								</CardTitle>
 							</CardHeader>
@@ -423,7 +419,7 @@ export function DesignCaseStudy({
 
 					{/* Testimonial */}
 					{testimonial && (
-						<Card className="bg-gradient-to-br from-yellow-600/5 to-yellow-600/10 border-yellow-600/20 hover:shadow-xl transition-all duration-300">
+						<Card className="bg-gradient-to-br from-brand/5 to-brand/10 border-brand/20 hover:shadow-xl transition-all duration-300">
 							<CardContent className="p-8">
 								<blockquote className="text-lg italic text-foreground mb-4">
 									"{testimonial.quote}"

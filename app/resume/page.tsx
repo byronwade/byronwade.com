@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowLeft, Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
+import { Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
+import { SiteShell } from "@/components/layout/site-shell";
 import { analytics } from "@/lib/analytics";
 import { customFont } from "@/lib/fonts";
 
@@ -144,205 +144,184 @@ export default function ResumePage() {
 				id="person-jsonld"
 			/>
 
-			<div className="relative min-h-screen w-full bg-[var(--background)]">
-				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
-					<div className="flex flex-col gap-12 sm:gap-16 md:gap-20 items-center w-full max-w-2xl">
-						{/* Header */}
-						<header className="animate-in w-full">
-							<div className="flex flex-col gap-6 items-start w-full">
-								<Link
-									href="/"
-									className="group flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
+			<SiteShell>
+				<div className="flex w-full flex-col gap-12 sm:gap-16">
+					<header className="reveal w-full">
+						<div className="flex w-full flex-col gap-6">
+							<div className="flex items-start gap-5">
+								<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
+									<Image
+										alt="Byron Wade"
+										className="size-full object-cover"
+										src="/avatar.avif"
+										width={64}
+										height={64}
+										priority
+									/>
+								</div>
+								<div className="flex flex-col gap-1 pt-1">
+									<h1
+										className={`${customFont.className} text-2xl font-medium text-foreground sm:text-3xl`}
+									>
+										Byron Wade
+									</h1>
+									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
+								</div>
+							</div>
+
+							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+								<button
+									type="button"
+									onClick={copyEmail}
+									className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand"
 								>
-									<ArrowLeft className="size-4 group-hover:-translate-x-1 transition-transform" />
-									<span>Back</span>
-								</Link>
-
-								<div className="flex items-start gap-5">
-									<div className="relative shrink-0">
-										<div className="rounded-full size-14 sm:size-16 overflow-hidden">
-											<Image
-												alt="Byron Wade"
-												className="object-cover size-full"
-												src="/avatar.avif"
-												width={64}
-												height={64}
-												priority
-											/>
-										</div>
-									</div>
-									<div className="flex flex-col gap-1 pt-1">
-										<h1
-											className={`${customFont.className} text-2xl sm:text-3xl font-medium text-[var(--foreground)]`}
-										>
-											Byron Wade
-										</h1>
-										<p className="text-[var(--muted-foreground)]">
-											Founder at Thorbis · Full Stack Developer
-										</p>
-									</div>
-								</div>
-
-								<div className="flex flex-wrap gap-x-6 gap-y-3 items-center text-sm text-[var(--muted-foreground)]">
-									<button
-										type="button"
-										onClick={copyEmail}
-										className="flex items-center gap-2 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors cursor-pointer bg-transparent border-none p-0"
-									>
-										{emailCopied ? (
-											<Check className="size-4 text-green-600 dark:text-green-500" />
-										) : (
-											<Mail className="size-4" />
-										)}
-										<span>{emailCopied ? "Copied!" : email}</span>
-									</button>
-									<span className="flex items-center gap-2">
-										<MapPin className="size-4" />
-										Jasper, GA
-									</span>
-									<a
-										href="/api/resume-pdf"
-										download="Byron_Wade_Resume.pdf"
-										onClick={() => analytics.resumeDownload("pdf")}
-										className="flex items-center gap-2 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
-									>
-										<Download className="size-4" />
-										<span>Download PDF</span>
-									</a>
-								</div>
+									{emailCopied ? (
+										<Check className="size-4 text-brand" />
+									) : (
+										<Mail className="size-4" />
+									)}
+									<span>{emailCopied ? "Copied!" : email}</span>
+								</button>
+								<span className="flex items-center gap-2">
+									<MapPin className="size-4" />
+									Jasper, GA
+								</span>
+								<a
+									href="/api/resume-pdf"
+									download="Byron_Wade_Resume.pdf"
+									onClick={() => analytics.resumeDownload("pdf")}
+									className="flex items-center gap-2 transition-colors hover:text-brand"
+								>
+									<Download className="size-4" />
+									<span>Download PDF</span>
+								</a>
 							</div>
-						</header>
+						</div>
+					</header>
 
-						{/* Summary */}
-						<section className="animate-in animate-delay-1 w-full">
-							<div className="flex flex-col gap-4">
-								<p className="text-[var(--foreground)] leading-relaxed text-base sm:text-lg">
-									Results-driven professional with 8+ years of experience scaling businesses from
-									startup to multi-million dollar operations. Currently building{" "}
-									<a
-										href="https://thorbis.com"
-										target="_blank"
-										rel="noopener noreferrer"
-										className="text-amber-700 dark:text-yellow-500 hover:underline underline-offset-2"
-									>
-										Thorbis
-									</a>
-									, a field management system for service professionals.
-								</p>
-								<p className="text-[var(--muted-foreground)] leading-relaxed">
-									<span className="text-amber-700 dark:text-yellow-500">Open to opportunities</span>{" "}
-									— Looking for full-time roles in software development, technical leadership, or
-									positions where I can leverage both my development skills and hands-on business
-									experience.
-								</p>
-							</div>
-						</section>
+					{/* Summary */}
+					<section className="reveal reveal-delay-1 w-full">
+						<div className="flex flex-col gap-4">
+							<p className="text-base leading-relaxed text-foreground sm:text-lg">
+								Results-driven professional with 8+ years of experience scaling businesses from
+								startup to multi-million dollar operations. Currently building{" "}
+								<a
+									href="https://thorbis.com"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="link-underline font-medium"
+								>
+									Thorbis
+								</a>
+								, a field management system for service professionals.
+							</p>
+							<p className="leading-relaxed text-muted-foreground">
+								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
+								full-time roles in software development, technical leadership, or positions where I
+								can leverage both my development skills and hands-on business experience.
+							</p>
+						</div>
+					</section>
 
-						{/* Experience */}
-						<section className="animate-in animate-delay-2 w-full">
-							<h2 className="text-sm font-medium uppercase tracking-wider text-[var(--muted-foreground)] mb-8">
-								Experience
-							</h2>
-							<div className="flex flex-col gap-10">
-								{workExperience.map((job) => (
-									<article key={`${job.company}-${job.role}`} className="flex flex-col gap-2">
-										<div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
-											<h3 className="font-medium text-[var(--foreground)]">
-												{job.role}
-												{job.current && (
-													<span className="ml-2 text-xs font-normal text-amber-700 dark:text-yellow-500">
-														Current
-													</span>
-												)}
-											</h3>
-											<span className="text-sm text-[var(--muted-foreground)] shrink-0 tabular-nums">
-												{job.period}
-											</span>
-										</div>
-										<p className="text-sm text-[var(--muted-foreground)]">
-											{job.companyUrl ? (
-												<a
-													href={job.companyUrl}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="inline-flex items-center gap-1 hover:text-amber-700 dark:hover:text-yellow-500 transition-colors underline decoration-[var(--muted-foreground)]/30 underline-offset-2 hover:decoration-amber-700 dark:hover:decoration-yellow-500"
-												>
-													{job.company}
-													<ExternalLink className="size-3" />
-												</a>
-											) : (
-												job.company
+					{/* Experience */}
+					<section className="reveal reveal-delay-2 w-full">
+						<h2 className="mb-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+							Experience
+						</h2>
+						<div className="flex flex-col gap-10">
+							{workExperience.map((job) => (
+								<article key={`${job.company}-${job.role}`} className="flex flex-col gap-2">
+									<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+										<h3 className="font-medium text-foreground">
+											{job.role}
+											{job.current && (
+												<span className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 px-2 py-0.5 align-middle text-[11px] font-medium text-brand">
+													<span className="size-1.5 rounded-full bg-brand" aria-hidden />
+													Current
+												</span>
 											)}
-											{" · "}
-											{job.location}
-										</p>
-										<p className="text-[var(--muted-foreground)] mt-2 leading-relaxed">
-											{(() => {
-												if (!job.highlight || !job.description.includes(job.highlight)) {
-													return job.description;
-												}
-												const idx = job.description.indexOf(job.highlight);
-												return (
-													<>
-														{job.description.slice(0, idx)}
-														<span className="text-green-600 dark:text-green-500 font-medium">
-															{job.highlight}
-														</span>
-														{job.description.slice(idx + job.highlight.length)}
-													</>
-												);
-											})()}
-										</p>
-									</article>
-								))}
-							</div>
-						</section>
-
-						{/* Skills */}
-						<section className="animate-in animate-delay-3 w-full">
-							<h2 className="text-sm font-medium uppercase tracking-wider text-[var(--muted-foreground)] mb-6">
-								Skills
-							</h2>
-							<p className="text-[var(--foreground)] leading-relaxed">{skills.join(" · ")}</p>
-						</section>
-
-						{/* Certifications */}
-						<section className="animate-in animate-delay-4 w-full">
-							<h2 className="text-sm font-medium uppercase tracking-wider text-[var(--muted-foreground)] mb-6">
-								Licenses & Certifications
-							</h2>
-							<div className="flex flex-col gap-3">
-								{certifications.map((cert) => (
-									<div
-										key={`${cert.name}-${cert.year}`}
-										className="flex items-center justify-between gap-4"
-									>
-										<span className="text-[var(--foreground)]">{cert.name}</span>
-										<span
-											className={`text-sm shrink-0 tabular-nums ${cert.pending ? "text-amber-700 dark:text-yellow-500" : "text-[var(--muted-foreground)]"}`}
-										>
-											{cert.year}
+										</h3>
+										<span className="shrink-0 text-sm tabular-nums text-muted-foreground">
+											{job.period}
 										</span>
 									</div>
-								))}
-							</div>
-						</section>
+									<p className="text-sm text-muted-foreground">
+										{job.companyUrl ? (
+											<a
+												href={job.companyUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="link-underline inline-flex items-center gap-1 font-medium"
+											>
+												{job.company}
+												<ExternalLink className="size-3" />
+											</a>
+										) : (
+											job.company
+										)}
+										{" · "}
+										{job.location}
+									</p>
+									<p className="mt-2 leading-relaxed text-muted-foreground">
+										{(() => {
+											if (!job.highlight || !job.description.includes(job.highlight)) {
+												return job.description;
+											}
+											const idx = job.description.indexOf(job.highlight);
+											return (
+												<>
+													{job.description.slice(0, idx)}
+													<span className="font-medium text-brand">{job.highlight}</span>
+													{job.description.slice(idx + job.highlight.length)}
+												</>
+											);
+										})()}
+									</p>
+								</article>
+							))}
+						</div>
+					</section>
 
-						{/* Footer */}
-						<footer className="animate-in animate-delay-5 w-full pt-4">
-							<div className="flex items-center justify-between">
-								<Link
-									href="/"
-									className="text-sm text-[var(--muted-foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-colors"
+					{/* Skills */}
+					<section className="reveal reveal-delay-3 w-full">
+						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+							Skills
+						</h2>
+						<div className="flex flex-wrap gap-2">
+							{skills.map((skill) => (
+								<span
+									key={skill}
+									className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground"
 								>
-									← Back to home
-								</Link>
-								<span className="text-sm text-[var(--muted-foreground)]">byronwade.com</span>
-							</div>
-						</footer>
-					</div>
+									{skill}
+								</span>
+							))}
+						</div>
+					</section>
+
+					{/* Certifications */}
+					<section className="reveal reveal-delay-4 w-full">
+						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+							Licenses & Certifications
+						</h2>
+						<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+							{certifications.map((cert) => (
+								<div
+									key={`${cert.name}-${cert.year}`}
+									className="flex items-center justify-between gap-4 px-4 py-3"
+								>
+									<span className="text-foreground">{cert.name}</span>
+									<span
+										className={`shrink-0 text-sm tabular-nums ${cert.pending ? "text-brand" : "text-muted-foreground"}`}
+									>
+										{cert.year}
+									</span>
+								</div>
+							))}
+						</div>
+					</section>
 				</div>
-			</div>
+			</SiteShell>
 		</>
 	);
 }

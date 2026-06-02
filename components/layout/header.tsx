@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { ThemeToggle } from "@/components/common";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { customFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -16,50 +17,36 @@ const navLinks = [
 ];
 
 export default function Header() {
-	const [isScrolled, setIsScrolled] = React.useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 	const pathname = usePathname();
-
-	React.useEffect(() => {
-		const handleScroll = () => setIsScrolled(window.scrollY > 8);
-		handleScroll();
-		window.addEventListener("scroll", handleScroll, { passive: true });
-		return () => window.removeEventListener("scroll", handleScroll);
-	}, []);
 
 	const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
 	return (
-		<header
-			className={cn(
-				"sticky top-0 z-50 w-full transition-colors duration-300",
-				isScrolled
-					? "border-b border-border/60 bg-background/80 backdrop-blur-xl"
-					: "border-b border-transparent bg-transparent"
-			)}
-		>
-			<div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
+		<header className="sticky top-0 z-50 w-full px-4 pt-3 sm:pt-4 print:hidden">
+			<div className="mx-auto flex max-w-5xl items-center justify-between gap-3 rounded-full border border-border bg-background/80 px-2.5 py-2 shadow-card backdrop-blur-xl supports-[backdrop-filter]:bg-background/65">
 				<Link
 					href="/"
 					aria-label="Byron Wade — home"
 					className={cn(
 						customFont.className,
-						"text-2xl leading-none text-foreground transition-colors hover:text-accent focus-ring rounded-sm"
+						"shrink-0 rounded-full px-2 text-2xl leading-none text-foreground transition-colors hover:text-brand"
 					)}
 				>
 					Byron Wade
 				</Link>
 
-				<nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
+				<nav aria-label="Primary" className="hidden items-center gap-0.5 md:flex">
 					{navLinks.map((link) => (
 						<Link
 							key={link.href}
 							href={link.href}
+							aria-current={isActive(link.href) ? "page" : undefined}
 							className={cn(
-								"rounded-md px-3 py-2 text-sm font-medium transition-colors focus-ring",
+								"rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
 								isActive(link.href)
-									? "text-foreground"
-									: "text-muted-foreground hover:text-foreground"
+									? "bg-muted text-foreground"
+									: "text-muted-foreground hover:bg-brand/5 hover:text-foreground"
 							)}
 						>
 							{link.name}
@@ -67,20 +54,17 @@ export default function Header() {
 					))}
 				</nav>
 
-				<div className="flex items-center gap-1.5">
+				<div className="flex items-center gap-1">
 					<ThemeToggle />
-					<Link
-						href="/contact"
-						className="hidden rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 focus-ring sm:inline-flex"
-					>
+					<Button render={<Link href="/contact" />} size="sm" className="hidden sm:inline-flex">
 						Get in touch
-					</Link>
+					</Button>
 					<button
 						type="button"
 						aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
 						aria-expanded={isMobileMenuOpen}
 						onClick={() => setIsMobileMenuOpen((v) => !v)}
-						className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-ring md:hidden"
+						className="inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:hidden"
 					>
 						{isMobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
 					</button>
@@ -88,18 +72,15 @@ export default function Header() {
 			</div>
 
 			{isMobileMenuOpen && (
-				<div className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden">
-					<nav
-						aria-label="Mobile"
-						className="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-4 sm:px-6"
-					>
+				<div className="mx-auto mt-2 max-w-5xl rounded-2xl border border-border bg-background/95 p-2 shadow-float backdrop-blur-xl md:hidden">
+					<nav aria-label="Mobile" className="flex flex-col gap-0.5">
 						{navLinks.map((link) => (
 							<Link
 								key={link.href}
 								href={link.href}
 								onClick={() => setIsMobileMenuOpen(false)}
 								className={cn(
-									"rounded-md px-3 py-2.5 text-base font-medium transition-colors focus-ring",
+									"rounded-xl px-3 py-2.5 text-base font-medium transition-colors",
 									isActive(link.href)
 										? "bg-muted text-foreground"
 										: "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -108,13 +89,12 @@ export default function Header() {
 								{link.name}
 							</Link>
 						))}
-						<Link
-							href="/contact"
-							onClick={() => setIsMobileMenuOpen(false)}
-							className="mt-2 rounded-md bg-foreground px-3 py-2.5 text-center text-base font-medium text-background transition-opacity hover:opacity-90 focus-ring"
+						<Button
+							render={<Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} />}
+							className="mt-1 w-full"
 						>
 							Get in touch
-						</Link>
+						</Button>
 					</nav>
 				</div>
 			)}

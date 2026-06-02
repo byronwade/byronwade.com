@@ -19,13 +19,13 @@ const socialLinks = [
 
 export default function Footer() {
 	return (
-		<footer className="mt-24 border-t border-border/60">
+		<footer className="mt-28 border-t border-border">
 			<div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
 				<div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
 					<div className="max-w-sm space-y-4">
 						<Link
 							href="/"
-							className={`${customFont.className} text-2xl text-foreground transition-colors hover:text-accent`}
+							className={`${customFont.className} inline-flex text-2xl text-foreground transition-colors hover:text-brand`}
 						>
 							Byron Wade
 						</Link>
@@ -34,7 +34,7 @@ export default function Footer() {
 							and TypeScript.
 						</p>
 						<div className="flex items-center gap-2 text-sm text-muted-foreground">
-							<Mail className="size-4 text-accent" aria-hidden="true" />
+							<Mail className="size-4 text-brand" aria-hidden="true" />
 							<ObfuscatedEmail
 								className="text-muted-foreground hover:text-foreground"
 								showIcon={false}
@@ -56,7 +56,7 @@ export default function Footer() {
 							))}
 						</nav>
 
-						<div className="flex gap-2">
+						<div className="flex gap-1.5">
 							{socialLinks.map((social) => (
 								<a
 									key={social.name}
@@ -64,17 +64,20 @@ export default function Footer() {
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={social.name}
-									className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-ring"
+									className="inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground"
 								>
-									<social.icon className="size-[1.1rem]" />
+									<social.icon className="size-[1.05rem]" />
 								</a>
 							))}
 						</div>
 					</div>
 				</div>
 
-				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 text-sm text-muted-foreground sm:flex-row">
-					<p>© {new Date().getFullYear()} Byron Wade. All rights reserved.</p>
+				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
+					<p className="flex items-center gap-2">
+						<span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />©{" "}
+						{new Date().getFullYear()} Byron Wade. All rights reserved.
+					</p>
 					<div className="flex items-center gap-6">
 						<Link href="/privacy" className="transition-colors hover:text-foreground">
 							Privacy

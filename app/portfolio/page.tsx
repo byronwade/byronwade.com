@@ -4,6 +4,7 @@ import { ExternalLink, GitFork, Github, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 
 interface Repo {
@@ -67,15 +68,12 @@ export default function PortfolioPage() {
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
-				<div className="animate-in w-full">
-					<BreadcrumbNav
-						items={[{ label: "Home", href: "/" }, { label: "Portfolio" }]}
-						className="mb-4"
-					/>
-					<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
+				<header className="reveal flex w-full flex-col gap-3">
+					<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Portfolio" }]} />
+					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 						Portfolio
 					</h1>
-					<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+					<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
 						Open-source work and experiments. Pulled live from{" "}
 						<a
 							href="https://github.com/byronwade"
@@ -91,19 +89,19 @@ export default function PortfolioPage() {
 						</Link>
 						.
 					</p>
-				</div>
+				</header>
 
 				{loading ? (
 					<div className="grid animate-pulse gap-4 sm:grid-cols-2">
 						{["a", "b", "c", "d", "e", "f"].map((id) => (
 							<div
 								key={`skeleton-${id}`}
-								className="h-40 rounded-xl border border-border/60 bg-muted/50"
+								className="h-40 rounded-2xl border border-border bg-muted/50"
 							/>
 						))}
 					</div>
 				) : error ? (
-					<div className="rounded-xl border border-border/60 bg-card p-8 text-center">
+					<div className="rounded-2xl border border-border bg-card p-8 text-center">
 						<Github className="mx-auto mb-3 size-8 text-muted-foreground" />
 						<p className="text-muted-foreground">
 							Couldn't load repositories right now. View them directly on{" "}
@@ -127,13 +125,13 @@ export default function PortfolioPage() {
 									href={repo.html_url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="group flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md focus-ring"
+									className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float focus-ring"
 								>
 									<div className="flex items-start justify-between gap-3">
-										<h2 className="font-medium text-foreground transition-colors group-hover:text-accent">
+										<h2 className="font-medium text-foreground transition-colors group-hover:text-brand">
 											{titleize(repo.name)}
 										</h2>
-										<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-accent" />
+										<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
 									</div>
 									<p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
 										{repo.description || "Open-source project on GitHub."}
@@ -162,13 +160,13 @@ export default function PortfolioPage() {
 
 						{visibleRepos < repos.length && (
 							<div className="text-center">
-								<button
+								<Button
 									type="button"
+									variant="outline"
 									onClick={() => setVisibleRepos((prev) => prev + 8)}
-									className="inline-flex items-center gap-2 rounded-md border border-border/60 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-ring"
 								>
 									Load more
-								</button>
+								</Button>
 								<p className="mt-3 text-sm text-muted-foreground">
 									Showing {Math.min(visibleRepos, repos.length)} of {repos.length}
 								</p>

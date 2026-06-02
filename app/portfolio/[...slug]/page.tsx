@@ -39,19 +39,24 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 						</p>
 						<div className="mt-8 flex flex-wrap gap-4">
 							{project.liveUrl && (
-								<Button asChild size="lg">
-									<Link href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-										<ExternalLink className="mr-2 h-5 w-5" />
-										Live Demo
-									</Link>
+								<Button
+									render={<Link href={project.liveUrl} target="_blank" rel="noopener noreferrer" />}
+									size="lg"
+								>
+									<ExternalLink className="mr-2 h-5 w-5" />
+									Live Demo
 								</Button>
 							)}
 							{project.githubUrl && (
-								<Button asChild size="lg" variant="outline">
-									<Link href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-										<Github className="mr-2 h-5 w-5" />
-										View on GitHub
-									</Link>
+								<Button
+									render={
+										<Link href={project.githubUrl} target="_blank" rel="noopener noreferrer" />
+									}
+									size="lg"
+									variant="outline"
+								>
+									<Github className="mr-2 h-5 w-5" />
+									View on GitHub
 								</Button>
 							)}
 						</div>
@@ -132,7 +137,7 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 								<ul className="space-y-3">
 									{project.keyFeatures.map((feature) => (
 										<li key={feature} className="flex items-start">
-											<CheckCircle className="w-5 h-5 mr-3 text-green-500 flex-shrink-0 mt-1" />
+											<CheckCircle className="w-5 h-5 mr-3 text-success flex-shrink-0 mt-1" />
 											<span className="text-muted-foreground">{feature}</span>
 										</li>
 									))}

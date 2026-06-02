@@ -1,14 +1,8 @@
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { Card3DTilt, GradientText, ScrollReveal } from "@/components/common";
+import { Badge } from "@/components/ui/badge";
 import type { ProjectType } from "@/lib/projects";
 import { getProjects } from "@/lib/projects";
-
-// Color classes for project types - subtle differentiation
-const typeColors: Record<ProjectType, string> = {
-	client: "text-blue-600 dark:text-blue-400",
-	product: "text-accent",
-	hobby: "text-purple-600 dark:text-purple-400",
-};
 
 const typeLabels: Record<ProjectType, string> = {
 	client: "Client",
@@ -19,79 +13,65 @@ const typeLabels: Record<ProjectType, string> = {
 async function ProjectsList() {
 	const projects = await getProjects();
 
-	// Sort: Products first, then clients, then hobby. Within each, by date
 	const sortedProjects = [...projects].sort((a, b) => {
 		const typeOrder: Record<ProjectType, number> = { product: 0, client: 1, hobby: 2 };
 		const typeA = typeOrder[a.type || "hobby"];
 		const typeB = typeOrder[b.type || "hobby"];
 		if (typeA !== typeB) return typeA - typeB;
-		// Within same type, sort by date (newest first)
 		const dateA = a.date ? new Date(a.date).getTime() : 0;
 		const dateB = b.date ? new Date(b.date).getTime() : 0;
 		return dateB - dateA;
 	});
 
+	if (sortedProjects.length === 0) {
+		return <p className="text-sm text-muted-foreground">No projects yet. Check back soon.</p>;
+	}
+
 	return (
-		<div className="flex flex-col gap-1 sm:gap-1.5">
-			{sortedProjects.length === 0 ? (
-				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
-					No projects yet. Check back soon!
-				</p>
-			) : (
-				sortedProjects.map((project, index) => {
-					const projectType = project.type || "hobby";
-					const cleanUrl = project.url
-						? project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")
-						: "";
-					return (
-						<ScrollReveal key={project.slug} direction="up" delay={index * 50}>
-							<Card3DTilt intensity={3}>
-								<Link
-									href={`/projects/${project.slug}`}
-									className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-1.5 sm:py-2 gap-2 sm:gap-4"
-								>
-									<div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
-										<div className="flex items-center gap-2 min-w-0">
-											<span className={`text-xs shrink-0 type-badge ${typeColors[projectType]}`}>
-												{typeLabels[projectType]}
-											</span>
-											<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text truncate">
-												{project.title}
-											</p>
-										</div>
-									</div>
-									{project.url && cleanUrl && (
-										<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors truncate sm:whitespace-nowrap sm:ml-2 sm:shrink-0 max-w-full sm:max-w-none">
-											{cleanUrl}
-										</p>
-									)}
-								</Link>
-							</Card3DTilt>
-						</ScrollReveal>
-					);
-				})
-			)}
+		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+			{sortedProjects.map((project) => {
+				const projectType = project.type || "hobby";
+				const cleanUrl = project.url
+					? project.url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+					: "";
+				return (
+					<Link
+						key={project.slug}
+						href={`/projects/${project.slug}`}
+						className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
+					>
+						<div className="flex min-w-0 items-center gap-3">
+							<Badge variant={projectType === "product" ? "success" : "outline"}>
+								{typeLabels[projectType]}
+							</Badge>
+							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+								{project.title}
+							</span>
+						</div>
+						<div className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
+							{cleanUrl && <span className="hidden sm:inline">{cleanUrl}</span>}
+							<ArrowUpRight className="size-4 text-muted-foreground/60 transition-colors group-hover:text-brand" />
+						</div>
+					</Link>
+				);
+			})}
 		</div>
 	);
 }
 
 export function HomeProjects() {
 	return (
-		<ScrollReveal direction="up" delay={100}>
-			<div className="animate-in animate-delay-5 w-full">
-				<div className="flex flex-col gap-6 sm:gap-7 md:gap-8 w-full items-start">
-					<div className="flex flex-col gap-2 sm:gap-3 w-full">
-						<GradientText
-							as="h2"
-							variant="accent"
-							className="font-display text-2xl font-normal tracking-tight sm:text-3xl"
-						>
-							Projects
-						</GradientText>
-					</div>
-					<ProjectsList />
-				</div>
+		<section className="reveal reveal-delay-6 flex w-full flex-col gap-5">
+			<div className="flex items-baseline justify-between">
+				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Projects</h2>
+				<Link
+					href="/projects"
+					className="text-sm text-muted-foreground transition-colors hover:text-brand"
+				>
+					All projects →
+				</Link>
 			</div>
-		</ScrollReveal>
+			<ProjectsList />
+		</section>
 	);
 }

@@ -1,8 +1,14 @@
 export default function Background() {
 	return (
 		<>
-			<div className="fixed inset-0 pointer-events-none site-atmosphere" aria-hidden="true" />
-			<div className="fixed inset-0 pointer-events-none site-grain" aria-hidden="true" />
+			<div
+				className="bg-grid pointer-events-none fixed inset-0 opacity-[0.35]"
+				aria-hidden="true"
+			/>
+			<div
+				className="glow-brand pointer-events-none fixed inset-x-0 top-0 h-[36vh] opacity-70"
+				aria-hidden="true"
+			/>
 		</>
 	);
 }

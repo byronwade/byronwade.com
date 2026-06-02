@@ -1,13 +1,12 @@
-import { format } from "date-fns";
+import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
-import type React from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
-import { BreadcrumbNav, ProjectViewTracker } from "@/components/common";
+import { BreadcrumbNav, Markdown, ProjectViewTracker } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
-import { FullWidthProjectPreview } from "@/components/project";
-import type { Project } from "@/lib/projects";
+import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { extractToc, safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
+import type { Project, ProjectType } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,
@@ -18,18 +17,44 @@ interface ProjectContentProps {
 	project: Project;
 }
 
+const typeLabels: Record<ProjectType, string> = {
+	client: "Client",
+	product: "Product",
+	hobby: "Hobby",
+};
+
+const typeBadgeVariant: Record<ProjectType, "success" | "secondary" | "outline"> = {
+	product: "success",
+	client: "secondary",
+	hobby: "outline",
+};
+
 function extractDomain(url?: string): string {
 	if (!url) return "";
 	try {
-		const urlObj = new URL(url);
-		return urlObj.hostname.replace("www.", "");
+		return new URL(url).hostname.replace(/^www\./, "");
 	} catch {
-		return url || "";
+		return url;
 	}
+}
+
+/** Find the first GitHub repository link in the body, if any. */
+function extractSourceUrl(content: string): string | null {
+	const match = content.match(/https?:\/\/github\.com\/[^\s)<>"']+/i);
+	if (!match) return null;
+	return match[0].replace(/[.,]+$/, "");
 }
 
 export function ProjectContent({ project }: ProjectContentProps) {
 	const domain = extractDomain(project.url);
+	const projectType = project.type ?? "hobby";
+	const formattedDate = safeFormatDate(project.date);
+	const isoDate = safeISODate(project.date);
+	const body = stripLeadingH1(project.content);
+	const toc = extractToc(body);
+	const sourceUrl = extractSourceUrl(project.content);
+	const hasContent = Boolean(body?.trim());
+
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const url = `${baseUrl}/projects/${project.slug}`;
 	const ogImage = generateOGImageUrl({
@@ -39,7 +64,6 @@ export function ProjectContent({ project }: ProjectContentProps) {
 		date: project.date,
 	});
 
-	// Generate structured data
 	const projectStructuredData = generateProjectStructuredData({
 		title: project.title,
 		description: project.excerpt || "",
@@ -57,10 +81,8 @@ export function ProjectContent({ project }: ProjectContentProps) {
 
 	return (
 		<>
-			{/* Analytics Tracking */}
 			<ProjectViewTracker slug={project.slug} title={project.title} />
 
-			{/* Structured Data */}
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
@@ -72,173 +94,114 @@ export function ProjectContent({ project }: ProjectContentProps) {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			<SiteShell width="wide" className="!max-w-4xl">
-				<div className="flex flex-col gap-8 sm:gap-12">
-					<div className="animate-in w-full max-w-2xl">
+			<SiteShell width="wide">
+				<div className="flex flex-col gap-10 sm:gap-12">
+					{/* Header */}
+					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
 						<BreadcrumbNav
 							items={[
 								{ label: "Home", href: "/" },
 								{ label: "Projects", href: "/projects" },
 								{ label: project.title },
 							]}
-							className="mb-4"
 						/>
-						<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
-							{project.title}
-						</h1>
-						<div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-							{project.date && <time>{format(new Date(project.date), "MMMM d, yyyy")}</time>}
-							{project.category && (
+
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+							<Badge variant={typeBadgeVariant[projectType]}>{typeLabels[projectType]}</Badge>
+							{project.category && project.category !== typeLabels[projectType] && (
 								<>
-									<span aria-hidden="true">·</span>
+									<span aria-hidden="true" className="text-border">
+										·
+									</span>
 									<span>{project.category}</span>
 								</>
 							)}
+							{formattedDate && (
+								<>
+									<span aria-hidden="true" className="text-border">
+										·
+									</span>
+									<time dateTime={isoDate}>{formattedDate}</time>
+								</>
+							)}
 						</div>
-					</div>
 
+						<h1 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+							{project.title}
+						</h1>
+
+						{project.excerpt && (
+							<p className="text-lg leading-relaxed text-pretty text-muted-foreground">
+								{project.excerpt}
+							</p>
+						)}
+
+						{(project.url || sourceUrl) && (
+							<div className="mt-1 flex flex-wrap items-center gap-2">
+								{project.url && (
+									<Button
+										size="sm"
+										render={
+											<a href={project.url} target="_blank" rel="noopener noreferrer">
+												Visit site
+												<ArrowUpRight aria-hidden="true" />
+											</a>
+										}
+									/>
+								)}
+								{sourceUrl && (
+									<Button
+										size="sm"
+										variant="outline"
+										render={
+											<a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+												<Github aria-hidden="true" />
+												Source
+											</a>
+										}
+									/>
+								)}
+							</div>
+						)}
+					</header>
+
+					{/* Live preview */}
 					{project.url && domain && (
-						<div className="animate-in animate-delay-1 w-full">
+						<div className="reveal reveal-delay-1 w-full">
 							<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
 						</div>
 					)}
 
-					<article className="animate-in animate-delay-2 w-full max-w-2xl">
-						<div className="font-normal min-w-full relative shrink-0 text-[var(--foreground)] text-base flex flex-col gap-5">
-							<ReactMarkdown
-								remarkPlugins={[remarkGfm]}
-								rehypePlugins={[rehypeHighlight]}
-								components={{
-									p: ({ children, ...props }) => (
-										<p className="leading-relaxed" {...props}>
-											{children}
-										</p>
-									),
-									a: ({
-										children,
-										href,
-										...props
-									}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href?: string }) => {
-										const linkHref = href || "";
-										const isExternal = linkHref.startsWith("http");
-										return (
-											<a
-												href={linkHref}
-												target={isExternal ? "_blank" : undefined}
-												rel={isExternal ? "noopener noreferrer" : undefined}
-												className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] hover:decoration-[var(--foreground)] transition-colors duration-200"
-												{...props}
-											>
-												{children}
-											</a>
-										);
-									},
-									strong: ({ children, ...props }) => (
-										<strong className="font-semibold text-[var(--foreground)]" {...props}>
-											{children}
-										</strong>
-									),
-									em: ({ children, ...props }) => (
-										<em className="italic" {...props}>
-											{children}
-										</em>
-									),
-									code: ({ children, className, ...props }: React.HTMLAttributes<HTMLElement>) => {
-										const isInline = !className;
-										if (isInline) {
-											return (
-												<code
-													className="text-amber-700 dark:text-yellow-500 bg-[var(--muted)] px-1.5 py-0.5 rounded text-sm font-mono"
-													{...props}
-												>
-													{children}
-												</code>
-											);
-										}
-										return (
-											<code className={className} {...props}>
-												{children}
-											</code>
-										);
-									},
-									pre: ({ children, ...props }) => (
-										<pre
-											className="bg-[var(--muted)] border border-[var(--border)] rounded-lg my-4 p-4 overflow-x-auto text-sm"
-											{...props}
-										>
-											{children}
-										</pre>
-									),
-									ul: ({ children, ...props }) => (
-										<ul className="list-disc pl-5 space-y-2" {...props}>
-											{children}
-										</ul>
-									),
-									ol: ({ children, ...props }) => (
-										<ol className="list-decimal pl-5 space-y-2" {...props}>
-											{children}
-										</ol>
-									),
-									li: ({ children, ...props }) => (
-										<li className="text-base leading-relaxed pl-1" {...props}>
-											{children}
-										</li>
-									),
-									h1: ({ children, ...props }) => (
-										<h1
-											className="text-2xl font-semibold mt-8 mb-4 text-[var(--foreground)]"
-											{...props}
-										>
-											{children}
-										</h1>
-									),
-									h2: ({ children, ...props }) => (
-										<h2
-											className="text-xl font-semibold mt-8 mb-4 text-[var(--foreground)]"
-											{...props}
-										>
-											{children}
-										</h2>
-									),
-									h3: ({ children, ...props }) => (
-										<h3
-											className="text-lg font-semibold mt-6 mb-3 text-[var(--foreground)]"
-											{...props}
-										>
-											{children}
-										</h3>
-									),
-									h4: ({ children, ...props }) => (
-										<h4
-											className="text-base font-semibold mt-6 mb-3 text-[var(--foreground)]"
-											{...props}
-										>
-											{children}
-										</h4>
-									),
-									blockquote: ({ children, ...props }) => (
-										<blockquote
-											className="border-l-2 border-amber-700 dark:border-yellow-500 pl-4 py-1 text-[var(--muted-foreground)] italic my-4"
-											{...props}
-										>
-											{children}
-										</blockquote>
-									),
-									hr: ({ ...props }) => <hr className="border-[var(--border)] my-6" {...props} />,
-								}}
-							>
-								{project.content}
-							</ReactMarkdown>
-						</div>
-					</article>
+					{/* Body + table of contents */}
+					<div className="reveal reveal-delay-2 grid w-full grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(0,1fr)_15rem]">
+						<article className="w-full max-w-2xl">
+							{hasContent ? (
+								<Markdown content={body} />
+							) : (
+								<p className="text-base leading-relaxed text-muted-foreground">
+									Details for this project are coming soon.
+								</p>
+							)}
+						</article>
 
-					<div className="animate-in animate-delay-3 w-full">
+						{toc.length >= 3 && (
+							<aside className="hidden xl:block">
+								<div className="sticky top-24">
+									<ProjectToc items={toc} />
+								</div>
+							</aside>
+						)}
+					</div>
+
+					{/* Footer nav */}
+					<div className="reveal reveal-delay-3 w-full border-t border-border pt-8">
 						<Link
-							className="touch-target inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-							aria-label="Go to projects"
+							className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-brand"
+							aria-label="Back to projects"
 							href="/projects"
 						>
-							← Back to projects
+							<ArrowLeft className="size-4" aria-hidden="true" />
+							Back to projects
 						</Link>
 					</div>
 				</div>

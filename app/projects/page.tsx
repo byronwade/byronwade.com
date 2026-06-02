@@ -1,8 +1,10 @@
 import { format } from "date-fns";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Badge } from "@/components/ui/badge";
 import { getProjects, type ProjectType } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
@@ -38,13 +40,6 @@ export async function generateMetadata() {
 	});
 }
 
-// Color classes for project types - subtle differentiation
-const typeColors: Record<ProjectType, string> = {
-	client: "text-blue-600 dark:text-blue-400",
-	product: "text-accent",
-	hobby: "text-purple-600 dark:text-purple-400",
-};
-
 const typeLabels: Record<ProjectType, string> = {
 	client: "Client",
 	product: "Product",
@@ -65,47 +60,50 @@ async function ProjectsList() {
 		return dateB - dateA;
 	});
 
+	if (sortedProjects.length === 0) {
+		return (
+			<p className="text-sm leading-relaxed text-muted-foreground">
+				No projects yet. Check back soon.
+			</p>
+		);
+	}
+
 	return (
-		<div className="flex flex-col gap-1.5 sm:gap-2">
-			{sortedProjects.length === 0 ? (
-				<p className="text-[var(--muted-foreground)] text-base sm:text-lg leading-relaxed">
-					No projects yet. Check back soon!
-				</p>
-			) : (
-				sortedProjects.map((project) => {
-					const projectType = project.type || "hobby";
-					return (
-						<Link
-							key={project.slug}
-							href={`/projects/${project.slug}`}
-							className="flex flex-col gap-3 sm:gap-2 w-full hover:opacity-70 transition-all duration-200 group hover-scale focus-ring touch-target py-2 sm:py-1.5"
-						>
-							<div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
-								<div className="flex-1 min-w-0">
-									<div className="flex items-center gap-2 flex-wrap">
-										<span className={`text-xs shrink-0 ${typeColors[projectType]}`}>
-											{typeLabels[projectType]}
-										</span>
-										<p className="font-medium text-[var(--foreground)] text-base sm:text-base underline-animate mobile-text">
-											{project.title}
-										</p>
-									</div>
-									{project.excerpt && (
-										<p className="text-sm sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors mt-2 sm:mt-1 leading-relaxed">
-											{project.excerpt}
-										</p>
-									)}
-								</div>
-								{project.date && (
-									<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors shrink-0 sm:ml-2">
-										{format(new Date(project.date), "MMM d, yyyy")}
-									</p>
-								)}
+		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+			{sortedProjects.map((project) => {
+				const projectType = project.type || "hobby";
+				return (
+					<Link
+						key={project.slug}
+						href={`/projects/${project.slug}`}
+						className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
+					>
+						<div className="flex items-start justify-between gap-4">
+							<div className="flex min-w-0 items-center gap-3">
+								<Badge variant={projectType === "product" ? "success" : "outline"}>
+									{typeLabels[projectType]}
+								</Badge>
+								<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+									{project.title}
+								</span>
 							</div>
-						</Link>
-					);
-				})
-			)}
+							<div className="flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
+								{project.date && (
+									<time className="hidden sm:inline">
+										{format(new Date(project.date), "MMM d, yyyy")}
+									</time>
+								)}
+								<ArrowUpRight className="size-4 text-muted-foreground/60 transition-colors group-hover:text-brand" />
+							</div>
+						</div>
+						{project.excerpt && (
+							<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+								{project.excerpt}
+							</p>
+						)}
+					</Link>
+				);
+			})}
 		</div>
 	);
 }
@@ -136,27 +134,24 @@ export default async function ProjectsPage() {
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
-					<div className="animate-in w-full">
-						<BreadcrumbNav
-							items={[{ label: "Home", href: "/" }, { label: "Projects" }]}
-							className="mb-4"
-						/>
-						<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
+					<header className="reveal flex w-full flex-col gap-3">
+						<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Projects" }]} />
+						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 							Projects
 						</h1>
-						<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
 							Client work, products, and hobby projects — real-world problem solving with React,
 							Next.js, and full-stack tools.
 						</p>
-					</div>
+					</header>
 
-					<div className="animate-in animate-delay-1 w-full">
+					<div className="reveal reveal-delay-1 w-full">
 						<Suspense
 							fallback={
-								<div className="animate-pulse space-y-4">
-									<div className="h-16 rounded-lg bg-muted" />
-									<div className="h-16 rounded-lg bg-muted" />
-									<div className="h-16 rounded-lg bg-muted" />
+								<div className="animate-pulse space-y-2">
+									<div className="h-16 rounded-2xl bg-muted" />
+									<div className="h-16 rounded-2xl bg-muted" />
+									<div className="h-16 rounded-2xl bg-muted" />
 								</div>
 							}
 						>

@@ -4,20 +4,20 @@ import {
 	ExternalLink,
 	Globe,
 	Grip,
-	Image as ImageIcon,
+	ImageOff,
+	Laptop,
 	Maximize2,
+	Minimize2,
 	Monitor,
+	RefreshCw,
 	RotateCcw,
 	Smartphone,
 	Tablet,
-	X,
 } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
-// Simple in-memory cache to avoid duplicate requests for the same URL/size
-const previewCache = new Map<string, Promise<string | null>>();
+import { cn } from "@/lib/utils";
 
 interface FullWidthProjectPreviewProps {
 	href: string;
@@ -26,566 +26,549 @@ interface FullWidthProjectPreviewProps {
 }
 
 type LoadingState = "loading" | "loaded" | "error";
-
 type ViewportPreset = keyof typeof VIEWPORT_PRESETS;
 
 const VIEWPORT_PRESETS = {
 	desktop: { width: 1920, height: 1080, label: "Desktop", icon: Monitor },
-	laptop: { width: 1440, height: 900, label: "Laptop", icon: Monitor },
+	laptop: { width: 1440, height: 900, label: "Laptop", icon: Laptop },
 	tablet: { width: 768, height: 1024, label: "Tablet", icon: Tablet },
 	mobile: { width: 375, height: 667, label: "Mobile", icon: Smartphone },
 } as const;
 
-const MAX_NON_FULLSCREEN_WIDTH = 1280;
+const MIN_WIDTH = 320;
+const MAX_NORMAL_WIDTH = 1280;
+const MAX_NORMAL_HEIGHT = 760;
+const FULLSCREEN_PADDING_X = 48;
+const FULLSCREEN_PADDING_Y = 132;
+
+// Module-level cache of resolved screenshot URLs, keyed by href + viewport.
+// Only successful, non-empty results are cached so failures can be retried.
+const previewCache = new Map<string, string>();
+const inflight = new Map<string, Promise<string>>();
+
+async function fetchScreenshot(href: string, width: number, height: number): Promise<string> {
+	const key = `${href}|${width}x${height}`;
+	const cached = previewCache.get(key);
+	if (cached) return cached;
+
+	const existing = inflight.get(key);
+	if (existing) return existing;
+
+	const promise = (async () => {
+		const params = new URLSearchParams({
+			mode: "static",
+			url: href,
+			width: String(width),
+			height: String(height),
+			format: "jpg",
+			quality: "90",
+		});
+		const resp = await fetch(`/api/screenshot?${params.toString()}`);
+		if (!resp.ok) throw new Error(`screenshot request failed (${resp.status})`);
+		const data = (await resp.json()) as { url?: unknown };
+		if (typeof data?.url !== "string" || data.url.trim() === "") {
+			throw new Error("screenshot response missing url");
+		}
+		previewCache.set(key, data.url);
+		return data.url;
+	})();
+
+	inflight.set(key, promise);
+	try {
+		return await promise;
+	} finally {
+		inflight.delete(key);
+	}
+}
 
 export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPreviewProps) {
-	const [screenshotState, setScreenshotState] = useState<LoadingState>("loading");
-	const [staticUrl, setStaticUrl] = useState<string | null>(null);
-	const [animatedUrl, setAnimatedUrl] = useState<string | null>(null);
-	const [screenshotDims, setScreenshotDims] = useState<{ w: number; h: number } | null>(null);
+	const [preset, setPreset] = useState<ViewportPreset>("desktop");
+	const [status, setStatus] = useState<LoadingState>("loading");
+	const [src, setSrc] = useState<string | null>(null);
+	const [naturalDims, setNaturalDims] = useState<{ w: number; h: number } | null>(null);
 	const [containerWidth, setContainerWidth] = useState(0);
+	const [windowSize, setWindowSize] = useState({ w: 1920, h: 1080 });
 	const [manualWidth, setManualWidth] = useState<number | null>(null);
-	const [committedWidth, setCommittedWidth] = useState<number | null>(null);
-	const [selectedPreset, setSelectedPreset] = useState<ViewportPreset>("desktop");
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [isResizing, setIsResizing] = useState(false);
 	const [mounted, setMounted] = useState(false);
+	const [reloadKey, setReloadKey] = useState(0);
 
-	const resizeRafRef = useRef<number | null>(null);
 	const wrapperRef = useRef<HTMLDivElement>(null);
-	const imageContainerRef = useRef<HTMLDivElement>(null);
-	const videoRef = useRef<HTMLVideoElement>(null);
+	const triggerRef = useRef<HTMLButtonElement>(null);
+	const dialogRef = useRef<HTMLDivElement>(null);
+	const resizeRafRef = useRef<number | null>(null);
 
-	const minWidth = 320;
-
-	const baseViewport = useMemo(() => VIEWPORT_PRESETS[selectedPreset], [selectedPreset]);
-
-	const screenshotViewport = useMemo(() => {
-		const clampWidth = (width: number) =>
-			isFullscreen ? width : Math.min(width, MAX_NON_FULLSCREEN_WIDTH);
-
-		if (isFullscreen) {
-			const availableWidth = typeof window !== "undefined" ? window.innerWidth - 40 : 1920;
-			const availableHeight = typeof window !== "undefined" ? window.innerHeight - 120 : 1080;
-			return {
-				width: Math.round(availableWidth),
-				height: Math.round(availableHeight),
-			};
-		}
-
-		if (committedWidth !== null) {
-			return {
-				width: Math.round(clampWidth(committedWidth)),
-				height: Math.round(clampWidth(committedWidth) / (16 / 9)),
-			};
-		}
-
-		return {
-			width: clampWidth(baseViewport.width),
-			height: baseViewport.height,
-		};
-	}, [isFullscreen, committedWidth, baseViewport]);
-
-	const displayViewport = useMemo(() => {
-		if (manualWidth !== null) {
-			return {
-				width: Math.round(manualWidth),
-				height: Math.round(manualWidth / (16 / 9)),
-			};
-		}
-		return screenshotViewport;
-	}, [manualWidth, screenshotViewport]);
-
-	const maxWidth = useMemo(() => {
-		if (isFullscreen) {
-			return typeof window !== "undefined" ? window.innerWidth - 40 : 1920;
-		}
-		return containerWidth || 1920;
-	}, [isFullscreen, containerWidth]);
-
-	const displayWidth = useMemo(() => {
-		if (isFullscreen) {
-			const availableWidth = typeof window !== "undefined" ? window.innerWidth - 40 : 1200;
-			const availableHeight = typeof window !== "undefined" ? window.innerHeight - 120 : 800;
-			const aspectRatio = displayViewport.width / displayViewport.height;
-			const widthFromHeight = availableHeight * aspectRatio;
-			return Math.min(availableWidth, widthFromHeight, displayViewport.width);
-		}
-
-		if (manualWidth !== null) {
-			return Math.min(manualWidth, containerWidth);
-		}
-
-		return Math.min(containerWidth, Math.min(baseViewport.width, MAX_NON_FULLSCREEN_WIDTH));
-	}, [isFullscreen, manualWidth, containerWidth, baseViewport, displayViewport]);
-
-	const scale = useMemo(() => {
-		if (isFullscreen) return 1;
-		if (displayWidth <= 0 || screenshotViewport.width <= 0) return 0.5;
-		return Math.min(displayWidth / screenshotViewport.width, 1);
-	}, [isFullscreen, displayWidth, screenshotViewport.width]);
-
-	const displayHeight = useMemo(() => {
-		if (screenshotDims && screenshotDims.w > 0) {
-			return Math.max(200, Math.round((displayWidth * screenshotDims.h) / screenshotDims.w));
-		}
-		// default 16:9 if dims unknown
-		return Math.max(200, Math.round(displayWidth / (16 / 9)));
-	}, [displayWidth, screenshotDims]);
-
-	useEffect(() => {
-		const requestWidth = 1920;
-		const requestHeight = 1080;
-		const staticKey = `${href}|${requestWidth}x${requestHeight}|static`;
-
-		setAnimatedUrl(null);
-		const loadStatic = async () => {
-			const loader = async () => {
-				const resp = await fetch(
-					`/api/screenshot?mode=static&url=${encodeURIComponent(
-						href
-					)}&width=${requestWidth}&height=${requestHeight}&format=jpg&quality=90`
-				);
-				if (!resp.ok) throw new Error("static request failed");
-				const data = await resp.json();
-				if (!data?.url || typeof data.url !== "string" || data.url.trim() === "") {
-					return null;
-				}
-				return data.url as string;
-			};
-			const promise = previewCache.get(staticKey) ?? loader();
-			if (!previewCache.has(staticKey)) previewCache.set(staticKey, promise);
-			return promise;
-		};
-
-		let mounted = true;
-		(async () => {
-			try {
-				setScreenshotState("loading");
-				const staticUrlValue = await loadStatic();
-				if (mounted) {
-					if (staticUrlValue) {
-						setStaticUrl(staticUrlValue);
-						setScreenshotState("loaded");
-					}
-				}
-			} catch (error) {
-				console.error("Error fetching screenshot:", error);
-				if (mounted) setScreenshotState("error");
-			}
-		})();
-
-		return () => {
-			mounted = false;
-		};
-	}, [href]);
+	const capture = VIEWPORT_PRESETS[preset];
+	const aspect =
+		naturalDims && naturalDims.h > 0
+			? naturalDims.w / naturalDims.h
+			: capture.width / capture.height;
 
 	useEffect(() => {
 		setMounted(true);
 	}, []);
 
+	// Fetch a screenshot sized to the selected viewport preset.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: reloadKey is an intentional retry trigger
 	useEffect(() => {
-		if (!wrapperRef.current) return;
+		let active = true;
+		setStatus("loading");
+		setSrc(null);
+		setNaturalDims(null);
 
-		const resizeObserver = new ResizeObserver((entries) => {
+		fetchScreenshot(href, capture.width, capture.height)
+			.then((resolved) => {
+				if (active) setSrc(resolved);
+			})
+			.catch((error) => {
+				console.error("Error fetching screenshot:", error);
+				if (active) setStatus("error");
+			});
+
+		return () => {
+			active = false;
+		};
+	}, [href, capture.width, capture.height, reloadKey]);
+
+	// Track container width for responsive scaling.
+	useEffect(() => {
+		const node = wrapperRef.current;
+		if (!node) return;
+		const observer = new ResizeObserver((entries) => {
 			for (const entry of entries) {
-				const newWidth = entry.contentRect.width;
-				if (newWidth > 0) {
-					setContainerWidth(newWidth);
-				}
+				const w = entry.contentRect.width;
+				if (w > 0) setContainerWidth(w);
 			}
 		});
-
-		resizeObserver.observe(wrapperRef.current);
-
-		const initialWidth = wrapperRef.current.getBoundingClientRect().width;
-		if (initialWidth > 0) {
-			setContainerWidth(initialWidth);
-		}
-
-		return () => resizeObserver.disconnect();
+		observer.observe(node);
+		const initial = node.getBoundingClientRect().width;
+		if (initial > 0) setContainerWidth(initial);
+		return () => observer.disconnect();
 	}, []);
 
-	const handleResizeMove = useCallback(
-		(clientX: number) => {
-			const wrapper = wrapperRef.current;
-			if (!isResizing || !wrapper) return;
+	// Track window size for fullscreen fitting.
+	useEffect(() => {
+		if (!mounted) return;
+		const update = () => setWindowSize({ w: window.innerWidth, h: window.innerHeight });
+		update();
+		window.addEventListener("resize", update);
+		return () => window.removeEventListener("resize", update);
+	}, [mounted]);
 
-			const run = () => {
-				const wrapperRect = wrapper.getBoundingClientRect();
-				const centerX = wrapperRect.left + wrapperRect.width / 2;
-				const distanceFromCenter = Math.abs(clientX - centerX);
-				const newWidth = distanceFromCenter * 2;
-				const clampedWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
-				setManualWidth(clampedWidth);
-				resizeRafRef.current = null;
-			};
-
-			if (resizeRafRef.current === null) {
-				resizeRafRef.current = window.requestAnimationFrame(run);
+	// Frame dimensions (display pixels), aspect-correct, never cropped.
+	const { frameWidth, frameHeight, scale } = useMemo(() => {
+		if (isFullscreen) {
+			const availW = Math.max(MIN_WIDTH, windowSize.w - FULLSCREEN_PADDING_X);
+			const availH = Math.max(200, windowSize.h - FULLSCREEN_PADDING_Y);
+			let w = Math.min(availW, availH * aspect);
+			let h = w / aspect;
+			if (h > availH) {
+				h = availH;
+				w = h * aspect;
 			}
-		},
-		[isResizing, maxWidth]
-	);
-
-	const handleMouseMove = useCallback(
-		(e: MouseEvent) => handleResizeMove(e.clientX),
-		[handleResizeMove]
-	);
-
-	const handleTouchMove = useCallback(
-		(e: TouchEvent) => {
-			if (e.touches.length > 0) {
-				handleResizeMove(e.touches[0].clientX);
-			}
-		},
-		[handleResizeMove]
-	);
-
-	const handleResizeEnd = useCallback(() => {
-		setIsResizing(false);
-		if (manualWidth !== null) {
-			setCommittedWidth(manualWidth);
+			return { frameWidth: w, frameHeight: h, scale: w / capture.width };
 		}
-	}, [manualWidth]);
 
-	const handleMouseDown = useCallback((e: React.MouseEvent) => {
-		e.preventDefault();
-		setIsResizing(true);
-	}, []);
+		const available = containerWidth || MAX_NORMAL_WIDTH;
+		const ceiling = Math.min(available, MAX_NORMAL_WIDTH, capture.width);
+		let w = manualWidth != null ? Math.max(MIN_WIDTH, Math.min(manualWidth, available)) : ceiling;
+		let h = w / aspect;
+		if (h > MAX_NORMAL_HEIGHT) {
+			h = MAX_NORMAL_HEIGHT;
+			w = h * aspect;
+		}
+		return { frameWidth: w, frameHeight: h, scale: w / capture.width };
+	}, [isFullscreen, windowSize, aspect, capture.width, containerWidth, manualWidth]);
 
-	const handleTouchStart = useCallback((e: React.TouchEvent) => {
-		e.preventDefault();
-		setIsResizing(true);
+	const adjustManualWidth = useCallback((clientX: number) => {
+		const node = wrapperRef.current;
+		if (!node) return;
+		if (resizeRafRef.current != null) return;
+		resizeRafRef.current = window.requestAnimationFrame(() => {
+			const rect = node.getBoundingClientRect();
+			const center = rect.left + rect.width / 2;
+			const next = Math.abs(clientX - center) * 2;
+			setManualWidth(Math.max(MIN_WIDTH, Math.min(rect.width, next)));
+			resizeRafRef.current = null;
+		});
 	}, []);
 
 	useEffect(() => {
-		if (isResizing) {
-			document.addEventListener("mousemove", handleMouseMove);
-			document.addEventListener("mouseup", handleResizeEnd);
-			document.addEventListener("touchmove", handleTouchMove, { passive: false });
-			document.addEventListener("touchend", handleResizeEnd);
-			document.body.style.cursor = "col-resize";
-			document.body.style.userSelect = "none";
+		if (!isResizing) return;
+		const onMouseMove = (e: MouseEvent) => adjustManualWidth(e.clientX);
+		const onTouchMove = (e: TouchEvent) => {
+			if (e.touches.length > 0) adjustManualWidth(e.touches[0].clientX);
+		};
+		const onEnd = () => setIsResizing(false);
 
-			return () => {
-				document.removeEventListener("mousemove", handleMouseMove);
-				document.removeEventListener("mouseup", handleResizeEnd);
-				document.removeEventListener("touchmove", handleTouchMove);
-				document.removeEventListener("touchend", handleResizeEnd);
-				document.body.style.cursor = "";
-				document.body.style.userSelect = "";
-			};
-		}
-	}, [isResizing, handleMouseMove, handleTouchMove, handleResizeEnd]);
+		document.addEventListener("mousemove", onMouseMove);
+		document.addEventListener("mouseup", onEnd);
+		document.addEventListener("touchmove", onTouchMove, { passive: false });
+		document.addEventListener("touchend", onEnd);
+		document.body.style.cursor = "ew-resize";
+		document.body.style.userSelect = "none";
 
-	const handleResetWidth = useCallback(() => {
-		setManualWidth(null);
-		setCommittedWidth(null);
-	}, []);
+		return () => {
+			document.removeEventListener("mousemove", onMouseMove);
+			document.removeEventListener("mouseup", onEnd);
+			document.removeEventListener("touchmove", onTouchMove);
+			document.removeEventListener("touchend", onEnd);
+			document.body.style.cursor = "";
+			document.body.style.userSelect = "";
+		};
+	}, [isResizing, adjustManualWidth]);
 
-	const handleToggleFullscreen = useCallback(() => {
-		setIsFullscreen((prev) => {
-			if (!prev) {
-				setSelectedPreset("desktop");
+	const handleResizeKey = useCallback(
+		(event: React.KeyboardEvent) => {
+			const step = event.shiftKey ? 80 : 24;
+			const base = frameWidth;
+			const available = containerWidth || MAX_NORMAL_WIDTH;
+			if (event.key === "ArrowLeft") {
+				event.preventDefault();
+				setManualWidth(Math.max(MIN_WIDTH, base - step));
+			} else if (event.key === "ArrowRight") {
+				event.preventDefault();
+				setManualWidth(Math.min(available, base + step));
+			} else if (event.key === "Home") {
+				event.preventDefault();
+				setManualWidth(null);
 			}
+		},
+		[frameWidth, containerWidth]
+	);
+
+	const resetWidth = useCallback(() => setManualWidth(null), []);
+
+	const toggleFullscreen = useCallback(() => {
+		setIsFullscreen((prev) => {
+			if (!prev) setPreset("desktop");
 			return !prev;
 		});
 		setManualWidth(null);
-		setCommittedWidth(null);
 	}, []);
 
-	const handleVideoLoaded = useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
-		const video = e.currentTarget;
-		if (video?.videoWidth && video?.videoHeight) {
-			setScreenshotDims({ w: video.videoWidth, h: video.videoHeight });
-		}
-		setScreenshotState("loaded");
-	}, []);
-
-	const handleVideoError = useCallback(() => {
-		setScreenshotState("error");
-	}, []);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: intentionally reset sizing only when the preset changes
+	// When the preset changes, drop any manual sizing.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: reset sizing only when the preset changes
 	useEffect(() => {
 		setManualWidth(null);
-		setCommittedWidth(null);
-	}, [selectedPreset]);
+	}, [preset]);
 
-	const isLoading = screenshotState === "loading";
+	// Fullscreen: lock scroll, ESC to close, manage focus.
+	useEffect(() => {
+		if (!isFullscreen) return;
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") setIsFullscreen(false);
+		};
+		document.addEventListener("keydown", onKeyDown);
+		const focusTimer = window.setTimeout(() => dialogRef.current?.focus(), 0);
+
+		return () => {
+			document.body.style.overflow = previousOverflow;
+			document.removeEventListener("keydown", onKeyDown);
+			window.clearTimeout(focusTimer);
+			triggerRef.current?.focus();
+		};
+	}, [isFullscreen]);
+
+	const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
+		const img = e.currentTarget;
+		if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+			setNaturalDims({ w: img.naturalWidth, h: img.naturalHeight });
+		}
+		setStatus("loaded");
+	}, []);
+
+	const retry = useCallback(() => {
+		setStatus("loading");
+		setReloadKey((k) => k + 1);
+	}, []);
 
 	const previewContent = (
 		<div
-			className={`relative flex flex-col transition-all duration-300 ease-out ${isFullscreen ? "w-full h-full" : ""}`}
-			style={{
-				width: isFullscreen ? "100%" : `${displayWidth}px`,
-				height: isFullscreen ? "100%" : "auto",
-				maxWidth: isFullscreen ? "none" : "100%",
-			}}
+			className={cn(
+				"relative flex flex-col transition-[width,height] duration-300 ease-out",
+				isFullscreen && "h-full w-full"
+			)}
+			style={isFullscreen ? undefined : { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" }}
 		>
-			{/* Frame container */}
 			<div
-				className={`relative overflow-hidden bg-background ${isFullscreen ? "rounded-none border-0 h-full flex flex-col" : "rounded-xl border border-border shadow-sm"}`}
+				className={cn(
+					"relative flex flex-col overflow-hidden bg-background",
+					isFullscreen
+						? "h-full rounded-none border-0"
+						: "rounded-2xl border border-border shadow-card"
+				)}
 			>
 				{/* Top toolbar */}
-				<div className="flex items-center justify-between h-10 px-3 border-b border-border bg-secondary">
-					{/* Left side - URL */}
-					<div className="flex items-center gap-2 min-w-0 flex-1">
-						<Globe className="w-3.5 h-3.5 text-foreground shrink-0" strokeWidth={1.5} />
-						<span className="text-xs text-foreground truncate font-mono">{url}</span>
+				<div className="flex h-10 shrink-0 items-center justify-between gap-2 border-b border-border bg-secondary px-3">
+					{/* Window dots + address */}
+					<div className="flex min-w-0 flex-1 items-center gap-2.5">
+						<div className="hidden items-center gap-1.5 sm:flex" aria-hidden="true">
+							<span className="size-2.5 rounded-full bg-border" />
+							<span className="size-2.5 rounded-full bg-border" />
+							<span className="size-2.5 rounded-full bg-border" />
+						</div>
+						<div className="flex min-w-0 items-center gap-1.5 rounded-md bg-background/60 px-2 py-1">
+							<Globe
+								className="size-3.5 shrink-0 text-muted-foreground"
+								strokeWidth={1.5}
+								aria-hidden="true"
+							/>
+							<span className="truncate font-mono text-xs text-foreground">{url}</span>
+						</div>
 					</div>
 
-					{/* Center - Device toggles (hidden in fullscreen) */}
+					{/* Device presets */}
 					{!isFullscreen && (
-						<div className="hidden md:flex items-center gap-0.5 mx-4">
-							{(Object.keys(VIEWPORT_PRESETS) as ViewportPreset[]).map((preset) => {
-								const { icon: Icon, label, width, height } = VIEWPORT_PRESETS[preset];
-								const isActive = selectedPreset === preset;
+						<div className="mx-2 hidden items-center gap-0.5 rounded-lg bg-background/50 p-0.5 md:flex">
+							<span className="sr-only">Preview viewport</span>
+							{(Object.keys(VIEWPORT_PRESETS) as ViewportPreset[]).map((key) => {
+								const { icon: Icon, label, width, height } = VIEWPORT_PRESETS[key];
+								const isActive = preset === key;
 								return (
 									<button
-										key={preset}
+										key={key}
 										type="button"
-										onClick={() => setSelectedPreset(preset)}
-										className={`p-1.5 rounded-md transition-all ${
+										onClick={() => setPreset(key)}
+										aria-pressed={isActive}
+										aria-label={`${label} (${width} by ${height})`}
+										title={`${label} · ${width}×${height}`}
+										className={cn(
+											"rounded-md p-1.5 transition-colors",
 											isActive
 												? "bg-primary text-primary-foreground"
-												: "text-foreground hover:text-accent hover:bg-accent/10"
-										}`}
-										title={`${label} (${width}×${height})`}
+												: "text-muted-foreground hover:bg-brand/5 hover:text-brand"
+										)}
 									>
-										<Icon className="w-3.5 h-3.5" strokeWidth={1.5} />
+										<Icon className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
 									</button>
 								);
 							})}
 						</div>
 					)}
 
-					{/* Right side - Actions */}
-					<div className="flex items-center gap-1 shrink-0">
-						{manualWidth !== null && (
+					{/* Actions */}
+					<div className="flex shrink-0 items-center gap-1">
+						{manualWidth != null && !isFullscreen && (
 							<button
 								type="button"
-								onClick={handleResetWidth}
-								className="p-1.5 rounded-md text-foreground hover:text-accent hover:bg-accent/10 transition-all"
+								onClick={resetWidth}
+								aria-label="Reset preview width"
 								title="Reset width"
+								className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
 							>
-								<RotateCcw className="w-3.5 h-3.5" strokeWidth={1.5} />
+								<RotateCcw className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
 							</button>
 						)}
 
 						<button
+							ref={triggerRef}
 							type="button"
-							onClick={handleToggleFullscreen}
-							className="p-1.5 rounded-md text-foreground hover:text-accent hover:bg-accent/10 transition-all"
+							onClick={toggleFullscreen}
+							aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
 							title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+							className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
 						>
 							{isFullscreen ? (
-								<X className="w-3.5 h-3.5" strokeWidth={1.5} />
+								<Minimize2 className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
 							) : (
-								<Maximize2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+								<Maximize2 className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
 							)}
 						</button>
 
-						<div className="w-px h-4 bg-border mx-1" />
+						<div className="mx-1 h-4 w-px bg-border" />
 
 						<a
 							href={href}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm"
+							aria-label={`Visit ${url} (opens in a new tab)`}
+							className="flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
 						>
 							<span className="hidden sm:inline">Visit</span>
-							<ExternalLink className="w-3 h-3" strokeWidth={1.5} />
+							<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
 						</a>
 					</div>
 				</div>
 
-				{/* Preview area */}
+				{/* Preview viewport */}
 				<div
-					className={`relative w-full bg-background overflow-auto ${isFullscreen ? "flex-1" : "flex items-start justify-center"}`}
-					style={
-						isFullscreen
-							? {}
-							: {
-									height: `${displayHeight}px`,
-									minHeight: "200px",
-									maxHeight: "90vh",
-								}
-					}
-				>
-					{isLoading && (
-						<div className="absolute inset-0 flex flex-col items-center justify-center bg-background z-10 gap-4 overflow-hidden">
-							<div className="absolute inset-0 bg-gradient-to-br from-muted/50 via-muted/30 to-muted/10 animate-pulse" />
-							<div className="relative">
-								<div className="w-8 h-8 rounded-full border-2 border-border" />
-								<div className="absolute inset-0 w-8 h-8 rounded-full border-2 border-transparent border-t-accent animate-spin" />
-							</div>
-							<p className="text-xs text-muted-foreground font-medium relative">
-								Loading preview...
-							</p>
-						</div>
+					className={cn(
+						"relative flex w-full justify-center overflow-hidden bg-muted/30",
+						isFullscreen ? "flex-1 items-center" : "items-start"
 					)}
-
-					<div
-						ref={imageContainerRef}
-						className={`relative ${isFullscreen ? "w-full h-full" : ""}`}
-						style={
-							isFullscreen
-								? {}
-								: {
-										width: `${displayWidth}px`,
-										height: `${displayHeight}px`,
-										overflow: "hidden",
-									}
-						}
-					>
-						{animatedUrl && animatedUrl.trim() !== "" && screenshotState !== "error" ? (
-							<video
-								key={animatedUrl}
-								ref={videoRef}
-								src={animatedUrl}
-								className="w-full h-full object-cover"
-								style={{
-									border: "none",
-									opacity: screenshotState === "loaded" ? 1 : 0,
-									transition: "opacity 0.3s ease-in-out",
-									display: "block",
-								}}
-								title={`Scrolling preview of ${title}`}
-								playsInline
-								autoPlay
-								muted
-								loop
-								onLoadedMetadata={handleVideoLoaded}
-								onError={handleVideoError}
+					style={isFullscreen ? undefined : { height: `${Math.round(frameHeight)}px` }}
+					aria-busy={status === "loading"}
+				>
+					{status === "error" ? (
+						<div className="flex flex-col items-center justify-center gap-3 p-6 text-center">
+							<ImageOff
+								className="size-9 text-muted-foreground"
+								strokeWidth={1.5}
+								aria-hidden="true"
 							/>
-						) : staticUrl ? (
-							<div className="relative w-full h-full">
+							<div className="space-y-1">
+								<p className="text-sm font-medium text-foreground">Preview unavailable</p>
+								<p className="max-w-xs text-xs text-muted-foreground">
+									We couldn’t capture this site right now.
+								</p>
+							</div>
+							<div className="flex items-center gap-2">
+								<button
+									type="button"
+									onClick={retry}
+									className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+								>
+									<RefreshCw className="size-3" strokeWidth={1.5} aria-hidden="true" />
+									Retry
+								</button>
+								<a
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+								>
+									Open site
+									<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
+								</a>
+							</div>
+						</div>
+					) : (
+						<div
+							className="relative"
+							style={
+								isFullscreen
+									? { width: `${Math.round(frameWidth)}px`, height: `${Math.round(frameHeight)}px` }
+									: { width: "100%", height: "100%" }
+							}
+						>
+							{status === "loading" && (
+								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
+									<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-transparent" />
+									<div className="relative size-7">
+										<div className="absolute inset-0 rounded-full border-2 border-border" />
+										<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
+									</div>
+									<p className="relative text-xs font-medium text-muted-foreground">
+										Loading preview…
+									</p>
+								</div>
+							)}
+							{src && (
 								<Image
-									src={staticUrl}
+									key={src}
+									src={src}
 									alt={`Screenshot of ${title}`}
 									fill
-									className="object-cover"
-									onLoad={() => setScreenshotState("loaded")}
-									onError={handleVideoError}
+									className="object-cover object-top"
+									sizes="(max-width: 768px) 100vw, 1280px"
+									onLoad={onImageLoad}
+									onError={() => setStatus("error")}
 									priority
 									unoptimized
 								/>
-							</div>
-						) : (
-							<div className="absolute inset-0 flex flex-col items-center justify-center bg-background gap-3 text-center p-4">
-								<ImageIcon className="w-10 h-10 text-muted-foreground" />
-								<div className="space-y-1">
-									<p className="text-sm text-muted-foreground">Preview unavailable</p>
-									<p className="text-xs text-muted-foreground/80">
-										Click the “Visit” button to open the live site.
-									</p>
-								</div>
-							</div>
-						)}
-					</div>
+							)}
+						</div>
+					)}
 				</div>
 
-				{/* Bottom bar */}
-				<div className="flex items-center justify-between h-7 px-3 border-t border-border bg-secondary">
-					<div className="flex items-center gap-2 text-[10px] text-foreground font-mono">
-						<span className={isResizing ? "text-accent" : ""}>
-							{displayViewport.width}×{displayViewport.height}
+				{/* Bottom status bar */}
+				<div className="flex h-7 shrink-0 items-center justify-between border-t border-border bg-secondary px-3">
+					<div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+						<span className="text-foreground">
+							{capture.width}×{capture.height}
 						</span>
-						<span className="text-muted-foreground">•</span>
+						<span aria-hidden="true">•</span>
 						<span>{Math.round(scale * 100)}%</span>
-						{isResizing && <span className="text-accent animate-pulse">Release to apply</span>}
+						{isResizing && <span className="animate-pulse text-brand">Release to apply</span>}
 					</div>
 
-					{isFullscreen && (
-						<div className="text-[10px] text-foreground font-mono">
-							Press <kbd className="px-1 py-0.5 rounded bg-secondary text-foreground">ESC</kbd> to
+					{isFullscreen ? (
+						<div className="font-mono text-[10px] text-muted-foreground">
+							Press <kbd className="rounded bg-background px-1 py-0.5 text-foreground">ESC</kbd> to
 							exit
 						</div>
+					) : (
+						<span className="font-mono text-[10px] capitalize text-muted-foreground">
+							{capture.label}
+						</span>
 					)}
 				</div>
 			</div>
 
-			{/* Resize handles */}
-			{!isFullscreen && (
-				<>
-					{/* biome-ignore lint/a11y/noStaticElementInteractions: pointer-only drag affordance for resizing */}
-					<div
-						onMouseDown={handleMouseDown}
-						onTouchStart={handleTouchStart}
-						className={`absolute top-1/2 -right-4 -translate-y-1/2 z-40 cursor-ew-resize touch-none group ${
+			{/* Resize handles (pointer + keyboard) */}
+			{!isFullscreen &&
+				status !== "error" &&
+				(["left", "right"] as const).map((side) => (
+					<button
+						key={side}
+						type="button"
+						aria-label="Resize preview width"
+						onMouseDown={(e) => {
+							e.preventDefault();
+							setIsResizing(true);
+						}}
+						onTouchStart={(e) => {
+							e.preventDefault();
+							setIsResizing(true);
+						}}
+						onKeyDown={handleResizeKey}
+						className={cn(
+							"group absolute top-1/2 z-40 -translate-y-1/2 cursor-ew-resize touch-none transition-opacity duration-200 focus-visible:opacity-100 focus-visible:outline-none",
+							side === "right" ? "-right-4" : "-left-4",
 							isResizing ? "opacity-100" : "opacity-0 hover:opacity-100"
-						} transition-opacity duration-200`}
+						)}
 					>
-						<div
-							className={`flex items-center justify-center w-6 h-12 rounded-full border border-border bg-background shadow-md transition-all ${
-								isResizing ? "bg-primary border-primary" : "group-hover:border-accent/50"
-							}`}
+						<span
+							className={cn(
+								"flex h-12 w-6 items-center justify-center rounded-full border bg-background shadow-md transition-colors",
+								isResizing
+									? "border-primary bg-primary"
+									: "border-border group-hover:border-brand/50 group-focus-visible:border-brand"
+							)}
 						>
 							<Grip
-								className={`w-3 h-3 transition-colors ${
-									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-accent"
-								}`}
+								className={cn(
+									"size-3 transition-colors",
+									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-brand"
+								)}
 								strokeWidth={1.5}
+								aria-hidden="true"
 							/>
-						</div>
-					</div>
-
-					{/* biome-ignore lint/a11y/noStaticElementInteractions: pointer-only drag affordance for resizing */}
-					<div
-						onMouseDown={handleMouseDown}
-						onTouchStart={handleTouchStart}
-						className={`absolute top-1/2 -left-4 -translate-y-1/2 z-40 cursor-ew-resize touch-none group ${
-							isResizing ? "opacity-100" : "opacity-0 hover:opacity-100"
-						} transition-opacity duration-200`}
-					>
-						<div
-							className={`flex items-center justify-center w-6 h-12 rounded-full border border-border bg-background shadow-md transition-all ${
-								isResizing ? "bg-primary border-primary" : "group-hover:border-accent/50"
-							}`}
-						>
-							<Grip
-								className={`w-3 h-3 transition-colors ${
-									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-accent"
-								}`}
-								strokeWidth={1.5}
-							/>
-						</div>
-					</div>
-				</>
-			)}
+						</span>
+					</button>
+				))}
 		</div>
 	);
 
 	return (
-		<div ref={wrapperRef} className="w-full mb-12">
-			{isFullscreen &&
-				mounted &&
-				typeof document !== "undefined" &&
-				createPortal(
-					<div
-						className="fixed inset-0 z-[9998] bg-black flex flex-col"
-						onClick={(e) => {
-							if (e.target === e.currentTarget) {
-								setIsFullscreen(false);
-							}
-						}}
-						onKeyDown={(e) => {
-							if (e.key === "Escape") {
-								setIsFullscreen(false);
-							}
-						}}
-						role="dialog"
-						aria-modal="true"
-						tabIndex={-1}
-					>
-						{previewContent}
-					</div>,
-					document.body
-				)}
+		<div ref={wrapperRef} className="w-full">
+			{isFullscreen && mounted && typeof document !== "undefined"
+				? createPortal(
+						<div
+							ref={dialogRef}
+							className="fixed inset-0 z-[9998] flex flex-col bg-black/95 p-6 backdrop-blur-sm"
+							onClick={(e) => {
+								if (e.target === e.currentTarget) setIsFullscreen(false);
+							}}
+							onKeyDown={(e) => {
+								if (e.key === "Escape") setIsFullscreen(false);
+							}}
+							role="dialog"
+							aria-modal="true"
+							aria-label={`${title} fullscreen preview`}
+							tabIndex={-1}
+						>
+							<div className="flex h-full w-full items-center justify-center">{previewContent}</div>
+						</div>,
+						document.body
+					)
+				: null}
 
-			{!isFullscreen && <div className="w-full flex justify-center">{previewContent}</div>}
+			{!isFullscreen && <div className="flex w-full justify-center">{previewContent}</div>}
 		</div>
 	);
 }

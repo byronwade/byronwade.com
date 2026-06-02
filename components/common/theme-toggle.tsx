@@ -13,26 +13,29 @@ export function ThemeToggle({ className }: { className?: string }) {
 		setMounted(true);
 	}, []);
 
-	const isDark = resolvedTheme === "dark";
+	// resolvedTheme is undefined on the server and may differ on first client paint
+	// (system preference / localStorage). Keep SSR + hydration markup identical until
+	// mounted, then swap icon + label to the resolved theme.
+	const isDark = mounted && resolvedTheme === "dark";
 
 	return (
 		<button
 			type="button"
-			aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-			onClick={() => setTheme(isDark ? "light" : "dark")}
+			aria-label={mounted ? `Switch to ${isDark ? "light" : "dark"} mode` : "Toggle color theme"}
+			onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
 			className={cn(
-				"inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-ring",
+				"inline-flex size-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-ring",
 				className
 			)}
 		>
 			{mounted ? (
 				isDark ? (
-					<Sun className="size-[1.1rem]" strokeWidth={2} />
+					<Sun className="size-[1.1rem]" strokeWidth={2} aria-hidden="true" />
 				) : (
-					<Moon className="size-[1.1rem]" strokeWidth={2} />
+					<Moon className="size-[1.1rem]" strokeWidth={2} aria-hidden="true" />
 				)
 			) : (
-				<span className="size-[1.1rem]" />
+				<span className="size-[1.1rem]" aria-hidden="true" />
 			)}
 		</button>
 	);

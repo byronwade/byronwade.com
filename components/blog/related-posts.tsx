@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
-import { ScrollReveal } from "@/components/common";
+import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 
 interface RelatedPostsProps {
@@ -28,42 +28,41 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 	}
 
 	return (
-		<ScrollReveal direction="up" delay={100}>
-			<div className="w-full mt-12 pt-8 border-t border-[var(--border)]">
-				<h3 className="text-xl font-semibold text-[var(--foreground)] mb-6">Related Posts</h3>
-				<div className="flex flex-col gap-4">
-					{relatedPosts.map((post, index) => (
-						<ScrollReveal key={post.slug} direction="up" delay={index * 50}>
-							<Link
-								href={`/blog/${post.slug}`}
-								className="group flex flex-col sm:flex-row sm:items-center sm:justify-between w-full hover:opacity-70 transition-all duration-200 focus-ring touch-target py-2 gap-2 sm:gap-4 rounded-lg hover:bg-[var(--muted)]/30 px-2 -mx-2"
-							>
-								<div className="flex flex-col gap-1 flex-1 min-w-0">
-									<p className="font-medium text-[var(--foreground)] text-base underline-animate mobile-text">
-										{post.title}
-									</p>
-									{post.excerpt && (
-										<p className="text-sm text-[var(--muted-foreground)] line-clamp-2">
-											{post.excerpt}
-										</p>
-									)}
-								</div>
-								<div className="flex items-center gap-3 shrink-0 sm:ml-4">
-									<span className="inline-flex items-center gap-1 text-xs text-teal-600 dark:text-teal-400">
-										<Clock className="size-3" />
-										{post.readingTime} min
-									</span>
-									{post.date && (
-										<p className="text-xs sm:text-sm text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] transition-colors whitespace-nowrap">
-											{format(new Date(post.date), "MMM d, yyyy")}
-										</p>
-									)}
-								</div>
-							</Link>
-						</ScrollReveal>
-					))}
-				</div>
+		<div className="mt-12 w-full border-t border-border pt-8">
+			<h3 className="mb-6 font-heading text-xl font-semibold tracking-tight text-foreground">
+				Related posts
+			</h3>
+			<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+				{relatedPosts.map((post) => (
+					<Link
+						key={post.slug}
+						href={`/blog/${post.slug}`}
+						className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
+					>
+						<div className="flex items-start justify-between gap-4">
+							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+								{post.title}
+							</span>
+							<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+								<Badge variant="outline">
+									<Clock />
+									{post.readingTime} min
+								</Badge>
+								{post.date && (
+									<time className="hidden sm:inline">
+										{format(new Date(post.date), "MMM d, yyyy")}
+									</time>
+								)}
+							</div>
+						</div>
+						{post.excerpt && (
+							<p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+								{post.excerpt}
+							</p>
+						)}
+					</Link>
+				))}
 			</div>
-		</ScrollReveal>
+		</div>
 	);
 }

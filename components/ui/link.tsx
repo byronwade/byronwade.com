@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 interface LinkProps extends NextLinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
 	className?: string;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(

@@ -1,21 +1,18 @@
-import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
-// Body / UI — warm, friendly, highly legible
-export const plusJakartaSans = Plus_Jakarta_Sans({
+// Body / UI — Geist, the byronwade/ui design-system typeface
+export const geistSans = Geist({
 	subsets: ["latin"],
 	display: "swap",
 	variable: "--font-sans",
-	weight: ["300", "400", "500", "600", "700"],
 });
 
-// Display / editorial headings — elegant serif that pairs with the copper accent
-export const instrumentSerif = Instrument_Serif({
+// Monospace — code, metrics, technical labels
+export const geistMono = Geist_Mono({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-display",
-	weight: "400",
-	style: ["normal", "italic"],
+	variable: "--font-geist-mono",
 });
 
 // Custom signature font for the wordmark / personal branding

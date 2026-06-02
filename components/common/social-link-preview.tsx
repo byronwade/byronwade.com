@@ -66,10 +66,10 @@ const itemVariants = {
 
 const levelColors = [
 	"bg-muted",
-	"bg-emerald-900/70 dark:bg-emerald-900/70",
-	"bg-emerald-600/80 dark:bg-emerald-600/80",
-	"bg-emerald-500 dark:bg-emerald-500",
-	"bg-emerald-400 dark:bg-emerald-400",
+	"bg-brand/30",
+	"bg-brand/50",
+	"bg-brand/75",
+	"bg-brand",
 ];
 
 function EmailPreviewContent() {
@@ -201,7 +201,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 					<motion.div
 						animate={{ rotate: 360 }}
 						transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-						className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full"
+						className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full"
 					/>
 				</motion.div>
 			) : githubStats ? (
@@ -404,8 +404,6 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 
 	return (
 		<HoverCard
-			openDelay={200}
-			closeDelay={100}
 			open={isOpen}
 			onOpenChange={(open) => {
 				setIsOpen(open);
@@ -414,7 +412,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				}
 			}}
 		>
-			<HoverCardTrigger asChild>{children}</HoverCardTrigger>
+			<HoverCardTrigger render={children as React.ReactElement} />
 			<HoverCardContent
 				className="p-3 bg-popover border border-border shadow-2xl rounded-lg z-[9999]"
 				sideOffset={8}

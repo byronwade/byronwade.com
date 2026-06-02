@@ -1,15 +1,16 @@
 {
 	"$schema": "https://ui.shadcn.com/schema.json",
-	"style": "new-york",
+	"style": "base-nova",
 	"rsc": true,
 	"tsx": true,
 	"tailwind": {
-		"config": "tailwind.config.ts",
+		"config": "",
 		"css": "app/globals.css",
 		"baseColor": "neutral",
 		"cssVariables": true,
 		"prefix": ""
 	},
+	"iconLibrary": "lucide",
 	"aliases": {
 		"components": "@/components",
 		"utils": "@/lib/utils",
@@ -18,5 +19,8 @@
 		"hooks": "@/hooks",
 		"fonts": "@/lib/fonts",
 		"types": "@/types"
+	},
+	"registries": {
+		"@byronwade": "https://ui.byronwade.com/r/{name}.json"
 	}
 }
