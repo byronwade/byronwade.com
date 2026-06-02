@@ -1,3 +1,9 @@
+import { format } from "date-fns";
+import { Clock } from "lucide-react";
+import Link from "next/link";
+import { Suspense } from "react";
+import { BreadcrumbNav } from "@/components/common";
+import { SiteShell } from "@/components/layout/site-shell";
 import { getBlogPosts } from "@/lib/blog";
 import {
 	generateBreadcrumbStructuredData,
@@ -5,10 +11,6 @@ import {
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
-import { format } from "date-fns";
-import { Clock } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
 
 export async function generateMetadata() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
@@ -109,54 +111,37 @@ export default function BlogPage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			<div className="relative min-h-screen w-full bg-[var(--background)]">
-				{/* Subtle background gradient */}
-				<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
+			<SiteShell>
+				<div className="flex flex-col gap-8 sm:gap-10">
+					<div className="animate-in w-full">
+						<BreadcrumbNav
+							items={[{ label: "Home", href: "/" }, { label: "Blog" }]}
+							className="mb-4"
+						/>
+						<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
+							Blog
+						</h1>
+						<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+							Insights on web development, React, Next.js, performance, and building software for
+							service businesses.
+						</p>
+					</div>
 
-				{/* Main content */}
-				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
-					<div className="flex flex-col gap-6 sm:gap-10 md:gap-12 lg:gap-16 items-center w-full max-w-2xl">
-						{/* Header Section */}
-						<div className="animate-in w-full">
-							<div className="flex flex-col gap-4 sm:gap-6 items-start w-full">
-								<Link
-									className="group flex items-center gap-2 w-full touch-target"
-									aria-label="Go to home"
-									href="/"
-								>
-									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200">
-										← Back to home
-									</span>
-								</Link>
-
-								<h1 className="text-3xl sm:text-4xl font-semibold text-[var(--foreground)] tracking-tight">
-									Blog
-								</h1>
-								<p className="text-[var(--muted-foreground)] text-base leading-relaxed max-w-2xl">
-									Insights, tutorials, and thoughts on web development, JavaScript, React, Next.js,
-									and modern web technologies. Covering performance optimization, SEO best
-									practices, and building scalable applications.
-								</p>
-							</div>
-						</div>
-
-						{/* Blog Posts List */}
-						<div className="animate-in animate-delay-1 w-full">
-							<Suspense
-								fallback={
-									<div className="animate-pulse">
-										<div className="h-16 bg-[var(--muted)] rounded mb-4" />
-										<div className="h-16 bg-[var(--muted)] rounded mb-4" />
-										<div className="h-16 bg-[var(--muted)] rounded" />
-									</div>
-								}
-							>
-								<BlogList />
-							</Suspense>
-						</div>
+					<div className="animate-in animate-delay-1 w-full">
+						<Suspense
+							fallback={
+								<div className="animate-pulse space-y-4">
+									<div className="h-16 rounded-lg bg-muted" />
+									<div className="h-16 rounded-lg bg-muted" />
+									<div className="h-16 rounded-lg bg-muted" />
+								</div>
+							}
+						>
+							<BlogList />
+						</Suspense>
 					</div>
 				</div>
-			</div>
+			</SiteShell>
 		</>
 	);
 }

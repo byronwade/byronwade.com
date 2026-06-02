@@ -1,14 +1,3 @@
-import { BlogPostViewTracker } from "@/components/analytics-tracker";
-import { ReadingProgress } from "@/components/reading-progress";
-import { RelatedPosts } from "@/components/related-posts";
-import { SocialShare } from "@/components/social-share";
-import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
-import {
-	generateArticleStructuredData,
-	generateBreadcrumbStructuredData,
-	generateOGImageUrl,
-	generateMetadata as generateSEOMetadata,
-} from "@/lib/seo";
 import { format } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -17,6 +6,16 @@ import { Suspense } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import remarkGfm from "remark-gfm";
+import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
+import { BlogPostViewTracker, BreadcrumbNav } from "@/components/common";
+import { SiteShell } from "@/components/layout/site-shell";
+import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
+import {
+	generateArticleStructuredData,
+	generateBreadcrumbStructuredData,
+	generateOGImageUrl,
+	generateMetadata as generateSEOMetadata,
+} from "@/lib/seo";
 
 interface BlogPostPageProps {
 	params: Promise<{ slug: string }>;
@@ -126,33 +125,25 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 			{/* Header Section */}
 			<div className="animate-in w-full">
-				<div className="flex flex-col gap-3 items-start w-full">
-					<Link
-						className="group flex items-center gap-2 w-full touch-target"
-						aria-label="Go to blog"
-						href="/blog"
-					>
-						<span className="text-xs font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-yellow-600 dark:hover:text-yellow-500 transition-all duration-200">
-							← Back to blog
-						</span>
-					</Link>
-
-					<div className="flex flex-col gap-2 w-full">
-						<h1 className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)] tracking-tight">
+				<BreadcrumbNav
+					items={[
+						{ label: "Home", href: "/" },
+						{ label: "Blog", href: "/blog" },
+						{ label: post.title },
+					]}
+					className="mb-4"
+				/>
+				<div className="flex w-full flex-col items-start gap-3">
+					<div className="flex w-full flex-col gap-2">
+						<h1 className="font-display text-2xl font-normal tracking-tight text-foreground sm:text-3xl">
 							{post.title}
 						</h1>
 						{post.date && (
-							<p className="text-xs text-[var(--muted-foreground)]">
+							<time className="text-xs text-muted-foreground">
 								{format(new Date(post.date), "MMMM d, yyyy")}
-							</p>
+							</time>
 						)}
-						{/* Social Share Buttons */}
-						<SocialShare
-							url={url}
-							title={post.title}
-							description={post.excerpt}
-							className="mt-4"
-						/>
+						<SocialShare url={url} title={post.title} description={post.excerpt} className="mt-4" />
 					</div>
 				</div>
 			</div>
@@ -310,31 +301,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 
 	return (
-		<div className="relative min-h-screen w-full bg-[var(--background)]">
-			{/* Reading Progress Bar */}
+		<>
 			<ReadingProgress />
-
-			{/* Subtle background gradient */}
-			<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
-
-			{/* Main content */}
-			<div className="relative flex justify-center py-8 px-4 sm:py-10 md:py-12 safe-top safe-bottom">
-				<div className="flex flex-col gap-4 sm:gap-6 md:gap-8 items-center w-full max-w-2xl">
-					<Suspense
-						fallback={
-							<div className="animate-pulse w-full">
-								<div className="h-8 bg-[var(--muted)] rounded w-3/4 mb-4" />
-								<div className="h-4 bg-[var(--muted)] rounded w-1/2 mb-8" />
-								<div className="h-4 bg-[var(--muted)] rounded w-full mb-2" />
-								<div className="h-4 bg-[var(--muted)] rounded w-full mb-2" />
-								<div className="h-4 bg-[var(--muted)] rounded w-3/4" />
-							</div>
-						}
-					>
-						<BlogPostContent slug={slug} />
-					</Suspense>
-				</div>
-			</div>
-		</div>
+			<SiteShell>
+				<Suspense
+					fallback={
+						<div className="w-full animate-pulse space-y-4">
+							<div className="mb-4 h-8 w-3/4 rounded bg-muted" />
+							<div className="mb-8 h-4 w-1/2 rounded bg-muted" />
+							<div className="h-4 w-full rounded bg-muted" />
+							<div className="h-4 w-full rounded bg-muted" />
+							<div className="h-4 w-3/4 rounded bg-muted" />
+						</div>
+					}
+				>
+					<BlogPostContent slug={slug} />
+				</Suspense>
+			</SiteShell>
+		</>
 	);
 }

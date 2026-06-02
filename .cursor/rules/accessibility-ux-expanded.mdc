@@ -1,0 +1,539 @@
+---
+globs: *.tsx,*.jsx,*.js
+description: Accessibility and user experience guidelines for inclusive design
+---
+
+# Thorbis Accessibility & UX Rules
+
+## WCAG Compliance Standards
+
+### Contrast Requirements
+- **AA Minimum**: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt+ bold)
+- **AAA Preferred**: 7:1 for normal text, 4.5:1 for large text
+- **Table text**: Must meet AAA standards due to density and scanning patterns
+- **Status indicators**: Color + icon/text, never color alone
+
+### Color Usage Examples
+```css
+/* ✅ Good - Sufficient contrast on dark theme */
+.text-primary { color: #E6EAF0; } /* gray-900 on gray-25 = 16.74:1 */
+.text-secondary { color: #A9B2C1; } /* gray-800 on gray-25 = 9.51:1 */
+.text-muted { color: #7A8598; } /* gray-700 on gray-25 = 6.26:1 */
+
+/* ❌ Bad - Insufficient contrast */
+.text-error { color: #FF6B6B; } /* Fails AA on gray-25 background */
+```
+
+## Focus Management System
+
+### Focus Ring Implementation
+```tsx
+// ✅ Good - Comprehensive focus styles
+const focusClasses = cn(
+  "focus:outline-none", // Remove default outline
+  "focus:ring-2 focus:ring-blue-500", // 2px blue ring
+  "focus:ring-offset-2 focus:ring-offset-gray-25", // Dark theme offset
+  "focus-visible:ring-2", // Only on keyboard focus
+  "transition-shadow duration-150" // Smooth focus transition
+)
+
+// Apply to all interactive elements
+<button className={focusClasses}>
+  Interactive Element
+</button>
+
+// ❌ Bad - Missing or inconsistent focus
+<button className="focus:outline-blue-500"> // Inconsistent
+<div onClick={handler}> // No focus management
+```
+
+### Focus Trap Implementation
+```tsx
+// ✅ Good - Focus trap for inline panels
+import { useFocusTrap } from '@/hooks/use-focus-trap'
+
+export function InlinePanel({ isOpen, onClose }) {
+  const trapRef = useFocusTrap(isOpen)
+  
+  if (!isOpen) return null
+  
+  return (
+    <div 
+      ref={trapRef}
+      className="border rounded-lg p-4 bg-gray-50"
+      role="dialog"
+      aria-labelledby="panel-title"
+    >
+      <h3 id="panel-title">Panel Title</h3>
+      <div>Panel content...</div>
+      <button onClick={onClose}>Close</button>
+    </div>
+  )
+}
+
+// Custom hook for focus trapping
+export function useFocusTrap(isActive: boolean) {
+  const ref = useRef<HTMLDivElement>(null)
+  
+  useEffect(() => {
+    if (!isActive || !ref.current) return
+    
+    const element = ref.current
+    const focusableElements = element.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    
+    const firstElement = focusableElements[0] as HTMLElement
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus()
+            e.preventDefault()
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus()
+            e.preventDefault()
+          }
+        }
+      }
+      if (e.key === 'Escape') {
+        firstElement.focus() // Return focus to trigger
+      }
+    }
+    
+    element.addEventListener('keydown', handleKeyDown)
+    firstElement?.focus()
+    
+    return () => element.removeEventListener('keydown', handleKeyDown)
+  }, [isActive])
+  
+  return ref
+}
+```
+
+## Accessible Tooltip System
+
+### Tooltip Implementation Standards
+```tsx
+// ✅ Good - Fully accessible tooltip
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
+export function AccessibleTooltip({ 
+  children, 
+  content, 
+  shortcut,
+  delayDuration = 200 
+}) {
+  const tooltipId = useId()
+  
+  return (
+    <TooltipProvider>
+      <Tooltip delayDuration={delayDuration}>
+        <TooltipTrigger asChild>
+          <span 
+            className="inline-flex items-center cursor-help"
+            aria-describedby={tooltipId}
+          >
+            {children}
+            <HelpCircle className="ml-1 h-4 w-4 text-gray-500" />
+          </span>
+        </TooltipTrigger>
+        <TooltipContent 
+          id={tooltipId}
+          className={
+            cn(
+              "max-w-xs p-3 text-sm",
+              "bg-gray-800 text-white border-gray-700", // Dark tooltip
+              "shadow-lg z-50"
+            )
+          }
+          sideOffset={5}
+          role="tooltip"
+        >
+          <div className="space-y-1">
+            <p>{content}</p>
+            {shortcut && (
+              <kbd className="px-1.5 py-0.5 text-xs bg-gray-700 rounded">
+                {shortcut}
+              </kbd>
+            )}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
+// Mobile alternative - inline help text
+export function MobileHelp({ children, className }) {
+  return (
+    <div className={cn("mt-1 text-sm text-gray-600 md:hidden", className)}>
+      <Info className="inline h-4 w-4 mr-1" />
+      {children}
+    </div>
+  )
+}
+```
+
+### Tooltip Content Guidelines
+- **Maximum 2 sentences**: Keep content concise and scannable
+- **Action-oriented**: "Click to edit" not "This is editable"
+- **Keyboard shortcuts**: Include when relevant
+- **Never essential info**: Tooltips supplement, never replace critical information
+
+## Form Accessibility Patterns
+
+### Complete Form Implementation
+```tsx
+// ✅ Good - Fully accessible form
+export function AccessibleForm() {
+  const [errors, setErrors] = useState({})
+  const [touched, setTouched] = useState({})
+  
+  return (
+    <form onSubmit={handleSubmit} noValidate>
+      <fieldset>
+        <legend className="text-lg font-semibold mb-4">
+          User Information
+        </legend>
+        
+        {/* Text input with full accessibility */}
+        <div className="space-y-2">
+          <Label htmlFor="email" className="required">
+            Email Address
+            <span aria-label="required" className="text-red-500 ml-1">
+              *
+            </span>
+          </Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            aria-required="true"
+            aria-describedby={`email-help ${errors.email ? 'email-error' : ''}`}
+            aria-invalid={errors.email ? 'true' : 'false'}
+            className={cn(
+              "focus:ring-2 focus:ring-blue-500",
+              errors.email && "border-red-500"
+            )}
+          />
+          <div id="email-help" className="text-sm text-gray-600">
+            We'll use this for account notifications
+          </div>
+          {errors.email && (
+            <div id="email-error" className="text-sm text-red-600" role="alert">
+              <AlertCircle className="inline h-4 w-4 mr-1" />
+              {errors.email}
+            </div>
+          )}
+        </div>
+        
+        {/* Select with accessibility */}
+        <div className="space-y-2">
+          <Label htmlFor="role">Role (Optional)</Label>
+          <Select name="role">
+            <SelectTrigger 
+              id="role"
+              aria-describedby="role-help"
+            >
+              <SelectValue placeholder="Choose your role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="admin">Administrator</SelectItem>
+              <SelectItem value="user">Standard User</SelectItem>
+              <SelectItem value="viewer">Viewer</SelectItem>
+            </SelectContent>
+          </Select>
+          <div id="role-help" className="text-sm text-gray-600">
+            This determines your default permissions
+          </div>
+        </div>
+      </fieldset>
+      
+      <div className="flex gap-3 mt-6">
+        <Button type="button" variant="outline" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={hasErrors}>
+          Create Account
+        </Button>
+      </div>
+    </form>
+  )
+}
+```
+
+### Error Handling Patterns
+```tsx
+// ✅ Good - Accessible error display
+export function FormErrors({ errors }) {
+  if (Object.keys(errors).length === 0) return null
+  
+  return (
+    <div 
+      className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+      role="alert"
+      aria-labelledby="error-summary"
+    >
+      <div className="flex items-center mb-2">
+        <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
+        <h3 id="error-summary" className="font-medium text-red-800">
+          Please correct the following errors:
+        </h3>
+      </div>
+      <ul className="text-sm text-red-700 space-y-1">
+        {Object.entries(errors).map(([field, message]) => (
+          <li key={field}>
+            <a href={`#${field}`} className="underline hover:no-underline">
+              {message}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+```
+
+## Data Table Accessibility
+
+### Complete Table Implementation
+```tsx
+// ✅ Good - Fully accessible data table
+export function AccessibleDataTable({ data, columns, sortConfig, onSort }) {
+  return (
+    <div className="overflow-auto" role="region" aria-labelledby="table-title">
+      <h2 id="table-title" className="sr-only">Data Table</h2>
+      
+      <Table>
+        <TableHeader className="sticky top-0 bg-gray-50 z-10">
+          <TableRow>
+            {columns.map(column => (
+              <TableHead 
+                key={column.key}
+                scope="col"
+                className={
+                  cn(
+                    "font-medium text-left",
+                    column.sortable && "cursor-pointer hover:bg-gray-100"
+                  )
+                }
+                onClick={column.sortable ? () => onSort(column.key) : undefined}
+                aria-sort={
+                  sortConfig?.key === column.key
+                    ? sortConfig.direction === 'asc' ? 'ascending' : 'descending'
+                    : column.sortable ? 'none' : undefined
+                }
+              >
+                <div className="flex items-center gap-2">
+                  {column.label}
+                  {column.sortable && (
+                    <span className="text-gray-400">
+                      {sortConfig?.key === column.key ? (
+                        sortConfig.direction === 'asc' ? (
+                          <ChevronUp className="h-4 w-4" />
+                        ) : (
+                          <ChevronDown className="h-4 w-4" />
+                        )
+                      ) : (
+                        <ChevronsUpDown className="h-4 w-4" />
+                      )}
+                    </span>
+                  )}
+                </div>
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        
+        <TableBody>
+          {data.map((row, rowIndex) => (
+            <TableRow 
+              key={row.id}
+              className={
+                cn(
+                  "hover:bg-gray-50 focus-within:bg-gray-50",
+                  row.selected && "bg-blue-50 border-l-4 border-l-blue-500"
+                )
+              }
+              aria-selected={row.selected}
+            >
+              {columns.map(column => (
+                <TableCell key={`${row.id}-${column.key}`}>
+                  {column.render ? column.render(row, rowIndex) : row[column.key]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      
+      {/* Table summary for screen readers */}
+      <div className="sr-only" aria-live="polite">
+        Showing {data.length} items. 
+        {sortConfig && `Sorted by ${sortConfig.key} ${sortConfig.direction}.`}
+      </div>
+    </div>
+  )
+}
+```
+
+## Navigation Accessibility
+
+### Skip Links Implementation
+```tsx
+// ✅ Good - Skip links for keyboard users
+export function SkipLinks() {
+  return (
+    <div className="sr-only focus-within:not-sr-only">
+      <a 
+        href="#main-content"
+        className={
+          cn(
+            "absolute top-4 left-4 z-50",
+            "bg-blue-600 text-white px-4 py-2 rounded",
+            "focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          )
+        }
+      >
+        Skip to main content
+      </a>
+      <a 
+        href="#navigation"
+        className={
+          cn(
+            "absolute top-4 left-32 z-50",
+            "bg-blue-600 text-white px-4 py-2 rounded",
+            "focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          )
+        }
+      >
+        Skip to navigation
+      </a>
+    </div>
+  )
+}
+```
+
+### Breadcrumb Navigation
+```tsx
+// ✅ Good - Accessible breadcrumbs
+export function AccessibleBreadcrumbs({ items }) {
+  return (
+    <nav aria-label="Breadcrumb" className="mb-6">
+      <ol className="flex items-center space-x-2 text-sm">
+        {items.map((item, index) => (
+          <li key={item.href || item.label} className="flex items-center">
+            {index > 0 && (
+              <ChevronRight 
+                className="h-4 w-4 text-gray-400 mx-2" 
+                aria-hidden="true"
+              />
+            )}
+            {item.href && index < items.length - 1 ? (
+              <Link 
+                href={item.href}
+                className="text-blue-600 hover:text-blue-800 hover:underline"
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span 
+                className={cn(
+                  index === items.length - 1 
+                    ? "text-gray-900 font-medium" 
+                    : "text-gray-600"
+                )}
+                aria-current={index === items.length - 1 ? "page" : undefined}
+              >
+                {item.label}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+```
+
+## Motion & Animation Accessibility
+
+### Reduced Motion Implementation
+```css
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Accessible transitions */
+.transition-standard {
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .transition-standard {
+    transition-duration: 150ms;
+  }
+}
+```
+
+## Testing & Validation Requirements
+
+### Automated Testing Setup
+```tsx
+// accessibility.test.tsx
+import { render, screen } from '@testing-library/react'
+import { axe, toHaveNoViolations } from 'jest-axe'
+import userEvent from '@testing-library/user-event'
+
+expect.extend(toHaveNoViolations)
+
+describe('Component Accessibility', () => {
+  it('should have no accessibility violations', async () => {
+    const { container } = render(<YourComponent />)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+  
+  it('should be keyboard navigable', async () => {
+    const user = userEvent.setup()
+    render(<YourComponent />)
+    
+    // Tab through all interactive elements
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'First Button' })).toHaveFocus()
+    
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Second Button' })).toHaveFocus()
+  })
+  
+  it('should announce changes to screen readers', async () => {
+    render(<YourComponent />)
+    
+    const liveRegion = screen.getByRole('status')
+    expect(liveRegion).toBeInTheDocument()
+    expect(liveRegion).toHaveAttribute('aria-live', 'polite')
+  })
+})
+```
+
+### Manual Testing Checklist
+- [ ] **Tab navigation**: All interactive elements reachable via Tab key
+- [ ] **Focus visible**: Clear focus indicators on all interactive elements  
+- [ ] **Screen reader**: Content makes sense when read linearly
+- [ ] **Keyboard shortcuts**: All mouse actions have keyboard equivalents
+- [ ] **Color contrast**: All text meets WCAG AA minimum (AAA for small text)
+- [ ] **Zoom test**: Interface works at 200% zoom level
+- [ ] **Voice control**: Commands work with voice navigation software
+- [ ] **Reduced motion**: Respects prefers-reduced-motion setting

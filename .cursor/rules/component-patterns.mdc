@@ -1,0 +1,592 @@
+---
+globs: *.tsx,*.jsx,*.js
+description: Component patterns and UI implementation guidelines for React components
+---
+
+# Thorbis Component Patterns & UI Guidelines
+
+## FORBIDDEN PATTERNS - Never Use These
+
+### Overlay Components (Completely Banned)
+- **No dialogs/modals**: Use dedicated pages or inline panels instead
+- **No popovers**: Use inline dropdowns that expand and push content
+- **No drawer/sheet overlays**: Use dedicated routes or inline reveals
+- **No lightbox/overlay images**: Use dedicated image pages or inline galleries
+
+### Loading States (Strict Rules)
+- **No loading spinners for pages**: Only for micro-actions like button commits
+- **No page skeletons**: Only permitted for stateful widgets (tables, analytics)
+- **No route loading states**: Pages must render immediately with cached data
+- **No full-screen loading**: Replace with stale-while-revalidate patterns
+
+### Anti-Patterns
+- **No floating elements**: Except tooltips (the only allowed overlay)
+- **No z-index battles**: Keep flat component hierarchy
+- **No modal workflows**: Every flow must work via page navigation
+
+## REQUIRED PATTERNS - Use These Instead
+
+### Navigation & Routing Patterns
+
+#### Standard Navigation
+```tsx
+// ✅ Good - Prefetched navigation with Server Components
+import Link from 'next/link'
+
+export function NavigationItem({ href, children }) {
+  return (
+    <Link 
+      href={href} 
+      prefetch="auto"
+      className="hover:bg-gray-100 focus:ring-2 focus:ring-blue-500"
+    >
+      {children}
+    </Link>
+  )
+}
+
+// ❌ Bad - Modal or drawer navigation
+function openUserModal() {
+  setShowModal(true) // NOT ALLOWED
+}
+```
+
+#### Detail Navigation Pattern
+```tsx
+// ✅ Good - Navigate to detail page
+<Link href={`/invoices/${invoice.id}`} prefetch="auto">
+  View Invoice #{invoice.number}
+</Link>
+
+// ❌ Bad - Modal detail view
+<Button onClick={() => setShowModal(true)}>
+  View Details // NOT ALLOWED
+</Button>
+```
+
+### Form Patterns
+
+#### Inline Select/Combobox
+```tsx
+// ✅ Good - Inline dropdown that expands and pushes content
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+export function InlineSelect({ options, onSelect }) {
+  return (
+    <div className="space-y-4">
+      <Select onValueChange={onSelect}>
+        <SelectTrigger>
+          <SelectValue placeholder="Choose option" />
+        </SelectTrigger>
+        <SelectContent className="w-full">
+          {options.map(option => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {/* Content below gets pushed down when dropdown opens */}
+      <div>Content that gets pushed down...</div>
+    </div>
+  )
+}
+
+// ❌ Bad - Popover select
+<Popover> // NOT ALLOWED
+  <PopoverTrigger>Select</PopoverTrigger>
+  <PopoverContent>Options</PopoverContent>
+</Popover>
+```
+
+#### Inline Calendar Pattern
+```tsx
+// ✅ Good - Calendar occupies page section
+import { Calendar } from "@/components/ui/calendar"
+
+export function InlineDatePicker({ date, onDateChange }) {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div>
+        <Label>Select Date</Label>
+        <div className="mt-2 p-4 border rounded-lg">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={onDateChange}
+            className="w-full"
+          />
+        </div>
+      </div>
+      <div>
+        {/* Other form fields */}
+      </div>
+    </div>
+  )
+}
+
+// ❌ Bad - Popover date picker
+<Popover> // NOT ALLOWED
+  <PopoverTrigger asChild>
+    <Button variant="outline">{date?.toDateString()}</Button>
+  </PopoverTrigger>
+  <PopoverContent><Calendar /></PopoverContent>
+</Popover>
+```
+
+### Feedback & Confirmation Patterns
+
+#### Inline Confirm Bar
+```tsx
+// ✅ Good - Confirmation anchored to page header
+export function InlineConfirmBar({ action, onConfirm, onCancel }) {
+  return (
+    <div className="sticky top-0 z-10 bg-yellow-50 border-b border-yellow-200 p-4">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div>
+          <div className="flex">
+            <AlertTriangle className="h-5 w-5 text-yellow-400 mr-2" />
+            <div>
+              <h3 className="text-sm font-medium text-yellow-800">
+                Confirm {action}
+              </h3>
+              <p className="text-sm text-yellow-700">
+                This action cannot be undone.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="space-x-2">
+          <Button variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={onConfirm}>
+            Confirm {action}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ❌ Bad - Modal confirmation
+<AlertDialog> // NOT ALLOWED
+  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+  <AlertDialogContent>Are you sure?</AlertDialogContent>
+</AlertDialog>
+```
+
+#### Toast Notifications
+```tsx
+// ✅ Good - Corner toast with actions
+import { toast } from "@/hooks/use-toast"
+
+export function showActionToast() {
+  toast({
+    title: "Changes saved",
+    description: "Your invoice has been updated.",
+    duration: 4000,
+    action: (
+      <Button variant="outline" size="sm">
+        View Invoice
+      </Button>
+    )
+  })
+}
+
+// ❌ Bad - Alert dialog for notifications
+alert("Saved!") // NOT ALLOWED - use toast instead
+```
+
+### Data Display Patterns
+
+#### Table with Sticky Headers
+```tsx
+// ✅ Good - Accessible table with sticky headers
+export function DataTable({ data, columns }) {
+  return (
+    <div className="relative">
+      <Table>
+        <TableHeader className="sticky top-0 bg-gray-50 z-10">
+          <TableRow>
+            {columns.map(column => (
+              <TableHead key={column.key} className="font-medium">
+                {column.label}
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((row, index) => (
+            <TableRow 
+              key={row.id}
+              className="hover:bg-gray-50 focus-within:bg-gray-50"
+            >
+              {columns.map(column => (
+                <TableCell key={column.key}>
+                  {column.render ? column.render(row) : row[column.key]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+```
+
+#### Density Toggle Pattern
+```tsx
+// ✅ Good - Table density toggle
+export function TableDensityToggle({ density, onDensityChange }) {
+  return (
+    <div className="flex items-center space-x-2">
+      <Label htmlFor="density" className="text-sm">
+        Density
+      </Label>
+      <Select value={density} onValueChange={onDensityChange}>
+        <SelectTrigger className="w-32">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="comfortable">Comfortable</SelectItem>
+          <SelectItem value="compact">Compact</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
+  )
+}
+
+// CSS classes for density
+// Comfortable: py-3 (44px row height)
+// Compact: py-2 (36px row height)
+```
+
+### Search & Command Patterns
+
+#### Command Page (Not Modal)
+```tsx
+// ✅ Good - Dedicated command page at /app/command
+'use client'
+
+export default function CommandPage() {
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState([])
+
+  // Results update instantly as user types
+  useEffect(() => {
+    if (query) {
+      const filtered = searchData(query)
+      setResults(filtered)
+    }
+  }, [query])
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-2xl mx-auto">
+        <Input
+          placeholder="Search anything..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="text-lg p-4"
+          autoFocus
+        />
+        <div className="mt-4 space-y-2">
+          {results.map(result => (
+            <Link
+              key={result.id}
+              href={result.href}
+              className="block p-3 bg-white rounded-lg hover:bg-gray-50"
+            >
+              {result.title}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ❌ Bad - Command modal
+<CommandDialog> // NOT ALLOWED
+  <CommandInput />
+  <CommandList />
+</CommandDialog>
+```
+
+### Help & Tooltip Patterns
+
+#### Accessible Tooltips
+```tsx
+// ✅ Good - Tooltip with hover and focus support
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+
+export function HelpTooltip({ children, content }) {
+  return (
+    <TooltipProvider>
+      <Tooltip delayDuration={200}>
+        <TooltipTrigger asChild>
+          <button className="inline-flex items-center focus:ring-2 focus:ring-blue-500 rounded">
+            {children}
+            <HelpCircle className="ml-1 h-4 w-4 text-gray-500" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent 
+          className="max-w-xs bg-gray-800 text-white border-gray-700"
+          sideOffset={5}
+        >
+          <p className="text-sm">{content}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
+
+// Mobile: Show as inline help row
+export function MobileHelpText({ children }) {
+  return (
+    <div className="mt-1 text-sm text-gray-600 md:hidden">
+      {children}
+    </div>
+  )
+}
+```
+
+## Component Reuse Strategy (CRITICAL)
+
+### ALWAYS Reuse Existing Components
+**Before creating ANY new component, check if an existing component can be used or extended.**
+
+```tsx
+// ✅ PREFERRED - Reuse existing components across all industries
+// Use the SAME DataTable for work orders, checks, repair orders, and receipts
+export function useDataTable() {
+  return {
+    DataTable,           // Reuse for all tabular data
+    FilterBar,           // Reuse for all filtering
+    SearchInput,         // Reuse for all search
+    BulkActions,         // Reuse for all bulk operations
+    EmptyState,          // Reuse for all empty states
+    LoadingState,        // Reuse for all loading states
+    ErrorBoundary,       // Reuse for all error handling
+  }
+}
+
+// ✅ GOOD - Same form components across industries
+export function EntityForm({ 
+  entity,           // Could be work order, check, repair order, etc.
+  fields,           // Industry-specific field config
+  onSubmit,
+  onCancel,
+  ...props 
+}) {
+  return (
+    <Form onSubmit={onSubmit} {...props}>
+      {fields.map(field => (
+        <FormField
+          key={field.name}
+          name={field.name}
+          label={field.label}
+          type={field.type}
+          required={field.required}
+          validation={field.validation}
+        />
+      ))}
+      
+      <div className="flex gap-3 mt-6">
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">
+          Save {entity.type}
+        </Button>
+      </div>
+    </Form>
+  )
+}
+
+// Use the same form across industries with different configurations
+export function WorkOrderForm({ workOrder }) {
+  return (
+    <EntityForm
+      entity={{ type: 'Work Order', data: workOrder }}
+      fields={workOrderFields}
+      onSubmit={updateWorkOrder}
+      onCancel={goBack}
+    />
+  )
+}
+
+export function CheckForm({ check }) {
+  return (
+    <EntityForm
+      entity={{ type: 'Check', data: check }}
+      fields={checkFields}        // Different fields, same component
+      onSubmit={updateCheck}
+      onCancel={goBack}
+    />
+  )
+}
+
+// ❌ AVOID - Creating separate form components
+export function WorkOrderForm() { /* Custom implementation - DON'T DO THIS */ }
+export function CheckForm() { /* Duplicate implementation - DON'T DO THIS */ }
+export function RepairOrderForm() { /* Another duplicate - DON'T DO THIS */ }
+```
+
+### When to Create New vs Extend Existing
+
+#### ✅ REUSE/EXTEND - Most Common Pattern
+```tsx
+// ✅ PREFERRED - Extend existing component with new props
+export function DataTable({ 
+  data,
+  columns,
+  filters,
+  actions,
+  bulkActions,
+  realTimeUpdates,     // New feature - extend existing component
+  exportOptions,       // New feature - extend existing component
+  ...existingProps 
+}) {
+  // Add new functionality to existing component
+  useRealTimeUpdates(data, realTimeUpdates)
+  
+  return (
+    <div className="space-y-4">
+      {exportOptions && <ExportBar options={exportOptions} />}
+      {/* Existing DataTable implementation with new features */}
+      <ExistingDataTableImplementation 
+        data={data}
+        columns={columns}
+        filters={filters}
+        actions={actions}
+        bulkActions={bulkActions}
+        {...existingProps}
+      />
+    </div>
+  )
+}
+```
+
+#### ✅ CREATE NEW - Only When Necessary
+```tsx
+// ✅ RARE - Only create new when fundamentally different
+export function KanbanBoard({ columns, cards, onCardMove }) {
+  // This is fundamentally different from DataTable
+  // Creating new component is justified
+  return (
+    <div className="grid grid-cols-4 gap-4">
+      {columns.map(column => (
+        <KanbanColumn key={column.id} column={column} cards={cards} />
+      ))}
+    </div>
+  )
+}
+
+// But still reuse where possible
+export function DispatchBoard({ workOrders }) {
+  return (
+    <KanbanBoard
+      columns={dispatchColumns}
+      cards={workOrders}        // Same data, different view
+      onCardMove={assignWorkOrder}
+    />
+  )
+}
+
+export function KitchenBoard({ tickets }) {
+  return (
+    <KanbanBoard
+      columns={kitchenColumns}   // Different columns
+      cards={tickets}           // Different data
+      onCardMove={updateTicketStatus}
+    />
+  )
+}
+```
+
+### Component Extension Patterns
+
+#### Add Features to Existing Components
+```tsx
+// ✅ GOOD - Extend DataTable with industry-specific features
+export function DataTableWithInlineEdit({ data, columns, onEdit, ...props }) {
+  const [editingRow, setEditingRow] = useState(null)
+  
+  const enhancedColumns = columns.map(column => ({
+    ...column,
+    render: (row) => {
+      if (editingRow === row.id && column.editable) {
+        return <InlineEditor value={row[column.key]} onSave={onEdit} />
+      }
+      return column.render ? column.render(row) : row[column.key]
+    }
+  }))
+  
+  return (
+    <DataTable
+      data={data}
+      columns={enhancedColumns}
+      onRowDoubleClick={(row) => setEditingRow(row.id)}
+      {...props}
+    />
+  )
+}
+
+// Use enhanced component across industries
+export function EditableWorkOrdersTable({ workOrders }) {
+  return (
+    <DataTableWithInlineEdit
+      data={workOrders}
+      columns={workOrderColumns}
+      onEdit={updateWorkOrder}
+    />
+  )
+}
+
+export function EditableChecksTable({ checks }) {
+  return (
+    <DataTableWithInlineEdit
+      data={checks}
+      columns={checkColumns}
+      onEdit={updateCheck}
+    />
+  )
+}
+```
+
+### Shared Component Library Organization
+```tsx
+// /packages/ui/components/data-display/
+export { DataTable } from './DataTable'
+export { DataTableFilters } from './DataTableFilters'
+export { DataTableActions } from './DataTableActions'
+export { BulkActions } from './BulkActions'
+
+// /packages/ui/components/forms/
+export { EntityForm } from './EntityForm'
+export { FormField } from './FormField'
+export { InlineEditor } from './InlineEditor'
+
+// /packages/ui/components/layout/
+export { PageHeader } from './PageHeader'
+export { PageContainer } from './PageContainer'
+export { SidebarLayout } from './SidebarLayout'
+
+// /packages/ui/components/feedback/
+export { EmptyState } from './EmptyState'
+export { LoadingState } from './LoadingState'
+export { ErrorBoundary } from './ErrorBoundary'
+export { Toast } from './Toast'
+
+// All industries import from the same shared library
+import { DataTable, EntityForm, PageHeader } from '@repo/ui/components'
+```
+
+### Component Testing Requirements
+- **Test component reuse**: Ensure same component works across different data types
+- **Test extensibility**: New props/features don't break existing usage
+- **Test accessibility**: Focus management works in all contexts
+- **Test performance**: Component performs well with different data sizes

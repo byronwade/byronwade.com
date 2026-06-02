@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +10,10 @@ export async function GET(request: NextRequest) {
 		const height = Math.min(parseInt(searchParams.get("height") || "1080", 10), 1200);
 		const mode = searchParams.get("mode") || "static";
 		const format = searchParams.get("format") || (mode === "scroll" ? "webm" : "jpg");
-		const imageQuality = parseInt(searchParams.get("quality") || (mode === "scroll" ? "85" : "90"), 10);
+		const imageQuality = parseInt(
+			searchParams.get("quality") || (mode === "scroll" ? "85" : "90"),
+			10
+		);
 		const delay = parseInt(searchParams.get("delay") || "0", 10);
 		const duration = parseInt(searchParams.get("duration") || "3", 10);
 		const scrollDelay = parseInt(searchParams.get("scrollDelay") || "200", 10);
@@ -36,7 +39,9 @@ export async function GET(request: NextRequest) {
 		const buildUrl = (base: string, params: Record<string, string | number | boolean>) => {
 			const usp = new URLSearchParams();
 			usp.set("access_key", accessKey);
-			Object.entries(params).forEach(([k, v]) => usp.set(k, String(v)));
+			for (const [k, v] of Object.entries(params)) {
+				usp.set(k, String(v));
+			}
 			return `${base}?${usp.toString()}`;
 		};
 
@@ -84,9 +89,6 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({ url: screenshotUrl, mode: "static" });
 	} catch (error) {
 		console.error("ScreenshotOne API error:", error);
-		return NextResponse.json(
-			{ error: "Failed to generate screenshot URL" },
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: "Failed to generate screenshot URL" }, { status: 500 });
 	}
 }

@@ -42,6 +42,7 @@ const config = {
 		extend: {
 			fontFamily: {
 				sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+				display: ["var(--font-display)", "Georgia", "Cambria", "serif"],
 				signature: ["var(--font-signature)", "cursive"],
 			},
 			fontSize: {
@@ -114,6 +115,18 @@ const config = {
 				card: {
 					DEFAULT: "hsl(var(--card))",
 					foreground: "hsl(var(--card-foreground))",
+				},
+				copper: {
+					50: "#FDF8F3",
+					100: "#F9EEE5",
+					200: "#F2DCC9",
+					300: "#E8C4A0",
+					400: "#D4A574",
+					500: "#C77844",
+					600: "#B87333",
+					700: "#9A5F2A",
+					800: "#7D4D23",
+					900: "#66401E",
 				},
 				sidebar: {
 					DEFAULT: "hsl(var(--sidebar-background))",

@@ -1,0 +1,462 @@
+---
+globs: *.tsx,*.jsx,*.js,*.ts,page.tsx,layout.tsx,loading.tsx
+description: NextFaster performance guidelines for instant navigation and zero-wait pages
+---
+
+# NextFaster Performance Rules
+
+## Core Performance Doctrine
+
+### 1. Instant Navigation Requirements
+
+**Server Components First**
+```tsx
+// ✅ Good - Server Component with data fetching
+export default async function DashboardPage() {
+  // Data fetching happens on server, cached at edge
+  const [metrics, tasks] = await Promise.all([
+    getMetrics({ revalidate: 300 }), // 5 min cache
+    getTasks({ revalidate: 60 })     // 1 min cache
+  ])
+
+  return (
+    <DashboardLayout>
+      <MetricsGrid data={metrics} />
+      <TaskQueue data={tasks} />
+    </DashboardLayout>
+  )
+}
+
+// ❌ Bad - Client data fetching with loading state
+export default function DashboardPage() {
+  const { data: metrics, loading } = useQuery('/api/metrics')
+  if (loading) return <DashboardSkeleton /> // NOT ALLOWED
+}
+```
+
+**Prefetch Strategy**
+```tsx
+// ✅ Good - Comprehensive prefetch setup
+import Link from 'next/link'
+
+export function NavigationLinks() {
+  return (
+    <nav>
+      {/* Critical routes prefetched on hover + viewport */}
+      <Link href="/dashboard" prefetch="auto">
+        Dashboard
+      </Link>
+      
+      {/* High-priority routes get immediate prefetch */}
+      <Link href="/invoices" prefetch={true}>
+        Invoices
+      </Link>
+
+      {/* Less critical routes prefetch on hover only */}
+      <Link href="/settings" prefetch="false">
+        Settings
+      </Link>
+    </nav>
+  )
+}
+```
+
+**Cache Strategy Implementation**
+```tsx
+// next.config.ts
+export default {
+  experimental: {
+    serverComponentsExternalPackages: ['cache-manager'],
+  },
+  // Edge cache headers for static content
+  headers: async () => [
+    {
+      source: '/api/(.*)',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 's-maxage=1, stale-while-revalidate=59'
+        }
+      ]
+    }
+  ]
+}
+
+// Server action with precise cache invalidation
+export async function updateInvoice(id: string, data: InvoiceData) {
+  'use server'
+  
+  await db.invoice.update({ where: { id }, data })
+  
+  // Precisely invalidate affected caches
+  revalidateTag(`invoice-${id}`)
+  revalidateTag('invoices-list')
+  // Don't invalidate unrelated data
+}
+```
+
+### 2. Zero-Wait Pages
+
+**Stale-While-Revalidate Pattern**
+```tsx
+// ✅ Good - Show stale data immediately, update quietly
+export default async function InvoicesPage() {
+  // Get cached data instantly, revalidate in background
+  const invoices = await getInvoices({
+    cache: 'force-cache',
+    next: { revalidate: 60, tags: ['invoices-list'] }
+  })
+
+  return (
+    <div>
+      <InvoicesHeader />
+      {/* Data shows immediately from cache */}
+      <InvoicesTable data={invoices} />
+      {/* Client component handles real-time updates */}
+      <InvoiceUpdater />
+    </div>
+  )
+}
+
+// Client component for real-time updates
+'use client'
+function InvoiceUpdater() {
+  useEffect(() => {
+    // Subscribe to updates, refresh data quietly
+    const subscription = subscribeToInvoiceUpdates(() => {
+      router.refresh() // Refresh server component data
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+  
+  return null // No UI, just background updates
+}
+```
+
+**Skeleton Rules (Very Limited Use)**
+```tsx
+// ✅ Allowed - Skeleton for stateful widget only
+export function AnalyticsDashboard() {
+  return (
+    <div>
+      <DashboardHeader /> {/* Renders immediately */}
+      <Suspense fallback={<AnalyticsSkeleton />}>
+        <AnalyticsWidget /> {/* Heavy computation, <150ms skeleton */}
+      </Suspense>
+    </div>
+  )
+}
+
+// ❌ Not Allowed - Full page skeleton
+export function Page() {
+  return (
+    <Suspense fallback={<PageSkeleton />}> {/* NOT ALLOWED */}
+      <PageContent />
+    </Suspense>
+  )
+}
+```
+
+### 3. JavaScript Budget & Optimization
+
+**Bundle Size Monitoring**
+```json
+// package.json - Bundle analysis
+{
+  "scripts": {
+    "analyze": "cross-env ANALYZE=true next build",
+    "bundle-check": "npx @next/bundle-analyzer"
+  }
+}
+
+// Webpack bundle analyzer config
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true'
+})
+```
+
+**Code Splitting Strategy**
+```tsx
+// ✅ Good - Lazy load heavy components
+import { lazy, Suspense } from 'react'
+
+const ChartComponent = lazy(() => import('./ChartComponent'))
+const PDFViewer = lazy(() => import('./PDFViewer'))
+
+export function Dashboard() {
+  return (
+    <div>
+      <DashboardHeader /> {/* Critical, loads immediately */}
+      
+      {/* Heavy chart loads only when needed */}
+      <Suspense fallback={<ChartSkeleton />}>
+        <ChartComponent data={chartData} />
+      </Suspense>
+      
+      {/* PDF viewer loads on demand */}
+      {showPDF && (
+        <Suspense fallback={<PDFSkeleton />}>
+          <PDFViewer src={pdfUrl} />
+        </Suspense>
+      )}
+    </div>
+  )
+}
+```
+
+**Server vs Client Boundary**
+```tsx
+// ✅ Good - Minimize client JavaScript
+// Server Component (no JS shipped to client)
+export default async function InvoicePage({ params }) {
+  const invoice = await getInvoice(params.id) // Server-only
+  
+  return (
+    <div>
+      {/* Static content, server-rendered */}
+      <InvoiceHeader invoice={invoice} />
+      <InvoiceDetails invoice={invoice} />
+      
+      {/* Only interactive parts are client components */}
+      <InvoiceActions invoiceId={invoice.id} />
+    </div>
+  )
+}
+
+// Client Component (minimal JS for interactivity only)
+'use client'
+export function InvoiceActions({ invoiceId }) {
+  const [loading, setLoading] = useState(false)
+  
+  const handleSend = async () => {
+    setLoading(true)
+    await sendInvoice(invoiceId) // Server action
+    setLoading(false)
+  }
+  
+  return (
+    <Button onClick={handleSend} loading={loading}>
+      Send Invoice
+    </Button>
+  )
+}
+```
+
+### 4. Advanced Prefetch & Priority
+
+**Intersection Observer Prefetching**
+```tsx
+// ✅ Good - Smart prefetch with viewport detection
+'use client'
+import { useEffect, useRef } from 'react'
+
+export function SmartPrefetchLink({ href, children, ...props }) {
+  const linkRef = useRef(null)
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Prefetch when link enters viewport
+          router.prefetch(href)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '100px' } // Prefetch 100px before visible
+    )
+    
+    if (linkRef.current) {
+      observer.observe(linkRef.current)
+    }
+    
+    return () => observer.disconnect()
+  }, [href])
+  
+  return (
+    <Link ref={linkRef} href={href} {...props}>
+      {children}
+    </Link>
+  )
+}
+```
+
+**Resource Hints Implementation**
+```tsx
+// app/layout.tsx - Critical resource hints
+import { Inter } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true, // Preload critical font
+})
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={inter.className}>
+      <head>
+        {/* Critical CSS preload */}
+        <link rel="preload" href="/css/critical.css" as="style" />
+        
+        {/* Prefetch likely next pages */}
+        <link rel="prefetch" href="/dashboard" />
+        <link rel="prefetch" href="/invoices" />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://api.thorbis.com" />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+**Image Optimization Strategy**
+```tsx
+// ✅ Good - Optimized image loading
+import Image from 'next/image'
+
+export function ProductGallery({ images }) {
+  return (
+    <div className="grid grid-cols-3 gap-4">
+      {images.map((image, index) => (
+        <Image
+          key={image.id}
+          src={image.src}
+          alt={image.alt}
+          width={300}
+          height={200}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          // Priority only for above-the-fold images
+          priority={index < 3}
+          // Modern formats with fallback
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,..."
+        />
+      ))}
+    </div>
+  )
+}
+```
+
+### 5. Performance Monitoring & Targets
+
+**Core Web Vitals Implementation**
+```tsx
+// app/layout.tsx - Performance monitoring
+'use client'
+import { useReportWebVitals } from 'next/web-vitals'
+
+export function WebVitalsReporter() {
+  useReportWebVitals((metric) => {
+    // Send to analytics
+    analytics.track('web-vitals', {
+      name: metric.name,
+      value: metric.value,
+      id: metric.id,
+      label: metric.label
+    })
+    
+    // Log performance issues
+    if (metric.value > getThreshold(metric.name)) {
+      console.warn(`Performance issue: ${metric.name} = ${metric.value}`)
+    }
+  })
+}
+
+function getThreshold(metricName: string) {
+  const thresholds = {
+    FCP: 1800,    // First Contentful Paint
+    LCP: 2500,    // Largest Contentful Paint  
+    FID: 100,     // First Input Delay
+    CLS: 0.1,     // Cumulative Layout Shift
+    TTFB: 800,    // Time to First Byte
+    INP: 200      // Interaction to Next Paint
+  }
+  return thresholds[metricName] || Infinity
+}
+```
+
+**Route Performance Testing**
+```tsx
+// middleware.ts - Route performance monitoring
+import { NextRequest, NextResponse } from 'next/server'
+
+export function middleware(request: NextRequest) {
+  const start = Date.now()
+  
+  const response = NextResponse.next()
+  
+  // Add performance headers
+  response.headers.set('X-Response-Time', `${Date.now() - start}ms`)
+  
+  // Track slow routes
+  const responseTime = Date.now() - start
+  if (responseTime > 300) { // 300ms threshold
+    console.warn(`Slow route: ${request.nextUrl.pathname} took ${responseTime}ms`)
+  }
+  
+  return response
+}
+
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+}
+```
+
+## Performance Testing & Validation
+
+### Automated Performance Checks
+```json
+// package.json - Performance testing scripts
+{
+  "scripts": {
+    "perf:test": "lighthouse --chrome-flags='--headless' --output=json --output-path=./lighthouse-report.json http://localhost:3000",
+    "perf:budget": "bundlesize",
+    "perf:audit": "next-bundle-analyzer --server"
+  },
+  "bundlesize": [
+    {
+      "path": ".next/static/js/*.js",
+      "maxSize": "170KB"
+    },
+    {
+      "path": ".next/static/css/*.css", 
+      "maxSize": "50KB"
+    }
+  ]
+}
+```
+
+### Performance Budgets Enforcement
+```js
+// next.config.js - Bundle size limits
+module.exports = {
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    if (!dev && !isServer) {
+      // Enforce bundle size limits
+      config.plugins.push(
+        new webpack.optimize.LimitChunkCountPlugin({
+          maxChunks: 1
+        })
+      )
+    }
+    return config
+  }
+}
+```
+
+### Critical Performance Rules Summary
+
+1. **No route loading.js files** - Pages render immediately with cached data
+2. **170KB JS budget per route** - Enforce with bundlesize checks  
+3. **TTI < 300ms target** - Monitor with real user metrics
+4. **Prefetch all navigation** - `prefetch="auto"` on critical links
+5. **Server Components default** - Client components only for interactivity
+6. **Stale-while-revalidate** - Show cached data, update quietly
+7. **Precise cache invalidation** - Use tags, avoid broad invalidation
+8. **Image optimization required** - Next.js Image with proper sizing
+9. **Critical resource hints** - Preload fonts/CSS, prefetch likely routes
+10. **Bundle analysis required** - Regular audits with @next/bundle-analyzer

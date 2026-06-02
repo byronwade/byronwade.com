@@ -1,0 +1,698 @@
+---
+globs: **/app/**/page.tsx,**/app/**/layout.tsx
+description: Page structure patterns and archetypes for different application sections
+---
+
+# Thorbis Page Archetypes & Patterns
+
+## Core Page Structure Rules
+
+- **No dialogs anywhere**: All interactions use inline panels, dedicated pages, or section reveals
+- **Server Components first**: Prefer server rendering, minimal client JavaScript
+- **Instant navigation**: All pages must load instantly with cached/stale data
+
+## Page Archetype Patterns
+
+### 1. Dashboard Pages (`/app`, `/app/dashboard`)
+
+```tsx
+// Structure: KPIs + work queue + quick actions (all inline)
+- Hero metrics section (server-rendered)
+- Work queue with inline actions
+- Quick action buttons (no modals)
+- All data loads synchronously from cache
+```
+
+### 2. Schedule/Dispatch Pages (`/app/dispatch`)
+
+```tsx
+// Structure: Lanes + drag-drop + side info as inline panels
+- Timeline/calendar lanes
+- Drag-drop interface
+- Side information panels (never modal)
+- Inline editing and updates
+```
+
+### 3. List + Detail Pages (`/app/invoices`, `/app/estimates`)
+
+```tsx
+// Structure: List view + detail split, inline actions
+- Filterable list view
+- Detail pages (not modals)
+- Actions surface inline confirm bars
+- Preview rendered inline (not popup)
+- Send/Collect actions use inline confirmations
+```
+
+### 4. POS & KDS Pages (`/app/pos`, `/app/pos/kds`)
+
+```tsx
+// Structure: Large targets + offline indicator
+- Large touch targets
+- Clear offline/online indicators
+- No modal order flows
+- Inline order management
+```
+
+### 5. Template Pages (`/app/templates`)
+
+```tsx
+// Structure: Gallery + inline comparison
+- Grid gallery view
+- Compare in two inline panes (A/B layout)
+- No modal comparisons or previews
+- Direct navigation to template details
+```
+
+### 6. AI Console Pages (`/app/ai`)
+
+```tsx
+// Structure: Docked console + inline preview panels
+- Fixed console interface
+- Tool calls preview in inline panel
+- Commands array preview inline
+- No popup AI interactions
+```
+
+## Common Page Patterns
+
+### Inline Preview Panels
+
+```tsx
+// ✅ Good - Inline preview section
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div>
+    {/* Form/Editor */}
+  </div>
+  <div className="bg-gray-50 p-6 rounded-lg">
+    {/* Live preview renders here */}
+  </div>
+</div>
+```
+
+### Inline Confirm Bars
+
+```tsx
+// ✅ Good - Confirmation anchored to page
+<div className="sticky top-0 bg-yellow-50 border-b p-4">
+  <div className="flex items-center justify-between">
+    <div>
+      <strong>Confirm action:</strong> Delete 5 selected items
+    </div>
+    <div className="space-x-2">
+      <Button variant="outline" onClick={cancel}>Cancel</Button>
+      <Button variant="destructive" onClick={confirm}>Delete</Button>
+    </div>
+  </div>
+</div>
+```
+
+### Inline Dropdowns/Selects
+
+```tsx
+// ✅ Good - Dropdown expands inline, pushes content
+<div className="space-y-4">
+  <Select onOpenChange={setOpen}>
+    <SelectTrigger>Choose option</SelectTrigger>
+    <SelectContent className="w-full">
+      {/* Options expand below, pushing content down */}
+    </SelectContent>
+  </Select>
+  {/* Content below gets pushed down when dropdown opens */}
+  <div>Other content</div>
+</div>
+```
+
+### Command/Search Pattern
+
+```tsx
+// Route: /app/command (dedicated page, not modal)
+// Keyboard shortcut opens new page, not overlay
+// Results update instantly without loading states
+```
+
+## Advanced Page Implementation Examples
+
+### Document Detail Page Pattern (Reusable Across Industries)
+```tsx
+// ✅ PREFERRED - Generic document detail page used across industries
+export default async function DocumentDetailPage({ 
+  params, 
+  documentType, 
+  getDocument, 
+  documentConfig 
+}) {
+  const document = await getDocument(params.id, {
+    next: { tags: [`${documentType}-${params.id}`] }
+  })
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      {/* Reusable header component */}
+      <DocumentHeader 
+        document={document} 
+        type={documentType}
+        actions={documentConfig.headerActions}
+      />
+      
+      {/* Standard document layout */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          {/* Document content - 2/3 width */}
+          <div className="xl:col-span-2 space-y-6">
+            <DocumentDetailsCard 
+              document={document} 
+              fields={documentConfig.detailFields}
+            />
+            <DataTable 
+              data={document.lineItems || document.items} 
+              columns={documentConfig.itemColumns}
+            />
+            <DataTable 
+              data={document.history || document.payments} 
+              columns={documentConfig.historyColumns}
+            />
+          </div>
+          
+          {/* Actions sidebar - 1/3 width */}
+          <div className="space-y-6">
+            <QuickActionsPanel 
+              document={document}
+              actions={documentConfig.quickActions}
+            />
+            <DocumentStatusCard 
+              document={document}
+              statusConfig={documentConfig.statusConfig}
+            />
+            <RelatedDocuments 
+              documentId={document.id}
+              relatedTypes={documentConfig.relatedTypes}
+            />
+          </div>
+        </div>
+        
+        {/* Reusable send/action panel */}
+        <DocumentActionPanel 
+          document={document}
+          actionConfig={documentConfig.primaryAction}
+        />
+      </div>
+    </div>
+  )
+}
+
+// ✅ GOOD - Same page structure for all industries, different configs
+export default function HSInvoicePage({ params }) {
+  return (
+    <DocumentDetailPage
+      params={params}
+      documentType="invoice"
+      getDocument={getHSInvoice}
+      documentConfig={hsInvoiceConfig}
+    />
+  )
+}
+
+export default function RestaurantCheckPage({ params }) {
+  return (
+    <DocumentDetailPage
+      params={params}
+      documentType="check"
+      getDocument={getRestaurantCheck}
+      documentConfig={restCheckConfig}
+    />
+  )
+}
+
+export default function AutoRepairOrderPage({ params }) {
+  return (
+    <DocumentDetailPage
+      params={params}
+      documentType="repair-order"
+      getDocument={getAutoRepairOrder}
+      documentConfig={autoRepairOrderConfig}
+    />
+  )
+}
+
+// ❌ AVOID - Creating separate page components per industry
+// export default function HSInvoicePage() { /* Custom implementation */ }
+// export default function RestaurantCheckPage() { /* Duplicate implementation */ }
+// export default function AutoRepairOrderPage() { /* Another duplicate */ }
+```
+
+### Dashboard with Inline Filters
+```tsx
+// ✅ Good - Dashboard with expandable filter sections
+export default async function DashboardPage({ searchParams }) {
+  const filters = parseFilters(searchParams)
+  const data = await getDashboardData(filters, {
+    next: { revalidate: 60 }
+  })
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <DashboardHeader />
+      
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        {/* Expandable filters - NO modal */}
+        <InlineFiltersSection filters={filters} />
+        
+        {/* KPI Grid */}
+        <MetricsGrid metrics={data.metrics} />
+        
+        {/* Work Queue with inline actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <TaskQueue tasks={data.tasks} />
+          <RecentActivity activity={data.activity} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function InlineFiltersSection({ filters }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  
+  return (
+    <div className="bg-white border rounded-lg">
+      <button 
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50"
+      >
+        <h3 className="font-medium">Filters</h3>
+        <ChevronDown 
+          className={cn(
+            "h-4 w-4 transition-transform",
+            isExpanded && "rotate-180"
+          )}
+        />
+      </button>
+      
+      {isExpanded && (
+        <div className="border-t p-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <DateRangeFilter />
+            <StatusFilter />
+            <TypeFilter />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+### List Page Pattern (Reusable Across Industries)
+```tsx
+// ✅ PREFERRED - Generic list page used across all industries
+export default async function EntityListPage({ 
+  searchParams,
+  entityType,
+  getEntities,
+  listConfig 
+}) {
+  const { data, totalCount } = await getEntities(searchParams, {
+    next: { tags: [`${entityType}-list`] }
+  })
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Reusable list header */}
+        <ListPageHeader 
+          title={listConfig.title}
+          totalCount={totalCount}
+          createButton={listConfig.createButton}
+          exportOptions={listConfig.exportOptions}
+        />
+        
+        {/* Reusable bulk actions - appears when items selected */}
+        <BulkActionsBar 
+          actions={listConfig.bulkActions}
+          entityType={entityType}
+        />
+        
+        {/* Reusable data table */}
+        <DataTable
+          data={data}
+          columns={listConfig.columns}
+          filters={listConfig.filters}
+          onRowClick={listConfig.onRowClick}
+          emptyState={listConfig.emptyState}
+        />
+        
+        {/* Reusable pagination */}
+        <TablePagination 
+          totalCount={totalCount}
+          pageSize={listConfig.pageSize}
+        />
+      </div>
+    </div>
+  )
+}
+
+// ✅ GOOD - Same list page for all industries, different configs
+export default function HSWorkOrdersListPage({ searchParams }) {
+  return (
+    <EntityListPage
+      searchParams={searchParams}
+      entityType="work-orders"
+      getEntities={getHSWorkOrders}
+      listConfig={hsWorkOrdersListConfig}
+    />
+  )
+}
+
+export default function RestaurantChecksListPage({ searchParams }) {
+  return (
+    <EntityListPage
+      searchParams={searchParams}
+      entityType="checks"
+      getEntities={getRestaurantChecks}
+      listConfig={restChecksListConfig}
+    />
+  )
+}
+
+export default function AutoRepairOrdersListPage({ searchParams }) {
+  return (
+    <EntityListPage
+      searchParams={searchParams}
+      entityType="repair-orders"
+      getEntities={getAutoRepairOrders}
+      listConfig={autoRepairOrdersListConfig}
+    />
+  )
+}
+
+export default function RetailOrdersListPage({ searchParams }) {
+  return (
+    <EntityListPage
+      searchParams={searchParams}
+      entityType="orders"
+      getEntities={getRetailOrders}
+      listConfig={retailOrdersListConfig}
+    />
+  )
+}
+
+// ✅ GOOD - Reusable bulk actions component
+function BulkActionsBar({ actions, entityType }) {
+  const { selectedItems, clearSelection } = useSelection()
+  
+  if (selectedItems.length === 0) return null
+  
+  return (
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <span className="text-sm font-medium">
+            {selectedItems.length} {entityType} selected
+          </span>
+          <Button variant="outline" onClick={clearSelection}>
+            Clear Selection
+          </Button>
+        </div>
+        
+        <div className="flex gap-2">
+          {actions.map(action => (
+            <Button
+              key={action.key}
+              variant={action.variant || "outline"}
+              onClick={() => action.handler(selectedItems)}
+            >
+              {action.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ❌ AVOID - Creating separate list pages per industry
+// export default function HSWorkOrdersListPage() { /* Custom implementation */ }
+// export default function RestaurantChecksListPage() { /* Duplicate implementation */ }
+// export default function AutoRepairOrdersListPage() { /* Another duplicate */ }
+```
+
+### Settings Page with Inline Sections
+```tsx
+// ✅ Good - Settings with expandable sections, no modals
+export default async function SettingsPage() {
+  const settings = await getSettings({
+    next: { tags: ['user-settings'] }
+  })
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <SettingsHeader />
+        
+        <div className="space-y-6">
+          <AccountSettingsSection settings={settings.account} />
+          <NotificationSettingsSection settings={settings.notifications} />
+          <SecuritySettingsSection settings={settings.security} />
+          <BillingSettingsSection settings={settings.billing} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function AccountSettingsSection({ settings }) {
+  const [isEditing, setIsEditing] = useState(false)
+  
+  return (
+    <div className="bg-white border rounded-lg">
+      <div className="flex items-center justify-between p-6 border-b">
+        <h3 className="text-lg font-semibold">Account Settings</h3>
+        <Button 
+          variant="outline" 
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? 'Cancel' : 'Edit'}
+        </Button>
+      </div>
+      
+      <div className="p-6">
+        {isEditing ? (
+          <AccountSettingsForm 
+            settings={settings}
+            onSave={() => setIsEditing(false)}
+          />
+        ) : (
+          <AccountSettingsDisplay settings={settings} />
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+### Data Comparison Page (A/B Layout)
+```tsx
+// ✅ Good - Side-by-side comparison without modal
+export default async function CompareTemplatesPage({ searchParams }) {
+  const templateIds = searchParams.compare?.split(',') || []
+  const templates = await getTemplates(templateIds)
+  
+  if (templates.length !== 2) {
+    redirect('/templates')
+  }
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <ComparisonHeader templates={templates} />
+        
+        {/* Side-by-side comparison */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <TemplateComparisonPanel 
+            template={templates[0]} 
+            label="Template A"
+          />
+          <TemplateComparisonPanel 
+            template={templates[1]} 
+            label="Template B" 
+          />
+        </div>
+        
+        {/* Comparison actions */}
+        <div className="mt-8 flex justify-center gap-4">
+          <Button onClick={() => selectTemplate(templates[0])}>
+            Use Template A
+          </Button>
+          <Button onClick={() => selectTemplate(templates[1])}>
+            Use Template B  
+          </Button>
+          <Button variant="outline" onClick={() => router.push('/templates')}>
+            Back to Templates
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## Layout System Guidelines
+
+### Page Structure Standards
+```tsx
+// Standard page structure
+<div className="min-h-screen bg-gray-25">
+  {/* Skip links for accessibility */}
+  <SkipLinks />
+  
+  {/* Unified header */}
+  <PageHeader />
+  
+  {/* Main content area */}
+  <main id="main-content" className="max-w-7xl mx-auto px-6 py-8">
+    {/* Breadcrumb navigation */}
+    <Breadcrumbs />
+    
+    {/* Page title and actions */}
+    <PageTitleSection />
+    
+    {/* Main content grid */}
+    <div className="space-y-8">
+      {children}
+    </div>
+  </main>
+  
+  {/* Global components */}
+  <Toaster />
+  <GlobalKeyboardShortcuts />
+</div>
+```
+
+### Responsive Grid Patterns
+```css
+/* Standard content grids */
+.content-grid-full { @apply grid grid-cols-1; }
+.content-grid-split { @apply grid grid-cols-1 lg:grid-cols-2 gap-8; }
+.content-grid-sidebar { @apply grid grid-cols-1 xl:grid-cols-3 gap-8; }
+.content-grid-main { @apply xl:col-span-2; }
+.content-grid-aside { @apply xl:col-span-1; }
+
+/* Responsive table containers */
+.table-container { 
+  @apply overflow-auto rounded-lg border;
+  min-height: 400px; /* Prevent layout shift */
+}
+```
+
+## Error Page Patterns
+
+### 404 Page Implementation
+```tsx
+// ✅ Good - Helpful 404 page
+export default function NotFoundPage() {
+  return (
+    <div className="min-h-screen bg-gray-25 flex items-center justify-center">
+      <div className="max-w-md mx-auto text-center">
+        <div className="mb-8">
+          <FileX className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Page Not Found
+          </h1>
+          <p className="text-gray-600">
+            The page you're looking for doesn't exist or has been moved.
+          </p>
+        </div>
+        
+        {/* Helpful navigation */}
+        <div className="space-y-3">
+          <Button asChild className="w-full">
+            <Link href="/dashboard">
+              Go to Dashboard
+            </Link>
+          </Button>
+          <Button variant="outline" onClick={() => history.back()}>
+            Go Back
+          </Button>
+        </div>
+        
+        {/* Search suggestion */}
+        <div className="mt-8 pt-8 border-t">
+          <p className="text-sm text-gray-500 mb-3">
+            Or try searching:
+          </p>
+          <SearchInput placeholder="Search for pages, invoices, customers..." />
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+### Error Boundary Implementation
+```tsx
+// ✅ Good - User-friendly error boundary
+'use client'
+
+export function ErrorBoundary({ error, reset }) {
+  useEffect(() => {
+    // Log error to monitoring service
+    console.error('Error boundary caught:', error)
+  }, [error])
+  
+  return (
+    <div className="min-h-screen bg-gray-25 flex items-center justify-center">
+      <div className="max-w-md mx-auto text-center">
+        <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          Something went wrong
+        </h1>
+        <p className="text-gray-600 mb-6">
+          We encountered an unexpected error. Please try refreshing the page.
+        </p>
+        
+        <div className="space-y-3">
+          <Button onClick={reset} className="w-full">
+            Try Again
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/dashboard">Go to Dashboard</Link>
+          </Button>
+        </div>
+        
+        {/* Error details for development */}
+        {process.env.NODE_ENV === 'development' && (
+          <details className="mt-6 text-left">
+            <summary className="cursor-pointer text-sm text-gray-500">
+              Error Details
+            </summary>
+            <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-auto">
+              {error.message}
+            </pre>
+          </details>
+        )}
+      </div>
+    </div>
+  )
+}
+```
+
+## Page Layout Requirements
+
+### Unified Header System
+- **Consistent navigation**: Use unified header component across all pages
+- **Context-aware actions**: Header actions change based on current page
+- **Breadcrumb integration**: Clear hierarchy navigation in header
+- **Search integration**: Global search accessible from header
+
+### Content Organization
+- **No loading states**: Pages render immediately with cached data  
+- **Inline actions**: All CTAs integrated into page flow, no floating elements
+- **Responsive grids**: Standard grid patterns for consistent layouts
+- **Focus management**: Logical tab order throughout page structure
+
+### Accessibility Standards
+- **Skip links**: Provide keyboard navigation shortcuts
+- **Landmark elements**: Proper use of header, nav, main, aside
+- **Heading hierarchy**: Logical H1-H6 structure for screen readers
+- **ARIA labels**: Descriptive labels for complex interactive elements

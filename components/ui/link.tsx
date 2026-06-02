@@ -1,8 +1,8 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import NextLink, { type LinkProps as NextLinkProps } from "next/link";
 import { type AnchorHTMLAttributes, forwardRef } from "react";
+import { cn } from "@/lib/utils";
 
 interface LinkProps extends NextLinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
 	className?: string;

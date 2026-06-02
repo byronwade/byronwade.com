@@ -1,0 +1,132 @@
+---
+alwaysApply: true
+---
+
+# Thorbis Design System Rules
+
+## Core Design Principles
+
+- **Dark-first VIP minimalism**: Black/white core with neutral grays, maximum contrast for clarity
+- **Electric restraint**: Thorbis Blue (#1C8BFF) only for focus, primary CTA, and key highlights
+- **No overlays**: Replace all dialogs/popovers with inline panels, dedicated pages, or section reveals
+- **Tooltips > overlays**: Tooltips are the only overlay pattern allowed—short, helpful, and accessible
+
+## Brand Colors & Usage Guidelines
+
+### Primary Palette
+**Thorbis Electric Blue**: Full scale from 50 to 900
+- 50 `#EBF3FF`, 100 `#D6E9FF`, 200 `#ADD3FF`, 300 `#7FB8FF`, 400 `#4FA2FF`
+- **500 `#1C8BFF` (Primary)**, 600 `#0B84FF`, 700 `#0A6BDB`, 800 `#0A57B1`, 900 `#0A478F`
+
+### Neutrals (Dark-friendly)
+- `gray/0 #000`, 25 `#0A0B0D`, 50 `#0D0F13`, 100 `#111318`, 200 `#171A21`
+- 300 `#1D212B`, 400 `#2A2F3A`, 500 `#3A4150`, 600 `#545D6E`, 700 `#7A8598`
+- 800 `#A9B2C1`, 900 `#E6EAF0`, white `#FFFFFF`
+
+### Status Colors
+- Success `#18B26B`, Warning `#E5A400`, Danger `#E5484D`, Info `#4FA2FF`
+
+### Semantic Token Mapping (Dark-first)
+- **Backgrounds**: base `gray/25`, surface `gray/50`, elevated `gray/200`
+- **Borders**: subtle `gray/400`, strong `gray/500`, focus `blue/500`
+- **Text**: primary `gray/900`, secondary `gray/700`, muted `gray/600`, inverse `white`
+- **Brand**: primary `blue/600`, hover `blue/500`, active `blue/700`
+
+### Color Usage Rules
+- **Blue only for interactive states**: focus, links, primary actions
+- **Avoid large blue fills**: Use sparingly for maximum impact
+- **Hairline separators**: Prefer subtle borders over thick dividers
+- **High contrast required**: All text must meet AA standards minimum
+
+## Typography System
+
+### Font Stack & Loading
+```css
+/* Primary UI Font */
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+/* Code & Figures */
+font-family: 'Geist Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+```
+
+### Type Scale & Line Heights
+- **Display**: 32px/38px (2rem/2.375rem) - Hero headings only
+- **H1**: 24px/30px (1.5rem/1.875rem) - Page titles
+- **H2**: 20px/28px (1.25rem/1.75rem) - Section headers
+- **H3**: 18px/26px (1.125rem/1.625rem) - Subsection headers
+- **Body**: 14px/20px (0.875rem/1.25rem) - Default text
+- **Small**: 12px/18px (0.75rem/1.125rem) - Captions, metadata
+
+### Font Weights
+- **400 (Regular)**: Body text, descriptions
+- **500 (Medium)**: Emphasized text, form labels
+- **600 (Semibold)**: Headings, buttons, navigation
+
+### Typography Rules
+- **Truncate with tooltips**: Show full text on focus/hover for overflowing content
+- **Consistent vertical rhythm**: Use line heights that align to 4px grid
+- **Readable contrast**: AAA preferred for small text, AA minimum for large text
+
+## Layout & Spacing System
+
+### Spacing Scale (4px base unit)
+```
+2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64
+```
+- **2-8px**: Icon spacing, tight layouts
+- **12-24px**: Component internal spacing  
+- **32-48px**: Section spacing
+- **64px**: Large section breaks
+
+### Grid System
+- **Desktop (≥1024px)**: 12 columns, 80-1040px content width
+- **Tablet (768-1023px)**: 6 columns, fluid with margins
+- **Mobile (≤767px)**: 4 columns, 16px margins
+
+### Container Widths
+- **Page**: 1280px max-width (for most pages)
+- **Narrow**: 880px max-width (for forms, articles)
+- **Fluid**: 100% width with margins (for dashboards)
+
+### Layout Patterns
+- **Polaris-style Stack/Inline**: Consistent gaps, avoid nested cards
+- **Card layouts**: Flat with subtle borders, no heavy shadows
+- **Gutters**: Use spacing scale consistently
+
+## Component Architecture
+
+### shadcn/ui Base Implementation
+```tsx
+// ✅ Good - Thorbis-styled component
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+export function ThorbisPrimaryButton({ className, ...props }) {
+  return (
+    <Button 
+      className={cn(
+        "bg-blue-600 hover:bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+        "focus:ring-offset-gray-25", // Dark background offset
+        className
+      )} 
+      {...props} 
+    />
+  )
+}
+```
+
+### Focus System Requirements
+- **2px ring**: `ring-2 ring-blue-500`
+- **2px offset**: `ring-offset-2 ring-offset-gray-25` (dark theme)
+- **Visible on all interactive elements**: buttons, links, inputs, custom controls
+- **Keyboard navigation**: Tab order must match visual hierarchy
+
+### Dark-First Implementation
+- **Primary theme**: Dark backgrounds, light text
+- **Light mode**: Mapped from dark tokens (not separate implementation)
+- **Contrast requirements**: Meet WCAG AA minimum, AAA preferred
+
+### Component Patterns
+- **No nesting cards**: Use Stack/Inline patterns instead
+- **Consistent borders**: Use semantic border tokens
+- **State management**: Prefer server state, minimal client JavaScript

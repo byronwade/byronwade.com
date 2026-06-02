@@ -1,5 +1,5 @@
-import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
+import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Resume",

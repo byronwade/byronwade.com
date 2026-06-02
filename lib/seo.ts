@@ -339,18 +339,17 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		description: defaultDescription,
 		address: {
 			"@type": "PostalAddress",
-			addressLocality: "Santa Cruz",
-			addressRegion: "CA",
+			addressLocality: "Jasper",
+			addressRegion: "GA",
 			addressCountry: "US",
 		},
 		email: "byron@byronwade.com",
-		telephone: "+1-831-295-8460",
 		hasOccupation: {
 			"@type": "Occupation",
 			name: "Full Stack Developer",
 			occupationLocation: {
 				"@type": "City",
-				name: "Santa Cruz, CA",
+				name: "Jasper, GA",
 			},
 			skills:
 				"JavaScript, TypeScript, React, Next.js, Node.js, Python, Web Performance, SEO, Accessibility",

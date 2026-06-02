@@ -1,0 +1,351 @@
+---
+alwaysApply: true
+---
+
+# Component Reuse Guidelines - CRITICAL RULE
+
+## Core Principle: REUSE FIRST, CREATE LAST
+
+**Before creating ANY new component, you MUST:**
+
+1. **Check if an existing component can be used**
+2. **Check if an existing component can be extended with new props**
+3. **Only create new components when fundamentally different**
+
+## Component Reuse Hierarchy
+
+### 1. ✅ PREFERRED - Use Existing Component As-Is
+
+```tsx
+// ✅ BEST - Same DataTable used across ALL industries
+import { DataTable } from '@repo/ui/components'
+
+// Home Services - Work Orders
+export function HSWorkOrdersTable({ workOrders }) {
+  return (
+    <DataTable
+      data={workOrders}
+      columns={workOrderColumns}
+      onRowClick={(row) => router.push(`/hs/app/work-orders/${row.id}`)}
+    />
+  )
+}
+
+// Restaurant - Checks
+export function RestaurantChecksTable({ checks }) {
+  return (
+    <DataTable
+      data={checks}
+      columns={checkColumns}
+      onRowClick={(row) => router.push(`/rest/app/checks/${row.id}`)}
+    />
+  )
+}
+
+// Auto - Repair Orders
+export function AutoRepairOrdersTable({ repairOrders }) {
+  return (
+    <DataTable
+      data={repairOrders}
+      columns={repairOrderColumns}
+      onRowClick={(row) => router.push(`/auto/app/repair-orders/${row.id}`)}
+    />
+  )
+}
+
+// Retail - Orders
+export function RetailOrdersTable({ orders }) {
+  return (
+    <DataTable
+      data={orders}
+      columns={orderColumns}
+      onRowClick={(row) => router.push(`/ret/app/orders/${row.id}`)}
+    />
+  )
+}
+```
+
+### 2. ✅ GOOD - Extend Existing Component with New Props
+
+```tsx
+// ✅ GOOD - Add new functionality to existing DataTable
+export function DataTable({ 
+  data,
+  columns,
+  // Existing props
+  filters,
+  onRowClick,
+  emptyState,
+  // NEW props - extend functionality
+  realTimeUpdates,
+  exportOptions,
+  bulkActions,
+  inlineEdit,
+  ...props 
+}) {
+  // Add new functionality while preserving existing behavior
+  useRealTimeUpdates(data, realTimeUpdates)
+  const [selectedRows, setSelectedRows] = useState([])
+  
+  return (
+    <div className="space-y-4">
+      {exportOptions && <ExportToolbar options={exportOptions} />}
+      {selectedRows.length > 0 && bulkActions && (
+        <BulkActionsBar 
+          selectedRows={selectedRows}
+          actions={bulkActions}
+          onClear={() => setSelectedRows([])}
+        />
+      )}
+      
+      <Table {...props}>
+        {/* Enhanced table with new features */}
+        <TableHeader>
+          {columns.map(column => (
+            <TableHead key={column.key}>
+              {column.sortable && <SortButton column={column} />}
+              {column.label}
+            </TableHead>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {data.map(row => (
+            <TableRow 
+              key={row.id}
+              onClick={() => onRowClick?.(row)}
+              className={selectedRows.includes(row.id) ? 'bg-blue-50' : ''}
+            >
+              {bulkActions && (
+                <TableCell>
+                  <Checkbox
+                    checked={selectedRows.includes(row.id)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedRows(prev => [...prev, row.id])
+                      } else {
+                        setSelectedRows(prev => prev.filter(id => id !== row.id))
+                      }
+                    }}
+                  />
+                </TableCell>
+              )}
+              {columns.map(column => (
+                <TableCell key={column.key}>
+                  {inlineEdit && column.editable ? (
+                    <InlineEditor 
+                      value={row[column.key]}
+                      onSave={(value) => column.onEdit?.(row.id, column.key, value)}
+                    />
+                  ) : (
+                    column.render ? column.render(row) : row[column.key]
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  )
+}
+```
+
+### 3. ⚠️ CREATE NEW - Only When Fundamentally Different
+
+```tsx
+// ⚠️ RARE - Only create new when completely different interaction model
+export function KanbanBoard({ columns, cards, onCardMove }) {
+  // This is fundamentally different from tabular data
+  // Drag-and-drop board layout is NOT similar to DataTable
+  return (
+    <div className="grid grid-cols-4 gap-4">
+      {columns.map(column => (
+        <KanbanColumn 
+          key={column.id} 
+          column={column} 
+          cards={cards.filter(card => card.columnId === column.id)}
+          onCardMove={onCardMove}
+        />
+      ))}
+    </div>
+  )
+}
+
+// But STILL reuse the same KanbanBoard across industries
+export function HSDispatchBoard({ workOrders }) {
+  return (
+    <KanbanBoard
+      columns={hsDispatchColumns}
+      cards={workOrders}
+      onCardMove={assignWorkOrder}
+    />
+  )
+}
+
+export function RestaurantKitchenBoard({ tickets }) {
+  return (
+    <KanbanBoard
+      columns={kitchenColumns}
+      cards={tickets}
+      onCardMove={updateTicketStatus}
+    />
+  )
+}
+```
+
+## Common Components to ALWAYS Reuse
+
+### Data Display Components
+
+- **DataTable** - ALL tabular data (work orders, checks, repair orders, receipts, etc.)
+- **FilterBar** - ALL filtering interfaces
+- **SearchInput** - ALL search functionality
+- **Pagination** - ALL paginated content
+- **EmptyState** - ALL empty states
+- **LoadingState** - ALL loading states
+
+### Form Components
+
+- **EntityForm** - ALL create/edit forms (work orders, checks, customers, etc.)
+- **FormField** - ALL form inputs
+- **ValidationMessage** - ALL form validation
+- **FormSection** - ALL grouped form fields
+- **FormActions** - ALL form submit/cancel buttons
+
+### Layout Components
+
+- **PageHeader** - ALL page headers
+- **PageContainer** - ALL page layouts
+- **SidebarLayout** - ALL sidebar layouts
+- **TabsLayout** - ALL tabbed interfaces
+- **CardLayout** - ALL card-based layouts
+
+### Interactive Components
+
+- **ConfirmationDialog** - ALL confirmations (but inline, not modal)
+- **ActionMenu** - ALL dropdown menus
+- **BulkActions** - ALL bulk operations
+- **StatusBadge** - ALL status indicators
+- **ProgressBar** - ALL progress indicators
+
+## Anti-Patterns to AVOID
+
+### ❌ Creating Industry-Specific Components
+
+```tsx
+// ❌ BAD - Don't create separate components per industry
+export function HSWorkOrderTable() { /* Custom table */ }
+export function RestaurantCheckTable() { /* Duplicate table */ }
+export function AutoRepairOrderTable() { /* Another duplicate */ }
+
+// ❌ BAD - Don't create separate forms per entity
+export function WorkOrderForm() { /* Custom form */ }
+export function CustomerForm() { /* Duplicate form */ }
+export function InvoiceForm() { /* Another duplicate */ }
+
+// ❌ BAD - Don't create separate headers per page
+export function WorkOrderHeader() { /* Custom header */ }
+export function CheckHeader() { /* Duplicate header */ }
+export function RepairOrderHeader() { /* Another duplicate */ }
+```
+
+### ✅ Correct Approach - Reuse with Configuration
+
+```tsx
+// ✅ GOOD - One component, multiple configurations
+export function EntityTable({ 
+  data, 
+  entityType,
+  columns,
+  actions,
+  ...props 
+}) {
+  return (
+    <DataTable
+      data={data}
+      columns={columns}
+      onRowClick={(row) => router.push(`/${getIndustryRoute()}/${entityType}/${row.id}`)}
+      actions={actions}
+      {...props}
+    />
+  )
+}
+
+// Use with different configurations
+<EntityTable 
+  data={workOrders} 
+  entityType="work-orders"
+  columns={workOrderColumns}
+  actions={workOrderActions}
+/>
+
+<EntityTable 
+  data={checks} 
+  entityType="checks"
+  columns={checkColumns}
+  actions={checkActions}
+/>
+```
+
+## Implementation Checklist
+
+Before creating any new component, ask:
+
+- [ ] **Is there an existing component that does this?**
+- [ ] **Can I extend an existing component with new props?**
+- [ ] **Can I configure an existing component differently?**
+- [ ] **Is this truly a fundamentally different interaction model?**
+- [ ] **Will this component be used in multiple places?**
+- [ ] **Does this component solve a problem that existing components don't?**
+
+## Component Library Organization
+
+### Shared Components Location
+
+```text
+/packages/ui/components/
+├── data-display/
+│   ├── DataTable.tsx          // Used by ALL industries
+│   ├── FilterBar.tsx          // Used by ALL industries
+│   └── EmptyState.tsx         // Used by ALL industries
+├── forms/
+│   ├── EntityForm.tsx         // Used by ALL industries
+│   ├── FormField.tsx          // Used by ALL industries
+│   └── ValidationMessage.tsx  // Used by ALL industries
+├── layout/
+│   ├── PageHeader.tsx         // Used by ALL industries
+│   ├── PageContainer.tsx      // Used by ALL industries
+│   └── SidebarLayout.tsx      // Used by ALL industries
+└── interactive/
+    ├── ActionMenu.tsx         // Used by ALL industries
+    ├── BulkActions.tsx        // Used by ALL industries
+    └── StatusBadge.tsx        // Used by ALL industries
+```
+
+### Industry-Specific Configurations
+
+```text
+/packages/ui/configs/
+├── hs/
+│   ├── table-configs.ts       // Column configs for HS tables
+│   ├── form-configs.ts        // Field configs for HS forms
+│   └── action-configs.ts      // Action configs for HS entities
+├── rest/
+│   ├── table-configs.ts       // Column configs for restaurant tables
+│   ├── form-configs.ts        // Field configs for restaurant forms
+│   └── action-configs.ts      // Action configs for restaurant entities
+├── auto/
+└── ret/
+```
+
+## Summary
+
+**The golden rule: REUSE FIRST, CREATE LAST**
+
+- ✅ Same `DataTable` for work orders, checks, repair orders, and receipts
+- ✅ Same `EntityForm` for creating/editing all entities
+- ✅ Same `PageHeader` for all page types
+- ✅ Same `FilterBar` for all filtering needs
+- ✅ Same layout components across all industries
+
+**Only create new components when the interaction model is fundamentally different (like KanbanBoard vs DataTable), but even then, reuse that new component across all industries.**

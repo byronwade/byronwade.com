@@ -53,20 +53,7 @@ export const metadata: Metadata = {
 			"application/rss+xml": "/feed.xml",
 		},
 	},
-	icons: {
-		icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
-		apple: [
-			{ url: "/apple-icon.png" },
-			{ url: "/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
-			{ url: "/apple-icon-114x114.png", sizes: "114x114", type: "image/png" },
-		],
-		other: [
-			{
-				rel: "apple-touch-icon-precomposed",
-				url: "/apple-touch-icon-precomposed.png",
-			},
-		],
-	},
+	// Icons are provided via the App Router file convention (app/icon.png, app/apple-icon.png)
 	manifest: "/manifest.json",
 	openGraph: {
 		type: "website",
@@ -94,22 +81,13 @@ export const metadata: Metadata = {
 		title: "Byron Wade - Full Stack Developer & Web Performance Expert",
 		description:
 			"Expert full-stack developer specializing in high-performance web applications and modern solutions.",
-		creator: "@byronwade",
-		creatorId: "1234567890",
+		creator: "@byron_c_wade",
 		images: [
 			new URL(
 				"/api/og?title=Byron Wade&description=Full Stack Developer %26 Web Performance Expert&type=website",
 				process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"
 			).toString(),
 		],
-	},
-	verification: {
-		google: "your-google-verification-code",
-		yandex: "your-yandex-verification-code",
-		other: {
-			"msvalidate.01": "your-bing-verification-code",
-			"yahoo-site-verification": "your-yahoo-verification-code",
-		},
 	},
 	appleWebApp: {
 		capable: true,

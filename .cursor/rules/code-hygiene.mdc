@@ -1,0 +1,405 @@
+---
+alwaysApply: true
+---
+
+# Thorbis Code Hygiene & File Management Rules
+
+## Core Principle: CLEAN AS YOU GO
+
+**Maintain pristine codebase by aggressively removing unused code and updating existing files instead of creating new ones.**
+
+## File Update vs Recreation Guidelines
+
+### ✅ ALWAYS Update Existing Files
+
+**Never create new versions of existing files. Always update the original.**
+
+```tsx
+// ✅ GOOD - Update existing component
+// File: /packages/ui/components/layout/PageHeader.tsx
+export function PageHeader({ 
+  title,
+  actions,
+  breadcrumbs,
+  // NEW props - add to existing component
+  aiActions,
+  realTimeStatus,
+  notifications,
+  ...existingProps 
+}) {
+  return (
+    <header className="sticky top-0 z-40 bg-white border-b">
+      {/* Enhanced existing header with new features */}
+      <div className="flex items-center justify-between px-6 py-4">
+        <div>
+          {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+          <h1 className="text-2xl font-bold">{title}</h1>
+          {realTimeStatus && <StatusIndicator status={realTimeStatus} />}
+        </div>
+        <div className="flex items-center gap-3">
+          {notifications && <NotificationBell notifications={notifications} />}
+          {aiActions && <AIActionsDropdown actions={aiActions} />}
+          {actions}
+        </div>
+      </div>
+    </header>
+  )
+}
+
+// ❌ BAD - Creating new file versions
+// File: /packages/ui/components/layout/PageHeaderV2.tsx - DON'T CREATE
+// File: /packages/ui/components/layout/AIPageHeader.tsx - DON'T CREATE
+// File: /packages/ui/components/layout/UpdatedPageHeader.tsx - DON'T CREATE
+```
+
+### File Naming Anti-Patterns to AVOID
+
+```bash
+# ❌ BAD - Version suffixes
+Component.tsx
+ComponentV2.tsx
+ComponentNew.tsx
+ComponentUpdated.tsx
+ComponentWithAI.tsx
+ComponentFixed.tsx
+
+# ❌ BAD - Temporary suffixes
+header.tsx
+header-temp.tsx
+header-backup.tsx
+header-old.tsx
+header-working.tsx
+
+# ✅ GOOD - Single canonical file
+Component.tsx  # Always update this file
+```
+
+## Dead Code Detection & Removal
+
+### Unused File Detection
+
+```bash
+# ✅ GOOD - Regular dead code audits
+npm run find-unused-exports    # Find exports not imported anywhere
+npm run find-unused-files      # Find files not imported by any other file
+npm run find-empty-dirs        # Find empty directories
+npm run analyze-dependencies   # Find unused dependencies
+```
+
+### Automated Cleanup Commands
+
+```json
+// package.json
+{
+  "scripts": {
+    "cleanup:unused": "unimported --init && unimported",
+    "cleanup:deps": "depcheck",
+    "cleanup:empty": "find . -type d -empty -delete",
+    "cleanup:test": "find . -name '*.test.*' -size 0 -delete",
+    "cleanup:all": "npm run cleanup:unused && npm run cleanup:deps && npm run cleanup:empty && npm run cleanup:test"
+  }
+}
+```
+
+### Manual Cleanup Checklist
+
+```tsx
+// ✅ GOOD - Before committing, verify these are removed:
+
+// 1. Unused imports
+import { unused } from 'some-package'  // Remove if not used
+
+// 2. Unused variables
+const unusedVar = 'value'  // Remove if not used
+
+// 3. Dead code paths  
+if (false) {  // Remove unreachable code
+  console.log('never executed')
+}
+
+// 4. Commented out code (unless temporarily needed)
+// const oldImplementation = () => {}  // Remove old implementations
+
+// 5. Empty files
+export {}  // Remove files with only empty exports
+
+// 6. Unused types/interfaces
+interface UnusedInterface {}  // Remove if not used anywhere
+```
+
+## Component Evolution Patterns
+
+### ✅ GOOD - In-Place Component Evolution
+
+```tsx
+// ✅ PREFERRED - Evolve existing component with feature flags
+export function DataTable({ 
+  data,
+  columns,
+  // Legacy props - keep for backward compatibility
+  legacyActions,
+  // New props - add features incrementally  
+  bulkActions,
+  realTimeUpdates,
+  aiSuggestions,
+  ...props 
+}) {
+  // Feature flag for gradual rollout
+  const useNewBulkActions = useFeatureFlag('datatable.new-bulk-actions')
+  
+  return (
+    <div className="space-y-4">
+      {/* Conditionally render new features */}
+      {useNewBulkActions && bulkActions ? (
+        <NewBulkActionsBar actions={bulkActions} />
+      ) : legacyActions ? (
+        <LegacyActionsBar actions={legacyActions} />
+      ) : null}
+      
+      {/* Enhanced table with backward compatibility */}
+      <Table {...props}>
+        {/* Existing implementation enhanced */}
+      </Table>
+      
+      {/* New features */}
+      {realTimeUpdates && <RealtimeStatusIndicator />}
+      {aiSuggestions && <AISuggestionsPanel />}
+    </div>
+  )
+}
+
+// Once feature is stable, clean up legacy code
+// Remove: legacyActions prop, LegacyActionsBar component, feature flag
+```
+
+### ❌ BAD - Creating Component Variants
+
+```tsx
+// ❌ AVOID - Don't create separate component files
+export function DataTable() { /* Original */ }
+export function DataTableV2() { /* Enhanced version - DON'T CREATE */ }
+export function BulkDataTable() { /* With bulk actions - DON'T CREATE */ }
+export function AIDataTable() { /* With AI features - DON'T CREATE */ }
+export function RealtimeDataTable() { /* With realtime - DON'T CREATE */ }
+```
+
+## File Organization Maintenance
+
+### Directory Structure Hygiene
+
+```bash
+# ✅ GOOD - Clean directory structure
+/packages/ui/components/
+├── data-display/
+│   ├── DataTable.tsx           # Single canonical component
+│   ├── DataTableFilters.tsx
+│   └── DataTableActions.tsx
+├── forms/
+│   ├── EntityForm.tsx          # Single canonical component
+│   └── FormField.tsx
+└── layout/
+    ├── PageHeader.tsx          # Single canonical component
+    └── PageContainer.tsx
+
+# ❌ BAD - Messy directory with variants
+/packages/ui/components/
+├── data-display/
+│   ├── DataTable.tsx
+│   ├── DataTableV2.tsx         # Remove - update original
+│   ├── DataTable-old.tsx       # Remove - delete backup
+│   ├── DataTableNew.tsx        # Remove - update original  
+│   ├── BulkDataTable.tsx       # Remove - add props to original
+│   ├── empty-test.tsx          # Remove - empty file
+│   └── unused-component.tsx    # Remove - not imported
+└── abandoned/                  # Remove - empty directory
+```
+
+### Import Cleanup Automation
+
+```tsx
+// ✅ GOOD - Automated import organization
+// Use tools to automatically:
+// 1. Remove unused imports
+// 2. Sort imports consistently  
+// 3. Remove duplicate imports
+// 4. Convert to absolute/relative paths consistently
+
+// Before cleanup
+import React from 'react'
+import { Button } from '@repo/ui'
+import { unused } from 'some-package'
+import { Button } from '@repo/ui'  // Duplicate
+import { DataTable } from '../data-display/DataTable'
+
+// After automated cleanup
+import React from 'react'
+import { Button, DataTable } from '@repo/ui'
+```
+
+## Test File Hygiene
+
+### Test File Cleanup Rules
+
+```tsx
+// ✅ GOOD - Maintain test quality
+describe('Component', () => {
+  it('should render correctly', () => {
+    expect(true).toBe(true)  // Real test
+  })
+})
+
+// ❌ BAD - Remove empty or placeholder tests
+describe('Component', () => {
+  // Empty describe block - REMOVE ENTIRE FILE
+})
+
+describe('Component', () => {
+  it.skip('todo: write test', () => {
+    // Placeholder test - REMOVE OR IMPLEMENT
+  })
+})
+
+// Empty test file - DELETE IMMEDIATELY
+export {}
+```
+
+### Test File Maintenance Commands
+
+```bash
+# ✅ GOOD - Regular test cleanup
+find . -name "*.test.*" -size 0 -delete           # Remove empty test files
+find . -name "*.spec.*" -size 0 -delete           # Remove empty spec files  
+grep -r "it.skip\|test.skip\|describe.skip" .     # Find skipped tests to remove or implement
+grep -r "TODO\|FIXME\|XXX" . --include="*.test.*" # Find test TODOs to address
+```
+
+## Pre-Commit Cleanup Checklist
+
+### Required Cleanup Before Every Commit
+
+```bash
+# ✅ MANDATORY - Run before committing
+npm run lint --fix              # Fix linting issues
+npm run cleanup:unused          # Remove unused exports/files
+npm run cleanup:deps           # Remove unused dependencies  
+npm run cleanup:empty          # Remove empty directories
+npm run format                 # Format code consistently
+
+# Manual checks:
+# [ ] No files with version suffixes (V2, New, Updated, etc.)
+# [ ] No commented-out code blocks
+# [ ] No unused imports or variables
+# [ ] No empty test files
+# [ ] No placeholder TODO tests
+# [ ] All components updated in-place, not recreated
+```
+
+## Migration & Refactoring Guidelines
+
+### Safe Component Updates
+
+```tsx
+// ✅ GOOD - Safe migration pattern
+export function Component({ 
+  // Phase 1: Add new props alongside old ones
+  oldProp,        // Keep during transition
+  newProp,        // Add new functionality
+  ...props 
+}) {
+  // Phase 2: Support both patterns
+  const value = newProp ?? migrateLegacyProp(oldProp)
+  
+  // Phase 3: Warn about deprecated usage
+  if (oldProp && !newProp) {
+    console.warn('oldProp is deprecated, use newProp instead')
+  }
+  
+  return <div>{/* Updated implementation */}</div>
+}
+
+// Phase 4: After all usages updated, remove old prop
+// Phase 5: Clean up migration code
+```
+
+### Large-Scale Refactoring Process
+
+```bash
+# ✅ GOOD - Systematic refactoring approach
+
+# 1. Identify all usages
+grep -r "OldComponent" . --include="*.tsx" --include="*.ts"
+
+# 2. Update component in-place with backward compatibility
+# 3. Update all usages systematically  
+# 4. Remove backward compatibility code
+# 5. Verify no dead imports remain
+npm run cleanup:unused
+
+# 6. Remove any abandoned files
+find . -name "*Old*" -type f
+find . -name "*Legacy*" -type f  
+find . -name "*Deprecated*" -type f
+```
+
+## Continuous Maintenance
+
+### Weekly Cleanup Tasks
+
+```bash
+# ✅ GOOD - Regular maintenance schedule
+# Every Monday:
+npm run cleanup:all                    # Full cleanup
+npm audit                             # Security audit
+npm outdated                          # Check for updates
+find . -name "node_modules" -type d   # Find nested node_modules to remove
+
+# Every sprint:
+# [ ] Review feature flags - remove stable ones
+# [ ] Remove deprecated component props
+# [ ] Clean up migration code that's no longer needed
+# [ ] Archive old documentation
+```
+
+### Automated Cleanup CI/CD
+
+```yaml
+# ✅ GOOD - Automated cleanup in CI
+name: Code Hygiene
+on: [push, pull_request]
+
+jobs:
+  cleanup-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install
+      - run: npm run cleanup:unused
+      - run: npm run lint
+      - run: |
+          # Fail if there are files with version suffixes
+          if find . -name "*V2.*" -o -name "*New.*" -o -name "*Updated.*"; then
+            echo "Found versioned files - update originals instead"
+            exit 1
+          fi
+      - run: |
+          # Fail if there are empty test files
+          if find . -name "*.test.*" -size 0; then
+            echo "Found empty test files - remove them"
+            exit 1
+          fi
+```
+
+## Summary
+
+### The Golden Rule: EVOLVE DON'T DUPLICATE
+
+- ✅ **Always update existing files** instead of creating new versions
+- ✅ **Remove dead code aggressively** - unused files, imports, variables
+- ✅ **Clean empty directories and test files** immediately
+- ✅ **Use feature flags** for gradual component evolution
+- ✅ **Automate cleanup** with scripts and CI/CD checks
+- ❌ **Never create** file versions (V2, New, Updated suffixes)
+- ❌ **Never leave** empty or placeholder tests
+- ❌ **Never commit** commented-out code or unused imports
+
+**Keep the codebase pristine by cleaning as you code.**

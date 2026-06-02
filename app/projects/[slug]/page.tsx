@@ -1,13 +1,8 @@
-import { getAllProjectSlugs, getProject } from "@/lib/projects";
-import {
-	generateBreadcrumbStructuredData,
-	generateOGImageUrl,
-	generateProjectStructuredData,
-	generateMetadata as generateSEOMetadata,
-} from "@/lib/seo";
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { getAllProjectSlugs, getProject } from "@/lib/projects";
+import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { ProjectContent } from "./project-content";
 
 export const viewport: Viewport = {

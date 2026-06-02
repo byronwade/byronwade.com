@@ -1,0 +1,374 @@
+---
+alwaysApply: true
+---
+
+# Thorbis Development Workflow Rules
+
+## Build Policy & Command Restrictions
+
+### Build Command Guidelines
+- **Never run builds automatically** unless user explicitly requests it
+- **No `npm run build`** or similar build commands without user request  
+- **Don't suggest running builds** unless there's a specific build-related issue
+- **Focus on code changes** and improvements, not build verification
+
+### When Builds Are Allowed
+✅ User explicitly requests: "run build", "test build", "check if it builds"
+✅ User asks: "Does this build successfully?"  
+✅ Build-related debugging: When investigating build errors
+✅ CI/CD pipeline setup or troubleshooting
+❌ After code changes, file edits, refactoring, or adding features
+❌ As "verification" after implementing features
+❌ Proactive build health checks
+
+### Alternative Verification Methods
+```bash
+# ✅ Good - Static analysis without building
+npm run lint
+npm run type-check
+npm run test
+
+# ❌ Bad - Unnecessary build
+npm run build # Only when user requests
+```
+
+## Code Organization & File Management
+
+### File Movement Best Practices
+```bash
+# ✅ Good - Preserve git history with git mv
+git mv src/components/old-location/Component.tsx src/components/new-location/Component.tsx
+
+# ❌ Bad - Recreating files (loses history)
+cp src/components/old-location/Component.tsx src/components/new-location/Component.tsx
+rm src/components/old-location/Component.tsx
+```
+
+### Import Update Strategy
+```tsx
+// After moving files, update ALL related imports systematically
+// ✅ Good - Update all import paths
+import { Component } from '@/components/new-location/Component'
+
+// Update in:
+// - All TypeScript/JavaScript files
+// - Test files
+// - Documentation files
+// - README files
+// - Configuration files
+```
+
+### No Backwards Compatibility During Development
+- **Clean up old code**: Remove deprecated patterns immediately
+- **Don't maintain dual systems**: Choose new approach and migrate fully
+- **Update configuration**: Remove old build targets, unused dependencies
+- **Document breaking changes**: For team awareness, not support
+
+### Codebase Consolidation Patterns
+```tsx
+// ✅ Good - Consolidate related functionality
+// Before: Multiple scattered components
+components/
+  ├── UserMenu.tsx
+  ├── UserProfile.tsx  
+  ├── UserSettings.tsx
+  └── UserPreferences.tsx
+
+// After: Organized user module
+components/user/
+  ├── index.tsx          // Barrel exports
+  ├── UserMenu.tsx
+  ├── UserProfile.tsx
+  ├── UserSettings.tsx
+  └── UserPreferences.tsx
+```
+
+## UI Design Philosophy & Implementation
+
+### Vercel-Inspired Design System
+```css
+/* ✅ Good - Vercel-style minimalism */
+.thorbis-card {
+  @apply bg-white border border-gray-200 rounded-lg;
+  @apply shadow-sm hover:shadow-md transition-shadow;
+  @apply dark:bg-gray-900 dark:border-gray-800;
+}
+
+.thorbis-button {
+  @apply bg-black text-white hover:bg-gray-800;
+  @apply dark:bg-white dark:text-black dark:hover:bg-gray-100;
+  @apply focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* ❌ Bad - Gradients and complex shadows */
+.avoid-gradient {
+  background: linear-gradient(45deg, #ff0000, #00ff00); /* Never use */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3); /* Too heavy */
+}
+```
+
+### Dark-First Implementation Strategy
+```tsx
+// ✅ Good - Dark-first approach
+export function ThemeProvider({ children }) {
+  return (
+    <div className="bg-gray-900 text-gray-100 min-h-screen">
+      {/* Dark theme is default, light is the variant */}
+      <div className="light:bg-white light:text-gray-900">
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// Theme tokens prioritize dark
+const tokens = {
+  background: {
+    primary: '#0A0B0D',    // gray-25 (dark default)
+    secondary: '#0D0F13',  // gray-50
+    light: '#FFFFFF'       // light variant
+  }
+}
+```
+
+### UI Element Consolidation Guidelines
+```tsx
+// ✅ Good - Consolidated action patterns
+// Before: Scattered action buttons
+<div className="flex gap-2">
+  <EditButton />
+  <DeleteButton />
+  <ShareButton />
+  <ExportButton />
+  <PrintButton />
+  <ArchiveButton />
+</div>
+
+// After: Consolidated dropdown menu
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">
+      Actions
+      <ChevronDown className="ml-1 h-4 w-4" />
+    </Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+    <DropdownMenuItem>Share</DropdownMenuItem>
+    <DropdownMenuItem>Export</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+```
+
+### Compact Layout Principles
+```tsx
+// ✅ Good - Compact, information-dense layouts
+export function CompactDataTable({ data }) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow className="h-10"> {/* Reduced height */}
+          <TableHead className="py-2 text-xs font-medium">
+            Name
+          </TableHead>
+          <TableHead className="py-2 text-xs font-medium">
+            Status
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {data.map(item => (
+          <TableRow key={item.id} className="h-10 hover:bg-gray-50">
+            <TableCell className="py-2 text-sm">{item.name}</TableCell>
+            <TableCell className="py-2">
+              <Badge variant="outline" className="text-xs">
+                {item.status}
+              </Badge>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  )
+}
+```
+
+## Navigation & User Experience Patterns
+
+### No-Modal Navigation Philosophy
+```tsx
+// ✅ Good - Page-based navigation
+// User clicks "Edit Profile" → Navigate to /settings/profile
+<Link href="/settings/profile" className="btn-primary">
+  Edit Profile
+</Link>
+
+// ✅ Good - Inline editing
+const [isEditing, setIsEditing] = useState(false)
+return (
+  <div>
+    {isEditing ? (
+      <EditForm onSave={() => setIsEditing(false)} />
+    ) : (
+      <DisplayContent onEdit={() => setIsEditing(true)} />
+    )}
+  </div>
+)
+
+// ❌ Bad - Modal patterns
+<Dialog> {/* Completely forbidden */}
+  <DialogTrigger>Edit Profile</DialogTrigger>
+  <DialogContent>...</DialogContent>
+</Dialog>
+```
+
+### Toast Notification System
+```tsx
+// ✅ Good - Toast over alerts
+import { toast } from '@/hooks/use-toast'
+
+export function handleAction() {
+  try {
+    await performAction()
+    toast({
+      title: "Success",
+      description: "Action completed successfully",
+      duration: 4000
+    })
+  } catch (error) {
+    toast({
+      title: "Error", 
+      description: error.message,
+      variant: "destructive",
+      duration: 6000
+    })
+  }
+}
+
+// ❌ Bad - Browser alerts  
+alert("Action completed") // Never use browser alerts
+confirm("Are you sure?")  // Use inline confirm bars instead
+```
+
+### Unified Header System Implementation
+```tsx
+// ✅ Good - Centralized header configuration
+export function UnifiedHeader({ pageType, actions }) {
+  const headerConfig = {
+    dashboard: {
+      title: "Dashboard",
+      actions: [<DashboardActions />],
+      breadcrumb: [{ label: "Dashboard" }]
+    },
+    invoices: {
+      title: "Invoices", 
+      actions: [<InvoiceActions />],
+      breadcrumb: [
+        { label: "Dashboard", href: "/dashboard" },
+        { label: "Invoices" }
+      ]
+    }
+  }
+  
+  const config = headerConfig[pageType] || headerConfig.default
+  
+  return (
+    <header className="sticky top-0 z-40 bg-white border-b">
+      <div className="flex items-center justify-between px-6 py-4">
+        <div>
+          <Breadcrumbs items={config.breadcrumb} />
+          <h1 className="text-2xl font-bold">{config.title}</h1>
+        </div>
+        <div className="flex items-center gap-3">
+          {config.actions}
+        </div>
+      </div>
+    </header>
+  )
+}
+```
+
+## Development Quality Standards
+
+### Code Review Checklist
+- [ ] **No modal/dialog components**: All interactions use inline patterns
+- [ ] **Dark theme implemented**: Components work in dark mode
+- [ ] **Toast notifications**: No browser alerts used
+- [ ] **Accessibility**: Focus management, ARIA labels present
+- [ ] **Performance**: No unnecessary client components
+- [ ] **File organization**: Logical grouping and naming
+- [ ] **Import cleanup**: No unused imports, relative paths updated
+
+### Testing Strategy (Without Build Dependencies)
+```bash
+# ✅ Good - Test without building
+npm run lint          # ESLint checks
+npm run type-check    # TypeScript validation  
+npm run test          # Unit/integration tests
+npm run a11y-test     # Accessibility testing
+
+# Focus on static analysis and unit tests
+# Avoid end-to-end tests that require builds
+```
+
+### Performance Monitoring (Non-Build)
+```tsx
+// ✅ Good - Runtime performance monitoring
+'use client'
+import { useEffect } from 'react'
+
+export function PerformanceMonitor() {
+  useEffect(() => {
+    // Monitor client-side performance
+    const observer = new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (entry.entryType === 'navigation') {
+          console.log('Page load time:', entry.loadEventEnd - entry.loadEventStart)
+        }
+      }
+    })
+    
+    observer.observe({ entryTypes: ['navigation', 'measure'] })
+    return () => observer.disconnect()
+  }, [])
+}
+
+// Bundle size analysis (without build)
+// Use webpack-bundle-analyzer on existing builds only
+```
+
+## Communication & Feedback Patterns
+
+### User Guidance Philosophy
+- **Assume user will test builds**: Don't proactively offer build testing
+- **Focus on implementation**: Provide code solutions, not process verification  
+- **Ask before build verification**: "Would you like me to run a build test?"
+- **Suggest alternatives**: Linting, type checking, unit tests over builds
+
+### Error Handling Approach
+```tsx
+// ✅ Good - Graceful error handling without builds
+export function ComponentWithErrorBoundary() {
+  return (
+    <ErrorBoundary
+      fallback={<ErrorDisplay />}
+      onError={(error) => {
+        // Log error but don't suggest builds
+        console.error('Component error:', error)
+        // Focus on code fixes, not build verification
+      }}
+    >
+      <YourComponent />
+    </ErrorBoundary>
+  )
+}
+```
+
+### Development Progress Communication
+- **Show code changes**: Demonstrate implementation with actual code
+- **Explain architectural decisions**: Why certain patterns are chosen
+- **Highlight performance implications**: Bundle size, runtime performance
+- **Document breaking changes**: For team coordination
+- **Avoid build status updates**: Unless explicitly requested by user

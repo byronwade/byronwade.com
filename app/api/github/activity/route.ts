@@ -29,7 +29,7 @@ interface GitHubRepo {
 	html_url: string;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
 	try {
 		const username = "byronwade";
 

@@ -1,0 +1,405 @@
+---
+globs: **/app/**/page.tsx,**/app/**/layout.tsx,**/app/**/route.ts
+description: Industry-specific routing patterns and conventions for Thorbis apps
+---
+
+# Thorbis Industry Routing & URL Conventions
+
+## Core Routing Principles
+
+### Industry Separation in URLs
+- **Each industry has unique route prefixes**: `/hs/`, `/rest/`, `/auto/`, `/ret/`
+- **No shared sales document routes**: Each industry owns its invoices/estimates
+- **Public vs App separation**: `/hs/app/*` for authenticated, `/hs/*` for public
+- **Consistent patterns across industries**: Same structure, different content
+
+### URL Structure Standards
+
+```
+# Marketing & Public (Industry-Neutral)
+/                           # Marketing homepage
+/pricing                    # Unified pricing
+/solutions/home-services    # Industry-specific marketing
+/solutions/restaurants
+/solutions/auto
+/solutions/retail
+
+# Public Industry Pages (No Auth Required)
+/hs/live/[city]/[trade]     # Home Services live view
+/rest/live/[city]           # Restaurant live view  
+/auto/live/[city]           # Auto Services live view
+/ret/stores/[city]          # Retail stores live view
+
+# Public Profiles & Booking
+/hs/b/[businessSlug]        # HS business profile
+/rest/r/[restaurantSlug]    # Restaurant profile
+/auto/b/[shopSlug]          # Auto shop profile
+/ret/s/[storeSlug]          # Retail store profile
+
+# Authenticated Apps (Industry-Specific)
+/hs/app/*                   # Home Services app
+/rest/app/*                 # Restaurants app
+/auto/app/*                 # Auto Services app
+/ret/app/*                  # Retail app
+```
+
+## App Route Patterns (Per Industry)
+
+### Home Services (`/hs/app/*`)
+```tsx
+// ✅ Good - HS-specific route structure
+export default function HSAppLayout({ children }) {
+  return (
+    <HSAppShell>
+      <HSNavigation />
+      <main>{children}</main>
+    </HSAppShell>
+  )
+}
+
+// Routes specific to Home Services
+/hs/app/dispatch            # Service dispatch board
+/hs/app/work-orders         # Work order management  
+/hs/app/estimates           # HS estimates (not shared)
+/hs/app/invoices           # HS invoices (not shared)
+/hs/app/pricebook          # Service pricing
+/hs/app/customers          # Customer management
+/hs/app/marketing/gbp      # Google Business Profile
+```
+
+### Restaurants (`/rest/app/*`)
+```tsx
+// ✅ Good - Restaurant-specific routes
+/rest/app/pos              # Point of Sale
+/rest/app/kds              # Kitchen Display System
+/rest/app/floor            # Table management
+/rest/app/checks           # Customer checks (not invoices)
+/rest/app/vendor-invoices  # Vendor bills (different from customer invoices)
+/rest/app/menus            # Menu management
+/rest/app/inventory        # Food inventory
+/rest/app/shifts           # Staff scheduling
+/rest/app/tips             # Tip management
+```
+
+### Auto Services (`/auto/app/*`)
+```tsx
+// ✅ Good - Auto-specific routes  
+/auto/app/bays             # Service bay management
+/auto/app/repair-orders    # ROs (different from work orders)
+/auto/app/estimates        # Auto estimates (different from HS)
+/auto/app/invoices         # Auto invoices (different from HS)
+/auto/app/vehicles         # Vehicle database
+/auto/app/parts            # Parts inventory
+```
+
+### Retail (`/ret/app/*`)
+```tsx
+// ✅ Good - Retail-specific routes
+/ret/app/pos               # Retail POS
+/ret/app/orders            # Customer orders
+/ret/app/receipts          # Sales receipts
+/ret/app/purchase-orders   # Purchasing
+/ret/app/vendor-invoices   # Supplier bills
+/ret/app/products          # Product catalog
+/ret/app/inventory         # Stock management
+/ret/app/loyalty           # Loyalty programs
+```
+
+## Route Implementation Patterns
+
+### Industry-Specific Page Components
+```tsx
+// ✅ Good - Industry-specific invoice page
+// /apps/hs/src/app/app/invoices/[invoiceId]/page.tsx
+export default async function HSInvoicePage({ params }) {
+  const invoice = await getHSInvoice(params.invoiceId)
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <HSInvoiceHeader invoice={invoice} />
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          <div className="xl:col-span-2">
+            <HSInvoiceDetails invoice={invoice} />
+            <HSLineItemsTable items={invoice.lineItems} />
+          </div>
+          <div>
+            <HSInvoiceActions invoice={invoice} />
+            <HSPaymentHistory invoice={invoice} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ❌ Bad - Generic shared invoice page
+export default function GenericInvoicePage() {
+  // This would try to serve all industries - forbidden
+}
+```
+
+### API Route Organization
+```tsx
+// ✅ Good - Industry-namespaced API routes
+// /apps/hs/src/app/api/v1/work-orders/route.ts
+export async function GET(request: Request) {
+  const workOrders = await hsApiClient.workOrders.list()
+  return Response.json(workOrders)
+}
+
+// /apps/rest/src/app/api/v1/checks/route.ts  
+export async function GET(request: Request) {
+  const checks = await restApiClient.checks.list()
+  return Response.json(checks)
+}
+
+// ❌ Bad - Cross-industry API contamination
+// /apps/hs/src/app/api/v1/checks/route.ts - Wrong industry
+```
+
+### Public Confirmation Pages
+```tsx
+// ✅ Good - Industry-specific public confirmation
+// /apps/hs/src/app/confirm/work-order/[draftId]/page.tsx
+export default async function HSWorkOrderConfirm({ params }) {
+  const draft = await getWorkOrderDraft(params.draftId)
+  
+  return (
+    <div className="min-h-screen bg-gray-25">
+      <PublicHeader />
+      <div className="max-w-2xl mx-auto px-6 py-12">
+        <div className="bg-white rounded-lg border p-8">
+          <h1 className="text-2xl font-bold mb-6">
+            Confirm Work Order
+          </h1>
+          
+          {/* HS-specific work order preview */}
+          <HSWorkOrderPreview draft={draft} />
+          
+          {/* Inline confirmation (no modal) */}
+          <HSWorkOrderConfirmForm draft={draft} />
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+## URL State Management
+
+### Query Parameter Conventions
+```tsx
+// ✅ Good - Consistent query param patterns across industries
+/hs/app/work-orders?status=pending&technician=john&date=2024-01-15
+/rest/app/checks?status=open&server=jane&table=5
+/auto/app/repair-orders?status=in-progress&bay=2&priority=high
+/ret/app/orders?status=ready&customer=smith&payment=pending
+
+// Search and filter state in URL for all industries
+const searchParams = useSearchParams()
+const status = searchParams.get('status') || 'all'
+const dateRange = searchParams.get('date') || 'today'
+```
+
+### Table State Persistence
+```tsx
+// ✅ Good - URL-based table state (no localStorage)
+export function IndustryDataTable({ 
+  industry, 
+  baseUrl,
+  defaultFilters 
+}) {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  
+  const updateFilters = (filters) => {
+    const params = new URLSearchParams(searchParams)
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) params.set(key, value)
+      else params.delete(key)
+    })
+    router.push(`${baseUrl}?${params.toString()}`)
+  }
+  
+  return (
+    <div>
+      <InlineFiltersBar 
+        filters={Object.fromEntries(searchParams)}
+        onFiltersChange={updateFilters}
+      />
+      <DataTable />
+    </div>
+  )
+}
+```
+
+## Navigation Patterns
+
+### Industry-Specific Navigation
+```tsx
+// ✅ Good - Industry-aware navigation
+export function HSNavigation() {
+  const navItems = [
+    { label: 'Dashboard', href: '/hs/app' },
+    { label: 'Dispatch', href: '/hs/app/dispatch' },
+    { label: 'Work Orders', href: '/hs/app/work-orders' },
+    { label: 'Estimates', href: '/hs/app/estimates' },
+    { label: 'Invoices', href: '/hs/app/invoices' },
+    { label: 'Customers', href: '/hs/app/customers' },
+    { label: 'Pricebook', href: '/hs/app/pricebook' }
+  ]
+  
+  return (
+    <nav className="space-y-2">
+      {navItems.map(item => (
+        <NavigationLink 
+          key={item.href}
+          href={item.href}
+          prefetch="auto"
+        >
+          {item.label}
+        </NavigationLink>
+      ))}
+    </nav>
+  )
+}
+
+// Different navigation for restaurants
+export function RestaurantNavigation() {
+  const navItems = [
+    { label: 'Dashboard', href: '/rest/app' },
+    { label: 'POS', href: '/rest/app/pos' },
+    { label: 'Floor', href: '/rest/app/floor' },
+    { label: 'Checks', href: '/rest/app/checks' },
+    { label: 'Menus', href: '/rest/app/menus' },
+    { label: 'Inventory', href: '/rest/app/inventory' }
+  ]
+  // ... similar pattern but restaurant-specific
+}
+```
+
+### Cross-App Navigation (Admin/Partner)
+```tsx
+// ✅ Good - Admin navigation across industries
+export function AdminNavigation({ currentIndustry }) {
+  return (
+    <nav>
+      <div className="mb-4">
+        <IndustrySelector current={currentIndustry} />
+      </div>
+      
+      <div className="space-y-2">
+        <Link href={`/admin/tenants/${currentIndustry}`}>
+          {getIndustryLabel(currentIndustry)} Tenants
+        </Link>
+        <Link href={`/admin/usage/${currentIndustry}`}>
+          Usage Analytics
+        </Link>
+        <Link href={`/admin/feature-flags/${currentIndustry}`}>
+          Feature Flags
+        </Link>
+      </div>
+    </nav>
+  )
+}
+```
+
+## Route Protection & Role Gating
+
+### Industry-Specific Middleware
+```tsx
+// ✅ Good - Industry-aware route protection
+// /apps/hs/src/middleware.ts
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+  
+  // Only protect HS app routes
+  if (pathname.startsWith('/hs/app')) {
+    return withHSAuth(request)
+  }
+  
+  // Public HS routes don't need auth
+  return NextResponse.next()
+}
+
+// Each industry has its own auth middleware
+function withHSAuth(request: NextRequest) {
+  const token = request.cookies.get('hs-session')
+  const roles = parseHSRoles(token)
+  
+  // HS-specific role checking
+  if (request.nextUrl.pathname.includes('/dispatch')) {
+    if (!roles.includes('dispatcher') && !roles.includes('manager')) {
+      return NextResponse.redirect('/hs/app')
+    }
+  }
+  
+  return NextResponse.next()
+}
+```
+
+## Performance Optimization
+
+### Industry-Specific Prefetching
+```tsx
+// ✅ Good - Smart prefetch based on industry context
+export function IndustryLinkPrefetch({ 
+  industry,
+  href,
+  children,
+  ...props 
+}) {
+  // Prefetch strategy varies by industry usage patterns
+  const prefetchStrategy = useMemo(() => {
+    switch (industry) {
+      case 'hs':
+        // HS users frequently navigate between dispatch and work orders
+        return href.includes('/dispatch') || href.includes('/work-orders') 
+          ? 'auto' : 'hover'
+      case 'rest':
+        // Restaurant users stay in POS/KDS during service
+        return href.includes('/pos') || href.includes('/kds')
+          ? 'auto' : 'hover'
+      default:
+        return 'hover'
+    }
+  }, [industry, href])
+  
+  return (
+    <Link href={href} prefetch={prefetchStrategy} {...props}>
+      {children}
+    </Link>
+  )
+}
+```
+
+## Route Testing Patterns
+
+### Industry-Specific Route Tests
+```tsx
+// ✅ Good - Test industry routes in isolation
+describe('HS App Routes', () => {
+  it('should render work orders page for dispatchers', async () => {
+    const { render } = setup({ roles: ['dispatcher'] })
+    
+    await render('/hs/app/work-orders')
+    
+    expect(screen.getByText('Work Orders')).toBeInTheDocument()
+    expect(screen.getByText('Assign Technician')).toBeInTheDocument()
+  })
+  
+  it('should redirect technicians from dispatch page', async () => {
+    const { render } = setup({ roles: ['technician'] })
+    
+    const { redirect } = await render('/hs/app/dispatch')
+    
+    expect(redirect).toBe('/hs/app/work-orders')
+  })
+})
+
+// Separate test suites for each industry
+describe('Restaurant App Routes', () => {
+  // Restaurant-specific route tests
+})
+```

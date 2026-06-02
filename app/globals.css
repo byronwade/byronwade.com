@@ -4,32 +4,48 @@
 @tailwind utilities;
 @layer base {
 	:root {
-		/* Cursor.com retro color palette - warm beige/cream backgrounds */
-		--background: 42 30% 97%;
-		--foreground: 35 28% 25%;
-		--card: 42 35% 98%;
-		--card-foreground: 35 28% 25%;
-		--popover: 42 35% 98%;
-		--popover-foreground: 35 28% 25%;
-		--primary: 35 32% 30%;
-		--primary-foreground: 42 30% 98%;
-		--secondary: 42 25% 92%;
-		--secondary-foreground: 35 28% 30%;
-		--muted: 42 20% 94%;
-		--muted-foreground: 35 20% 45%;
-		--accent: 38 70% 42%;
-		--accent-foreground: 0 0% 100%;
+		/* Editorial ink + copper — light */
+		--background: 40 20% 97%;
+		--foreground: 25 15% 12%;
+		--card: 40 25% 99%;
+		--card-foreground: 25 15% 12%;
+		--popover: 40 25% 99%;
+		--popover-foreground: 25 15% 12%;
+		--primary: 25 15% 12%;
+		--primary-foreground: 40 20% 97%;
+		--secondary: 35 15% 93%;
+		--secondary-foreground: 25 15% 18%;
+		--muted: 38 12% 92%;
+		--muted-foreground: 25 10% 42%;
+		--accent: 28 55% 48%;
+		--accent-foreground: 40 20% 98%;
 		--destructive: 0 70% 55%;
-		--destructive-foreground: 42 30% 98%;
-		--border: 42 15% 85%;
-		--input: 42 15% 88%;
-		--ring: 35 32% 30%;
-		--chart-1: 38 70% 45%;
-		--chart-2: 95 35% 45%;
-		--chart-3: 35 32% 40%;
-		--chart-4: 38 70% 42%;
-		--chart-5: 42 40% 45%;
-		--radius: 0.5rem;
+		--destructive-foreground: 40 20% 98%;
+		--border: 35 12% 86%;
+		--input: 35 12% 88%;
+		--ring: 28 55% 48%;
+		--chart-1: 28 55% 48%;
+		--chart-2: 160 30% 42%;
+		--chart-3: 25 15% 30%;
+		--chart-4: 38 45% 55%;
+		--chart-5: 200 25% 50%;
+		--radius: 0.625rem;
+		--sidebar-background: 40 20% 96%;
+		--sidebar-foreground: 25 15% 12%;
+		--sidebar-primary: 28 55% 48%;
+		--sidebar-primary-foreground: 40 20% 98%;
+		--sidebar-accent: 35 15% 93%;
+		--sidebar-accent-foreground: 25 15% 12%;
+		--sidebar-border: 35 12% 86%;
+		--sidebar-ring: 28 55% 48%;
+		--ease-in: cubic-bezier(0.4, 0, 1, 1);
+		--ease-out: cubic-bezier(0, 0, 0.2, 1);
+		--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+		--ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		--duration-fast: 150ms;
+		--duration-normal: 200ms;
+		--duration-slow: 300ms;
+		--duration-slower: 500ms;
 		/* Semantic Color Tokens */
 		--success: 142 71% 45%;
 		--success-foreground: 0 0% 98%;
@@ -57,31 +73,39 @@
 		--shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 	}
 	.dark {
-		/* Cursor.com retro dark mode - warmer tones */
-		--background: 35 15% 12%;
-		--foreground: 42 20% 88%;
-		--card: 35 18% 15%;
-		--card-foreground: 42 20% 88%;
-		--popover: 35 18% 15%;
-		--popover-foreground: 42 20% 88%;
-		--primary: 25 55% 65%;
-		--primary-foreground: 35 15% 12%;
-		--secondary: 35 20% 18%;
-		--secondary-foreground: 42 20% 88%;
-		--muted: 35 18% 20%;
-		--muted-foreground: 42 15% 65%;
-		--accent: 38 50% 60%;
-		--accent-foreground: 42 20% 88%;
+		/* Editorial ink + copper — dark */
+		--background: 25 12% 7%;
+		--foreground: 38 18% 90%;
+		--card: 25 14% 10%;
+		--card-foreground: 38 18% 90%;
+		--popover: 25 14% 10%;
+		--popover-foreground: 38 18% 90%;
+		--primary: 38 18% 90%;
+		--primary-foreground: 25 12% 7%;
+		--secondary: 25 10% 14%;
+		--secondary-foreground: 38 15% 85%;
+		--muted: 25 10% 16%;
+		--muted-foreground: 35 10% 58%;
+		--accent: 32 45% 58%;
+		--accent-foreground: 25 12% 7%;
 		--destructive: 0 60% 50%;
-		--destructive-foreground: 42 20% 88%;
-		--border: 35 20% 25%;
-		--input: 35 20% 25%;
-		--ring: 38 55% 65%;
-		--chart-1: 38 65% 70%;
-		--chart-2: 95 25% 60%;
-		--chart-3: 35 32% 50%;
-		--chart-4: 38 55% 65%;
-		--chart-5: 42 30% 60%;
+		--destructive-foreground: 38 18% 90%;
+		--border: 25 10% 20%;
+		--input: 25 10% 20%;
+		--ring: 32 45% 58%;
+		--chart-1: 32 45% 58%;
+		--chart-2: 160 25% 50%;
+		--chart-3: 38 15% 70%;
+		--chart-4: 28 40% 45%;
+		--chart-5: 200 20% 55%;
+		--sidebar-background: 25 12% 9%;
+		--sidebar-foreground: 38 18% 90%;
+		--sidebar-primary: 32 45% 58%;
+		--sidebar-primary-foreground: 25 12% 7%;
+		--sidebar-accent: 25 10% 14%;
+		--sidebar-accent-foreground: 38 18% 90%;
+		--sidebar-border: 25 10% 20%;
+		--sidebar-ring: 32 45% 58%;
 		/* Dark mode semantic colors */
 		--success: 142 71% 55%;
 		--success-foreground: 0 0% 9%;
@@ -199,7 +223,9 @@
 
 	body {
 		@apply bg-background text-foreground;
-		font-feature-settings: "kern" 1, "liga" 1;
+		font-feature-settings:
+			"kern" 1,
+			"liga" 1;
 		text-rendering: optimizeLegibility;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
@@ -257,7 +283,9 @@
 	h5,
 	h6 {
 		letter-spacing: -0.01em;
-		font-feature-settings: "kern" 1, "liga" 1;
+		font-feature-settings:
+			"kern" 1,
+			"liga" 1;
 		font-weight: 600;
 		scroll-margin-top: 5rem;
 	}
@@ -370,7 +398,29 @@
 	}
 }
 @layer utilities {
-	/* Cursor.com retro painted landscape wallpaper background */
+	/* Editorial atmosphere — warm radial glow + subtle grain */
+	.site-atmosphere {
+		background:
+			radial-gradient(ellipse 80% 50% at 50% -10%, hsl(var(--accent) / 0.08), transparent 60%),
+			radial-gradient(ellipse 60% 40% at 100% 100%, hsl(var(--accent) / 0.05), transparent 50%),
+			hsl(var(--background));
+	}
+
+	.site-grain {
+		opacity: 0.35;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+		mix-blend-mode: overlay;
+	}
+
+	.dark .site-grain {
+		opacity: 0.2;
+	}
+
+	.link-underline {
+		@apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors duration-200 hover:decoration-foreground;
+	}
+
+	/* Legacy retro wallpaper — kept for reference, superseded by site-atmosphere */
 	.retro-wallpaper {
 		background: linear-gradient(
 			180deg,
@@ -391,7 +441,8 @@
 		content: "";
 		position: absolute;
 		inset: 0;
-		background: radial-gradient(circle at 20% 30%, hsl(25, 40%, 70%) 0%, transparent 50%),
+		background:
+			radial-gradient(circle at 20% 30%, hsl(25, 40%, 70%) 0%, transparent 50%),
 			radial-gradient(circle at 80% 60%, hsl(95, 30%, 65%) 0%, transparent 50%),
 			radial-gradient(circle at 50% 80%, hsl(35, 35%, 75%) 0%, transparent 50%);
 		opacity: 0.3;
@@ -469,7 +520,9 @@
 
 	/* Smooth hover scale for interactive elements */
 	.hover-scale {
-		transition: transform 0.2s ease, opacity 0.2s ease;
+		transition:
+			transform 0.2s ease,
+			opacity 0.2s ease;
 	}
 
 	.hover-scale:hover {
@@ -575,7 +628,9 @@
 
 	/* Smooth color transition on theme toggle */
 	.theme-toggle {
-		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s ease;
+		transition:
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			color 0.2s ease;
 	}
 
 	.theme-toggle:hover {
@@ -584,7 +639,9 @@
 
 	/* Smooth profile picture hover */
 	.profile-hover {
-		transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+		transition:
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.3s ease;
 	}
 
 	.profile-hover:hover {
@@ -707,16 +764,11 @@
 		width: 100%;
 		max-width: 120px;
 		margin: 0 auto;
-		background: linear-gradient(
-			to right,
-			transparent,
-			hsl(var(--border)),
-			transparent
-		);
+		background: linear-gradient(to right, transparent, hsl(var(--border)), transparent);
 	}
 
 	.section-divider::before {
-		content: '';
+		content: "";
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -729,7 +781,8 @@
 
 	/* Pulsing heart animation for footer */
 	@keyframes heart-beat {
-		0%, 100% {
+		0%,
+		100% {
 			transform: scale(1);
 		}
 		14% {
@@ -766,7 +819,9 @@
 	.type-badge {
 		padding: 0.125rem 0.375rem;
 		border-radius: 0.25rem;
-		transition: background-color 0.2s ease, transform 0.2s ease;
+		transition:
+			background-color 0.2s ease,
+			transform 0.2s ease;
 	}
 
 	.type-badge:hover {

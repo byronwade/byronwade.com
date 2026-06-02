@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
 
@@ -56,7 +56,20 @@ export interface ButtonProps
  * - MUST: Keep submit enabled until request starts; then disable, show spinner
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, isLoading = false, loadingText, children, disabled, ...props }, ref) => {
+	(
+		{
+			className,
+			variant,
+			size,
+			asChild = false,
+			isLoading = false,
+			loadingText,
+			children,
+			disabled,
+			...props
+		},
+		ref
+	) => {
 		const Comp = asChild ? Slot : "button";
 
 		// When loading, show spinner + original label (or loadingText if provided)

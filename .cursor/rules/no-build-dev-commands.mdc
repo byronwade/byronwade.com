@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+description: Development workflow rules - never run builds or dev servers
+---
+
+# Development Workflow Rules
+
+## Core Principle: NO BUILD OR DEV COMMANDS
+
+**Never run build or development server commands. Always assume the dev environment is running.**
+
+### Forbidden Commands
+- ❌ `npm run dev` / `yarn dev` / `pnpm dev`
+- ❌ `npm run build` / `yarn build` / `pnpm build`
+- ❌ `npm start` / `yarn start` / `pnpm start`
+- ❌ `turbo run dev` / `turbo run build`
+- ❌ Any server startup commands
+
+### Assumptions
+- ✅ Development server is ALWAYS running
+- ✅ Hot reload is active and working
+- ✅ User manages their own development environment
+- ✅ Focus on code changes, not process management
+
+### Allowed Verification Commands
+- ✅ `npm run lint` - Static analysis
+- ✅ `npm run type-check` - TypeScript validation
+- ✅ `npm run test` - Unit tests
+- ✅ File system operations (read, write, edit)
+- ✅ Code analysis and search tools
+
+### When User Requests Build/Dev
+If user explicitly asks to run build or dev:
+1. Clarify if they want to run it themselves
+2. Only run if they explicitly confirm with phrases like:
+   - "please run build"
+   - "run the build command"
+   - "start the dev server"
+
+### Response Patterns
+Instead of suggesting builds, offer:
+- Code improvements and fixes
+- Static analysis results
+- Architecture recommendations
+- Implementation guidance
+
+**The user manages their development environment. Focus on code, not processes.**

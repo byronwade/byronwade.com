@@ -1,15 +1,24 @@
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import localFont from "next/font/local";
 
-// Plus Jakarta Sans - warm, friendly, approachable font perfect for retro/warm aesthetic
+// Body / UI — warm, friendly, highly legible
 export const plusJakartaSans = Plus_Jakarta_Sans({
 	subsets: ["latin"],
 	display: "swap",
 	variable: "--font-sans",
-	weight: ["200", "300", "400", "500", "600", "700", "800"],
+	weight: ["300", "400", "500", "600", "700"],
 });
 
-// Custom signature font for branding
+// Display / editorial headings — elegant serif that pairs with the copper accent
+export const instrumentSerif = Instrument_Serif({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-display",
+	weight: "400",
+	style: ["normal", "italic"],
+});
+
+// Custom signature font for the wordmark / personal branding
 export const customFont = localFont({
 	src: [
 		{

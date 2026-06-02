@@ -5,9 +5,8 @@
 		"next.config.{js,ts,mjs}",
 		"tailwind.config.{ts,js}",
 		"postcss.config.{js,mjs}",
-		"components/**/*.{ts,tsx}",
-		"lib/**/*.{ts,tsx}",
-		"hooks/**/*.{ts,tsx}"
+		"middleware.{ts,js}",
+		"instrumentation.{ts,js}"
 	],
 	"project": [
 		"app/**/*.{ts,tsx}",
@@ -25,24 +24,6 @@
 		"dist/**",
 		"build/**"
 	],
-	"ignoreDependencies": [
-		"@next/bundle-analyzer",
-		"@playwright/test",
-		"@axe-core/playwright",
-		"playwright",
-		"playwright-core",
-		"sharp",
-		"puppeteer",
-		"@types/puppeteer"
-	],
-	"next": {
-		"entry": ["app/**/*.{ts,tsx}", "next.config.{js,ts,mjs}"],
-		"project": [
-			"app/**/*.{ts,tsx}",
-			"components/**/*.{ts,tsx}",
-			"lib/**/*.{ts,tsx}",
-			"hooks/**/*.{ts,tsx}"
-		]
-	},
-	"ignoreBinaries": ["next", "tsc", "biome", "knip"]
+	"ignoreDependencies": ["@next/bundle-analyzer", "sharp", "highlight.js"],
+	"ignoreBinaries": ["next", "tsc", "biome", "knip", "docker-compose"]
 }

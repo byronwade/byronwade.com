@@ -1,13 +1,15 @@
-import { type ProjectType, getProjects } from "@/lib/projects";
+import { format } from "date-fns";
+import Link from "next/link";
+import { Suspense } from "react";
+import { BreadcrumbNav } from "@/components/common";
+import { SiteShell } from "@/components/layout/site-shell";
+import { getProjects, type ProjectType } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
-import { format } from "date-fns";
-import Link from "next/link";
-import { Suspense } from "react";
 
 export async function generateMetadata() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
@@ -132,54 +134,37 @@ export default async function ProjectsPage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			<div className="relative min-h-screen w-full bg-[var(--background)]">
-				{/* Subtle background gradient */}
-				<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
+			<SiteShell>
+				<div className="flex flex-col gap-8 sm:gap-10">
+					<div className="animate-in w-full">
+						<BreadcrumbNav
+							items={[{ label: "Home", href: "/" }, { label: "Projects" }]}
+							className="mb-4"
+						/>
+						<h1 className="font-display text-3xl font-normal tracking-tight text-foreground sm:text-4xl">
+							Projects
+						</h1>
+						<p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground">
+							Client work, products, and hobby projects — real-world problem solving with React,
+							Next.js, and full-stack tools.
+						</p>
+					</div>
 
-				{/* Main content */}
-				<div className="relative flex justify-center py-8 px-4 sm:py-12 md:py-16 lg:py-20 safe-top safe-bottom">
-					<div className="flex flex-col gap-6 sm:gap-10 md:gap-12 lg:gap-16 items-center w-full max-w-2xl">
-						{/* Header Section */}
-						<div className="animate-in w-full">
-							<div className="flex flex-col gap-4 sm:gap-6 items-start w-full">
-								<Link
-									className="group flex items-center gap-2 w-full touch-target"
-									aria-label="Go to home"
-									href="/"
-								>
-									<span className="text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:text-amber-700 dark:hover:text-yellow-500 transition-all duration-200">
-										← Back to home
-									</span>
-								</Link>
-
-								<h1 className="text-3xl sm:text-4xl font-semibold text-[var(--foreground)] tracking-tight">
-									Projects
-								</h1>
-								<p className="text-[var(--muted-foreground)] text-base leading-relaxed max-w-2xl">
-									A collection of client work, products, and hobby projects showcasing modern web
-									development with React, Next.js, and full-stack technologies. Each project
-									represents real-world problem-solving and clean code practices.
-								</p>
-							</div>
-						</div>
-
-						{/* Projects List */}
-						<div className="animate-in animate-delay-1 w-full">
-							<Suspense
-								fallback={
-									<div className="animate-pulse">
-										<div className="h-16 bg-[var(--muted)] rounded mb-4" />
-										<div className="h-16 bg-[var(--muted)] rounded mb-4" />
-										<div className="h-16 bg-[var(--muted)] rounded" />
-									</div>
-								}
-							>
-								<ProjectsList />
-							</Suspense>
-						</div>
+					<div className="animate-in animate-delay-1 w-full">
+						<Suspense
+							fallback={
+								<div className="animate-pulse space-y-4">
+									<div className="h-16 rounded-lg bg-muted" />
+									<div className="h-16 rounded-lg bg-muted" />
+									<div className="h-16 rounded-lg bg-muted" />
+								</div>
+							}
+						>
+							<ProjectsList />
+						</Suspense>
 					</div>
 				</div>
-			</div>
+			</SiteShell>
 		</>
 	);
 }

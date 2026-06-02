@@ -1,4 +1,4 @@
-import { readFile, readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import matter from "gray-matter";
 
@@ -81,10 +81,3 @@ export async function getAllBlogSlugs(): Promise<string[]> {
 		return [];
 	}
 }
-
-
-
-
-
-
-

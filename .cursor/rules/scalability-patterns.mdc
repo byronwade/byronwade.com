@@ -1,0 +1,634 @@
+---
+alwaysApply: true
+description: Scalability patterns and database organization for Thorbis multi-industry architecture
+---
+
+# Thorbis Scalability & Database Organization Patterns
+
+## Database Architecture Principles
+
+### Industry-Isolated Schema Design
+- **Industry-prefixed tables**: Each industry owns its data with clear prefixes
+- **Shared core tables**: User, organization, billing, audit data shared across industries
+- **Independent migrations**: Each industry can evolve schemas independently
+- **Tenant isolation**: All data properly scoped to tenant boundaries
+
+### Table Naming Conventions
+
+#### Shared Tables (No Prefix)
+```sql
+-- ✅ Good - Shared infrastructure tables
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE organizations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  industry industry_enum NOT NULL,
+  plan_type plan_enum DEFAULT 'starter',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE billing_usage (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID REFERENCES organizations(id),
+  industry industry_enum NOT NULL,
+  metric TEXT NOT NULL,
+  value INTEGER NOT NULL,
+  period_start TIMESTAMPTZ NOT NULL,
+  period_end TIMESTAMPTZ NOT NULL
+);
+```
+
+#### Industry-Specific Tables
+```sql
+-- ✅ Good - Home Services tables
+CREATE TABLE hs_work_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  customer_id UUID NOT NULL,
+  technician_id UUID,
+  status hs_work_order_status DEFAULT 'created',
+  scheduled_at TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  total_amount DECIMAL(10,2),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE hs_estimates (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  work_order_id UUID REFERENCES hs_work_orders(id),
+  customer_id UUID NOT NULL,
+  status hs_estimate_status DEFAULT 'draft',
+  valid_until TIMESTAMPTZ,
+  total_amount DECIMAL(10,2),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ✅ Good - Restaurant tables  
+CREATE TABLE rest_checks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  table_id UUID,
+  server_id UUID NOT NULL,
+  status rest_check_status DEFAULT 'open',
+  opened_at TIMESTAMPTZ DEFAULT NOW(),
+  closed_at TIMESTAMPTZ,
+  total_amount DECIMAL(10,2)
+);
+
+CREATE TABLE rest_menu_items (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  name TEXT NOT NULL,
+  description TEXT,
+  price DECIMAL(8,2) NOT NULL,
+  category TEXT,
+  available BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ❌ Bad - Generic shared tables
+CREATE TABLE invoices ( -- This would mix industries
+  id UUID PRIMARY KEY,
+  organization_id UUID,
+  type TEXT, -- 'hs_invoice' | 'rest_check' | 'auto_invoice' - BAD
+  data JSONB  -- Different schemas mixed together - BAD
+);
+```
+
+## Data Access Layer Organization
+
+### Industry-Specific Database Clients
+```tsx
+// ✅ Good - Industry-separated database access
+// /packages/database/hs/index.ts
+export class HSDatabase {
+  constructor(private db: Database) {}
+  
+  get workOrders() {
+    return new HSWorkOrderRepository(this.db)
+  }
+  
+  get estimates() {
+    return new HSEstimateRepository(this.db)
+  }
+  
+  get invoices() {
+    return new HSInvoiceRepository(this.db)
+  }
+  
+  get customers() {
+    return new HSCustomerRepository(this.db)
+  }
+}
+
+// /packages/database/rest/index.ts
+export class RestaurantDatabase {
+  constructor(private db: Database) {}
+  
+  get checks() {
+    return new RestCheckRepository(this.db)
+  }
+  
+  get menuItems() {
+    return new RestMenuItemRepository(this.db)
+  }
+  
+  get orders() {
+    return new RestOrderRepository(this.db)
+  }
+  
+  get tables() {
+    return new RestTableRepository(this.db)
+  }
+}
+
+// Usage in apps
+// /apps/hs/src/lib/database.ts
+import { HSDatabase } from '@repo/database/hs'
+import { createClient } from '@repo/database/client'
+
+export const hsDb = new HSDatabase(createClient())
+
+// /apps/rest/src/lib/database.ts  
+import { RestaurantDatabase } from '@repo/database/rest'
+import { createClient } from '@repo/database/client'
+
+export const restDb = new RestaurantDatabase(createClient())
+```
+
+### Repository Pattern Implementation
+```tsx
+// ✅ Good - Industry-specific repository
+export class HSWorkOrderRepository {
+  constructor(private db: Database) {}
+  
+  async findByTenant(
+    tenantId: string,
+    filters: HSWorkOrderFilters = {}
+  ): Promise<HSWorkOrder[]> {
+    let query = this.db
+      .selectFrom('hs_work_orders')
+      .selectAll()
+      .where('organization_id', '=', tenantId)
+    
+    if (filters.status) {
+      query = query.where('status', '=', filters.status)
+    }
+    
+    if (filters.technicianId) {
+      query = query.where('technician_id', '=', filters.technicianId)
+    }
+    
+    if (filters.dateRange) {
+      query = query.where('scheduled_at', '>=', filters.dateRange.start)
+                   .where('scheduled_at', '<=', filters.dateRange.end)
+    }
+    
+    return await query.execute()
+  }
+  
+  async create(data: CreateHSWorkOrderData): Promise<HSWorkOrder> {
+    return await this.db
+      .insertInto('hs_work_orders')
+      .values({
+        ...data,
+        id: generateId(),
+        created_at: new Date(),
+        status: 'created'
+      })
+      .returningAll()
+      .executeTakeFirst()
+  }
+  
+  async assignTechnician(
+    workOrderId: string,
+    technicianId: string,
+    assignedBy: string
+  ): Promise<HSWorkOrder> {
+    return await this.db
+      .updateTable('hs_work_orders')
+      .set({
+        technician_id: technicianId,
+        assigned_at: new Date(),
+        assigned_by: assignedBy,
+        status: 'assigned'
+      })
+      .where('id', '=', workOrderId)
+      .returningAll()
+      .executeTakeFirst()
+  }
+}
+
+// Restaurant equivalent with different business logic
+export class RestCheckRepository {
+  constructor(private db: Database) {}
+  
+  async findOpenChecks(tenantId: string): Promise<RestCheck[]> {
+    return await this.db
+      .selectFrom('rest_checks')
+      .selectAll()
+      .where('organization_id', '=', tenantId)
+      .where('status', '=', 'open')
+      .execute()
+  }
+  
+  async addItem(
+    checkId: string,
+    menuItemId: string,
+    quantity: number,
+    modifications?: string[]
+  ): Promise<void> {
+    await this.db
+      .insertInto('rest_check_items')
+      .values({
+        check_id: checkId,
+        menu_item_id: menuItemId,
+        quantity,
+        modifications: JSON.stringify(modifications || []),
+        added_at: new Date()
+      })
+      .execute()
+  }
+}
+```
+
+## Feature Flag Architecture
+
+### Industry-Scoped Feature Flags
+```tsx
+// ✅ Good - Industry-namespaced feature flags
+export interface FeatureFlags {
+  // Home Services flags
+  'hs.dispatch.ai-routing': boolean
+  'hs.estimates.auto-pricing': boolean
+  'hs.mobile.offline-mode': boolean
+  'hs.integrations.quickbooks': boolean
+  
+  // Restaurant flags
+  'rest.pos.tip-suggestions': boolean
+  'rest.kds.voice-orders': boolean
+  'rest.inventory.auto-reorder': boolean
+  'rest.reservations.waitlist': boolean
+  
+  // Auto Services flags
+  'auto.diagnostics.ai-analysis': boolean
+  'auto.parts.inventory-sync': boolean
+  'auto.estimates.labor-calculator': boolean
+  
+  // Retail flags
+  'ret.pos.loyalty-integration': boolean
+  'ret.inventory.barcode-scanning': boolean
+  'ret.customers.sms-notifications': boolean
+  
+  // Global flags
+  'global.dark-mode': boolean
+  'global.new-dashboard': boolean
+  'global.maintenance-mode': boolean
+}
+
+export class FeatureFlagService {
+  async getFlags(
+    industry: Industry,
+    tenantId: string
+  ): Promise<Partial<FeatureFlags>> {
+    const flags = await this.db
+      .selectFrom('feature_flags')
+      .selectAll()
+      .where('tenant_id', '=', tenantId)
+      .where(eb => eb.or([
+        eb('scope', '=', industry),
+        eb('scope', '=', 'global')
+      ]))
+      .execute()
+    
+    return flags.reduce((acc, flag) => {
+      acc[flag.name as keyof FeatureFlags] = flag.enabled
+      return acc
+    }, {} as Partial<FeatureFlags>)
+  }
+  
+  async isEnabled(
+    flagName: keyof FeatureFlags,
+    industry: Industry,
+    tenantId: string
+  ): Promise<boolean> {
+    const flag = await this.db
+      .selectFrom('feature_flags')
+      .select('enabled')
+      .where('name', '=', flagName)
+      .where('tenant_id', '=', tenantId)
+      .executeTakeFirst()
+    
+    return flag?.enabled ?? false
+  }
+}
+
+// Usage in components
+export function useFeatureFlag(
+  flagName: keyof FeatureFlags
+): boolean {
+  const { industry, tenantId } = useContext(IndustryContext)
+  
+  return useSWR(
+    ['feature-flag', flagName, industry, tenantId],
+    () => featureFlagService.isEnabled(flagName, industry, tenantId)
+  ).data ?? false
+}
+```
+
+## Caching Strategy
+
+### Industry-Aware Caching
+```tsx
+// ✅ Good - Industry-specific cache keys and strategies
+export class CacheService {
+  private redis: Redis
+  
+  constructor() {
+    this.redis = createRedisClient()
+  }
+  
+  // Industry-scoped cache keys
+  private getCacheKey(
+    industry: Industry,
+    tenantId: string,
+    resourceType: string,
+    resourceId?: string
+  ): string {
+    const parts = [industry, tenantId, resourceType]
+    if (resourceId) parts.push(resourceId)
+    return parts.join(':')
+  }
+  
+  async cacheHSWorkOrders(
+    tenantId: string,
+    workOrders: HSWorkOrder[],
+    ttl = 300 // 5 minutes
+  ): Promise<void> {
+    const key = this.getCacheKey('hs', tenantId, 'work-orders')
+    await this.redis.setex(key, ttl, JSON.stringify(workOrders))
+  }
+  
+  async getCachedHSWorkOrders(tenantId: string): Promise<HSWorkOrder[] | null> {
+    const key = this.getCacheKey('hs', tenantId, 'work-orders')
+    const cached = await this.redis.get(key)
+    return cached ? JSON.parse(cached) : null
+  }
+  
+  async invalidateHSWorkOrders(tenantId: string): Promise<void> {
+    const pattern = this.getCacheKey('hs', tenantId, 'work-orders*')
+    const keys = await this.redis.keys(pattern)
+    if (keys.length > 0) {
+      await this.redis.del(...keys)
+    }
+  }
+  
+  // Different caching strategies per industry
+  async cacheRestaurantMenu(
+    tenantId: string,
+    menu: RestaurantMenu,
+    ttl = 3600 // 1 hour - menus change less frequently
+  ): Promise<void> {
+    const key = this.getCacheKey('rest', tenantId, 'menu')
+    await this.redis.setex(key, ttl, JSON.stringify(menu))
+  }
+}
+
+// Cache invalidation on mutations
+export async function updateHSWorkOrder(
+  workOrderId: string,
+  data: UpdateHSWorkOrderData
+): Promise<HSWorkOrder> {
+  const workOrder = await hsDb.workOrders.update(workOrderId, data)
+  
+  // Invalidate related caches
+  await cacheService.invalidateHSWorkOrders(workOrder.organization_id)
+  await cacheService.invalidateHSWorkOrder(workOrder.organization_id, workOrderId)
+  
+  // Trigger real-time updates
+  await publishHSWorkOrderUpdate(workOrder)
+  
+  return workOrder
+}
+```
+
+## Real-Time Updates
+
+### Industry-Specific WebSocket Channels
+```tsx
+// ✅ Good - Industry-scoped real-time channels
+export class RealtimeService {
+  private io: SocketIOServer
+  
+  constructor() {
+    this.io = createSocketIOServer()
+  }
+  
+  // Industry-specific room naming
+  private getRoom(
+    industry: Industry,
+    tenantId: string,
+    resourceType: string
+  ): string {
+    return `${industry}:${tenantId}:${resourceType}`
+  }
+  
+  async publishHSWorkOrderUpdate(workOrder: HSWorkOrder): Promise<void> {
+    const room = this.getRoom('hs', workOrder.organization_id, 'work-orders')
+    
+    this.io.to(room).emit('hs:work-order:updated', {
+      id: workOrder.id,
+      status: workOrder.status,
+      technician_id: workOrder.technician_id,
+      updated_at: workOrder.updated_at
+    })
+    
+    // Also notify specific technician if assigned
+    if (workOrder.technician_id) {
+      const techRoom = this.getRoom('hs', workOrder.organization_id, 'technicians')
+      this.io.to(`${techRoom}:${workOrder.technician_id}`).emit('hs:assignment:new', workOrder)
+    }
+  }
+  
+  async publishRestaurantOrderUpdate(order: RestaurantOrder): Promise<void> {
+    const room = this.getRoom('rest', order.organization_id, 'orders')
+    
+    // Notify POS
+    this.io.to(`${room}:pos`).emit('rest:order:updated', order)
+    
+    // Notify KDS
+    this.io.to(`${room}:kds`).emit('rest:ticket:updated', {
+      orderId: order.id,
+      status: order.status,
+      items: order.items
+    })
+  }
+  
+  // Client connection handling with industry context
+  async handleConnection(socket: Socket): Promise<void> {
+    const { industry, tenantId, userId } = await this.authenticateSocket(socket)
+    
+    // Join industry-specific rooms based on user role
+    const baseRoom = `${industry}:${tenantId}`
+    socket.join(baseRoom)
+    
+    if (industry === 'hs') {
+      const roles = await this.getHSUserRoles(userId, tenantId)
+      
+      if (roles.includes('dispatcher')) {
+        socket.join(`${baseRoom}:dispatch`)
+      }
+      
+      if (roles.includes('technician')) {
+        socket.join(`${baseRoom}:technicians:${userId}`)
+      }
+    }
+    
+    if (industry === 'rest') {
+      const roles = await this.getRestaurantUserRoles(userId, tenantId)
+      
+      if (roles.includes('server')) {
+        socket.join(`${baseRoom}:pos`)
+      }
+      
+      if (roles.includes('kitchen')) {
+        socket.join(`${baseRoom}:kds`)
+      }
+    }
+  }
+}
+```
+
+## Migration Strategy
+
+### Industry-Specific Migration Management
+```typescript
+// ✅ Good - Separate migration paths per industry
+// /migrations/shared/001_create_users_and_orgs.sql
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE organizations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  industry industry_enum NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- /migrations/hs/001_create_hs_tables.sql
+CREATE TYPE hs_work_order_status AS ENUM (
+  'created', 'scheduled', 'assigned', 'in_progress', 'completed', 'cancelled'
+);
+
+CREATE TABLE hs_work_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  -- HS-specific fields
+);
+
+-- /migrations/rest/001_create_restaurant_tables.sql  
+CREATE TYPE rest_check_status AS ENUM (
+  'open', 'closed', 'paid', 'comped'
+);
+
+CREATE TABLE rest_checks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  organization_id UUID NOT NULL REFERENCES organizations(id),
+  -- Restaurant-specific fields
+);
+
+// Migration runner with industry awareness
+export class MigrationRunner {
+  async runMigrations(industry?: Industry): Promise<void> {
+    // Always run shared migrations first
+    await this.runSharedMigrations()
+    
+    if (industry) {
+      await this.runIndustryMigrations(industry)
+    } else {
+      // Run all industry migrations
+      for (const ind of ['hs', 'rest', 'auto', 'ret'] as Industry[]) {
+        await this.runIndustryMigrations(ind)
+      }
+    }
+  }
+  
+  private async runSharedMigrations(): Promise<void> {
+    const migrations = await this.getSharedMigrations()
+    for (const migration of migrations) {
+      await this.executeMigration(migration)
+    }
+  }
+  
+  private async runIndustryMigrations(industry: Industry): Promise<void> {
+    const migrations = await this.getIndustryMigrations(industry)
+    for (const migration of migrations) {
+      await this.executeMigration(migration)
+    }
+  }
+}
+```
+
+## Performance Monitoring
+
+### Industry-Specific Metrics
+```tsx
+// ✅ Good - Industry-aware performance monitoring
+export class MetricsService {
+  async recordAPILatency(
+    industry: Industry,
+    endpoint: string,
+    method: string,
+    latency: number,
+    statusCode: number
+  ): Promise<void> {
+    await this.prometheus.histogram('api_request_duration_ms', {
+      industry,
+      endpoint,
+      method,
+      status_code: statusCode.toString()
+    }).observe(latency)
+  }
+  
+  async recordDatabaseQuery(
+    industry: Industry,
+    table: string,
+    operation: string,
+    duration: number
+  ): Promise<void> {
+    await this.prometheus.histogram('db_query_duration_ms', {
+      industry,
+      table,
+      operation
+    }).observe(duration)
+  }
+  
+  // Industry-specific business metrics
+  async recordHSWorkOrderCreated(tenantId: string): Promise<void> {
+    await this.prometheus.counter('hs_work_orders_created_total', {
+      tenant_id: tenantId
+    }).inc()
+  }
+  
+  async recordRestaurantOrderCreated(tenantId: string, orderValue: number): Promise<void> {
+    await this.prometheus.counter('rest_orders_created_total', {
+      tenant_id: tenantId
+    }).inc()
+    
+    await this.prometheus.histogram('rest_order_value_usd', {
+      tenant_id: tenantId
+    }).observe(orderValue)
+  }
+}
+```

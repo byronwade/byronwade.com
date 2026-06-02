@@ -133,17 +133,17 @@ export async function GET(request: NextRequest) {
 		// #endregion
 
 		if (!response.ok) {
-		void agentLog(
-			"fetch:error",
-			{
-				target: targetUrl.toString(),
-				status: response.status,
-				statusText: response.statusText,
-				resourceType,
-				contentType,
-			},
-			"H2"
-		);
+			void agentLog(
+				"fetch:error",
+				{
+					target: targetUrl.toString(),
+					status: response.status,
+					statusText: response.statusText,
+					resourceType,
+					contentType,
+				},
+				"H2"
+			);
 			return NextResponse.json(
 				{ error: `Failed to fetch: ${response.statusText}` },
 				{ status: response.status }
@@ -154,61 +154,61 @@ export async function GET(request: NextRequest) {
 
 		// For non-HTML resources, just pass them through
 		if (!isHTML) {
-		const data = await response.arrayBuffer();
-		const upstreamHeaders = response.headers;
-		const contentEncoding = upstreamHeaders.get("content-encoding");
-		const cacheControl = upstreamHeaders.get("cache-control");
-		const etag = upstreamHeaders.get("etag");
-		const lastModified = upstreamHeaders.get("last-modified");
-		const contentLength = upstreamHeaders.get("content-length");
+			const data = await response.arrayBuffer();
+			const upstreamHeaders = response.headers;
+			const contentEncoding = upstreamHeaders.get("content-encoding");
+			const cacheControl = upstreamHeaders.get("cache-control");
+			const etag = upstreamHeaders.get("etag");
+			const lastModified = upstreamHeaders.get("last-modified");
+			const contentLength = upstreamHeaders.get("content-length");
 			void agentLog(
-			"fetch:non-html",
+				"fetch:non-html",
 				{
 					target: targetUrl.toString(),
 					contentType,
 					resourceType,
 					status: response.status,
-				upstreamContentLength: Number(contentLength || 0),
-				upstreamContentEncoding: contentEncoding || null,
-				bodyLength: data.byteLength,
-				note: "forwarding decompressed body; stripping content-encoding/length",
+					upstreamContentLength: Number(contentLength || 0),
+					upstreamContentEncoding: contentEncoding || null,
+					bodyLength: data.byteLength,
+					note: "forwarding decompressed body; stripping content-encoding/length",
 				},
 				"H3"
 			);
-		const headers = new Headers();
-		headers.set("Content-Type", contentType);
-		if (cacheControl) headers.set("Cache-Control", cacheControl);
-		if (etag) headers.set("ETag", etag);
-		if (lastModified) headers.set("Last-Modified", lastModified);
-		headers.set("Access-Control-Allow-Origin", "*");
-		return new NextResponse(data, { status: response.status, headers });
+			const headers = new Headers();
+			headers.set("Content-Type", contentType);
+			if (cacheControl) headers.set("Cache-Control", cacheControl);
+			if (etag) headers.set("ETag", etag);
+			if (lastModified) headers.set("Last-Modified", lastModified);
+			headers.set("Access-Control-Allow-Origin", "*");
+			return new NextResponse(data, { status: response.status, headers });
 		}
 
 		// Process HTML content
 		let html = await response.text();
-	const scriptCount = (html.match(/<script/gi) || []).length;
-	const linkCount = (html.match(/<link/gi) || []).length;
-	const imgCount = (html.match(/<img/gi) || []).length;
-	const styleCount = (html.match(/<style/gi) || []).length;
-	const hasMetaCsp = /http-equiv=["']Content-Security-Policy["']/i.test(html);
-	const hasMetaXfo = /http-equiv=["']X-Frame-Options["']/i.test(html);
-	const hasBase = /<base[^>]*>/i.test(html);
-	void agentLog(
-		"html:pre-rewrite",
-		{
-			target: targetUrl.toString(),
-			contentLength: html.length,
-			hasMetaCsp,
-			hasMetaXfo,
-			hasBase,
-			viewportWidth,
-			scriptCount,
-			linkCount,
-			imgCount,
-			styleCount,
-		},
-		"H3"
-	);
+		const scriptCount = (html.match(/<script/gi) || []).length;
+		const linkCount = (html.match(/<link/gi) || []).length;
+		const imgCount = (html.match(/<img/gi) || []).length;
+		const styleCount = (html.match(/<style/gi) || []).length;
+		const hasMetaCsp = /http-equiv=["']Content-Security-Policy["']/i.test(html);
+		const hasMetaXfo = /http-equiv=["']X-Frame-Options["']/i.test(html);
+		const hasBase = /<base[^>]*>/i.test(html);
+		void agentLog(
+			"html:pre-rewrite",
+			{
+				target: targetUrl.toString(),
+				contentLength: html.length,
+				hasMetaCsp,
+				hasMetaXfo,
+				hasBase,
+				viewportWidth,
+				scriptCount,
+				linkCount,
+				imgCount,
+				styleCount,
+			},
+			"H3"
+		);
 		// Use absolute proxy base so injected resources stay on our origin even after
 		// the <base> tag points at the target origin.
 		const proxyBase = `${request.nextUrl.origin}/api/proxy-site?url=`;
@@ -394,7 +394,7 @@ export async function GET(request: NextRequest) {
 				var normalized = normalizeUrl(urlStr || '');
 				var urlObj = new URL(normalized);
 				var isSameHost = urlObj.host === TARGET_HOST;
-				var isRelative = !/^https?:\/\//i.test(urlStr || '');
+				var isRelative = !/^https?:///i.test(urlStr || '');
 				if (isSameHost || isRelative) {
 					var proxied = PROXY_BASE + encodeURIComponent(normalized) + '&viewport=' + VIEWPORT + '&type=asset';
 					agentLog('fetch:proxy', { url: urlStr, proxied: proxied }, 'H3');
@@ -422,7 +422,7 @@ export async function GET(request: NextRequest) {
 					var normalizedUrl = normalizeUrl(url);
 					var urlObj = new URL(normalizedUrl);
 					var isSameHost = urlObj.host === TARGET_HOST;
-					var isRelative = !/^https?:\/\//i.test(url || '');
+					var isRelative = !/^https?:///i.test(url || '');
 					if (isSameHost || isRelative) {
 						var proxiedUrl = PROXY_BASE + encodeURIComponent(normalizedUrl) + '&viewport=' + VIEWPORT + '&type=asset';
 						agentLog('xhr:proxy', { url: url, proxied: proxiedUrl }, 'H3');
@@ -896,11 +896,11 @@ export async function GET(request: NextRequest) {
 				viewportWidth,
 				contentLength: html.length,
 				contentType,
-			scriptCountAfter: (html.match(/<script/gi) || []).length,
-			linkCountAfter: (html.match(/<link/gi) || []).length,
-			imgCountAfter: (html.match(/<img/gi) || []).length,
-			styleCountAfter: (html.match(/<style/gi) || []).length,
-			hasBaseAfter: /<base[^>]*>/i.test(html),
+				scriptCountAfter: (html.match(/<script/gi) || []).length,
+				linkCountAfter: (html.match(/<link/gi) || []).length,
+				imgCountAfter: (html.match(/<img/gi) || []).length,
+				styleCountAfter: (html.match(/<style/gi) || []).length,
+				hasBaseAfter: /<base[^>]*>/i.test(html),
 			},
 			"H4"
 		);

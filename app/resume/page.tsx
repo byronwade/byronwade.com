@@ -1,12 +1,12 @@
 "use client";
 
-import { analytics } from "@/lib/analytics";
-import { customFont } from "@/lib/fonts";
 import { ArrowLeft, Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
+import { analytics } from "@/lib/analytics";
+import { customFont } from "@/lib/fonts";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {
@@ -277,20 +277,21 @@ export default function ResumePage() {
 											{job.location}
 										</p>
 										<p className="text-[var(--muted-foreground)] mt-2 leading-relaxed">
-											{job.highlight
-												? job.description.split(job.highlight).map((part, i, arr) =>
-														i < arr.length - 1 ? (
-															<span key={`${job.company}-part-${i}`}>
-																{part}
-																<span className="text-green-600 dark:text-green-500 font-medium">
-																	{job.highlight}
-																</span>
-															</span>
-														) : (
-															<span key={`${job.company}-part-${i}`}>{part}</span>
-														)
-													)
-												: job.description}
+											{(() => {
+												if (!job.highlight || !job.description.includes(job.highlight)) {
+													return job.description;
+												}
+												const idx = job.description.indexOf(job.highlight);
+												return (
+													<>
+														{job.description.slice(0, idx)}
+														<span className="text-green-600 dark:text-green-500 font-medium">
+															{job.highlight}
+														</span>
+														{job.description.slice(idx + job.highlight.length)}
+													</>
+												);
+											})()}
 										</p>
 									</article>
 								))}

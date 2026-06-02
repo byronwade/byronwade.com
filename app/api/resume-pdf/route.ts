@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
-import puppeteer, { Browser } from "puppeteer-core";
+import { NextResponse } from "next/server";
+import puppeteer, { type Browser } from "puppeteer-core";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

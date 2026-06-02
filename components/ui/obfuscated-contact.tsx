@@ -4,9 +4,12 @@ import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Base64 encoded contact info (additional layer of obfuscation)
-const ENCODED_EMAIL = "YmN3MTk5NUBnbWFpbC5jb20="; // bcw1995@gmail.com
-const ENCODED_PHONE = "KzE4MzE0MzA2MDEx"; // +18314306011
-const ENCODED_PHONE_DISPLAY = "KzEgKDgzMSkgNDMwLTYwMTE="; // +1 (831) 430-6011
+// byron@byronwade.com
+const ENCODED_EMAIL = "Ynlyb25AYnlyb253YWRlLmNvbQ==";
+// +18312958460
+const ENCODED_PHONE = "KzE4MzEyOTU4NDYw";
+// +1 (831) 295-8460
+const ENCODED_PHONE_DISPLAY = "KzEgKDgzMSkgMjk1LTg0NjA=";
 
 // Decode function
 const decode = (encoded: string): string => {
