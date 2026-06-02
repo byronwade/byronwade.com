@@ -52,6 +52,12 @@ const jsonLdData: WithContext<Person> = {
 		"Operations Management",
 		"Team Leadership",
 	],
+	hasCredential: {
+		"@type": "EducationalOccupationalCredential",
+		credentialCategory: "license",
+		name: "Master Plumber License",
+		recognizedBy: { "@type": "GovernmentOrganization", name: "State of Georgia" },
+	},
 };
 
 const workExperience = [
@@ -112,8 +118,8 @@ const skills = [
 	"TypeScript",
 ];
 
-const certifications = [
-	{ name: "Georgia Plumbing License", year: "Pending", pending: true },
+const certifications: { name: string; year: string; pending?: boolean }[] = [
+	{ name: "Master Plumber License (GA)", year: "2026" },
 	{ name: "C-36 Plumbing License (CA)", year: "2018" },
 	{ name: "C-42 Sanitation License (CA)", year: "2020" },
 	{ name: "Septic System Installer (Santa Cruz County)", year: "2016" },

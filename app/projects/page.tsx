@@ -1,11 +1,8 @@
-import { format } from "date-fns";
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 import { Suspense } from "react";
 import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
-import { Badge } from "@/components/ui/badge";
-import { getProjects, type ProjectType } from "@/lib/projects";
+import { ProjectsIndex } from "@/components/project";
+import { getProjects, type Project } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,
@@ -40,27 +37,28 @@ export async function generateMetadata() {
 	});
 }
 
-const typeLabels: Record<ProjectType, string> = {
-	client: "Client",
-	product: "Product",
-	hobby: "Hobby",
-};
+function timeOf(date?: string): number {
+	return date ? new Date(date).getTime() : 0;
+}
+
+/** Flagships first (by explicit `order`, then recency), then everything else by recency. */
+function sortForIndex(projects: Project[]): Project[] {
+	return [...projects].sort((a, b) => {
+		if (!!a.flagship !== !!b.flagship) return a.flagship ? -1 : 1;
+		if (a.flagship && b.flagship) {
+			const orderA = a.order ?? Number.POSITIVE_INFINITY;
+			const orderB = b.order ?? Number.POSITIVE_INFINITY;
+			if (orderA !== orderB) return orderA - orderB;
+		}
+		return timeOf(b.date) - timeOf(a.date);
+	});
+}
 
 async function ProjectsList() {
 	const projects = await getProjects();
+	const sorted = sortForIndex(projects);
 
-	// Sort: Products first, then clients, then hobby. Within each, by date
-	const sortedProjects = [...projects].sort((a, b) => {
-		const typeOrder: Record<ProjectType, number> = { product: 0, client: 1, hobby: 2 };
-		const typeA = typeOrder[a.type || "hobby"];
-		const typeB = typeOrder[b.type || "hobby"];
-		if (typeA !== typeB) return typeA - typeB;
-		const dateA = a.date ? new Date(a.date).getTime() : 0;
-		const dateB = b.date ? new Date(b.date).getTime() : 0;
-		return dateB - dateA;
-	});
-
-	if (sortedProjects.length === 0) {
+	if (sorted.length === 0) {
 		return (
 			<p className="text-sm leading-relaxed text-muted-foreground">
 				No projects yet. Check back soon.
@@ -68,42 +66,24 @@ async function ProjectsList() {
 		);
 	}
 
+	return <ProjectsIndex projects={sorted} />;
+}
+
+function IndexFallback() {
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
-			{sortedProjects.map((project) => {
-				const projectType = project.type || "hobby";
-				return (
-					<Link
-						key={project.slug}
-						href={`/projects/${project.slug}`}
-						className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
-					>
-						<div className="flex items-start justify-between gap-4">
-							<div className="flex min-w-0 items-center gap-3">
-								<Badge variant={projectType === "product" ? "success" : "outline"}>
-									{typeLabels[projectType]}
-								</Badge>
-								<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-									{project.title}
-								</span>
-							</div>
-							<div className="flex shrink-0 items-center gap-2 text-xs text-muted-foreground">
-								{project.date && (
-									<time className="hidden sm:inline">
-										{format(new Date(project.date), "MMM d, yyyy")}
-									</time>
-								)}
-								<ArrowUpRight className="size-4 text-muted-foreground/60 transition-colors group-hover:text-brand" />
-							</div>
-						</div>
-						{project.excerpt && (
-							<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-								{project.excerpt}
-							</p>
-						)}
-					</Link>
-				);
-			})}
+		<div className="flex animate-pulse flex-col">
+			<div className="h-8 border-b border-border" />
+			{Array.from({ length: 6 }).map((_, i) => (
+				<div
+					// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows
+					key={i}
+					className="flex items-center gap-4 border-b border-border py-5"
+				>
+					<div className="h-3 w-6 rounded bg-muted" />
+					<div className="h-4 w-32 rounded bg-muted" />
+					<div className="ml-auto h-3 w-10 rounded bg-muted" />
+				</div>
+			))}
 		</div>
 	);
 }
@@ -133,7 +113,7 @@ export default async function ProjectsPage() {
 			/>
 
 			<SiteShell>
-				<div className="flex flex-col gap-8 sm:gap-10">
+				<div className="flex flex-col gap-8 sm:gap-12">
 					<header className="reveal flex w-full flex-col gap-3">
 						<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Projects" }]} />
 						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
@@ -146,15 +126,7 @@ export default async function ProjectsPage() {
 					</header>
 
 					<div className="reveal reveal-delay-1 w-full">
-						<Suspense
-							fallback={
-								<div className="animate-pulse space-y-2">
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-								</div>
-							}
-						>
+						<Suspense fallback={<IndexFallback />}>
 							<ProjectsList />
 						</Suspense>
 					</div>

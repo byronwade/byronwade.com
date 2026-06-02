@@ -20,12 +20,14 @@ interface ProjectContentProps {
 const typeLabels: Record<ProjectType, string> = {
 	client: "Client",
 	product: "Product",
+	concept: "Concept",
 	hobby: "Hobby",
 };
 
 const typeBadgeVariant: Record<ProjectType, "success" | "secondary" | "outline"> = {
 	product: "success",
 	client: "secondary",
+	concept: "outline",
 	hobby: "outline",
 };
 

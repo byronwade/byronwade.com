@@ -15,6 +15,8 @@ export const metadata: Metadata = generateSEOMetadata({
 		"Full Stack Developer",
 		"Business Manager",
 		"Plumbing Contractor",
+		"Master Plumber",
+		"Georgia Master Plumber",
 	],
 	image: generateOGImageUrl({
 		title: "Resume - Byron Wade",

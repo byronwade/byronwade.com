@@ -1,0 +1,65 @@
+---
+title: "SignalRoute: The Phone System That Runs Itself"
+url: "https://getsignalroute.com"
+category: "Product"
+flagship: true
+status: "In development"
+tagline: "the phone that runs itself"
+order: 2
+date: 2026-06-01
+excerpt: "A flagship I'm building: an AI-operated business phone system with a visual call-flow editor, trusted caller ID, and a developer API — telephony that handles routing, transfers, and conferencing without a full-time receptionist."
+---
+
+# SignalRoute: Rebuilding the Business Phone for an AI-First World
+
+**SignalRoute** is a flagship product I'm actively building — an AI-operated business phone system designed around a simple promise: the phone should run itself. Calls get answered, routed, transferred, and summarized without a human babysitting a console, and everything a developer needs to build on top of it is exposed through a clean API.
+
+---
+
+## The Problem
+
+Business telephony is stuck. The incumbents fall into two camps: legacy PBX systems that are powerful but require an expert to configure and a manual to operate, and consumer-grade VoIP apps that are easy but shallow. Neither was built for a world where an AI can realistically handle the front line — answering, triaging, and routing calls — and neither treats the developer as a first-class user.
+
+On top of that, the trust layer is broken. Outbound calls from small businesses increasingly get flagged as spam and silently dropped, and most phone platforms give owners no visibility or control over their own caller reputation.
+
+SignalRoute is my answer: a phone system that's AI-operated by default, trustworthy on the wire, and programmable to the core.
+
+---
+
+## What SignalRoute Does
+
+The product centers on **"Line"** — an operator surface where the phone system actually runs. It handles the full vocabulary of real call operations: inbound and outbound calls, warm and cold transfers, consult-then-conference, DTMF (in-call keypad), ring-out dialing, and voicemail. A dialer with full keyboard control makes it fast for power users, while the call-handling panel stays calm and legible under pressure.
+
+**Visual call-flow editor.** Routing logic is built on a drag-and-drop canvas (powered by a node graph with automatic layout) rather than buried in nested menus. You can *see* how a call travels — through ring groups, queues, routing rules, and fallbacks — and reshape it without a telecom degree.
+
+**AI in the loop.** Calls and transcripts are summarized automatically using Anthropic's Claude, so the record of what happened is a human-readable summary, not a raw audio file nobody listens to. This is the foundation for the broader "runs itself" thesis — the system understands calls, it doesn't just connect them.
+
+**Messaging cockpit.** Alongside voice, SignalRoute includes an SMS surface with templates, scheduled sends, and built-in STOP/START compliance — the unglamorous-but-mandatory parts of doing business texting correctly.
+
+**Trust and reputation.** Spam-score tracking gives a business visibility into how carriers see its numbers, treating caller reputation as a managed asset instead of an invisible liability.
+
+**A developer API.** A versioned REST surface (`/api/v1`) exposes placing calls, listing calls, and sending and receiving messages — so SignalRoute is something you can build *on*, not just something you log into.
+
+---
+
+## How It's Built
+
+SignalRoute runs on **Next.js 16** and **React 19** with TypeScript, styled with **Tailwind CSS v4** on a token-driven design system (shadcn/ui + Base UI primitives, with a calm, centered aesthetic and a single accent — and a denser dark "cockpit" mode for the messaging surface). Data and auth live on **Supabase** (Postgres, SSR-aware sessions).
+
+The interesting architecture is in the telephony layer:
+
+**Provider-agnostic adapter pattern.** Telephony is built around **Telnyx**, but behind an adapter interface with both a real implementation and a mock. In development the system runs entirely on the mock adapter, so the whole call experience can be built, tested, and demoed without burning live minutes — then the same code path swaps to real Telnyx with a key change.
+
+**Webhook-driven core.** Inbound events (`call.*`, `message.received`, delivery receipts) flow through a single webhook endpoint that drives the system's state. The roadmap hardens this with Ed25519 signature verification against the provider's public key, moving from shared-secret to cryptographic webhook auth.
+
+**Preference-aware routing.** After sign-in, users land on the surface they actually work in, with their landing preference stored server-side — a small thing that signals the larger intent: the product adapts to the operator, not the other way around.
+
+---
+
+## Status
+
+SignalRoute is in active development and moving fast — recent work has concentrated on the call dialer and operator experience (transfer, ring-out, conference, DTMF, keyboard shortcuts), the visual call-flow editor, and a redesign of the messaging cockpit. The two pieces of the project — the application and the `getsignalroute.com` marketing/product site — are advancing together.
+
+It's not finished, and I'm not pretending it is. But the spine is real: live call operations, a working flow editor, AI summarization, and a provider abstraction ready for production telephony. SignalRoute is where I'm betting on what the business phone becomes when you assume an AI is sitting at the front desk.
+
+Follow along at [getsignalroute.com](https://getsignalroute.com).

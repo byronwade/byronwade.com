@@ -17,6 +17,7 @@ import {
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { fetchScreenshot } from "@/lib/screenshot";
 import { cn } from "@/lib/utils";
 
 interface FullWidthProjectPreviewProps {
@@ -40,46 +41,6 @@ const MAX_NORMAL_WIDTH = 1280;
 const MAX_NORMAL_HEIGHT = 760;
 const FULLSCREEN_PADDING_X = 48;
 const FULLSCREEN_PADDING_Y = 132;
-
-// Module-level cache of resolved screenshot URLs, keyed by href + viewport.
-// Only successful, non-empty results are cached so failures can be retried.
-const previewCache = new Map<string, string>();
-const inflight = new Map<string, Promise<string>>();
-
-async function fetchScreenshot(href: string, width: number, height: number): Promise<string> {
-	const key = `${href}|${width}x${height}`;
-	const cached = previewCache.get(key);
-	if (cached) return cached;
-
-	const existing = inflight.get(key);
-	if (existing) return existing;
-
-	const promise = (async () => {
-		const params = new URLSearchParams({
-			mode: "static",
-			url: href,
-			width: String(width),
-			height: String(height),
-			format: "jpg",
-			quality: "90",
-		});
-		const resp = await fetch(`/api/screenshot?${params.toString()}`);
-		if (!resp.ok) throw new Error(`screenshot request failed (${resp.status})`);
-		const data = (await resp.json()) as { url?: unknown };
-		if (typeof data?.url !== "string" || data.url.trim() === "") {
-			throw new Error("screenshot response missing url");
-		}
-		previewCache.set(key, data.url);
-		return data.url;
-	})();
-
-	inflight.set(key, promise);
-	try {
-		return await promise;
-	} finally {
-		inflight.delete(key);
-	}
-}
 
 export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPreviewProps) {
 	const [preset, setPreset] = useState<ViewportPreset>("desktop");

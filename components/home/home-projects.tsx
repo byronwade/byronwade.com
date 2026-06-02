@@ -7,6 +7,7 @@ import { getProjects } from "@/lib/projects";
 const typeLabels: Record<ProjectType, string> = {
 	client: "Client",
 	product: "Product",
+	concept: "Concept",
 	hobby: "Hobby",
 };
 
@@ -14,7 +15,7 @@ async function ProjectsList() {
 	const projects = await getProjects();
 
 	const sortedProjects = [...projects].sort((a, b) => {
-		const typeOrder: Record<ProjectType, number> = { product: 0, client: 1, hobby: 2 };
+		const typeOrder: Record<ProjectType, number> = { product: 0, client: 1, concept: 2, hobby: 3 };
 		const typeA = typeOrder[a.type || "hobby"];
 		const typeB = typeOrder[b.type || "hobby"];
 		if (typeA !== typeB) return typeA - typeB;

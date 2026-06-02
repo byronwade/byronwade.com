@@ -2,7 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import matter from "gray-matter";
 
-export type ProjectType = "client" | "product" | "hobby";
+export type ProjectType = "client" | "product" | "concept" | "hobby";
 
 export interface Project {
 	slug: string;
@@ -12,10 +12,48 @@ export interface Project {
 	type?: ProjectType;
 	date?: string;
 	excerpt?: string;
+	/** Floats to the top of the index with a flagship marker. */
+	flagship?: boolean;
+	/** Short status label, e.g. "Live", "In development", "Open source". */
+	status?: string;
+	/** Punchy phrase shown inline in the index (falls back to nothing). */
+	tagline?: string;
+	/** Explicit ordering among flagships (lower first); non-flagships sort by date. */
+	order?: number;
 	content: string;
 }
 
 const projectsDirectory = join(process.cwd(), "content/projects");
+
+function resolveType(data: matter.GrayMatterFile<string>["data"]): ProjectType {
+	if (data.type) return data.type;
+	if (data.category) {
+		const cat = String(data.category).toLowerCase();
+		if (cat.includes("client")) return "client";
+		if (cat.includes("concept")) return "concept";
+		if (cat.includes("product")) return "product";
+		if (cat.includes("hobby")) return "hobby";
+	}
+	return "hobby";
+}
+
+function toProject(slug: string, fileContents: string): Project {
+	const { data, content } = matter(fileContents);
+	return {
+		slug,
+		title: data.title || slug,
+		url: data.url,
+		category: data.category,
+		type: resolveType(data),
+		date: data.date || new Date().toISOString(),
+		excerpt: data.excerpt,
+		flagship: data.flagship === true,
+		status: data.status,
+		tagline: data.tagline,
+		order: typeof data.order === "number" ? data.order : undefined,
+		content,
+	};
+}
 
 export async function getProjects(): Promise<Project[]> {
 	try {
@@ -27,29 +65,7 @@ export async function getProjects(): Promise<Project[]> {
 				const slug = file.replace(/\.md$/, "");
 				const fullPath = join(projectsDirectory, file);
 				const fileContents = await readFile(fullPath, "utf8");
-				const { data, content } = matter(fileContents);
-
-				// Determine type from category or explicit type field
-				let type: ProjectType = "hobby";
-				if (data.type) {
-					type = data.type;
-				} else if (data.category) {
-					const cat = data.category.toLowerCase();
-					if (cat.includes("client")) type = "client";
-					else if (cat.includes("product")) type = "product";
-					else if (cat.includes("hobby")) type = "hobby";
-				}
-
-				return {
-					slug,
-					title: data.title || slug,
-					url: data.url,
-					category: data.category,
-					type,
-					date: data.date || new Date().toISOString(),
-					excerpt: data.excerpt,
-					content,
-				};
+				return toProject(slug, fileContents);
 			})
 		);
 
@@ -69,29 +85,7 @@ export async function getProject(slug: string): Promise<Project | null> {
 	try {
 		const fullPath = join(projectsDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
-		const { data, content } = matter(fileContents);
-
-		// Determine type from category or explicit type field
-		let type: ProjectType = "hobby";
-		if (data.type) {
-			type = data.type;
-		} else if (data.category) {
-			const cat = data.category.toLowerCase();
-			if (cat.includes("client")) type = "client";
-			else if (cat.includes("product")) type = "product";
-			else if (cat.includes("hobby")) type = "hobby";
-		}
-
-		return {
-			slug,
-			title: data.title || slug,
-			url: data.url,
-			category: data.category,
-			type,
-			date: data.date || new Date().toISOString(),
-			excerpt: data.excerpt,
-			content,
-		};
+		return toProject(slug, fileContents);
 	} catch (error) {
 		console.error(`Error reading project ${slug}:`, error);
 		return null;
