@@ -13,6 +13,12 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect
 
 /** Every product under the byronwade umbrella — the launcher is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
+	{
+		name: "byronwade/ui",
+		desc: "Design system & morph chrome",
+		href: "https://ui.byronwade.com",
+		mark: "U",
+	},
 	{ name: "GoodMarks", desc: "Reviews & reputation", href: "https://goodmarks.io", mark: "G" },
 	{
 		name: "SignalRoute",
