@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
-import { BlogPostViewTracker, BreadcrumbNav, Markdown } from "@/components/common";
+import { BlogPostViewTracker, Markdown } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import {
@@ -121,14 +121,6 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 			{/* Header Section */}
 			<div className="reveal w-full">
-				<BreadcrumbNav
-					items={[
-						{ label: "Home", href: "/" },
-						{ label: "Blog", href: "/blog" },
-						{ label: post.title },
-					]}
-					className="mb-4"
-				/>
 				<div className="flex w-full flex-col items-start gap-3">
 					<div className="flex w-full flex-col gap-2">
 						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">

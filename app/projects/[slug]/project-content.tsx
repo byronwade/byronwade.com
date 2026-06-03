@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
-import { BreadcrumbNav, Markdown, ProjectViewTracker } from "@/components/common";
+import { Markdown, ProjectViewTracker } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Badge } from "@/components/ui/badge";
@@ -100,14 +100,6 @@ export function ProjectContent({ project }: ProjectContentProps) {
 				<div className="flex flex-col gap-10 sm:gap-12">
 					{/* Header */}
 					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
-						<BreadcrumbNav
-							items={[
-								{ label: "Home", href: "/" },
-								{ label: "Projects", href: "/projects" },
-								{ label: project.title },
-							]}
-						/>
-
 						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
 							<Badge variant={typeBadgeVariant[projectType]}>{typeLabels[projectType]}</Badge>
 							{project.category && project.category !== typeLabels[projectType] && (

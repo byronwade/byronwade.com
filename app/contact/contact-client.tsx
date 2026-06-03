@@ -4,7 +4,6 @@ import { Github, Linkedin, Loader2, Mail, MapPin, Send, Twitter } from "lucide-r
 import { useState } from "react";
 import { toast } from "sonner";
 import { sendEmail } from "@/app/actions/send-email";
-import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,7 +55,6 @@ export default function ContactClient() {
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<header className="reveal flex w-full flex-col gap-3">
-					<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
 					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 						Get in touch
 					</h1>

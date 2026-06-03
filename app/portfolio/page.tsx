@@ -1,8 +1,8 @@
 "use client";
 
+import { format } from "date-fns";
 import { ExternalLink, GitFork, Github, Star } from "lucide-react";
 import { useEffect, useState } from "react";
-import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
@@ -16,6 +16,10 @@ interface Repo {
 	language: string | null;
 	stargazers_count: number;
 	forks_count: number;
+	topics?: string[];
+	pushed_at?: string;
+	archived?: boolean;
+	fork?: boolean;
 }
 
 const languageColors: Record<string, string> = {
@@ -50,9 +54,15 @@ export default function PortfolioPage() {
 				if (!response.ok) throw new Error("Failed to fetch portfolio data");
 				const data = await response.json();
 				const filtered: Repo[] = (data.repos ?? []).filter(
-					(repo: Repo) => repo.name !== "byronwade.com"
+					(repo: Repo) => !repo.fork && repo.name !== "byronwade.com"
 				);
-				filtered.sort((a, b) => b.stargazers_count - a.stargazers_count);
+				// Most-starred first, then most recently pushed so active repos surface.
+				filtered.sort((a, b) => {
+					if (b.stargazers_count !== a.stargazers_count) {
+						return b.stargazers_count - a.stargazers_count;
+					}
+					return new Date(b.pushed_at ?? 0).getTime() - new Date(a.pushed_at ?? 0).getTime();
+				});
 				setRepos(filtered);
 			} catch (err) {
 				console.error("Error loading portfolio data:", err);
@@ -69,7 +79,6 @@ export default function PortfolioPage() {
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<header className="reveal flex w-full flex-col gap-3">
-					<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Portfolio" }]} />
 					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 						Portfolio
 					</h1>
@@ -125,18 +134,42 @@ export default function PortfolioPage() {
 									href={repo.html_url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float focus-ring"
+									className="group flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float focus-ring"
 								>
 									<div className="flex items-start justify-between gap-3">
-										<h2 className="font-medium text-foreground transition-colors group-hover:text-brand">
-											{titleize(repo.name)}
-										</h2>
+										<div className="flex min-w-0 items-center gap-2">
+											<h2 className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+												{titleize(repo.name)}
+											</h2>
+											{repo.archived && (
+												<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+													Archived
+												</span>
+											)}
+										</div>
 										<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
 									</div>
-									<p className="line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-										{repo.description || "Open-source project on GitHub."}
-									</p>
-									<div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+
+									{repo.description && (
+										<p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+											{repo.description}
+										</p>
+									)}
+
+									{repo.topics && repo.topics.length > 0 && (
+										<div className="flex flex-wrap gap-1.5">
+											{repo.topics.slice(0, 4).map((topic) => (
+												<span
+													key={topic}
+													className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
+												>
+													{topic}
+												</span>
+											))}
+										</div>
+									)}
+
+									<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-xs text-muted-foreground">
 										{repo.language && (
 											<span className="inline-flex items-center gap-1.5">
 												<span
@@ -153,6 +186,11 @@ export default function PortfolioPage() {
 											<GitFork className="size-3.5" />
 											{repo.forks_count}
 										</span>
+										{repo.pushed_at && (
+											<span className="ml-auto whitespace-nowrap text-muted-foreground/80">
+												Updated {format(new Date(repo.pushed_at), "MMM yyyy")}
+											</span>
+										)}
 									</div>
 								</a>
 							))}

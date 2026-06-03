@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -115,7 +114,6 @@ export default async function ProjectsPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">
 					<header className="reveal flex w-full flex-col gap-3">
-						<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Projects" }]} />
 						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 							Projects
 						</h1>

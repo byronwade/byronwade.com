@@ -2,7 +2,6 @@ import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { BreadcrumbNav } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
@@ -115,7 +114,6 @@ export default function BlogPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
 					<header className="reveal flex w-full flex-col gap-3">
-						<BreadcrumbNav items={[{ label: "Home", href: "/" }, { label: "Blog" }]} />
 						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 							Writing
 						</h1>
