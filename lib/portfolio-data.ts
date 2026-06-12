@@ -33,6 +33,25 @@ const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: 
 	}
 };
 
+/**
+ * Headers for GitHub's REST API. The `User-Agent` is **required** — GitHub
+ * rejects requests without one (403). Auth is optional: a token raises the rate
+ * limit, but public data fetches fine unauthenticated, so we only attach the
+ * `Authorization` header when a token is actually present (sending `token
+ * undefined` triggers a 401 even for public endpoints). Reads either env alias.
+ */
+const githubHeaders = (): Record<string, string> => {
+	const token = process.env.GITHUB_TOKEN ?? process.env.GITHUB_API_TOKEN;
+	const headers: Record<string, string> = {
+		Accept: "application/vnd.github.v3+json",
+		"User-Agent": "byronwade.com",
+	};
+	if (token) {
+		headers.Authorization = `token ${token}`;
+	}
+	return headers;
+};
+
 // Aggressive caching for Dribbble shots
 export const getDribbbleShots = unstable_cache(
 	async () => {
@@ -386,14 +405,13 @@ export const projects: PortfolioProject[] = [
 export const getGitHubProfile = unstable_cache(
 	async () => {
 		try {
-			const response = await fetch("https://api.github.com/users/byronwade", {
-				headers: {
-					Authorization: `token ${process.env.GITHUB_TOKEN}`,
-				},
+			const response = await fetchWithTimeout("https://api.github.com/users/byronwade", {
+				headers: githubHeaders(),
+				timeout: 5000,
 			});
 
 			if (!response.ok) {
-				throw new Error("Failed to fetch GitHub profile");
+				throw new Error(`Failed to fetch GitHub profile (${response.status})`);
 			}
 
 			return await response.json();
@@ -413,14 +431,13 @@ export const getGitHubProfile = unstable_cache(
 export const getGitHubStats = unstable_cache(
 	async () => {
 		try {
-			const response = await fetch("https://api.github.com/users/byronwade", {
-				headers: {
-					Authorization: `token ${process.env.GITHUB_TOKEN}`,
-				},
+			const response = await fetchWithTimeout("https://api.github.com/users/byronwade", {
+				headers: githubHeaders(),
+				timeout: 5000,
 			});
 
 			if (!response.ok) {
-				throw new Error("Failed to fetch GitHub stats");
+				throw new Error(`Failed to fetch GitHub stats (${response.status})`);
 			}
 
 			const data = await response.json();
@@ -465,20 +482,24 @@ const PRIORITY_PROJECTS = [
 export const getGitHubRepositories = unstable_cache(
 	async () => {
 		try {
-			const response = await fetch(
+			const response = await fetchWithTimeout(
 				"https://api.github.com/users/byronwade/repos?sort=updated&per_page=100",
 				{
-					headers: {
-						Authorization: `token ${process.env.GITHUB_TOKEN}`,
-					},
+					headers: githubHeaders(),
+					timeout: 6000,
 				}
 			);
 
 			if (!response.ok) {
-				throw new Error("Failed to fetch GitHub repositories");
+				throw new Error(`Failed to fetch GitHub repositories (${response.status})`);
 			}
 
 			const repos = await response.json();
+
+			// Defend against GitHub returning an error object instead of an array.
+			if (!Array.isArray(repos)) {
+				throw new Error("Unexpected GitHub repositories response shape");
+			}
 
 			// Sort repositories by priority and activity
 			return repos

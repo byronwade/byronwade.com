@@ -109,7 +109,7 @@ export default function PortfolioPage() {
 							/>
 						))}
 					</div>
-				) : error ? (
+				) : error || repos.length === 0 ? (
 					<div className="rounded-2xl border border-border bg-card p-8 text-center">
 						<Github className="mx-auto mb-3 size-8 text-muted-foreground" />
 						<p className="text-muted-foreground">
