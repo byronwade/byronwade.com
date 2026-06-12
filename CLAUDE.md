@@ -57,14 +57,14 @@ npm run clear                # Clear .turbo, .next, node_modules
 - **UI Components**: Radix UI (shadcn/ui) for accessible primitives
 - **State**: Zustand for client-side state
 - **Data Fetching**: React Query (@tanstack/react-query)
-- **Themes**: next-themes with forced dark mode
+- **Themes**: next-themes, system preference first (light + dark) with a user toggle
 - **Performance**: Aggressive caching with Next.js unstable_cache
 - **3D Graphics**: Three.js with @react-three/fiber and @react-three/drei
 
 ### Key Directories
 ```
 app/                          # Next.js App Router pages
-├── layout.tsx               # Root layout with dark theme, performance monitoring
+├── layout.tsx               # Root layout with system-first theming, performance monitoring
 ├── metadata.config.ts       # Centralized metadata configuration
 ├── page.tsx                 # Gateway (split-screen portal)
 ├── web-development/         # Web dev landing page
@@ -216,10 +216,11 @@ export const getDataFunction = unstable_cache(
 - Biome handles import sorting, formatting, and linting
 - Over 300 rules preconfigured for Next.js, React, and TypeScript
 
-#### 5. Dark Mode Only
-- Site uses forced dark theme: `forcedTheme="dark"` in ThemeProvider
-- No theme switcher - design assumes dark mode
-- Tailwind classes should use dark mode variants when needed
+#### 5. System-First Theming (Light + Dark)
+- ThemeProvider uses `defaultTheme="system"` with `enableSystem` — first visit follows the OS light/dark preference
+- A theme toggle (`components/common/theme-toggle.tsx`, plus the dock toolbar) lets users override; the choice persists via next-themes
+- `attribute="class"` + `disableTransitionOnChange`; viewport `colorScheme: "light dark"` so native UI (scrollbars, form controls) tracks the theme
+- Build every surface for both schemes — pair base tokens with `dark:` variants; never assume one mode
 
 #### 5. Performance Monitoring
 - **Web Vitals Tracking**: Real-time FCP, LCP, CLS, TBT monitoring
@@ -395,7 +396,7 @@ copper: {
 - `cn()` utility from `lib/utils.ts` for conditional classes
 - Custom animations in `globals.css` (including gateway utilities)
 - Mobile-first responsive design
-- Dark mode is default and forced (except gateway left side which is white)
+- Theme follows system preference first with a user toggle (light + dark); support both via tokens + `dark:` variants. The gateway split is a fixed editorial treatment (white left / black right), independent of the active theme.
 
 ## Common Workflows
 
