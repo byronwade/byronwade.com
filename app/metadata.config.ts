@@ -106,4 +106,6 @@ export const viewport: Viewport = {
 	maximumScale: 5,
 	userScalable: true,
 	viewportFit: "cover",
+	// Follow the OS preference; lets native UI (scrollbars, form controls) adapt.
+	colorScheme: "light dark",
 };
