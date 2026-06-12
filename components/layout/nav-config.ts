@@ -2,7 +2,6 @@ import {
 	FileText,
 	Folder as FolderGit2,
 	House as Home,
-	GridFour as LayoutGrid,
 	type Icon as LucideIcon,
 	PencilSimpleLine as PenLine,
 } from "@/lib/icons";
@@ -19,7 +18,6 @@ export interface NavItem {
 export const navItems: NavItem[] = [
 	{ label: "Home", href: "/", icon: Home, match: (p) => p === "/" },
 	{ label: "Projects", href: "/projects", icon: FolderGit2 },
-	{ label: "Portfolio", href: "/portfolio", icon: LayoutGrid },
 	{ label: "Blog", href: "/blog", icon: PenLine },
 	{ label: "Resume", href: "/resume", icon: FileText },
 ];

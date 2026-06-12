@@ -101,13 +101,11 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
 					<div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-						<Link href="/portfolio" className="hover:text-brand transition-colors">
-							Portfolio
+						<Link href="/projects" className="hover:text-brand transition-colors">
+							Projects
 						</Link>
 						<ChevronRight className="w-4 h-4" />
-						<Link href="/portfolio?tab=figma" className="hover:text-brand transition-colors">
-							Figma
-						</Link>
+						<span>Figma</span>
 						<ChevronRight className="w-4 h-4" />
 						<span className="text-foreground">{fileData.name}</span>
 					</div>

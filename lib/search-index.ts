@@ -4,12 +4,11 @@ import type { SearchEntry } from "./search-types";
 
 const PAGES: SearchEntry[] = [
 	{ kind: "Page", label: "Home", href: "/", keywords: "start landing" },
-	{ kind: "Page", label: "Projects", href: "/projects", keywords: "work case studies products" },
 	{
 		kind: "Page",
-		label: "Portfolio",
-		href: "/portfolio",
-		keywords: "design dribbble figma github shots",
+		label: "Projects",
+		href: "/projects",
+		keywords: "work case studies products portfolio github open source",
 	},
 	{ kind: "Page", label: "Blog", href: "/blog", keywords: "writing articles posts notes" },
 	{ kind: "Page", label: "Resume", href: "/resume", keywords: "cv experience work history" },

@@ -10,7 +10,6 @@ import {
 
 const navLinks = [
 	{ name: "Projects", href: "/projects" },
-	{ name: "Portfolio", href: "/portfolio" },
 	{ name: "Blog", href: "/blog" },
 	{ name: "Resume", href: "/resume" },
 	{ name: "Contact", href: "/contact" },
