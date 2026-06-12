@@ -1,5 +1,5 @@
-import { Flame } from "lucide-react";
 import { StatusDot, type StatusTone } from "@/components/ui/status-dot";
+import { Flame } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 export interface RailItem {
@@ -20,7 +20,7 @@ export function TimelineRail({
 	className?: string;
 }) {
 	return (
-		<div className={cn("space-y-4", className)}>
+		<div data-slot="timeline-rail" className={cn("space-y-4", className)}>
 			{groups.map((g, gi) => (
 				<div key={gi} className="space-y-2">
 					<div className="flex justify-center">
@@ -28,7 +28,7 @@ export function TimelineRail({
 							{g.label}
 						</span>
 					</div>
-					<ol className="overflow-hidden rounded-2xl border border-border bg-card">
+					<ol className="edge overflow-hidden rounded-2xl bg-card">
 						{g.items.map((it, i) => (
 							<li
 								key={i}

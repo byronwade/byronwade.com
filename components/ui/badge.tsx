@@ -35,9 +35,13 @@ function Badge({
 	return useRender({
 		defaultTagName: "span",
 		props: mergeProps<"span">(
+			// `data-slot` is a valid DOM attribute but TS only permits `data-*` keys in
+			// JSX, not in object literals — cast to the element's own prop type so the
+			// attribute passes through while keeping the rest type-checked.
 			{
+				"data-slot": "badge",
 				className: cn(badgeVariants({ variant }), className),
-			},
+			} as useRender.ComponentProps<"span">,
 			props
 		),
 		render,

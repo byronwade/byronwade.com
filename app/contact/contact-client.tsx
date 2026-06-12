@@ -1,6 +1,5 @@
 "use client";
 
-import { Github, Linkedin, Loader2, Mail, MapPin, Send, Twitter } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { sendEmail } from "@/app/actions/send-email";
@@ -10,6 +9,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	GithubLogo as Github,
+	LinkedinLogo as Linkedin,
+	CircleNotch as Loader2,
+	Envelope as Mail,
+	MapPin,
+	PaperPlaneTilt as Send,
+	XLogo as Twitter,
+} from "@/lib/icons";
 
 const socials = [
 	{ name: "GitHub", href: "https://github.com/byronwade", icon: Github },

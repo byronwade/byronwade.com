@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronLeft, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CaretLeft as ChevronLeft, DotsThree as MoreHorizontal } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 

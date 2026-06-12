@@ -1,15 +1,3 @@
-import {
-	BarChart3,
-	Calendar,
-	ChevronRight,
-	ExternalLink,
-	Figma,
-	FileText,
-	GitBranch,
-	Layers,
-	Palette,
-	Zap,
-} from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +6,18 @@ import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DesignCaseStudy } from "@/components/ui/design-case-study";
+import {
+	ChartBar as BarChart3,
+	Calendar,
+	CaretRight as ChevronRight,
+	ArrowSquareOut as ExternalLink,
+	FigmaLogo as Figma,
+	FileText,
+	GitBranch,
+	Stack as Layers,
+	Palette,
+	Lightning as Zap,
+} from "@/lib/icons";
 import { getFigmaFile } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {

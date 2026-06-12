@@ -1,4 +1,5 @@
-import * as React from "react";
+import type * as React from "react";
+import { Check } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 type VerificationTone = "success" | "warning" | "danger" | "info" | "neutral";
@@ -14,83 +15,88 @@ export interface VerificationProgressProps extends React.ComponentProps<"div"> {
 	steps: VerificationStep[];
 }
 
-const toneClasses: Record<VerificationTone, { dot: string; label: string; count: string }> = {
-	success: {
-		dot: "bg-success",
-		label: "text-success",
-		count: "bg-success/10 text-success",
-	},
-	warning: {
-		dot: "bg-warning",
-		label: "text-warning",
-		count: "bg-warning/10 text-warning",
-	},
+// Soft tonal node treatment — mirrors StatusPill (`bg-<tone>/10` + `text-<tone>`)
+// so the tracker reads as native to the design system. `info` resolves to
+// `--brand` like every other accent (never a literal blue). Colour lives in the
+// node; labels stay foreground/muted so a multi-tone track never turns rainbow.
+const toneClasses: Record<VerificationTone, { node: string; label: string }> = {
+	success: { node: "bg-success/10 text-success ring-success/25", label: "text-foreground" },
+	warning: { node: "bg-warning/10 text-warning ring-warning/30", label: "text-foreground" },
 	danger: {
-		dot: "bg-destructive",
-		label: "text-destructive",
-		count: "bg-destructive/10 text-destructive",
+		node: "bg-destructive/10 text-destructive ring-destructive/25",
+		label: "text-foreground",
 	},
-	info: {
-		dot: "bg-blue-500",
-		label: "text-blue-600 dark:text-blue-400",
-		count: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
-	},
-	neutral: {
-		dot: "bg-muted-foreground",
-		label: "text-muted-foreground",
-		count: "bg-muted text-muted-foreground",
-	},
+	info: { node: "bg-brand/10 text-brand ring-brand/25", label: "text-foreground" },
+	neutral: { node: "bg-muted text-muted-foreground ring-border", label: "text-muted-foreground" },
 };
 
 function VerificationProgress({ steps, className, ...props }: VerificationProgressProps) {
 	return (
+		// Responsive: stacks vertically (node + label per row) on narrow screens,
+		// and lays out as a horizontal track with connecting rails from `sm` up.
 		<div
 			data-slot="verification-progress"
-			className={cn("flex items-start gap-0", className)}
+			className={cn("flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-0", className)}
 			{...props}
 		>
 			{steps.map((step, i) => {
 				const colors = toneClasses[step.tone];
 				const isLast = i === steps.length - 1;
 				return (
-					<React.Fragment key={i}>
-						<div className="flex min-w-0 flex-1 flex-col items-center gap-2">
-							{/* Circle + connector row */}
-							<div className="relative flex w-full items-center">
-								{/* Left connector */}
-								{i > 0 && <span className="h-px flex-1 bg-border" />}
-								{/* Step circle */}
-								<span
-									className={cn(
-										"relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-background shadow-sm",
-										colors.dot
-									)}
-								>
-									{step.count !== undefined ? (
-										<span className="text-[10px] font-bold leading-none text-white tabular-nums">
-											{step.count > 99 ? "99+" : step.count}
-										</span>
-									) : (
-										<span className="size-2 rounded-full bg-white/80" />
-									)}
-								</span>
-								{/* Right connector */}
-								{!isLast && <span className="h-px flex-1 bg-border" />}
-							</div>
-
-							{/* Label */}
-							<div className="flex flex-col items-center gap-0.5 text-center">
-								<span className={cn("text-xs font-semibold leading-tight", colors.label)}>
-									{step.label}
-								</span>
-								{step.description && (
-									<span className="max-w-[120px] text-[11px] leading-tight text-muted-foreground">
-										{step.description}
-									</span>
+					<div
+						key={i}
+						className="flex items-center gap-3 sm:flex-1 sm:flex-col sm:items-center sm:gap-2.5"
+					>
+						{/* Node + rail row. Capsule rails only show on the horizontal (sm+)
+                layout; the outer ends are transparent so every node stays
+                centred over its label and the rail reads continuous. */}
+						<div className="flex items-center sm:w-full">
+							<span
+								className={cn(
+									"hidden h-0.5 flex-1 rounded-full sm:block",
+									i > 0 ? "bg-border" : "bg-transparent"
 								)}
-							</div>
+							/>
+							{/* Step node — soft tonal disc */}
+							<span
+								className={cn(
+									"relative z-10 grid size-8 shrink-0 place-items-center rounded-full text-xs font-semibold tabular-nums ring-1 ring-inset",
+									colors.node
+								)}
+							>
+								{step.count !== undefined ? (
+									step.count > 99 ? (
+										"99+"
+									) : (
+										step.count
+									)
+								) : step.tone === "success" ? (
+									<Check className="size-4" strokeWidth={2.75} aria-hidden />
+								) : (
+									<span className="size-2 rounded-full bg-current" />
+								)}
+							</span>
+							<span
+								className={cn(
+									"hidden h-0.5 flex-1 rounded-full sm:block",
+									!isLast ? "bg-border" : "bg-transparent"
+								)}
+							/>
 						</div>
-					</React.Fragment>
+
+						{/* Label — left-aligned beside the node when stacked, centred under
+                it on the horizontal track. */}
+						<div className="flex min-w-0 flex-col gap-0.5 text-left sm:items-center sm:px-3 sm:text-center">
+							<span className={cn("text-xs font-medium leading-tight", colors.label)}>
+								{step.label}
+							</span>
+							{step.description && (
+								<span className="text-[11px] leading-tight text-muted-foreground sm:max-w-[120px]">
+									{step.description}
+								</span>
+							)}
+						</div>
+					</div>
 				);
 			})}
 		</div>

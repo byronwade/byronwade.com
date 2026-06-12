@@ -1,7 +1,6 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { CheckIcon, SearchIcon } from "lucide-react";
 import type * as React from "react";
 import {
 	Dialog,
@@ -11,6 +10,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { InputGroup, InputGroupAddon } from "@/components/ui/input-group";
+import { Check, MagnifyingGlass } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
@@ -72,7 +72,7 @@ function CommandInput({
 					{...props}
 				/>
 				<InputGroupAddon>
-					<SearchIcon className="size-4 shrink-0 opacity-50" />
+					<MagnifyingGlass className="size-4 shrink-0 opacity-50" />
 				</InputGroupAddon>
 			</InputGroup>
 		</div>
@@ -143,13 +143,13 @@ function CommandItem({
 		<CommandPrimitive.Item
 			data-slot="command-item"
 			className={cn(
-				"group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-muted data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
+				"group/command-item relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-muted data-[selected=true]:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[selected=true]:*:[svg]:text-foreground",
 				className
 			)}
 			{...props}
 		>
 			{children}
-			<CheckIcon className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
+			<Check className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
 		</CommandPrimitive.Item>
 	);
 }
@@ -159,7 +159,7 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<"span">) 
 		<span
 			data-slot="command-shortcut"
 			className={cn(
-				"ml-auto text-xs tracking-widest text-muted-foreground group-data-selected/command-item:text-foreground",
+				"ml-auto text-xs tracking-widest text-muted-foreground group-data-[selected=true]/command-item:text-foreground",
 				className
 			)}
 			{...props}

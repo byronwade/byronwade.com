@@ -1,7 +1,13 @@
 "use client";
 
-import { Check, Copy, Linkedin, Share2, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+	Check,
+	Copy,
+	LinkedinLogo as Linkedin,
+	ShareNetwork as Share2,
+	XLogo as Twitter,
+} from "@/lib/icons";
 
 interface SocialShareProps {
 	url: string;

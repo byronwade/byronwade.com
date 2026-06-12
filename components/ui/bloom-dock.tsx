@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronsLeftRight } from "lucide-react";
 import * as React from "react";
 import { Bloom } from "@/components/ui/bloom";
 import { BloomFlow, type BloomFlowDef } from "@/components/ui/bloom-flow";
 import type { BloomPlacement } from "@/lib/bloom/placement";
+import { ArrowsHorizontal as ChevronsLeftRight } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 /**

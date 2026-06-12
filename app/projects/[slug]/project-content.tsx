@@ -1,10 +1,10 @@
-import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
 import { Markdown, ProjectViewTracker } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowUpRight, GithubLogo as Github } from "@/lib/icons";
 import { extractToc, safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
 import type { Project, ProjectType } from "@/lib/projects";
 import {

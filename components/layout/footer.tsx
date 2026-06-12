@@ -1,7 +1,12 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { customFont } from "@/lib/fonts";
+import {
+	GithubLogo as Github,
+	LinkedinLogo as Linkedin,
+	Envelope as Mail,
+	XLogo as Twitter,
+} from "@/lib/icons";
 
 const navLinks = [
 	{ name: "Projects", href: "/projects" },

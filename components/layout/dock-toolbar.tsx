@@ -1,13 +1,23 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
-import { Box, CornerDownLeft, Github, Hash, Heart, Moon, PenLine, Search, Sun } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as React from "react";
 import { flushSync } from "react-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+	Cube as Box,
+	ArrowElbowDownLeft as CornerDownLeft,
+	GithubLogo as Github,
+	Hash,
+	Heart,
+	type Icon as LucideIcon,
+	Moon,
+	PencilSimpleLine as PenLine,
+	MagnifyingGlass as Search,
+	Sun,
+} from "@/lib/icons";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +25,7 @@ const GITHUB_URL = "https://github.com/byronwade";
 const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
-/** X (formerly Twitter) brand glyph — lucide's `X` is the close icon, not the logo. */
+/** X (formerly Twitter) brand glyph — the icon barrel's `X` is the close icon, not the logo. */
 function XIcon({ className }: { className?: string }) {
 	return (
 		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>

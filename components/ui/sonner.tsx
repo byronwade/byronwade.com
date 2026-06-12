@@ -1,14 +1,14 @@
 "use client";
 
-import {
-	CircleCheckIcon,
-	InfoIcon,
-	Loader2Icon,
-	OctagonXIcon,
-	TriangleAlertIcon,
-} from "lucide-react";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import {
+	CheckCircle as CircleCheckIcon,
+	Info as InfoIcon,
+	CircleNotch as Loader2Icon,
+	XCircle as OctagonXIcon,
+	Warning as TriangleAlertIcon,
+} from "@/lib/icons";
 
 const Toaster = ({ ...props }: ToasterProps) => {
 	const { theme = "system" } = useTheme();

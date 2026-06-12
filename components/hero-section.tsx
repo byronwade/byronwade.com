@@ -12,7 +12,7 @@ export function HeroSection({
 	className?: string;
 }) {
 	return (
-		<section className={cn("space-y-4", className)}>
+		<section data-slot="hero-section" className={cn("space-y-4", className)}>
 			{header && <div className="flex flex-wrap items-end justify-between gap-4">{header}</div>}
 			<div className="full-bleed">{children}</div>
 		</section>

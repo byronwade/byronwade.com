@@ -24,6 +24,7 @@ export function StatusPill({
 	const t = tones[tone];
 	return (
 		<span
+			data-slot="status-pill"
 			className={cn(
 				"inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
 				t.ring,

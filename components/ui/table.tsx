@@ -1,23 +1,65 @@
 "use client";
 
-import type * as React from "react";
-
+import type { VariantProps } from "class-variance-authority";
+import * as React from "react";
+import {
+	tableCellVariants,
+	tableContainerVariants,
+	tableHeaderVariants,
+	tableHeadVariants,
+} from "@/components/ui/table-variants";
 import { cn } from "@/lib/utils";
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+type TableDensity = NonNullable<VariantProps<typeof tableHeadVariants>["density"]>;
+type TableLayout = NonNullable<VariantProps<typeof tableContainerVariants>["layout"]>;
+
+type TableContextValue = {
+	density: TableDensity;
+	layout: TableLayout;
+};
+
+const TableContext = React.createContext<TableContextValue>({
+	density: "comfortable",
+	layout: "default",
+});
+
+function useTableContext() {
+	return React.useContext(TableContext);
+}
+
+type TableProps = React.ComponentProps<"table"> & {
+	density?: TableDensity;
+	layout?: TableLayout;
+};
+
+function Table({ className, density = "comfortable", layout = "default", ...props }: TableProps) {
 	return (
-		<div data-slot="table-container" className="relative w-full overflow-x-auto">
-			<table
-				data-slot="table"
-				className={cn("w-full caption-bottom text-sm", className)}
-				{...props}
-			/>
-		</div>
+		<TableContext.Provider value={{ density, layout }}>
+			<div
+				data-slot="table-container"
+				data-density={density}
+				data-layout={layout}
+				className={cn(tableContainerVariants({ layout }))}
+			>
+				<table
+					data-slot="table"
+					className={cn("w-full caption-bottom text-sm", className)}
+					{...props}
+				/>
+			</div>
+		</TableContext.Provider>
 	);
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-	return <thead data-slot="table-header" className={cn("[&_tr]:border-b", className)} {...props} />;
+	const { layout } = useTableContext();
+	return (
+		<thead
+			data-slot="table-header"
+			className={cn(tableHeaderVariants({ layout }), className)}
+			{...props}
+		/>
+	);
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
@@ -54,23 +96,22 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+	const { density } = useTableContext();
 	return (
 		<th
 			data-slot="table-head"
-			className={cn(
-				"h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
-				className
-			)}
+			className={cn(tableHeadVariants({ density }), className)}
 			{...props}
 		/>
 	);
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+	const { density } = useTableContext();
 	return (
 		<td
 			data-slot="table-cell"
-			className={cn("p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0", className)}
+			className={cn(tableCellVariants({ density }), className)}
 			{...props}
 		/>
 	);
@@ -86,4 +127,18 @@ function TableCaption({ className, ...props }: React.ComponentProps<"caption">) 
 	);
 }
 
-export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };
+export type { TableDensity, TableLayout, TableProps };
+export {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+	tableCellVariants,
+	tableContainerVariants,
+	tableHeaderVariants,
+	tableHeadVariants,
+};

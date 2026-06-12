@@ -1,7 +1,7 @@
 "use client";
 
-import { Check, Copy, Mail, Send, X } from "lucide-react";
 import { useState } from "react";
+import { Check, Copy, Envelope as Mail, PaperPlaneTilt as Send, X } from "@/lib/icons";
 
 interface InlineContactProps {
 	open: boolean;

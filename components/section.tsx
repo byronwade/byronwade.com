@@ -20,17 +20,17 @@ export function Section({
 	const hasHeader = Boolean(title || description || action);
 
 	return (
-		<section className={cn("space-y-4", className)}>
+		<section data-slot="section" className={cn("space-y-4", className)}>
 			{hasHeader && (
 				<div className="flex items-end justify-between gap-4">
 					<div className="space-y-1">
-						{title && <h2 className="text-sm font-semibold tracking-tight">{title}</h2>}
+						{title && <h2 className="text-sm font-medium tracking-tight">{title}</h2>}
 						{description && <p className="text-sm text-muted-foreground">{description}</p>}
 					</div>
 					{action && <div className="shrink-0">{action}</div>}
 				</div>
 			)}
-			<div className="rounded-2xl border border-border bg-card shadow-card">{children}</div>
+			<div className="rounded-2xl bg-card edge">{children}</div>
 		</section>
 	);
 }

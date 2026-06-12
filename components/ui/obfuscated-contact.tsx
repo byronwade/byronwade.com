@@ -1,7 +1,7 @@
 "use client";
 
-import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Envelope as Mail, Phone } from "@/lib/icons";
 
 // Base64 encoded contact info (additional layer of obfuscation)
 // byron@byronwade.com

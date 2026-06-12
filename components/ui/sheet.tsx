@@ -1,9 +1,9 @@
 "use client";
 
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog";
-import { XIcon } from "lucide-react";
 import type * as React from "react";
 import { Button } from "@/components/ui/button";
+import { X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
@@ -27,7 +27,7 @@ function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
 		<SheetPrimitive.Backdrop
 			data-slot="sheet-overlay"
 			className={cn(
-				"fixed inset-0 z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs",
+				"fixed inset-0 z-50 bg-foreground/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs",
 				className
 			)}
 			{...props}
@@ -35,14 +35,42 @@ function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
 	);
 }
 
+/**
+ * Positioning per `side` × `variant`. `default` pins the panel flush to the
+ * viewport edge; `inset` floats it with a token-radius margin (drawer look).
+ * Enter/exit translate stays on the spacing scale (no arbitrary values).
+ */
+const sheetSide = {
+	default: {
+		top: "inset-x-0 top-0 h-auto rounded-b-2xl data-starting-style:-translate-y-10 data-ending-style:-translate-y-10",
+		right:
+			"inset-y-0 right-0 h-full w-3/4 sm:max-w-sm data-starting-style:translate-x-10 data-ending-style:translate-x-10",
+		bottom:
+			"inset-x-0 bottom-0 h-auto rounded-t-2xl data-starting-style:translate-y-10 data-ending-style:translate-y-10",
+		left: "inset-y-0 left-0 h-full w-3/4 sm:max-w-sm data-starting-style:-translate-x-10 data-ending-style:-translate-x-10",
+	},
+	inset: {
+		top: "inset-x-2 top-2 h-auto rounded-2xl data-starting-style:-translate-y-10 data-ending-style:-translate-y-10",
+		right:
+			"inset-y-2 right-2 w-3/4 rounded-2xl sm:max-w-sm data-starting-style:translate-x-10 data-ending-style:translate-x-10",
+		bottom:
+			"inset-x-2 bottom-2 h-auto rounded-2xl data-starting-style:translate-y-10 data-ending-style:translate-y-10",
+		left: "inset-y-2 left-2 w-3/4 rounded-2xl sm:max-w-sm data-starting-style:-translate-x-10 data-ending-style:-translate-x-10",
+	},
+} as const;
+
 function SheetContent({
 	className,
 	children,
 	side = "right",
+	variant = "default",
+	showBar = false,
 	showCloseButton = true,
 	...props
 }: SheetPrimitive.Popup.Props & {
 	side?: "top" | "right" | "bottom" | "left";
+	variant?: "default" | "inset";
+	showBar?: boolean;
 	showCloseButton?: boolean;
 }) {
 	return (
@@ -51,24 +79,46 @@ function SheetContent({
 			<SheetPrimitive.Popup
 				data-slot="sheet-content"
 				data-side={side}
+				data-variant={variant}
 				className={cn(
-					"fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg transition duration-200 ease-in-out data-ending-style:opacity-0 data-starting-style:opacity-0 data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=bottom]:data-ending-style:translate-y-[2.5rem] data-[side=bottom]:data-starting-style:translate-y-[2.5rem] data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-r data-[side=left]:data-ending-style:translate-x-[-2.5rem] data-[side=left]:data-starting-style:translate-x-[-2.5rem] data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-l data-[side=right]:data-ending-style:translate-x-[2.5rem] data-[side=right]:data-starting-style:translate-x-[2.5rem] data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=top]:data-ending-style:translate-y-[-2.5rem] data-[side=top]:data-starting-style:translate-y-[-2.5rem] data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm",
+					"fixed z-50 flex flex-col gap-4 overflow-hidden bg-popover bg-clip-padding text-sm text-popover-foreground edge transition duration-200 ease-in-out data-ending-style:opacity-0 data-starting-style:opacity-0",
+					sheetSide[variant][side],
 					className
 				)}
 				{...props}
 			>
+				{showBar && (
+					<div
+						data-slot="sheet-bar"
+						aria-hidden
+						className="mx-auto h-1.5 w-12 shrink-0 rounded-full bg-border"
+					/>
+				)}
 				{children}
 				{showCloseButton && (
 					<SheetPrimitive.Close
 						data-slot="sheet-close"
 						render={<Button variant="ghost" className="absolute top-3 right-3" size="icon-sm" />}
 					>
-						<XIcon />
+						<X />
 						<span className="sr-only">Close</span>
 					</SheetPrimitive.Close>
 				)}
 			</SheetPrimitive.Popup>
 		</SheetPortal>
+	);
+}
+
+/**
+ * Scrollable body region for a Sheet/Drawer, between the header and footer.
+ */
+function SheetPanel({ className, ...props }: React.ComponentProps<"div">) {
+	return (
+		<div
+			data-slot="sheet-panel"
+			className={cn("flex-1 overflow-y-auto px-4", className)}
+			{...props}
+		/>
 	);
 }
 
@@ -82,11 +132,20 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
 	);
 }
 
-function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
+function SheetFooter({
+	className,
+	variant = "default",
+	...props
+}: React.ComponentProps<"div"> & { variant?: "default" | "bare" }) {
 	return (
 		<div
 			data-slot="sheet-footer"
-			className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+			data-variant={variant}
+			className={cn(
+				"mt-auto flex gap-2 p-4",
+				variant === "bare" ? "flex-row items-center" : "flex-col",
+				className
+			)}
 			{...props}
 		/>
 	);
@@ -119,6 +178,7 @@ export {
 	SheetDescription,
 	SheetFooter,
 	SheetHeader,
+	SheetPanel,
 	SheetTitle,
 	SheetTrigger,
 };

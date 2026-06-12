@@ -1,26 +1,26 @@
 "use client";
 
-import {
-	CheckCircle,
-	ChevronDown,
-	ChevronUp,
-	Clock,
-	Code,
-	Eye,
-	Heart,
-	Lightbulb,
-	MessageCircle,
-	Palette,
-	Target,
-	TrendingUp,
-	Users,
-	Zap,
-} from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	CheckCircle,
+	CaretDown as ChevronDown,
+	CaretUp as ChevronUp,
+	Clock,
+	Code,
+	Eye,
+	Heart,
+	Lightbulb,
+	ChatCircle as MessageCircle,
+	Palette,
+	Crosshair as Target,
+	TrendUp as TrendingUp,
+	Users,
+	Lightning as Zap,
+} from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 interface CaseStudySection {

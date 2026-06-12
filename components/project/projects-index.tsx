@@ -1,7 +1,7 @@
-import { ArrowUpRight, Sparkle } from "lucide-react";
 import Link from "next/link";
 import type { StatusTone } from "@/components/ui/status-dot";
 import { StatusPill } from "@/components/ui/status-pill";
+import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import type { Project } from "@/lib/projects";
 import { cn } from "@/lib/utils";
 

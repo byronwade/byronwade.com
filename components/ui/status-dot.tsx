@@ -25,7 +25,7 @@ export function StatusDot({
 	className?: string;
 }) {
 	return (
-		<span className={cn("relative inline-flex", sizes[size], className)}>
+		<span data-slot="status-dot" className={cn("relative inline-flex", sizes[size], className)}>
 			{pulse && (
 				<span
 					className={cn(

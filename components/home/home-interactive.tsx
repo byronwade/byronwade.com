@@ -1,11 +1,18 @@
 "use client";
 
-import { Check, Github, Globe, Linkedin, Mail, Twitter } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { SocialLinkPreview } from "@/components/common";
 import { InlineContact } from "@/components/home/inline-contact";
 import { StatusPill } from "@/components/status-pill";
+import {
+	Check,
+	GithubLogo as Github,
+	Globe,
+	LinkedinLogo as Linkedin,
+	Envelope as Mail,
+	XLogo as Twitter,
+} from "@/lib/icons";
 
 const socials = [
 	{ id: "github", label: "GitHub", href: "https://github.com/byronwade", icon: Github },

@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,6 +8,7 @@ import { use } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { CheckCircle, ArrowSquareOut as ExternalLink, GithubLogo as Github } from "@/lib/icons";
 import { projects } from "@/lib/portfolio-data";
 
 export default function ProjectDetailsPage(props: { params: Promise<{ slug: string[] }> }) {

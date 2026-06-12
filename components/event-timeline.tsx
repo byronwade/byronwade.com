@@ -24,7 +24,7 @@ export function EventTimeline({
 	className?: string;
 }) {
 	return (
-		<ol className={cn("relative space-y-6", className)}>
+		<ol data-slot="event-timeline" className={cn("relative space-y-6", className)}>
 			{events.map((e, i) => (
 				<li key={i} className="relative flex gap-4 pl-1">
 					<div className="flex flex-col items-center">

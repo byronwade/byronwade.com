@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import * as React from "react";
 import { customFont } from "@/lib/fonts";
+import { ArrowUpRight, GitFork, GridFour as LayoutGrid, Moon, Sun, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";

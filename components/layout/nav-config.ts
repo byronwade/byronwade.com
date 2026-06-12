@@ -1,4 +1,11 @@
-import { FileText, FolderGit2, Home, LayoutGrid, type LucideIcon, PenLine } from "lucide-react";
+import {
+	FileText,
+	Folder as FolderGit2,
+	House as Home,
+	GridFour as LayoutGrid,
+	type Icon as LucideIcon,
+	PencilSimpleLine as PenLine,
+} from "@/lib/icons";
 
 /** Primary destinations surfaced in the floating nav dock. */
 export interface NavItem {

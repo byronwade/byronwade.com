@@ -1,6 +1,6 @@
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight } from "@/lib/icons";
 import type { ProjectType } from "@/lib/projects";
 import { getProjects } from "@/lib/projects";
 

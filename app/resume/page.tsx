@@ -1,12 +1,18 @@
 "use client";
 
-import { Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
 import { SiteShell } from "@/components/layout/site-shell";
 import { analytics } from "@/lib/analytics";
 import { customFont } from "@/lib/fonts";
+import {
+	Check,
+	DownloadSimple as Download,
+	ArrowSquareOut as ExternalLink,
+	Envelope as Mail,
+	MapPin,
+} from "@/lib/icons";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {

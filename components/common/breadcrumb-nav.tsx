@@ -1,5 +1,5 @@
-import { ChevronRight, Home } from "lucide-react";
 import Link from "next/link";
+import { CaretRight as ChevronRight, House as Home } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 export interface BreadcrumbItem {

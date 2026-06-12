@@ -1,10 +1,18 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {
+	Flame,
+	Folder,
+	GitCommit,
+	GithubLogo as Github,
+	LinkedinLogo as Linkedin,
+	Envelope as Mail,
+	XLogo as Twitter,
+} from "@/lib/icons";
 
 interface ContributionDay {
 	date: string;
@@ -64,13 +72,7 @@ const itemVariants = {
 	},
 };
 
-const levelColors = [
-	"bg-muted",
-	"bg-brand/30",
-	"bg-brand/50",
-	"bg-brand/75",
-	"bg-brand",
-];
+const levelColors = ["bg-muted", "bg-brand/30", "bg-brand/50", "bg-brand/75", "bg-brand"];
 
 function EmailPreviewContent() {
 	const [copied, setCopied] = useState(false);

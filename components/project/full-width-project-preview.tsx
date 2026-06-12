@@ -1,22 +1,22 @@
 "use client";
 
-import {
-	ExternalLink,
-	Globe,
-	Grip,
-	ImageOff,
-	Laptop,
-	Maximize2,
-	Minimize2,
-	Monitor,
-	RefreshCw,
-	RotateCcw,
-	Smartphone,
-	Tablet,
-} from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import {
+	ArrowSquareOut as ExternalLink,
+	Globe,
+	DotsSixVertical as Grip,
+	ImageBroken as ImageOff,
+	Laptop,
+	ArrowsOut as Maximize2,
+	ArrowsIn as Minimize2,
+	Monitor,
+	ArrowsClockwise as RefreshCw,
+	ArrowCounterClockwise as RotateCcw,
+	DeviceMobile as Smartphone,
+	DeviceTablet as Tablet,
+} from "@/lib/icons";
 import { fetchScreenshot } from "@/lib/screenshot";
 import { cn } from "@/lib/utils";
 

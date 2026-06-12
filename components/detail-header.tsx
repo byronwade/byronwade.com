@@ -18,10 +18,10 @@ export function DetailHeader({
 	className?: string;
 }) {
 	return (
-		<div className={cn("space-y-6", className)}>
+		<div data-slot="detail-header" className={cn("space-y-6", className)}>
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
-					<h1 className="font-mono text-xl font-semibold tracking-tight">{title}</h1>
+					<h1 className="font-mono text-xl font-medium tracking-tight">{title}</h1>
 					{badge}
 				</div>
 				{actions && <div className="flex items-center gap-2">{actions}</div>}

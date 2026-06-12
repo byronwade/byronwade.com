@@ -1,10 +1,10 @@
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
+import { Clock } from "@/lib/icons";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,

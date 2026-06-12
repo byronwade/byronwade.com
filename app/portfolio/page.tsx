@@ -1,11 +1,11 @@
 "use client";
 
 import { format } from "date-fns";
-import { ExternalLink, GitFork, Github, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
+import { ArrowSquareOut as ExternalLink, GitFork, GithubLogo as Github, Star } from "@/lib/icons";
 
 interface Repo {
 	id: number;
