@@ -5,7 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { SocialLinkPreview } from "@/components/common";
 import { InlineContact } from "@/components/home/inline-contact";
-import { StatusPill } from "@/components/status-pill";
+import { pillLinkClass } from "@/components/ui/pill";
+import { StatusPill } from "@/components/ui/status-pill";
 
 const socials = [
 	{ id: "github", label: "GitHub", href: "https://github.com/byronwade", icon: Github },
@@ -14,8 +15,7 @@ const socials = [
 	{ id: "thorbis", label: "Thorbis", href: "https://thorbis.com", icon: Globe },
 ] as const;
 
-const pillClass =
-	"inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground";
+const pillClass = pillLinkClass;
 
 export function HomeInteractive() {
 	const [copiedButton, setCopiedButton] = useState<string | null>(null);

@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
 import { SiteShell } from "@/components/layout/site-shell";
+import { pillLinkClass } from "@/components/ui/pill";
+import { StatusPill } from "@/components/ui/status-pill";
 import { analytics } from "@/lib/analytics";
 import { customFont } from "@/lib/fonts";
 
@@ -241,10 +243,9 @@ export default function ResumePage() {
 										<h3 className="font-medium text-foreground">
 											{job.role}
 											{job.current && (
-												<span className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 px-2 py-0.5 align-middle text-[11px] font-medium text-brand">
-													<span className="size-1.5 rounded-full bg-brand" aria-hidden />
+												<StatusPill tone="success" pulse className="ml-2 align-middle">
 													Current
-												</span>
+												</StatusPill>
 											)}
 										</h3>
 										<span className="shrink-0 text-sm tabular-nums text-muted-foreground">
@@ -295,10 +296,7 @@ export default function ResumePage() {
 						</h2>
 						<div className="flex flex-wrap gap-2">
 							{skills.map((skill) => (
-								<span
-									key={skill}
-									className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground"
-								>
+								<span key={skill} className={pillLinkClass}>
 									{skill}
 								</span>
 							))}
