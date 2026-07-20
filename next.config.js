@@ -20,6 +20,16 @@ const nextConfig = {
 	cacheComponents: false,
 	turbopack: {},
 
+	// React Compiler (stable in Next.js 16): automatically memoizes components
+	// so unnecessary re-renders are eliminated without manual useMemo/useCallback.
+	reactCompiler: true,
+
+	// Node packages that must stay external to the server bundle (renamed from the
+	// deprecated experimental.serverComponentsExternalPackages in Next.js 15+).
+	...(process.env.ENABLE_LOCAL_FEATURES === "true" && {
+		serverExternalPackages: ["@prisma/client"],
+	}),
+
 	images: {
 		formats: ["image/webp", "image/avif"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -29,9 +39,14 @@ const nextConfig = {
 	},
 
 	experimental: {
-		...(process.env.ENABLE_LOCAL_FEATURES === "true" && {
-			serverComponentsExternalPackages: ["@prisma/client"],
-		}),
+		// Tree-shake barrel-file libraries so only the icons/helpers actually used
+		// ship to the client. lucide-react alone is imported across 40+ files.
+		optimizePackageImports: [
+			"lucide-react",
+			"date-fns",
+			"framer-motion",
+			"@radix-ui/react-icons",
+		],
 	},
 
 	...(process.env.NODE_ENV === "production" && {
@@ -46,10 +61,9 @@ const nextConfig = {
 						{ key: "X-XSS-Protection", value: "1; mode=block" },
 					],
 				},
-				{
-					source: "/_next/static/(.*)",
-					headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-				},
+				// Note: /_next/static is already served immutable by Next.js, so no
+				// manual Cache-Control is set for it (doing so triggers a build warning
+				// and can interfere with Next's own handling).
 				{
 					source: "/images/(.*)",
 					headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],

@@ -96,6 +96,7 @@
 		"@types/node": "^24.0.1",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"knip": "^5.0.0",
 		"lighthouse": "^12.6.1",
 		"postcss": "^8.5.5",
