@@ -42,7 +42,7 @@ async function ProjectsList() {
 						className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
 					>
 						<div className="flex min-w-0 items-center gap-3">
-							<Badge variant={projectType === "product" ? "success" : "outline"}>
+							<Badge variant={projectType === "product" ? "success" : "muted"}>
 								{typeLabels[projectType]}
 							</Badge>
 							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">

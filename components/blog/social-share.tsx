@@ -2,6 +2,7 @@
 
 import { Check, Copy, Linkedin, Share2, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
+import { pillLinkClass } from "@/components/ui/pill";
 
 interface SocialShareProps {
 	url: string;
@@ -66,7 +67,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				<button
 					type="button"
 					onClick={handleNativeShare}
-					className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
+					className={pillLinkClass}
 					aria-label="Share via native share"
 				>
 					<Share2 className="size-4" />
@@ -79,7 +80,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				href={shareLinks.twitter}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
+				className={pillLinkClass}
 				aria-label="Share on Twitter"
 			>
 				<Twitter className="size-4" />
@@ -91,7 +92,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				href={shareLinks.linkedin}
 				target="_blank"
 				rel="noopener noreferrer"
-				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
+				className={pillLinkClass}
 				aria-label="Share on LinkedIn"
 			>
 				<Linkedin className="size-4" />
@@ -99,12 +100,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 			</a>
 
 			{/* Copy Link */}
-			<button
-				type="button"
-				onClick={handleCopy}
-				className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
-				aria-label="Copy link"
-			>
+			<button type="button" onClick={handleCopy} className={pillLinkClass} aria-label="Copy link">
 				{copied ? (
 					<>
 						<Check className="size-4" />

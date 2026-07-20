@@ -44,7 +44,7 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 								{post.title}
 							</span>
 							<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
-								<Badge variant="outline">
+								<Badge variant="muted">
 									<Clock />
 									{post.readingTime} min
 								</Badge>

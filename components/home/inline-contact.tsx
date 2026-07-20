@@ -2,6 +2,7 @@
 
 import { Check, Copy, Mail, Send, X } from "lucide-react";
 import { useState } from "react";
+import { pillLinkClass } from "@/components/ui/pill";
 
 interface InlineContactProps {
 	open: boolean;
@@ -53,11 +54,7 @@ export function InlineContact({
 					{email}
 				</a>
 				<div className="flex gap-2">
-					<button
-						type="button"
-						onClick={copyEmail}
-						className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
-					>
+					<button type="button" onClick={copyEmail} className={pillLinkClass}>
 						{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
 						{copied ? "Copied" : "Copy"}
 					</button>
