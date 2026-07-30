@@ -37,7 +37,7 @@ function MobileNavLink({
 	return (
 		<Link
 			className={cn(
-				"block rounded-md px-3 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring",
+				"block rounded-xl px-3 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring",
 				compact ? "py-2" : "py-2.5"
 			)}
 			href={href}
@@ -97,7 +97,7 @@ export function SiteHeaderMobileMenu({
 			>
 				<SheetHeader className="border-b border-border px-4 py-4 text-left">
 					<div className="flex items-center gap-3">
-						<span className="relative size-10 overflow-hidden rounded-md">
+						<span className="relative size-10 overflow-hidden rounded-xl">
 							<Image
 								alt=""
 								src="/avatar.avif"

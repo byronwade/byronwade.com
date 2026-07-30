@@ -144,7 +144,7 @@ export default function ContactClient() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={social.name}
-										className="inline-flex size-10 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+										className="inline-flex size-10 items-center justify-center rounded-xl border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
 									>
 										<social.icon className="size-[1.05rem]" />
 									</a>

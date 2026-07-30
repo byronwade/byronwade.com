@@ -18,7 +18,9 @@ function FooterColumn({
 }) {
 	return (
 		<nav aria-label={title}>
-			<p className="spec-label mb-4 text-primary-bright">{title}</p>
+			<p className="mb-4 text-xs font-semibold tracking-[0.12em] text-primary-bright uppercase">
+				{title}
+			</p>
 			<ul className="flex flex-col gap-3">
 				{links.map((link) => (
 					<li key={link.href}>
@@ -59,12 +61,10 @@ export default function Footer() {
 							href="/"
 							prefetch
 						>
-							<span className="font-display text-lg leading-tight font-extrabold tracking-[-0.03em]">
+							<span className="font-display text-xl leading-tight font-bold tracking-[-0.03em]">
 								{siteConfig.name}
 							</span>
-							<span className="mt-1 font-mono text-[0.625rem] leading-none font-semibold tracking-[0.2em] text-primary-bright uppercase">
-								Studio
-							</span>
+							<span className="mt-1.5 text-sm text-on-dark-muted">{siteConfig.tagline}</span>
 						</Link>
 						<p className="mt-5 max-w-xs text-sm leading-relaxed text-on-dark-muted">
 							{siteConfig.description}
@@ -88,7 +88,7 @@ export default function Footer() {
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={social.name}
-									className="grid size-10 place-items-center rounded-md bg-white/8 text-on-dark-muted opacity-90 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
+									className="grid size-10 place-items-center rounded-xl bg-white/8 text-on-dark-muted opacity-90 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
 								>
 									<social.icon className="size-5" />
 								</a>
@@ -122,27 +122,19 @@ export default function Footer() {
 			<div className="footer-credit relative overflow-hidden">
 				<div
 					aria-hidden="true"
-					className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_120%_at_50%_-20%,color-mix(in_srgb,var(--primary)_28%,transparent),transparent_55%)]"
+					className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_120%_at_50%_-20%,color-mix(in_oklch,var(--primary)_35%,transparent),transparent_55%)]"
 				/>
 				<div
 					aria-hidden="true"
 					className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
 				/>
 				<div className="container-shell relative flex flex-col items-center gap-3 py-8 text-center sm:py-10">
-					<p className="font-mono text-[0.625rem] font-semibold tracking-[0.22em] text-primary-bright/90 uppercase">
-						Also a trades company
+					<p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-primary-bright/90 uppercase">
+						Built in the field
 					</p>
 					<p className="max-w-lg text-[0.9375rem] leading-relaxed text-pretty text-white/78 sm:text-base">
-						I grew{" "}
-						<a
-							className="font-semibold text-white underline decoration-white/25 underline-offset-[0.2em] transition-colors hover:text-primary-bright hover:decoration-primary-bright/50"
-							href="https://wadesplumbingandseptic.com"
-							rel="noopener noreferrer"
-							target="_blank"
-						>
-							Wade&apos;s Plumbing &amp; Septic
-						</a>{" "}
-						to $2.4M — then started building the software service businesses actually need.
+						I grew a plumbing company to $2.4M — then started building the software service
+						businesses actually need.
 					</p>
 				</div>
 			</div>

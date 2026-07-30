@@ -146,7 +146,7 @@ export default function PortfolioPage() {
 													{titleize(repo.name)}
 												</h2>
 												{repo.archived && (
-													<span className="shrink-0 rounded-md bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+													<span className="shrink-0 rounded-lg bg-muted px-2 py-0.5 text-[10px] font-bold tracking-wider text-muted-foreground uppercase">
 														Archived
 													</span>
 												)}
@@ -165,7 +165,7 @@ export default function PortfolioPage() {
 												{repo.topics.slice(0, 4).map((topic) => (
 													<span
 														key={topic}
-														className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
+														className="rounded-lg bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
 													>
 														{topic}
 													</span>

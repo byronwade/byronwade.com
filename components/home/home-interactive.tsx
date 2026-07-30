@@ -16,8 +16,8 @@ const socials = [
 ] as const;
 
 const socialLinkClass = cn(
-	"inline-flex h-10 items-center gap-2 rounded-md border border-border bg-card px-3.5 text-sm font-bold tracking-[-0.01em] text-foreground transition-colors",
-	"hover:border-foreground/20 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+	"inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-card/80 px-3.5 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors",
+	"hover:border-primary/30 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 );
 
 export function HomeInteractive() {
@@ -50,7 +50,7 @@ export function HomeInteractive() {
 						className="glow-brand pointer-events-none absolute -inset-6 opacity-70"
 						aria-hidden
 					/>
-					<div className="relative size-20 overflow-hidden rounded-md ring-1 ring-border sm:size-24">
+					<div className="relative size-20 overflow-hidden rounded-2xl ring-1 ring-border sm:size-24">
 						<Image
 							alt="Byron Wade — Full Stack Developer"
 							className="size-full object-cover"
@@ -65,7 +65,7 @@ export function HomeInteractive() {
 
 				<div className="flex flex-col gap-3">
 					<p className="spec-label">Jasper, Georgia</p>
-					<h1 className="type-headline text-foreground">Byron Wade</h1>
+					<h1 className="type-display text-foreground">Byron Wade</h1>
 					<p className="type-lead">Builder · Developer · Operator</p>
 					<StatusPill tone="success" pulse className="w-fit">
 						Available for conversations

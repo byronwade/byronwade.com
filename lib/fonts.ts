@@ -1,28 +1,28 @@
-import { Archivo, Geist_Mono, Manrope } from "next/font/google";
+import { Geist_Mono, Plus_Jakarta_Sans, Syne } from "next/font/google";
 import localFont from "next/font/local";
 
-/** Body / UI — humanist sans for long-form readability */
-export const manrope = Manrope({
+/** Body / UI — contemporary geometric sans */
+export const jakarta = Plus_Jakarta_Sans({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-manrope",
+	variable: "--font-jakarta",
 	preload: true,
-	weight: ["400", "700"],
+	weight: ["400", "500", "600", "700"],
 });
 
 /**
- * Display face — squared grotesque against Manrope's humanist body.
- * Headings get their own voice instead of running the body face at weight 800.
+ * Display face — Syne gives headings a modern studio voice
+ * without looking like a default AI portfolio stack.
  */
-export const archivo = Archivo({
+export const syne = Syne({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-archivo",
+	variable: "--font-syne",
 	preload: false,
-	weight: ["700", "800"],
+	weight: ["600", "700", "800"],
 });
 
-/** Monospace — code, metrics, spec labels */
+/** Monospace — code, metrics, meta labels */
 export const geistMono = Geist_Mono({
 	subsets: ["latin"],
 	display: "swap",
@@ -42,5 +42,7 @@ export const customFont = localFont({
 	variable: "--font-signature",
 });
 
-/** @deprecated Use `manrope` — kept for transitional imports */
-export const geistSans = manrope;
+/** @deprecated transitional aliases */
+export const manrope = jakarta;
+export const archivo = syne;
+export const geistSans = jakarta;

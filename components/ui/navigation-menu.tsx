@@ -44,7 +44,7 @@ export function NavigationMenuList({
 export const NavigationMenuItem = NavigationMenuPrimitive.Item;
 
 export const navigationMenuTriggerStyle = cva(
-	"group inline-flex h-10 w-max items-center justify-center rounded-md px-3.5 py-2 text-sm font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+	"group inline-flex h-10 w-max items-center justify-center rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
 );
 
 export function NavigationMenuTrigger({
@@ -85,8 +85,7 @@ export function NavigationMenuContent({
 export const NavigationMenuLink = NavigationMenuPrimitive.Link;
 
 /**
- * Full-bleed drawer under the sticky header. Painted on --dark-2 with a lit
- * top edge so it reads as a drawer, not as the header growing taller.
+ * Full-bleed panel under the sticky header — elevated surface, not a dark drawer.
  */
 function NavigationMenuViewport({
 	className,
@@ -96,7 +95,7 @@ function NavigationMenuViewport({
 		<div className="absolute inset-x-0 top-full z-50 flex justify-center">
 			<NavigationMenuPrimitive.Viewport
 				className={cn(
-					"surface-float relative h-[var(--radix-navigation-menu-viewport-height)] w-full origin-top overflow-hidden rounded-b-xl transition-[height] duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-2",
+					"surface-float relative h-[var(--radix-navigation-menu-viewport-height)] w-full origin-top overflow-hidden rounded-b-2xl transition-[height] duration-200 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:animate-in data-[state=open]:fade-in data-[state=open]:slide-in-from-top-2",
 					className
 				)}
 				{...props}

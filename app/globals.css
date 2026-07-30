@@ -60,129 +60,80 @@
 }
 
 /*
-  byronwade.com design system — adapted from Wade's craft language.
-  Charcoal ink chrome + copper accent. Cool stone neutrals. Sharp geometry.
-  No cream wash, no purple, no glow stacks, no pill clusters.
-
-  Display type is Archivo. Body is Manrope. Spec labels use mono.
-*/
-/*
-  Palette is authored in OKLCH. Same hues as before, but perceptually uniform:
-  lightness steps are visually even, and color-mix() tints (hover states, the
-  scrims, the accent washes) interpolate without the muddy midpoints sRGB hex
-  produced. The L channel is also a reliable contrast proxy, so surface ramps
-  can be reasoned about instead of eyeballed.
+  byronwade.com — modern studio system.
+  Cool light canvas, near-black type, electric blue signal.
+  Frost-glass chrome. Keep shells/type scale; ditch trade copper/ink look.
 */
 :root {
-	--ink: oklch(0.175 0.008 68);
-	--ink-soft: oklch(0.215 0.009 68);
-	--panel: oklch(0.215 0.009 68);
-	--panel-elevated: oklch(0.268 0.01 68);
-	--background: oklch(0.976 0.003 85);
-	--foreground: oklch(0.2 0.007 68);
+	--ink: oklch(0.18 0.02 255);
+	--ink-soft: oklch(0.24 0.02 255);
+	--panel: oklch(0.22 0.02 255);
+	--panel-elevated: oklch(0.28 0.02 255);
+	--background: oklch(0.985 0.004 250);
+	--foreground: oklch(0.2 0.02 255);
 	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.2 0.007 68);
+	--card-foreground: oklch(0.2 0.02 255);
 	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.2 0.007 68);
-	--primary: oklch(0.4859 0.1104 51.3);
-	--primary-foreground: oklch(1 0 0);
-	--primary-bright: oklch(0.7557 0.1133 66.7);
-	/* Compat aliases for legacy utility classes */
+	--popover-foreground: oklch(0.2 0.02 255);
+	--primary: oklch(0.55 0.19 255);
+	--primary-foreground: oklch(0.99 0.01 255);
+	--primary-bright: oklch(0.68 0.17 255);
 	--brand: var(--primary);
 	--brand-foreground: var(--primary-foreground);
 	--brand-muted: var(--accent);
-	--success: oklch(0.55 0.14 155);
-	--success-foreground: oklch(0.99 0.002 95);
-	--warning: oklch(0.78 0.14 75);
-	--warning-foreground: oklch(0.26 0.05 70);
-	--secondary: oklch(0.942 0.004 85);
-	--secondary-foreground: oklch(0.24 0.008 68);
-	--muted: oklch(0.951 0.004 85);
-	--muted-foreground: oklch(0.49 0.011 68);
-	--accent: oklch(0.9243 0.0201 70);
-	--accent-foreground: oklch(0.4027 0.0855 54.6);
-	--destructive: oklch(0.5534 0.1739 38.4);
-	--border: oklch(0.893 0.006 85);
-	--border-strong: oklch(0.83 0.008 82);
-	--input: oklch(0.893 0.006 85);
-	--ring: oklch(0.4859 0.1104 51.3);
-	--radius: 0.5rem;
-	--shadow-edge: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent);
+	--success: oklch(0.58 0.14 155);
+	--success-foreground: oklch(0.99 0.002 155);
+	--warning: oklch(0.75 0.14 75);
+	--warning-foreground: oklch(0.28 0.04 75);
+	--secondary: oklch(0.96 0.008 250);
+	--secondary-foreground: oklch(0.28 0.02 255);
+	--muted: oklch(0.96 0.008 250);
+	--muted-foreground: oklch(0.5 0.02 255);
+	--accent: oklch(0.94 0.03 255);
+	--accent-foreground: oklch(0.4 0.12 255);
+	--destructive: oklch(0.55 0.2 25);
+	--border: oklch(0.9 0.01 250);
+	--border-strong: oklch(0.82 0.015 250);
+	--input: oklch(0.9 0.01 250);
+	--ring: oklch(0.55 0.19 255);
+	--radius: 0.75rem;
+	--shadow-edge: 0 0 0 1px color-mix(in oklch, var(--foreground) 8%, transparent);
 	--shadow-panel:
-		0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent),
-		0 8px 24px -12px color-mix(in srgb, var(--ink) 12%, transparent);
+		0 1px 2px color-mix(in oklch, var(--foreground) 4%, transparent),
+		0 12px 32px -16px color-mix(in oklch, var(--foreground) 14%, transparent);
 
-	/*
-	  Alternating band. `bg-secondary/60` over --background was a ~2% delta,
-	  so section rhythm never read. This is a deliberate, visible step down -
-	  L 0.9756 → 0.9483.
-	*/
-	--sunken: oklch(0.948 0.005 85);
+	--sunken: oklch(0.965 0.008 250);
 
-	/* Text ramp for ink/panel surfaces. Replaces three near-identical
-	   hardcoded whites (#ececea / #e4e5e7 / #e8e8e4) and ad-hoc white/NN. */
-	--on-dark: oklch(0.967 0.003 85);
-	--on-dark-muted: oklch(0.875 0.007 80);
-	--on-dark-subtle: oklch(0.712 0.011 75);
+	--on-dark: oklch(0.97 0.01 250);
+	--on-dark-muted: oklch(0.82 0.02 250);
+	--on-dark-subtle: oklch(0.68 0.02 250);
 
-	/*
-	  Dark elevation ramp. Every ink surface used to resolve to roughly the same
-	  lightness, so the header, the mega menu, and each page hero read as one
-	  undifferentiated slab. These are separated by ~0.035 L, which is a visible
-	  step, and each level up is also lighter in chroma so it reads as "closer"
-	  rather than just "greyer".
+	--dark-1: oklch(0.22 0.02 255);
+	--dark-2: oklch(0.26 0.02 255);
+	--dark-3: oklch(0.32 0.025 255);
 
-	    ink      L .18   page chrome, the header bar
-	    dark-1   L .215  hero bands
-	    dark-2   L .25   floating panels (mega menu, popovers)
-	    dark-3   L .285  cards resting on a panel
-	*/
-	--dark-1: oklch(0.215 0.009 68);
-	--dark-2: oklch(0.252 0.01 68);
-	--dark-3: oklch(0.288 0.011 68);
-
-	/*
-	  Top inner highlight. A single light hairline along the top edge is what
-	  makes a dark panel read as a raised object rather than a hole. Paired with
-	  --shadow-float on anything that floats.
-	*/
 	--hairline-top: inset 0 1px 0 0 oklch(1 0 0 / 0.08);
 	--hairline-all: inset 0 0 0 1px oklch(1 0 0 / 0.08);
 	--shadow-float:
-		0 1px 2px oklch(0 0 0 / 0.4), 0 12px 24px -8px oklch(0 0 0 / 0.45),
-		0 32px 64px -24px oklch(0 0 0 / 0.55);
+		0 1px 2px oklch(0.2 0.02 255 / 0.06),
+		0 16px 40px -20px oklch(0.2 0.02 255 / 0.18);
 
-	/* Long-form copy. Was hardcoded #3f444b, which left every content page
-	   unreadable in dark mode. */
-	--prose-body: oklch(0.385 0.01 68);
-	--prose-quote: oklch(0.432 0.01 68);
-	--prose-quote-bg: oklch(0.954 0.005 85);
-	--prose-code-bg: oklch(0.943 0.004 85);
+	--prose-body: oklch(0.4 0.02 255);
+	--prose-quote: oklch(0.42 0.02 255);
+	--prose-quote-bg: oklch(0.96 0.015 255);
+	--prose-code-bg: oklch(0.95 0.012 250);
 
-	/* --- Type scale ---
-	   display  → home hero only
-	   headline → content + service hero h1 (was misusing display)
-	   title    → section h2
-	   subtitle → sub-section h2/h3 (the step that was missing entirely) */
-	/*
-	  Cinematic step, above display. Sized off vw so the headline scales to the
-	  measure of the viewport and reads edge to edge rather than sitting as a
-	  block of text on a photo.
-	*/
-	--type-cinematic: clamp(3.25rem, 13vw, 9rem);
-	--type-display: clamp(2.35rem, 5.4vw, 4.25rem);
-	--type-headline: clamp(1.95rem, 3.6vw, 3rem);
-	--type-title: clamp(1.65rem, 2.6vw, 2.25rem);
-	--type-subtitle: clamp(1.3rem, 1.8vw, 1.5rem);
+	--type-cinematic: clamp(3rem, 10vw, 7rem);
+	--type-display: clamp(2.5rem, 5.5vw, 4.5rem);
+	--type-headline: clamp(2rem, 3.8vw, 3.25rem);
+	--type-title: clamp(1.6rem, 2.5vw, 2.25rem);
+	--type-subtitle: clamp(1.25rem, 1.7vw, 1.5rem);
 	--type-card: 1.0625rem;
-	--type-lead: clamp(1.0625rem, 1.15vw, 1.1875rem);
+	--type-lead: clamp(1.05rem, 1.2vw, 1.2rem);
 	--type-body: 1rem;
 	--type-meta: 0.8125rem;
 	--type-label: 0.6875rem;
 
-	/* --- Spacing scale ---
-	   Every vertical relationship resolves to one of these, so heading→body
-	   and header→grid gaps stop drifting between mt-2/3/4/5/6/7/8. */
 	--space-page-x: clamp(1.25rem, 4vw, 2.5rem);
 	--space-section-y: clamp(3.5rem, 6vw, 5.5rem);
 	--space-section-y-tight: clamp(2.5rem, 4vw, 3.5rem);
@@ -192,81 +143,68 @@
 	--space-card: 1.5rem;
 
 	--content-max: 78rem;
-	/*
-	  Single-column article templates. Sized to the prose measure plus a little
-	  room for galleries and two-up promise cards on service pages.
-	*/
 	--content-max-article: 48rem;
-	/* ch measures the "0" glyph, which is wider than average lowercase, so
-	   60ch lands around 75 real characters a line. */
 	--measure: 60ch;
-	--header-offset: 6.5rem;
-	/* Visible header height, used to size the cinematic hero to the viewport.
-	   Matches the 64px bar on phones; the utility bar adds 28px from sm up. */
+	--header-offset: 5rem;
 	--header-h: 4rem;
-
-	/* Focus-ring offset colour. Surfaces override it so rings never halo
-	   white on ink panels. Consumed by the button/control base classes. */
 	--ring-offset: var(--background);
 
 	--font-sans:
-		var(--font-manrope), "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+		var(--font-jakarta), "Avenir Next", "Segoe UI", Helvetica, sans-serif;
 	--font-display:
-		var(--font-archivo), var(--font-manrope), "Helvetica Neue", sans-serif;
+		var(--font-syne), var(--font-jakarta), "Helvetica Neue", sans-serif;
 	--font-mono:
 		var(--font-geist-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo,
 		"Roboto Mono", monospace;
 }
 
 .dark {
-	--ink: oklch(0.13 0.006 68);
-	--ink-soft: oklch(0.185 0.008 68);
-	--panel: oklch(0.205 0.009 68);
-	--panel-elevated: oklch(0.255 0.01 68);
-	--background: oklch(0.165 0.007 68);
-	--foreground: oklch(0.96 0.004 85);
-	--card: oklch(0.205 0.008 68);
-	--card-foreground: oklch(0.96 0.004 85);
-	--popover: oklch(0.205 0.008 68);
-	--popover-foreground: oklch(0.96 0.004 85);
-	--primary: oklch(0.619 0.1364 50.7);
-	--primary-foreground: oklch(1 0 0);
-	--primary-bright: oklch(0.7557 0.1133 66.7);
+	--ink: oklch(0.14 0.02 255);
+	--ink-soft: oklch(0.2 0.02 255);
+	--panel: oklch(0.2 0.02 255);
+	--panel-elevated: oklch(0.26 0.025 255);
+	--background: oklch(0.16 0.02 255);
+	--foreground: oklch(0.96 0.01 250);
+	--card: oklch(0.2 0.02 255);
+	--card-foreground: oklch(0.96 0.01 250);
+	--popover: oklch(0.2 0.02 255);
+	--popover-foreground: oklch(0.96 0.01 250);
+	--primary: oklch(0.68 0.17 255);
+	--primary-foreground: oklch(0.16 0.03 255);
+	--primary-bright: oklch(0.76 0.14 255);
 	--brand: var(--primary);
 	--brand-foreground: var(--primary-foreground);
 	--brand-muted: var(--accent);
-	--success: oklch(0.72 0.14 155);
-	--success-foreground: oklch(0.99 0.002 95);
-	--warning: oklch(0.82 0.13 78);
-	--warning-foreground: oklch(0.26 0.05 70);
-	--secondary: oklch(0.235 0.009 68);
-	--secondary-foreground: oklch(0.93 0.005 85);
-	--muted: oklch(0.235 0.009 68);
-	--muted-foreground: oklch(0.745 0.012 78);
-	--accent: oklch(0.2554 0.0212 66.6);
-	--accent-foreground: oklch(0.7557 0.1133 66.7);
-	--destructive: oklch(0.6828 0.1741 40.3);
-	--border: oklch(0.295 0.01 68);
-	--border-strong: oklch(0.365 0.012 68);
-	--input: oklch(0.295 0.01 68);
-	--ring: oklch(0.7557 0.1133 66.7);
-	--shadow-edge: 0 0 0 1px color-mix(in srgb, white 8%, transparent);
+	--success: oklch(0.7 0.14 155);
+	--success-foreground: oklch(0.16 0.03 155);
+	--warning: oklch(0.8 0.13 75);
+	--warning-foreground: oklch(0.22 0.04 75);
+	--secondary: oklch(0.24 0.02 255);
+	--secondary-foreground: oklch(0.94 0.01 250);
+	--muted: oklch(0.24 0.02 255);
+	--muted-foreground: oklch(0.72 0.02 250);
+	--accent: oklch(0.28 0.04 255);
+	--accent-foreground: oklch(0.78 0.12 255);
+	--destructive: oklch(0.65 0.18 25);
+	--border: oklch(0.3 0.02 255);
+	--border-strong: oklch(0.38 0.025 255);
+	--input: oklch(0.3 0.02 255);
+	--ring: oklch(0.68 0.17 255);
+	--shadow-edge: 0 0 0 1px color-mix(in oklch, white 8%, transparent);
 	--shadow-panel:
-		0 1px 2px color-mix(in srgb, black 30%, transparent),
-		0 8px 24px -12px color-mix(in srgb, black 45%, transparent);
+		0 1px 2px color-mix(in oklch, black 30%, transparent),
+		0 12px 32px -16px color-mix(in oklch, black 45%, transparent);
 
-	--sunken: oklch(0.195 0.008 68);
+	--sunken: oklch(0.19 0.02 255);
 
-	--prose-body: oklch(0.83 0.01 80);
-	--prose-quote: oklch(0.864 0.009 80);
-	--prose-quote-bg: oklch(0.228 0.009 68);
-	--prose-code-bg: oklch(0.25 0.01 68);
+	--prose-body: oklch(0.82 0.015 250);
+	--prose-quote: oklch(0.85 0.015 250);
+	--prose-quote-bg: oklch(0.24 0.025 255);
+	--prose-code-bg: oklch(0.26 0.025 255);
 
-	/* Dark theme starts lower, so the ramp shifts down with it and keeps the
-	   same ~0.035 L separation between levels. */
-	--dark-1: oklch(0.195 0.008 68);
-	--dark-2: oklch(0.232 0.009 68);
-	--dark-3: oklch(0.268 0.01 68);
+	--dark-1: oklch(0.2 0.02 255);
+	--dark-2: oklch(0.24 0.02 255);
+	--dark-3: oklch(0.3 0.025 255);
 }
 
 /*
@@ -276,8 +214,8 @@
 */
 @media (width >= 40rem) {
 	:root {
-		/* Utility bar (28px) + main bar (72px) + hairline. */
-		--header-h: 6.5rem;
+		--header-h: 4.25rem;
+		--header-offset: 5.5rem;
 	}
 }
 
@@ -596,11 +534,11 @@
 	.hero-article {
 		background:
 			radial-gradient(
-				ellipse 70% 55% at 0% 0%,
-				color-mix(in srgb, var(--primary) 8%, transparent),
+				ellipse 80% 60% at 0% 0%,
+				color-mix(in oklch, var(--primary) 12%, transparent),
 				transparent 70%
 			),
-			var(--background);
+			linear-gradient(180deg, var(--sunken) 0%, var(--background) 100%);
 	}
 
 	/*
@@ -621,8 +559,8 @@
 		background:
 			linear-gradient(
 				180deg,
-				color-mix(in srgb, black 35%, var(--ink)) 0%,
-				oklch(0.12 0.008 68) 100%
+				color-mix(in oklch, var(--ink) 92%, var(--primary)) 0%,
+				oklch(0.12 0.03 255) 100%
 			);
 	}
 
@@ -630,7 +568,7 @@
 		background:
 			radial-gradient(
 				ellipse 55% 70% at 100% 0%,
-				color-mix(in srgb, var(--primary) 7%, transparent),
+				color-mix(in oklch, var(--primary) 10%, transparent),
 				transparent 65%
 			),
 			var(--sunken);
@@ -638,16 +576,22 @@
 
 	.hero-index-service {
 		background:
-			linear-gradient(
-				135deg,
-				color-mix(in srgb, var(--ink) 4%, var(--background)) 0%,
-				var(--background) 55%,
-				color-mix(in srgb, var(--primary) 5%, var(--background)) 100%
-			);
+			radial-gradient(
+				ellipse 70% 80% at 100% -20%,
+				color-mix(in oklch, var(--primary) 14%, transparent),
+				transparent 55%
+			),
+			linear-gradient(180deg, var(--sunken) 0%, var(--background) 100%);
 	}
 
 	.hero-page {
-		background: var(--sunken);
+		background:
+			radial-gradient(
+				ellipse 60% 50% at 0% 0%,
+				color-mix(in oklch, var(--primary) 8%, transparent),
+				transparent 60%
+			),
+			var(--sunken);
 	}
 
 	/*
@@ -737,30 +681,23 @@
 	}
 
 	/*
-	  Floating dark panel: mega menu, popovers. --dark-2 with a full hairline and
-	  a real drop shadow, so it reads as sitting above the page rather than being
-	  cut out of the header.
+	  Floating panel for mega menus / popovers — light elevated surface.
 	*/
 	.surface-float {
-		--border: color-mix(in srgb, white 10%, transparent);
-		--muted-foreground: var(--on-dark-muted);
-		--ring-offset: var(--dark-2);
-		background: var(--dark-2);
-		color: var(--on-dark);
-		box-shadow: var(--hairline-all), var(--shadow-float);
+		--ring-offset: var(--card);
+		background: var(--card);
+		color: var(--foreground);
+		border: 1px solid var(--border);
+		box-shadow: var(--shadow-float);
 	}
 
 	/*
-	  Dark surfaces must remap light-theme text tokens. Without this, nested
-	  .prose / text-foreground / strong keep --prose-body and --foreground from
-	  :root (dark charcoal on charcoal) and fail contrast, especially inside
-	  service timeline panels that put MarkdownContent on surface-float.
+	  Dark surfaces remap text tokens for contrast on ink bands.
+	  Light `.surface-float` mega menus are intentionally excluded.
 	*/
-	.surface-float,
 	.surface-hero,
 	.surface-dark,
 	.surface-dark-soft,
-	.surface-raised,
 	.hero-cinematic,
 	.bg-ink,
 	.bg-panel {
@@ -775,40 +712,31 @@
 		--prose-code-bg: color-mix(in srgb, white 9%, transparent);
 	}
 
-	.surface-float .prose a,
 	.surface-hero .prose a,
 	.surface-dark .prose a,
 	.surface-dark-soft .prose a,
-	.surface-raised .prose a,
 	.hero-cinematic .prose a,
 	.bg-ink .prose a,
 	.bg-panel .prose a {
 		color: var(--primary-bright);
 	}
 
-	/*
-	  Light cards nested on a dark band must restore light-theme text tokens.
-	  Use concrete light values (not var(--card-foreground)): the parent dark
-	  surface already remapped --card-foreground to on-dark.
-	*/
-	.surface-float .surface-panel,
 	.surface-hero .surface-panel,
 	.surface-dark .surface-panel,
 	.surface-dark-soft .surface-panel,
 	.hero-cinematic .surface-panel,
 	.bg-ink .surface-panel,
 	.bg-panel .surface-panel {
-		--foreground: oklch(0.2 0.007 68);
-		--card-foreground: oklch(0.2 0.007 68);
-		--muted-foreground: oklch(0.49 0.011 68);
-		--prose-body: oklch(0.385 0.01 68);
-		--prose-quote: oklch(0.432 0.01 68);
-		--prose-quote-bg: oklch(0.954 0.005 85);
-		--prose-code-bg: oklch(0.943 0.004 85);
-		color: oklch(0.2 0.007 68);
+		--foreground: oklch(0.2 0.02 255);
+		--card-foreground: oklch(0.2 0.02 255);
+		--muted-foreground: oklch(0.5 0.02 255);
+		--prose-body: oklch(0.4 0.02 255);
+		--prose-quote: oklch(0.42 0.02 255);
+		--prose-quote-bg: oklch(0.96 0.015 255);
+		--prose-code-bg: oklch(0.95 0.012 250);
+		color: oklch(0.2 0.02 255);
 	}
 
-	.surface-float .surface-panel .prose a,
 	.surface-hero .surface-panel .prose a,
 	.surface-dark .surface-panel .prose a,
 	.surface-dark-soft .surface-panel .prose a,
@@ -818,17 +746,16 @@
 		color: var(--primary);
 	}
 
-	/* A card resting on a floating panel. */
+	/* Icon tile on light mega menus / raised chips. */
 	.surface-raised {
-		background: var(--dark-3);
-		box-shadow: var(--hairline-all);
+		background: var(--accent);
+		color: var(--primary);
+		box-shadow: none;
 	}
 
 	/*
-	  Blueprint grid, drawn from the subject: permit drawings and site plans are
-	  set on exactly this kind of ruled field. Masked so it fades out instead of
-	  ending on a hard edge, and pinned behind content on its own z layer, which
-	  is why every surface using it sets `isolation: isolate`.
+	  Soft ruled field for dark bands. Masked so it fades instead of ending on a
+	  hard edge; pinned behind content on its own z layer (`isolation: isolate`).
 	*/
 	.tex-grid::before {
 		content: "";
@@ -855,8 +782,7 @@
 		);
 	}
 
-	/* Ambient copper. One warm source top-left so the band has a light
-	   direction instead of reading evenly flat. */
+	/* Ambient brand glow — one cool source so dark bands have light direction. */
 	.tex-glow::after {
 		content: "";
 		position: absolute;
@@ -988,10 +914,7 @@
 	}
 
 	/*
-	  Signature: the spec plate. One label system for eyebrows, category marks,
-	  and column heads - mono, letterspaced, over a short copper rule, the way a
-	  permit stamp or a control-panel nameplate is set. Replaces the two
-	  competing eyebrow treatments (pill badges + .type-eyebrow).
+	  Meta eyebrow — mono, tracked, with a short signal rule.
 	*/
 	.spec-label {
 		display: flex;
@@ -1000,16 +923,17 @@
 		font-family: var(--font-mono);
 		font-size: var(--type-label);
 		font-weight: 600;
-		letter-spacing: 0.18em;
+		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		color: var(--primary);
 	}
 
 	.spec-label::before {
 		content: "";
-		width: 1.5rem;
+		width: 1.25rem;
 		height: 2px;
 		flex: none;
+		border-radius: 999px;
 		background: currentColor;
 	}
 
@@ -1019,9 +943,7 @@
 
 	.surface-dark .spec-label,
 	.surface-dark-soft .spec-label,
-	.surface-float .spec-label,
 	.surface-hero .spec-label,
-	.surface-raised .spec-label,
 	.hero-cinematic .spec-label,
 	.bg-ink .spec-label,
 	.bg-panel .spec-label {
@@ -1333,7 +1255,7 @@
     box-shadow: 0 0 0 2px var(--ring-offset), 0 0 0 4px var(--ring);
   }
   .glow-brand {
-    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--primary) 28%, transparent) 0%, transparent 70%);
+    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--primary) 22%, transparent) 0%, transparent 70%);
   }
   .text-gradient {
     background: linear-gradient(180deg, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 62%, transparent) 100%);
@@ -1357,4 +1279,14 @@
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+
+@layer utilities {
+  .site-atmosphere {
+    background:
+      radial-gradient(ellipse 70% 45% at 15% -10%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 95% 10%, color-mix(in oklch, var(--primary) 7%, transparent), transparent 50%),
+      var(--background);
+  }
 }

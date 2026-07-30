@@ -156,7 +156,7 @@ export default function ResumePage() {
 					<header className="reveal w-full">
 						<div className="flex w-full flex-col gap-6">
 							<div className="flex items-start gap-5">
-								<div className="relative size-14 shrink-0 overflow-hidden rounded-md ring-1 ring-border sm:size-16">
+								<div className="relative size-14 shrink-0 overflow-hidden rounded-2xl ring-1 ring-border sm:size-16">
 									<Image
 										alt="Byron Wade"
 										className="size-full object-cover"

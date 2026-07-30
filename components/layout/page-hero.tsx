@@ -20,7 +20,7 @@ const variantClass: Record<PageHeroVariant, string> = {
 };
 
 /**
- * Interior page hero — Wade's-style first viewport for non-home routes.
+ * Interior page hero — clean first viewport for non-home routes.
  * One eyebrow, one headline, one lead. No card chrome.
  */
 export function PageHero({

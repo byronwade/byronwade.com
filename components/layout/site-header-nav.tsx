@@ -59,7 +59,7 @@ const megaIcons: Record<MegaNavItem["icon"], ComponentType<{ className?: string 
 };
 
 const triggerClassName =
-	"bg-transparent text-white hover:bg-transparent hover:text-primary-bright focus:bg-transparent focus:text-primary-bright data-[active]:bg-transparent data-[active]:text-primary-bright data-[state=open]:bg-transparent data-[state=open]:text-primary-bright";
+	"bg-transparent text-muted-foreground hover:bg-transparent hover:text-foreground focus:bg-transparent focus:text-foreground data-[active]:bg-transparent data-[active]:text-foreground data-[state=open]:bg-transparent data-[state=open]:text-foreground";
 
 function MegaLink({ href, label, description, icon }: MegaNavItem) {
 	const Icon = megaIcons[icon];
@@ -69,20 +69,20 @@ function MegaLink({ href, label, description, icon }: MegaNavItem) {
 		<li>
 			<NavigationMenuLink asChild>
 				<Link
-					className="group relative flex items-start gap-3.5 rounded-lg p-3 outline-none transition-colors hover:bg-white/[0.05] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)]"
+					className="group relative flex items-start gap-3.5 rounded-xl p-3 outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 					href={href}
 					prefetch={!external}
 					{...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
 				>
-					<span className="surface-raised grid size-9 shrink-0 place-items-center rounded-md text-primary-bright transition-colors group-hover:bg-[color-mix(in_srgb,var(--primary)_30%,var(--dark-3))]">
+					<span className="surface-raised grid size-9 shrink-0 place-items-center rounded-lg transition-colors group-hover:bg-[color-mix(in_oklch,var(--primary)_16%,var(--accent))]">
 						<Icon className="size-[1.125rem]" aria-hidden="true" />
 					</span>
 					<span className="min-w-0">
-						<span className="block text-sm font-bold tracking-[-0.01em] text-white transition-colors group-hover:text-primary-bright">
+						<span className="block text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
 							{label}
 						</span>
 						{description ? (
-							<span className="mt-1 block text-[0.8125rem] leading-snug text-on-dark-subtle">
+							<span className="mt-1 block text-[0.8125rem] leading-snug text-muted-foreground">
 								{description}
 							</span>
 						) : null}
@@ -95,15 +95,18 @@ function MegaLink({ href, label, description, icon }: MegaNavItem) {
 
 function MegaFooter({ action, actionLabel }: { action: string; actionLabel: string }) {
 	return (
-		<div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-			<p className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[0.6875rem] tracking-[0.08em] text-on-dark-subtle uppercase">
+		<div className="mt-6 flex flex-col gap-4 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+			<p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+				<span className="inline-flex items-center gap-2 font-medium">
+					<span className="size-1.5 rounded-full bg-success" aria-hidden="true" />
+					{siteConfig.availability}
+				</span>
 				<span>{siteConfig.location}</span>
-				<span>{siteConfig.availability}</span>
 			</p>
 			<div className="flex shrink-0 items-center gap-2">
 				<NavigationMenuLink asChild>
 					<a
-						className={buttonVariants({ variant: "default", size: "sm" })}
+						className={buttonVariants({ variant: "outline", size: "sm" })}
 						href={siteConfig.social.github}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -114,7 +117,7 @@ function MegaFooter({ action, actionLabel }: { action: string; actionLabel: stri
 				</NavigationMenuLink>
 				<NavigationMenuLink asChild>
 					<Link
-						className={buttonVariants({ variant: "inverse", size: "sm" })}
+						className={buttonVariants({ variant: "default", size: "sm" })}
 						href={action}
 						prefetch
 					>
@@ -140,25 +143,25 @@ function WorkMegaMenu() {
 					</ul>
 				</div>
 
-				<div className="rounded-lg bg-black/20 p-3 lg:p-4">
+				<div className="rounded-xl bg-muted/70 p-3 lg:p-4">
 					<p className="spec-label mb-3 px-1">Featured</p>
 					<ul className="space-y-0.5">
 						{workMegaHighlights.map((item) => (
 							<li key={item.href}>
 								<NavigationMenuLink asChild>
 									<Link
-										className="group block rounded-md p-2.5 outline-none transition-colors hover:bg-white/[0.05] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)]"
+										className="group block rounded-lg p-2.5 outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 										href={item.href}
 										prefetch
 									>
-										<span className="flex items-center justify-between gap-3 text-sm font-bold tracking-[-0.01em] text-white transition-colors group-hover:text-primary-bright">
+										<span className="flex items-center justify-between gap-3 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
 											{item.label}
 											<ArrowRight
 												aria-hidden="true"
-												className="size-4 shrink-0 -translate-x-1 text-primary-bright opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
+												className="size-4 shrink-0 -translate-x-1 text-primary opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
 											/>
 										</span>
-										<span className="mt-1 block text-[0.8125rem] leading-snug text-on-dark-subtle">
+										<span className="mt-1 block text-[0.8125rem] leading-snug text-muted-foreground">
 											{item.description}
 										</span>
 									</Link>
@@ -186,17 +189,13 @@ function AboutMegaMenu() {
 						))}
 					</ul>
 				</div>
-				<div className="relative overflow-hidden rounded-lg bg-black/20 p-5 lg:p-6">
-					<div
-						aria-hidden="true"
-						className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_100%_0%,color-mix(in_srgb,var(--primary)_35%,transparent),transparent_60%)]"
-					/>
+				<div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-accent to-card p-5 lg:p-6">
 					<div className="relative">
 						<p className="spec-label mb-3">Now building</p>
-						<p className="font-display text-xl font-extrabold tracking-[-0.03em] text-white">
+						<p className="font-display text-xl font-bold tracking-[-0.03em] text-foreground">
 							Thorbis
 						</p>
-						<p className="mt-2 max-w-sm text-sm leading-relaxed text-on-dark-muted">
+						<p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
 							Field management software for service professionals — real problems from the field,
 							solved in code.
 						</p>
@@ -204,7 +203,7 @@ function AboutMegaMenu() {
 							href={siteConfig.social.thorbis}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-primary-bright transition-colors hover:text-white"
+							className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-foreground"
 						>
 							Visit thorbis.com
 							<ArrowRight className="size-4" aria-hidden="true" />
@@ -222,7 +221,7 @@ export function SiteHeaderNav() {
 
 	return (
 		<>
-			<nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+			<nav aria-label="Primary" className="hidden items-center gap-0.5 lg:flex">
 				<NavigationMenu>
 					<NavigationMenuList>
 						{midNavLinks.map((item) => (
@@ -259,7 +258,7 @@ export function SiteHeaderNav() {
 					type="button"
 					onClick={() => openSiteSearch()}
 					aria-label="Search (⌘K)"
-					className="ml-1 inline-flex size-10 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-primary-bright focus-visible:ring-2 focus-visible:ring-ring"
+					className="ml-1 inline-flex size-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
 				>
 					<Search className="size-4" aria-hidden="true" />
 				</button>
@@ -278,7 +277,7 @@ export function SiteHeaderNav() {
 					type="button"
 					onClick={() => openSiteSearch()}
 					aria-label="Search"
-					className="inline-flex size-10 items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-primary-bright"
+					className="inline-flex size-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 				>
 					<Search className="size-5" aria-hidden="true" />
 				</button>
@@ -287,7 +286,7 @@ export function SiteHeaderNav() {
 					onClick={() => setMobileOpen(true)}
 					aria-label="Open menu"
 					aria-expanded={mobileOpen}
-					className="inline-flex size-10 items-center justify-center rounded-md text-white/85 transition-colors hover:bg-white/10 hover:text-primary-bright"
+					className="inline-flex size-10 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 				>
 					<Menu className="size-5" aria-hidden="true" />
 				</button>

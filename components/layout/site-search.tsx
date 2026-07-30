@@ -147,7 +147,7 @@ export function SiteSearch({ entries }: { entries: SearchEntry[] }) {
 													onMouseEnter={() => setActive(index)}
 													onClick={() => go(item.href)}
 													className={cn(
-														"flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left transition-colors",
+														"flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors",
 														selected ? "bg-primary text-primary-foreground" : "hover:bg-muted"
 													)}
 												>
