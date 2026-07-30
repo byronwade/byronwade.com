@@ -18,7 +18,7 @@ function FooterColumn({
 }) {
 	return (
 		<nav aria-label={title}>
-			<p className="mb-4 text-xs font-semibold tracking-[0.12em] text-primary-bright uppercase">
+			<p className="mb-4 text-xs font-medium tracking-[0.06em] text-muted-foreground uppercase">
 				{title}
 			</p>
 			<ul className="flex flex-col gap-3">
@@ -29,7 +29,7 @@ function FooterColumn({
 								href={link.href}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="text-sm text-on-dark-muted transition-colors hover:text-white"
+								className="text-sm text-muted-foreground transition-colors hover:text-foreground"
 							>
 								{link.label}
 							</a>
@@ -37,7 +37,7 @@ function FooterColumn({
 							<Link
 								href={link.href}
 								prefetch
-								className="text-sm text-on-dark-muted transition-colors hover:text-white"
+								className="text-sm text-muted-foreground transition-colors hover:text-foreground"
 							>
 								{link.label}
 							</Link>
@@ -51,7 +51,7 @@ function FooterColumn({
 
 export default function Footer() {
 	return (
-		<footer className="bg-ink text-white">
+		<footer className="border-t border-border/70 bg-sunken text-foreground">
 			<div className="container-shell py-[var(--space-section-y-tight)]">
 				<div className="grid gap-[var(--space-block)] sm:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
 					<div>
@@ -61,21 +61,21 @@ export default function Footer() {
 							href="/"
 							prefetch
 						>
-							<span className="font-display text-xl leading-tight font-bold tracking-[-0.03em]">
+							<span className="text-xl leading-tight font-medium tracking-[-0.02em]">
 								{siteConfig.name}
 							</span>
-							<span className="mt-1.5 text-sm text-on-dark-muted">{siteConfig.tagline}</span>
+							<span className="mt-1.5 text-sm text-muted-foreground">{siteConfig.tagline}</span>
 						</Link>
-						<p className="mt-5 max-w-xs text-sm leading-relaxed text-on-dark-muted">
+						<p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
 							{siteConfig.description}
 						</p>
-						<p className="mt-4 max-w-xs text-sm leading-relaxed text-on-dark-muted">
+						<p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
 							{siteConfig.location}
 						</p>
-						<div className="mt-4 flex items-center gap-2 text-sm text-on-dark-muted">
-							<Mail className="size-4 text-primary-bright" aria-hidden="true" />
+						<div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+							<Mail className="size-4" aria-hidden="true" />
 							<ObfuscatedEmail
-								className="text-on-dark-muted hover:text-white"
+								className="text-muted-foreground hover:text-foreground"
 								showIcon={false}
 								variant="link"
 							/>
@@ -88,9 +88,9 @@ export default function Footer() {
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={social.name}
-									className="grid size-10 place-items-center rounded-xl bg-white/8 text-on-dark-muted opacity-90 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-ring"
+									className="grid size-10 place-items-center rounded-2xl border border-border/70 bg-card text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40"
 								>
-									<social.icon className="size-5" />
+									<social.icon className="size-4" />
 								</a>
 							))}
 						</div>
@@ -101,38 +101,30 @@ export default function Footer() {
 					<FooterColumn title="Products" links={footerProductLinks} />
 				</div>
 
-				<div className="mt-[var(--space-block)] flex flex-col gap-4 border-t border-white/10 pt-7 text-xs text-on-dark-subtle sm:flex-row sm:items-center sm:justify-between">
+				<div className="mt-[var(--space-block)] flex flex-col gap-4 border-t border-border/70 pt-7 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
 					<p>
 						© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
 					</p>
 					<div className="flex flex-wrap gap-x-6 gap-y-2">
-						<Link className="transition-colors hover:text-white" href="/privacy" prefetch>
+						<Link className="transition-colors hover:text-foreground" href="/privacy" prefetch>
 							Privacy
 						</Link>
-						<Link className="transition-colors hover:text-white" href="/terms" prefetch>
+						<Link className="transition-colors hover:text-foreground" href="/terms" prefetch>
 							Terms
 						</Link>
-						<a className="transition-colors hover:text-white" href="/sitemap.xml">
+						<a className="transition-colors hover:text-foreground" href="/sitemap.xml">
 							Sitemap
 						</a>
 					</div>
 				</div>
 			</div>
 
-			<div className="footer-credit relative overflow-hidden">
-				<div
-					aria-hidden="true"
-					className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_120%_at_50%_-20%,color-mix(in_oklch,var(--primary)_35%,transparent),transparent_55%)]"
-				/>
-				<div
-					aria-hidden="true"
-					className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"
-				/>
-				<div className="container-shell relative flex flex-col items-center gap-3 py-8 text-center sm:py-10">
-					<p className="text-[0.6875rem] font-semibold tracking-[0.16em] text-primary-bright/90 uppercase">
+			<div className="border-t border-border/60">
+				<div className="container-shell flex flex-col items-center gap-2 py-8 text-center sm:py-10">
+					<p className="text-xs font-medium tracking-[0.06em] text-muted-foreground uppercase">
 						Built in the field
 					</p>
-					<p className="max-w-lg text-[0.9375rem] leading-relaxed text-pretty text-white/78 sm:text-base">
+					<p className="max-w-lg text-sm leading-relaxed text-pretty text-muted-foreground sm:text-[0.9375rem]">
 						I grew a plumbing company to $2.4M — then started building the software service
 						businesses actually need.
 					</p>

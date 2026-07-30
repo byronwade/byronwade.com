@@ -20,8 +20,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 			<SiteSearch entries={searchEntries} />
 			{/* Floating theme control — keeps dark/light available without dock chrome */}
 			<div className="pointer-events-none fixed right-3 bottom-3 z-40 print:hidden sm:right-5 sm:bottom-5">
-				<div className="pointer-events-auto rounded-xl border border-border bg-card/95 p-1 shadow-[var(--shadow-panel)] backdrop-blur-sm">
-					<ThemeToggle className="rounded-lg text-foreground hover:bg-muted" />
+				<div className="pointer-events-auto rounded-2xl border border-border/70 bg-card/90 p-1 shadow-[var(--shadow-panel)] backdrop-blur-xl">
+					<ThemeToggle className="rounded-xl text-foreground hover:bg-muted" />
 				</div>
 			</div>
 		</>

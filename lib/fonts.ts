@@ -1,28 +1,15 @@
-import { Geist_Mono, Plus_Jakarta_Sans, Syne } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
-/** Body / UI — contemporary geometric sans */
-export const jakarta = Plus_Jakarta_Sans({
+/** Soft modern UI — Geist for body and display (one calm voice) */
+export const geist = Geist({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-jakarta",
+	variable: "--font-geist",
 	preload: true,
-	weight: ["400", "500", "600", "700"],
 });
 
-/**
- * Display face — Syne gives headings a modern studio voice
- * without looking like a default AI portfolio stack.
- */
-export const syne = Syne({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-syne",
-	preload: false,
-	weight: ["600", "700", "800"],
-});
-
-/** Monospace — code, metrics, meta labels */
+/** Monospace — code and dense meta */
 export const geistMono = Geist_Mono({
 	subsets: ["latin"],
 	display: "swap",
@@ -42,7 +29,9 @@ export const customFont = localFont({
 	variable: "--font-signature",
 });
 
-/** @deprecated transitional aliases */
-export const manrope = jakarta;
-export const archivo = syne;
-export const geistSans = jakarta;
+/** @deprecated transitional aliases — all map to Geist */
+export const jakarta = geist;
+export const syne = geist;
+export const manrope = geist;
+export const archivo = geist;
+export const geistSans = geist;

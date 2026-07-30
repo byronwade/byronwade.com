@@ -10,7 +10,7 @@ import "./globals.css";
 import { ErrorBoundary, ThemeProvider } from "@/components/common";
 import SiteLayout from "@/components/layout/conditional-layout";
 import { Toaster } from "@/components/ui/sonner";
-import { customFont, geistMono, jakarta, syne } from "@/lib/fonts";
+import { customFont, geist, geistMono } from "@/lib/fonts";
 import { metadata, viewport } from "./metadata.config";
 
 const personJsonLd = generatePersonStructuredData();
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="dns-prefetch" href="//api.figma.com" />
 			</head>
 			<body
-				className={`${jakarta.variable} ${syne.variable} ${geistMono.variable} ${customFont.variable} site-atmosphere min-h-screen bg-background font-sans antialiased touch-pan-y`}
+				className={`${geist.variable} ${geistMono.variable} ${customFont.variable} site-atmosphere min-h-screen bg-background font-sans antialiased touch-pan-y`}
 			>
 				<a href="#main-content" className="skip-link">
 					Skip to main content

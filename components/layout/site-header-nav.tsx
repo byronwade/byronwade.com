@@ -78,7 +78,7 @@ function MegaLink({ href, label, description, icon }: MegaNavItem) {
 						<Icon className="size-[1.125rem]" aria-hidden="true" />
 					</span>
 					<span className="min-w-0">
-						<span className="block text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
+						<span className="block text-sm font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:text-foreground">
 							{label}
 						</span>
 						{description ? (
@@ -143,7 +143,7 @@ function WorkMegaMenu() {
 					</ul>
 				</div>
 
-				<div className="rounded-xl bg-muted/70 p-3 lg:p-4">
+				<div className="rounded-2xl bg-muted/60 p-3 lg:p-4">
 					<p className="spec-label mb-3 px-1">Featured</p>
 					<ul className="space-y-0.5">
 						{workMegaHighlights.map((item) => (
@@ -154,11 +154,11 @@ function WorkMegaMenu() {
 										href={item.href}
 										prefetch
 									>
-										<span className="flex items-center justify-between gap-3 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
+										<span className="flex items-center justify-between gap-3 text-sm font-medium tracking-[-0.01em] text-foreground">
 											{item.label}
 											<ArrowRight
 												aria-hidden="true"
-												className="size-4 shrink-0 -translate-x-1 text-primary opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
+												className="size-4 shrink-0 -translate-x-1 text-muted-foreground opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
 											/>
 										</span>
 										<span className="mt-1 block text-[0.8125rem] leading-snug text-muted-foreground">
@@ -189,10 +189,10 @@ function AboutMegaMenu() {
 						))}
 					</ul>
 				</div>
-				<div className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-accent to-card p-5 lg:p-6">
+				<div className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-5 shadow-[var(--shadow-panel)] lg:p-6">
 					<div className="relative">
 						<p className="spec-label mb-3">Now building</p>
-						<p className="font-display text-xl font-bold tracking-[-0.03em] text-foreground">
+						<p className="text-xl font-medium tracking-[-0.02em] text-foreground">
 							Thorbis
 						</p>
 						<p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
@@ -203,7 +203,7 @@ function AboutMegaMenu() {
 							href={siteConfig.social.thorbis}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-foreground"
+							className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-opacity hover:opacity-70"
 						>
 							Visit thorbis.com
 							<ArrowRight className="size-4" aria-hidden="true" />

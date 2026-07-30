@@ -45,7 +45,7 @@ async function ProjectsList() {
 							<Badge variant={projectType === "product" ? "success" : "muted"}>
 								{typeLabels[projectType]}
 							</Badge>
-							<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
+							<span className="truncate font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:opacity-70">
 								{project.title}
 							</span>
 						</div>
@@ -70,7 +70,7 @@ export function HomeProjects() {
 				</div>
 				<Link
 					href="/projects"
-					className="text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
+					className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
 				>
 					All projects →
 				</Link>

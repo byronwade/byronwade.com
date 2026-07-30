@@ -55,7 +55,7 @@ function MobileNavLink({
 		>
 			<span
 				className={cn(
-					"block font-bold tracking-[-0.02em] text-foreground",
+					"block font-medium tracking-[-0.01em] text-foreground",
 					compact ? "text-[0.9375rem]" : "text-base"
 				)}
 			>
@@ -107,7 +107,7 @@ export function SiteHeaderMobileMenu({
 							/>
 						</span>
 						<div>
-							<SheetTitle className="font-display text-base font-extrabold tracking-[-0.03em]">
+							<SheetTitle className="text-base font-medium tracking-[-0.02em]">
 								{siteConfig.name}
 							</SheetTitle>
 							<SheetDescription className="text-xs text-muted-foreground">

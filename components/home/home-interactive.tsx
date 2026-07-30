@@ -16,8 +16,8 @@ const socials = [
 ] as const;
 
 const socialLinkClass = cn(
-	"inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-card/80 px-3.5 text-sm font-semibold tracking-[-0.01em] text-foreground transition-colors",
-	"hover:border-primary/30 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+	"inline-flex h-10 items-center gap-2 rounded-2xl border border-border/80 bg-card/90 px-3.5 text-sm font-medium tracking-[-0.01em] text-foreground shadow-[0_1px_2px_color-mix(in_oklch,var(--foreground)_3%,transparent)] transition-colors",
+	"hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2"
 );
 
 export function HomeInteractive() {
@@ -50,7 +50,7 @@ export function HomeInteractive() {
 						className="glow-brand pointer-events-none absolute -inset-6 opacity-70"
 						aria-hidden
 					/>
-					<div className="relative size-20 overflow-hidden rounded-2xl ring-1 ring-border sm:size-24">
+					<div className="relative size-20 overflow-hidden rounded-[1.25rem] shadow-[var(--shadow-panel)] ring-1 ring-border/70 sm:size-24">
 						<Image
 							alt="Byron Wade — Full Stack Developer"
 							className="size-full object-cover"
@@ -76,7 +76,7 @@ export function HomeInteractive() {
 			<div className="flex flex-col gap-5 text-base leading-relaxed text-muted-foreground">
 				<p className="reveal reveal-delay-1">
 					Full-stack developer and designer based in Jasper, Georgia. I grew a plumbing company to{" "}
-					<span className="font-bold text-primary">$2.4M</span> in revenue during my second year in
+					<span className="font-medium text-foreground">$2.4M</span> in revenue during my second year in
 					Santa Cruz, California — before relocating to Georgia.
 				</p>
 
@@ -86,7 +86,7 @@ export function HomeInteractive() {
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-bold"
+						className="link-underline font-medium"
 					>
 						Thorbis
 					</a>
@@ -95,7 +95,7 @@ export function HomeInteractive() {
 						href="https://nextjs.org"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-bold"
+						className="link-underline font-medium"
 					>
 						Next.js
 					</a>{" "}
@@ -104,7 +104,7 @@ export function HomeInteractive() {
 						href="https://react.dev"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-bold"
+						className="link-underline font-medium"
 					>
 						React
 					</a>
@@ -126,7 +126,7 @@ export function HomeInteractive() {
 					<button
 						type="button"
 						onClick={() => handleEmailClick("say-hello")}
-						className="link-underline cursor-pointer border-none bg-transparent p-0 text-base font-bold"
+						className="link-underline cursor-pointer border-none bg-transparent p-0 text-base font-medium"
 						aria-label="Open contact panel"
 					>
 						{copiedButton === "say-hello" ? "Copied!" : "Say hello"}
@@ -137,7 +137,7 @@ export function HomeInteractive() {
 							href="https://github.com/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="link-underline font-bold"
+							className="link-underline font-medium"
 						>
 							GitHub
 						</a>
@@ -147,7 +147,7 @@ export function HomeInteractive() {
 						href="https://linkedin.com/in/byronwade"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-bold"
+						className="link-underline font-medium"
 					>
 						LinkedIn
 					</a>
@@ -156,7 +156,7 @@ export function HomeInteractive() {
 						href="https://twitter.com/byron_c_wade"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-bold"
+						className="link-underline font-medium"
 					>
 						X
 					</a>

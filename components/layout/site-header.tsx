@@ -5,7 +5,7 @@ import { siteConfig } from "@/lib/site";
 
 export function SiteHeader() {
 	return (
-		<header className="sticky top-0 z-50 border-b border-border/80 bg-background/80 text-foreground shadow-[0_1px_0_0_color-mix(in_oklch,var(--foreground)_4%,transparent)] backdrop-blur-xl supports-backdrop-filter:bg-background/70">
+		<header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 text-foreground backdrop-blur-2xl supports-backdrop-filter:bg-background/55">
 			{/* Relative shell so mega-menu viewports span the full header width */}
 			<div className="relative">
 				<div className="container-shell flex h-16 items-center justify-between gap-3 sm:h-[4.25rem]">
@@ -15,7 +15,7 @@ export function SiteHeader() {
 						aria-label={`${siteConfig.name} home`}
 						prefetch
 					>
-						<span className="relative size-9 shrink-0 overflow-hidden rounded-xl ring-1 ring-border sm:size-10">
+						<span className="relative size-9 shrink-0 overflow-hidden rounded-2xl ring-1 ring-border/70 sm:size-10">
 							<Image
 								alt={`${siteConfig.name} portrait`}
 								className="size-full object-cover"
@@ -26,10 +26,10 @@ export function SiteHeader() {
 							/>
 						</span>
 						<span className="leading-none">
-							<span className="font-display block truncate text-[0.9375rem] leading-tight font-bold tracking-[-0.03em] text-foreground sm:text-lg">
+							<span className="block truncate text-[0.9375rem] leading-tight font-medium tracking-[-0.02em] text-foreground sm:text-base">
 								{siteConfig.name}
 							</span>
-							<span className="mt-1 block text-[0.6875rem] leading-none font-medium tracking-[-0.01em] text-muted-foreground">
+							<span className="mt-1 block text-[0.6875rem] leading-none font-normal text-muted-foreground">
 								{siteConfig.tagline}
 							</span>
 						</span>

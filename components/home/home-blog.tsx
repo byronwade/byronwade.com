@@ -20,7 +20,7 @@ async function BlogList() {
 					href={`/blog/${post.slug}`}
 					className="group flex items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-muted"
 				>
-					<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
+					<span className="truncate font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:opacity-70">
 						{post.title}
 					</span>
 					<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
@@ -48,7 +48,7 @@ export function HomeBlog() {
 				</div>
 				<Link
 					href="/blog"
-					className="text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
+					className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
 				>
 					All posts →
 				</Link>
