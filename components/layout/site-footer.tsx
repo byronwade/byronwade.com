@@ -48,7 +48,7 @@ export default function SiteFooter() {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer className="footer-cinema relative isolate mt-32 overflow-hidden sm:mt-40">
+		<footer className="footer-cinema relative isolate mt-32 overflow-hidden sm:mt-40 print:hidden">
 			{/* Horizon — the lit seam where the page ends and the stage begins. */}
 			<div className="footer-beam absolute inset-x-0 top-0 h-px" aria-hidden="true" />
 			<div className="footer-grid absolute inset-0 -z-10" aria-hidden="true" />

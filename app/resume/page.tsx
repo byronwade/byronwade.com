@@ -8,7 +8,6 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
 import { analytics } from "@/lib/analytics";
-import { customFont } from "@/lib/fonts";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {
@@ -33,10 +32,12 @@ const jsonLdData: WithContext<Person> = {
 		addressCountry: "US",
 	},
 	worksFor: [
+		{ "@type": "Organization", name: "Grassroots Plumbing" },
+		{ "@type": "Organization", name: "Thorbis LLC" },
+		{ "@type": "Organization", name: "ServiceWise Electric & Plumbing" },
 		{ "@type": "Organization", name: "Lanier Plumbing Services, LLC" },
 		{ "@type": "Organization", name: "Wade's Plumbing & Septic" },
 		{ "@type": "Organization", name: "Garrison Septic & Plumbing" },
-		{ "@type": "Organization", name: "Thorbis LLC" },
 	],
 	alumniOf: [
 		{ "@type": "EducationalOrganization", name: "San Lorenzo Valley High School" },
@@ -64,6 +65,15 @@ const jsonLdData: WithContext<Person> = {
 
 const workExperience = [
 	{
+		role: "Service Plumber",
+		company: "Grassroots Plumbing",
+		location: "Woodstock, GA",
+		period: "Dec 2025 — Present",
+		description:
+			"Residential and commercial service plumbing — diagnostics, repairs, and installations, with an emphasis on getting it right the first visit.",
+		current: true,
+	},
+	{
 		role: "Founder & CEO",
 		company: "Thorbis",
 		companyUrl: "https://thorbis.com",
@@ -76,7 +86,7 @@ const workExperience = [
 	{
 		role: "Service Plumber",
 		company: "ServiceWise Electric & Plumbing",
-		location: "Georgia",
+		location: "Holly Springs, GA",
 		period: "Apr 2025 — Nov 2025",
 		description:
 			"Provided residential and commercial plumbing services with focus on customer satisfaction, diagnostic expertise, and efficient problem resolution.",
@@ -122,12 +132,24 @@ const skills = [
 
 const certifications: { name: string; year: string; pending?: boolean }[] = [
 	{ name: "Master Plumber License (GA)", year: "2026" },
-	{ name: "C-36 Plumbing License (CA)", year: "2018" },
-	{ name: "C-42 Sanitation License (CA)", year: "2020" },
-	{ name: "Septic System Installer (Santa Cruz County)", year: "2016" },
-	{ name: "Septic System Installer (Santa Clara County)", year: "2017" },
+	{ name: "C-36 Plumbing License (CA)", year: "2021" },
+	{ name: "C-42 Sanitation License (CA)", year: "2021" },
+	{ name: "Septic System Installer (Santa Cruz County)", year: "2021" },
+	{ name: "Septic System Installer (Santa Clara County)", year: "2021" },
 	{ name: "Project Management", year: "2019" },
 ];
+
+/** Small caps label with a hairline running to the right margin. */
+function SectionHeading({ children }: { children: React.ReactNode }) {
+	return (
+		<div className="mb-8 flex items-center gap-4">
+			<h2 className="shrink-0 text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+				{children}
+			</h2>
+			<span aria-hidden="true" className="h-px flex-1 bg-border" />
+		</div>
+	);
+}
 
 export default function ResumePage() {
 	const [emailCopied, setEmailCopied] = useState(false);
@@ -154,56 +176,50 @@ export default function ResumePage() {
 
 			<SiteShell>
 				<div className="flex w-full flex-col gap-12 sm:gap-16">
-					<header className="reveal w-full">
-						<div className="flex w-full flex-col gap-6">
-							<div className="flex items-start gap-5">
-								<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
-									<Image
-										alt="Byron Wade"
-										className="size-full object-cover"
-										src="/avatar.avif"
-										width={64}
-										height={64}
-										priority
-									/>
-								</div>
-								<div className="flex flex-col gap-1 pt-1">
-									<h1
-										className={`${customFont.className} text-2xl font-medium text-foreground sm:text-3xl`}
-									>
-										Byron Wade
-									</h1>
-									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
-								</div>
+					<header className="reveal flex w-full flex-col gap-7">
+						<div className="flex items-center gap-5">
+							<div className="relative size-16 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-[4.5rem]">
+								<Image
+									alt="Byron Wade"
+									className="size-full object-cover"
+									src="/avatar.avif"
+									width={72}
+									height={72}
+									priority
+								/>
 							</div>
+							<div className="flex min-w-0 flex-col gap-1.5">
+								<h1 className="font-heading text-3xl font-semibold tracking-[-0.025em] text-foreground sm:text-4xl">
+									Byron Wade
+								</h1>
+								<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
+							</div>
+						</div>
 
-							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
-								<button
-									type="button"
-									onClick={copyEmail}
-									className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand"
-								>
-									{emailCopied ? (
-										<Check className="size-4 text-brand" />
-									) : (
-										<Mail className="size-4" />
-									)}
-									<span>{emailCopied ? "Copied!" : email}</span>
-								</button>
-								<span className="flex items-center gap-2">
-									<MapPin className="size-4" />
-									Jasper, GA
-								</span>
-								<a
-									href="/api/resume-pdf"
-									download="Byron_Wade_Resume.pdf"
-									onClick={() => analytics.resumeDownload("pdf")}
-									className="flex items-center gap-2 transition-colors hover:text-brand"
-								>
-									<Download className="size-4" />
-									<span>Download PDF</span>
-								</a>
-							</div>
+						<div className="flex flex-wrap items-center gap-2">
+							<button type="button" onClick={copyEmail} className={pillLinkClass}>
+								{emailCopied ? (
+									<Check className="size-4 text-brand" />
+								) : (
+									<Mail className="size-4" />
+								)}
+								{emailCopied ? "Copied!" : email}
+							</button>
+							<span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground">
+								<MapPin className="size-4" />
+								Jasper, GA
+							</span>
+							{/* The one filled control on the page — and the only thing the PDF
+							    render has no use for. */}
+							<a
+								href="/api/resume-pdf"
+								download="Byron_Wade_Resume.pdf"
+								onClick={() => analytics.resumeDownload("pdf")}
+								className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-3.5 py-1.5 text-sm font-semibold text-background transition-opacity hover:opacity-85 print:hidden"
+							>
+								<Download className="size-4" />
+								Download PDF
+							</a>
 						</div>
 					</header>
 
@@ -231,98 +247,125 @@ export default function ResumePage() {
 						</div>
 					</section>
 
-					{/* Experience */}
+					{/* Experience — a rail timeline: one continuous thread, a node per role,
+					    lit at the roles that are still running. */}
 					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Experience
-						</h2>
-						<div className="flex flex-col gap-10">
-							{workExperience.map((job) => (
-								<article key={`${job.company}-${job.role}`} className="flex flex-col gap-2">
-									<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-										<h3 className="font-medium text-foreground">
-											{job.role}
+						<SectionHeading>Experience</SectionHeading>
+						<ol className="flex flex-col">
+							{workExperience.map((job, i) => {
+								const last = i === workExperience.length - 1;
+								return (
+									// The gap between entries lives on the <article>, not the <li> — the
+									// rail is a flex sibling and only stretches to the row's content box,
+									// so padding on the <li> would leave the thread short of the next node.
+									<li key={`${job.company}-${job.role}`} className="relative flex gap-5">
+										<div className="relative flex w-2.5 shrink-0 justify-center">
+											<span
+												aria-hidden="true"
+												className={`absolute top-[0.45rem] size-2.5 rounded-full ring-4 ring-background ${
+													job.current ? "bg-brand" : "bg-border"
+												}`}
+											/>
 											{job.current && (
-												<StatusPill tone="success" pulse className="ml-2 align-middle">
-													Current
-												</StatusPill>
+												<span
+													aria-hidden="true"
+													className="absolute top-[0.45rem] size-2.5 animate-ping rounded-full bg-brand opacity-50"
+												/>
 											)}
-										</h3>
-										<span className="shrink-0 text-sm tabular-nums text-muted-foreground">
-											{job.period}
-										</span>
-									</div>
-									<p className="text-sm text-muted-foreground">
-										{job.companyUrl ? (
-											<a
-												href={job.companyUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="link-underline inline-flex items-center gap-1 font-medium"
-											>
-												{job.company}
-												<ExternalLink className="size-3" />
-											</a>
-										) : (
-											job.company
-										)}
-										{" · "}
-										{job.location}
-									</p>
-									<p className="mt-2 leading-relaxed text-muted-foreground">
-										{(() => {
-											if (!job.highlight || !job.description.includes(job.highlight)) {
-												return job.description;
-											}
-											const idx = job.description.indexOf(job.highlight);
-											return (
-												<>
-													{job.description.slice(0, idx)}
-													<span className="font-medium text-brand">{job.highlight}</span>
-													{job.description.slice(idx + job.highlight.length)}
-												</>
-											);
-										})()}
-									</p>
-								</article>
-							))}
-						</div>
+											{!last && (
+												<span
+													aria-hidden="true"
+													className="absolute top-5 bottom-0 w-px bg-border"
+												/>
+											)}
+										</div>
+
+										<article className={`min-w-0 flex-1 ${last ? "" : "pb-10"}`}>
+											<div className="flex flex-col gap-x-4 gap-y-0.5 sm:flex-row sm:items-baseline sm:justify-between">
+												<h3 className="font-medium text-foreground">
+													{job.role}
+													{job.current && (
+														<StatusPill tone="success" className="ml-2 align-middle">
+															Current
+														</StatusPill>
+													)}
+												</h3>
+												<span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+													{job.period}
+												</span>
+											</div>
+											<p className="mt-1 text-sm text-muted-foreground">
+												{job.companyUrl ? (
+													<a
+														href={job.companyUrl}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="link-underline inline-flex items-center gap-1 font-medium"
+													>
+														{job.company}
+														<ExternalLink className="size-3" />
+													</a>
+												) : (
+													<span className="font-medium text-foreground/80">{job.company}</span>
+												)}
+												{" · "}
+												{job.location}
+											</p>
+											<p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">
+												{(() => {
+													if (!job.highlight || !job.description.includes(job.highlight)) {
+														return job.description;
+													}
+													const idx = job.description.indexOf(job.highlight);
+													return (
+														<>
+															{job.description.slice(0, idx)}
+															<span className="font-medium text-brand">{job.highlight}</span>
+															{job.description.slice(idx + job.highlight.length)}
+														</>
+													);
+												})()}
+											</p>
+										</article>
+									</li>
+								);
+							})}
+						</ol>
 					</section>
 
 					{/* Skills */}
 					<section className="reveal reveal-delay-3 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Skills
-						</h2>
-						<div className="flex flex-wrap gap-2">
+						<SectionHeading>Skills</SectionHeading>
+						<ul className="flex flex-wrap gap-2">
 							{skills.map((skill) => (
-								<span key={skill} className={pillLinkClass}>
+								<li
+									key={skill}
+									className="inline-flex items-center rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground"
+								>
 									{skill}
-								</span>
+								</li>
 							))}
-						</div>
+						</ul>
 					</section>
 
-					{/* Certifications */}
+					{/* Licenses — hairline rows, no card: it should read like a document. */}
 					<section className="reveal reveal-delay-4 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Licenses & Certifications
-						</h2>
-						<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+						<SectionHeading>Licenses &amp; Certifications</SectionHeading>
+						<ul className="flex flex-col">
 							{certifications.map((cert) => (
-								<div
+								<li
 									key={`${cert.name}-${cert.year}`}
-									className="flex items-center justify-between gap-4 px-4 py-3"
+									className="flex items-baseline justify-between gap-4 border-b border-border py-3 last:border-b-0"
 								>
-									<span className="text-foreground">{cert.name}</span>
+									<span className="text-[15px] text-foreground">{cert.name}</span>
 									<span
-										className={`shrink-0 text-sm tabular-nums ${cert.pending ? "text-brand" : "text-muted-foreground"}`}
+										className={`shrink-0 font-mono text-xs tabular-nums ${cert.pending ? "text-brand" : "text-muted-foreground"}`}
 									>
 										{cert.year}
 									</span>
-								</div>
+								</li>
 							))}
-						</div>
+						</ul>
 					</section>
 				</div>
 			</SiteShell>
