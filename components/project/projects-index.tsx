@@ -58,7 +58,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 								</span>
 
 								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-									<span className="shrink-0 font-bold tracking-[-0.01em] text-foreground transition-colors group-hover/row:text-primary group-focus-visible/row:text-primary">
+									<span className="shrink-0 font-medium tracking-[-0.01em] text-foreground transition-colors group-hover/row:opacity-70 group-focus-visible/row:opacity-70">
 										{project.title.split(":")[0]}
 									</span>
 									{project.flagship && (

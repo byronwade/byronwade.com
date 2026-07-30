@@ -62,7 +62,7 @@ async function BlogList() {
 					className="group flex flex-col gap-1.5 px-5 py-5 transition-colors hover:bg-muted"
 				>
 					<div className="flex items-start justify-between gap-4">
-						<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
+						<span className="truncate font-medium tracking-[-0.01em] text-foreground transition-colors group-hover:opacity-70">
 							{post.title}
 						</span>
 						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">

@@ -158,7 +158,7 @@ export function SiteSearch({ entries }: { entries: SearchEntry[] }) {
 														)}
 													/>
 													<span className="min-w-0 flex-1">
-														<span className="block truncate text-sm font-bold tracking-[-0.01em]">
+														<span className="block truncate text-sm font-medium tracking-[-0.01em]">
 															{item.label}
 														</span>
 														{item.meta ? (
