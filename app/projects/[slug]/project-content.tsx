@@ -99,36 +99,23 @@ export function ProjectContent({ project }: ProjectContentProps) {
 			<SiteShell width="wide">
 				<div className="flex flex-col gap-10 sm:gap-12">
 					{/* Header */}
-					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+					<header className="reveal section-head max-w-2xl">
+						<p className="spec-label">
+							{typeLabels[projectType]}
+							{project.category && project.category !== typeLabels[projectType]
+								? ` · ${project.category}`
+								: ""}
+							{formattedDate ? ` · ${formattedDate}` : ""}
+						</p>
+						{/* Keep Badge for screen readers / status semantics; visual eyebrow is spec-label */}
+						<span className="sr-only">
 							<Badge variant={typeBadgeVariant[projectType]}>{typeLabels[projectType]}</Badge>
-							{project.category && project.category !== typeLabels[projectType] && (
-								<>
-									<span aria-hidden="true" className="text-border">
-										·
-									</span>
-									<span>{project.category}</span>
-								</>
-							)}
-							{formattedDate && (
-								<>
-									<span aria-hidden="true" className="text-border">
-										·
-									</span>
-									<time dateTime={isoDate}>{formattedDate}</time>
-								</>
-							)}
-						</div>
+							{isoDate ? <time dateTime={isoDate}>{formattedDate}</time> : null}
+						</span>
 
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
-							{project.title}
-						</h1>
+						<h1 className="type-headline text-foreground">{project.title}</h1>
 
-						{project.excerpt && (
-							<p className="text-lg leading-relaxed text-pretty text-muted-foreground">
-								{project.excerpt}
-							</p>
-						)}
+						{project.excerpt && <p className="type-lead">{project.excerpt}</p>}
 
 						{(project.url || sourceUrl) && (
 							<div className="mt-1 flex flex-wrap items-center gap-2">

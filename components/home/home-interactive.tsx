@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { SocialLinkPreview } from "@/components/common";
 import { InlineContact } from "@/components/home/inline-contact";
-import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
+import { cn } from "@/lib/utils";
 
 const socials = [
 	{ id: "github", label: "GitHub", href: "https://github.com/byronwade", icon: Github },
@@ -15,7 +15,10 @@ const socials = [
 	{ id: "thorbis", label: "Thorbis", href: "https://thorbis.com", icon: Globe },
 ] as const;
 
-const pillClass = pillLinkClass;
+const socialLinkClass = cn(
+	"inline-flex h-10 items-center gap-2 rounded-md border border-border bg-card px-3.5 text-sm font-bold tracking-[-0.01em] text-foreground transition-colors",
+	"hover:border-foreground/20 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+);
 
 export function HomeInteractive() {
 	const [copiedButton, setCopiedButton] = useState<string | null>(null);
@@ -47,7 +50,7 @@ export function HomeInteractive() {
 						className="glow-brand pointer-events-none absolute -inset-6 opacity-70"
 						aria-hidden
 					/>
-					<div className="relative size-20 overflow-hidden rounded-full ring-1 ring-border sm:size-24">
+					<div className="relative size-20 overflow-hidden rounded-md ring-1 ring-border sm:size-24">
 						<Image
 							alt="Byron Wade — Full Stack Developer"
 							className="size-full object-cover"
@@ -61,12 +64,9 @@ export function HomeInteractive() {
 				</div>
 
 				<div className="flex flex-col gap-3">
-					<h1 className="font-heading text-4xl font-semibold tracking-tight sm:text-5xl">
-						Byron Wade
-					</h1>
-					<p className="text-base text-muted-foreground sm:text-lg">
-						Builder · Developer · Operator
-					</p>
+					<p className="spec-label">Jasper, Georgia</p>
+					<h1 className="type-headline text-foreground">Byron Wade</h1>
+					<p className="type-lead">Builder · Developer · Operator</p>
 					<StatusPill tone="success" pulse className="w-fit">
 						Available for conversations
 					</StatusPill>
@@ -76,8 +76,8 @@ export function HomeInteractive() {
 			<div className="flex flex-col gap-5 text-base leading-relaxed text-muted-foreground">
 				<p className="reveal reveal-delay-1">
 					Full-stack developer and designer based in Jasper, Georgia. I grew a plumbing company to{" "}
-					<span className="font-semibold text-brand">$2.4M</span> in revenue during my second year
-					in Santa Cruz, California — before relocating to Georgia.
+					<span className="font-bold text-primary">$2.4M</span> in revenue during my second year in
+					Santa Cruz, California — before relocating to Georgia.
 				</p>
 
 				<p className="reveal reveal-delay-2">
@@ -86,7 +86,7 @@ export function HomeInteractive() {
 						href="https://thorbis.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-medium"
+						className="link-underline font-bold"
 					>
 						Thorbis
 					</a>
@@ -95,7 +95,7 @@ export function HomeInteractive() {
 						href="https://nextjs.org"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-medium"
+						className="link-underline font-bold"
 					>
 						Next.js
 					</a>{" "}
@@ -104,7 +104,7 @@ export function HomeInteractive() {
 						href="https://react.dev"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-medium"
+						className="link-underline font-bold"
 					>
 						React
 					</a>
@@ -126,7 +126,7 @@ export function HomeInteractive() {
 					<button
 						type="button"
 						onClick={() => handleEmailClick("say-hello")}
-						className="link-underline cursor-pointer border-none bg-transparent p-0 text-base font-medium"
+						className="link-underline cursor-pointer border-none bg-transparent p-0 text-base font-bold"
 						aria-label="Open contact panel"
 					>
 						{copiedButton === "say-hello" ? "Copied!" : "Say hello"}
@@ -137,7 +137,7 @@ export function HomeInteractive() {
 							href="https://github.com/byronwade"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="link-underline font-medium"
+							className="link-underline font-bold"
 						>
 							GitHub
 						</a>
@@ -147,7 +147,7 @@ export function HomeInteractive() {
 						href="https://linkedin.com/in/byronwade"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-medium"
+						className="link-underline font-bold"
 					>
 						LinkedIn
 					</a>
@@ -156,7 +156,7 @@ export function HomeInteractive() {
 						href="https://twitter.com/byron_c_wade"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="link-underline font-medium"
+						className="link-underline font-bold"
 					>
 						X
 					</a>
@@ -172,7 +172,7 @@ export function HomeInteractive() {
 								href={social.href}
 								target="_blank"
 								rel="noopener noreferrer"
-								className={pillClass}
+								className={socialLinkClass}
 								aria-label={social.label}
 							>
 								<social.icon className="size-4" />
@@ -185,7 +185,7 @@ export function HomeInteractive() {
 							href={social.href}
 							target="_blank"
 							rel="noopener noreferrer"
-							className={pillClass}
+							className={socialLinkClass}
 							aria-label={social.label}
 						>
 							<social.icon className="size-4" />
@@ -193,9 +193,13 @@ export function HomeInteractive() {
 						</a>
 					)
 				)}
-				<button type="button" onClick={() => handleEmailClick("social")} className={pillClass}>
+				<button
+					type="button"
+					onClick={() => handleEmailClick("social")}
+					className={socialLinkClass}
+				>
 					{copiedButton === "social" ? (
-						<Check className="size-4 text-brand" />
+						<Check className="size-4 text-primary" />
 					) : (
 						<Mail className="size-4" />
 					)}

@@ -8,7 +8,6 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
 import { analytics } from "@/lib/analytics";
-import { customFont } from "@/lib/fonts";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {
@@ -157,7 +156,7 @@ export default function ResumePage() {
 					<header className="reveal w-full">
 						<div className="flex w-full flex-col gap-6">
 							<div className="flex items-start gap-5">
-								<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
+								<div className="relative size-14 shrink-0 overflow-hidden rounded-md ring-1 ring-border sm:size-16">
 									<Image
 										alt="Byron Wade"
 										className="size-full object-cover"
@@ -167,13 +166,10 @@ export default function ResumePage() {
 										priority
 									/>
 								</div>
-								<div className="flex flex-col gap-1 pt-1">
-									<h1
-										className={`${customFont.className} text-2xl font-medium text-foreground sm:text-3xl`}
-									>
-										Byron Wade
-									</h1>
-									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
+								<div className="flex flex-col gap-1.5 pt-1">
+									<p className="spec-label">Resume</p>
+									<h1 className="type-headline text-foreground">Byron Wade</h1>
+									<p className="type-lead">Founder at Thorbis · Full Stack Developer</p>
 								</div>
 							</div>
 
@@ -181,10 +177,10 @@ export default function ResumePage() {
 								<button
 									type="button"
 									onClick={copyEmail}
-									className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand"
+									className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 font-bold transition-colors hover:text-primary"
 								>
 									{emailCopied ? (
-										<Check className="size-4 text-brand" />
+										<Check className="size-4 text-primary" />
 									) : (
 										<Mail className="size-4" />
 									)}
@@ -198,7 +194,7 @@ export default function ResumePage() {
 									href="/api/resume-pdf"
 									download="Byron_Wade_Resume.pdf"
 									onClick={() => analytics.resumeDownload("pdf")}
-									className="flex items-center gap-2 transition-colors hover:text-brand"
+									className="flex items-center gap-2 font-bold transition-colors hover:text-primary"
 								>
 									<Download className="size-4" />
 									<span>Download PDF</span>
@@ -224,7 +220,7 @@ export default function ResumePage() {
 								, a field management system for service professionals.
 							</p>
 							<p className="leading-relaxed text-muted-foreground">
-								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
+								<span className="font-bold text-primary">Open to opportunities</span> — Looking for
 								full-time roles in software development, technical leadership, or positions where I
 								can leverage both my development skills and hands-on business experience.
 							</p>
@@ -233,9 +229,7 @@ export default function ResumePage() {
 
 					{/* Experience */}
 					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Experience
-						</h2>
+						<p className="spec-label mb-8">Experience</p>
 						<div className="flex flex-col gap-10">
 							{workExperience.map((job) => (
 								<article key={`${job.company}-${job.role}`} className="flex flex-col gap-2">

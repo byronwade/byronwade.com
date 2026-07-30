@@ -29,7 +29,7 @@ async function ProjectsList() {
 	}
 
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+		<div className="surface-panel divide-y divide-border overflow-hidden">
 			{sortedProjects.map((project) => {
 				const projectType = project.type || "hobby";
 				const cleanUrl = project.url
@@ -39,19 +39,19 @@ async function ProjectsList() {
 					<Link
 						key={project.slug}
 						href={`/projects/${project.slug}`}
-						className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
+						className="group flex items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-muted"
 					>
 						<div className="flex min-w-0 items-center gap-3">
 							<Badge variant={projectType === "product" ? "success" : "muted"}>
 								{typeLabels[projectType]}
 							</Badge>
-							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+							<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
 								{project.title}
 							</span>
 						</div>
 						<div className="flex shrink-0 items-center gap-2 text-sm text-muted-foreground">
 							{cleanUrl && <span className="hidden sm:inline">{cleanUrl}</span>}
-							<ArrowUpRight className="size-4 text-muted-foreground/60 transition-colors group-hover:text-brand" />
+							<ArrowUpRight className="size-4 text-muted-foreground/60 transition-colors group-hover:text-primary" />
 						</div>
 					</Link>
 				);
@@ -63,11 +63,14 @@ async function ProjectsList() {
 export function HomeProjects() {
 	return (
 		<section className="reveal reveal-delay-6 flex w-full flex-col gap-5">
-			<div className="flex items-baseline justify-between">
-				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Projects</h2>
+			<div className="section-head-row">
+				<div className="section-head">
+					<p className="spec-label">Selected work</p>
+					<h2 className="type-title text-foreground">Projects</h2>
+				</div>
 				<Link
 					href="/projects"
-					className="text-sm text-muted-foreground transition-colors hover:text-brand"
+					className="text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
 				>
 					All projects →
 				</Link>

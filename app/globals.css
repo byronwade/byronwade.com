@@ -5,269 +5,1312 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─────────────────────────────────────────────────────────────
-   byronwade/ui foundation — token theme mapping (Tailwind v4)
-   Brand follows --brand; override it to re-skin rings/charts/success.
-   ───────────────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-brand-muted: var(--brand-muted);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
-  --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
-  --color-dock: var(--dock);
-  --color-dock-foreground: var(--dock-foreground);
-  --color-dock-muted: var(--dock-muted);
-  --color-dock-active: var(--dock-active);
-  --color-dock-active-foreground: var(--dock-active-foreground);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --font-display: var(--font-sans);
-  --font-signature: var(--font-signature);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary-bright: var(--primary-bright);
+	--color-brand: var(--brand);
+	--color-brand-foreground: var(--brand-foreground);
+	--color-brand-muted: var(--brand-muted);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-border-strong: var(--border-strong);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-ink: var(--ink);
+	--color-ink-soft: var(--ink-soft);
+	--color-panel: var(--panel);
+	--color-panel-elevated: var(--panel-elevated);
+	--color-dark-1: var(--dark-1);
+	--color-dark-2: var(--dark-2);
+	--color-dark-3: var(--dark-3);
+	--color-sunken: var(--sunken);
+	--color-on-dark: var(--on-dark);
+	--color-on-dark-muted: var(--on-dark-muted);
+	--color-on-dark-subtle: var(--on-dark-subtle);
+	--font-sans: var(--font-sans);
+	--font-display: var(--font-display);
+	--font-heading: var(--font-display);
+	--font-mono: var(--font-mono);
+	--font-signature: var(--font-signature);
+	--radius-sm: calc(var(--radius) - 2px);
+	--radius-md: var(--radius);
+	--radius-lg: calc(var(--radius) + 2px);
+	--radius-xl: calc(var(--radius) + 6px);
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+	--animate-fade: fade 0.55s ease-out both;
 }
 
+/*
+  byronwade.com design system — adapted from Wade's craft language.
+  Charcoal ink chrome + copper accent. Cool stone neutrals. Sharp geometry.
+  No cream wash, no purple, no glow stacks, no pill clusters.
+
+  Display type is Archivo. Body is Manrope. Spec labels use mono.
+*/
+/*
+  Palette is authored in OKLCH. Same hues as before, but perceptually uniform:
+  lightness steps are visually even, and color-mix() tints (hover states, the
+  scrims, the accent washes) interpolate without the muddy midpoints sRGB hex
+  produced. The L channel is also a reliable contrast proxy, so surface ramps
+  can be reasoned about instead of eyeballed.
+*/
 :root {
-  --background: oklch(0.985 0.003 92);
-  --foreground: oklch(0.27 0.008 70);
-  --card: oklch(0.992 0.003 92);
-  --card-foreground: oklch(0.27 0.008 70);
-  --popover: oklch(0.994 0.003 92);
-  --popover-foreground: oklch(0.27 0.008 70);
-  --primary: oklch(0.3 0.01 70);
-  --primary-foreground: oklch(0.99 0.002 95);
-  --secondary: oklch(0.967 0.004 90);
-  --secondary-foreground: oklch(0.27 0.008 70);
-  --muted: oklch(0.963 0.004 90);
-  --muted-foreground: oklch(0.553 0.01 75);
-  --accent: oklch(0.963 0.004 90);
-  --accent-foreground: oklch(0.27 0.008 70);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 85);
-  --input: oklch(0.92 0.004 85);
-  --brand: oklch(0.72 0.14 85);
-  --brand-foreground: oklch(0.22 0.04 80);
-  --brand-muted: oklch(0.96 0.04 90);
-  --success: var(--brand);
-  --success-foreground: oklch(0.99 0.002 95);
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.26 0.05 70);
-  --ring: var(--brand);
-  --chart-1: var(--brand);
-  --chart-2: oklch(0.556 0.01 75);
-  --chart-3: oklch(0.439 0.01 75);
-  --chart-4: oklch(0.371 0.01 75);
-  --chart-5: oklch(0.269 0.01 75);
-  --radius: 0.75rem;
-  --dock: oklch(0.235 0.006 72);
-  --dock-foreground: oklch(0.72 0.006 75);
-  --dock-muted: oklch(1 0 0 / 10%);
-  --dock-active: oklch(1 0 0 / 14%);
-  --dock-active-foreground: oklch(0.99 0 0);
-  --sidebar: oklch(0.974 0.005 88);
-  --sidebar-foreground: oklch(0.27 0.008 70);
-  --sidebar-primary: oklch(0.3 0.01 70);
-  --sidebar-primary-foreground: oklch(0.99 0.002 95);
-  --sidebar-accent: oklch(0.955 0.0045 88);
-  --sidebar-accent-foreground: oklch(0.27 0.008 70);
-  --sidebar-border: oklch(0.91 0.004 85);
-  --sidebar-ring: oklch(0.708 0.008 75);
+	--ink: oklch(0.175 0.008 68);
+	--ink-soft: oklch(0.215 0.009 68);
+	--panel: oklch(0.215 0.009 68);
+	--panel-elevated: oklch(0.268 0.01 68);
+	--background: oklch(0.976 0.003 85);
+	--foreground: oklch(0.2 0.007 68);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.2 0.007 68);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.2 0.007 68);
+	--primary: oklch(0.4859 0.1104 51.3);
+	--primary-foreground: oklch(1 0 0);
+	--primary-bright: oklch(0.7557 0.1133 66.7);
+	/* Compat aliases for legacy utility classes */
+	--brand: var(--primary);
+	--brand-foreground: var(--primary-foreground);
+	--brand-muted: var(--accent);
+	--success: oklch(0.55 0.14 155);
+	--success-foreground: oklch(0.99 0.002 95);
+	--warning: oklch(0.78 0.14 75);
+	--warning-foreground: oklch(0.26 0.05 70);
+	--secondary: oklch(0.942 0.004 85);
+	--secondary-foreground: oklch(0.24 0.008 68);
+	--muted: oklch(0.951 0.004 85);
+	--muted-foreground: oklch(0.49 0.011 68);
+	--accent: oklch(0.9243 0.0201 70);
+	--accent-foreground: oklch(0.4027 0.0855 54.6);
+	--destructive: oklch(0.5534 0.1739 38.4);
+	--border: oklch(0.893 0.006 85);
+	--border-strong: oklch(0.83 0.008 82);
+	--input: oklch(0.893 0.006 85);
+	--ring: oklch(0.4859 0.1104 51.3);
+	--radius: 0.5rem;
+	--shadow-edge: 0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent);
+	--shadow-panel:
+		0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent),
+		0 8px 24px -12px color-mix(in srgb, var(--ink) 12%, transparent);
+
+	/*
+	  Alternating band. `bg-secondary/60` over --background was a ~2% delta,
+	  so section rhythm never read. This is a deliberate, visible step down -
+	  L 0.9756 → 0.9483.
+	*/
+	--sunken: oklch(0.948 0.005 85);
+
+	/* Text ramp for ink/panel surfaces. Replaces three near-identical
+	   hardcoded whites (#ececea / #e4e5e7 / #e8e8e4) and ad-hoc white/NN. */
+	--on-dark: oklch(0.967 0.003 85);
+	--on-dark-muted: oklch(0.875 0.007 80);
+	--on-dark-subtle: oklch(0.712 0.011 75);
+
+	/*
+	  Dark elevation ramp. Every ink surface used to resolve to roughly the same
+	  lightness, so the header, the mega menu, and each page hero read as one
+	  undifferentiated slab. These are separated by ~0.035 L, which is a visible
+	  step, and each level up is also lighter in chroma so it reads as "closer"
+	  rather than just "greyer".
+
+	    ink      L .18   page chrome, the header bar
+	    dark-1   L .215  hero bands
+	    dark-2   L .25   floating panels (mega menu, popovers)
+	    dark-3   L .285  cards resting on a panel
+	*/
+	--dark-1: oklch(0.215 0.009 68);
+	--dark-2: oklch(0.252 0.01 68);
+	--dark-3: oklch(0.288 0.011 68);
+
+	/*
+	  Top inner highlight. A single light hairline along the top edge is what
+	  makes a dark panel read as a raised object rather than a hole. Paired with
+	  --shadow-float on anything that floats.
+	*/
+	--hairline-top: inset 0 1px 0 0 oklch(1 0 0 / 0.08);
+	--hairline-all: inset 0 0 0 1px oklch(1 0 0 / 0.08);
+	--shadow-float:
+		0 1px 2px oklch(0 0 0 / 0.4), 0 12px 24px -8px oklch(0 0 0 / 0.45),
+		0 32px 64px -24px oklch(0 0 0 / 0.55);
+
+	/* Long-form copy. Was hardcoded #3f444b, which left every content page
+	   unreadable in dark mode. */
+	--prose-body: oklch(0.385 0.01 68);
+	--prose-quote: oklch(0.432 0.01 68);
+	--prose-quote-bg: oklch(0.954 0.005 85);
+	--prose-code-bg: oklch(0.943 0.004 85);
+
+	/* --- Type scale ---
+	   display  → home hero only
+	   headline → content + service hero h1 (was misusing display)
+	   title    → section h2
+	   subtitle → sub-section h2/h3 (the step that was missing entirely) */
+	/*
+	  Cinematic step, above display. Sized off vw so the headline scales to the
+	  measure of the viewport and reads edge to edge rather than sitting as a
+	  block of text on a photo.
+	*/
+	--type-cinematic: clamp(3.25rem, 13vw, 9rem);
+	--type-display: clamp(2.35rem, 5.4vw, 4.25rem);
+	--type-headline: clamp(1.95rem, 3.6vw, 3rem);
+	--type-title: clamp(1.65rem, 2.6vw, 2.25rem);
+	--type-subtitle: clamp(1.3rem, 1.8vw, 1.5rem);
+	--type-card: 1.0625rem;
+	--type-lead: clamp(1.0625rem, 1.15vw, 1.1875rem);
+	--type-body: 1rem;
+	--type-meta: 0.8125rem;
+	--type-label: 0.6875rem;
+
+	/* --- Spacing scale ---
+	   Every vertical relationship resolves to one of these, so heading→body
+	   and header→grid gaps stop drifting between mt-2/3/4/5/6/7/8. */
+	--space-page-x: clamp(1.25rem, 4vw, 2.5rem);
+	--space-section-y: clamp(3.5rem, 6vw, 5.5rem);
+	--space-section-y-tight: clamp(2.5rem, 4vw, 3.5rem);
+	--space-stack: 1.125rem;
+	--space-block: 2.75rem;
+	--space-grid: 1.5rem;
+	--space-card: 1.5rem;
+
+	--content-max: 78rem;
+	/*
+	  Single-column article templates. Sized to the prose measure plus a little
+	  room for galleries and two-up promise cards on service pages.
+	*/
+	--content-max-article: 48rem;
+	/* ch measures the "0" glyph, which is wider than average lowercase, so
+	   60ch lands around 75 real characters a line. */
+	--measure: 60ch;
+	--header-offset: 6.5rem;
+	/* Visible header height, used to size the cinematic hero to the viewport.
+	   Matches the 64px bar on phones; the utility bar adds 28px from sm up. */
+	--header-h: 4rem;
+
+	/* Focus-ring offset colour. Surfaces override it so rings never halo
+	   white on ink panels. Consumed by the button/control base classes. */
+	--ring-offset: var(--background);
+
+	--font-sans:
+		var(--font-manrope), "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+	--font-display:
+		var(--font-archivo), var(--font-manrope), "Helvetica Neue", sans-serif;
+	--font-mono:
+		var(--font-geist-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo,
+		"Roboto Mono", monospace;
 }
 
 .dark {
-  --background: oklch(0.16 0.006 70);
-  --foreground: oklch(0.928 0.004 83);
-  --card: oklch(0.205 0.007 70);
-  --card-foreground: oklch(0.928 0.004 83);
-  --popover: oklch(0.215 0.007 70);
-  --popover-foreground: oklch(0.928 0.004 83);
-  --primary: oklch(0.922 0.004 83);
-  --primary-foreground: oklch(0.2 0.006 70);
-  --secondary: oklch(0.268 0.007 70);
-  --secondary-foreground: oklch(0.928 0.004 83);
-  --muted: oklch(0.255 0.007 70);
-  --muted-foreground: oklch(0.715 0.009 75);
-  --accent: oklch(0.285 0.008 70);
-  --accent-foreground: oklch(0.95 0.004 83);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.285 0.006 70);
-  --input: oklch(0.32 0.007 70);
-  --brand: oklch(0.78 0.14 85);
-  --brand-foreground: oklch(0.22 0.04 80);
-  --brand-muted: oklch(0.34 0.06 85);
-  --success: var(--brand);
-  --success-foreground: oklch(0.985 0.001 95);
-  --warning: oklch(0.82 0.15 78);
-  --warning-foreground: oklch(0.26 0.05 70);
-  --ring: var(--brand);
-  --chart-1: var(--brand);
-  --chart-2: oklch(0.556 0.01 75);
-  --chart-3: oklch(0.439 0.01 75);
-  --chart-4: oklch(0.371 0.01 75);
-  --chart-5: oklch(0.269 0.01 75);
-  --dock: oklch(0.205 0.007 70);
-  --dock-foreground: oklch(0.72 0.008 75);
-  --dock-muted: oklch(1 0 0 / 8%);
-  --dock-active: oklch(1 0 0 / 14%);
-  --dock-active-foreground: oklch(0.99 0 0);
-  --sidebar: oklch(0.15 0.006 70);
-  --sidebar-foreground: oklch(0.715 0.009 75);
-  --sidebar-primary: oklch(0.922 0.004 83);
-  --sidebar-primary-foreground: oklch(0.2 0.006 70);
-  --sidebar-accent: oklch(0.255 0.007 70);
-  --sidebar-accent-foreground: oklch(0.95 0.004 83);
-  --sidebar-border: oklch(0.275 0.006 70);
-  --sidebar-ring: oklch(0.556 0.006 75);
+	--ink: oklch(0.13 0.006 68);
+	--ink-soft: oklch(0.185 0.008 68);
+	--panel: oklch(0.205 0.009 68);
+	--panel-elevated: oklch(0.255 0.01 68);
+	--background: oklch(0.165 0.007 68);
+	--foreground: oklch(0.96 0.004 85);
+	--card: oklch(0.205 0.008 68);
+	--card-foreground: oklch(0.96 0.004 85);
+	--popover: oklch(0.205 0.008 68);
+	--popover-foreground: oklch(0.96 0.004 85);
+	--primary: oklch(0.619 0.1364 50.7);
+	--primary-foreground: oklch(1 0 0);
+	--primary-bright: oklch(0.7557 0.1133 66.7);
+	--brand: var(--primary);
+	--brand-foreground: var(--primary-foreground);
+	--brand-muted: var(--accent);
+	--success: oklch(0.72 0.14 155);
+	--success-foreground: oklch(0.99 0.002 95);
+	--warning: oklch(0.82 0.13 78);
+	--warning-foreground: oklch(0.26 0.05 70);
+	--secondary: oklch(0.235 0.009 68);
+	--secondary-foreground: oklch(0.93 0.005 85);
+	--muted: oklch(0.235 0.009 68);
+	--muted-foreground: oklch(0.745 0.012 78);
+	--accent: oklch(0.2554 0.0212 66.6);
+	--accent-foreground: oklch(0.7557 0.1133 66.7);
+	--destructive: oklch(0.6828 0.1741 40.3);
+	--border: oklch(0.295 0.01 68);
+	--border-strong: oklch(0.365 0.012 68);
+	--input: oklch(0.295 0.01 68);
+	--ring: oklch(0.7557 0.1133 66.7);
+	--shadow-edge: 0 0 0 1px color-mix(in srgb, white 8%, transparent);
+	--shadow-panel:
+		0 1px 2px color-mix(in srgb, black 30%, transparent),
+		0 8px 24px -12px color-mix(in srgb, black 45%, transparent);
+
+	--sunken: oklch(0.195 0.008 68);
+
+	--prose-body: oklch(0.83 0.01 80);
+	--prose-quote: oklch(0.864 0.009 80);
+	--prose-quote-bg: oklch(0.228 0.009 68);
+	--prose-code-bg: oklch(0.25 0.01 68);
+
+	/* Dark theme starts lower, so the ramp shifts down with it and keeps the
+	   same ~0.035 L separation between levels. */
+	--dark-1: oklch(0.195 0.008 68);
+	--dark-2: oklch(0.232 0.009 68);
+	--dark-3: oklch(0.268 0.01 68);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  html {
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-    touch-action: manipulation;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    letter-spacing: -0.006em;
-    line-height: 1.6;
-  }
-  h1, h2, h3, h4 {
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    scroll-margin-top: 5rem;
-  }
-  h5, h6 {
-    scroll-margin-top: 5rem;
-  }
-  /* iOS: ≥16px inputs avoid focus zoom; restore scale on larger screens */
-  input, select, textarea {
-    font-size: 16px;
-  }
-  @media (min-width: 640px) {
-    input, select, textarea {
-      font-size: inherit;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
+/*
+  Must stay unlayered. Declared inside @layer base it lost to the unlayered
+  :root block above, so --header-h stayed at the phone value and the cinematic
+  hero came out 40px taller than the viewport, clipping its bottom bar.
+*/
+@media (width >= 40rem) {
+	:root {
+		/* Utility bar (28px) + main bar (72px) + hairline. */
+		--header-h: 6.5rem;
+	}
 }
+
+/*
+  Must stay in @layer base. An unlayered `* { border-color }` rule beats
+  Tailwind utilities (border-transparent, border-white/*, etc.) and forces
+  the light --border token (#dddcd7) onto every bordered control - which
+  reads as harsh white outlines on dark ink/hero surfaces.
+*/
+@layer base {
+	* {
+		border-color: var(--border);
+	}
+
+	html {
+		scroll-behavior: smooth;
+		text-rendering: optimizeLegibility;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		margin: 0;
+		background: var(--background);
+		color: var(--foreground);
+		font-family: var(--font-sans);
+		font-size: var(--type-body);
+		line-height: 1.6;
+		font-feature-settings:
+			"ss01" on,
+			"kern" on;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	::selection {
+		background: color-mix(in srgb, var(--primary) 30%, transparent);
+		color: var(--foreground);
+	}
+
+	a,
+	button,
+	summary {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	button:not(:disabled),
+	[role="button"]:not(:disabled),
+	summary {
+		cursor: pointer;
+	}
+
+	/* Anchor targets clear the sticky header. */
+	:target {
+		scroll-margin-top: var(--header-offset);
+	}
+}
+
+/*
+  Everything below is @layer components on purpose. Unlayered class rules beat
+  every Tailwind utility regardless of specificity, which is how `type-title
+  text-2xl` silently rendered at full title size and `prose max-w-none` still
+  had no measure. Layered here, a utility on the same element always wins.
+*/
+@layer components {
+	/* Layout */
+	.container-shell {
+		width: min(100% - (var(--space-page-x) * 2), var(--content-max));
+		margin-inline: auto;
+	}
+
+	/* Single-column body-copy templates. */
+	.article-shell {
+		width: min(100% - (var(--space-page-x) * 2), var(--content-max-article));
+		margin-inline: auto;
+	}
+
+	.section-y {
+		padding-block: var(--space-section-y);
+	}
+
+	.section-y-tight {
+		padding-block: var(--space-section-y-tight);
+	}
+
+	.measure {
+		max-width: var(--measure);
+	}
+
+	/*
+	  Section headers. One class owns the eyebrow → heading → lead rhythm so it
+	  is identical on every page instead of drifting mt-4/mt-5 per section.
+	*/
+	.section-head > * + * {
+		margin-top: var(--space-stack);
+	}
+
+	.section-head-row {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-stack);
+		align-items: flex-start;
+	}
+
+	@media (width >= 48rem) {
+		.section-head-row {
+			flex-direction: row;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 2.5rem;
+		}
+	}
+
+	/* Standard card gutter. */
+	.grid-cards {
+		display: grid;
+		gap: var(--space-grid);
+	}
+
+	/*
+	  Card rail - intrinsic, not breakpoint-driven. Columns are derived from how
+	  much room the track actually has (auto-fit + minmax), replacing hardcoded
+	  `md:grid-cols-2 lg:grid-cols-3` ladders that guessed at container width and
+	  broke whenever a grid was nested somewhere narrower.
+
+	  min() keeps the track from overflowing below 20rem viewports.
+	*/
+	.card-rail {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+		gap: var(--space-grid);
+	}
+
+	/*
+	  Each card becomes its own containment context, so a card decides its own
+	  layout from its width rather than the viewport's - the same component works
+	  in a three-up grid and in a wide single column.
+	*/
+	.card-rail > * {
+		container-type: inline-size;
+		container-name: card;
+	}
+
+	/*
+	  Cards stretch to the tallest in their row, and their action row is pinned to
+	  the bottom, so the links across a row line up.
+
+	  Deliberately not subgrid: the media child is an aspect-ratio box whose only
+	  content is a `fill` image (position: absolute), so it contributes zero
+	  content height. Against an auto row track that resolves circularly to 0px
+	  and the photo paints straight over the card copy. Equal-height flex with a
+	  bottom-pinned action gets the alignment that actually matters without that
+	  failure mode.
+	*/
+	.card-rail > * {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.card-rail > * > .card-body {
+		margin-top: auto;
+	}
+
+	/* Extended footer band on content cards — pin that instead when present. */
+	.card-rail > * > .card-foot {
+		margin-top: auto;
+	}
+
+	.card-rail > *:has(> .card-foot) > .card-body {
+		margin-top: 0;
+	}
+
+	/*
+	  Long archives skip layout and paint for off-screen rows. The intrinsic size
+	  keeps the scrollbar honest before a row has been rendered.
+	*/
+	.defer-paint {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 28rem;
+	}
+
+	/*
+	  Filter chips (desktop archive UI). Mobile uses labeled selects instead,
+	  so this rail always wraps rather than horizontal-snapping.
+	*/
+	.chip-rail {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	/*
+	  Horizontal snap rail on narrow screens. Four tall stacked photos was a lot
+	  of scrolling for a gallery; this makes it a swipeable strip and reverts to a
+	  plain grid once there is room for one.
+	*/
+	.snap-rail {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 76%;
+		gap: var(--space-grid);
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		overscroll-behavior-x: contain;
+		scrollbar-width: none;
+		/* Break the container gutter so the rail bleeds to the screen edges, then
+		   put the gutter back as padding. scroll-padding has to match it: without
+		   it the snapport starts at the padding box, so the browser scrolls 20px
+		   to snap item one flush to the viewport edge and clips its caption. */
+		margin-inline: calc(var(--space-page-x) * -1);
+		padding-inline: var(--space-page-x);
+		scroll-padding-inline: var(--space-page-x);
+	}
+
+	.snap-rail::-webkit-scrollbar {
+		display: none;
+	}
+
+	.snap-rail > * {
+		scroll-snap-align: start;
+	}
+
+	@media (width >= 40rem) {
+		.snap-rail {
+			grid-auto-flow: row;
+			grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+			overflow-x: visible;
+			margin-inline: 0;
+			padding-inline: 0;
+		}
+	}
+
+	/* --- Card internals ---
+	   Padding and title size are driven by the card's own container width, not
+	   the viewport, so one card component reads correctly at three-up, two-up,
+	   and full-bleed without a breakpoint ladder per usage site. */
+	.card-head {
+		padding: var(--space-card) var(--space-card) 0;
+	}
+
+	.card-body {
+		padding: 1rem var(--space-card) var(--space-card);
+	}
+
+	.card-foot {
+		padding: 0.85rem var(--space-card);
+	}
+
+	.card-title {
+		font-size: var(--type-card);
+	}
+
+	/* Thresholds are set against the widths cards actually take here: ~22rem in
+	   a single mobile column, ~25rem three-up, ~38rem two-up. */
+	@container card (width < 22.5rem) {
+		.card-head {
+			padding: 1.25rem 1.25rem 0;
+		}
+
+		.card-body {
+			padding: 0.875rem 1.25rem 1.25rem;
+		}
+
+		.card-foot {
+			padding: 0.75rem 1.25rem;
+		}
+
+		.card-title {
+			font-size: 1rem;
+		}
+	}
+
+	@container card (width >= 28rem) {
+		.card-head {
+			padding: 1.75rem 1.75rem 0;
+		}
+
+		.card-body {
+			padding: 1.125rem 1.75rem 1.75rem;
+		}
+
+		.card-foot {
+			padding: 0.95rem 1.75rem;
+		}
+
+		.card-title {
+			font-size: 1.1875rem;
+		}
+	}
+
+	/* Surfaces */
+	.surface-sunken {
+		background: var(--sunken);
+	}
+
+	/*
+	  Hero band. Distinct from the header on three axes at once, because a
+	  lightness step alone was not enough separation: a lighter base (--dark-1
+	  against the header's --ink), a hairline along the top edge, and the grid
+	  and glow textures below, which the flat header bar never has.
+	*/
+	.surface-hero {
+		--border: color-mix(in srgb, white 10%, transparent);
+		--muted-foreground: var(--on-dark-muted);
+		--ring-offset: var(--dark-1);
+		position: relative;
+		isolation: isolate;
+		background: var(--dark-1);
+		color: var(--on-dark);
+		box-shadow: var(--hairline-top);
+	}
+
+	/*
+	  Interior heroes (not the home cinematic). Each template owns a distinct
+	  first viewport so services, tips, and utility pages do not share one dark
+	  washed slab.
+	*/
+	.hero-article {
+		background:
+			radial-gradient(
+				ellipse 70% 55% at 0% 0%,
+				color-mix(in srgb, var(--primary) 8%, transparent),
+				transparent 70%
+			),
+			var(--background);
+	}
+
+	/*
+	  Featured media stays inside the same shell as the title/copy so mobile
+	  and desktop share one aligned column instead of breaking to viewport edges.
+	*/
+	.hero-article-media,
+	.hero-service-media {
+		width: 100%;
+		background: var(--muted);
+	}
+
+	.hero-service {
+		background: var(--background);
+	}
+
+	.footer-credit {
+		background:
+			linear-gradient(
+				180deg,
+				color-mix(in srgb, black 35%, var(--ink)) 0%,
+				oklch(0.12 0.008 68) 100%
+			);
+	}
+
+	.hero-index-tip {
+		background:
+			radial-gradient(
+				ellipse 55% 70% at 100% 0%,
+				color-mix(in srgb, var(--primary) 7%, transparent),
+				transparent 65%
+			),
+			var(--sunken);
+	}
+
+	.hero-index-service {
+		background:
+			linear-gradient(
+				135deg,
+				color-mix(in srgb, var(--ink) 4%, var(--background)) 0%,
+				var(--background) 55%,
+				color-mix(in srgb, var(--primary) 5%, var(--background)) 100%
+			);
+	}
+
+	.hero-page {
+		background: var(--sunken);
+	}
+
+	/*
+	  Cinematic hero. Sized to the visible viewport minus the header, so the whole
+	  frame is on screen at once instead of being cropped by the sticky bar.
+
+	  svh, not vh or dvh: vh ignores mobile browser chrome and overflows, dvh
+	  changes as the URL bar hides and makes the headline resize while you scroll.
+	  svh is the small (chrome-visible) viewport, which is stable.
+	*/
+	.hero-cinematic {
+		--border: color-mix(in srgb, white 12%, transparent);
+		--muted-foreground: var(--on-dark-muted);
+		--ring-offset: oklch(0 0 0);
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		flex-direction: column;
+		min-height: calc(100svh - var(--header-h));
+		overflow: clip;
+		background: var(--ink);
+		color: var(--on-dark);
+	}
+
+	/* Keep below-the-fold bands out of the critical rendering path. */
+	.section-defer {
+		content-visibility: auto;
+		contain-intrinsic-size: 1px 720px;
+	}
+
+	/*
+	  Bottom-weighted scrim. Two stops rather than a flat overlay: the top of the
+	  frame stays open so the photograph reads as a photograph, and the weight
+	  gathers only where the type sits.
+	*/
+	.hero-cinematic::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background:
+			linear-gradient(
+				to top,
+				oklch(0 0 0 / 0.88) 0%,
+				oklch(0 0 0 / 0.62) 26%,
+				oklch(0 0 0 / 0.18) 58%,
+				oklch(0 0 0 / 0.32) 100%
+			),
+			linear-gradient(to right, oklch(0 0 0 / 0.45) 0%, transparent 55%);
+	}
+
+	/*
+	  Slow drift on the hero photograph. Cinematic movement comes from the frame,
+	  not from elements sliding in, so this is the only motion in the band.
+	*/
+	@media (prefers-reduced-motion: no-preference) {
+		.media-drift {
+			will-change: transform;
+			animation: drift 28s ease-in-out infinite alternate;
+		}
+	}
+
+	/* Scroll cue: a hairline that pulses down the page. */
+	.scroll-cue {
+		position: relative;
+		display: block;
+		width: 1px;
+		height: 1.75rem;
+		overflow: hidden;
+		background: color-mix(in srgb, white 18%, transparent);
+	}
+
+	.scroll-cue::after {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		top: 0;
+		height: 45%;
+		background: var(--primary-bright);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.scroll-cue::after {
+			animation: cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+		}
+	}
+
+	/*
+	  Floating dark panel: mega menu, popovers. --dark-2 with a full hairline and
+	  a real drop shadow, so it reads as sitting above the page rather than being
+	  cut out of the header.
+	*/
+	.surface-float {
+		--border: color-mix(in srgb, white 10%, transparent);
+		--muted-foreground: var(--on-dark-muted);
+		--ring-offset: var(--dark-2);
+		background: var(--dark-2);
+		color: var(--on-dark);
+		box-shadow: var(--hairline-all), var(--shadow-float);
+	}
+
+	/*
+	  Dark surfaces must remap light-theme text tokens. Without this, nested
+	  .prose / text-foreground / strong keep --prose-body and --foreground from
+	  :root (dark charcoal on charcoal) and fail contrast, especially inside
+	  service timeline panels that put MarkdownContent on surface-float.
+	*/
+	.surface-float,
+	.surface-hero,
+	.surface-dark,
+	.surface-dark-soft,
+	.surface-raised,
+	.hero-cinematic,
+	.bg-ink,
+	.bg-panel {
+		--foreground: var(--on-dark);
+		--card-foreground: var(--on-dark);
+		--popover-foreground: var(--on-dark);
+		--secondary-foreground: var(--on-dark);
+		--muted-foreground: var(--on-dark-muted);
+		--prose-body: var(--on-dark-muted);
+		--prose-quote: var(--on-dark-muted);
+		--prose-quote-bg: color-mix(in srgb, white 7%, transparent);
+		--prose-code-bg: color-mix(in srgb, white 9%, transparent);
+	}
+
+	.surface-float .prose a,
+	.surface-hero .prose a,
+	.surface-dark .prose a,
+	.surface-dark-soft .prose a,
+	.surface-raised .prose a,
+	.hero-cinematic .prose a,
+	.bg-ink .prose a,
+	.bg-panel .prose a {
+		color: var(--primary-bright);
+	}
+
+	/*
+	  Light cards nested on a dark band must restore light-theme text tokens.
+	  Use concrete light values (not var(--card-foreground)): the parent dark
+	  surface already remapped --card-foreground to on-dark.
+	*/
+	.surface-float .surface-panel,
+	.surface-hero .surface-panel,
+	.surface-dark .surface-panel,
+	.surface-dark-soft .surface-panel,
+	.hero-cinematic .surface-panel,
+	.bg-ink .surface-panel,
+	.bg-panel .surface-panel {
+		--foreground: oklch(0.2 0.007 68);
+		--card-foreground: oklch(0.2 0.007 68);
+		--muted-foreground: oklch(0.49 0.011 68);
+		--prose-body: oklch(0.385 0.01 68);
+		--prose-quote: oklch(0.432 0.01 68);
+		--prose-quote-bg: oklch(0.954 0.005 85);
+		--prose-code-bg: oklch(0.943 0.004 85);
+		color: oklch(0.2 0.007 68);
+	}
+
+	.surface-float .surface-panel .prose a,
+	.surface-hero .surface-panel .prose a,
+	.surface-dark .surface-panel .prose a,
+	.surface-dark-soft .surface-panel .prose a,
+	.hero-cinematic .surface-panel .prose a,
+	.bg-ink .surface-panel .prose a,
+	.bg-panel .surface-panel .prose a {
+		color: var(--primary);
+	}
+
+	/* A card resting on a floating panel. */
+	.surface-raised {
+		background: var(--dark-3);
+		box-shadow: var(--hairline-all);
+	}
+
+	/*
+	  Blueprint grid, drawn from the subject: permit drawings and site plans are
+	  set on exactly this kind of ruled field. Masked so it fades out instead of
+	  ending on a hard edge, and pinned behind content on its own z layer, which
+	  is why every surface using it sets `isolation: isolate`.
+	*/
+	.tex-grid::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background-image:
+			linear-gradient(
+				to right,
+				color-mix(in srgb, white 4.5%, transparent) 1px,
+				transparent 1px
+			),
+			linear-gradient(
+				to bottom,
+				color-mix(in srgb, white 4.5%, transparent) 1px,
+				transparent 1px
+			);
+		background-size: 4rem 4rem;
+		mask-image: radial-gradient(
+			ellipse 90% 80% at 50% 0%,
+			black 20%,
+			transparent 75%
+		);
+	}
+
+	/* Ambient copper. One warm source top-left so the band has a light
+	   direction instead of reading evenly flat. */
+	.tex-glow::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		background:
+			radial-gradient(
+				ellipse 60% 70% at 8% 0%,
+				color-mix(in srgb, var(--primary) 28%, transparent),
+				transparent 62%
+			),
+			radial-gradient(
+				ellipse 45% 55% at 92% 100%,
+				color-mix(in srgb, var(--primary-bright) 9%, transparent),
+				transparent 60%
+			);
+	}
+
+	.surface-panel {
+		background: var(--card);
+		border: 1px solid var(--border);
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-edge);
+	}
+
+	.surface-dark {
+		/* Keep hairlines soft on ink panels even while the page theme is light */
+		--border: color-mix(in srgb, white 10%, transparent);
+		--input: color-mix(in srgb, white 10%, transparent);
+		--muted-foreground: var(--on-dark-muted);
+		--ring-offset: var(--panel);
+		background: var(--panel);
+		color: var(--on-dark);
+	}
+
+	.surface-dark-soft {
+		--border: color-mix(in srgb, white 10%, transparent);
+		--input: color-mix(in srgb, white 10%, transparent);
+		--muted-foreground: var(--on-dark-muted);
+		--ring-offset: var(--ink-soft);
+		background: var(--ink-soft);
+		color: var(--on-dark);
+	}
+
+	.bg-ink,
+	.bg-panel {
+		--border: color-mix(in srgb, white 10%, transparent);
+		--input: color-mix(in srgb, white 10%, transparent);
+		--ring-offset: var(--ink);
+	}
+
+	/* Type */
+	.type-cinematic,
+	.type-display,
+	.type-headline,
+	.type-title,
+	.type-subtitle {
+		font-family: var(--font-display);
+		font-weight: 800;
+		text-wrap: balance;
+	}
+
+	/*
+	  Trim the font's built-in leading above the cap line and below the baseline,
+	  so a heading's box is the letterforms rather than letterforms plus Archivo's
+	  internal padding. Gaps around headings then match the spacing scale
+	  optically, not just numerically. Purely additive - without support the
+	  headings keep their normal half-leading.
+	*/
+	@supports (text-box: trim-both cap alphabetic) {
+		.type-cinematic,
+		.type-display,
+		.type-headline,
+		.type-title,
+		.type-subtitle {
+			text-box: trim-both cap alphabetic;
+		}
+	}
+
+	/*
+	  Cinematic headline. Very tight leading and negative tracking so stacked
+	  lines lock into a single mass, the way a title card does. text-wrap is left
+	  alone here: at this size the line breaks are authored with <br>, and balance
+	  would fight them.
+	*/
+	.type-cinematic {
+		font-size: var(--type-cinematic);
+		line-height: 0.9;
+		letter-spacing: -0.045em;
+	}
+
+	.type-display {
+		font-size: var(--type-display);
+		line-height: 1.02;
+		letter-spacing: -0.035em;
+	}
+
+	.type-headline {
+		font-size: var(--type-headline);
+		line-height: 1.08;
+		letter-spacing: -0.03em;
+	}
+
+	.type-title {
+		font-size: var(--type-title);
+		line-height: 1.12;
+		letter-spacing: -0.025em;
+	}
+
+	.type-subtitle {
+		font-size: var(--type-subtitle);
+		font-weight: 700;
+		line-height: 1.2;
+		letter-spacing: -0.02em;
+	}
+
+	.type-lead {
+		font-size: var(--type-lead);
+		line-height: 1.6;
+		color: var(--muted-foreground);
+		text-wrap: pretty;
+	}
+
+	.type-meta {
+		font-size: var(--type-meta);
+		line-height: 1.5;
+		color: var(--muted-foreground);
+	}
+
+	/*
+	  Signature: the spec plate. One label system for eyebrows, category marks,
+	  and column heads - mono, letterspaced, over a short copper rule, the way a
+	  permit stamp or a control-panel nameplate is set. Replaces the two
+	  competing eyebrow treatments (pill badges + .type-eyebrow).
+	*/
+	.spec-label {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		font-family: var(--font-mono);
+		font-size: var(--type-label);
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--primary);
+	}
+
+	.spec-label::before {
+		content: "";
+		width: 1.5rem;
+		height: 2px;
+		flex: none;
+		background: currentColor;
+	}
+
+	.spec-label-center {
+		justify-content: center;
+	}
+
+	.surface-dark .spec-label,
+	.surface-dark-soft .spec-label,
+	.surface-float .spec-label,
+	.surface-hero .spec-label,
+	.surface-raised .spec-label,
+	.hero-cinematic .spec-label,
+	.bg-ink .spec-label,
+	.bg-panel .spec-label {
+		color: var(--primary-bright);
+	}
+
+	/* Inline variant for card category marks, where a rule would be noise. */
+	.spec-tag {
+		display: inline-flex;
+		align-items: center;
+		font-family: var(--font-mono);
+		font-size: var(--type-label);
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--muted-foreground);
+	}
+
+	/* Prose */
+	.prose {
+		max-width: var(--measure);
+		color: var(--prose-body);
+		font-size: 1.0625rem;
+		line-height: 1.75;
+		text-wrap: pretty;
+	}
+
+	.prose > * + * {
+		margin-top: 1.15em;
+	}
+
+	.prose h2,
+	.prose h3,
+	.prose h4 {
+		font-family: var(--font-display);
+		color: var(--foreground);
+		font-weight: 800;
+		line-height: 1.15;
+		letter-spacing: -0.025em;
+		text-wrap: balance;
+		scroll-margin-top: var(--header-offset);
+	}
+
+	.prose h2 {
+		margin-top: 2em;
+		font-size: var(--type-title);
+	}
+
+	.prose h3 {
+		margin-top: 1.75em;
+		font-size: var(--type-subtitle);
+	}
+
+	.prose h4 {
+		margin-top: 1.5em;
+		font-size: 1.0625rem;
+		letter-spacing: -0.01em;
+	}
+
+	.prose strong {
+		color: var(--foreground);
+		font-weight: 700;
+	}
+
+	.prose a {
+		color: var(--primary);
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1.5px;
+	}
+
+	.prose a:hover {
+		text-decoration-thickness: 2.5px;
+	}
+
+	.prose ul,
+	.prose ol {
+		padding-left: 1.35rem;
+	}
+
+	.prose ul {
+		list-style: disc;
+	}
+
+	.prose ol {
+		list-style: decimal;
+	}
+
+	.prose li::marker {
+		color: var(--primary);
+	}
+
+	.prose li + li {
+		margin-top: 0.5rem;
+	}
+
+	.prose blockquote {
+		border-left: 3px solid var(--primary);
+		background: var(--prose-quote-bg);
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
+		padding: 1rem 1.25rem;
+		color: var(--prose-quote);
+	}
+
+	.prose code {
+		background: var(--prose-code-bg);
+		border-radius: var(--radius-sm);
+		padding: 0.15em 0.4em;
+		font-family: var(--font-mono);
+		font-size: 0.875em;
+	}
+
+	.prose hr {
+		border: 0;
+		border-top: 1px solid var(--border);
+		margin-block: 2.5em;
+	}
+
+	.prose img {
+		border-radius: var(--radius-lg);
+	}
+
+	/* Tables scroll rather than forcing the page sideways on narrow screens. */
+	.prose .table-scroll {
+		overflow-x: auto;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-md);
+	}
+
+	.prose table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: var(--type-meta);
+	}
+
+	.prose th,
+	.prose td {
+		border-bottom: 1px solid var(--border);
+		padding: 0.75rem 1rem;
+		text-align: left;
+	}
+
+	.prose tr:last-child td {
+		border-bottom: 0;
+	}
+
+	.prose th {
+		background: var(--secondary);
+		color: var(--foreground);
+		font-weight: 800;
+		white-space: nowrap;
+	}
+}
+
+/* Motion */
+@keyframes rise {
+	from {
+		transform: translateY(12px);
+	}
+	to {
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes accordion-down {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--radix-accordion-content-height);
+	}
+}
+
+@keyframes accordion-up {
+	from {
+		height: var(--radix-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+
+/* Ken Burns drift on the hero frame. */
+@keyframes drift {
+	from {
+		transform: scale(1.06) translate3d(0, 0, 0);
+	}
+	to {
+		transform: scale(1.16) translate3d(-1.5%, -1.5%, 0);
+	}
+}
+
+@keyframes cue {
+	0% {
+		transform: translateY(-100%);
+	}
+	60%,
+	100% {
+		transform: translateY(340%);
+	}
+}
+
+@keyframes reveal {
+	from {
+		opacity: 0;
+		transform: translateY(1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@layer components {
+	/* Load-time motion. Correct for the hero, which is on screen at paint. */
+	.motion-rise {
+		animation: var(--animate-rise);
+	}
+
+	.motion-fade {
+		animation: var(--animate-fade);
+	}
+
+	.motion-delay-1 {
+		animation-delay: 90ms;
+	}
+
+	.motion-delay-2 {
+		animation-delay: 180ms;
+	}
+
+	/*
+	  Scroll-driven reveal for everything below the fold. The old approach ran
+	  load-time animations on off-screen sections, so the whole page had already
+	  finished animating before you scrolled to any of it. Tying the animation to
+	  the element's own view() progress means it plays when it is actually seen -
+	  no observers, no JS, and grids stagger naturally because each card crosses
+	  the viewport edge at a different moment.
+
+	  No fallback branch on purpose: without support the content is simply
+	  visible, which is the correct resting state.
+	*/
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.reveal {
+				animation: reveal linear both;
+				animation-timeline: view();
+				animation-range: entry 15% cover 32%;
+			}
+		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		scroll-behavior: auto !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
 
 @layer utilities {
-  /* ── Foundation utilities ── */
-  .bg-grid {
-    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 12%, transparent) 1px, transparent 0);
-    background-size: 28px 28px;
-  }
-  .bg-grid-lines {
-    background-image: linear-gradient(to right, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-  .glow-brand {
-    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--brand) 28%, transparent) 0%, transparent 70%);
-  }
-  .text-gradient {
-    background: linear-gradient(180deg, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 62%, transparent) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .text-gradient-brand {
-    background: linear-gradient(135deg, var(--foreground) 0%, var(--brand) 120%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .mask-fade-x {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-  }
-  .shadow-float {
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.08), 0 8px 24px -8px oklch(0 0 0 / 0.22), 0 16px 48px -16px oklch(0 0 0 / 0.18);
-  }
-  .shadow-card {
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 1px 3px oklch(0 0 0 / 0.04);
-  }
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-  }
-
-  /* ── Site utilities ── */
-  .site-atmosphere {
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in oklch, var(--brand) 9%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, color-mix(in oklch, var(--brand) 5%, transparent), transparent 55%),
-      var(--background);
-  }
-  .site-grain {
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-  }
-  .dark .site-grain {
-    opacity: 0.2;
-  }
+  .text-brand { color: var(--brand); }
+  .bg-brand { background-color: var(--brand); }
+  .border-brand { border-color: var(--brand); }
+  .font-heading { font-family: var(--font-display); }
   .link-underline {
-    @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
+    color: var(--foreground);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 150ms ease, color 150ms ease;
+  }
+  .link-underline:hover {
+    text-decoration-color: var(--foreground);
   }
   .skip-link {
     position: absolute;
@@ -278,19 +1321,28 @@
     border-radius: var(--radius-md);
     background: var(--popover);
     color: var(--popover-foreground);
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.2);
   }
   .skip-link:focus {
     left: 1rem;
     top: 1rem;
   }
   .focus-ring {
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    outline: none;
   }
-
-  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ── */
+  .focus-ring:focus-visible {
+    box-shadow: 0 0 0 2px var(--ring-offset), 0 0 0 4px var(--ring);
+  }
+  .glow-brand {
+    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--primary) 28%, transparent) 0%, transparent 70%);
+  }
+  .text-gradient {
+    background: linear-gradient(180deg, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 62%, transparent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .reveal {
-    animation: reveal-up 0.6s var(--tw-ease, cubic-bezier(0, 0, 0.2, 1)) forwards;
+    animation: reveal-up 0.6s cubic-bezier(0, 0, 0.2, 1) forwards;
   }
   .reveal-delay-1 { animation-delay: 0.08s; opacity: 0; }
   .reveal-delay-2 { animation-delay: 0.16s; opacity: 0; }
@@ -305,23 +1357,4 @@
 @keyframes reveal-up {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/*
- * Theme-toggle morph (byronwade/ui). The nav dock drives the light/dark swap
- * through the View Transitions API and animates `::view-transition-new(root)`
- * with an expanding clip-path circle anchored at the toggle button — so the new
- * theme blooms outward from the trigger. We disable the default cross-fade and
- * stack the incoming snapshot on top so the circle reveals it.
- */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-old(root) {
-  z-index: 1;
-}
-::view-transition-new(root) {
-  z-index: 9999;
 }

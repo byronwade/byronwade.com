@@ -3,24 +3,24 @@ import { cn } from "@/lib/utils";
 
 interface SiteShellProps {
 	children: ReactNode;
-	width?: "narrow" | "wide";
+	width?: "narrow" | "wide" | "full";
 	className?: string;
+	/** Skip default vertical padding (useful when a PageHero already sets rhythm). */
+	flush?: boolean;
 }
 
-/** Content width + gutter wrapper — header/footer/background come from SiteLayout */
-export function SiteShell({ children, width = "narrow", className }: SiteShellProps) {
-	const maxWidth = width === "narrow" ? "max-w-2xl" : "max-w-5xl";
+/** Content width + gutter wrapper — header/footer come from SiteLayout */
+export function SiteShell({
+	children,
+	width = "narrow",
+	className,
+	flush = false,
+}: SiteShellProps) {
+	const shell =
+		width === "full" ? "w-full" : width === "wide" ? "container-shell" : "article-shell";
 
 	return (
-		<div
-			className={cn(
-				// Small top (the layout's <main> already clears the floating chrome) +
-				// generous bottom before the footer.
-				"mx-auto w-full px-4 pt-6 pb-14 sm:px-6 sm:pt-8 sm:pb-20",
-				maxWidth,
-				className
-			)}
-		>
+		<div className={cn(shell, !flush && "py-[var(--space-section-y-tight)]", className)}>
 			{children}
 		</div>
 	);

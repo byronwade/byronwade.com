@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { PageHero } from "@/components/layout/page-hero";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
@@ -53,15 +54,15 @@ async function BlogList() {
 	}
 
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+		<div className="surface-panel divide-y divide-border overflow-hidden">
 			{posts.map((post) => (
 				<Link
 					key={post.slug}
 					href={`/blog/${post.slug}`}
-					className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
+					className="group flex flex-col gap-1.5 px-5 py-5 transition-colors hover:bg-muted"
 				>
 					<div className="flex items-start justify-between gap-4">
-						<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+						<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
 							{post.title}
 						</span>
 						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
@@ -90,7 +91,6 @@ async function BlogList() {
 export default function BlogPage() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 
-	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
 		{ name: "Home", url: baseUrl },
@@ -99,7 +99,6 @@ export default function BlogPage() {
 
 	return (
 		<>
-			{/* Structured Data */}
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
@@ -111,31 +110,26 @@ export default function BlogPage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			<SiteShell>
-				<div className="flex flex-col gap-8 sm:gap-10">
-					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-							Writing
-						</h1>
-						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Insights on web development, React, Next.js, performance, and building software for
-							service businesses.
-						</p>
-					</header>
+			<PageHero
+				variant="index"
+				eyebrow="Notes"
+				title="Writing"
+				description="Insights on web development, React, Next.js, performance, and building software for service businesses."
+			/>
 
-					<div className="reveal reveal-delay-1 w-full">
-						<Suspense
-							fallback={
-								<div className="animate-pulse space-y-2">
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-								</div>
-							}
-						>
-							<BlogList />
-						</Suspense>
-					</div>
+			<SiteShell flush className="pb-[var(--space-section-y)]">
+				<div className="reveal w-full">
+					<Suspense
+						fallback={
+							<div className="animate-pulse space-y-2">
+								<div className="h-16 rounded-lg bg-muted" />
+								<div className="h-16 rounded-lg bg-muted" />
+								<div className="h-16 rounded-lg bg-muted" />
+							</div>
+						}
+					>
+						<BlogList />
+					</Suspense>
 				</div>
 			</SiteShell>
 		</>

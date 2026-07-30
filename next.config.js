@@ -41,12 +41,7 @@ const nextConfig = {
 	experimental: {
 		// Tree-shake barrel-file libraries so only the icons/helpers actually used
 		// ship to the client. lucide-react alone is imported across 40+ files.
-		optimizePackageImports: [
-			"lucide-react",
-			"date-fns",
-			"framer-motion",
-			"@radix-ui/react-icons",
-		],
+		optimizePackageImports: ["lucide-react", "date-fns", "framer-motion", "@radix-ui/react-icons"],
 	},
 
 	...(process.env.NODE_ENV === "production" && {

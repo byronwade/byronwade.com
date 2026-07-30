@@ -4,6 +4,7 @@ import { Github, Linkedin, Loader2, Mail, MapPin, Send, Twitter } from "lucide-r
 import { useState } from "react";
 import { toast } from "sonner";
 import { sendEmail } from "@/app/actions/send-email";
+import { PageHero } from "@/components/layout/page-hero";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,19 +53,16 @@ export default function ContactClient() {
 	};
 
 	return (
-		<SiteShell width="wide">
-			<div className="flex flex-col gap-10 sm:gap-12">
-				<header className="reveal flex w-full flex-col gap-3">
-					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-						Get in touch
-					</h1>
-					<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-						Have a project in mind, a question, or just want to say hello? Send a note below and
-						I'll reply as soon as I can.
-					</p>
-				</header>
+		<>
+			<PageHero
+				variant="page"
+				eyebrow="Contact"
+				title="Get in touch"
+				description="Have a project in mind, a question, or just want to say hello? Send a note below and I'll reply as soon as I can."
+			/>
 
-				<div className="grid reveal reveal-delay-1 gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
+			<SiteShell width="wide" flush className="pb-[var(--space-section-y)]">
+				<div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
 						<div className="grid gap-5 sm:grid-cols-2">
 							<div className="flex flex-col gap-2">
@@ -73,7 +71,7 @@ export default function ContactClient() {
 									id="name"
 									value={formData.name}
 									onChange={(e) => handleChange("name", e.target.value)}
-									placeholder="Your name"
+									placeholder="Your name…"
 									required
 									autoComplete="name"
 								/>
@@ -85,7 +83,7 @@ export default function ContactClient() {
 									type="email"
 									value={formData.email}
 									onChange={(e) => handleChange("email", e.target.value)}
-									placeholder="you@example.com"
+									placeholder="you@example.com…"
 									required
 									autoComplete="email"
 								/>
@@ -104,7 +102,7 @@ export default function ContactClient() {
 							/>
 						</div>
 						<div>
-							<Button type="submit" disabled={isSubmitting} className="gap-2">
+							<Button type="submit" disabled={isSubmitting} size="lg">
 								{isSubmitting ? (
 									<>
 										<Loader2 className="size-4 animate-spin" />
@@ -120,30 +118,24 @@ export default function ContactClient() {
 						</div>
 					</form>
 
-					<aside className="flex h-fit flex-col gap-6 rounded-2xl border border-border bg-card p-6 shadow-card">
+					<aside className="surface-panel flex h-fit flex-col gap-6 p-6">
 						<div className="flex flex-col gap-1.5">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-								Email
-							</span>
+							<span className="spec-label">Email</span>
 							<ObfuscatedEmail
-								className="text-sm text-foreground hover:text-brand"
+								className="text-sm text-foreground hover:text-primary"
 								showIcon={false}
 								variant="link"
 							/>
 						</div>
 						<div className="flex flex-col gap-1.5">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-								Location
-							</span>
-							<span className="inline-flex items-center gap-2 text-sm text-foreground">
-								<MapPin className="size-4 text-brand" />
+							<span className="spec-label">Location</span>
+							<span className="inline-flex items-center gap-2 text-sm font-bold text-foreground">
+								<MapPin className="size-4 text-primary" />
 								Jasper, GA
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-								Elsewhere
-							</span>
+							<span className="spec-label">Elsewhere</span>
 							<div className="flex gap-1.5">
 								{socials.map((social) => (
 									<a
@@ -152,7 +144,7 @@ export default function ContactClient() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={social.name}
-										className="inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
+										className="inline-flex size-10 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
 									>
 										<social.icon className="size-[1.05rem]" />
 									</a>
@@ -165,7 +157,7 @@ export default function ContactClient() {
 						</div>
 					</aside>
 				</div>
-			</div>
-		</SiteShell>
+			</SiteShell>
+		</>
 	);
 }

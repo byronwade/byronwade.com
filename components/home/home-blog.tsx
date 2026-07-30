@@ -13,14 +13,14 @@ async function BlogList() {
 	}
 
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+		<div className="surface-panel divide-y divide-border overflow-hidden">
 			{recentPosts.map((post) => (
 				<Link
 					key={post.slug}
 					href={`/blog/${post.slug}`}
-					className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
+					className="group flex items-center justify-between gap-4 px-4 py-3.5 transition-colors hover:bg-muted"
 				>
-					<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+					<span className="truncate font-bold tracking-[-0.01em] text-foreground transition-colors group-hover:text-primary">
 						{post.title}
 					</span>
 					<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
@@ -41,11 +41,14 @@ async function BlogList() {
 export function HomeBlog() {
 	return (
 		<section className="reveal reveal-delay-7 flex w-full flex-col gap-5">
-			<div className="flex items-baseline justify-between">
-				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Writing</h2>
+			<div className="section-head-row">
+				<div className="section-head">
+					<p className="spec-label">Notes</p>
+					<h2 className="type-title text-foreground">Writing</h2>
+				</div>
 				<Link
 					href="/blog"
-					className="text-sm text-muted-foreground transition-colors hover:text-brand"
+					className="text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
 				>
 					All posts →
 				</Link>

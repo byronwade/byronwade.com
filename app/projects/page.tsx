@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { PageHero } from "@/components/layout/page-hero";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -90,7 +91,6 @@ function IndexFallback() {
 export default async function ProjectsPage() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 
-	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
 		{ name: "Home", url: baseUrl },
@@ -99,7 +99,6 @@ export default async function ProjectsPage() {
 
 	return (
 		<>
-			{/* Structured Data */}
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
@@ -111,23 +110,18 @@ export default async function ProjectsPage() {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			<SiteShell>
-				<div className="flex flex-col gap-8 sm:gap-12">
-					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-							Projects
-						</h1>
-						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Client work, products, and hobby projects — real-world problem solving with React,
-							Next.js, and full-stack tools.
-						</p>
-					</header>
+			<PageHero
+				variant="index"
+				eyebrow="Index"
+				title="Projects"
+				description="Client work, products, and hobby projects — real-world problem solving with React, Next.js, and full-stack tools."
+			/>
 
-					<div className="reveal reveal-delay-1 w-full">
-						<Suspense fallback={<IndexFallback />}>
-							<ProjectsList />
-						</Suspense>
-					</div>
+			<SiteShell flush className="pb-[var(--space-section-y)]">
+				<div className="reveal w-full">
+					<Suspense fallback={<IndexFallback />}>
+						<ProjectsList />
+					</Suspense>
 				</div>
 			</SiteShell>
 		</>

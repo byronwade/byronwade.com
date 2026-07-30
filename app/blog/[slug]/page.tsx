@@ -119,20 +119,14 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
 			/>
 
-			{/* Header Section */}
 			<div className="reveal w-full">
-				<div className="flex w-full flex-col items-start gap-3">
-					<div className="flex w-full flex-col gap-2">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-							{post.title}
-						</h1>
-						{post.date && (
-							<time className="text-xs text-muted-foreground">
-								{format(new Date(post.date), "MMMM d, yyyy")}
-							</time>
-						)}
-						<SocialShare url={url} title={post.title} description={post.excerpt} className="mt-4" />
-					</div>
+				<div className="section-head">
+					<p className="spec-label">Writing</p>
+					<h1 className="type-headline text-foreground">{post.title}</h1>
+					{post.date && (
+						<time className="type-meta">{format(new Date(post.date), "MMMM d, yyyy")}</time>
+					)}
+					<SocialShare url={url} title={post.title} description={post.excerpt} className="mt-2" />
 				</div>
 			</div>
 
@@ -157,7 +151,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 					aria-label="Go to blog"
 					href="/blog"
 				>
-					<span className="text-sm font-medium text-muted-foreground transition-colors hover:text-brand">
+					<span className="text-sm font-bold text-muted-foreground transition-colors hover:text-primary">
 						← Back to blog
 					</span>
 				</Link>

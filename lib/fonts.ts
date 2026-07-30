@@ -1,21 +1,35 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Geist_Mono, Manrope } from "next/font/google";
 import localFont from "next/font/local";
 
-// Body / UI — Geist, the byronwade/ui design-system typeface
-export const geistSans = Geist({
+/** Body / UI — humanist sans for long-form readability */
+export const manrope = Manrope({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-sans",
+	variable: "--font-manrope",
+	preload: true,
+	weight: ["400", "700"],
 });
 
-// Monospace — code, metrics, technical labels
+/**
+ * Display face — squared grotesque against Manrope's humanist body.
+ * Headings get their own voice instead of running the body face at weight 800.
+ */
+export const archivo = Archivo({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-archivo",
+	preload: false,
+	weight: ["700", "800"],
+});
+
+/** Monospace — code, metrics, spec labels */
 export const geistMono = Geist_Mono({
 	subsets: ["latin"],
 	display: "swap",
 	variable: "--font-geist-mono",
 });
 
-// Custom signature font for the wordmark / personal branding
+/** Signature wordmark font for personal branding accents */
 export const customFont = localFont({
 	src: [
 		{
@@ -27,3 +41,6 @@ export const customFont = localFont({
 	display: "swap",
 	variable: "--font-signature",
 });
+
+/** @deprecated Use `manrope` — kept for transitional imports */
+export const geistSans = manrope;

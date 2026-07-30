@@ -1,41 +1,28 @@
 import type { ReactNode } from "react";
-import Background from "@/components/sections/background";
+import { ThemeToggle } from "@/components/common";
+import Footer from "@/components/layout/footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteSearch } from "@/components/layout/site-search";
 import { buildSearchIndex } from "@/lib/search-index";
-import { AppBreadcrumb } from "./app-breadcrumb";
-import { AppLauncher } from "./app-launcher";
-import { DockToolbar } from "./dock-toolbar";
-import Footer from "./footer";
-import { NavDock } from "./nav-dock";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
 	const searchEntries = await buildSearchIndex();
-	// href → label map for the chrome breadcrumb pill (dynamic project/blog titles
-	// come from the same source as ⌘K search).
-	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
 
 	return (
 		<>
-			<Background />
-
-			{/* Top-left header group: identity launcher + breadcrumb pill. */}
-			<div className="pointer-events-none fixed top-3 left-3 z-50 flex items-start gap-2 print:hidden">
-				<AppLauncher />
-				<AppBreadcrumb labels={pathLabels} />
-			</div>
-
-			{/* Far-right utility toolbar: search · GitHub · theme · donate. */}
-			<DockToolbar entries={searchEntries} />
-
+			<SiteHeader />
 			<div className="relative flex min-h-screen flex-col">
-				<NavDock />
-				{/* Top padding clears the floating chrome (launcher + nav dock) so it
-				    never sits on top of page content. */}
-				<main id="main-content" className="flex-1 pt-14 sm:pt-20">
+				<main id="main-content" className="flex-1">
 					{children}
 				</main>
 				<Footer />
-				{/* Clearance for the floating dock, which sits at the bottom on phones. */}
-				<div aria-hidden="true" className="h-24 shrink-0 sm:hidden" />
+			</div>
+			<SiteSearch entries={searchEntries} />
+			{/* Floating theme control — keeps dark/light available without dock chrome */}
+			<div className="pointer-events-none fixed right-3 bottom-3 z-40 print:hidden sm:right-5 sm:bottom-5">
+				<div className="pointer-events-auto rounded-md border border-border bg-card/95 p-1 shadow-[var(--shadow-panel)] backdrop-blur-sm">
+					<ThemeToggle className="rounded-md text-foreground hover:bg-muted" />
+				</div>
 			</div>
 		</>
 	);

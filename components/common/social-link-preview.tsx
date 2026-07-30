@@ -64,13 +64,7 @@ const itemVariants = {
 	},
 };
 
-const levelColors = [
-	"bg-muted",
-	"bg-brand/30",
-	"bg-brand/50",
-	"bg-brand/75",
-	"bg-brand",
-];
+const levelColors = ["bg-muted", "bg-brand/30", "bg-brand/50", "bg-brand/75", "bg-brand"];
 
 function EmailPreviewContent() {
 	const [copied, setCopied] = useState(false);
