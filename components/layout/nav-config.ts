@@ -20,7 +20,7 @@ export interface NavItem {
 /** Home lives on the wordmark, so it is only surfaced in the mobile panel. */
 export const homeItem: NavItem = { label: "Home", href: "/", icon: Home, match: (p) => p === "/" };
 
-/** Primary destinations — the centred row in the header island. */
+/** Primary destinations: the centred row in the header island. */
 export const navItems: NavItem[] = [
 	{ label: "Projects", href: "/projects", icon: FolderGit2 },
 	{ label: "Portfolio", href: "/portfolio", icon: LayoutGrid },
@@ -28,7 +28,7 @@ export const navItems: NavItem[] = [
 	{ label: "Resume", href: "/resume", icon: FileText },
 ];
 
-/** The one call to action — rendered as a distinct button, not a nav link. */
+/** The one call to action, rendered as a distinct button, not a nav link. */
 export const contactItem: NavItem = { label: "Contact", href: "/contact", icon: Mail };
 
 /** Full list for the mobile panel, where everything is one flat menu. */

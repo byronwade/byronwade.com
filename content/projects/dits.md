@@ -1,5 +1,5 @@
 ---
-title: "Dits — Media-First Version Control"
+title: "Dits: Media-First Version Control"
 url: "https://dits.byronwade.com"
 category: "Hobby"
 type: "hobby"
@@ -7,9 +7,9 @@ date: 2025-12-09
 excerpt: "A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and other binary beasts."
 ---
 
-# Dits — Media-First Version Control (Longform Portfolio Summary)
+# Dits: Media-First Version Control (Longform Portfolio Summary)
 
-A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and other binary beasts. This document is a website-ready, 1000+ line explainer that blends product value, architecture, safety guarantees, roadmap, and operations—all distilled from the `docs/` corpus.
+A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and other binary beasts. This document is a website-ready, 1000+ line explainer that blends product value, architecture, safety guarantees, roadmap, and operations, all distilled from the `docs/` corpus.
 
 ## How to Use This Summary
 
@@ -75,7 +75,7 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## One-Line Solution
 
-- A content-addressed, FastCDC-chunked VCS with manifest-driven file recipes, QUIC-based delta sync, keyframe-aware media handling, and a virtual filesystem for just-in-time hydration—so media versions travel as small deltas, not multi-gigabyte blobs.
+- A content-addressed, FastCDC-chunked VCS with manifest-driven file recipes, QUIC-based delta sync, keyframe-aware media handling, and a virtual filesystem for just-in-time hydration, so media versions travel as small deltas, not multi-gigabyte blobs.
 
 ## Who It Serves
 
@@ -97,8 +97,8 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## Core Architecture (Two-Layer Model)
 
-- Layer 1: Universal bucket — every file chunked via FastCDC, hashed with BLAKE3, stored in a content-addressable store.
-- Layer 2: Smart, file-type-aware logic — domain-specific behaviors for video, games, 3D, and photo to maximize dedup and preserve playability.
+- Layer 1: Universal bucket. Every file chunked via FastCDC, hashed with BLAKE3, stored in a content-addressable store.
+- Layer 2: Smart, file-type-aware logic. Domain-specific behaviors for video, games, 3D, and photo to maximize dedup and preserve playability.
 - Commits: DAG of manifests (file recipes) and trees; Git-like operations with binary awareness.
 - Project graphs: optional higher-level graphs for timelines/builds/dependencies.
 
@@ -210,7 +210,7 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Lock contention: expose status; admins clear stale locks with audit trail.
 - High latency: tune QUIC cwnd/streams/keep-alive; use proxy/hologram mode.
 - Storage pressure: run GC, move cold chunks, monitor object growth.
-- Runbooks: service down, scaling, database issues, high latency—all documented in `docs/operations/runbooks/`.
+- Runbooks: service down, scaling, database issues, high latency, all documented in `docs/operations/runbooks/`.
 
 ## CLI Usage Cheat Sheet
 
@@ -242,16 +242,16 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## Roadmap (9 Phases)
 
-- Phase 1: Engine — local chunking/dedup; bit-for-bit checkout.
-- Phase 2: Structure awareness — MP4 atom exploder; metadata-only changes avoid re-upload.
-- Phase 3: Virtual filesystem — mounted drive; just-in-time hydration.
+- Phase 1: Engine. Local chunking/dedup; bit-for-bit checkout.
+- Phase 2: Structure awareness. MP4 atom exploder; metadata-only changes avoid re-upload.
+- Phase 3: Virtual filesystem. Mounted drive; just-in-time hydration.
 - Phase 3.5: Git parity milestones.
-- Phase 4: Collaboration & sync — QUIC delta sync; push/pull missing chunks only.
-- Phase 5: Conflict & locking — binary locks; visual diff assistance.
-- Phase 6: The Hologram — proxy-based editing (`checkout --proxy`).
-- Phase 7: The Spiderweb — dependency parsing to prevent “media offline.”
-- Phase 8: Deep Freeze — tiered storage lifecycle (hot/cold).
-- Phase 9: The Black Box — client-side convergent encryption with RBAC keys.
+- Phase 4: Collaboration & sync. QUIC delta sync; push/pull missing chunks only.
+- Phase 5: Conflict & locking. Binary locks; visual diff assistance.
+- Phase 6: The Hologram. Proxy-based editing (`checkout --proxy`).
+- Phase 7: The Spiderweb. Dependency parsing to prevent “media offline.”
+- Phase 8: Deep Freeze. Tiered storage lifecycle (hot/cold).
+- Phase 9: The Black Box. Client-side convergent encryption with RBAC keys.
 
 ## Business and Compliance Notes
 
@@ -277,11 +277,11 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## Known Issues and Solutions (Highlights)
 
-- STOR-C1: missing checksum verification — mandate BLAKE3 verify on read.
-- STOR-C2: race in ref counting — use advisory locks + transactions.
-- NET-C1: no partition detection — add quorum-based detector.
-- SEC-C2: deterministic nonces break AEAD — mix content hash + randomness.
-- OPS-C1: manual DB failover — documented runbook and HA guidance.
+- STOR-C1: missing checksum verification. Mandate BLAKE3 verify on read.
+- STOR-C2: race in ref counting. Use advisory locks + transactions.
+- NET-C1: no partition detection. Add quorum-based detector.
+- SEC-C2: deterministic nonces break AEAD. Mix content hash + randomness.
+- OPS-C1: manual DB failover. Documented runbook and HA guidance.
 
 ## Disaster Recovery and Backup
 
@@ -749,5 +749,5 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 - Dits aims to be the Git of heavy media: deduped, verifiable, fast, open, and fit for modern creative and game pipelines.
 - This summary captures the documented system; see source docs for deeper implementation details.
-- Contributions and feedback welcome—open issues or join the discussion.
+- Contributions and feedback welcome. Open issues or join the discussion.
 

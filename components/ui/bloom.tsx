@@ -225,7 +225,7 @@ function toneClasses(tone: "dock" | "surface"): string {
 }
 
 /**
- * The morphing edge-anchored bloom primitive — a generalized port of NavDock's
+ * The morphing edge-anchored bloom primitive, a generalized port of NavDock's
  * proven CSS technique (NOT a library-animated popover).
  *
  * Two orthogonal morphs, exactly as the reference splits them:
@@ -238,7 +238,7 @@ function toneClasses(tone: "dock" | "surface"): string {
  *
  * The bar is ALWAYS mounted inside the container and pinned to the placement
  * edge (footer for bottom/right, header for top/left), so opening never reflows
- * page content — the body simply grows away from the anchored edge.
+ * page content: the body simply grows away from the anchored edge.
  *
  * Positioning modes:
  *  - `anchor="viewport"` (default): an outer `fixed z-50 pointer-events-none`
@@ -541,7 +541,7 @@ export function Bloom({
 			>
 				{/* Keep children mounted through the collapse (gated on `mounted`, not
             `open`) so the body clips away under overflow-hidden instead of
-            snapping to empty — matches DockSheet's requestClose feel. */}
+            snapping to empty. This matches DockSheet's requestClose feel. */}
 				{children}
 			</div>
 		</div>

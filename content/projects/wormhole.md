@@ -1,10 +1,10 @@
 ---
-title: "Wormhole — Mount Any Folder. Any Computer. No Setup."
+title: "Wormhole: Mount Any Folder. Any Computer. No Setup."
 url: "https://wormhole.byronwade.com"
 category: "Product"
 type: "product"
 date: 2025-12-09
-excerpt: "Peer-to-peer distributed filesystem: share a folder with a join code and mount it anywhere—no uploads, no accounts, zero monthly fees."
+excerpt: "Peer-to-peer distributed filesystem: share a folder with a join code and mount it anywhere, with no uploads, no accounts, zero monthly fees."
 ---
 
 # Wormhole - Mount Any Folder. Any Computer. No Setup.

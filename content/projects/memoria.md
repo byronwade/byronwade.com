@@ -8,7 +8,7 @@ excerpt: "An MCP server that keeps AI from breaking your code by exposing hidden
 
 # Memoria: Keeping AI From Breaking Your Code
 
-I built **Memoria** after watching AI assistants refactor code perfectly in isolation, only to crash the app because another file depended on the old behavior. Imports don't tell the full story—git history does. Memoria is the guardrail that exposes hidden coupling before your AI ships a regression.
+I built **Memoria** after watching AI assistants refactor code perfectly in isolation, only to crash the app because another file depended on the old behavior. Imports don't tell the full story. Git history does. Memoria is the guardrail that exposes hidden coupling before your AI ships a regression.
 
 ---
 
@@ -33,7 +33,7 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 **Assigns a risk score** so you and the AI know when to slow down.  
 **Surfaces static dependents** using git grep to catch direct importers.  
 **Builds a pre-flight checklist** of files to verify or update before the change is "done."  
-**Runs 100% locally**—no API keys, no cloud upload, works offline.
+**Runs 100% locally.** No API keys, no cloud upload, works offline.
 
 ---
 
@@ -62,7 +62,7 @@ Memoria is distributed as an **MCP server**. Pick your client and drop in a sing
 - Claude Desktop: `npx @anthropic/claude-code mcp add memoria -- npx -y @byronwade/memoria`
 - Global npm: `npm install -g @byronwade/memoria` then point your MCP config to `memoria`
 
-Restart your AI tool and Memoria is available immediately—no API keys needed.
+Restart your AI tool and Memoria is available immediately. No API keys needed.
 
 ---
 
@@ -81,16 +81,16 @@ You’ll see:
 - **Static dependents** that import the target
 - **Pre-flight checklist** so the AI updates everything that matters, not just the file you asked for
 
-Repeat the analysis during refactors—the cache returns results in milliseconds.
+Repeat the analysis during refactors, and the cache returns results in milliseconds.
 
 ---
 
 ## When to Reach for Memoria
 
 - Refactors or API shape changes where hidden dependents are likely.
-- Deleting "dead" code that might actually be a regression fix—run history first.
+- Deleting "dead" code that might actually be a regression fix. Run history first.
 - Touching high-churn areas with many authors and unclear ownership.
-- Onboarding a new AI workflow—make Memoria the first step before any edit.
+- Onboarding a new AI workflow. Make Memoria the first step before any edit.
 
 ---
 

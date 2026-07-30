@@ -1,6 +1,6 @@
 # byronwade.com
 
-Personal portfolio for Byron Wade — full-stack developer. An editorial homepage,
+Personal portfolio for Byron Wade, full-stack developer. An editorial homepage,
 case-study projects, a live GitHub portfolio, a Markdown blog, and a resume.
 
 ## Quick start
@@ -16,7 +16,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Editorial homepage — intro, projects, recent posts |
+| `/` | Editorial homepage: intro, projects, recent posts |
 | `/projects`, `/projects/[slug]` | Case studies from Markdown (`content/projects/`) |
 | `/portfolio` | Live GitHub repositories (`/api/portfolio`) |
 | `/blog`, `/blog/[slug]` | Blog from Markdown (`content/blog/`) |

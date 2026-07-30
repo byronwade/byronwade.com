@@ -17,9 +17,9 @@ the header.
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
 
-- `components/home/home-interactive.tsx` — intro, bio, social links
-- `components/home/home-projects.tsx` — project list
-- `components/home/home-blog.tsx` — recent posts
+- `components/home/home-interactive.tsx`: intro, bio, social links
+- `components/home/home-projects.tsx`: project list
+- `components/home/home-blog.tsx`: recent posts
 
 ## Route map
 
@@ -49,7 +49,7 @@ components/
 
 ## Data
 
-- `lib/portfolio-data.ts` — GitHub / Dribbble / Figma APIs
-- `lib/projects.ts`, `lib/blog.ts` — Markdown content (`gray-matter`)
-- `lib/seo.ts` — Metadata and JSON-LD structured data
-- `lib/analytics.ts`, `lib/cache.ts` — Vercel analytics + caching helpers
+- `lib/portfolio-data.ts`: GitHub / Dribbble / Figma APIs
+- `lib/projects.ts`, `lib/blog.ts`: Markdown content (`gray-matter`)
+- `lib/seo.ts`: Metadata and JSON-LD structured data
+- `lib/analytics.ts`, `lib/cache.ts`: Vercel analytics + caching helpers

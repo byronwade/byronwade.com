@@ -1,18 +1,18 @@
 ---
 title: "From 'Nice Guy' to Wise Leader: The Hard-Won Evolution of Wade's Plumbing & Septic"
 date: 2024-02-20
-excerpt: "How I scaled a plumbing business to $2.4M, lost it all to the chaos of growth, and learned the hard lessons too late—after the company had already closed."
+excerpt: "How I scaled a plumbing business to $2.4M, lost it all to the chaos of growth, and learned the hard lessons too late, after the company had already closed."
 ---
 
 In the high-stakes world of contracting, the gap between a hard worker and a business owner is often a canyon filled with debt, stress, and hard lessons. For Wade's Plumbing & Septic, bridging that gap wasn't just a business pivot, it was a personal transformation.
 
-Building a company at 25 is a feat of energy; learning to run it properly is a feat of wisdom. This is the story of how I scaled a plumbing business to $2.4 million in sales, lost it all to the chaos of growth, and learned the hard lessons after it was too late—after the company had already closed.
+Building a company at 25 is a feat of energy; learning to run it properly is a feat of wisdom. This is the story of how I scaled a plumbing business to $2.4 million in sales, lost it all to the chaos of growth, and learned the hard lessons after it was too late, after the company had already closed.
 
 ## Filling the Void: The Rapid Rise
 
 The origin story of Wade's Plumbing & Septic is one of pure hustle. At 25 years old, I looked at the market and saw a glaring inefficiency: customers were desperate. In an industry plagued by contractors who wouldn't pick up the phone or show up on time, I realized that simply **being there** and doing the hard work was a competitive advantage no one else could match.
 
-The strategy worked—too well.
+The strategy worked. Too well.
 
 "We filled the void," as I recall. The company exploded in size, scaling to 13 employees and generating $2.4 million in annual sales. From the outside, it looked like the American Dream. Crews were dispatching across Santa Cruz County, CA, and eventually Pickens County, GA, tackling everything from complex trenchless sewer replacements to alternative septic system installations.
 
@@ -48,9 +48,9 @@ I learned:
 
 The education came too late. By the time I learned these lessons, Wade's Plumbing & Septic had already closed its doors. The company that had reached $2.4 million in revenue was gone, not because the work wasn't good, but because the business wasn't sustainable.
 
-This is the hardest part of the story to tell: I learned what I should have done, but I learned it after it was too late to save the company. The specialized expertise we developed, the transparent client relations we built, the operational discipline we tried to implement—all of it came after the damage was done.
+This is the hardest part of the story to tell: I learned what I should have done, but I learned it after it was too late to save the company. The specialized expertise we developed, the transparent client relations we built, the operational discipline we tried to implement: all of it came after the damage was done.
 
-Today, Wade's Plumbing & Septic is closed. Not because we didn't know how to fix pipes or install septic systems, but because I didn't know how to run a business. The lessons I learned from the Million Dollar Plumbing course, from working for other companies, from seeing how successful operations actually function—these came after the company had already failed.
+Today, Wade's Plumbing & Septic is closed. Not because we didn't know how to fix pipes or install septic systems, but because I didn't know how to run a business. The lessons I learned from the Million Dollar Plumbing course, from working for other companies, from seeing how successful operations actually function: these came after the company had already failed.
 
 ## The Lesson
 

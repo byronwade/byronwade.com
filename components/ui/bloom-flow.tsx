@@ -38,7 +38,7 @@ export interface BloomFlowProps<S, R> {
 
 /**
  * The stepped flow body rendered INSIDE a `Bloom`. It owns the steps, the
- * persistent footer (Back/Close · step-dots · Primary), and the success view —
+ * persistent footer (Back/Close · step-dots · Primary), and the success view,
  * but NOT the outer height bloom: Bloom's body-height ResizeObserver picks up
  * this content's size changes, so BloomFlow must not wrap itself in a competing
  * height transition. Step bodies fade/slide in via CSS (`animate-in`); the
@@ -144,7 +144,7 @@ export function BloomFlow<S, R>({ flow, onClose, className }: BloomFlowProps<S, 
 					</button>
 				) : (
 					<>
-						{/* Back / Close — same slot, label swaps with stepIndex. */}
+						{/* Back / Close: same slot, label swaps with stepIndex. */}
 						<button
 							type="button"
 							onClick={back}
@@ -164,7 +164,7 @@ export function BloomFlow<S, R>({ flow, onClose, className }: BloomFlowProps<S, 
 							)}
 						</button>
 
-						{/* Centered step-dots — one per step; the active dot widens (w-1.5→w-4). */}
+						{/* Centered step-dots: one per step; the active dot widens (w-1.5→w-4). */}
 						<div className="mx-auto flex items-center gap-1.5" role="presentation" aria-hidden>
 							{steps.map((_, i) => (
 								<span
@@ -181,7 +181,7 @@ export function BloomFlow<S, R>({ flow, onClose, className }: BloomFlowProps<S, 
 							))}
 						</div>
 
-						{/* Primary — label/disabled swap, slot fixed. */}
+						{/* Primary: label/disabled swap, slot fixed. */}
 						<button
 							type="button"
 							onClick={advance}

@@ -34,7 +34,7 @@ export default function ContactClient() {
 			const result = await sendEmail(formData);
 			if (result.success) {
 				toast.success("Message sent!", {
-					description: "Thanks for reaching out — I'll get back to you soon.",
+					description: "Thanks for reaching out. I'll get back to you soon.",
 				});
 				setFormData({ name: "", email: "", message: "" });
 			} else {

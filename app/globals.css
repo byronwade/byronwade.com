@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────
-   byronwade/ui foundation — token theme mapping (Tailwind v4)
+   byronwade/ui foundation: token theme mapping (Tailwind v4)
    Brand follows --brand; override it to re-skin rings/charts/success.
    ───────────────────────────────────────────────────────────── */
 @theme inline {
@@ -311,7 +311,7 @@
       0 32px 72px -28px oklch(0 0 0 / 0.35),
       inset 0 1px 0 oklch(1 0 0 / 0.06);
   }
-  /* Reading progress hairline along the island's bottom edge — pure CSS
+  /* Reading progress hairline along the island's bottom edge: pure CSS
      where scroll-driven animations exist, invisible everywhere else. */
   .scroll-progress {
     transform: scaleX(0);
@@ -333,7 +333,7 @@
       linear-gradient(180deg, oklch(0.235 0.009 70) 0%, oklch(0.15 0.006 70) 45%, oklch(0.1 0.004 70) 100%);
     color: oklch(0.74 0.006 75);
   }
-  /* Horizon beam — the thin lit edge where the page meets the footer. */
+  /* Horizon beam: the thin lit edge where the page meets the footer. */
   .footer-beam {
     background: linear-gradient(90deg, transparent 0%, color-mix(in oklch, var(--brand) 70%, transparent) 35%, oklch(1 0 0 / 0.55) 50%, color-mix(in oklch, var(--brand) 70%, transparent) 65%, transparent 100%);
   }
@@ -397,7 +397,7 @@
 /*
  * Theme-toggle morph (byronwade/ui). The nav dock drives the light/dark swap
  * through the View Transitions API and animates `::view-transition-new(root)`
- * with an expanding clip-path circle anchored at the toggle button — so the new
+ * with an expanding clip-path circle anchored at the toggle button, so the new
  * theme blooms outward from the trigger. We disable the default cross-fade and
  * stack the incoming snapshot on top so the circle reveals it.
  */

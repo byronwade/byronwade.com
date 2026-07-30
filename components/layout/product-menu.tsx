@@ -6,7 +6,7 @@ import * as React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-/** Every product under the byronwade umbrella — this menu is the cross-app switcher. */
+/** Every product under the byronwade umbrella: this menu is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 	{
 		name: "byronwade/ui",
@@ -38,7 +38,7 @@ const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 ];
 
 /**
- * Product switcher — a quiet chevron beside the wordmark that opens the full
+ * Product switcher: a quiet chevron beside the wordmark that opens the full
  * byronwade catalogue. Styled on the header's `--dock` material so the panel
  * reads as an extension of the floating island.
  */

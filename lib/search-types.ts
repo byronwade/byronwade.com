@@ -1,4 +1,4 @@
-// Client-safe search types — kept separate from search-index.ts (which imports
+// Client-safe search types, kept separate from search-index.ts (which imports
 // node:fs via the content loaders) so the client nav dock can import the types
 // without pulling server-only modules into the browser bundle.
 

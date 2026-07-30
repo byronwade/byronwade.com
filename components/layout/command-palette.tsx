@@ -43,7 +43,7 @@ function go(href: string, router: ReturnType<typeof useRouter>) {
 }
 
 /**
- * ⌘K spotlight — a centered, focus-trapped search over the site index.
+ * ⌘K spotlight: a centered, focus-trapped search over the site index.
  *
  * Shares the header's `--dock` chrome material so opening it reads as the
  * header expanding into the page rather than a foreign modal.

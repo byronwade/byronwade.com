@@ -118,7 +118,7 @@ export default async function ProjectsPage() {
 							Projects
 						</h1>
 						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Client work, products, and hobby projects — real-world problem solving with React,
+							Client work, products, and hobby projects: real-world problem solving with React,
 							Next.js, and full-stack tools.
 						</p>
 					</header>

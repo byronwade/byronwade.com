@@ -25,7 +25,7 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect
 const ICON_BUTTON =
 	"flex size-8 items-center justify-center rounded-full text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-white/30";
 
-/** X (formerly Twitter) brand glyph — lucide's `X` is the close icon, not the logo. */
+/** X (formerly Twitter) brand glyph: lucide's `X` is the close icon, not the logo. */
 function XIcon({ className }: { className?: string }) {
 	return (
 		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -35,7 +35,7 @@ function XIcon({ className }: { className?: string }) {
 }
 
 /**
- * The floating header — one island holding everything.
+ * The floating header: one island holding everything.
  *
  * Identity and product switcher on the left, destinations in the middle behind a
  * sliding active pill, utilities and the contact CTA on the right. It condenses
@@ -50,7 +50,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 	const [menuOpen, setMenuOpen] = React.useState(false);
 	const [paletteOpen, setPaletteOpen] = React.useState(false);
 
-	/* — condense once the page has moved off the top — */
+	/* Condense once the page has moved off the top. */
 	React.useEffect(() => {
 		const onScroll = () => setScrolled(window.scrollY > 8);
 		onScroll();
@@ -58,13 +58,13 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
-	/* — a route change always closes the mobile panel — */
+	/* A route change always closes the mobile panel. */
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value we read
 	React.useEffect(() => {
 		setMenuOpen(false);
 	}, [pathname]);
 
-	/* — ⌘K anywhere opens search; other surfaces can dispatch the same event — */
+	/* ⌘K anywhere opens search; other surfaces can dispatch the same event. */
 	React.useEffect(() => {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -99,7 +99,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 							{/* IDENTITY */}
 							<Link
 								href="/"
-								aria-label="Byron Wade — home"
+								aria-label="Byron Wade, home"
 								className={cn(
 									customFont.className,
 									"flex h-8 shrink-0 items-center whitespace-nowrap px-1 text-lg leading-none text-dock-active-foreground transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
@@ -168,7 +168,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 												href={X_URL}
 												target="_blank"
 												rel="noreferrer"
-												aria-label="X — @byron_c_wade"
+												aria-label="X, @byron_c_wade"
 												className={cn(ICON_BUTTON, "hidden sm:flex")}
 											>
 												<XIcon className="size-3.5 shrink-0" />
@@ -181,7 +181,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 								<ThemeToggle />
 								<SponsorButton />
 
-								{/* CTA — the one filled control in the chrome. */}
+								{/* CTA: the one filled control in the chrome. */}
 								<Link
 									href={contactItem.href}
 									className="ml-1 hidden h-8 items-center rounded-full bg-dock-active-foreground px-3.5 text-[13px] font-semibold text-dock transition-opacity hover:opacity-85 md:inline-flex"
@@ -211,7 +211,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 							</div>
 						</div>
 
-						{/* MOBILE PANEL — grows the island rather than opening a new surface. */}
+						{/* MOBILE PANEL: grows the island rather than opening a new surface. */}
 						<div
 							id="site-menu"
 							className={cn(
@@ -268,7 +268,7 @@ export function SiteHeader({ entries }: { entries: SearchEntry[] }) {
 							</div>
 						</div>
 
-						{/* Reading progress — a lit hairline riding the island's bottom edge. */}
+						{/* Reading progress: a lit hairline riding the island's bottom edge. */}
 						<span
 							aria-hidden="true"
 							className="scroll-progress pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-gradient-to-r from-transparent via-brand to-transparent"
@@ -430,7 +430,7 @@ function SponsorButton() {
 				<p className="text-[13px] leading-relaxed text-dock-foreground">
 					Donations keep my open-source projects free and maintained. And every month I give{" "}
 					<span className="font-semibold text-dock-active-foreground">20%</span> of what I receive
-					to a non-profit of my choice — so a little goes a long way.
+					to a non-profit of my choice, so a little goes a long way.
 				</p>
 				<a
 					href={SPONSOR_URL}

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * A single navigable item in the dock. Mirrors a route/tab but stays generic:
- * the dock never knows about routing, products, or cookies — the consumer wires
+ * the dock never knows about routing, products, or cookies. The consumer wires
  * `onSelect`/`href` and the active/badge state.
  */
 export interface BloomDockItem {
@@ -37,7 +37,7 @@ export interface BloomDockAction {
 	icon: React.ComponentType<{ className?: string }>;
 	/** Blooms the whole dock upward into this flow. */
 	flow?: BloomFlowDef<any, any>;
-	/** Or a plain action — no bloom. */
+	/** Or a plain action, no bloom. */
 	onSelect?: () => void;
 }
 
@@ -69,10 +69,10 @@ const PILL_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-act
 const PILL_ACTIVE = "bg-dock-active text-dock-active-foreground";
 
 /**
- * One nav item — `<a>` when `href`, else a `<button>`. Collapsed (compact-
- * hidden) items morph to zero width via CSS — `w-0 scale-50 opacity-0` with a
- * 300ms `cubic-bezier(.22,1,.36,1)` transition on width/opacity/transform —
- * ported from NavDock's item morph (no Motion `layout`/`AnimatePresence`).
+ * One nav item: `<a>` when `href`, else a `<button>`. Collapsed (compact-
+ * hidden) items morph to zero width via CSS (`w-0 scale-50 opacity-0` with a
+ * 300ms `cubic-bezier(.22,1,.36,1)` transition on width/opacity/transform), ported
+ * from NavDock's item morph (no Motion `layout`/`AnimatePresence`).
  */
 function DockItem({ item, collapsed }: { item: BloomDockItem; collapsed: boolean }) {
 	const Icon = item.icon;
@@ -138,12 +138,12 @@ function DockItem({ item, collapsed }: { item: BloomDockItem; collapsed: boolean
 }
 
 /**
- * Config-driven morphing navigation dock — a generalized port of NavDock.
+ * Config-driven morphing navigation dock, a generalized port of NavDock.
  *
  * - Compact ↔ full: an `expanded` toggle reveals non-core/non-pinned items; each
  *   item morphs its own width/opacity/transform via CSS (no library layout).
  * - A contextual `action` either blooms the whole dock into a `BloomFlow` (via
- *   the `Bloom` primitive — the item row collapses to make room for the flow's
+ *   the `Bloom` primitive: the item row collapses to make room for the flow's
  *   own footer, then settles back in with `animate-in fade-in` on close) or runs
  *   a plain handler.
  * - Stays visually dark in both themes via the `--dock-*` tokens (tone="dock").

@@ -68,9 +68,9 @@ const workExperience = [
 		role: "Service Plumber",
 		company: "Grassroots Plumbing",
 		location: "Woodstock, GA",
-		period: "Dec 2025 — Present",
+		period: "Dec 2025 - Present",
 		description:
-			"Residential and commercial service plumbing — diagnostics, repairs, and installations, with an emphasis on getting it right the first visit.",
+			"Residential and commercial service plumbing: diagnostics, repairs, and installations, with an emphasis on getting it right the first visit.",
 		current: true,
 	},
 	{
@@ -78,7 +78,7 @@ const workExperience = [
 		company: "Thorbis",
 		companyUrl: "https://thorbis.com",
 		location: "Jasper, GA",
-		period: "Jun 2025 — Present",
+		period: "Jun 2025 - Present",
 		description:
 			"Building a field management system for service professionals. Combining real-world experience running a plumbing company with modern web technologies to solve problems I encountered firsthand.",
 		current: true,
@@ -87,7 +87,7 @@ const workExperience = [
 		role: "Service Plumber",
 		company: "ServiceWise Electric & Plumbing",
 		location: "Holly Springs, GA",
-		period: "Apr 2025 — Nov 2025",
+		period: "Apr 2025 - Nov 2025",
 		description:
 			"Provided residential and commercial plumbing services with focus on customer satisfaction, diagnostic expertise, and efficient problem resolution.",
 	},
@@ -95,7 +95,7 @@ const workExperience = [
 		role: "General Manager",
 		company: "Lanier Plumbing Services, LLC",
 		location: "Alpharetta, GA",
-		period: "Sep 2024 — Apr 2025",
+		period: "Sep 2024 - Apr 2025",
 		description:
 			"Led operations for a growing commercial plumbing contractor with focus on estimation accuracy, service department development, and operational efficiency.",
 	},
@@ -104,7 +104,7 @@ const workExperience = [
 		company: "Wade's Plumbing & Septic",
 		companyUrl: "https://wadesplumbingandseptic.com",
 		location: "Los Gatos, CA",
-		period: "2021 — 2024",
+		period: "2021 - 2024",
 		description:
 			"Built and managed a multi-million dollar plumbing and septic service company. Scaled company from startup to $2.4M annual revenue in second year of business.",
 		highlight: "$2.4M",
@@ -113,7 +113,7 @@ const workExperience = [
 		role: "Foreman Plumber & Project Manager",
 		company: "Garrison Septic & Plumbing",
 		location: "Scotts Valley, CA",
-		period: "2016 — 2021",
+		period: "2016 - 2021",
 		description:
 			"Dual role managing field operations and project oversight for residential and commercial plumbing and septic installations.",
 	},
@@ -209,7 +209,7 @@ export default function ResumePage() {
 								<MapPin className="size-4" />
 								Jasper, GA
 							</span>
-							{/* The one filled control on the page — and the only thing the PDF
+							{/* The one filled control on the page, and the only thing the PDF
 							    render has no use for. */}
 							<a
 								href="/api/resume-pdf"
@@ -240,14 +240,14 @@ export default function ResumePage() {
 								, a field management system for service professionals.
 							</p>
 							<p className="leading-relaxed text-muted-foreground">
-								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
+								<span className="font-medium text-brand">Open to opportunities</span>. Looking for
 								full-time roles in software development, technical leadership, or positions where I
 								can leverage both my development skills and hands-on business experience.
 							</p>
 						</div>
 					</section>
 
-					{/* Experience — a rail timeline: one continuous thread, a node per role,
+					{/* Experience is a rail timeline: one continuous thread, a node per role,
 					    lit at the roles that are still running. */}
 					<section className="reveal reveal-delay-2 w-full">
 						<SectionHeading>Experience</SectionHeading>
@@ -255,7 +255,7 @@ export default function ResumePage() {
 							{workExperience.map((job, i) => {
 								const last = i === workExperience.length - 1;
 								return (
-									// The gap between entries lives on the <article>, not the <li> — the
+									// The gap between entries lives on the <article>, not the <li>. The
 									// rail is a flex sibling and only stretches to the row's content box,
 									// so padding on the <li> would leave the thread short of the next node.
 									<li key={`${job.company}-${job.role}`} className="relative flex gap-5">
@@ -348,7 +348,7 @@ export default function ResumePage() {
 						</ul>
 					</section>
 
-					{/* Licenses — hairline rows, no card: it should read like a document. */}
+					{/* Licenses: hairline rows, no card. It should read like a document. */}
 					<section className="reveal reveal-delay-4 w-full">
 						<SectionHeading>Licenses &amp; Certifications</SectionHeading>
 						<ul className="flex flex-col">

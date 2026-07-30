@@ -49,7 +49,7 @@ export function HomeInteractive() {
 					/>
 					<div className="relative size-20 overflow-hidden rounded-full ring-1 ring-border sm:size-24">
 						<Image
-							alt="Byron Wade — Full Stack Developer"
+							alt="Byron Wade, Full Stack Developer"
 							className="size-full object-cover"
 							src="/avatar.avif"
 							width={96}
@@ -77,7 +77,7 @@ export function HomeInteractive() {
 				<p className="reveal reveal-delay-1">
 					Full-stack developer and designer based in Jasper, Georgia. I grew a plumbing company to{" "}
 					<span className="font-semibold text-brand">$2.4M</span> in revenue during my second year
-					in Santa Cruz, California — before relocating to Georgia.
+					in Santa Cruz, California, before relocating to Georgia.
 				</p>
 
 				<p className="reveal reveal-delay-2">
@@ -90,7 +90,7 @@ export function HomeInteractive() {
 					>
 						Thorbis
 					</a>
-					, a field management system for service professionals — with{" "}
+					, a field management system for service professionals, built with{" "}
 					<a
 						href="https://nextjs.org"
 						target="_blank"
@@ -113,7 +113,7 @@ export function HomeInteractive() {
 
 				<p className="reveal reveal-delay-3">
 					Scaling a service business from zero taught me what software actually needs to do. I build
-					tools for people who work with their hands and their phones — not just their laptops.
+					tools for people who work with their hands and their phones, not just their laptops.
 				</p>
 
 				<p className="reveal reveal-delay-4">

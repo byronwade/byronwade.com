@@ -27,7 +27,7 @@ const socialLinks = [
 	{ name: "RSS", href: "/feed.xml", icon: Rss },
 ];
 
-/** X (formerly Twitter) brand glyph — lucide's `X` is the close icon, not the logo. */
+/** X (formerly Twitter) brand glyph: lucide's `X` is the close icon, not the logo. */
 function XIcon({ className }: { className?: string }) {
 	return (
 		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -37,7 +37,7 @@ function XIcon({ className }: { className?: string }) {
 }
 
 /**
- * The cinematic close — a lit, always-dark stage that ends every page.
+ * The cinematic close: a lit, always-dark stage that ends every page.
  *
  * Four beats, top to bottom: a horizon beam and drifting aurora, the single
  * call to action at display scale, the link floor, and an oversized signature
@@ -49,7 +49,7 @@ export default function SiteFooter() {
 
 	return (
 		<footer className="footer-cinema relative isolate mt-32 overflow-hidden sm:mt-40 print:hidden">
-			{/* Horizon — the lit seam where the page ends and the stage begins. */}
+			{/* Horizon: the lit seam where the page ends and the stage begins. */}
 			<div className="footer-beam absolute inset-x-0 top-0 h-px" aria-hidden="true" />
 			<div className="footer-grid absolute inset-0 -z-10" aria-hidden="true" />
 			<div
@@ -102,7 +102,7 @@ export default function SiteFooter() {
 
 				{/* ── LINK FLOOR ── */}
 				<div className="grid gap-10 py-12 sm:grid-cols-2 sm:gap-12 sm:py-14 lg:grid-cols-4">
-					<nav aria-label="Footer — explore" className="flex flex-col gap-3.5">
+					<nav aria-label="Footer: explore" className="flex flex-col gap-3.5">
 						<h3 className="text-[11px] font-semibold tracking-[0.14em] text-white/35 uppercase">
 							Explore
 						</h3>
@@ -113,7 +113,7 @@ export default function SiteFooter() {
 						))}
 					</nav>
 
-					<nav aria-label="Footer — building" className="flex flex-col gap-3.5">
+					<nav aria-label="Footer: building" className="flex flex-col gap-3.5">
 						<h3 className="text-[11px] font-semibold tracking-[0.14em] text-white/35 uppercase">
 							Building
 						</h3>
@@ -134,7 +134,7 @@ export default function SiteFooter() {
 						))}
 					</nav>
 
-					<nav aria-label="Footer — elsewhere" className="flex flex-col gap-3.5">
+					<nav aria-label="Footer: elsewhere" className="flex flex-col gap-3.5">
 						<h3 className="text-[11px] font-semibold tracking-[0.14em] text-white/35 uppercase">
 							Elsewhere
 						</h3>
@@ -160,7 +160,7 @@ export default function SiteFooter() {
 						</a>
 					</nav>
 
-					{/* Status card — the human details, in one lit block. */}
+					{/* Status card: the human details, in one lit block. */}
 					<div className="flex flex-col gap-3.5">
 						<h3 className="text-[11px] font-semibold tracking-[0.14em] text-white/35 uppercase">
 							Say hello
@@ -172,7 +172,7 @@ export default function SiteFooter() {
 							</p>
 							<div className="mt-4 flex flex-col gap-2 text-[13px]">
 								{/* The reveal control paints itself with `--primary`, which is a dark
-								    ink in the light theme — remap it for the always-dark stage. */}
+								    ink in the light theme, so remap it for the always-dark stage. */}
 								<ObfuscatedEmail
 									className="[&_a]:text-white/70 [&_a:hover]:text-white [&_button]:text-white/70 [&_button:hover]:text-white"
 									variant="link"
@@ -189,7 +189,7 @@ export default function SiteFooter() {
 				</div>
 			</div>
 
-			{/* ── SIGNATURE — oversized, dissolving into the floor. The script face
+			{/* ── SIGNATURE: oversized, dissolving into the floor. The script face
 			    carries long swashes well past its layout box, so the size is tuned to
 			    keep the ink inside the viewport rather than to fill the text box. ── */}
 			<div className="relative overflow-hidden pt-2 pb-1" aria-hidden="true">

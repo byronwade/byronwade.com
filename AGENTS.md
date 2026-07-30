@@ -33,7 +33,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - State & navigation
   - MUST: URL reflects state (deep-link filters/tabs/pagination/expanded panels) Prefer libs like [nuqs](https://nuqs.dev)
   - MUST: Back/Forward restores scroll
-  - MUST: Links are links—use `<a>/<Link>` for navigation (support Cmd/Ctrl/middle-click)
+  - MUST: Links are links: use `<a>/<Link>` for navigation (support Cmd/Ctrl/middle-click)
 - Feedback
   - SHOULD: Optimistic UI; reconcile on response; on failure show error and rollback or offer Undo
   - MUST: Confirm destructive actions or provide Undo window
@@ -44,7 +44,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
   - MUST: Delay first tooltip in a group; subsequent peers no delay
   - MUST: Intentional `overscroll-behavior: contain` in modals/drawers
   - MUST: During drag, disable text selection and set `inert` on dragged element/containers
-  - MUST: No “dead-looking” interactive zones—if it looks clickable, it is
+  - MUST: No “dead-looking” interactive zones: if it looks clickable, it is
 - Autofocus
   - SHOULD: Autofocus on desktop when there’s a single primary input; rarely on mobile (to avoid layout shift)
 
@@ -61,7 +61,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 ## Layout
 
 - SHOULD: Optical alignment; adjust by ±1px when perception beats geometry
-- MUST: Deliberate alignment to grid/baseline/edges/optical centers—no accidental placement
+- MUST: Deliberate alignment to grid/baseline/edges/optical centers, with no accidental placement
 - SHOULD: Balance icon/text lockups (stroke/weight/size/spacing/color)
 - MUST: Verify mobile, laptop, ultra-wide (simulate ultra-wide at 50% zoom)
 - MUST: Respect safe areas (use env(safe-area-inset-*))
@@ -77,7 +77,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - SHOULD: Curly quotes (“ ”); avoid widows/orphans
 - MUST: Tabular numbers for comparisons (`font-variant-numeric: tabular-nums` or a mono like Geist Mono)
 - MUST: Redundant status cues (not color-only); icons have text labels
-- MUST: Don’t ship the schema—visuals may omit labels but accessible names still exist
+- MUST: Don’t ship the schema: visuals may omit labels but accessible names still exist
 - MUST: Use the ellipsis character `…` (not ``)
 - MUST: `scroll-margin-top` on headings for anchored links; include a “Skip to content” link; hierarchical `<h1–h6>`
 - MUST: Resilient to user-generated content (short/avg/very long)
@@ -108,7 +108,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - SHOULD: Nested radii: child ≤ parent; concentric
 - SHOULD: Hue consistency: tint borders/shadows/text toward bg hue
 - MUST: Accessible charts (color-blind-friendly palettes)
-- MUST: Meet contrast—prefer [APCA](https://apcacontrast.com/) over WCAG 2
+- MUST: Meet contrast: prefer [APCA](https://apcacontrast.com/) over WCAG 2
 - MUST: Increase contrast on `:hover/:active/:focus`
 - SHOULD: Match browser UI to bg
 - SHOULD: Avoid gradient banding (use masks when needed)

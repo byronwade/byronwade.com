@@ -9,7 +9,7 @@ alwaysApply: true
 - **Dark-first VIP minimalism**: Black/white core with neutral grays, maximum contrast for clarity
 - **Electric restraint**: Thorbis Blue (#1C8BFF) only for focus, primary CTA, and key highlights
 - **No overlays**: Replace all dialogs/popovers with inline panels, dedicated pages, or section reveals
-- **Tooltips > overlays**: Tooltips are the only overlay pattern allowed—short, helpful, and accessible
+- **Tooltips > overlays**: Tooltips are the only overlay pattern allowed: short, helpful, and accessible
 
 ## Brand Colors & Usage Guidelines
 
