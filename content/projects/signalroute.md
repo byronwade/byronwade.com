@@ -3,11 +3,21 @@ title: "SignalRoute: The Phone System That Runs Itself"
 url: "https://getsignalroute.com"
 category: "Product"
 flagship: true
+featured: true
 status: "In development"
 tagline: "the phone that runs itself"
 order: 2
 date: 2026-06-01
 excerpt: "A flagship I'm building: an AI-operated business phone system with a visual call-flow editor, trusted caller ID, and a developer API — telephony that handles routing, transfers, and conferencing without a full-time receptionist."
+problem: "Missed calls and clumsy phone trees cost service businesses jobs — and hiring a full-time receptionist doesn't scale."
+outcome: "AI-operated telephony that answers, routes, transfers, and summarizes — with a visual call-flow editor and developer API."
+metrics:
+  - label: Mode
+    value: "AI-operated"
+  - label: Editor
+    value: "Visual flows"
+  - label: Audience
+    value: "Dev + ops"
 ---
 
 # SignalRoute: Rebuilding the Business Phone for an AI-First World

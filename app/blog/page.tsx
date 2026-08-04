@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { TagList } from "@/components/common/tag-list";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
@@ -15,25 +16,24 @@ import {
 export async function generateMetadata() {
 	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const ogImage = generateOGImageUrl({
-		title: "Blog",
-		description:
-			"Read insights, tutorials, and thoughts on web development, JavaScript, React, and modern web technologies.",
+		title: "Writing",
+		description: "Notes on building products, design systems, and software for service businesses.",
 		type: "blog",
 	});
 
 	return generateSEOMetadata({
-		title: "Blog",
+		title: "Writing",
 		description:
-			"Read insights, tutorials, and thoughts on web development, JavaScript, React, Next.js, and modern web technologies from Byron Wade, a full-stack developer.",
+			"Notes on building products, design systems, and software for service businesses — from field operations to modern Next.js apps.",
 		keywords: [
 			"Blog",
-			"Web Development",
-			"JavaScript",
-			"React",
+			"Writing",
+			"Field Service",
+			"Design Systems",
 			"Next.js",
-			"Programming",
-			"Tutorial",
-			"Tech Blog",
+			"Product Engineering",
+			"Service Business Software",
+			"Byron Wade",
 		],
 		image: ogImage,
 		type: "website",
@@ -81,6 +81,9 @@ async function BlogList() {
 							{post.excerpt}
 						</p>
 					)}
+					{post.tags && post.tags.length > 0 && (
+						<TagList tags={post.tags} limit={4} className="pt-0.5" />
+					)}
 				</Link>
 			))}
 		</div>
@@ -118,8 +121,8 @@ export default function BlogPage() {
 							Writing
 						</h1>
 						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Insights on web development, React, Next.js, performance, and building software for
-							service businesses.
+							Notes from building products and running a service business — design systems, field
+							ops, and the software that has to work in the truck.
 						</p>
 					</header>
 

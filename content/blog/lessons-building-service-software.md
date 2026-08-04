@@ -2,6 +2,10 @@
 title: "Lessons from Building Service Management Software"
 date: 2024-03-10
 excerpt: "What I've learned building Thorbis, a field service management platform, and why understanding the user's world is everything."
+tags:
+  - Field service
+  - Product
+  - Lessons
 ---
 
 After years of working with field service companies and building [Thorbis](https://thorbis.com), I've learned that building software for service professionals is fundamentally different from building for other industries. These are people who spend their days in the field, solving real problems for real customers. They don't have time for complicated interfaces, slow loading times, or features they'll never use.

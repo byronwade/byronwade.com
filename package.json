@@ -103,5 +103,24 @@
 		"rimraf": "^6.0.1",
 		"tailwindcss": "^4.1.13",
 		"typescript": "^5.8.3"
-	}
+	},
+	"prettier": {
+		"useTabs": true,
+		"tabWidth": 2,
+		"semi": true,
+		"singleQuote": false,
+		"trailingComma": "es5",
+		"printWidth": 100,
+		"bracketSpacing": true,
+		"arrowParens": "always",
+		"endOfLine": "lf"
+	},
+	"browserslist": [
+		"last 2 Chrome versions",
+		"last 2 Firefox versions",
+		"last 2 Safari versions",
+		"last 2 Edge versions",
+		"not dead",
+		"not op_mini all"
+	]
 }

@@ -2,9 +2,22 @@
 title: "Thorbis: A Modern Service-Business Platform"
 url: "https://thorbis.com"
 category: "Product"
+flagship: true
+featured: true
+status: "In development"
 tagline: "field service, rebuilt"
+order: 0
 date: 2026-06-01
 excerpt: "An enterprise platform for service businesses, in heavy active development — built as a Next.js 16 monorepo on Supabase with unified communications, dispatch, and AI woven through the operations, not bolted on."
+problem: "Service shops stitch together half a dozen tools for jobs, messages, payments, and dispatch — and still lose context in the truck."
+outcome: "A unified operating system for field service: one job cockpit, live dispatch, and communications that stay with the work."
+metrics:
+  - label: Focus
+    value: "Job cockpit"
+  - label: Stack
+    value: "Next.js 16"
+  - label: Status
+    value: "Active build"
 ---
 
 # Thorbis: Building the Operating System for Service Businesses

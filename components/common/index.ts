@@ -4,5 +4,6 @@ export { BreadcrumbNav } from "./breadcrumb-nav";
 export { default as ErrorBoundary } from "./error-boundary";
 export { Markdown } from "./markdown";
 export { SocialLinkPreview } from "./social-link-preview";
+export { TagList } from "./tag-list";
 export { ThemeProvider } from "./theme-provider";
 export { ThemeToggle } from "./theme-toggle";

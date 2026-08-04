@@ -1,10 +1,12 @@
 "use client";
 
-import { Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
+import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Button } from "@/components/ui/button";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
 import { analytics } from "@/lib/analytics";
@@ -228,6 +230,31 @@ export default function ResumePage() {
 								full-time roles in software development, technical leadership, or positions where I
 								can leverage both my development skills and hands-on business experience.
 							</p>
+							<div className="flex flex-wrap items-center gap-2 pt-1">
+								<Button
+									size="sm"
+									render={
+										<Link href="/contact">
+											Start a conversation
+											<ArrowRight className="size-3.5" aria-hidden="true" />
+										</Link>
+									}
+								/>
+								<Button
+									size="sm"
+									variant="outline"
+									render={
+										<a
+											href="/api/resume-pdf"
+											download="Byron_Wade_Resume.pdf"
+											onClick={() => analytics.resumeDownload("pdf")}
+										>
+											<Download className="size-3.5" aria-hidden="true" />
+											Download PDF
+										</a>
+									}
+								/>
+							</div>
 						</div>
 					</section>
 
@@ -322,6 +349,27 @@ export default function ResumePage() {
 									</span>
 								</div>
 							))}
+						</div>
+					</section>
+
+					<section className="reveal reveal-delay-5 w-full border-t border-border pt-10">
+						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<div className="flex flex-col gap-1">
+								<h2 className="font-heading text-lg font-semibold tracking-tight">
+									Interested in working together?
+								</h2>
+								<p className="text-sm text-muted-foreground">
+									Tell me what you’re building — product roles, service software, or an intro.
+								</p>
+							</div>
+							<Button
+								render={
+									<Link href="/contact">
+										Contact Byron
+										<ArrowRight className="size-4" aria-hidden="true" />
+									</Link>
+								}
+							/>
 						</div>
 					</section>
 				</div>
