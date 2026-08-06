@@ -1,114 +1,374 @@
-Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVER to guide decisions
+# AGENTS.md
 
-## Interactions
+Governs AI-assisted work in this repository. Keep it concise, current, and
+enforceable. Package-specific facts belong in the nearest nested `AGENTS.md`;
+do not repeat root rules there.
 
-- Keyboard
-  - MUST: Full keyboard support per [WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/patterns/)
-  - MUST: Visible focus rings (`:focus-visible`; group with `:focus-within`)
-  - MUST: Manage focus (trap, move, and return) per APG patterns
-- Targets & input
-  - MUST: Hit target ≥24px (mobile ≥44px) If visual <24px, expand hit area
-  - MUST: Mobile `<input>` font-size ≥16px or set:
-    ```html
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-    ```
-  - NEVER: Disable browser zoom
-  - MUST: `touch-action: manipulation` to prevent double-tap zoom; set `-webkit-tap-highlight-color` to match design
-- Inputs & forms (behavior)
-  - MUST: Hydration-safe inputs (no lost focus/value)
-  - NEVER: Block paste in `<input>/<textarea>`
-  - MUST: Loading buttons show spinner and keep original label
-  - MUST: Enter submits focused text input In `<textarea>`, ⌘/Ctrl+Enter submits; Enter adds newline
-  - MUST: Keep submit enabled until request starts; then disable, show spinner, use idempotency key
-  - MUST: Don’t block typing; accept free text and validate after
-  - MUST: Allow submitting incomplete forms to surface validation
-  - MUST: Errors inline next to fields; on submit, focus first error
-  - MUST: `autocomplete` + meaningful `name`; correct `type` and `inputmode`
-  - SHOULD: Disable spellcheck for emails/codes/usernames
-  - SHOULD: Placeholders end with ellipsis and show example pattern (eg, `+1 (123) 456-7890`, `sk-012345…`)
-  - MUST: Warn on unsaved changes before navigation
-  - MUST: Compatible with password managers & 2FA; allow pasting one-time codes
-  - MUST: Trim values to handle text expansion trailing spaces
-  - MUST: No dead zones on checkboxes/radios; label+control share one generous hit target
-- State & navigation
-  - MUST: URL reflects state (deep-link filters/tabs/pagination/expanded panels) Prefer libs like [nuqs](https://nuqs.dev)
-  - MUST: Back/Forward restores scroll
-  - MUST: Links are links—use `<a>/<Link>` for navigation (support Cmd/Ctrl/middle-click)
-- Feedback
-  - SHOULD: Optimistic UI; reconcile on response; on failure show error and rollback or offer Undo
-  - MUST: Confirm destructive actions or provide Undo window
-  - MUST: Use polite `aria-live` for toasts/inline validation
-  - SHOULD: Ellipsis (`…`) for options that open follow-ups (eg, "Rename…") and loading states (eg, "Loading…", "Saving…", "Generating…")
-- Touch/drag/scroll
-  - MUST: Design forgiving interactions (generous targets, clear affordances; avoid finickiness)
-  - MUST: Delay first tooltip in a group; subsequent peers no delay
-  - MUST: Intentional `overscroll-behavior: contain` in modals/drawers
-  - MUST: During drag, disable text selection and set `inert` on dragged element/containers
-  - MUST: No “dead-looking” interactive zones—if it looks clickable, it is
-- Autofocus
-  - SHOULD: Autofocus on desktop when there’s a single primary input; rarely on mobile (to avoid layout shift)
+## Mission
 
-## Animation
+Complete the requested change while leaving its affected dependency cone
+healthier than before.
 
-- MUST: Honor `prefers-reduced-motion` (provide reduced variant)
-- SHOULD: Prefer CSS > Web Animations API > JS libraries
-- MUST: Animate compositor-friendly props (`transform`, `opacity`); avoid layout/repaint props (`top/left/width/height`)
-- SHOULD: Animate only to clarify cause/effect or add deliberate delight
-- SHOULD: Choose easing to match the change (size/distance/trigger)
-- MUST: Animations are interruptible and input-driven (avoid autoplay)
-- MUST: Correct `transform-origin` (motion starts where it “physically” should)
+Success means:
 
-## Layout
+- requested behavior is correct and verified;
+- existing concepts are reused before new ones are created;
+- architecture, security, accessibility, maintainability, and measured
+  performance do not regress;
+- relevant duplication, dead code, and accidental complexity are reduced;
+- recurring objective failures become mechanical checks;
+- unrelated repository-wide rewrites do not enter the task.
 
-- SHOULD: Optical alignment; adjust by ±1px when perception beats geometry
-- MUST: Deliberate alignment to grid/baseline/edges/optical centers—no accidental placement
-- SHOULD: Balance icon/text lockups (stroke/weight/size/spacing/color)
-- MUST: Verify mobile, laptop, ultra-wide (simulate ultra-wide at 50% zoom)
-- MUST: Respect safe areas (use env(safe-area-inset-*))
-- MUST: Avoid unwanted scrollbars; fix overflows
+Optimize for the fewest necessary concepts and the lowest future change
+cost — not merely fewer lines, files, or abstractions.
 
-## Content & Accessibility
+## Authority
 
-- SHOULD: Inline help first; tooltips last resort
-- MUST: Skeletons mirror final content to avoid layout shift
-- MUST: `<title>` matches current context
-- MUST: No dead ends; always offer next step/recovery
-- MUST: Design empty/sparse/dense/error states
-- SHOULD: Curly quotes (“ ”); avoid widows/orphans
-- MUST: Tabular numbers for comparisons (`font-variant-numeric: tabular-nums` or a mono like Geist Mono)
-- MUST: Redundant status cues (not color-only); icons have text labels
-- MUST: Don’t ship the schema—visuals may omit labels but accessible names still exist
-- MUST: Use the ellipsis character `…` (not ``)
-- MUST: `scroll-margin-top` on headings for anchored links; include a “Skip to content” link; hierarchical `<h1–h6>`
-- MUST: Resilient to user-generated content (short/avg/very long)
-- MUST: Locale-aware dates/times/numbers/currency
-- MUST: Accurate names (`aria-label`), decorative elements `aria-hidden`, verify in the Accessibility Tree
-- MUST: Icon-only buttons have descriptive `aria-label`
-- MUST: Prefer native semantics (`button`, `a`, `label`, `table`) before ARIA
-- SHOULD: Right-clicking the nav logo surfaces brand assets
-- MUST: Use non-breaking spaces to glue terms: `10&nbsp;MB`, `⌘&nbsp;+&nbsp;K`, `Vercel&nbsp;SDK`
+Apply instructions in this order:
 
-## Performance
+1. User request and acceptance criteria.
+2. Closest applicable nested `AGENTS.md`.
+3. This file.
+4. Public contracts, security requirements, and repository docs:
+   [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md),
+   [`docs/UI_GUIDELINES.md`](docs/UI_GUIDELINES.md),
+   [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md),
+   [`docs/SPAM_PROTECTION.md`](docs/SPAM_PROTECTION.md).
+5. Existing conventions, only when they do not degrade code health.
 
-- SHOULD: Test iOS Low Power Mode and macOS Safari
-- MUST: Measure reliably (disable extensions that skew runtime)
-- MUST: Track and minimize re-renders (React DevTools/React Scan)
-- MUST: Profile with CPU/network throttling
-- MUST: Batch layout reads/writes; avoid unnecessary reflows/repaints
-- MUST: Mutations (`POST/PATCH/DELETE`) target <500 ms
-- SHOULD: Prefer uncontrolled inputs; make controlled loops cheap (keystroke cost)
-- MUST: Virtualize large lists (eg, `virtua`)
-- MUST: Preload only above-the-fold images; lazy-load the rest
-- MUST: Prevent CLS from images (explicit dimensions or reserved space)
+Report meaningful conflicts. Never preserve a bad pattern solely because it
+already exists. When a repository doc contradicts the code, the code is the
+truth — fix the doc in the same change.
 
-## Design
+## The stack (verified facts)
 
-- SHOULD: Layered shadows (ambient + direct)
-- SHOULD: Crisp edges via semi-transparent borders + shadows
-- SHOULD: Nested radii: child ≤ parent; concentric
-- SHOULD: Hue consistency: tint borders/shadows/text toward bg hue
-- MUST: Accessible charts (color-blind-friendly palettes)
-- MUST: Meet contrast—prefer [APCA](https://apcacontrast.com/) over WCAG 2
-- MUST: Increase contrast on `:hover/:active/:focus`
-- SHOULD: Match browser UI to bg
-- SHOULD: Avoid gradient banding (use masks when needed)
+| Concern | Reality |
+|---|---|
+| Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack (`next.config.js`) |
+| Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
+| Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
+| UI | shadcn/Radix primitives in `components/ui/`, plus `@base-ui/react` |
+| Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
+| Lint/format | Biome 2.2 (`biome.json`) — tabs, width 100, double quotes, semicolons |
+| Dead code | knip (`knip.json`) |
+| Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
+| Email | Resend through the `app/actions/send-email.ts` server action |
+| Tests | **None.** There is no test runner or test script in this repository |
+
+`.eslintrc.json` / `.eslintrc.cjs` exist only to neutralize Codacy's ESLint 8
+engine. Do not treat them as this project's linter; Biome is.
+
+## Commands
+
+```bash
+npm run dev          # dev server on :3000
+npm run lint         # biome check .        (CI gate)
+npm run lint:fix     # biome check --write .
+npm run type-check   # tsc --noEmit         (CI gate)
+npm run check        # biome check --write . && tsc --noEmit
+npm run knip         # unused files, exports, dependencies
+npm run build        # production build
+npm run build:analyze    # ANALYZE=true bundle report
+npm run perf:budget      # build + lighthouse against lighthouse-budget.json
+```
+
+CI (`.github/workflows/ci.yml`) runs `npm run lint` and `npm run type-check` on
+every pull request and push to `main`. Both must pass.
+
+## Required workflow
+
+For every nontrivial task:
+
+1. Frame the behavior, constraints, non-goals, and verification target.
+2. Reconnoiter the relevant code before editing.
+3. Decide whether to reuse, configure, extend, extract, or create.
+4. Implement the smallest coherent solution.
+5. Recursively clean the task-related dependency cone until it converges.
+6. Verify with deterministic checks and full-diff review.
+7. Report decisions, checks, cleanup, and remaining findings truthfully.
+
+Before implementing substantial work, state a compact decision record:
+
+```text
+Target and acceptance criteria:
+Existing candidates inspected:
+Reuse/extend/extract/create decision:
+Expected dependency cone:
+Verification plan:
+```
+
+## Reconnaissance before creation
+
+Expand inspection progressively: nearest instructions and manifests →
+target symbols, callers, dependencies, and data contracts → repository-wide
+search for exact and semantic equivalents → comparable completed features →
+history when intent is unclear → a narrow baseline check before risky work.
+
+Before creating any component, hook, utility, formatter, validator, schema,
+type, API client, or abstraction, search these first:
+
+- `components/ui/` — 59 primitives already exist (button, dialog, form, chart,
+  carousel, command, sidebar, and more). Check before writing any primitive.
+- `components/common/`, `components/layout/`, `components/home/`,
+  `components/blog/`, `components/project/`, `components/portfolio/`.
+- `lib/utils.ts` (`cn`, formatters), `lib/cache.ts` (`CACHE_TAGS`,
+  `CACHE_DURATIONS`, `createCachedFunction`), `lib/seo.ts` (metadata + JSON-LD),
+  `lib/portfolio-data.ts` (GitHub/Dribbble/Figma), `lib/blog.ts`,
+  `lib/projects.ts`, `lib/analytics.ts`, `lib/identity.ts`,
+  `lib/contact-form.ts`, `lib/status-tone.ts`, `lib/search-index.ts`.
+- `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`.
+- Platform and existing-dependency capabilities: `Intl`, `date-fns`, `nuqs`
+  for URL state, `react-hook-form`, `sonner`, `framer-motion`, `recharts`.
+
+No exact name match does not mean no equivalent exists. Search by behavior and
+domain meaning, not just by identifier.
+
+## Reuse decision ladder
+
+Choose the first sound option:
+
+1. **Reuse** unchanged when semantics and lifecycle match.
+2. **Configure or compose** through existing props, slots, callbacks, or children.
+3. **Extend** coherently when the behavior belongs to the same concept and does
+   not introduce unrelated flags or invalid states.
+4. **Extract** shared behavior when multiple implementations express one stable
+   concept with a clear owner.
+5. **Create** only when existing concepts differ materially or extension would
+   confuse ownership.
+
+New code requires a brief reason earlier options were rejected. A shared
+abstraction must have one stable responsibility, a clear owner, a simpler
+interface than the behavior it hides, and lower change amplification than
+separate implementations. Do not merge incidental similarity. Do not add
+wrappers that only rename an API or forward arguments without enforcing a
+meaningful invariant.
+
+## Bounded recursive cleanup
+
+"Leave it better" applies to the task-related dependency cone, not the whole
+repository.
+
+Seed a queue with each changed file, symbol, contract, and page. For each item:
+inspect direct callers and dependencies; search for semantic duplicates and
+competing sources of truth; find dead paths, obsolete compatibility code, and
+defects the change exposes; classify each finding as **fix now**, **migrate
+atomically**, or **record**; enqueue only items directly affected by an accepted
+fix; repeat until no task-related violation remains.
+
+**Fix now** when the issue is introduced or exposed by the task; is in code
+already being changed; is a correctness, security, accessibility, or measured
+performance defect; is a duplicate or competing implementation of the same
+concept; is dead code revealed by migration (confirm with `npm run knip`);
+blocks correct architecture; or is small, safe, and verifiable.
+
+**Migrate atomically** when a contract, shared primitive, or boundary must
+change and every current caller can be updated and verified together. Parallel
+old and new paths create drift.
+
+This is a single-owner, pre-production personal site. Internal backward
+compatibility is not a default requirement: use the better contract, migrate
+every caller, delete the obsolete path. Still protected unless explicitly
+authorized: published route URLs, content front-matter shape in `content/`,
+`/api/*` and `/feed.xml` response shapes, environment variable names, and
+user-visible behavior.
+
+**Record instead of fixing** when the issue is unrelated to the request or its
+contract chain; speculative or unsupported by evidence; a broad migration with
+no safe verification path; or would create a mixed-purpose diff.
+
+Stop when acceptance criteria are met, affected callers are migrated,
+task-related duplicates and obsolete paths are gone, checks pass, and the next
+change would be unrelated or disproportionately risky.
+
+Each recursion must reduce a concrete cost: duplication, coupling, obscurity,
+invalid states, dead code, unsafe operations, failing checks, or measured
+resource use. Moving, renaming, formatting, or abstracting without reducing such
+a cost is not cleanup.
+
+## Architecture invariants
+
+- Dependencies flow one way: `app/` → `components/` → `lib/` → `types/`.
+  `lib/` must not import from `app/` or `components/`. No cycles.
+- Server Components are the default. Add `"use client"` only for hooks, browser
+  APIs, event handlers, or animation — and push it to the smallest leaf. Keep
+  data fetching and secrets on the server.
+- One source of truth per invariant. Route metadata and JSON-LD go through
+  `lib/seo.ts`; external caching goes through `lib/cache.ts` tags and durations;
+  navigation structure lives in `components/layout/nav-config.ts`. Derive values
+  instead of synchronizing duplicated state.
+- `components/ui/` holds generic primitives only — no domain rules, no data
+  fetching, no route knowledge. Domain behavior lives in its feature folder.
+- Every external API call is wrapped in a cached function with an explicit tag
+  and revalidation window, uses a timeout, and degrades to a usable fallback.
+  A failed third-party fetch must never break a page render.
+- Import through path aliases (`@/components/*`, `@/lib/*`, `@/types/*`), not
+  relative backdoors across folders.
+- Existing `index.ts` barrels stay curated. Do not add indiscriminate barrels or
+  widen public exports for convenience — knip will flag the unused surface.
+- Do not add packages, layers, services, or configuration for hypothetical
+  future use.
+
+## Simplicity and code quality
+
+- Prefer platform, framework, and existing-dependency capabilities over custom
+  machinery.
+- Prefer direct readable flow over clever compression and needless indirection.
+- Do not duplicate constants, business rules, schemas, formatting, validation,
+  or error handling.
+- Avoid catch-all `utils`/`helpers` modules without cohesive ownership.
+- Make invalid states unrepresentable when practical; prefer discriminated
+  unions and `as const` over loose strings.
+- Never use `any`, unsafe casts, `@ts-expect-error`, `biome-ignore`, ignored
+  promises, or swallowed errors as shortcuts. An exception needs a comment
+  stating why it is correct.
+- Comments explain intent, tradeoffs, and invariants — not obvious syntax.
+- Delete replaced implementations, dead exports, abandoned files, commented-out
+  code, and temporary shims in the same change.
+- Before adding a dependency, check repository and platform alternatives, then
+  evaluate maintenance, security, runtime cost, bundle size, and overlap with
+  what is already installed.
+
+## TypeScript and React
+
+- Preserve strict inference; validate untrusted data (API responses, form input,
+  Markdown front-matter, search params) at the boundary before it flows inward.
+- Derive render values instead of storing synchronized state. Use effects only
+  to synchronize with external systems.
+- `reactCompiler` is on. Do not add `useMemo`/`useCallback`/`memo` without a
+  demonstrated identity or performance need.
+- Keep URL-addressable state in the URL (`nuqs` is available) so filters, tabs,
+  and pagination deep-link and survive back/forward.
+- Preserve accessibility, keyboard behavior, stable identity, hydration safety,
+  and deterministic rendering. Anything time- or random-dependent must be
+  hydration-safe.
+- Use the canonical primitives: `cn()` for class names, `components/ui/` for
+  controls, `lib/seo.ts` for metadata, `components/common/error-boundary.tsx`
+  for failure containment.
+
+## UI, accessibility, and content
+
+[`docs/UI_GUIDELINES.md`](docs/UI_GUIDELINES.md) is binding for any change that
+renders UI — keyboard support, focus, hit targets, forms, motion, layout,
+contrast, and copy. Read it before writing interface code; do not restate it
+here.
+
+Biome's a11y rules are relaxed only inside `components/ui/` (see `biome.json`
+overrides). That relaxation is for upstream shadcn source, not a license to ship
+inaccessible application UI.
+
+## Contact information and secrets
+
+Contact details are deliberately obfuscated to resist harvesting. See
+[`docs/SPAM_PROTECTION.md`](docs/SPAM_PROTECTION.md).
+
+- Render email and phone only through `ObfuscatedEmail` / `ObfuscatedPhone` in
+  `components/ui/obfuscated-contact.tsx`.
+- Never hardcode a raw email or phone number in JSX, metadata, JSON-LD, or
+  fixtures. Do not add `mailto:`/`tel:` hrefs that bypass the click-to-reveal.
+- After touching contact surfaces (`app/contact/`, `components/layout/footer.tsx`,
+  `components/home/inline-contact.tsx`), verify reveal still works.
+- Keep secrets out of source, logs, client bundles, and error messages. API
+  tokens (`GITHUB_API_TOKEN`, `DRIBBBLE_ACCESS_TOKEN`, `FIGMA_ACCESS_TOKEN`,
+  `RESEND_API_KEY`) are server-only — never reference them in a `"use client"`
+  file or a `NEXT_PUBLIC_*` variable.
+- Server actions and route handlers are public endpoints. Validate and normalize
+  every input there; never trust client-side checks alone.
+
+## Performance protocol
+
+Performance claims require evidence:
+
+1. Establish a representative baseline (`npm run build`, `npm run build:analyze`,
+   or `npm run perf:budget` against `lighthouse-budget.json`).
+2. Measure or profile one level below the visible symptom.
+3. Identify the dominant bottleneck.
+4. Change the smallest responsible design or implementation.
+5. Repeat the same measurement and report before/after.
+6. Preserve a budget or benchmark when regression risk matters.
+
+Prioritize in this order: server/client boundary and shipped JavaScript, image
+weight and CLS, third-party fetch waterfalls and caching, algorithms and data
+shape, rendering and re-renders — then cosmetic micro-optimization. Never claim
+speed from fewer lines, different syntax, or a newer library without a
+representative measurement. See [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md).
+
+## Correctness and verification
+
+There is no test runner here, so static checks and manual verification carry the
+load. Do not claim a change is tested when it is not.
+
+Run from narrowest to broadest, as risk requires:
+
+```bash
+npm run type-check   # always
+npm run lint         # always
+npm run knip         # after deleting, moving, or renaming anything
+npm run build        # for routing, data-fetching, server/client boundary changes
+```
+
+Then exercise the affected route in `npm run dev` — including its loading,
+empty, and error states — before reporting completion.
+
+If a change introduces logic worth protecting with a test, say so and propose
+the smallest setup rather than silently skipping it. Never weaken a check to
+make a change pass.
+
+## Mechanical prevention
+
+When an objective failure can recur, add the smallest reliable sensor, in
+increasing order of cost: a type invariant → a Biome rule → a knip entry →
+`lighthouse-budget.json` → a CI step in `.github/workflows/ci.yml`.
+
+Sensors must be deterministic, actionable, low-noise, and fast enough for their
+stage; their messages must explain how to fix the violation. For existing debt,
+record a baseline, block new violations, and reduce the baseline when the code
+is touched. Do not introduce a noisy repository-wide gate that will be ignored.
+Prefer safe autofixes when semantics are unambiguous.
+
+## Verification gate
+
+Before reporting completion:
+
+- review the full diff;
+- verify every acceptance criterion and non-goal;
+- confirm existing candidates were reused or explicitly rejected;
+- search again for duplicate components, helpers, schemas, and sources of truth;
+- migrate every affected caller, import, export, and contract;
+- remove dead and obsolete code;
+- verify server/client boundaries and one-way dependencies;
+- confirm no secret or raw contact detail entered the client bundle;
+- run the checks appropriate to the risk and report their actual output;
+- compare before/after measurements for any performance claim;
+- confirm no unrelated cleanup entered the diff;
+- run `git diff --check`;
+- state any unrun check and why.
+
+Never call a solution "best", "optimal", "safe", or "fully verified" without
+evidence.
+
+## Required final report
+
+- **Decision** — chosen design and why.
+- **Reused** — existing concepts used.
+- **Created or extended** — what changed and why reuse alone was insufficient.
+- **Recursive cleanup** — duplicates, dead paths, or debt removed in the cone.
+- **Mechanical prevention** — sensors added, or the highest-value next sensor.
+- **Verification** — exact commands run and their results.
+- **Remaining findings** — relevant issues intentionally left out of this change.
+
+## Never
+
+- create before searching;
+- reimplement an existing canonical helper or `components/ui/` primitive locally;
+- force unrelated concepts together merely to satisfy DRY;
+- add a wrapper with no invariant or meaningful simplification;
+- ship a raw email, phone number, or API token to the client;
+- add `"use client"` to a component that does not need it;
+- preserve an obsolete internal path solely for pre-production compatibility;
+- perform an unbounded cleanup rewrite during a focused task;
+- optimize without measurement;
+- broaden public exports for convenience;
+- suppress types, lint rules, security findings, or errors without a justified
+  exception;
+- leave old and new implementations competing after a migration;
+- claim a check passed without running it.
