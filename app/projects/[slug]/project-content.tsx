@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
 import { Markdown, ProjectViewTracker } from "@/components/common";
+import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Badge } from "@/components/ui/badge";
@@ -85,16 +86,8 @@ export function ProjectContent({ project }: ProjectContentProps) {
 		<>
 			<ProjectViewTracker slug={project.slug} title={project.title} />
 
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(projectStructuredData) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-			/>
+			<JsonLd data={projectStructuredData} />
+			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell width="wide">
 				<div className="flex flex-col gap-10 sm:gap-12">

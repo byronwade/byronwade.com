@@ -59,6 +59,7 @@ export function FigmaInteractiveViewer({
 					<div className="relative bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800">
 						<div className="relative w-full h-[700px] sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
+								sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
 								style={{ border: "none" }}
 								width="100%"
 								height="100%"
@@ -83,6 +84,7 @@ export function FigmaInteractiveViewer({
 								src={imageUrl}
 								alt={fileName}
 								fill
+								sizes="(min-width: 1280px) 1200px, 100vw"
 								className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
 								priority
 							/>

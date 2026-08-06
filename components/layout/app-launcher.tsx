@@ -4,7 +4,6 @@ import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
-import { customFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";
@@ -200,7 +199,7 @@ export function AppLauncher() {
 						href="/"
 						aria-label="Byron Wade — home"
 						className={cn(
-							customFont.className,
+							"font-signature",
 							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-lg leading-none text-dock-active-foreground transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
 						)}
 					>

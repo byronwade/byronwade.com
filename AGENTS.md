@@ -341,6 +341,55 @@ record a baseline, block new violations, and reduce the baseline when the code
 is touched. Do not introduce a noisy repository-wide gate that will be ignored.
 Prefer safe autofixes when semantics are unambiguous.
 
+## Audit tooling
+
+Keeping this repository clean is a standing goal, not a one-off. Beyond the four
+CI gates, run these periodically — after a feature lands, before a release, or
+whenever the codebase feels like it has accumulated drift.
+
+| Tool | Command | What it catches |
+|---|---|---|
+| Biome | `npm run lint` | Lint + formatting. **CI gate.** |
+| knip | `npm run knip` | Unused files, exports, types, dependencies. **CI gate.** |
+| react-doctor | `npm run audit:react` | React codebase health — anti-patterns, dead code, dependency supply chain. Scores the repo. |
+| React Scan | automatic in `npm run dev` | Unnecessary re-renders, highlighted live in the browser. |
+| shadcn | `npm run audit:ui` | Whether `components.json` and the installed primitives still line up with the registry. |
+| Vercel | `npm run audit:deploy` | Builds exactly the way Vercel will, catching deploy-only breakage `next build` misses. |
+
+Two naming notes, so nobody hunts for tools that do not exist: there is **no
+`vercel doctor` command** in the Vercel CLI (verified against v58) — `vercel
+build` is the closest real equivalent and is what `audit:deploy` runs. There is
+**no `shadscan` package** on npm; `shadcn info` plus `shadcn add <component>
+--diff` covers the same ground.
+
+react-doctor and React Scan are diagnostics, not gates. React Scan is wired in
+through `components/common/react-scan.tsx`, which dynamically imports the
+package only when `NODE_ENV === "development"` — the branch is statically
+removed from production builds, so it never reaches the client bundle. Do not
+replace it with the CDN `<script>` that `react-scan init` writes: that adds an
+unpinned third-party origin at runtime.
+
+`audit:deploy` needs a linked Vercel project (`vercel link`, then `vercel pull`)
+and will refuse to run without one.
+
+Treat these reports as a queue of candidate findings and apply the same fix-now
+/ migrate / record triage as any other cleanup — do not act on them mechanically.
+Known false positives in this repository, confirmed by reading the code:
+
+- `nextjs-no-side-effect-in-get-handler` on `api/screenshot`, `api/og`, and
+  `api/github/stats` — the flagged "side effects" are `URLSearchParams.set` and
+  `Map.set` on local objects, and a POST to GitHub's GraphQL *query* endpoint.
+  None mutate server state.
+- `deslop/unused-export` on `components/ui/obfuscated-contact.tsx` — those
+  exports are intentional public API, marked `@public` and documented in
+  `docs/SPAM_PROTECTION.md`.
+- `unused-dependency: sharp` — Next.js loads it for image optimization without
+  an import.
+
+React Scan overlaps with `reactCompiler: true`, which already memoizes
+automatically. A re-render it flags is worth chasing only when it is measurable;
+see the Performance protocol above before changing anything on its say-so.
+
 ## Verification gate
 
 Before reporting completion:

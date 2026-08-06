@@ -202,12 +202,13 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	const resetWidth = useCallback(() => setManualWidth(null), []);
 
 	const toggleFullscreen = useCallback(() => {
-		setIsFullscreen((prev) => {
-			if (!prev) setPreset("desktop");
-			return !prev;
-		});
+		// Entering fullscreen resets to the desktop preset. This runs outside the
+		// state updater: React may invoke an updater more than once, which would
+		// fire the nested setPreset repeatedly.
+		if (!isFullscreen) setPreset("desktop");
+		setIsFullscreen((prev) => !prev);
 		setManualWidth(null);
-	}, []);
+	}, [isFullscreen]);
 
 	// When the preset changes, drop any manual sizing.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: reset sizing only when the preset changes

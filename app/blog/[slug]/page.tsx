@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
+import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import {
@@ -108,16 +109,8 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			<BlogPostViewTracker slug={post.slug} title={post.title} />
 
 			{/* Structured Data */}
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-			/>
+			<JsonLd data={articleStructuredData} />
+			<JsonLd data={breadcrumbStructuredData} />
 
 			{/* Header Section */}
 			<div className="reveal w-full">

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -100,16 +101,8 @@ export default async function ProjectsPage() {
 	return (
 		<>
 			{/* Structured Data */}
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-			/>
+			<JsonLd data={websiteStructuredData} />
+			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">

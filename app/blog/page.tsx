@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
@@ -101,16 +102,8 @@ export default function BlogPage() {
 	return (
 		<>
 			{/* Structured Data */}
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-			/>
+			<JsonLd data={websiteStructuredData} />
+			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">

@@ -5,12 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
+import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
 import { analytics } from "@/lib/analytics";
-import { customFont } from "@/lib/fonts";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {
@@ -147,12 +147,7 @@ export default function ResumePage() {
 
 	return (
 		<>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-				id="person-jsonld"
-			/>
+			<JsonLd data={jsonLdData} />
 
 			<SiteShell>
 				<div className="flex w-full flex-col gap-12 sm:gap-16">
@@ -170,9 +165,7 @@ export default function ResumePage() {
 									/>
 								</div>
 								<div className="flex flex-col gap-1 pt-1">
-									<h1
-										className={`${customFont.className} text-2xl font-medium text-foreground sm:text-3xl`}
-									>
+									<h1 className="font-signature text-2xl font-medium text-foreground sm:text-3xl">
 										Byron Wade
 									</h1>
 									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
