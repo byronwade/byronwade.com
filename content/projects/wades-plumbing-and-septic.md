@@ -2,8 +2,21 @@
 title: "Wade's Plumbing and Septic"
 url: "https://wadesplumbingandseptic.com"
 category: "Client Work"
+featured: true
+status: "Live"
+tagline: "trust at emergency speed"
+order: 4
 date: 2023-10-01
 excerpt: "A conversion-focused website built on trust, speed, and local authenticity for a plumbing and septic business serving two states."
+problem: "Emergency plumbing searchers bounce from slow, generic franchise sites — and dual-state SEO is easy to get wrong."
+outcome: "A fast, neighborly site that ranks in two markets and makes calling feel obvious under stress."
+metrics:
+  - label: Business
+    value: "$2.4M yr-2"
+  - label: Markets
+    value: "CA + GA"
+  - label: Priority
+    value: "Speed + trust"
 ---
 
 # Building Wade's Plumbing and Septic: Designing for Trust in a Skeptical Industry

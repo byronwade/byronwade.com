@@ -1,4 +1,4 @@
-import { HomeBlog, HomeInteractive, HomeProjects } from "@/components/home";
+import { HomeBlog, HomeCta, HomeInteractive, HomeProjects } from "@/components/home";
 import { SiteShell } from "@/components/layout/site-shell";
 
 export default function HomePage() {
@@ -8,6 +8,7 @@ export default function HomePage() {
 				<HomeInteractive />
 				<HomeProjects />
 				<HomeBlog />
+				<HomeCta />
 			</div>
 		</SiteShell>
 	);

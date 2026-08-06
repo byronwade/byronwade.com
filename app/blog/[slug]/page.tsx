@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
-import { BlogPostViewTracker, Markdown } from "@/components/common";
+import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import {
@@ -57,13 +57,14 @@ export async function generateMetadata({
 			"Next.js",
 			"Programming",
 			"Tutorial",
+			...(post.tags ?? []),
 		],
 		image: ogImage,
 		type: "article",
 		author: "Byron Wade",
 		publishedTime: post.date,
 		modifiedTime: post.date,
-		tags: [],
+		tags: post.tags ?? [],
 		canonical: url,
 	});
 }
@@ -85,7 +86,6 @@ async function BlogPostContent({ slug }: { slug: string }) {
 		author: "Byron Wade",
 	});
 
-	// Generate structured data
 	const articleStructuredData = generateArticleStructuredData({
 		title: post.title,
 		description: post.excerpt || "",
@@ -94,6 +94,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 		modifiedTime: post.date,
 		image: ogImage,
 		url,
+		tags: post.tags,
 	});
 
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
@@ -122,16 +123,26 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			{/* Header Section */}
 			<div className="reveal w-full">
 				<div className="flex w-full flex-col items-start gap-3">
-					<div className="flex w-full flex-col gap-2">
+					<div className="flex w-full flex-col gap-3">
 						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
 							{post.title}
 						</h1>
-						{post.date && (
-							<time className="text-xs text-muted-foreground">
-								{format(new Date(post.date), "MMMM d, yyyy")}
-							</time>
+						{post.excerpt && (
+							<p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+								{post.excerpt}
+							</p>
 						)}
-						<SocialShare url={url} title={post.title} description={post.excerpt} className="mt-4" />
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
+							{post.date && (
+								<time dateTime={post.date}>{format(new Date(post.date), "MMMM d, yyyy")}</time>
+							)}
+							<span aria-hidden="true">·</span>
+							<span>{post.readingTime} min read</span>
+						</div>
+						{post.tags && post.tags.length > 0 && (
+							<TagList tags={post.tags} itemClassName="px-2.5 py-1 text-xs" />
+						)}
+						<SocialShare url={url} title={post.title} description={post.excerpt} className="mt-1" />
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,23 @@
+---
+# Codacy cloud configuration aligned with Biome (tabs) + Next.js App Router.
+# Tool enable/disable still happens in the Codacy UI; this scopes paths and
+# points engines at local config where supported.
+exclude_paths:
+  - "node_modules/**"
+  - ".next/**"
+  - "public/**"
+  - "docs/**"
+
+engines:
+  eslint-8:
+    exclude_paths:
+      - "content/**"
+  markdownlint:
+    exclude_paths:
+      - "content/blog/**"
+      - "content/projects/**"
+      - "docs/**"
+  duplication:
+    exclude_paths:
+      - "content/**"
+      - "components/ui/**"

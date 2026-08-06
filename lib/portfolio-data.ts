@@ -464,43 +464,54 @@ const PRIORITY_PROJECTS = [
 // Fetch all GitHub repositories
 export const getGitHubRepositories = unstable_cache(
 	async () => {
+		const token = process.env.GITHUB_TOKEN || process.env.GITHUB_API_TOKEN;
+
 		try {
-			const response = await fetch(
+			const response = await fetchWithTimeout(
 				"https://api.github.com/users/byronwade/repos?sort=updated&per_page=100",
 				{
 					headers: {
-						Authorization: `token ${process.env.GITHUB_TOKEN}`,
+						Accept: "application/vnd.github+json",
+						...(token ? { Authorization: `Bearer ${token}` } : {}),
 					},
+					timeout: 5000,
 				}
 			);
 
 			if (!response.ok) {
-				throw new Error("Failed to fetch GitHub repositories");
+				throw new Error(`Failed to fetch GitHub repositories: ${response.status}`);
 			}
 
 			const repos = await response.json();
 
+			if (!Array.isArray(repos)) {
+				throw new Error("GitHub repositories response was not an array");
+			}
+
 			// Sort repositories by priority and activity
 			return repos
-				.filter((repo: any) => !repo.fork && !repo.archived)
-				.sort((a: any, b: any) => {
-					// Priority projects first
-					const aPriority = PRIORITY_PROJECTS.indexOf(a.name);
-					const bPriority = PRIORITY_PROJECTS.indexOf(b.name);
+				.filter((repo: { fork?: boolean; archived?: boolean }) => !repo.fork && !repo.archived)
+				.sort(
+					(
+						a: { name: string; stargazers_count: number; updated_at: string },
+						b: { name: string; stargazers_count: number; updated_at: string }
+					) => {
+						const aPriority = PRIORITY_PROJECTS.indexOf(a.name);
+						const bPriority = PRIORITY_PROJECTS.indexOf(b.name);
 
-					if (aPriority !== -1 && bPriority !== -1) {
-						return aPriority - bPriority;
+						if (aPriority !== -1 && bPriority !== -1) {
+							return aPriority - bPriority;
+						}
+						if (aPriority !== -1) return -1;
+						if (bPriority !== -1) return 1;
+
+						if (a.stargazers_count !== b.stargazers_count) {
+							return b.stargazers_count - a.stargazers_count;
+						}
+
+						return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
 					}
-					if (aPriority !== -1) return -1;
-					if (bPriority !== -1) return 1;
-
-					// Then by stars, then by updated date
-					if (a.stargazers_count !== b.stargazers_count) {
-						return b.stargazers_count - a.stargazers_count;
-					}
-
-					return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-				});
+				);
 		} catch (error) {
 			console.error("Error fetching GitHub repositories:", error);
 			return [];

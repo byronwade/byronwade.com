@@ -130,6 +130,38 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							</p>
 						)}
 
+						{(project.problem || project.outcome) && (
+							<dl className="mt-1 grid gap-3 sm:grid-cols-2">
+								{project.problem && (
+									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
+										<dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+											Problem
+										</dt>
+										<dd className="text-sm leading-relaxed text-foreground">{project.problem}</dd>
+									</div>
+								)}
+								{project.outcome && (
+									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
+										<dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+											Outcome
+										</dt>
+										<dd className="text-sm leading-relaxed text-foreground">{project.outcome}</dd>
+									</div>
+								)}
+							</dl>
+						)}
+
+						{project.metrics && project.metrics.length > 0 && (
+							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 border-y border-border py-3 tabular-nums">
+								{project.metrics.map((metric) => (
+									<li key={`${project.slug}-${metric.label}`} className="flex flex-col gap-0.5">
+										<span className="text-base font-semibold text-foreground">{metric.value}</span>
+										<span className="text-xs text-muted-foreground">{metric.label}</span>
+									</li>
+								))}
+							</ul>
+						)}
+
 						{(project.url || sourceUrl) && (
 							<div className="mt-1 flex flex-wrap items-center gap-2">
 								{project.url && (
@@ -188,7 +220,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					</div>
 
 					{/* Footer nav */}
-					<div className="reveal reveal-delay-3 w-full border-t border-border pt-8">
+					<div className="reveal reveal-delay-3 flex w-full flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
 						<Link
 							className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-brand"
 							aria-label="Back to projects"
@@ -197,6 +229,15 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							<ArrowLeft className="size-4" aria-hidden="true" />
 							Back to projects
 						</Link>
+						<div className="flex flex-wrap items-center gap-3 text-sm">
+							<span className="text-muted-foreground">Want something like this?</span>
+							<Link
+								href="/contact"
+								className="font-medium text-brand transition-colors hover:underline"
+							>
+								Start a conversation →
+							</Link>
+						</div>
 					</div>
 				</div>
 			</SiteShell>

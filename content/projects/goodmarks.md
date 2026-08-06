@@ -3,11 +3,21 @@ title: "Goodmarks: Reputation Protection for Local Business"
 url: "https://goodmarks.io"
 category: "Product"
 flagship: true
+featured: true
 status: "Live"
 tagline: "reputation, protected"
 order: 1
 date: 2026-05-17
 excerpt: "My flagship product — a mobile-first review platform that routes happy customers to public reviews and unhappy ones to a private inbox, so a business gets every chance to fix a problem before it becomes a one-star rating."
+problem: "Angry customers post publicly; delighted ones rarely do — so local businesses get a review profile worse than the service they deliver."
+outcome: "Happy customers route to public reviews; unhappy ones land in a private inbox first — reputation protected before it breaks."
+metrics:
+  - label: Status
+    value: "Live"
+  - label: Focus
+    value: "Reviews"
+  - label: Surface
+    value: "Mobile-first"
 ---
 
 # Goodmarks: Turning Customer Feedback Into Reputation, Not Risk

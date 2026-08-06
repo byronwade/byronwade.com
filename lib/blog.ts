@@ -7,8 +7,15 @@ export interface BlogPost {
 	title: string;
 	date: string;
 	excerpt?: string;
+	tags?: string[];
 	content: string;
 	readingTime: number; // in minutes
+}
+
+function parseTags(raw: unknown): string[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	const tags = raw.map((tag) => String(tag).trim()).filter(Boolean);
+	return tags.length > 0 ? tags : undefined;
 }
 
 function calculateReadingTime(content: string): number {
@@ -36,6 +43,7 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 					title: data.title || slug,
 					date: data.date || new Date().toISOString(),
 					excerpt: data.excerpt,
+					tags: parseTags(data.tags),
 					content,
 					readingTime: calculateReadingTime(content),
 				};
@@ -63,6 +71,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 			title: data.title || slug,
 			date: data.date || new Date().toISOString(),
 			excerpt: data.excerpt,
+			tags: parseTags(data.tags),
 			content,
 			readingTime: calculateReadingTime(content),
 		};

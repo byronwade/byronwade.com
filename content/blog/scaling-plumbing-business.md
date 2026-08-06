@@ -2,6 +2,10 @@
 title: "From 'Nice Guy' to Wise Leader: The Hard-Won Evolution of Wade's Plumbing & Septic"
 date: 2024-02-20
 excerpt: "How I scaled a plumbing business to $2.4M, lost it all to the chaos of growth, and learned the hard lessons too late—after the company had already closed."
+tags:
+  - Operations
+  - Entrepreneurship
+  - Lessons
 ---
 
 In the high-stakes world of contracting, the gap between a hard worker and a business owner is often a canyon filled with debt, stress, and hard lessons. For Wade's Plumbing & Septic, bridging that gap wasn't just a business pivot, it was a personal transformation.

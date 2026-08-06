@@ -1,12 +1,13 @@
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { TagList } from "@/components/common/tag-list";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 
 async function BlogList() {
 	const posts = await getBlogPosts();
-	const recentPosts = posts.slice(0, 5);
+	const recentPosts = posts.slice(0, 4);
 
 	if (recentPosts.length === 0) {
 		return <p className="text-sm text-muted-foreground">No blog posts yet. Check back soon.</p>;
@@ -18,20 +19,30 @@ async function BlogList() {
 				<Link
 					key={post.slug}
 					href={`/blog/${post.slug}`}
-					className="group flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-muted"
+					className="group flex flex-col gap-2 px-4 py-4 transition-colors hover:bg-muted"
 				>
-					<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-						{post.title}
-					</span>
-					<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
-						<Badge variant="muted">
-							<Clock />
-							{post.readingTime} min
-						</Badge>
-						{post.date && (
-							<span className="hidden sm:inline">{format(new Date(post.date), "MMM d, yyyy")}</span>
-						)}
+					<div className="flex items-start justify-between gap-4">
+						<span className="font-medium text-foreground transition-colors group-hover:text-brand">
+							{post.title}
+						</span>
+						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+							<Badge variant="muted">
+								<Clock />
+								{post.readingTime} min
+							</Badge>
+							{post.date && (
+								<span className="hidden sm:inline">
+									{format(new Date(post.date), "MMM d, yyyy")}
+								</span>
+							)}
+						</div>
 					</div>
+					{post.excerpt && (
+						<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+							{post.excerpt}
+						</p>
+					)}
+					{post.tags && post.tags.length > 0 && <TagList tags={post.tags} limit={3} />}
 				</Link>
 			))}
 		</div>
@@ -42,7 +53,12 @@ export function HomeBlog() {
 	return (
 		<section className="reveal reveal-delay-7 flex w-full flex-col gap-5">
 			<div className="flex items-baseline justify-between">
-				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Writing</h2>
+				<div className="flex flex-col gap-1">
+					<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Writing</h2>
+					<p className="text-sm text-muted-foreground">
+						Notes from building products and running a service business.
+					</p>
+				</div>
 				<Link
 					href="/blog"
 					className="text-sm text-muted-foreground transition-colors hover:text-brand"

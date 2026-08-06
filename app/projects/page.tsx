@@ -40,11 +40,13 @@ function timeOf(date?: string): number {
 	return date ? new Date(date).getTime() : 0;
 }
 
-/** Flagships first (by explicit `order`, then recency), then everything else by recency. */
+/** Featured/flagships first (by explicit `order`, then recency), then everything else by recency. */
 function sortForIndex(projects: Project[]): Project[] {
 	return [...projects].sort((a, b) => {
-		if (!!a.flagship !== !!b.flagship) return a.flagship ? -1 : 1;
-		if (a.flagship && b.flagship) {
+		const aLead = Boolean(a.flagship || a.featured);
+		const bLead = Boolean(b.flagship || b.featured);
+		if (aLead !== bLead) return aLead ? -1 : 1;
+		if (aLead && bLead) {
 			const orderA = a.order ?? Number.POSITIVE_INFINITY;
 			const orderB = b.order ?? Number.POSITIVE_INFINITY;
 			if (orderA !== orderB) return orderA - orderB;
@@ -118,8 +120,8 @@ export default async function ProjectsPage() {
 							Projects
 						</h1>
 						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Client work, products, and hobby projects — real-world problem solving with React,
-							Next.js, and full-stack tools.
+							Selected products, client work, and experiments — case studies with outcomes where it
+							matters, built with React, Next.js, and full-stack tools.
 						</p>
 					</header>
 

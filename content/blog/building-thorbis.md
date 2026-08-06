@@ -2,6 +2,10 @@
 title: "Building Thorbis: A Modern Field Service Management Platform for the Next Generation"
 date: 2025-11-18
 excerpt: "How years of working with field service companies led me to build a comprehensive platform that solves the fragmented, outdated tools service companies have been forced to use."
+tags:
+  - Thorbis
+  - Field service
+  - Next.js
 ---
 
 After years of working with field service companies and witnessing the daily struggles of dispatchers, technicians, and business owners, I decided to build **Thorbis**, a comprehensive field service management platform designed from the ground up with modern technology, real-world workflows, and operational excellence at its core.

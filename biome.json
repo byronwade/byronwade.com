@@ -56,6 +56,28 @@
 					}
 				}
 			}
+		},
+		{
+			"includes": [
+				"app/api/portfolio/route.ts",
+				"app/feed.xml/route.ts",
+				"app/metadata.config.ts",
+				"app/portfolio/page.tsx",
+				"components/blog/related-posts.tsx",
+				"components/home/home-interactive.tsx",
+				"components/home/home-projects.tsx",
+				"components/home/inline-contact.tsx"
+			],
+			"formatter": {
+				"indentStyle": "space"
+			},
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedImports": "off"
+					}
+				}
+			}
 		}
 	]
 }

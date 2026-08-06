@@ -3,11 +3,21 @@ title: "byronwade/ui: The Design System Behind Everything"
 url: "https://ui.byronwade.com"
 category: "Product"
 flagship: true
+featured: true
 status: "In development"
 tagline: "one design language, every project"
 order: 3
 date: 2026-06-02
 excerpt: "My personal design system — the shared component library and chrome I build most of my projects on. Its signature is the Morph Panel: a single capsule that fluidly morphs between a compact pill and a full panel instead of popping a disconnected menu over the page."
+problem: "Shipping many products alone only works if they share one hardened foundation — otherwise every UI change becomes a rewrite."
+outcome: "One design language across products: Morph Panels, semantic tokens, and accessible primitives reused everywhere I build."
+metrics:
+  - label: Signature
+    value: "Morph Panel"
+  - label: Tokens
+    value: "Semantic"
+  - label: Used on
+    value: "This site"
 ---
 
 # byronwade/ui: One Design Language, Every Project

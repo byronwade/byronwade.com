@@ -1,7 +1,7 @@
 "use client";
 
 import { Github, Linkedin, Loader2, Mail, MapPin, Send, Twitter } from "lucide-react";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { sendEmail } from "@/app/actions/send-email";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	buildContactMessage,
+	CONTACT_TOPICS,
+	type ContactTopicValue,
+	DEFAULT_CONTACT_TOPIC,
+} from "@/lib/contact-form";
 
 const socials = [
 	{ name: "GitHub", href: "https://github.com/byronwade", icon: Github },
@@ -19,30 +25,47 @@ const socials = [
 
 export default function ContactClient() {
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		topic: DEFAULT_CONTACT_TOPIC,
+		message: "",
+	});
 
-	const handleChange = (field: keyof typeof formData, value: string) => {
+	const handleChange = <K extends keyof typeof formData>(field: K, value: (typeof formData)[K]) => {
 		setFormData((prev) => ({ ...prev, [field]: value }));
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		if (isSubmitting) return;
 		setIsSubmitting(true);
 
 		try {
-			const result = await sendEmail(formData);
+			const payload = buildContactMessage(formData.topic, formData.message);
+			const result = await sendEmail({
+				name: formData.name.trim(),
+				email: formData.email.trim(),
+				message: payload.message,
+				projectType: payload.projectType,
+			});
 			if (result.success) {
 				toast.success("Message sent!", {
 					description: "Thanks for reaching out — I'll get back to you soon.",
 				});
-				setFormData({ name: "", email: "", message: "" });
+				setFormData({
+					name: "",
+					email: "",
+					topic: DEFAULT_CONTACT_TOPIC,
+					message: "",
+				});
 			} else {
 				toast.error("Couldn't send message", {
 					description: result.error || "Please try again, or email me directly.",
 				});
 			}
-		} catch {
+		} catch (error) {
+			console.error("Contact form submit failed", error);
 			toast.error("Something went wrong", {
 				description: "Please try again, or email me directly.",
 			});
@@ -59,8 +82,9 @@ export default function ContactClient() {
 						Get in touch
 					</h1>
 					<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-						Have a project in mind, a question, or just want to say hello? Send a note below and
-						I'll reply as soon as I can.
+						Available for product engineering, software for service businesses, and design systems
+						that have to ship. Have a project in mind, a question, or just want to say hello? Send a
+						note below — I usually reply within a day or two.
 					</p>
 				</header>
 
@@ -92,15 +116,37 @@ export default function ContactClient() {
 							</div>
 						</div>
 						<div className="flex flex-col gap-2">
+							<Label htmlFor="topic">What is this about?</Label>
+							<select
+								id="topic"
+								name="topic"
+								value={formData.topic}
+								onChange={(e) => handleChange("topic", e.target.value as ContactTopicValue)}
+								className="h-9 rounded-full border border-border bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+							>
+								{CONTACT_TOPICS.map((topic) => (
+									<option key={topic.value} value={topic.value}>
+										{topic.label}
+									</option>
+								))}
+							</select>
+						</div>
+						<div className="flex flex-col gap-2">
 							<Label htmlFor="message">Message</Label>
 							<Textarea
 								id="message"
+								name="message"
 								value={formData.message}
 								onChange={(e) => handleChange("message", e.target.value)}
 								placeholder="Tell me a little about what you're working on…"
 								required
 								rows={7}
 								className="resize-y"
+								onKeyDown={(e) => {
+									if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+										e.currentTarget.form?.requestSubmit();
+									}
+								}}
 							/>
 						</div>
 						<div>
