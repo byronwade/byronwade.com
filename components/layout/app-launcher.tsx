@@ -3,6 +3,7 @@
 import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
+import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -55,7 +56,6 @@ export function AppLauncher() {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
-	const collapsedRef = React.useRef<{ w: number; h: number } | null>(null);
 
 	const panelId = React.useId();
 
@@ -82,80 +82,16 @@ export function AppLauncher() {
 		return () => ro.disconnect();
 	}, []);
 
-	// Width + height + radius morph between the compact pill and the open panel,
-	// cross-fading the contents — the signature launcher choreography.
-	useIsoLayoutEffect(() => {
-		const morph = morphRef.current;
-		const compact = compactRef.current;
-		const panel = panelRef.current;
-		if (!(morph && compact && panel)) {
-			return;
-		}
-
-		const reduce =
-			typeof window !== "undefined" &&
-			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		const ease = "cubic-bezier(.22,1,.36,1)";
-		const T = `width 200ms ${ease}, height 200ms ${ease}, border-radius 200ms ${ease}`;
-
-		const release = () => {
-			morph.style.transition = "none";
-			morph.style.width = "";
-			morph.style.height = "";
-			void morph.offsetWidth;
-			morph.style.transition = "";
-		};
-
-		if (open) {
-			if (!collapsedRef.current) {
-				collapsedRef.current = { w: morph.offsetWidth, h: morph.offsetHeight };
-			}
-			const sw = morph.offsetWidth;
-			const sh = morph.offsetHeight;
-			const ew = panel.offsetWidth;
-			const eh = panel.offsetHeight;
-			compact.style.transitionDelay = "0ms";
-			compact.style.opacity = "0";
-			panel.style.transitionDelay = reduce ? "0ms" : "30ms";
-			panel.style.opacity = "1";
-			if (reduce) {
-				morph.style.transition = "none";
-				morph.style.width = `${ew}px`;
-				morph.style.height = `${eh}px`;
-				return;
-			}
-			morph.style.transition = "none";
-			morph.style.width = `${sw}px`;
-			morph.style.height = `${sh}px`;
-			void morph.offsetWidth; // reflow
-			morph.style.transition = T;
-			morph.style.width = `${ew}px`;
-			morph.style.height = `${eh}px`;
-			panel.focus({ preventScroll: true });
-		} else if (collapsedRef.current && morph.style.width) {
-			const { w: cw, h: ch } = collapsedRef.current;
-			panel.style.transitionDelay = "0ms";
-			panel.style.opacity = "0";
-			compact.style.transitionDelay = reduce ? "0ms" : "70ms";
-			compact.style.opacity = "1";
-			if (reduce) {
-				release();
-				return;
-			}
-			morph.style.transition = T;
-			morph.style.width = `${cw}px`;
-			morph.style.height = `${ch}px`;
-			const onEnd = (e: TransitionEvent) => {
-				if (e.propertyName !== "height") {
-					return;
-				}
-				release();
-				morph.removeEventListener("transitionend", onEnd);
-			};
-			morph.addEventListener("transitionend", onEnd);
-			return () => morph.removeEventListener("transitionend", onEnd);
-		}
-	}, [open]);
+	useCapsuleMorph({
+		open,
+		morphRef,
+		compactRef,
+		panelRef,
+		durationMs: 200,
+		openDelayMs: 30,
+		closeDelayMs: 70,
+		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+	});
 
 	// Esc + click-away close.
 	React.useEffect(() => {

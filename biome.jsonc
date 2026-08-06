@@ -6,7 +6,11 @@
   "extends": [
     "ultracite/biome/core",
     "ultracite/biome/react",
-    "ultracite/biome/next"
+    "ultracite/biome/next",
+    // Import-graph rules: no cycles, no undeclared dependencies, no reaching
+    // into another package's private files. These enforce the architecture
+    // invariants in AGENTS.md mechanically instead of by review.
+    "ultracite/biome/type-aware"
   ],
   "vcs": {
     "enabled": true,
@@ -40,13 +44,18 @@
   "linter": {
     "rules": {
       "complexity": {
-        // Five components exceed the threshold. That is real debt, tracked in
-        // AGENTS.md rather than hidden — but splitting them is a refactor in
-        // its own right, not something to smuggle into a linter rollout.
-        "noExcessiveCognitiveComplexity": "off",
         // `void promise` is how this codebase marks a deliberately unawaited
         // promise. Removing it would make those reads ambiguous.
         "noVoid": "off"
+      },
+      "correctness": {
+        // Wants `.js` suffixes on relative imports. That is native-ESM
+        // resolution; this project is bundled by Turbopack with `moduleResolution:
+        // bundler`, where extensionless imports are correct.
+        "useImportExtensions": "off",
+        // Biome's resolver cannot see React 19's type exports and reports
+        // `react has no export named Suspense`, which is false.
+        "noUnresolvedImports": "off"
       },
       "performance": {
         // Each feature folder's index.ts is its public interface, per the

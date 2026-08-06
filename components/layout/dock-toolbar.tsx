@@ -5,6 +5,7 @@ import { Box, CornerDownLeft, Github, Hash, Heart, Moon, PenLine, Search, Sun } 
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
@@ -29,9 +30,6 @@ const ITEM =
 const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-active-foreground";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
-
-const EASE = "cubic-bezier(.22,1,.36,1)";
-const MORPH = `width 240ms ${EASE}, height 240ms ${EASE}, border-radius 240ms ${EASE}`;
 
 const KIND_ORDER: SearchKind[] = ["Page", "Project", "Writing"];
 const KIND_LABEL: Record<SearchKind, string> = {
@@ -94,7 +92,6 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
-	const collapsedRef = React.useRef<{ w: number; h: number } | null>(null);
 	const panelId = React.useId();
 
 	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
@@ -141,79 +138,21 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		return () => ro.disconnect();
 	}, []);
 
-	/* — the morph: animate the shared capsule between pill and the active panel — */
-	useIsoLayoutEffect(() => {
-		const morph = morphRef.current;
-		const compact = compactRef.current;
-		const panel = panelRef.current;
-		if (!(morph && compact && panel)) {
-			return;
-		}
-
-		const reduce =
-			typeof window !== "undefined" &&
-			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-		const release = () => {
-			morph.style.transition = "none";
-			morph.style.width = "";
-			morph.style.height = "";
-			void morph.offsetWidth;
-			morph.style.transition = "";
-		};
-
-		if (open) {
-			if (!collapsedRef.current) {
-				collapsedRef.current = { w: morph.offsetWidth, h: morph.offsetHeight };
-			}
-			const sw = morph.offsetWidth;
-			const sh = morph.offsetHeight;
-			const ew = panel.offsetWidth;
-			const eh = panel.offsetHeight;
-			compact.style.transitionDelay = "0ms";
-			compact.style.opacity = "0";
-			panel.style.transitionDelay = reduce ? "0ms" : "40ms";
-			panel.style.opacity = "1";
-			if (reduce) {
-				morph.style.transition = "none";
-				morph.style.width = `${ew}px`;
-				morph.style.height = `${eh}px`;
-			} else {
-				morph.style.transition = "none";
-				morph.style.width = `${sw}px`;
-				morph.style.height = `${sh}px`;
-				void morph.offsetWidth;
-				morph.style.transition = MORPH;
-				morph.style.width = `${ew}px`;
-				morph.style.height = `${eh}px`;
-			}
+	useCapsuleMorph({
+		open,
+		morphRef,
+		compactRef,
+		panelRef,
+		durationMs: 240,
+		openDelayMs: 40,
+		closeDelayMs: 80,
+		onOpened: () => {
 			if (mode === "search") {
 				inputRef.current?.focus({ preventScroll: true });
 			}
-		} else if (collapsedRef.current && morph.style.width) {
-			const { w: cw, h: ch } = collapsedRef.current;
-			panel.style.transitionDelay = "0ms";
-			panel.style.opacity = "0";
-			compact.style.transitionDelay = reduce ? "0ms" : "80ms";
-			compact.style.opacity = "1";
-			if (reduce) {
-				release();
-				return;
-			}
-			morph.style.transition = MORPH;
-			morph.style.width = `${cw}px`;
-			morph.style.height = `${ch}px`;
-			const onEnd = (ev: TransitionEvent) => {
-				if (ev.propertyName !== "height") {
-					return;
-				}
-				release();
-				morph.removeEventListener("transitionend", onEnd);
-			};
-			morph.addEventListener("transitionend", onEnd);
-			return () => morph.removeEventListener("transitionend", onEnd);
-		}
-	}, [open, mode]);
+		},
+		deps: [mode],
+	});
 
 	/* — follow the panel's live size while open (results filtering, mode swap) — */
 	useIsoLayoutEffect(() => {

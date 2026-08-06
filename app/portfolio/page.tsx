@@ -57,21 +57,34 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	};
 }
 
-export default function PortfolioPage() {
+const REQUEST_TIMEOUT_MS = 8000;
+
+interface PortfolioReposState {
+	degraded: boolean;
+	error: boolean;
+	loading: boolean;
+	refreshing: boolean;
+	reload: () => void;
+	repos: GitHubRepo[];
+}
+
+/**
+ * Loads the repository list, keeping the request lifecycle — abort on unmount,
+ * timeout, refresh-vs-initial-load — out of the rendering component.
+ */
+function usePortfolioRepos(): PortfolioReposState {
 	const [repos, setRepos] = useState<GitHubRepo[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 	const [error, setError] = useState(false);
 	const [degraded, setDegraded] = useState(false);
-	const [visibleRepos, setVisibleRepos] = useState(8);
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
 		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), 8000);
-		const isRefresh = reloadKey > 0;
+		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
-		if (isRefresh) {
+		if (reloadKey > 0) {
 			setRefreshing(true);
 		} else {
 			setLoading(true);
@@ -85,8 +98,10 @@ export default function PortfolioPage() {
 					return;
 				}
 				setRepos(result.repos);
+				// An empty list is only an error when the upstream call degraded; a
+				// genuinely empty profile is a valid, non-error state.
 				setDegraded(result.degraded && result.repos.length === 0);
-				setError(result.repos.length === 0 && result.degraded);
+				setError(result.degraded && result.repos.length === 0);
 			} catch (err) {
 				if (controller.signal.aborted) {
 					return;
@@ -107,9 +122,147 @@ export default function PortfolioPage() {
 		};
 	}, [reloadKey]);
 
-	const reload = useCallback(() => {
-		setReloadKey((key) => key + 1);
-	}, []);
+	const reload = useCallback(() => setReloadKey((key) => key + 1), []);
+
+	return { repos, loading, refreshing, error, degraded, reload };
+}
+
+function PortfolioEmptyState({
+	degraded,
+	error,
+	refreshing,
+	reload,
+}: {
+	degraded: boolean;
+	error: boolean;
+	refreshing: boolean;
+	reload: () => void;
+}) {
+	return (
+		<EmptyState
+			icon={Github}
+			title={degraded || error ? "Couldn't load repositories" : "No repositories yet"}
+			description={
+				degraded || error
+					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
+					: "Public repositories will show up here once they’re available."
+			}
+			action={
+				<div className="flex flex-wrap items-center justify-center gap-2">
+					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
+						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
+						{refreshing ? "Retrying…" : "Try again"}
+					</Button>
+					<Button
+						variant="outline"
+						render={
+							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
+								Open GitHub
+								<ExternalLink className="size-3.5" aria-hidden="true" />
+							</a>
+						}
+					/>
+				</div>
+			}
+		/>
+	);
+}
+
+function RepoSkeletonGrid() {
+	return (
+		<div className="grid gap-4 sm:grid-cols-2" aria-busy="true">
+			<p className="sr-only" role="status">
+				Loading repositories…
+			</p>
+			{["a", "b", "c", "d", "e", "f"].map((id) => (
+				<div
+					key={`skeleton-${id}`}
+					className="flex min-h-40 animate-pulse flex-col gap-3 rounded-2xl border border-border bg-card p-5"
+				>
+					<div className="h-5 w-1/2 rounded bg-muted" />
+					<div className="h-4 w-full rounded bg-muted/70" />
+					<div className="h-4 w-3/4 rounded bg-muted/70" />
+					<div className="mt-auto flex gap-3 pt-2">
+						<div className="h-3 w-16 rounded bg-muted/60" />
+						<div className="h-3 w-10 rounded bg-muted/60" />
+					</div>
+				</div>
+			))}
+		</div>
+	);
+}
+
+function RepoCard({ repo }: { repo: GitHubRepo }) {
+	return (
+		<a
+			href={repo.html_url}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
+		>
+			<div className="flex items-start justify-between gap-3">
+				<div className="flex min-w-0 items-center gap-2">
+					<h2 className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
+						{titleize(repo.name)}
+					</h2>
+					{repo.archived && (
+						<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground">
+							Archived
+						</span>
+					)}
+				</div>
+				<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
+			</div>
+
+			{repo.description && (
+				<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
+					{repo.description}
+				</p>
+			)}
+
+			{repo.topics && repo.topics.length > 0 && (
+				<div className="flex flex-wrap gap-1.5">
+					{repo.topics.slice(0, 4).map((topic) => (
+						<span
+							key={topic}
+							className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
+						>
+							{topic}
+						</span>
+					))}
+				</div>
+			)}
+
+			<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-muted-foreground text-xs">
+				{repo.language && (
+					<span className="inline-flex items-center gap-1.5">
+						<span
+							className={`size-2.5 rounded-full ${languageColors[repo.language] ?? "bg-muted-foreground"}`}
+						/>
+						{repo.language}
+					</span>
+				)}
+				<span className="inline-flex items-center gap-1">
+					<Star className="size-3.5" />
+					{repo.stargazers_count}
+				</span>
+				<span className="inline-flex items-center gap-1">
+					<GitFork className="size-3.5" />
+					{repo.forks_count}
+				</span>
+				{repo.pushed_at && (
+					<span className="ml-auto whitespace-nowrap text-muted-foreground/80">
+						Updated {format(new Date(repo.pushed_at), "MMM yyyy")}
+					</span>
+				)}
+			</div>
+		</a>
+	);
+}
+
+export default function PortfolioPage() {
+	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
+	const [visibleRepos, setVisibleRepos] = useState(8);
 
 	return (
 		<SiteShell width="wide">
@@ -154,55 +307,13 @@ export default function PortfolioPage() {
 				</header>
 
 				{loading ? (
-					<div className="grid gap-4 sm:grid-cols-2" aria-busy="true">
-						<p className="sr-only" role="status">
-							Loading repositories…
-						</p>
-						{["a", "b", "c", "d", "e", "f"].map((id) => (
-							<div
-								key={`skeleton-${id}`}
-								className="flex min-h-40 animate-pulse flex-col gap-3 rounded-2xl border border-border bg-card p-5"
-							>
-								<div className="h-5 w-1/2 rounded bg-muted" />
-								<div className="h-4 w-full rounded bg-muted/70" />
-								<div className="h-4 w-3/4 rounded bg-muted/70" />
-								<div className="mt-auto flex gap-3 pt-2">
-									<div className="h-3 w-16 rounded bg-muted/60" />
-									<div className="h-3 w-10 rounded bg-muted/60" />
-								</div>
-							</div>
-						))}
-					</div>
+					<RepoSkeletonGrid />
 				) : error || repos.length === 0 ? (
-					<EmptyState
-						icon={Github}
-						title={degraded || error ? "Couldn't load repositories" : "No repositories yet"}
-						description={
-							degraded || error
-								? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
-								: "Public repositories will show up here once they’re available."
-						}
-						action={
-							<div className="flex flex-wrap items-center justify-center gap-2">
-								<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
-									<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-									{refreshing ? "Retrying…" : "Try again"}
-								</Button>
-								<Button
-									variant="outline"
-									render={
-										<a
-											href="https://github.com/byronwade"
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											Open GitHub
-											<ExternalLink className="size-3.5" aria-hidden="true" />
-										</a>
-									}
-								/>
-							</div>
-						}
+					<PortfolioEmptyState
+						degraded={degraded}
+						error={error}
+						refreshing={refreshing}
+						reload={reload}
 					/>
 				) : (
 					<>
@@ -216,70 +327,7 @@ export default function PortfolioPage() {
 						)}
 						<div className="grid gap-4 sm:grid-cols-2">
 							{repos.slice(0, visibleRepos).map((repo) => (
-								<a
-									key={repo.id}
-									href={repo.html_url}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
-								>
-									<div className="flex items-start justify-between gap-3">
-										<div className="flex min-w-0 items-center gap-2">
-											<h2 className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-												{titleize(repo.name)}
-											</h2>
-											{repo.archived && (
-												<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground">
-													Archived
-												</span>
-											)}
-										</div>
-										<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
-									</div>
-
-									{repo.description && (
-										<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
-											{repo.description}
-										</p>
-									)}
-
-									{repo.topics && repo.topics.length > 0 && (
-										<div className="flex flex-wrap gap-1.5">
-											{repo.topics.slice(0, 4).map((topic) => (
-												<span
-													key={topic}
-													className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
-												>
-													{topic}
-												</span>
-											))}
-										</div>
-									)}
-
-									<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-muted-foreground text-xs">
-										{repo.language && (
-											<span className="inline-flex items-center gap-1.5">
-												<span
-													className={`size-2.5 rounded-full ${languageColors[repo.language] ?? "bg-muted-foreground"}`}
-												/>
-												{repo.language}
-											</span>
-										)}
-										<span className="inline-flex items-center gap-1">
-											<Star className="size-3.5" />
-											{repo.stargazers_count}
-										</span>
-										<span className="inline-flex items-center gap-1">
-											<GitFork className="size-3.5" />
-											{repo.forks_count}
-										</span>
-										{repo.pushed_at && (
-											<span className="ml-auto whitespace-nowrap text-muted-foreground/80">
-												Updated {format(new Date(repo.pushed_at), "MMM yyyy")}
-											</span>
-										)}
-									</div>
-								</a>
+								<RepoCard key={repo.id} repo={repo} />
 							))}
 						</div>
 
