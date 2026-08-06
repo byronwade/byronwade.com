@@ -39,8 +39,8 @@
     }
   },
   // Preset rules turned off deliberately. Each conflicts with a decision this
-  // repository has already made and documented in AGENTS.md — none is off
-  // because it was inconvenient to satisfy.
+  // repository has already made and documented in AGENTS.md, or is inaccurate
+  // for this stack — none is off because it was inconvenient to satisfy.
   "linter": {
     "rules": {
       "complexity": {

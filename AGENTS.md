@@ -404,12 +404,14 @@ Never run `ultracite fix --unsafe` without reading the resulting diff and
 running `type-check` plus a cold `build` — its unsafe pass left this repository
 uncompilable twice.
 
-Known debt, deliberately not hidden: five components exceed Ultracite's
-cognitive-complexity threshold (`noExcessiveCognitiveComplexity`, currently off)
-— `dock-toolbar`, `app-launcher`, `full-width-project-preview`,
-`design-case-study`, and the Figma detail page. Splitting them is its own
-refactor. Enabling `ultracite/biome/type-aware` would also let
-`noUnnecessaryConditions` be turned back on.
+`noExcessiveCognitiveComplexity` is enforced, and the repository is at zero.
+Keep it that way by extracting a hook or a child component rather than raising
+the threshold — `hooks/use-capsule-morph.ts`, `use-drag-resize.ts`,
+`use-frame-size.ts`, and `use-screenshot.ts` all came out of that exercise and
+each owns one concern.
+
+`ultracite/biome/type-aware` is enabled for its import-graph rules, so import
+cycles and undeclared dependencies fail CI.
 
 React Scan overlaps with `reactCompiler: true`, which already memoizes
 automatically. A re-render it flags is worth chasing only when it is measurable;
