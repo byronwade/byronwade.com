@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/site";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 const siteName = "Byron Wade";
 const defaultDescription =
 	"Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions.";
@@ -46,8 +46,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	const fullTitle = title.includes("|") ? title : `${title} | ${siteName}`;
 	const ogImage =
 		image ||
-		`${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&type=${type}${tags.length > 0 ? `&tags=${encodeURIComponent(tags.join(", "))}` : ""}${publishedTime ? `&date=${encodeURIComponent(publishedTime)}` : ""}`;
-	const pageUrl = canonical || baseUrl;
+		`${siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&type=${type}${tags.length > 0 ? `&tags=${encodeURIComponent(tags.join(", "))}` : ""}${publishedTime ? `&date=${encodeURIComponent(publishedTime)}` : ""}`;
+	const pageUrl = canonical || siteUrl;
 
 	// Combine default keywords with page-specific ones
 	const allKeywords = [
@@ -67,11 +67,11 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	];
 
 	const metadata: Metadata = {
-		metadataBase: new URL(baseUrl),
+		metadataBase: new URL(siteUrl),
 		title: fullTitle,
 		description,
 		keywords: allKeywords,
-		authors: [{ name: author, url: baseUrl }],
+		authors: [{ name: author, url: siteUrl }],
 		creator: author,
 		publisher: author,
 		applicationName: siteName,
@@ -104,7 +104,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
 				...alternateLanguages,
 			},
 			types: {
-				"application/rss+xml": `${baseUrl}/feed.xml`,
+				"application/rss+xml": `${siteUrl}/feed.xml`,
 			},
 		},
 		openGraph: {
@@ -176,7 +176,7 @@ export function generateOGImageUrl(params: {
 		...(author ? { author } : {}),
 		...(date ? { date } : {}),
 	});
-	return `${baseUrl}/api/og?${queryParams.toString()}`;
+	return `${siteUrl}/api/og?${queryParams.toString()}`;
 }
 
 /**
@@ -219,15 +219,15 @@ export function generateArticleStructuredData(params: {
 		author: {
 			"@type": "Person",
 			name: author,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		publisher: {
 			"@type": "Organization",
 			name: siteName,
-			url: baseUrl,
+			url: siteUrl,
 			logo: {
 				"@type": "ImageObject",
-				url: `${baseUrl}/logo.avif`,
+				url: `${siteUrl}/logo.avif`,
 			},
 		},
 		datePublished: publishedTime,
@@ -262,18 +262,18 @@ export function generateWebSiteStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
 		name: siteName,
-		url: baseUrl,
+		url: siteUrl,
 		description: defaultDescription,
 		publisher: {
 			"@type": "Person",
 			name: defaultAuthor,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		potentialAction: {
 			"@type": "SearchAction",
 			target: {
 				"@type": "EntryPoint",
-				urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+				urlTemplate: `${siteUrl}/search?q={search_term_string}`,
 			},
 			"query-input": "required name=search_term_string",
 		},
@@ -288,8 +288,8 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "Organization",
 		name: siteName,
-		url: baseUrl,
-		logo: `${baseUrl}/logo.avif`,
+		url: siteUrl,
+		logo: `${siteUrl}/logo.avif`,
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
@@ -313,8 +313,8 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "Person",
 		name: defaultAuthor,
-		url: baseUrl,
-		image: `${baseUrl}/avatar.avif`,
+		url: siteUrl,
+		image: `${siteUrl}/avatar.avif`,
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
@@ -377,15 +377,15 @@ export function generateProjectStructuredData(params: {
 		author: {
 			"@type": "Person",
 			name: defaultAuthor,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		publisher: {
 			"@type": "Organization",
 			name: siteName,
-			url: baseUrl,
+			url: siteUrl,
 			logo: {
 				"@type": "ImageObject",
-				url: `${baseUrl}/logo.avif`,
+				url: `${siteUrl}/logo.avif`,
 			},
 		},
 		...(url

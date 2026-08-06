@@ -12,9 +12,9 @@ import {
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 export async function generateMetadata() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const ogImage = generateOGImageUrl({
 		title: "Writing",
 		description: "Notes on building products, design systems, and software for service businesses.",
@@ -37,7 +37,7 @@ export async function generateMetadata() {
 		],
 		image: ogImage,
 		type: "website",
-		canonical: `${baseUrl}/blog`,
+		canonical: `${siteUrl}/blog`,
 	});
 }
 
@@ -91,13 +91,11 @@ async function BlogList() {
 }
 
 export default function BlogPage() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-		{ name: "Home", url: baseUrl },
-		{ name: "Blog", url: `${baseUrl}/blog` },
+		{ name: "Home", url: siteUrl },
+		{ name: "Blog", url: `${siteUrl}/blog` },
 	]);
 
 	return (

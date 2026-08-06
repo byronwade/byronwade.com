@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/site-shell";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
 	title: "Terms of Service | Byron Wade",
 	description:
 		"The terms that govern your use of byronwade.com and services provided by Byron Wade and Wade's Plumbing & Septic.",
 	alternates: {
-		canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/terms`,
+		canonical: `${siteUrl}/terms`,
 	},
 	robots: { index: true, follow: true },
 };

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/site-shell";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
 	title: "Privacy Policy | Byron Wade",
 	description:
 		"How Byron Wade and Wade's Plumbing & Septic collect, use, and protect your information.",
 	alternates: {
-		canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/privacy`,
+		canonical: `${siteUrl}/privacy`,
 	},
 	robots: { index: true, follow: true },
 };

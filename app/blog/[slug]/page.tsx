@@ -12,6 +12,7 @@ import {
 	generateOGImageUrl,
 	generateMetadata as generateSEOMetadata,
 } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 interface BlogPostPageProps {
 	params: Promise<{ slug: string }>;
@@ -34,8 +35,7 @@ export async function generateMetadata({
 		return {};
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-	const url = `${baseUrl}/blog/${slug}`;
+	const url = `${siteUrl}/blog/${slug}`;
 	const ogImage = generateOGImageUrl({
 		title: post.title,
 		description: post.excerpt || "",
@@ -71,13 +71,12 @@ export async function generateMetadata({
 
 async function BlogPostContent({ slug }: { slug: string }) {
 	const post = await getBlogPost(slug);
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 
 	if (!post) {
 		notFound();
 	}
 
-	const url = `${baseUrl}/blog/${slug}`;
+	const url = `${siteUrl}/blog/${slug}`;
 	const ogImage = generateOGImageUrl({
 		title: post.title,
 		description: post.excerpt || "",
@@ -98,8 +97,8 @@ async function BlogPostContent({ slug }: { slug: string }) {
 	});
 
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-		{ name: "Home", url: baseUrl },
-		{ name: "Blog", url: `${baseUrl}/blog` },
+		{ name: "Home", url: siteUrl },
+		{ name: "Blog", url: `${siteUrl}/blog` },
 		{ name: post.title, url },
 	]);
 

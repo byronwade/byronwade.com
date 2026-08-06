@@ -8,9 +8,9 @@ import {
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 export async function generateMetadata() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const ogImage = generateOGImageUrl({
 		title: "Projects",
 		description:
@@ -32,7 +32,7 @@ export async function generateMetadata() {
 		],
 		image: ogImage,
 		type: "website",
-		canonical: `${baseUrl}/projects`,
+		canonical: `${siteUrl}/projects`,
 	});
 }
 
@@ -90,13 +90,11 @@ function IndexFallback() {
 }
 
 export default async function ProjectsPage() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-		{ name: "Home", url: baseUrl },
-		{ name: "Projects", url: `${baseUrl}/projects` },
+		{ name: "Home", url: siteUrl },
+		{ name: "Projects", url: `${siteUrl}/projects` },
 	]);
 
 	return (

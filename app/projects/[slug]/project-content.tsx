@@ -12,6 +12,7 @@ import {
 	generateOGImageUrl,
 	generateProjectStructuredData,
 } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 interface ProjectContentProps {
 	project: Project;
@@ -57,8 +58,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 	const sourceUrl = extractSourceUrl(project.content);
 	const hasContent = Boolean(body?.trim());
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-	const url = `${baseUrl}/projects/${project.slug}`;
+	const url = `${siteUrl}/projects/${project.slug}`;
 	const ogImage = generateOGImageUrl({
 		title: project.title,
 		description: project.excerpt || "",
@@ -76,8 +76,8 @@ export function ProjectContent({ project }: ProjectContentProps) {
 	});
 
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-		{ name: "Home", url: baseUrl },
-		{ name: "Projects", url: `${baseUrl}/projects` },
+		{ name: "Home", url: siteUrl },
+		{ name: "Projects", url: `${siteUrl}/projects` },
 		{ name: project.title, url },
 	]);
 

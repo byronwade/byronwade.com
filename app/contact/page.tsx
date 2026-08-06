@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import ContactClient from "./contact-client";
-
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Contact",
@@ -15,7 +14,7 @@ export const metadata: Metadata = generateSEOMetadata({
 		description: "Get in touch with Byron Wade",
 		type: "website",
 	}),
-	canonical: `${baseUrl}/contact`,
+	canonical: `${siteUrl}/contact`,
 	type: "website",
 });
 

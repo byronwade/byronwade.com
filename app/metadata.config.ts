@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-	metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"),
+	metadataBase: new URL(siteUrl),
 	title: {
 		template: "%s | Byron Wade",
 		default: "Byron Wade — Software for Service Businesses",
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
 		},
 	},
 	alternates: {
-		canonical: process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com",
+		canonical: siteUrl,
 		types: {
 			"application/rss+xml": "/feed.xml",
 		},
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
 			{
 				url: new URL(
 					"/api/og?title=Byron Wade&description=Software for service businesses&type=website",
-					process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"
+					siteUrl
 				).toString(),
 				width: 1200,
 				height: 630,
@@ -85,7 +86,7 @@ export const metadata: Metadata = {
 		images: [
 			new URL(
 				"/api/og?title=Byron Wade&description=Software for service businesses&type=website",
-				process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com"
+				siteUrl
 			).toString(),
 		],
 	},

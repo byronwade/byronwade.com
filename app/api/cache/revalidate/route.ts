@@ -1,6 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { CACHE_TAGS, type CacheTag } from "@/lib/cache";
+import { siteUrl } from "@/lib/site";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -44,7 +45,7 @@ export async function GET() {
 			},
 		},
 		example: {
-			curl: `curl -X POST ${process.env.NEXT_PUBLIC_SITE_URL}/api/cache/revalidate -H "Content-Type: application/json" -d '{"tag":"portfolio","secret":"your-secret"}'`,
+			curl: `curl -X POST ${siteUrl}/api/cache/revalidate -H "Content-Type: application/json" -d '{"tag":"portfolio","secret":"your-secret"}'`,
 		},
 	});
 }

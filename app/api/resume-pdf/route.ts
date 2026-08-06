@@ -1,6 +1,7 @@
 import chromium from "@sparticuz/chromium";
 import { NextResponse } from "next/server";
 import puppeteer, { type Browser } from "puppeteer-core";
+import { siteUrl } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,13 +20,11 @@ export async function GET() {
 
 		const page = await browser.newPage();
 
-		// Determine the base URL - use production URL or localhost with correct port
-		const baseUrl =
-			process.env.NEXT_PUBLIC_BASE_URL ||
-			(process.env.NODE_ENV === "production" ? "https://byronwade.com" : "http://localhost:3000");
+		// Render against the local server in development; the deployed origin otherwise.
+		const origin = process.env.NODE_ENV === "production" ? siteUrl : "http://localhost:3000";
 
 		// Navigate to the resume page and wait for content to load
-		await page.goto(`${baseUrl}/resume`, {
+		await page.goto(`${origin}/resume`, {
 			waitUntil: "networkidle0",
 			timeout: 30000,
 		});

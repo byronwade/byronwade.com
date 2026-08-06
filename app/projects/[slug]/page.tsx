@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getAllProjectSlugs, getProject } from "@/lib/projects";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import { ProjectContent } from "./project-content";
 
 export const viewport: Viewport = {
@@ -31,8 +32,7 @@ export async function generateMetadata({
 		return {};
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-	const url = `${baseUrl}/projects/${slug}`;
+	const url = `${siteUrl}/projects/${slug}`;
 	const ogImage = generateOGImageUrl({
 		title: project.title,
 		description: project.excerpt || "",
