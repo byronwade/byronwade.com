@@ -3,25 +3,11 @@
 import { format } from "date-fns";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { EmptyState } from "@/components/common/empty-state";
+import { EmptyState } from "@/components/common";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
-
-interface Repo {
-	id: number;
-	name: string;
-	description: string | null;
-	html_url: string;
-	homepage: string | null;
-	language: string | null;
-	stargazers_count: number;
-	forks_count: number;
-	topics?: string[];
-	pushed_at?: string;
-	archived?: boolean;
-	fork?: boolean;
-}
+import type { GitHubRepo } from "@/types/github";
 
 const languageColors: Record<string, string> = {
 	TypeScript: "bg-blue-500",
@@ -43,7 +29,7 @@ const titleize = (name: string) =>
 		.join(" ");
 
 async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
-	repos: Repo[];
+	repos: GitHubRepo[];
 	degraded: boolean;
 }> {
 	const response = await fetch("/api/portfolio", {
@@ -52,8 +38,8 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	});
 	if (!response.ok) throw new Error("Failed to fetch portfolio data");
 	const data = await response.json();
-	const filtered: Repo[] = (data.repos ?? []).filter(
-		(repo: Repo) => !repo.fork && repo.name !== "byronwade.com"
+	const filtered: GitHubRepo[] = (data.repos ?? []).filter(
+		(repo: GitHubRepo) => !repo.fork && repo.name !== "byronwade.com"
 	);
 	filtered.sort((a, b) => {
 		if (b.stargazers_count !== a.stargazers_count) {
@@ -68,7 +54,7 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 }
 
 export default function PortfolioPage() {
-	const [repos, setRepos] = useState<Repo[]>([]);
+	const [repos, setRepos] = useState<GitHubRepo[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 	const [error, setError] = useState(false);

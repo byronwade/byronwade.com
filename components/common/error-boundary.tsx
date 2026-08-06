@@ -141,33 +141,4 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 	}
 }
 
-// Hook version for functional components
-export function useErrorHandler() {
-	return React.useCallback((error: Error, errorInfo?: React.ErrorInfo) => {
-		console.error("Error caught by useErrorHandler:", error, errorInfo);
-
-		// Handle specific webpack errors
-		if (error.message.includes("Cannot read properties of undefined (reading 'call')")) {
-			console.warn("Detected webpack module loading error. Reloading page...");
-			window.location.reload();
-		}
-	}, []);
-}
-
-// Higher-order component for wrapping components with error boundary
-export function withErrorBoundary<P extends object>(
-	Component: React.ComponentType<P>,
-	fallback?: React.ComponentType<{ error: Error; retry: () => void }>
-) {
-	const WrappedComponent = (props: P) => (
-		<ErrorBoundary fallback={fallback}>
-			<Component {...props} />
-		</ErrorBoundary>
-	);
-
-	WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
-
-	return WrappedComponent;
-}
-
 export default ErrorBoundary;

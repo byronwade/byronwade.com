@@ -6,7 +6,7 @@ const defaultDescription =
 	"Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions.";
 const defaultAuthor = "Byron Wade";
 
-export interface SEOConfig {
+interface SEOConfig {
 	title: string;
 	description?: string;
 	keywords?: string[];
@@ -417,47 +417,5 @@ export function generateProjectStructuredData(params: {
 					keywords: category,
 				}
 			: {}),
-	};
-}
-
-/**
- * Extract keywords from text
- */
-export function extractKeywords(text: string, maxKeywords = 10): string[] {
-	// Simple keyword extraction - could be enhanced with NLP
-	const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-	const wordFreq: Record<string, number> = {};
-
-	for (const word of words) {
-		wordFreq[word] = (wordFreq[word] || 0) + 1;
-	}
-
-	return Object.entries(wordFreq)
-		.sort(([, a], [, b]) => b - a)
-		.slice(0, maxKeywords)
-		.map(([word]) => word.charAt(0).toUpperCase() + word.slice(1));
-}
-
-/**
- * Generate canonical URL
- */
-export function generateCanonicalUrl(path: string): string {
-	return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
-}
-
-/**
- * Generate sitemap entry
- */
-export function generateSitemapEntry(
-	url: string,
-	lastModified?: Date,
-	changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
-	priority?: number
-) {
-	return {
-		url,
-		lastModified: lastModified?.toISOString() || new Date().toISOString(),
-		changeFrequency,
-		priority,
 	};
 }

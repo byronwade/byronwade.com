@@ -125,6 +125,7 @@ interface ObfuscatedPhoneProps {
 	displayFormat?: boolean;
 }
 
+/** @public Documented in docs/SPAM_PROTECTION.md. */
 export const ObfuscatedPhone = ({
 	className = "",
 	showIcon = false,
@@ -195,6 +196,7 @@ export const ObfuscatedPhone = ({
 };
 
 // Component for structured data - returns obfuscated values for bots
+/** @public Documented in docs/SPAM_PROTECTION.md. */
 export const getObfuscatedContactForSchema = () => {
 	// Return partially obfuscated data for structured data
 	return {
@@ -204,6 +206,7 @@ export const getObfuscatedContactForSchema = () => {
 };
 
 // Hook to get real contact info only on client-side interaction
+/** @public Documented in docs/SPAM_PROTECTION.md. */
 export const useContactInfo = () => {
 	const [contactInfo, setContactInfo] = useState<{
 		email: string;

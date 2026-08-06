@@ -4,7 +4,7 @@ import matter from "gray-matter";
 
 export type ProjectType = "client" | "product" | "concept" | "hobby";
 
-export interface ProjectMetric {
+interface ProjectMetric {
 	label: string;
 	value: string;
 }

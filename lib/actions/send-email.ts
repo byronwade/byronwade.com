@@ -2,7 +2,7 @@
 
 import { Resend } from "resend";
 
-export interface EmailProps {
+interface EmailProps {
 	name: string;
 	email: string;
 	message: string;

@@ -9,7 +9,7 @@ export type ContactTopicValue = (typeof CONTACT_TOPICS)[number]["value"];
 
 export const DEFAULT_CONTACT_TOPIC: ContactTopicValue = "conversation";
 
-export function getContactTopicLabel(value: string): string {
+function getContactTopicLabel(value: string): string {
 	return CONTACT_TOPICS.find((topic) => topic.value === value)?.label ?? "Conversation";
 }
 

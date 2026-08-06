@@ -1,6 +1,6 @@
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
-import { CACHE_TAGS } from "@/lib/cache";
+import { CACHE_TAGS, type CacheTag } from "@/lib/cache";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Validate the tag
-		const validTags = Object.values(CACHE_TAGS);
+		const validTags: readonly CacheTag[] = Object.values(CACHE_TAGS);
 		if (!validTags.includes(tag)) {
 			return NextResponse.json({ error: "Invalid tag", validTags }, { status: 400 });
 		}
