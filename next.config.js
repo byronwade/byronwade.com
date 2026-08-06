@@ -24,12 +24,6 @@ const nextConfig = {
 	// so unnecessary re-renders are eliminated without manual useMemo/useCallback.
 	reactCompiler: true,
 
-	// Node packages that must stay external to the server bundle (renamed from the
-	// deprecated experimental.serverComponentsExternalPackages in Next.js 15+).
-	...(process.env.ENABLE_LOCAL_FEATURES === "true" && {
-		serverExternalPackages: ["@prisma/client"],
-	}),
-
 	images: {
 		formats: ["image/webp", "image/avif"],
 		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

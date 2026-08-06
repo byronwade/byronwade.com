@@ -11,7 +11,6 @@ Supporting documentation:
 - [`docs/UI_GUIDELINES.md`](docs/UI_GUIDELINES.md) — binding UI/accessibility rules
 - [`docs/PERFORMANCE.md`](docs/PERFORMANCE.md) — performance strategy
 - [`docs/SPAM_PROTECTION.md`](docs/SPAM_PROTECTION.md) — contact obfuscation
-- [`docs/LOCAL_DEVELOPMENT.md`](docs/LOCAL_DEVELOPMENT.md) — Docker/local setup
 
 Do not duplicate `AGENTS.md` rules in this file. If both files ever disagree,
 `AGENTS.md` wins and this file should be corrected.

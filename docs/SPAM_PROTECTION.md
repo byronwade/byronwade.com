@@ -47,15 +47,11 @@ import { ObfuscatedEmail, ObfuscatedPhone } from "@/components/ui/obfuscated-con
 
 ### 3. Utility Functions
 
-#### Contact Utils
-Located at `lib/contact-utils.ts`
+#### Contact helpers
+Exported from `components/ui/obfuscated-contact.tsx`:
 
-Provides:
-- `getContactInfo()` - Get real contact info (server-side only)
-- `getObfuscatedContactInfo()` - Get obfuscated info for public display
-- `createMailtoLink()` - Create obfuscated mailto links
-- `createTelLink()` - Create obfuscated tel links
-- `getSchemaContactInfo()` - Get contact info for structured data
+- `getObfuscatedContactForSchema()` - Contact values for JSON-LD structured data
+- `useContactInfo()` - Decoded contact values for a client component
 
 ### 4. Metadata Protection
 
@@ -131,21 +127,13 @@ useEffect(() => {
 }, [revealed]);
 ```
 
-## Files Updated
+## Where it is used
 
-### Components
-- `components/ui/obfuscated-contact.tsx` - Main obfuscation component
-- `components/sections/contact-section.tsx` - Updated to use obfuscated contact
-- `components/footer.tsx` - Updated to use obfuscated contact
-
-### Pages
-- `app/our-work/page.tsx` - Updated metadata and contact info
-- `app/plumbing-santa-cruz/page.tsx` - Updated metadata and contact info
-
-### Configuration
-- `app/layout.tsx` - Updated JSON-LD schema
-- `app/metadata.config.ts` - Format detection disabled
-- `lib/contact-utils.ts` - Utility functions for contact management
+- `components/ui/obfuscated-contact.tsx` — the obfuscation components themselves
+- `components/layout/footer.tsx` — footer email
+- `app/contact/contact-client.tsx` — contact page email
+- `app/metadata.config.ts` — `format-detection` disabled so mobile browsers do
+  not auto-linkify the revealed values
 
 ## Benefits
 
@@ -169,8 +157,7 @@ useEffect(() => {
 ### Adding New Contact Information
 1. Encode the new contact info using base64
 2. Update the encoded constants in `obfuscated-contact.tsx`
-3. Update the utility functions in `contact-utils.ts`
-4. Test the obfuscation on both client and server side
+3. Test the obfuscation on both client and server side
 
 ### Updating Existing Contact Information
 1. Generate new base64 encoded values

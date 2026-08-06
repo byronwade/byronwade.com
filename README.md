@@ -44,5 +44,16 @@ Next.js (App Router) · React 19 · TypeScript · Tailwind CSS · Biome · Verce
 
 ## Environment
 
-See `env.local.example`. Key variables: `GITHUB_TOKEN`, `DRIBBBLE_ACCESS_TOKEN`,
-`FIGMA_ACCESS_TOKEN`, `RESEND_API_KEY`, `NEXT_PUBLIC_BASE_URL`.
+Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
+
+| Variable | Used for |
+|---|---|
+| `GITHUB_API_TOKEN` | GitHub repos and stats on `/portfolio` |
+| `DRIBBBLE_ACCESS_TOKEN` | Dribbble shots |
+| `FIGMA_ACCESS_TOKEN` | Figma files and the `/portfolio/figma` viewer |
+| `RESEND_API_KEY` | Contact form delivery |
+| `REVALIDATION_SECRET` | Authorizes `POST /api/cache/revalidate` |
+| `NEXT_PUBLIC_BASE_URL` | Canonical URLs and metadata |
+
+Every external fetch degrades to a usable fallback, so the site builds and runs
+with these unset.

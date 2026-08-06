@@ -47,12 +47,12 @@ truth — fix the doc in the same change.
 | Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack (`next.config.js`) |
 | Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
-| UI | shadcn/Radix primitives in `components/ui/`, plus `@base-ui/react` |
+| UI | `@base-ui/react` primitives wrapped in `components/ui/` (18 of them) |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
-| Lint/format | Biome 2.2 (`biome.json`) — tabs, width 100, double quotes, semicolons |
-| Dead code | knip (`knip.json`) |
+| Lint/format | Biome (`biome.json`) — tabs, width 100, double quotes, semicolons |
+| Dead code | knip (`knip.json`), clean — a new unused export fails CI |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
-| Email | Resend through the `app/actions/send-email.ts` server action |
+| Email | Resend through the `lib/actions/send-email.ts` server action |
 | Tests | **None.** There is no test runner or test script in this repository |
 
 `.eslintrc.json` / `.eslintrc.cjs` exist only to neutralize Codacy's ESLint 8
@@ -62,18 +62,20 @@ engine. Do not treat them as this project's linter; Biome is.
 
 ```bash
 npm run dev          # dev server on :3000
-npm run lint         # biome check .        (CI gate)
+npm run lint         # biome check .                    (CI gate)
+npm run type-check   # next typegen && tsc --noEmit     (CI gate)
+npm run knip         # unused files, exports, deps      (CI gate)
+npm run build        # production build                 (CI gate)
+npm run check        # lint --write, then type-check and knip
 npm run lint:fix     # biome check --write .
-npm run type-check   # tsc --noEmit         (CI gate)
-npm run check        # biome check --write . && tsc --noEmit
-npm run knip         # unused files, exports, dependencies
-npm run build        # production build
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
 ```
 
-CI (`.github/workflows/ci.yml`) runs `npm run lint` and `npm run type-check` on
-every pull request and push to `main`. Both must pass.
+CI (`.github/workflows/ci.yml`) runs all four gates on every pull request and
+push to `main`. `type-check` runs `next typegen` first because `next-env.d.ts`
+and the generated route types are gitignored — without it tsc cannot resolve
+`next/*` on a clean checkout.
 
 ## Required workflow
 
@@ -107,18 +109,23 @@ history when intent is unclear → a narrow baseline check before risky work.
 Before creating any component, hook, utility, formatter, validator, schema,
 type, API client, or abstraction, search these first:
 
-- `components/ui/` — 59 primitives already exist (button, dialog, form, chart,
-  carousel, command, sidebar, and more). Check before writing any primitive.
+- `components/ui/` — badge, button, card, hover-card, input, label, link,
+  pill, popover, separator, sonner, status-dot, status-pill, tabs, textarea,
+  tooltip, obfuscated-contact, design-case-study. The set is deliberately small:
+  add a primitive with `npx shadcn add` only when a page actually needs it, and
+  expect knip to delete it again if nothing imports it.
 - `components/common/`, `components/layout/`, `components/home/`,
-  `components/blog/`, `components/project/`, `components/portfolio/`.
-- `lib/utils.ts` (`cn`, formatters), `lib/cache.ts` (`CACHE_TAGS`,
-  `CACHE_DURATIONS`, `createCachedFunction`), `lib/seo.ts` (metadata + JSON-LD),
-  `lib/portfolio-data.ts` (GitHub/Dribbble/Figma), `lib/blog.ts`,
-  `lib/projects.ts`, `lib/analytics.ts`, `lib/identity.ts`,
-  `lib/contact-form.ts`, `lib/status-tone.ts`, `lib/search-index.ts`.
-- `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`.
+  `components/blog/`, `components/project/`, `components/portfolio/` — each
+  folder's `index.ts` is its public interface.
+- `lib/utils.ts` (`cn`), `lib/cache.ts` (`CACHE_TAGS` — the only place a cache
+  tag may be defined), `lib/seo.ts` (metadata + JSON-LD), `lib/portfolio-data.ts`
+  (GitHub/Dribbble/Figma), `lib/blog.ts`, `lib/projects.ts`, `lib/analytics.ts`,
+  `lib/contact-form.ts`, `lib/status-tone.ts`, `lib/search-index.ts`,
+  `lib/actions/send-email.ts`.
+- `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`
+  (`use-theme-toggle.ts`).
 - Platform and existing-dependency capabilities: `Intl`, `date-fns`, `nuqs`
-  for URL state, `react-hook-form`, `sonner`, `framer-motion`, `recharts`.
+  for URL state, `sonner` for toasts, `framer-motion` for motion.
 
 No exact name match does not mean no equivalent exists. Search by behavior and
 domain meaning, not just by identifier.
@@ -198,13 +205,16 @@ a cost is not cleanup.
   instead of synchronizing duplicated state.
 - `components/ui/` holds generic primitives only — no domain rules, no data
   fetching, no route knowledge. Domain behavior lives in its feature folder.
-- Every external API call is wrapped in a cached function with an explicit tag
-  and revalidation window, uses a timeout, and degrades to a usable fallback.
-  A failed third-party fetch must never break a page render.
+- Every external API call is wrapped in `unstable_cache` with a tag from
+  `CACHE_TAGS`, an explicit revalidation window, a timeout, and a usable
+  fallback. A failed third-party fetch must never break a page render, and a
+  raw tag string is a bug — `/api/cache/revalidate` only knows `CACHE_TAGS`.
 - Import through path aliases (`@/components/*`, `@/lib/*`, `@/types/*`), not
   relative backdoors across folders.
 - Existing `index.ts` barrels stay curated. Do not add indiscriminate barrels or
-  widen public exports for convenience — knip will flag the unused surface.
+  widen public exports for convenience — knip fails CI on the unused surface.
+  An export that is genuinely public but unused in-repo needs a `@public`
+  JSDoc tag and a doc entry justifying it.
 - Do not add packages, layers, services, or configuration for hypothetical
   future use.
 
@@ -300,11 +310,13 @@ load. Do not claim a change is tested when it is not.
 Run from narrowest to broadest, as risk requires:
 
 ```bash
-npm run type-check   # always
 npm run lint         # always
+npm run type-check   # always
 npm run knip         # after deleting, moving, or renaming anything
 npm run build        # for routing, data-fetching, server/client boundary changes
 ```
+
+All four run in CI, so a change that skips them locally fails there instead.
 
 Then exercise the affected route in `npm run dev` — including its loading,
 empty, and error states — before reporting completion.
@@ -318,6 +330,10 @@ make a change pass.
 When an objective failure can recur, add the smallest reliable sensor, in
 increasing order of cost: a type invariant → a Biome rule → a knip entry →
 `lighthouse-budget.json` → a CI step in `.github/workflows/ci.yml`.
+
+Sensors already in place: Biome (lint + format), `tsc --noEmit` under strict
+mode, knip at zero unused files/exports/types/dependencies, and a production
+build — all four gating every pull request.
 
 Sensors must be deterministic, actionable, low-noise, and fast enough for their
 stage; their messages must explain how to fix the violation. For existing debt,
