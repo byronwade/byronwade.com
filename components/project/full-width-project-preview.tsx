@@ -80,11 +80,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 		fetchScreenshot(href, capture.width, capture.height)
 			.then((resolved) => {
-				if (active) setSrc(resolved);
+				if (active) {
+					setSrc(resolved);
+				}
 			})
 			.catch((error) => {
 				console.error("Error fetching screenshot:", error);
-				if (active) setStatus("error");
+				if (active) {
+					setStatus("error");
+				}
 			});
 
 		return () => {
@@ -95,22 +99,30 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	// Track container width for responsive scaling.
 	useEffect(() => {
 		const node = wrapperRef.current;
-		if (!node) return;
+		if (!node) {
+			return;
+		}
 		const observer = new ResizeObserver((entries) => {
 			for (const entry of entries) {
 				const w = entry.contentRect.width;
-				if (w > 0) setContainerWidth(w);
+				if (w > 0) {
+					setContainerWidth(w);
+				}
 			}
 		});
 		observer.observe(node);
 		const initial = node.getBoundingClientRect().width;
-		if (initial > 0) setContainerWidth(initial);
+		if (initial > 0) {
+			setContainerWidth(initial);
+		}
 		return () => observer.disconnect();
 	}, []);
 
 	// Track window size for fullscreen fitting.
 	useEffect(() => {
-		if (!mounted) return;
+		if (!mounted) {
+			return;
+		}
 		const update = () => setWindowSize({ w: window.innerWidth, h: window.innerHeight });
 		update();
 		window.addEventListener("resize", update);
@@ -133,7 +145,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 		const available = containerWidth || MAX_NORMAL_WIDTH;
 		const ceiling = Math.min(available, MAX_NORMAL_WIDTH, capture.width);
-		let w = manualWidth != null ? Math.max(MIN_WIDTH, Math.min(manualWidth, available)) : ceiling;
+		let w = manualWidth === null ? ceiling : Math.max(MIN_WIDTH, Math.min(manualWidth, available));
 		let h = w / aspect;
 		if (h > MAX_NORMAL_HEIGHT) {
 			h = MAX_NORMAL_HEIGHT;
@@ -144,8 +156,12 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	const adjustManualWidth = useCallback((clientX: number) => {
 		const node = wrapperRef.current;
-		if (!node) return;
-		if (resizeRafRef.current != null) return;
+		if (!node) {
+			return;
+		}
+		if (resizeRafRef.current !== null) {
+			return;
+		}
 		resizeRafRef.current = window.requestAnimationFrame(() => {
 			const rect = node.getBoundingClientRect();
 			const center = rect.left + rect.width / 2;
@@ -156,10 +172,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	}, []);
 
 	useEffect(() => {
-		if (!isResizing) return;
+		if (!isResizing) {
+			return;
+		}
 		const onMouseMove = (e: MouseEvent) => adjustManualWidth(e.clientX);
 		const onTouchMove = (e: TouchEvent) => {
-			if (e.touches.length > 0) adjustManualWidth(e.touches[0].clientX);
+			const touch = e.touches[0];
+			if (touch) {
+				adjustManualWidth(touch.clientX);
+			}
 		};
 		const onEnd = () => setIsResizing(false);
 
@@ -205,7 +226,9 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		// Entering fullscreen resets to the desktop preset. This runs outside the
 		// state updater: React may invoke an updater more than once, which would
 		// fire the nested setPreset repeatedly.
-		if (!isFullscreen) setPreset("desktop");
+		if (!isFullscreen) {
+			setPreset("desktop");
+		}
 		setIsFullscreen((prev) => !prev);
 		setManualWidth(null);
 	}, [isFullscreen]);
@@ -218,11 +241,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	// Fullscreen: lock scroll, ESC to close, manage focus.
 	useEffect(() => {
-		if (!isFullscreen) return;
+		if (!isFullscreen) {
+			return;
+		}
 		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
 		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") setIsFullscreen(false);
+			if (e.key === "Escape") {
+				setIsFullscreen(false);
+			}
 		};
 		document.addEventListener("keydown", onKeyDown);
 		const focusTimer = window.setTimeout(() => dialogRef.current?.focus(), 0);
@@ -265,7 +292,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				)}
 			>
 				{/* Top toolbar */}
-				<div className="flex h-10 shrink-0 items-center justify-between gap-2 border-b border-border bg-secondary px-3">
+				<div className="flex h-10 shrink-0 items-center justify-between gap-2 border-border border-b bg-secondary px-3">
 					{/* Window dots + address */}
 					<div className="flex min-w-0 flex-1 items-center gap-2.5">
 						<div className="hidden items-center gap-1.5 sm:flex" aria-hidden="true">
@@ -279,7 +306,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 								strokeWidth={1.5}
 								aria-hidden="true"
 							/>
-							<span className="truncate font-mono text-xs text-foreground">{url}</span>
+							<span className="truncate font-mono text-foreground text-xs">{url}</span>
 						</div>
 					</div>
 
@@ -314,7 +341,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 					{/* Actions */}
 					<div className="flex shrink-0 items-center gap-1">
-						{manualWidth != null && !isFullscreen && (
+						{manualWidth !== null && !isFullscreen && (
 							<button
 								type="button"
 								onClick={resetWidth}
@@ -348,7 +375,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label={`Visit ${url} (opens in a new tab)`}
-							className="flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+							className="flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 font-medium text-primary-foreground text-xs shadow-sm transition-colors hover:bg-primary/90"
 						>
 							<span className="hidden sm:inline">Visit</span>
 							<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
@@ -373,8 +400,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 								aria-hidden="true"
 							/>
 							<div className="space-y-1">
-								<p className="text-sm font-medium text-foreground">Preview unavailable</p>
-								<p className="max-w-xs text-xs text-muted-foreground">
+								<p className="font-medium text-foreground text-sm">Preview unavailable</p>
+								<p className="max-w-xs text-muted-foreground text-xs">
 									We couldn’t capture this site right now.
 								</p>
 							</div>
@@ -382,7 +409,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 								<button
 									type="button"
 									onClick={retry}
-									className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+									className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 font-medium text-foreground text-xs transition-colors hover:bg-muted"
 								>
 									<RefreshCw className="size-3" strokeWidth={1.5} aria-hidden="true" />
 									Retry
@@ -391,7 +418,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 									href={href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+									className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs transition-colors hover:bg-primary/90"
 								>
 									Open site
 									<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
@@ -414,7 +441,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 										<div className="absolute inset-0 rounded-full border-2 border-border" />
 										<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
 									</div>
-									<p className="relative text-xs font-medium text-muted-foreground">
+									<p className="relative font-medium text-muted-foreground text-xs">
 										Loading preview…
 									</p>
 								</div>
@@ -438,7 +465,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				</div>
 
 				{/* Bottom status bar */}
-				<div className="flex h-7 shrink-0 items-center justify-between border-t border-border bg-secondary px-3">
+				<div className="flex h-7 shrink-0 items-center justify-between border-border border-t bg-secondary px-3">
 					<div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
 						<span className="text-foreground">
 							{capture.width}×{capture.height}
@@ -454,7 +481,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							exit
 						</div>
 					) : (
-						<span className="font-mono text-[10px] capitalize text-muted-foreground">
+						<span className="font-mono text-[10px] text-muted-foreground capitalize">
 							{capture.label}
 						</span>
 					)}
@@ -510,14 +537,19 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		<div ref={wrapperRef} className="w-full">
 			{isFullscreen && mounted && typeof document !== "undefined"
 				? createPortal(
+						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog — role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
 						<div
 							ref={dialogRef}
 							className="fixed inset-0 z-[9998] flex flex-col bg-black/95 p-6 backdrop-blur-sm"
 							onClick={(e) => {
-								if (e.target === e.currentTarget) setIsFullscreen(false);
+								if (e.target === e.currentTarget) {
+									setIsFullscreen(false);
+								}
 							}}
 							onKeyDown={(e) => {
-								if (e.key === "Escape") setIsFullscreen(false);
+								if (e.key === "Escape") {
+									setIsFullscreen(false);
+								}
 							}}
 							role="dialog"
 							aria-modal="true"

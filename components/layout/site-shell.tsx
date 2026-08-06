@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 
 interface SiteShellProps {
 	children: ReactNode;
-	width?: "narrow" | "wide";
 	className?: string;
+	width?: "narrow" | "wide";
 }
 
 /** Content width + gutter wrapper — header/footer/background come from SiteLayout */

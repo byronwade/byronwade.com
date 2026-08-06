@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { pillLinkClass } from "@/components/ui/pill";
 
 interface SocialShareProps {
-	url: string;
-	title: string;
-	description?: string;
 	className?: string;
+	description?: string;
+	title: string;
+	url: string;
 }
 
 /**
@@ -28,7 +28,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	}, []);
 
 	const shareLinks = {
-		twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}${encodedDescription ? `&via=byronwade` : ""}`,
+		twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}${encodedDescription ? "&via=byronwade" : ""}`,
 		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
 		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 	};

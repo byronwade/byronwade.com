@@ -49,25 +49,31 @@ truth — fix the doc in the same change.
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
 | UI | `@base-ui/react` primitives wrapped in `components/ui/` (18 of them) |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
-| Lint/format | Biome (`biome.json`) — tabs, width 100, double quotes, semicolons |
+| Lint/format | Ultracite over Biome (`biome.jsonc`) — tabs, width 100, double quotes, semicolons |
 | Dead code | knip (`knip.json`), clean — a new unused export fails CI |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
 | Tests | **None.** There is no test runner or test script in this repository |
 
-`.eslintrc.json` / `.eslintrc.cjs` exist only to neutralize Codacy's ESLint 8
-engine. Do not treat them as this project's linter; Biome is.
+`.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
+this project's linter — Ultracite is, and it drives Biome underneath.
+
+Ultracite 7 defaults to the oxlint/oxfmt toolchain. This repository pins it to
+`--linter biome` so there is exactly one formatter and one linter, and
+`biome.jsonc` extends `ultracite/biome/{core,react,next}`. Everything written
+below those `extends` is a deliberate repository-level override with a comment
+explaining why; read those comments before re-enabling a rule.
 
 ## Commands
 
 ```bash
 npm run dev          # dev server on :3000
-npm run lint         # biome check .                    (CI gate)
+npm run lint         # ultracite check                  (CI gate)
 npm run type-check   # next typegen && tsc --noEmit     (CI gate)
 npm run knip         # unused files, exports, deps      (CI gate)
 npm run build        # production build                 (CI gate)
-npm run check        # lint --write, then type-check and knip
-npm run lint:fix     # biome check --write .
+npm run check        # lint --fix, then type-check and knip
+npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
 ```
@@ -331,9 +337,10 @@ When an objective failure can recur, add the smallest reliable sensor, in
 increasing order of cost: a type invariant → a Biome rule → a knip entry →
 `lighthouse-budget.json` → a CI step in `.github/workflows/ci.yml`.
 
-Sensors already in place: Biome (lint + format), `tsc --noEmit` under strict
-mode, knip at zero unused files/exports/types/dependencies, and a production
-build — all four gating every pull request.
+Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
+`tsc --noEmit` under `strict` **and** `noUncheckedIndexedAccess`, knip at zero
+unused files/exports/types/dependencies, and a production build — all four
+gating every pull request.
 
 Sensors must be deterministic, actionable, low-noise, and fast enough for their
 stage; their messages must explain how to fix the violation. For existing debt,
@@ -349,7 +356,7 @@ whenever the codebase feels like it has accumulated drift.
 
 | Tool | Command | What it catches |
 |---|---|---|
-| Biome | `npm run lint` | Lint + formatting. **CI gate.** |
+| Ultracite / Biome | `npm run lint` | Lint + formatting, Ultracite's rule preset. `npm run lint:fix` applies safe fixes. **CI gate.** |
 | knip | `npm run knip` | Unused files, exports, types, dependencies. **CI gate.** |
 | react-doctor | `npm run audit:react` | React codebase health — anti-patterns, dead code, dependency supply chain. Scores the repo. |
 | React Scan | automatic in `npm run dev` | Unnecessary re-renders, highlighted live in the browser. |
@@ -385,6 +392,24 @@ Known false positives in this repository, confirmed by reading the code:
   `docs/SPAM_PROTECTION.md`.
 - `unused-dependency: sharp` — Next.js loads it for image optimization without
   an import.
+
+Two Ultracite **assists** are disabled after they damaged this codebase, and
+they should stay that way unless upstream fixes them: `useSortedAttributes`
+emitted duplicate JSX attributes (`render`, `components`) and can reorder
+attributes across a `{...spread}`, which changes precedence; `useSortedKeys`
+sorts object literals alphabetically, which silently reorders any UI that
+iterates an object's keys. Class sorting stays on.
+
+Never run `ultracite fix --unsafe` without reading the resulting diff and
+running `type-check` plus a cold `build` — its unsafe pass left this repository
+uncompilable twice.
+
+Known debt, deliberately not hidden: five components exceed Ultracite's
+cognitive-complexity threshold (`noExcessiveCognitiveComplexity`, currently off)
+— `dock-toolbar`, `app-launcher`, `full-width-project-preview`,
+`design-case-study`, and the Figma detail page. Splitting them is its own
+refactor. Enabling `ultracite/biome/type-aware` would also let
+`noUnnecessaryConditions` be turned back on.
 
 React Scan overlaps with `reactCompiler: true`, which already memoizes
 automatically. A re-render it flags is worth chasing only when it is measurable;

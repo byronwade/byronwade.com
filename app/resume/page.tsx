@@ -165,14 +165,14 @@ export default function ResumePage() {
 									/>
 								</div>
 								<div className="flex flex-col gap-1 pt-1">
-									<h1 className="font-signature text-2xl font-medium text-foreground sm:text-3xl">
+									<h1 className="font-medium font-signature text-2xl text-foreground sm:text-3xl">
 										Byron Wade
 									</h1>
 									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
 								</div>
 							</div>
 
-							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-muted-foreground text-sm">
 								<button
 									type="button"
 									onClick={copyEmail}
@@ -205,7 +205,7 @@ export default function ResumePage() {
 					{/* Summary */}
 					<section className="reveal reveal-delay-1 w-full">
 						<div className="flex flex-col gap-4">
-							<p className="text-base leading-relaxed text-foreground sm:text-lg">
+							<p className="text-base text-foreground leading-relaxed sm:text-lg">
 								Results-driven professional with 8+ years of experience scaling businesses from
 								startup to multi-million dollar operations. Currently building{" "}
 								<a
@@ -218,7 +218,7 @@ export default function ResumePage() {
 								</a>
 								, a field management system for service professionals.
 							</p>
-							<p className="leading-relaxed text-muted-foreground">
+							<p className="text-muted-foreground leading-relaxed">
 								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
 								full-time roles in software development, technical leadership, or positions where I
 								can leverage both my development skills and hands-on business experience.
@@ -253,7 +253,7 @@ export default function ResumePage() {
 
 					{/* Experience */}
 					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						<h2 className="mb-8 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
 							Experience
 						</h2>
 						<div className="flex flex-col gap-10">
@@ -268,11 +268,11 @@ export default function ResumePage() {
 												</StatusPill>
 											)}
 										</h3>
-										<span className="shrink-0 text-sm tabular-nums text-muted-foreground">
+										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
 											{job.period}
 										</span>
 									</div>
-									<p className="text-sm text-muted-foreground">
+									<p className="text-muted-foreground text-sm">
 										{job.companyUrl ? (
 											<a
 												href={job.companyUrl}
@@ -289,9 +289,9 @@ export default function ResumePage() {
 										{" · "}
 										{job.location}
 									</p>
-									<p className="mt-2 leading-relaxed text-muted-foreground">
+									<p className="mt-2 text-muted-foreground leading-relaxed">
 										{(() => {
-											if (!job.highlight || !job.description.includes(job.highlight)) {
+											if (!(job.highlight && job.description.includes(job.highlight))) {
 												return job.description;
 											}
 											const idx = job.description.indexOf(job.highlight);
@@ -311,7 +311,7 @@ export default function ResumePage() {
 
 					{/* Skills */}
 					<section className="reveal reveal-delay-3 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						<h2 className="mb-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
 							Skills
 						</h2>
 						<div className="flex flex-wrap gap-2">
@@ -325,7 +325,7 @@ export default function ResumePage() {
 
 					{/* Certifications */}
 					<section className="reveal reveal-delay-4 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						<h2 className="mb-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
 							Licenses & Certifications
 						</h2>
 						<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
@@ -345,13 +345,13 @@ export default function ResumePage() {
 						</div>
 					</section>
 
-					<section className="reveal reveal-delay-5 w-full border-t border-border pt-10">
+					<section className="reveal reveal-delay-5 w-full border-border border-t pt-10">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex flex-col gap-1">
-								<h2 className="font-heading text-lg font-semibold tracking-tight">
+								<h2 className="font-heading font-semibold text-lg tracking-tight">
 									Interested in working together?
 								</h2>
-								<p className="text-sm text-muted-foreground">
+								<p className="text-muted-foreground text-sm">
 									Tell me what you’re building — product roles, service software, or an intro.
 								</p>
 							</div>

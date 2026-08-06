@@ -20,7 +20,7 @@ function NavDockItem({ item, pathname }: { item: NavItem; pathname: string }) {
 						aria-label={item.label}
 						aria-current={active ? "page" : undefined}
 						className={cn(
-							"relative flex h-8 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30 sm:px-3",
+							"relative flex h-8 items-center gap-1.5 rounded-full px-2.5 font-medium text-[13px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30 sm:px-3",
 							active ? ITEM_ACTIVE : ITEM_IDLE
 						)}
 					/>

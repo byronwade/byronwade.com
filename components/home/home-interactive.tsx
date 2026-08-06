@@ -37,7 +37,9 @@ export function HomeInteractive() {
 
 	const handleEmailClick = (buttonId: string) => {
 		setContactOpen(true);
-		if (buttonId !== "panel") copyEmail(buttonId);
+		if (buttonId !== "panel") {
+			copyEmail(buttonId);
+		}
 	};
 
 	return (
@@ -64,10 +66,10 @@ export function HomeInteractive() {
 				</div>
 
 				<div className="flex flex-col gap-3">
-					<h1 className="font-heading text-4xl font-semibold tracking-tight sm:text-5xl">
+					<h1 className="font-heading font-semibold text-4xl tracking-tight sm:text-5xl">
 						Byron Wade
 					</h1>
-					<p className="max-w-xl text-lg leading-snug text-foreground sm:text-xl">
+					<p className="max-w-xl text-foreground text-lg leading-snug sm:text-xl">
 						I build software for service businesses — from the field up.
 					</p>
 					<p className="text-base text-muted-foreground sm:text-lg">
@@ -79,7 +81,7 @@ export function HomeInteractive() {
 				</div>
 			</div>
 
-			<div className="flex flex-col gap-5 text-base leading-relaxed text-muted-foreground">
+			<div className="flex flex-col gap-5 text-base text-muted-foreground leading-relaxed">
 				<p className="reveal reveal-delay-1">
 					I grew a plumbing company to <span className="font-semibold text-brand">$2.4M</span> in
 					year-two revenue, then started building the tools I wished we had — dispatch, reputation,

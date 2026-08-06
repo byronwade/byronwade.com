@@ -19,7 +19,7 @@ const socialLinks = [
 
 export default function Footer() {
 	return (
-		<footer className="mt-28 border-t border-border">
+		<footer className="mt-28 border-border border-t">
 			<div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
 				<div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
 					<div className="max-w-sm space-y-4">
@@ -29,11 +29,11 @@ export default function Footer() {
 						>
 							Byron Wade
 						</Link>
-						<p className="text-sm leading-relaxed text-muted-foreground">
+						<p className="text-muted-foreground text-sm leading-relaxed">
 							Full-stack developer building fast, thoughtful web applications with Next.js, React,
 							and TypeScript.
 						</p>
-						<div className="flex items-center gap-2 text-sm text-muted-foreground">
+						<div className="flex items-center gap-2 text-muted-foreground text-sm">
 							<Mail className="size-4 text-brand" aria-hidden="true" />
 							<ObfuscatedEmail
 								className="text-muted-foreground hover:text-foreground"
@@ -49,7 +49,7 @@ export default function Footer() {
 								<Link
 									key={link.href}
 									href={link.href}
-									className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+									className="text-muted-foreground text-sm transition-colors hover:text-foreground"
 								>
 									{link.name}
 								</Link>
@@ -73,7 +73,7 @@ export default function Footer() {
 					</div>
 				</div>
 
-				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
+				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-border border-t pt-8 text-muted-foreground text-sm sm:flex-row">
 					<p className="flex items-center gap-2">
 						<span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />©{" "}
 						{new Date().getFullYear()} Byron Wade. All rights reserved.

@@ -1,24 +1,40 @@
 import { NextResponse } from "next/server";
 
 interface ContributionDay {
-	date: string;
 	count: number;
+	date: string;
 	level: 0 | 1 | 2 | 3 | 4;
 }
 
 interface LanguageStats {
+	color: string;
 	name: string;
 	percentage: number;
-	color: string;
+}
+
+/** The `contributionsCollection` slice of the GitHub GraphQL response. */
+interface ContributionsCollection {
+	contributionCalendar?: {
+		totalContributions?: number;
+		weeks?: Array<{
+			contributionDays: Array<{
+				date: string;
+				contributionCount: number;
+				contributionLevel: string;
+			}>;
+		}>;
+	};
+	totalCommitContributions?: number;
+	totalPullRequestContributions?: number;
 }
 
 interface GitHubStats {
-	totalContributions: number;
+	contributionDays: ContributionDay[];
 	currentStreak: number;
 	longestStreak: number;
-	contributionDays: ContributionDay[];
 	topLanguages: LanguageStats[];
 	totalCommits: number;
+	totalContributions: number;
 	totalPRs: number;
 	totalRepos: number;
 }
@@ -63,7 +79,7 @@ export async function GET() {
 		}
 
 		// Try GraphQL API first for contribution data (requires token)
-		let contributionData = null;
+		let contributionData: ContributionsCollection | null = null;
 		if (githubToken) {
 			try {
 				const graphqlResponse = await fetch("https://api.github.com/graphql", {
@@ -121,7 +137,7 @@ export async function GET() {
 			}),
 		]);
 
-		if (!userResponse.ok || !reposResponse.ok) {
+		if (!(userResponse.ok && reposResponse.ok)) {
 			throw new Error("Failed to fetch GitHub data");
 		}
 
@@ -190,7 +206,7 @@ export async function GET() {
 				const date = new Date(now);
 				date.setDate(date.getDate() - i);
 				contributionDays.push({
-					date: date.toISOString().split("T")[0],
+					date: date.toISOString().slice(0, 10),
 					count: 0,
 					level: 0,
 				});
@@ -203,9 +219,10 @@ export async function GET() {
 		let tempStreak = 0;
 
 		for (let i = contributionDays.length - 1; i >= 0; i--) {
-			if (contributionDays[i].count > 0) {
+			const day = contributionDays[i];
+			if (day && day.count > 0) {
 				tempStreak++;
-				if (i === contributionDays.length - 1 || contributionDays[i + 1]?.count > 0) {
+				if (i === contributionDays.length - 1 || (contributionDays[i + 1]?.count ?? 0) > 0) {
 					currentStreak = tempStreak;
 				}
 			} else {

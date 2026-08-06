@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ErrorBoundaryState {
-	hasError: boolean;
 	error?: Error;
 	errorInfo?: React.ErrorInfo;
+	hasError: boolean;
 }
 
 interface ErrorBoundaryProps {
@@ -93,7 +93,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 			);
 
 			return (
-				<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
+				<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background to-secondary/20 p-4">
 					<Card className="w-full max-w-md">
 						<CardHeader className="text-center">
 							<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
@@ -111,7 +111,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 						<CardContent className="space-y-4">
 							{process.env.NODE_ENV === "development" && error && (
 								<div className="rounded-md bg-muted p-3">
-									<p className="text-sm font-mono text-muted-foreground">{error.message}</p>
+									<p className="font-mono text-muted-foreground text-sm">{error.message}</p>
 								</div>
 							)}
 
@@ -127,7 +127,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 							</div>
 
 							{isWebpackError && (
-								<p className="text-xs text-muted-foreground text-center">
+								<p className="text-center text-muted-foreground text-xs">
 									If this error persists, try clearing your browser cache or refreshing the page.
 								</p>
 							)}

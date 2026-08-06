@@ -17,9 +17,9 @@ import {
 } from "@/lib/contact-form";
 
 interface InlineContactProps {
-	open: boolean;
-	onClose: () => void;
 	email?: string;
+	onClose: () => void;
+	open: boolean;
 }
 
 export function InlineContact({
@@ -38,7 +38,9 @@ export function InlineContact({
 	const formId = useId();
 	const nameFieldId = `${formId}-name`;
 
-	if (!open) return null;
+	if (!open) {
+		return null;
+	}
 
 	const copyEmail = async () => {
 		try {
@@ -52,7 +54,9 @@ export function InlineContact({
 
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
-		if (isSubmitting) return;
+		if (isSubmitting) {
+			return;
+		}
 		setIsSubmitting(true);
 
 		const payload = buildContactMessage(formData.topic, formData.message);
@@ -95,10 +99,10 @@ export function InlineContact({
 			className="reveal w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
-			<div className="flex items-center justify-between border-b border-border px-4 py-3">
+			<div className="flex items-center justify-between border-border border-b px-4 py-3">
 				<div className="flex flex-col">
-					<span className="text-sm font-medium">Start a conversation</span>
-					<span className="text-xs text-muted-foreground">
+					<span className="font-medium text-sm">Start a conversation</span>
+					<span className="text-muted-foreground text-xs">
 						Product builds, service software, or an intro — brief is fine.
 					</span>
 				</div>
@@ -189,7 +193,7 @@ export function InlineContact({
 					<div className="flex flex-wrap items-center gap-2">
 						<a
 							href={`mailto:${email}`}
-							className="inline-flex items-center gap-2 text-sm font-medium text-brand hover:underline"
+							className="inline-flex items-center gap-2 font-medium text-brand text-sm hover:underline"
 						>
 							<Mail className="h-4 w-4" />
 							{email}

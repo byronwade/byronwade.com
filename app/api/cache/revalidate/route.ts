@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET endpoint to show cache status
-export async function GET() {
+export function GET() {
 	return NextResponse.json({
 		availableTags: Object.values(CACHE_TAGS),
 		usage: {

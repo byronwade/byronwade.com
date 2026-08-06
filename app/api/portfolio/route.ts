@@ -34,7 +34,9 @@ export async function GET() {
 		const figmaCount = Array.isArray(figmaFiles) ? figmaFiles.length : 0;
 
 		const recentRepos = safeRepos.filter((repo: { updated_at?: string }) => {
-			if (!repo.updated_at) return false;
+			if (!repo.updated_at) {
+				return false;
+			}
 			const updatedDate = new Date(repo.updated_at);
 			const threeMonthsAgo = new Date();
 			threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);

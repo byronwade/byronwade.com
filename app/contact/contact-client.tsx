@@ -38,7 +38,9 @@ export default function ContactClient() {
 
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		if (isSubmitting) return;
+		if (isSubmitting) {
+			return;
+		}
 		setIsSubmitting(true);
 
 		try {
@@ -78,17 +80,17 @@ export default function ContactClient() {
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<header className="reveal flex w-full flex-col gap-3">
-					<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+					<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 						Get in touch
 					</h1>
-					<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+					<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
 						Available for product engineering, software for service businesses, and design systems
 						that have to ship. Have a project in mind, a question, or just want to say hello? Send a
 						note below — I usually reply within a day or two.
 					</p>
 				</header>
 
-				<div className="grid reveal reveal-delay-1 gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
+				<div className="reveal reveal-delay-1 grid gap-10 md:grid-cols-[minmax(0,1fr)_18rem]">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
 						<div className="grid gap-5 sm:grid-cols-2">
 							<div className="flex flex-col gap-2">
@@ -168,26 +170,26 @@ export default function ContactClient() {
 
 					<aside className="flex h-fit flex-col gap-6 rounded-2xl border border-border bg-card p-6 shadow-card">
 						<div className="flex flex-col gap-1.5">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+							<span className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
 								Email
 							</span>
 							<ObfuscatedEmail
-								className="text-sm text-foreground hover:text-brand"
+								className="text-foreground text-sm hover:text-brand"
 								showIcon={false}
 								variant="link"
 							/>
 						</div>
 						<div className="flex flex-col gap-1.5">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+							<span className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
 								Location
 							</span>
-							<span className="inline-flex items-center gap-2 text-sm text-foreground">
+							<span className="inline-flex items-center gap-2 text-foreground text-sm">
 								<MapPin className="size-4 text-brand" />
 								Jasper, GA
 							</span>
 						</div>
 						<div className="flex flex-col gap-2">
-							<span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+							<span className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
 								Elsewhere
 							</span>
 							<div className="flex gap-1.5">
@@ -198,14 +200,14 @@ export default function ContactClient() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={social.name}
-										className="inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring"
+										className="focus-ring inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground"
 									>
 										<social.icon className="size-[1.05rem]" />
 									</a>
 								))}
 							</div>
 						</div>
-						<div className="flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
+						<div className="flex items-center gap-2 border-border border-t pt-4 text-muted-foreground text-xs">
 							<Mail className="size-3.5" />
 							Usually replies within a day or two.
 						</div>

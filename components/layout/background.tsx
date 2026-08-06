@@ -2,7 +2,7 @@ export default function Background() {
 	return (
 		<>
 			<div
-				className="bg-grid pointer-events-none fixed inset-0 opacity-[0.35]"
+				className="pointer-events-none fixed inset-0 bg-grid opacity-[0.35]"
 				aria-hidden="true"
 			/>
 			<div

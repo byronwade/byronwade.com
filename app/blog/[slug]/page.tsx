@@ -116,15 +116,15 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			<div className="reveal w-full">
 				<div className="flex w-full flex-col items-start gap-3">
 					<div className="flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+						<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 							{post.title}
 						</h1>
 						{post.excerpt && (
-							<p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+							<p className="max-w-2xl text-base text-muted-foreground leading-relaxed sm:text-lg">
 								{post.excerpt}
 							</p>
 						)}
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-muted-foreground">
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-xs">
 							{post.date && (
 								<time dateTime={post.date}>{format(new Date(post.date), "MMMM d, yyyy")}</time>
 							)}
@@ -148,7 +148,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			<RelatedPosts currentSlug={post.slug} limit={3} />
 
 			{/* Social Share and Back to blog at bottom */}
-			<div className="reveal reveal-delay-2 w-full flex flex-col gap-4 mt-8">
+			<div className="reveal reveal-delay-2 mt-8 flex w-full flex-col gap-4">
 				<SocialShare
 					url={url}
 					title={post.title}
@@ -160,7 +160,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 					aria-label="Go to blog"
 					href="/blog"
 				>
-					<span className="text-sm font-medium text-muted-foreground transition-colors hover:text-brand">
+					<span className="font-medium text-muted-foreground text-sm transition-colors hover:text-brand">
 						← Back to blog
 					</span>
 				</Link>

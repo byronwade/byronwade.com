@@ -20,15 +20,6 @@ const decode = (encoded: string): string => {
 	}
 };
 
-// Additional obfuscation: split and reverse parts
-const _obfuscateEmail = (email: string): { user: string; domain: string } => {
-	const [user, domain] = email.split("@");
-	return {
-		user: user.split("").reverse().join(""),
-		domain: domain.split("").reverse().join(""),
-	};
-};
-
 // Component that only renders after client-side hydration
 const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
 	const [mounted, setMounted] = useState(false);
@@ -75,7 +66,7 @@ export const ObfuscatedEmail = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Mail className="inline w-4 h-4 mr-2" />}
+					{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						email
 					) : (
@@ -91,11 +82,11 @@ export const ObfuscatedEmail = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Mail className="inline w-4 h-4 mr-2" />}
+				{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
-						className="hover:text-primary transition-colors"
+						className="transition-colors hover:text-primary"
 						// Additional protection: use JavaScript to build the href
 						onClick={(e) => {
 							e.preventDefault();
@@ -107,7 +98,7 @@ export const ObfuscatedEmail = ({
 				) : (
 					<button
 						onClick={handleReveal}
-						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						className="text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
 						type="button"
 					>
 						Click to reveal email
@@ -120,9 +111,9 @@ export const ObfuscatedEmail = ({
 
 interface ObfuscatedPhoneProps {
 	className?: string;
+	displayFormat?: boolean;
 	showIcon?: boolean;
 	variant?: "link" | "text";
-	displayFormat?: boolean;
 }
 
 /** @public Documented in docs/SPAM_PROTECTION.md. */
@@ -153,7 +144,7 @@ export const ObfuscatedPhone = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Phone className="inline w-4 h-4 mr-2" />}
+					{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						displayPhone
 					) : (
@@ -169,11 +160,11 @@ export const ObfuscatedPhone = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Phone className="inline w-4 h-4 mr-2" />}
+				{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}
-						className="hover:text-primary transition-colors"
+						className="transition-colors hover:text-primary"
 						onClick={(e) => {
 							e.preventDefault();
 							window.location.href = `tel:${phone}`;
@@ -184,7 +175,7 @@ export const ObfuscatedPhone = ({
 				) : (
 					<button
 						onClick={handleReveal}
-						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						className="text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
 						type="button"
 					>
 						Click to reveal phone

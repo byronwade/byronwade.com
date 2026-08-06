@@ -28,7 +28,9 @@ type AnalyticsEvent =
  * @param event - The event to track with name and properties
  */
 function trackEvent(event: AnalyticsEvent): void {
-	if (typeof window === "undefined") return;
+	if (typeof window === "undefined") {
+		return;
+	}
 
 	try {
 		track(event.name, event.properties);

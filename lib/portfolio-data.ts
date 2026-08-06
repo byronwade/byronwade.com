@@ -58,7 +58,7 @@ export const getFigmaFiles = unstable_cache(
 		const accessToken = process.env.FIGMA_ACCESS_TOKEN;
 		const teamId = process.env.FIGMA_TEAM_ID;
 
-		if (!accessToken || !teamId) {
+		if (!(accessToken && teamId)) {
 			console.warn("Figma credentials not found - skipping Figma files");
 			return [];
 		}
@@ -106,11 +106,11 @@ export const getFigmaFiles = unstable_cache(
 
 			const projectResults = await Promise.allSettled(projectPromises);
 
-			projectResults.forEach((result) => {
+			for (const result of projectResults) {
 				if (result.status === "fulfilled") {
 					allFiles.push(...result.value);
 				}
-			});
+			}
 
 			return allFiles
 				.sort((a, b) => new Date(b.last_modified).getTime() - new Date(a.last_modified).getTime())
@@ -185,23 +185,23 @@ export const getFigmaFile = (key: string) =>
 	);
 
 interface PortfolioProject {
-	id: number;
-	slug: string;
-	title: string;
-	shortDescription: string;
-	longDescription: string;
-	image: string;
-	liveUrl?: string;
-	githubUrl?: string;
 	caseStudyUrl?: string;
-	tags: string[];
-	status: string;
-	keyFeatures: string[];
-	techStack: { name: string }[];
 	gallery: string[];
-	problem: string;
-	solution: string;
+	githubUrl?: string;
+	id: number;
+	image: string;
+	keyFeatures: string[];
+	liveUrl?: string;
+	longDescription: string;
 	outcome: string;
+	problem: string;
+	shortDescription: string;
+	slug: string;
+	solution: string;
+	status: string;
+	tags: string[];
+	techStack: { name: string }[];
+	title: string;
 }
 
 export const projects: PortfolioProject[] = [
@@ -411,7 +411,7 @@ export const getGitHubRepositories = unstable_cache(
 
 			// Sort repositories by priority and activity
 			return repos
-				.filter((repo: GitHubRepo) => !repo.fork && !repo.archived)
+				.filter((repo: GitHubRepo) => !(repo.fork || repo.archived))
 				.sort((a: GitHubRepo, b: GitHubRepo) => {
 					const aPriority = PRIORITY_PROJECTS.indexOf(a.name);
 					const bPriority = PRIORITY_PROJECTS.indexOf(b.name);
@@ -419,8 +419,12 @@ export const getGitHubRepositories = unstable_cache(
 					if (aPriority !== -1 && bPriority !== -1) {
 						return aPriority - bPriority;
 					}
-					if (aPriority !== -1) return -1;
-					if (bPriority !== -1) return 1;
+					if (aPriority !== -1) {
+						return -1;
+					}
+					if (bPriority !== -1) {
+						return 1;
+					}
 
 					if (a.stargazers_count !== b.stargazers_count) {
 						return b.stargazers_count - a.stargazers_count;

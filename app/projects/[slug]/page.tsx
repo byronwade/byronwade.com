@@ -69,12 +69,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 		<Suspense
 			fallback={
 				<div className="relative min-h-screen w-full bg-[var(--background)]">
-					<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
-					<div className="relative flex justify-center py-12 px-4 sm:py-16 md:py-20 safe-top safe-bottom">
-						<div className="flex flex-col gap-8 sm:gap-12 md:gap-16 items-center w-full max-w-2xl">
-							<div className="animate-pulse w-full">
-								<div className="h-8 bg-[var(--muted)] rounded w-3/4 mb-4" />
-								<div className="h-4 bg-[var(--muted)] rounded w-1/2" />
+					<div className="pointer-events-none fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10" />
+					<div className="safe-top safe-bottom relative flex justify-center px-4 py-12 sm:py-16 md:py-20">
+						<div className="flex w-full max-w-2xl flex-col items-center gap-8 sm:gap-12 md:gap-16">
+							<div className="w-full animate-pulse">
+								<div className="mb-4 h-8 w-3/4 rounded bg-[var(--muted)]" />
+								<div className="h-4 w-1/2 rounded bg-[var(--muted)]" />
 							</div>
 						</div>
 					</div>

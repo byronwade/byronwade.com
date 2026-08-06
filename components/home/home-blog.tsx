@@ -10,7 +10,7 @@ async function BlogList() {
 	const recentPosts = posts.slice(0, 4);
 
 	if (recentPosts.length === 0) {
-		return <p className="text-sm text-muted-foreground">No blog posts yet. Check back soon.</p>;
+		return <p className="text-muted-foreground text-sm">No blog posts yet. Check back soon.</p>;
 	}
 
 	return (
@@ -25,7 +25,7 @@ async function BlogList() {
 						<span className="font-medium text-foreground transition-colors group-hover:text-brand">
 							{post.title}
 						</span>
-						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+						<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
 							<Badge variant="muted">
 								<Clock />
 								{post.readingTime} min
@@ -38,7 +38,7 @@ async function BlogList() {
 						</div>
 					</div>
 					{post.excerpt && (
-						<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+						<p className="line-clamp-2 max-w-2xl text-muted-foreground text-sm leading-relaxed">
 							{post.excerpt}
 						</p>
 					)}
@@ -54,14 +54,14 @@ export function HomeBlog() {
 		<section className="reveal reveal-delay-7 flex w-full flex-col gap-5">
 			<div className="flex items-baseline justify-between">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">Writing</h2>
-					<p className="text-sm text-muted-foreground">
+					<h2 className="font-heading font-semibold text-xl tracking-tight sm:text-2xl">Writing</h2>
+					<p className="text-muted-foreground text-sm">
 						Notes from building products and running a service business.
 					</p>
 				</div>
 				<Link
 					href="/blog"
-					className="text-sm text-muted-foreground transition-colors hover:text-brand"
+					className="text-muted-foreground text-sm transition-colors hover:text-brand"
 				>
 					All posts →
 				</Link>

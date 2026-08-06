@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
-const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
 /** Room reserved around the centered nav dock so the breadcrumb never crowds it. */
 const NAV_RESERVE = 420;
@@ -37,7 +37,9 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 	useIsoLayoutEffect(() => {
 		const root = rootRef.current;
 		const twin = twinRef.current;
-		if (!root || !twin) return;
+		if (!(root && twin)) {
+			return;
+		}
 		const compute = () => {
 			const W = window.innerWidth;
 			const left = root.getBoundingClientRect().left;
@@ -55,11 +57,18 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 		};
 	}, [trailKey, crumbs.length]);
 
-	if (crumbs.length <= 1) return null;
+	if (crumbs.length <= 1) {
+		return null;
+	}
 
-	const last = crumbs[crumbs.length - 1];
-	const parent = crumbs[crumbs.length - 2];
+	const first = crumbs[0];
+	const last = crumbs.at(-1);
+	const parent = crumbs.at(-2);
 	const middle = crumbs.slice(1, -1);
+
+	if (!(first && last)) {
+		return null;
+	}
 
 	return (
 		<nav
@@ -74,7 +83,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 			>
 				{collapsed ? (
 					<>
-						<CrumbLink crumb={crumbs[0]} />
+						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
 							<Popover>

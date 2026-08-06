@@ -2,9 +2,9 @@ import { FileText, FolderGit2, Home, LayoutGrid, type LucideIcon, PenLine } from
 
 /** Primary destinations surfaced in the floating nav dock. */
 export interface NavItem {
-	label: string;
 	href: string;
 	icon: LucideIcon;
+	label: string;
 	/** Custom active matcher; defaults to exact / prefix match on `href`. */
 	match?: (pathname: string) => boolean;
 }
@@ -18,6 +18,8 @@ export const navItems: NavItem[] = [
 ];
 
 export function isActive(item: NavItem, pathname: string): boolean {
-	if (item.match) return item.match(pathname);
+	if (item.match) {
+		return item.match(pathname);
+	}
 	return pathname === item.href || pathname.startsWith(`${item.href}/`);
 }

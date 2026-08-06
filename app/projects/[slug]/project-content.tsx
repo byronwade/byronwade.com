@@ -15,6 +15,11 @@ import {
 } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
+// Hoisted so each is compiled once rather than on every call.
+const WWW_PREFIX = /^www\./;
+const GITHUB_URL = /https?:\/\/github\.com\/[^\s)<>"']+/i;
+const TRAILING_PUNCTUATION = /[.,]+$/;
+
 interface ProjectContentProps {
 	project: Project;
 }
@@ -34,9 +39,11 @@ const typeBadgeVariant: Record<ProjectType, "success" | "secondary" | "outline">
 };
 
 function extractDomain(url?: string): string {
-	if (!url) return "";
+	if (!url) {
+		return "";
+	}
 	try {
-		return new URL(url).hostname.replace(/^www\./, "");
+		return new URL(url).hostname.replace(WWW_PREFIX, "");
 	} catch {
 		return url;
 	}
@@ -44,9 +51,11 @@ function extractDomain(url?: string): string {
 
 /** Find the first GitHub repository link in the body, if any. */
 function extractSourceUrl(content: string): string | null {
-	const match = content.match(/https?:\/\/github\.com\/[^\s)<>"']+/i);
-	if (!match) return null;
-	return match[0].replace(/[.,]+$/, "");
+	const match = content.match(GITHUB_URL);
+	if (!match) {
+		return null;
+	}
+	return match[0].replace(TRAILING_PUNCTUATION, "");
 }
 
 export function ProjectContent({ project }: ProjectContentProps) {
@@ -93,7 +102,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 				<div className="flex flex-col gap-10 sm:gap-12">
 					{/* Header */}
 					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-sm">
 							<Badge variant={typeBadgeVariant[projectType]}>{typeLabels[projectType]}</Badge>
 							{project.category && project.category !== typeLabels[projectType] && (
 								<>
@@ -113,12 +122,12 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							)}
 						</div>
 
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-4xl">
+						<h1 className="text-balance font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 							{project.title}
 						</h1>
 
 						{project.excerpt && (
-							<p className="text-lg leading-relaxed text-pretty text-muted-foreground">
+							<p className="text-pretty text-lg text-muted-foreground leading-relaxed">
 								{project.excerpt}
 							</p>
 						)}
@@ -127,29 +136,29 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							<dl className="mt-1 grid gap-3 sm:grid-cols-2">
 								{project.problem && (
 									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
-										<dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+										<dt className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
 											Problem
 										</dt>
-										<dd className="text-sm leading-relaxed text-foreground">{project.problem}</dd>
+										<dd className="text-foreground text-sm leading-relaxed">{project.problem}</dd>
 									</div>
 								)}
 								{project.outcome && (
 									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
-										<dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+										<dt className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
 											Outcome
 										</dt>
-										<dd className="text-sm leading-relaxed text-foreground">{project.outcome}</dd>
+										<dd className="text-foreground text-sm leading-relaxed">{project.outcome}</dd>
 									</div>
 								)}
 							</dl>
 						)}
 
 						{project.metrics && project.metrics.length > 0 && (
-							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 border-y border-border py-3 tabular-nums">
+							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 border-border border-y py-3 tabular-nums">
 								{project.metrics.map((metric) => (
 									<li key={`${project.slug}-${metric.label}`} className="flex flex-col gap-0.5">
-										<span className="text-base font-semibold text-foreground">{metric.value}</span>
-										<span className="text-xs text-muted-foreground">{metric.label}</span>
+										<span className="font-semibold text-base text-foreground">{metric.value}</span>
+										<span className="text-muted-foreground text-xs">{metric.label}</span>
 									</li>
 								))}
 							</ul>
@@ -197,7 +206,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							{hasContent ? (
 								<Markdown content={body} />
 							) : (
-								<p className="text-base leading-relaxed text-muted-foreground">
+								<p className="text-base text-muted-foreground leading-relaxed">
 									Details for this project are coming soon.
 								</p>
 							)}
@@ -213,9 +222,9 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					</div>
 
 					{/* Footer nav */}
-					<div className="reveal reveal-delay-3 flex w-full flex-col gap-4 border-t border-border pt-8 sm:flex-row sm:items-center sm:justify-between">
+					<div className="reveal reveal-delay-3 flex w-full flex-col gap-4 border-border border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
 						<Link
-							className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-brand"
+							className="inline-flex items-center gap-2 font-medium text-muted-foreground text-sm transition-colors hover:text-brand"
 							aria-label="Back to projects"
 							href="/projects"
 						>

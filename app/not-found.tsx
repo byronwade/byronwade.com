@@ -7,7 +7,7 @@ export default function NotFound() {
 		<SiteShell>
 			<div className="flex min-h-[60vh] flex-col items-center justify-center gap-8 py-12 text-center">
 				<div className="relative">
-					<h1 className="text-gradient select-none font-heading text-8xl font-semibold tracking-tight">
+					<h1 className="select-none font-heading font-semibold text-8xl text-gradient tracking-tight">
 						404
 					</h1>
 				</div>
@@ -19,8 +19,8 @@ export default function NotFound() {
 						<span className="h-px w-8 bg-gradient-to-l from-transparent to-border" />
 					</div>
 
-					<h2 className="text-lg font-medium text-foreground sm:text-xl">Page not found</h2>
-					<p className="mx-auto max-w-xs text-sm text-muted-foreground sm:text-base">
+					<h2 className="font-medium text-foreground text-lg sm:text-xl">Page not found</h2>
+					<p className="mx-auto max-w-xs text-muted-foreground text-sm sm:text-base">
 						The page you're looking for doesn't exist or has moved.
 					</p>
 

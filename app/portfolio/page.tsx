@@ -22,9 +22,11 @@ const languageColors: Record<string, string> = {
 	HTML: "bg-orange-500",
 };
 
+const WORD_SEPARATORS = /[-_]/;
+
 const titleize = (name: string) =>
 	name
-		.split(/[-_]/)
+		.split(WORD_SEPARATORS)
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ");
 
@@ -36,7 +38,9 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 		signal,
 		headers: { Accept: "application/json" },
 	});
-	if (!response.ok) throw new Error("Failed to fetch portfolio data");
+	if (!response.ok) {
+		throw new Error("Failed to fetch portfolio data");
+	}
 	const data = await response.json();
 	const filtered: GitHubRepo[] = (data.repos ?? []).filter(
 		(repo: GitHubRepo) => !repo.fork && repo.name !== "byronwade.com"
@@ -67,19 +71,26 @@ export default function PortfolioPage() {
 		const timeoutId = setTimeout(() => controller.abort(), 8000);
 		const isRefresh = reloadKey > 0;
 
-		if (isRefresh) setRefreshing(true);
-		else setLoading(true);
+		if (isRefresh) {
+			setRefreshing(true);
+		} else {
+			setLoading(true);
+		}
 		setError(false);
 
 		void (async () => {
 			try {
 				const result = await fetchPortfolioRepos(controller.signal);
-				if (controller.signal.aborted) return;
+				if (controller.signal.aborted) {
+					return;
+				}
 				setRepos(result.repos);
 				setDegraded(result.degraded && result.repos.length === 0);
 				setError(result.repos.length === 0 && result.degraded);
 			} catch (err) {
-				if (controller.signal.aborted) return;
+				if (controller.signal.aborted) {
+					return;
+				}
 				console.error("Error loading portfolio data:", err);
 				setError(true);
 			} finally {
@@ -106,10 +117,10 @@ export default function PortfolioPage() {
 				<header className="reveal flex w-full flex-col gap-3">
 					<div className="flex flex-wrap items-end justify-between gap-3">
 						<div className="flex flex-col gap-3">
-							<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+							<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 								Portfolio
 							</h1>
-							<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+							<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
 								Open-source work and experiments. Pulled live from{" "}
 								<a
 									href="https://github.com/byronwade"
@@ -197,7 +208,7 @@ export default function PortfolioPage() {
 					<>
 						{degraded && (
 							<p
-								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground"
+								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-muted-foreground text-sm"
 								role="status"
 							>
 								Showing a partial response — some GitHub data may be stale. Refresh to try again.
@@ -210,7 +221,7 @@ export default function PortfolioPage() {
 									href={repo.html_url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="group flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float focus-ring"
+									className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
 								>
 									<div className="flex items-start justify-between gap-3">
 										<div className="flex min-w-0 items-center gap-2">
@@ -218,7 +229,7 @@ export default function PortfolioPage() {
 												{titleize(repo.name)}
 											</h2>
 											{repo.archived && (
-												<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+												<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground">
 													Archived
 												</span>
 											)}
@@ -227,7 +238,7 @@ export default function PortfolioPage() {
 									</div>
 
 									{repo.description && (
-										<p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+										<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
 											{repo.description}
 										</p>
 									)}
@@ -245,7 +256,7 @@ export default function PortfolioPage() {
 										</div>
 									)}
 
-									<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-xs text-muted-foreground">
+									<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-muted-foreground text-xs">
 										{repo.language && (
 											<span className="inline-flex items-center gap-1.5">
 												<span
@@ -281,7 +292,7 @@ export default function PortfolioPage() {
 								>
 									Load more
 								</Button>
-								<p className="mt-3 text-sm text-muted-foreground">
+								<p className="mt-3 text-muted-foreground text-sm">
 									Showing {Math.min(visibleRepos, repos.length)} of {repos.length}
 								</p>
 							</div>

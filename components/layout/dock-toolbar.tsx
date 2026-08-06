@@ -10,6 +10,8 @@ import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";
+/** Hoisted so it is compiled once rather than on every keystroke. */
+const WHITESPACE = /\s+/;
 const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
@@ -26,7 +28,7 @@ const ITEM =
 	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30";
 const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-active-foreground";
 
-const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
 const EASE = "cubic-bezier(.22,1,.36,1)";
 const MORPH = `width 240ms ${EASE}, height 240ms ${EASE}, border-radius 240ms ${EASE}`;
@@ -42,21 +44,25 @@ const KIND_ICON: Record<SearchKind, LucideIcon> = { Page: Hash, Project: Box, Wr
 type Mode = "search" | "donate" | null;
 
 function score(entry: SearchEntry, q: string): boolean {
-	if (!q) return true;
+	if (!q) {
+		return true;
+	}
 	const hay = `${entry.label} ${entry.meta ?? ""} ${entry.keywords ?? ""}`.toLowerCase();
 	return q
 		.toLowerCase()
-		.split(/\s+/)
+		.split(WHITESPACE)
 		.filter(Boolean)
 		.every((tok) => hay.includes(tok));
 }
 
 function go(href: string, router: ReturnType<typeof useRouter>) {
 	const hash = href.indexOf("#");
-	if (hash === -1) return router.push(href);
+	if (hash === -1) {
+		return router.push(href);
+	}
 	const path = href.slice(0, hash) || "/";
 	const id = href.slice(hash + 1);
-	const here = typeof window !== "undefined" ? window.location.pathname : "";
+	const here = typeof window === "undefined" ? "" : window.location.pathname;
 	const el = here === path && typeof document !== "undefined" ? document.getElementById(id) : null;
 	if (el) {
 		el.scrollIntoView({ behavior: "smooth" });
@@ -120,9 +126,13 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
 		const morph = morphRef.current;
-		if (!compact || !morph) return;
+		if (!(compact && morph)) {
+			return;
+		}
 		const sync = () => {
-			if (morph.style.width) return;
+			if (morph.style.width) {
+				return;
+			}
 			setSlot({ w: morph.offsetWidth, h: morph.offsetHeight });
 		};
 		sync();
@@ -136,7 +146,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		const morph = morphRef.current;
 		const compact = compactRef.current;
 		const panel = panelRef.current;
-		if (!morph || !compact || !panel) return;
+		if (!(morph && compact && panel)) {
+			return;
+		}
 
 		const reduce =
 			typeof window !== "undefined" &&
@@ -175,7 +187,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 				morph.style.width = `${ew}px`;
 				morph.style.height = `${eh}px`;
 			}
-			if (mode === "search") inputRef.current?.focus({ preventScroll: true });
+			if (mode === "search") {
+				inputRef.current?.focus({ preventScroll: true });
+			}
 		} else if (collapsedRef.current && morph.style.width) {
 			const { w: cw, h: ch } = collapsedRef.current;
 			panel.style.transitionDelay = "0ms";
@@ -190,7 +204,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 			morph.style.width = `${cw}px`;
 			morph.style.height = `${ch}px`;
 			const onEnd = (ev: TransitionEvent) => {
-				if (ev.propertyName !== "height") return;
+				if (ev.propertyName !== "height") {
+					return;
+				}
 				release();
 				morph.removeEventListener("transitionend", onEnd);
 			};
@@ -203,9 +219,13 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	useIsoLayoutEffect(() => {
 		const morph = morphRef.current;
 		const panel = panelRef.current;
-		if (!morph || !panel || !open) return;
+		if (!(morph && panel && open)) {
+			return;
+		}
 		const ro = new ResizeObserver(() => {
-			if (!morph.style.width) return;
+			if (!morph.style.width) {
+				return;
+			}
 			morph.style.height = `${panel.offsetHeight}px`;
 			morph.style.width = `${panel.offsetWidth}px`;
 		});
@@ -214,10 +234,14 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	}, [open]);
 
 	React.useEffect(() => {
-		if (active > flat.length - 1) setActive(flat.length ? flat.length - 1 : 0);
+		if (active > flat.length - 1) {
+			setActive(flat.length ? flat.length - 1 : 0);
+		}
 	}, [flat.length, active]);
 	React.useEffect(() => {
-		if (mode !== "search") return;
+		if (mode !== "search") {
+			return;
+		}
 		listRef.current
 			?.querySelector<HTMLElement>(`[data-idx="${active}"]`)
 			?.scrollIntoView({ block: "nearest" });
@@ -242,7 +266,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 
 	/* — Esc + click-away close — */
 	React.useEffect(() => {
-		if (!open) return;
+		if (!open) {
+			return;
+		}
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
 				e.preventDefault();
@@ -251,7 +277,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		};
 		const onDown = (e: PointerEvent) => {
 			const t = e.target as Element | null;
-			if (!rootRef.current || rootRef.current.contains(t)) return;
+			if (!rootRef.current || rootRef.current.contains(t)) {
+				return;
+			}
 			close();
 		};
 		document.addEventListener("keydown", onKey);
@@ -272,7 +300,9 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		} else if (e.key === "Enter") {
 			e.preventDefault();
 			const hit = flat[active];
-			if (hit) run(hit.href);
+			if (hit) {
+				run(hit.href);
+			}
 		}
 	};
 
@@ -432,13 +462,13 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											<Heart className="size-4 fill-pink-500 text-pink-500" />
 										</span>
 										<div className="leading-tight">
-											<div className="text-[13px] font-semibold text-dock-active-foreground">
+											<div className="font-semibold text-[13px] text-dock-active-foreground">
 												Support my open source
 											</div>
 											<div className="text-[11px] text-dock-foreground">Pretty please 💖</div>
 										</div>
 									</div>
-									<p className="text-[13px] leading-relaxed text-dock-foreground">
+									<p className="text-[13px] text-dock-foreground leading-relaxed">
 										Donations keep my open-source projects free and maintained. And every month I
 										give <span className="font-semibold text-dock-active-foreground">20%</span> of
 										what I receive to a non-profit of my choice — so a little goes a long way.
@@ -447,7 +477,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										href={SPONSOR_URL}
 										target="_blank"
 										rel="noreferrer"
-										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-pink-500 text-[13px] font-semibold text-white transition-colors hover:bg-pink-500/90"
+										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-pink-500 font-semibold text-[13px] text-white transition-colors hover:bg-pink-500/90"
 									>
 										<Heart className="size-4 fill-white" />
 										Donate via GitHub Sponsors
@@ -474,14 +504,14 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											onKeyDown={onInputKey}
 											placeholder="Search projects, writing, pages…"
 											aria-label="Search"
-											className="h-6 flex-1 bg-transparent text-sm text-dock-active-foreground outline-none placeholder:text-dock-foreground/60"
+											className="h-6 flex-1 bg-transparent text-dock-active-foreground text-sm outline-none placeholder:text-dock-foreground/60"
 										/>
 										<kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground/70">
 											esc
 										</kbd>
 									</div>
 									<div className="h-px bg-white/5" aria-hidden="true" />
-									<div ref={listRef} className="max-h-80 overflow-y-auto p-1.5 scrollbar-thin">
+									<div ref={listRef} className="scrollbar-thin max-h-80 overflow-y-auto p-1.5">
 										{flat.length === 0 ? (
 											<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground/70">
 												No results for “{query}”.
@@ -489,7 +519,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										) : (
 											groups.map((g) => (
 												<div className="mb-1 last:mb-0" key={g.kind}>
-													<div className="px-2.5 pt-1.5 pb-1 text-[10px] font-semibold tracking-wider text-dock-foreground/50 uppercase">
+													<div className="px-2.5 pt-1.5 pb-1 font-semibold text-[10px] text-dock-foreground/50 uppercase tracking-wider">
 														{KIND_LABEL[g.kind]}
 													</div>
 													{g.items.map((e) => Row(e, cursor++))}
@@ -497,7 +527,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											))
 										)}
 									</div>
-									<div className="flex items-center gap-3 border-t border-white/5 bg-black/20 px-3.5 py-2 text-[11px] text-dock-foreground/70">
+									<div className="flex items-center gap-3 border-white/5 border-t bg-black/20 px-3.5 py-2 text-[11px] text-dock-foreground/70">
 										<span className="flex items-center gap-1">
 											<kbd className="rounded border border-white/10 bg-white/5 px-1 font-mono">
 												↑↓

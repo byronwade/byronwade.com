@@ -1,71 +1,71 @@
 [
-	{
-		"path": "/*",
-		"timings": [
-			{
-				"metric": "first-contentful-paint",
-				"budget": 2000
-			},
-			{
-				"metric": "largest-contentful-paint",
-				"budget": 3000
-			},
-			{
-				"metric": "cumulative-layout-shift",
-				"budget": 0.1
-			},
-			{
-				"metric": "total-blocking-time",
-				"budget": 300
-			},
-			{
-				"metric": "speed-index",
-				"budget": 3000
-			}
-		],
-		"resourceSizes": [
-			{
-				"resourceType": "script",
-				"budget": 300
-			},
-			{
-				"resourceType": "total",
-				"budget": 1000
-			},
-			{
-				"resourceType": "stylesheet",
-				"budget": 50
-			},
-			{
-				"resourceType": "image",
-				"budget": 500
-			},
-			{
-				"resourceType": "font",
-				"budget": 100
-			}
-		],
-		"resourceCounts": [
-			{
-				"resourceType": "script",
-				"budget": 10
-			},
-			{
-				"resourceType": "total",
-				"budget": 50
-			},
-			{
-				"resourceType": "stylesheet",
-				"budget": 3
-			},
-			{
-				"resourceType": "image",
-				"budget": 20
-			},
-			{
-				"resourceType": "font",
-				"budget": 5
-			}
-		]
-	}
+  {
+    "path": "/*",
+    "timings": [
+      {
+        "metric": "first-contentful-paint",
+        "budget": 2000
+      },
+      {
+        "metric": "largest-contentful-paint",
+        "budget": 3000
+      },
+      {
+        "metric": "cumulative-layout-shift",
+        "budget": 0.1
+      },
+      {
+        "metric": "total-blocking-time",
+        "budget": 300
+      },
+      {
+        "metric": "speed-index",
+        "budget": 3000
+      }
+    ],
+    "resourceSizes": [
+      {
+        "resourceType": "script",
+        "budget": 300
+      },
+      {
+        "resourceType": "total",
+        "budget": 1000
+      },
+      {
+        "resourceType": "stylesheet",
+        "budget": 50
+      },
+      {
+        "resourceType": "image",
+        "budget": 500
+      },
+      {
+        "resourceType": "font",
+        "budget": 100
+      }
+    ],
+    "resourceCounts": [
+      {
+        "resourceType": "script",
+        "budget": 10
+      },
+      {
+        "resourceType": "total",
+        "budget": 50
+      },
+      {
+        "resourceType": "stylesheet",
+        "budget": 3
+      },
+      {
+        "resourceType": "image",
+        "budget": 20
+      },
+      {
+        "resourceType": "font",
+        "budget": 5
+      }
+    ]
+  }
 ]

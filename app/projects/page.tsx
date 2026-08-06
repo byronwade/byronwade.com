@@ -46,11 +46,15 @@ function sortForIndex(projects: Project[]): Project[] {
 	return [...projects].sort((a, b) => {
 		const aLead = Boolean(a.flagship || a.featured);
 		const bLead = Boolean(b.flagship || b.featured);
-		if (aLead !== bLead) return aLead ? -1 : 1;
+		if (aLead !== bLead) {
+			return aLead ? -1 : 1;
+		}
 		if (aLead && bLead) {
 			const orderA = a.order ?? Number.POSITIVE_INFINITY;
 			const orderB = b.order ?? Number.POSITIVE_INFINITY;
-			if (orderA !== orderB) return orderA - orderB;
+			if (orderA !== orderB) {
+				return orderA - orderB;
+			}
 		}
 		return timeOf(b.date) - timeOf(a.date);
 	});
@@ -62,7 +66,7 @@ async function ProjectsList() {
 
 	if (sorted.length === 0) {
 		return (
-			<p className="text-sm leading-relaxed text-muted-foreground">
+			<p className="text-muted-foreground text-sm leading-relaxed">
 				No projects yet. Check back soon.
 			</p>
 		);
@@ -74,12 +78,12 @@ async function ProjectsList() {
 function IndexFallback() {
 	return (
 		<div className="flex animate-pulse flex-col">
-			<div className="h-8 border-b border-border" />
+			<div className="h-8 border-border border-b" />
 			{Array.from({ length: 6 }).map((_, i) => (
 				<div
 					// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows
 					key={i}
-					className="flex items-center gap-4 border-b border-border py-5"
+					className="flex items-center gap-4 border-border border-b py-5"
 				>
 					<div className="h-3 w-6 rounded bg-muted" />
 					<div className="h-4 w-32 rounded bg-muted" />
@@ -107,10 +111,10 @@ export default async function ProjectsPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">
 					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+						<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 							Projects
 						</h1>
-						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+						<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
 							Selected products, client work, and experiments — case studies with outcomes where it
 							matters, built with React, Next.js, and full-stack tools.
 						</p>

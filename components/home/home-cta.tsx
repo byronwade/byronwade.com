@@ -10,12 +10,12 @@ export function HomeCta() {
 	const [contactOpen, setContactOpen] = useState(false);
 
 	return (
-		<section className="reveal reveal-delay-8 flex w-full flex-col gap-5 border-t border-border pt-10 sm:pt-12">
+		<section className="reveal reveal-delay-8 flex w-full flex-col gap-5 border-border border-t pt-10 sm:pt-12">
 			<div className="flex flex-col gap-2">
-				<h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">
+				<h2 className="font-heading font-semibold text-xl tracking-tight sm:text-2xl">
 					Let’s talk
 				</h2>
-				<p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+				<p className="max-w-xl text-muted-foreground text-sm leading-relaxed sm:text-base">
 					Available for product engineering conversations, service-business software, and design
 					systems that have to ship. Or just say hello.
 				</p>

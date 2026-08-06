@@ -20,45 +20,45 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 interface CaseStudySection {
-	title: string;
 	content: string;
 	icon?: React.ReactNode;
+	title: string;
 }
 
 interface DesignMetrics {
-	views?: number;
-	likes?: number;
 	comments?: number;
-	shares?: number;
 	downloads?: number;
+	likes?: number;
+	shares?: number;
+	views?: number;
 }
 
 interface TechnicalDetails {
-	tools: string[];
-	techniques: string[];
-	duration: string;
-	team?: string[];
 	challenges?: string[];
+	duration: string;
 	solutions?: string[];
+	team?: string[];
+	techniques: string[];
+	tools: string[];
 }
 
 interface DesignCaseStudyProps {
-	title: string;
-	description: string;
 	challenge?: string;
-	solution?: string;
+	className?: string;
+	colors?: string[];
+	description: string;
+	metrics?: DesignMetrics;
 	process?: CaseStudySection[];
 	results?: string[];
-	metrics?: DesignMetrics;
-	technical?: TechnicalDetails;
-	colors?: string[];
+	solution?: string;
 	tags?: string[];
+	technical?: TechnicalDetails;
 	testimonial?: {
 		quote: string;
 		author: string;
 		role?: string;
 	};
-	className?: string;
+	title: string;
 }
 
 export function DesignCaseStudy({
@@ -80,24 +80,24 @@ export function DesignCaseStudy({
 			title: "Research & Discovery",
 			content:
 				"Understanding user needs, market research, and competitive analysis to inform design decisions.",
-			icon: <Users className="w-5 h-5" />,
+			icon: <Users className="h-5 w-5" />,
 		},
 		{
 			title: "Ideation & Concepts",
 			content:
 				"Brainstorming sessions, sketching initial concepts, and exploring different design directions.",
-			icon: <Lightbulb className="w-5 h-5" />,
+			icon: <Lightbulb className="h-5 w-5" />,
 		},
 		{
 			title: "Design & Iteration",
 			content:
 				"Creating high-fidelity designs, gathering feedback, and iterating based on user testing.",
-			icon: <Palette className="w-5 h-5" />,
+			icon: <Palette className="h-5 w-5" />,
 		},
 		{
 			title: "Implementation",
 			content: "Working with developers to ensure design integrity and optimal user experience.",
-			icon: <Code className="w-5 h-5" />,
+			icon: <Code className="h-5 w-5" />,
 		},
 	];
 
@@ -106,12 +106,12 @@ export function DesignCaseStudy({
 	return (
 		<div className={cn("space-y-8", className)}>
 			{/* Header */}
-			<div className="text-center space-y-4">
-				<p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+			<div className="space-y-4 text-center">
+				<p className="font-medium text-muted-foreground text-sm uppercase tracking-wide">
 					Case Study
 				</p>
-				<h2 className="text-3xl font-bold text-foreground">{title}</h2>
-				<p className="text-lg text-muted-foreground max-w-3xl mx-auto">{description}</p>
+				<h2 className="font-bold text-3xl text-foreground">{title}</h2>
+				<p className="mx-auto max-w-3xl text-lg text-muted-foreground">{description}</p>
 			</div>
 
 			<Tabs defaultValue="overview" className="w-full">
@@ -125,12 +125,12 @@ export function DesignCaseStudy({
 				{/* Overview Tab */}
 				<TabsContent value="overview" className="space-y-6">
 					{/* Challenge & Solution */}
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 						{challenge && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
-										<Target className="w-5 h-5 text-brand" />
+										<Target className="h-5 w-5 text-brand" />
 										The Challenge
 									</CardTitle>
 								</CardHeader>
@@ -141,10 +141,10 @@ export function DesignCaseStudy({
 						)}
 
 						{solution && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
-										<CheckCircle className="w-5 h-5 text-green-600" />
+										<CheckCircle className="h-5 w-5 text-green-600" />
 										The Solution
 									</CardTitle>
 								</CardHeader>
@@ -157,68 +157,68 @@ export function DesignCaseStudy({
 
 					{/* Metrics */}
 					{metrics && (
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<TrendingUp className="w-5 h-5 text-brand" />
+									<TrendingUp className="h-5 w-5 text-brand" />
 									Project Impact
 								</CardTitle>
 							</CardHeader>
 							<CardContent>
-								<div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+								<div className="grid grid-cols-2 gap-4 md:grid-cols-5">
 									{metrics.views && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mx-auto mb-2">
-												<Eye className="w-6 h-6 text-brand" />
+											<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
+												<Eye className="h-6 w-6 text-brand" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">
+											<div className="font-bold text-2xl text-foreground">
 												{metrics.views.toLocaleString()}
 											</div>
-											<div className="text-sm text-muted-foreground">Views</div>
+											<div className="text-muted-foreground text-sm">Views</div>
 										</div>
 									)}
 									{metrics.likes && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-red-500/10 rounded-lg mx-auto mb-2">
-												<Heart className="w-6 h-6 text-red-500" />
+											<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-red-500/10">
+												<Heart className="h-6 w-6 text-red-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">
+											<div className="font-bold text-2xl text-foreground">
 												{metrics.likes.toLocaleString()}
 											</div>
-											<div className="text-sm text-muted-foreground">Likes</div>
+											<div className="text-muted-foreground text-sm">Likes</div>
 										</div>
 									)}
 									{metrics.comments && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-blue-500/10 rounded-lg mx-auto mb-2">
-												<MessageCircle className="w-6 h-6 text-brand" />
+											<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/10">
+												<MessageCircle className="h-6 w-6 text-brand" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">
+											<div className="font-bold text-2xl text-foreground">
 												{metrics.comments.toLocaleString()}
 											</div>
-											<div className="text-sm text-muted-foreground">Comments</div>
+											<div className="text-muted-foreground text-sm">Comments</div>
 										</div>
 									)}
 									{metrics.shares && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-green-500/10 rounded-lg mx-auto mb-2">
-												<TrendingUp className="w-6 h-6 text-green-500" />
+											<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/10">
+												<TrendingUp className="h-6 w-6 text-green-500" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">
+											<div className="font-bold text-2xl text-foreground">
 												{metrics.shares.toLocaleString()}
 											</div>
-											<div className="text-sm text-muted-foreground">Shares</div>
+											<div className="text-muted-foreground text-sm">Shares</div>
 										</div>
 									)}
 									{metrics.downloads && (
 										<div className="text-center">
-											<div className="flex items-center justify-center w-12 h-12 bg-purple-500/10 rounded-lg mx-auto mb-2">
-												<Zap className="w-6 h-6 text-brand" />
+											<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10">
+												<Zap className="h-6 w-6 text-brand" />
 											</div>
-											<div className="text-2xl font-bold text-foreground">
+											<div className="font-bold text-2xl text-foreground">
 												{metrics.downloads.toLocaleString()}
 											</div>
-											<div className="text-sm text-muted-foreground">Downloads</div>
+											<div className="text-muted-foreground text-sm">Downloads</div>
 										</div>
 									)}
 								</div>
@@ -228,10 +228,10 @@ export function DesignCaseStudy({
 
 					{/* Color Palette */}
 					{colors.length > 0 && (
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<Palette className="w-5 h-5 text-brand" />
+									<Palette className="h-5 w-5 text-brand" />
 									Color Palette
 								</CardTitle>
 							</CardHeader>
@@ -240,12 +240,12 @@ export function DesignCaseStudy({
 									{colors.map((color) => (
 										<div key={color} className="flex items-center gap-3">
 											<div
-												className="w-12 h-12 rounded-lg border border-border shadow-sm"
+												className="h-12 w-12 rounded-lg border border-border shadow-sm"
 												style={{ backgroundColor: color }}
 											/>
 											<div>
-												<div className="font-mono text-sm text-foreground">{color}</div>
-												<div className="text-xs text-muted-foreground">
+												<div className="font-mono text-foreground text-sm">{color}</div>
+												<div className="text-muted-foreground text-xs">
 													{color.startsWith("#") ? "HEX" : "RGB"}
 												</div>
 											</div>
@@ -263,7 +263,7 @@ export function DesignCaseStudy({
 								<Badge
 									key={tag}
 									variant="secondary"
-									className="bg-brand/10 border border-brand/30 text-brand hover:bg-brand/20 transition-colors"
+									className="border border-brand/30 bg-brand/10 text-brand transition-colors hover:bg-brand/20"
 								>
 									{tag}
 								</Badge>
@@ -278,11 +278,11 @@ export function DesignCaseStudy({
 						{processSteps.map((step, index) => (
 							<Card
 								key={step.title}
-								className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300"
+								className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl"
 							>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-3 text-foreground">
-										<div className="flex items-center justify-center w-8 h-8 bg-brand/10 rounded-full text-brand text-sm font-bold">
+										<div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/10 font-bold text-brand text-sm">
 											{index + 1}
 										</div>
 										{step.icon}
@@ -300,13 +300,13 @@ export function DesignCaseStudy({
 				{/* Technical Tab */}
 				<TabsContent value="technical" className="space-y-6">
 					{technical && (
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 							{/* Tools & Duration */}
 							<div className="space-y-6">
-								<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+								<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
-											<Code className="w-5 h-5 text-brand" />
+											<Code className="h-5 w-5 text-brand" />
 											Tools Used
 										</CardTitle>
 									</CardHeader>
@@ -321,15 +321,15 @@ export function DesignCaseStudy({
 									</CardContent>
 								</Card>
 
-								<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+								<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
-											<Clock className="w-5 h-5 text-brand" />
+											<Clock className="h-5 w-5 text-brand" />
 											Project Duration
 										</CardTitle>
 									</CardHeader>
 									<CardContent>
-										<p className="text-lg font-semibold text-foreground">{technical.duration}</p>
+										<p className="font-semibold text-foreground text-lg">{technical.duration}</p>
 									</CardContent>
 								</Card>
 							</div>
@@ -337,10 +337,10 @@ export function DesignCaseStudy({
 							{/* Techniques & Team */}
 							<div className="space-y-6">
 								{technical.techniques.length > 0 && (
-									<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+									<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
-												<Zap className="w-5 h-5 text-brand" />
+												<Zap className="h-5 w-5 text-brand" />
 												Techniques
 											</CardTitle>
 										</CardHeader>
@@ -357,10 +357,10 @@ export function DesignCaseStudy({
 								)}
 
 								{technical.team && technical.team.length > 0 && (
-									<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+									<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
-												<Users className="w-5 h-5 text-brand" />
+												<Users className="h-5 w-5 text-brand" />
 												Team
 											</CardTitle>
 										</CardHeader>
@@ -384,10 +384,10 @@ export function DesignCaseStudy({
 				<TabsContent value="results" className="space-y-6">
 					{/* Results List */}
 					{results.length > 0 && (
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300">
+						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
-									<TrendingUp className="w-5 h-5 text-brand" />
+									<TrendingUp className="h-5 w-5 text-brand" />
 									Key Results
 								</CardTitle>
 							</CardHeader>
@@ -395,7 +395,7 @@ export function DesignCaseStudy({
 								<div className="space-y-3">
 									{results.map((result) => (
 										<div key={result} className="flex items-start gap-3">
-											<CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+											<CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
 											<p className="text-muted-foreground">{result}</p>
 										</div>
 									))}
@@ -406,16 +406,16 @@ export function DesignCaseStudy({
 
 					{/* Testimonial */}
 					{testimonial && (
-						<Card className="bg-gradient-to-br from-brand/5 to-brand/10 border-brand/20 hover:shadow-xl transition-all duration-300">
+						<Card className="border-brand/20 bg-gradient-to-br from-brand/5 to-brand/10 transition-all duration-300 hover:shadow-xl">
 							<CardContent className="p-8">
-								<blockquote className="text-lg italic text-foreground mb-4">
+								<blockquote className="mb-4 text-foreground text-lg italic">
 									"{testimonial.quote}"
 								</blockquote>
 								<div className="flex items-center gap-3">
 									<div>
 										<div className="font-semibold text-foreground">{testimonial.author}</div>
 										{testimonial.role && (
-											<div className="text-sm text-muted-foreground">{testimonial.role}</div>
+											<div className="text-muted-foreground text-sm">{testimonial.role}</div>
 										)}
 									</div>
 								</div>

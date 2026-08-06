@@ -1,11 +1,20 @@
 export interface DribbbleShot {
-	id: number;
-	title: string;
-	description?: string;
-	html_url: string;
-	width?: number;
-	height?: number;
 	animated?: boolean;
+	attachments?: Array<{
+		id: number;
+		url: string;
+		thumbnail_url: string;
+		size: number;
+		content_type: string;
+	}>;
+	buckets_count?: number; // Collections this shot is in
+	// Color palette extracted from the shot
+	colors?: string[];
+	comments_count?: number;
+	description?: string;
+	height?: number;
+	html_url: string;
+	id: number;
 	images: {
 		four_x?: string | null; // Highest quality (1600x1200)
 		hidpi: string | null; // High quality (800x600)
@@ -14,21 +23,33 @@ export interface DribbbleShot {
 		normal: string; // Normal quality (400x300)
 		teaser: string; // Thumbnail (200x150)
 	};
-	published_at?: string;
-	updated_at?: string;
-	tags?: string[];
-	views_count?: number;
 	likes_count?: number;
-	comments_count?: number;
-	rebounds_count?: number; // Shots inspired by this one
-	buckets_count?: number; // Collections this shot is in
-	attachments?: Array<{
+	// Project context
+	project?: {
 		id: number;
-		url: string;
-		thumbnail_url: string;
-		size: number;
-		content_type: string;
-	}>;
+		name: string;
+		description?: string;
+		shots_count?: number;
+		created_at?: string;
+	};
+	published_at?: string;
+	rebounds_count?: number; // Shots inspired by this one
+	tags?: string[];
+	// Team information if applicable
+	team?: {
+		id: number;
+		name: string;
+		login: string;
+		html_url: string;
+		avatar_url: string;
+		bio?: string;
+		location?: string;
+		members_count?: number;
+		shots_count?: number;
+		created_at?: string;
+	};
+	title: string;
+	updated_at?: string;
 	user?: {
 		id?: number;
 		name?: string;
@@ -58,28 +79,7 @@ export interface DribbbleShot {
 		teams_count?: number;
 		created_at?: string;
 	};
-	// Color palette extracted from the shot
-	colors?: string[];
-	// Project context
-	project?: {
-		id: number;
-		name: string;
-		description?: string;
-		shots_count?: number;
-		created_at?: string;
-	};
-	// Team information if applicable
-	team?: {
-		id: number;
-		name: string;
-		login: string;
-		html_url: string;
-		avatar_url: string;
-		bio?: string;
-		location?: string;
-		members_count?: number;
-		shots_count?: number;
-		created_at?: string;
-	};
+	views_count?: number;
+	width?: number;
 }
 // User portfolio analytics

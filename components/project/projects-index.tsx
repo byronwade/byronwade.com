@@ -10,7 +10,9 @@ interface ProjectsIndexProps {
 }
 
 function yearOf(date?: string): string {
-	if (!date) return "";
+	if (!date) {
+		return "";
+	}
 	const d = new Date(date);
 	return Number.isNaN(d.getTime()) ? "" : String(d.getFullYear());
 }
@@ -18,11 +20,11 @@ function yearOf(date?: string): string {
 export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 	return (
 		<div className="flex flex-col">
-			<div className="flex items-baseline justify-between border-b border-border pb-3">
-				<span className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+			<div className="flex items-baseline justify-between border-border border-b pb-3">
+				<span className="font-mono text-muted-foreground text-xs uppercase tracking-[0.18em]">
 					Index
 				</span>
-				<span className="font-mono text-xs tabular-nums text-muted-foreground">
+				<span className="font-mono text-muted-foreground text-xs tabular-nums">
 					{String(projects.length).padStart(2, "0")} projects
 				</span>
 			</div>
@@ -36,16 +38,16 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 					const proof = project.outcome || project.tagline;
 					const leadMetric = project.metrics?.[0];
 					return (
-						<li key={project.slug} className="border-b border-border last:border-b-0">
+						<li key={project.slug} className="border-border border-b last:border-b-0">
 							<Link
 								href={`/projects/${project.slug}`}
 								className={cn(
 									"group/row flex flex-col gap-2 py-5 outline-none transition-opacity duration-300",
-									"group-hover/list:opacity-40 hover:opacity-100! focus-visible:opacity-100!"
+									"hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
 								)}
 							>
 								<div className="flex items-center gap-4">
-									<span className="w-6 shrink-0 font-mono text-xs tabular-nums text-muted-foreground/70 transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+									<span className="w-6 shrink-0 font-mono text-muted-foreground/70 text-xs tabular-nums transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
 										{String(i + 1).padStart(2, "0")}
 									</span>
 
@@ -60,7 +62,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 											/>
 										)}
 										{project.tagline && (
-											<span className="hidden truncate text-sm text-muted-foreground sm:inline">
+											<span className="hidden truncate text-muted-foreground text-sm sm:inline">
 												{project.tagline}
 											</span>
 										)}
@@ -76,24 +78,24 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 										</StatusPill>
 									) : (
 										year && (
-											<span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+											<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
 												{year}
 											</span>
 										)
 									)}
 
-									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-all duration-300 group-hover/row:-translate-y-0.5 group-hover/row:translate-x-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
+									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-all duration-300 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
 								</div>
 
 								{(project.featured || project.flagship) && (proof || leadMetric) && (
 									<div className="ml-10 flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
 										{proof && (
-											<p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+											<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed">
 												{proof}
 											</p>
 										)}
 										{leadMetric && (
-											<span className="shrink-0 font-mono text-xs tabular-nums text-muted-foreground">
+											<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
 												<span className="font-medium text-foreground">{leadMetric.value}</span>
 												{" · "}
 												{leadMetric.label}

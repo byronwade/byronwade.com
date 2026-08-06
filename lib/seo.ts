@@ -7,20 +7,20 @@ const defaultDescription =
 const defaultAuthor = "Byron Wade";
 
 interface SEOConfig {
-	title: string;
-	description?: string;
-	keywords?: string[];
-	image?: string;
-	type?: "website" | "article" | "project";
-	author?: string;
-	publishedTime?: string;
-	modifiedTime?: string;
-	tags?: string[];
-	canonical?: string;
-	noindex?: boolean;
-	nofollow?: boolean;
 	alternateLanguages?: Record<string, string>;
+	author?: string;
+	canonical?: string;
+	description?: string;
+	image?: string;
+	keywords?: string[];
+	modifiedTime?: string;
+	nofollow?: boolean;
+	noindex?: boolean;
+	publishedTime?: string;
 	structuredData?: Record<string, unknown>;
+	tags?: string[];
+	title: string;
+	type?: "website" | "article" | "project";
 }
 
 /**

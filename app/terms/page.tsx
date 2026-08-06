@@ -17,10 +17,10 @@ const LAST_UPDATED = "June 1, 2026";
 export default function TermsPage() {
 	return (
 		<SiteShell>
-			<article className="prose dark:prose-invert mx-auto max-w-3xl py-16 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-brand hover:prose-a:text-brand">
+			<article className="prose dark:prose-invert mx-auto max-w-3xl py-16 prose-headings:font-semibold prose-a:text-brand prose-headings:tracking-tight hover:prose-a:text-brand">
 				<header className="not-prose mb-10">
-					<h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Terms of Service</h1>
-					<p className="mt-3 text-sm text-muted-foreground">Last updated: {LAST_UPDATED}</p>
+					<h1 className="font-semibold text-3xl tracking-tight sm:text-4xl">Terms of Service</h1>
+					<p className="mt-3 text-muted-foreground text-sm">Last updated: {LAST_UPDATED}</p>
 				</header>
 
 				<p>

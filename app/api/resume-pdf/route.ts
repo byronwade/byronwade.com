@@ -26,11 +26,11 @@ export async function GET() {
 		// Navigate to the resume page and wait for content to load
 		await page.goto(`${origin}/resume`, {
 			waitUntil: "networkidle0",
-			timeout: 30000,
+			timeout: 30_000,
 		});
 
 		// Wait for the main content to be rendered (wait for h1 with name)
-		await page.waitForSelector("h1", { timeout: 10000 });
+		await page.waitForSelector("h1", { timeout: 10_000 });
 
 		// Add a small delay to ensure all client-side rendering is complete
 		await new Promise((resolve) => setTimeout(resolve, 500));

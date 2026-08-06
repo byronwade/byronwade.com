@@ -47,7 +47,7 @@ async function BlogList() {
 
 	if (posts.length === 0) {
 		return (
-			<p className="text-sm leading-relaxed text-muted-foreground">
+			<p className="text-muted-foreground text-sm leading-relaxed">
 				No blog posts yet. Check back soon.
 			</p>
 		);
@@ -65,7 +65,7 @@ async function BlogList() {
 						<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
 							{post.title}
 						</span>
-						<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+						<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
 							<Badge variant="muted">
 								<Clock />
 								{post.readingTime} min
@@ -78,7 +78,7 @@ async function BlogList() {
 						</div>
 					</div>
 					{post.excerpt && (
-						<p className="line-clamp-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+						<p className="line-clamp-2 max-w-2xl text-muted-foreground text-sm leading-relaxed">
 							{post.excerpt}
 						</p>
 					)}
@@ -108,10 +108,10 @@ export default function BlogPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
 					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+						<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 							Writing
 						</h1>
-						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+						<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
 							Notes from building products and running a service business — design systems, field
 							ops, and the software that has to work in the truck.
 						</p>

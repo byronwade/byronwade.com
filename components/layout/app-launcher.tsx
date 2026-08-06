@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";
 
-const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
 /** Every product under the byronwade umbrella — the launcher is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
@@ -67,9 +67,13 @@ export function AppLauncher() {
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
 		const morph = morphRef.current;
-		if (!compact || !morph) return;
+		if (!(compact && morph)) {
+			return;
+		}
 		const sync = () => {
-			if (morph.style.width) return; // morphed open — leave the slot alone
+			if (morph.style.width) {
+				return; // morphed open — leave the slot alone
+			}
 			setSlot({ w: morph.offsetWidth, h: morph.offsetHeight });
 		};
 		sync();
@@ -84,7 +88,9 @@ export function AppLauncher() {
 		const morph = morphRef.current;
 		const compact = compactRef.current;
 		const panel = panelRef.current;
-		if (!morph || !compact || !panel) return;
+		if (!(morph && compact && panel)) {
+			return;
+		}
 
 		const reduce =
 			typeof window !== "undefined" &&
@@ -140,7 +146,9 @@ export function AppLauncher() {
 			morph.style.width = `${cw}px`;
 			morph.style.height = `${ch}px`;
 			const onEnd = (e: TransitionEvent) => {
-				if (e.propertyName !== "height") return;
+				if (e.propertyName !== "height") {
+					return;
+				}
 				release();
 				morph.removeEventListener("transitionend", onEnd);
 			};
@@ -151,13 +159,19 @@ export function AppLauncher() {
 
 	// Esc + click-away close.
 	React.useEffect(() => {
-		if (!open) return;
+		if (!open) {
+			return;
+		}
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") setOpen(false);
+			if (e.key === "Escape") {
+				setOpen(false);
+			}
 		};
 		const onDown = (e: PointerEvent) => {
 			const target = e.target as Element | null;
-			if (!rootRef.current || rootRef.current.contains(target)) return;
+			if (!rootRef.current || rootRef.current.contains(target)) {
+				return;
+			}
 			setOpen(false);
 		};
 		document.addEventListener("keydown", onKey);
@@ -200,7 +214,7 @@ export function AppLauncher() {
 						aria-label="Byron Wade — home"
 						className={cn(
 							"font-signature",
-							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-lg leading-none text-dock-active-foreground transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
+							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-dock-active-foreground text-lg leading-none transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
 						)}
 					>
 						Byron Wade
@@ -232,7 +246,7 @@ export function AppLauncher() {
 					)}
 				>
 					<div className="flex items-center justify-between p-3.5 pb-2">
-						<span className="text-[10px] font-semibold tracking-wider text-dock-foreground/70 uppercase">
+						<span className="font-semibold text-[10px] text-dock-foreground/70 uppercase tracking-wider">
 							Switch product
 						</span>
 						<button
@@ -256,14 +270,14 @@ export function AppLauncher() {
 								<span className="size-2 rounded-full bg-brand" />
 							</span>
 							<div className="min-w-0 leading-tight">
-								<div className="truncate text-[13px] font-semibold text-dock-active-foreground">
+								<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
 									byronwade<span className="text-dock-foreground">.com</span>
 								</div>
 								<div className="truncate text-[11px] text-dock-foreground">
 									Portfolio & developer
 								</div>
 							</div>
-							<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-medium text-brand">
+							<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 font-medium text-[10px] text-brand">
 								Current
 							</span>
 						</Link>
@@ -276,11 +290,11 @@ export function AppLauncher() {
 								rel="noreferrer"
 								className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-dock-active"
 							>
-								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 text-[13px] font-bold text-dock-active-foreground">
+								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 font-bold text-[13px] text-dock-active-foreground">
 									{p.mark}
 								</span>
 								<div className="min-w-0 leading-tight">
-									<div className="truncate text-[13px] font-semibold text-dock-active-foreground">
+									<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
 										{p.name}
 									</div>
 									<div className="truncate text-[11px] text-dock-foreground">{p.desc}</div>
@@ -290,12 +304,12 @@ export function AppLauncher() {
 						))}
 					</div>
 
-					<div className="flex items-center gap-2 border-t border-white/5 bg-black/25 p-3">
+					<div className="flex items-center gap-2 border-white/5 border-t bg-black/25 p-3">
 						<a
 							href={GITHUB_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active text-[13px] font-semibold text-dock-active-foreground transition-colors hover:bg-white/15"
+							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-white/15"
 						>
 							<GitFork className="size-4" /> GitHub
 						</a>

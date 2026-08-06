@@ -11,7 +11,9 @@ interface RelatedPostsProps {
 
 function tagOverlapScore(current: BlogPost, candidate: BlogPost): number {
 	const currentTags = new Set((current.tags ?? []).map((tag) => tag.toLowerCase()));
-	if (currentTags.size === 0) return 0;
+	if (currentTags.size === 0) {
+		return 0;
+	}
 	return (candidate.tags ?? []).reduce(
 		(score, tag) => score + (currentTags.has(tag.toLowerCase()) ? 1 : 0),
 		0
@@ -23,13 +25,17 @@ function tagOverlapScore(current: BlogPost, candidate: BlogPost): number {
  */
 export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps) {
 	const [current, allPosts] = await Promise.all([getBlogPost(currentSlug), getBlogPosts()]);
-	if (!current) return null;
+	if (!current) {
+		return null;
+	}
 
 	const otherPosts = allPosts.filter((post) => post.slug !== currentSlug);
 	const relatedPosts = [...otherPosts]
 		.sort((a, b) => {
 			const scoreDiff = tagOverlapScore(current, b) - tagOverlapScore(current, a);
-			if (scoreDiff !== 0) return scoreDiff;
+			if (scoreDiff !== 0) {
+				return scoreDiff;
+			}
 			return new Date(b.date).getTime() - new Date(a.date).getTime();
 		})
 		.slice(0, limit);
@@ -39,8 +45,8 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 	}
 
 	return (
-		<div className="mt-12 w-full border-t border-border pt-8">
-			<h3 className="mb-6 font-heading text-xl font-semibold tracking-tight text-foreground">
+		<div className="mt-12 w-full border-border border-t pt-8">
+			<h3 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
 				Related posts
 			</h3>
 			<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
@@ -54,7 +60,7 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
 								{post.title}
 							</span>
-							<div className="flex shrink-0 items-center gap-2.5 text-xs text-muted-foreground">
+							<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
 								<Badge variant="muted">
 									<Clock />
 									{post.readingTime} min
@@ -67,7 +73,7 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 							</div>
 						</div>
 						{post.excerpt && (
-							<p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+							<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
 								{post.excerpt}
 							</p>
 						)}

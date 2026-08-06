@@ -5,11 +5,11 @@
 export type SearchKind = "Page" | "Project" | "Writing";
 
 export interface SearchEntry {
-	kind: SearchKind;
-	label: string;
 	href: string;
-	/** Small trailing hint, e.g. a status or reading time. */
-	meta?: string;
 	/** Extra terms folded into matching but not displayed. */
 	keywords?: string;
+	kind: SearchKind;
+	label: string;
+	/** Small trailing hint, e.g. a status or reading time. */
+	meta?: string;
 }

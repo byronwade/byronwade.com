@@ -1,4 +1,7 @@
-export type Crumb = { label: string; href: string };
+export interface Crumb {
+	href: string;
+	label: string;
+}
 
 function titleCase(seg: string): string {
 	return seg.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -7,7 +10,9 @@ function titleCase(seg: string): string {
 function dedupe(crumbs: Crumb[]): Crumb[] {
 	const seen = new Set<string>();
 	return crumbs.filter((c) => {
-		if (seen.has(c.href)) return false;
+		if (seen.has(c.href)) {
+			return false;
+		}
 		seen.add(c.href);
 		return true;
 	});
@@ -21,7 +26,9 @@ function dedupe(crumbs: Crumb[]): Crumb[] {
  */
 export function resolveTrail(pathname: string, labels: Record<string, string>): Crumb[] {
 	const root: Crumb = { label: labels["/"] ?? "Home", href: "/" };
-	if (pathname === "/") return [root];
+	if (pathname === "/") {
+		return [root];
+	}
 
 	const trail: Crumb[] = [root];
 	let acc = "";

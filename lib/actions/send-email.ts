@@ -3,57 +3,65 @@
 import { Resend } from "resend";
 
 interface EmailProps {
-	name: string;
-	email: string;
-	message: string;
-	phone?: string;
-	company?: string;
-	projectType?: string[];
-	budget?: string;
-	timeline?: string;
-	monthlyBudget?: string;
-	websiteUrl?: string;
-	hearAboutUs?: string;
-	inspiration?: string;
 	attachments?: Array<{
 		name: string;
 		type: string;
 		size: number;
 		data: string;
 	}>;
+	budget?: string;
+	company?: string;
+	email: string;
+	hearAboutUs?: string;
+	inspiration?: string;
+	message: string;
+	monthlyBudget?: string;
+	name: string;
+	phone?: string;
+	projectType?: string[];
+	timeline?: string;
+	websiteUrl?: string;
 }
 
 interface EmailTemplate {
-	subject: string;
 	html: string;
+	subject: string;
 }
 
 function formatProjectTypes(types: string[] | undefined): string {
-	if (!types || types.length === 0) return "Not specified";
+	if (!types || types.length === 0) {
+		return "Not specified";
+	}
 	return types.join(", ");
 }
 
 function formatBudget(budget: string | undefined): string {
-	if (!budget) return "Not specified";
+	if (!budget) {
+		return "Not specified";
+	}
 	return budget === "na" ? "N/A - Just reaching out" : budget;
 }
 
 function formatMonthlyBudget(budget: string | undefined): string {
-	if (!budget) return "Not specified";
+	if (!budget) {
+		return "Not specified";
+	}
 	return budget === "na" ? "N/A - No maintenance needed" : budget;
 }
 
 function formatAttachmentsList(attachments: EmailProps["attachments"]): string {
-	if (!attachments || attachments.length === 0) return "";
+	if (!attachments || attachments.length === 0) {
+		return "";
+	}
 
 	const attachmentItems = attachments
-		.map((file) => {
-			return `
+		.map(
+			(file) => `
 				<li style="font-size: 14px; color: #111827; margin: 12px 0;">
 					<strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)}KB)
 				</li>
-			`;
-		})
+			`
+		)
 		.join("");
 
 	return `
@@ -69,7 +77,9 @@ function formatAttachmentsList(attachments: EmailProps["attachments"]): string {
 }
 
 function prepareAttachments(attachments: EmailProps["attachments"]) {
-	if (!attachments) return [];
+	if (!attachments) {
+		return [];
+	}
 	return attachments.map((file) => {
 		// Remove the "data:image/jpeg;base64," or similar prefix
 		const base64Data = file.data.split(";base64,").pop() || "";
@@ -234,9 +244,9 @@ function generateAdminEmailTemplate(data: EmailProps): EmailTemplate {
 }
 
 interface SendEmailResponse {
-	success: boolean;
 	data?: unknown;
 	error?: string;
+	success: boolean;
 }
 
 export async function sendEmail(formData: EmailProps): Promise<SendEmailResponse> {
