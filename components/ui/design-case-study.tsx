@@ -2,8 +2,6 @@
 
 import {
 	CheckCircle,
-	ChevronDown,
-	ChevronUp,
 	Clock,
 	Code,
 	Eye,
@@ -16,9 +14,7 @@ import {
 	Users,
 	Zap,
 } from "lucide-react";
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -79,18 +75,6 @@ export function DesignCaseStudy({
 	testimonial,
 	className,
 }: DesignCaseStudyProps) {
-	const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
-
-	const _toggleSection = (sectionId: string) => {
-		const newExpanded = new Set(expandedSections);
-		if (newExpanded.has(sectionId)) {
-			newExpanded.delete(sectionId);
-		} else {
-			newExpanded.add(sectionId);
-		}
-		setExpandedSections(newExpanded);
-	};
-
 	const defaultProcess: CaseStudySection[] = [
 		{
 			title: "Research & Discovery",
@@ -123,7 +107,10 @@ export function DesignCaseStudy({
 		<div className={cn("space-y-8", className)}>
 			{/* Header */}
 			<div className="text-center space-y-4">
-				<h2 className="text-3xl font-bold text-foreground">Case Study</h2>
+				<p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+					Case Study
+				</p>
+				<h2 className="text-3xl font-bold text-foreground">{title}</h2>
 				<p className="text-lg text-muted-foreground max-w-3xl mx-auto">{description}</p>
 			</div>
 
@@ -250,8 +237,8 @@ export function DesignCaseStudy({
 							</CardHeader>
 							<CardContent>
 								<div className="flex flex-wrap gap-4">
-									{colors.map((color, index) => (
-										<div key={index} className="flex items-center gap-3">
+									{colors.map((color) => (
+										<div key={color} className="flex items-center gap-3">
 											<div
 												className="w-12 h-12 rounded-lg border border-border shadow-sm"
 												style={{ backgroundColor: color }}
@@ -290,7 +277,7 @@ export function DesignCaseStudy({
 					<div className="space-y-4">
 						{processSteps.map((step, index) => (
 							<Card
-								key={index}
+								key={step.title}
 								className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300"
 							>
 								<CardHeader>
@@ -406,8 +393,8 @@ export function DesignCaseStudy({
 							</CardHeader>
 							<CardContent>
 								<div className="space-y-3">
-									{results.map((result, index) => (
-										<div key={index} className="flex items-start gap-3">
+									{results.map((result) => (
+										<div key={result} className="flex items-start gap-3">
 											<CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
 											<p className="text-muted-foreground">{result}</p>
 										</div>

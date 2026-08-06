@@ -13,6 +13,21 @@ import type {
 // Export types for use in other files
 export type { GitHubRepo } from "@/types/github";
 
+/**
+ * Shapes of the third-party payloads this module reads. They describe only the
+ * fields consumed here, so an unexpected extra field from GitHub or Figma never
+ * silently becomes `any`.
+ */
+/** A Figma document node, narrowed to the fields the complexity walk reads. */
+type FigmaDocumentNode = Pick<Figma.Node, "type"> & {
+	readonly children?: readonly FigmaDocumentNode[];
+};
+type CommitActivityWeek = NonNullable<GitHubRepoStatistics["commit_activity"]>["week_data"][number];
+type WorkflowRunResponse = Omit<
+	NonNullable<GitHubWorkflowData["recent_runs"]>[number],
+	"run_duration"
+>;
+
 // Utility function to add timeout to fetch requests
 const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: number } = {}) => {
 	const { timeout = 3000, ...fetchOptions } = options; // Reduced to 3s for speed
@@ -181,7 +196,7 @@ export const getFigmaFiles = unstable_cache(
 export const getFigmaThumbnail = async (key: string): Promise<string | null> => {
 	try {
 		const files = await getFigmaFiles();
-		const file = files.find((f) => f.key === key);
+		const file = files.find((f: FigmaFile) => f.key === key);
 		return file?.thumbnail_url || null;
 	} catch (error) {
 		console.error(`Failed to get Figma thumbnail for ${key}:`, error);
@@ -730,7 +745,10 @@ export const getGitHubRepoStatistics = unstable_cache(
 				const commitActivity = await commitActivityRes.value.json();
 				if (Array.isArray(commitActivity)) {
 					statistics.commit_activity = {
-						total: commitActivity.reduce((sum: number, week: any) => sum + week.total, 0),
+						total: commitActivity.reduce(
+							(sum: number, week: CommitActivityWeek) => sum + week.total,
+							0
+						),
 						week_data: commitActivity,
 					};
 				} else {
@@ -912,7 +930,7 @@ export const getGitHubWorkflowData = unstable_cache(
 				const runsResponse = await runsRes.value.json();
 				const runs = runsResponse.workflow_runs;
 
-				workflowData.recent_runs = runs.slice(0, 10).map((run: any) => ({
+				workflowData.recent_runs = runs.slice(0, 10).map((run: WorkflowRunResponse) => ({
 					id: run.id,
 					name: run.name,
 					head_branch: run.head_branch,
@@ -932,9 +950,15 @@ export const getGitHubWorkflowData = unstable_cache(
 
 				// Calculate summary stats
 				const totalRuns = runs.length;
-				const successfulRuns = runs.filter((run: any) => run.conclusion === "success").length;
-				const failedRuns = runs.filter((run: any) => run.conclusion === "failure").length;
-				const cancelledRuns = runs.filter((run: any) => run.conclusion === "cancelled").length;
+				const successfulRuns = runs.filter(
+					(run: WorkflowRunResponse) => run.conclusion === "success"
+				).length;
+				const failedRuns = runs.filter(
+					(run: WorkflowRunResponse) => run.conclusion === "failure"
+				).length;
+				const cancelledRuns = runs.filter(
+					(run: WorkflowRunResponse) => run.conclusion === "cancelled"
+				).length;
 
 				workflowData.workflow_runs_summary = {
 					total_runs: totalRuns,
@@ -944,14 +968,17 @@ export const getGitHubWorkflowData = unstable_cache(
 					success_rate: totalRuns > 0 ? Math.round((successfulRuns / totalRuns) * 100) : 0,
 					avg_duration:
 						runs
-							.filter((run: any) => run.updated_at && run.created_at)
-							.reduce((sum: number, run: any) => {
+							.filter((run: WorkflowRunResponse) => run.updated_at && run.created_at)
+							.reduce((sum: number, run: WorkflowRunResponse) => {
 								return (
 									sum +
 									(new Date(run.updated_at).getTime() - new Date(run.created_at).getTime()) / 1000
 								);
 							}, 0) /
-						Math.max(1, runs.filter((run: any) => run.updated_at && run.created_at).length),
+						Math.max(
+							1,
+							runs.filter((run: WorkflowRunResponse) => run.updated_at && run.created_at).length
+						),
 				};
 			}
 
@@ -1098,7 +1125,7 @@ export const getFigmaFileAnalytics = unstable_cache(
 			let totalNodes = 0;
 			let componentCount = 0;
 
-			function countNodes(node: any): void {
+			function countNodes(node: FigmaDocumentNode): void {
 				totalNodes++;
 				if (node.type === "COMPONENT" || node.type === "COMPONENT_SET") {
 					componentCount++;
@@ -1145,8 +1172,8 @@ export const getPortfolioStats = unstable_cache(
 		try {
 			const [repos, profile] = await Promise.all([getGitHubRepositories(), getGitHubProfile()]);
 
-			const totalStars = repos.reduce((sum: number, repo: any) => sum + repo.stargazers_count, 0);
-			const totalForks = repos.reduce((sum: number, repo: any) => sum + repo.forks_count, 0);
+			const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+			const totalForks = repos.reduce((sum, repo) => sum + repo.forks_count, 0);
 
 			return [
 				{

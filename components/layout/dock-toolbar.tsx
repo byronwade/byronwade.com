@@ -2,7 +2,6 @@
 
 import type { LucideIcon } from "lucide-react";
 import { Box, CornerDownLeft, Github, Hash, Heart, Moon, PenLine, Search, Sun } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as React from "react";
