@@ -3,10 +3,9 @@
 import type { LucideIcon } from "lucide-react";
 import { Box, CornerDownLeft, Github, Hash, Heart, Moon, PenLine, Search, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import * as React from "react";
-import { flushSync } from "react-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
 
@@ -76,7 +75,7 @@ function go(href: string, router: ReturnType<typeof useRouter>) {
  */
 export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const router = useRouter();
-	const { resolvedTheme, setTheme } = useTheme();
+	const { toggleTheme } = useThemeToggle();
 
 	const [mode, setMode] = React.useState<Mode>(null);
 	const [query, setQuery] = React.useState("");
@@ -114,33 +113,6 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 			go(href, router);
 		},
 		[close, router]
-	);
-
-	const toggleTheme = React.useCallback(
-		(e: React.MouseEvent<HTMLButtonElement>) => {
-			const next = resolvedTheme === "dark" ? "light" : "dark";
-			const doc = document as Document & {
-				startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-			};
-			const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-			if (!doc.startViewTransition || reduce) {
-				setTheme(next);
-				return;
-			}
-			const rect = e.currentTarget.getBoundingClientRect();
-			const x = rect.left + rect.width / 2;
-			const y = rect.top + rect.height / 2;
-			const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-			doc
-				.startViewTransition(() => flushSync(() => setTheme(next)))
-				.ready.then(() => {
-					document.documentElement.animate(
-						{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-						{ duration: 480, easing: EASE, pseudoElement: "::view-transition-new(root)" }
-					);
-				});
-		},
-		[resolvedTheme, setTheme]
 	);
 
 	/* — slot sizing: keep the reserved footprint synced to the compact pill — */

@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { EmptyState } from "@/components/empty-state";
+import { EmptyState } from "@/components/common/empty-state";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";

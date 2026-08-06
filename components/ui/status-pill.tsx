@@ -1,4 +1,5 @@
-import { StatusDot, type StatusTone } from "@/components/ui/status-dot";
+import { StatusDot } from "@/components/ui/status-dot";
+import type { StatusTone } from "@/lib/status-tone";
 import { cn } from "@/lib/utils";
 
 const tones: Record<StatusTone, { text: string; ring: string }> = {

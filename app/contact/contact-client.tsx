@@ -3,13 +3,13 @@
 import { Github, Linkedin, Loader2, Mail, MapPin, Send, Twitter } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { toast } from "sonner";
-import { sendEmail } from "@/app/actions/send-email";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
+import { sendEmail } from "@/lib/actions/send-email";
 import {
 	buildContactMessage,
 	CONTACT_TOPICS,

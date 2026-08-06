@@ -2,8 +2,8 @@
 
 import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import * as React from "react";
+import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import { customFont } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 
@@ -169,7 +169,7 @@ export function AppLauncher() {
 		};
 	}, [open]);
 
-	const { resolvedTheme, setTheme } = useTheme();
+	const { toggleTheme } = useThemeToggle();
 
 	return (
 		<div
@@ -302,7 +302,7 @@ export function AppLauncher() {
 						</a>
 						<button
 							type="button"
-							onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+							onClick={toggleTheme}
 							aria-label="Toggle theme"
 							className="flex size-9 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>

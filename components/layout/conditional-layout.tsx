@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import Background from "@/components/sections/background";
 import { buildSearchIndex } from "@/lib/search-index";
 import { AppBreadcrumb } from "./app-breadcrumb";
 import { AppLauncher } from "./app-launcher";
+import Background from "./background";
 import { DockToolbar } from "./dock-toolbar";
 import Footer from "./footer";
 import { NavDock } from "./nav-dock";
