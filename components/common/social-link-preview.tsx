@@ -243,10 +243,14 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 								{githubStats.topLanguages.slice(0, 4).map((lang) => (
 									<motion.div
 										key={lang.name}
-										initial={{ width: 0 }}
-										animate={{ width: `${lang.percentage}%` }}
+										initial={{ scaleX: 0 }}
+										animate={{ scaleX: 1 }}
 										transition={{ delay: 0.2, duration: 0.4 }}
-										style={{ backgroundColor: lang.color }}
+										style={{
+											backgroundColor: lang.color,
+											width: `${lang.percentage}%`,
+											transformOrigin: "left",
+										}}
 									/>
 								))}
 							</div>

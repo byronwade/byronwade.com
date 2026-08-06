@@ -55,7 +55,7 @@ export function FigmaInteractiveViewer({
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
 				<div className="group relative">
-					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-all duration-500 group-hover:blur-2xl" />
+					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-[filter] duration-500 group-hover:blur-2xl" />
 					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur-sm">
 						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
@@ -77,7 +77,7 @@ export function FigmaInteractiveViewer({
 			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
 				<div className="group relative">
-					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-all duration-500 group-hover:blur-2xl" />
+					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-[filter] duration-500 group-hover:blur-2xl" />
 					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur-sm">
 						<div className="relative aspect-[16/9] w-full">
 							<Image
@@ -96,7 +96,7 @@ export function FigmaInteractiveViewer({
 			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
 				<div className="group relative">
-					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-all duration-500 group-hover:blur-2xl" />
+					<div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl transition-[filter] duration-500 group-hover:blur-2xl" />
 					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 p-12 text-center backdrop-blur-sm">
 						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-gray-500" />
 						<p className="text-gray-400">No static preview available for this design.</p>

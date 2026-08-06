@@ -32,7 +32,7 @@ function FeaturedProject({ project }: { project: Project }) {
 						{project.tagline && <p className="text-muted-foreground text-sm">{project.tagline}</p>}
 					</div>
 					<ArrowUpRight
-						className="size-4 shrink-0 text-muted-foreground/60 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand"
+						className="size-4 shrink-0 text-muted-foreground/60 transition-[transform,color] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand"
 						aria-hidden="true"
 					/>
 				</div>

@@ -198,7 +198,7 @@ function RepoCard({ repo }: { repo: GitHubRepo }) {
 			href={repo.html_url}
 			target="_blank"
 			rel="noopener noreferrer"
-			className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
+			className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
 		>
 			<div className="flex items-start justify-between gap-3">
 				<div className="flex min-w-0 items-center gap-2">

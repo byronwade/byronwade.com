@@ -127,7 +127,7 @@ export function DesignCaseStudy({
 					{/* Challenge & Solution */}
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 						{challenge && (
-							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
 										<Target className="h-5 w-5 text-brand" />
@@ -141,7 +141,7 @@ export function DesignCaseStudy({
 						)}
 
 						{solution && (
-							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
 										<CheckCircle className="h-5 w-5 text-green-600" />
@@ -157,7 +157,7 @@ export function DesignCaseStudy({
 
 					{/* Metrics */}
 					{metrics && (
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
 									<TrendingUp className="h-5 w-5 text-brand" />
@@ -228,7 +228,7 @@ export function DesignCaseStudy({
 
 					{/* Color Palette */}
 					{colors.length > 0 && (
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
 									<Palette className="h-5 w-5 text-brand" />
@@ -278,7 +278,7 @@ export function DesignCaseStudy({
 						{processSteps.map((step, index) => (
 							<Card
 								key={step.title}
-								className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl"
+								className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl"
 							>
 								<CardHeader>
 									<CardTitle className="flex items-center gap-3 text-foreground">
@@ -303,7 +303,7 @@ export function DesignCaseStudy({
 						<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 							{/* Tools & Duration */}
 							<div className="space-y-6">
-								<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+								<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
 											<Code className="h-5 w-5 text-brand" />
@@ -321,7 +321,7 @@ export function DesignCaseStudy({
 									</CardContent>
 								</Card>
 
-								<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+								<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 									<CardHeader>
 										<CardTitle className="flex items-center gap-2 text-foreground">
 											<Clock className="h-5 w-5 text-brand" />
@@ -337,7 +337,7 @@ export function DesignCaseStudy({
 							{/* Techniques & Team */}
 							<div className="space-y-6">
 								{technical.techniques.length > 0 && (
-									<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+									<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
 												<Zap className="h-5 w-5 text-brand" />
@@ -357,7 +357,7 @@ export function DesignCaseStudy({
 								)}
 
 								{technical.team && technical.team.length > 0 && (
-									<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+									<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 										<CardHeader>
 											<CardTitle className="flex items-center gap-2 text-foreground">
 												<Users className="h-5 w-5 text-brand" />
@@ -384,7 +384,7 @@ export function DesignCaseStudy({
 				<TabsContent value="results" className="space-y-6">
 					{/* Results List */}
 					{results.length > 0 && (
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-shadow duration-300 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="flex items-center gap-2 text-foreground">
 									<TrendingUp className="h-5 w-5 text-brand" />
@@ -406,7 +406,7 @@ export function DesignCaseStudy({
 
 					{/* Testimonial */}
 					{testimonial && (
-						<Card className="border-brand/20 bg-gradient-to-br from-brand/5 to-brand/10 transition-all duration-300 hover:shadow-xl">
+						<Card className="border-brand/20 bg-gradient-to-br from-brand/5 to-brand/10 transition-shadow duration-300 hover:shadow-xl">
 							<CardContent className="p-8">
 								<blockquote className="mb-4 text-foreground text-lg italic">
 									"{testimonial.quote}"

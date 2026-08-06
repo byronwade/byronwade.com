@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Link } from "@/components/ui/link";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -73,8 +74,8 @@ export default function PrivacyPage() {
 
 				<h2>Contact</h2>
 				<p>
-					Questions about this policy? Reach out through our <a href="/contact">contact page</a> and
-					we&rsquo;ll be happy to help.
+					Questions about this policy? Reach out through our{" "}
+					<Link href="/contact">contact page</Link> and we&rsquo;ll be happy to help.
 				</p>
 			</article>
 		</SiteShell>

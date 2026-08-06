@@ -3,7 +3,6 @@ import {
 	Calendar,
 	ChevronRight,
 	ExternalLink,
-	Figma,
 	FileText,
 	GitBranch,
 	Layers,
@@ -11,7 +10,6 @@ import {
 	Zap,
 } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
@@ -84,8 +82,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		notFound();
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: raw Figma API payload is dynamically shaped
-	const fileData = file as any;
+	const fileData = file;
 
 	// Calculate some metrics from the file data directly (no expensive API calls)
 	const pagesCount = fileData.document?.children?.length || 0;
@@ -121,23 +118,14 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						<div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
 							<div className="flex items-center gap-1">
 								<Calendar className="h-4 w-4 text-brand" />
-								<span>
-									Updated{" "}
-									{new Date(fileData.lastModified || fileData.last_modified).toLocaleDateString()}
-								</span>
+								<span>Updated {new Date(fileData.lastModified).toLocaleDateString()}</span>
 							</div>
-							{fileData.editorType && (
-								<div className="flex items-center gap-1">
-									<Figma className="h-4 w-4 text-brand" />
-									<span className="capitalize">{fileData.editorType}</span>
-								</div>
-							)}
 						</div>
 					</div>
 
 					{/* Metrics Overview */}
 					<div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<FileText className="h-6 w-6 text-brand" />
@@ -149,7 +137,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<Palette className="h-6 w-6 text-brand" />
@@ -161,7 +149,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<Zap className="h-6 w-6 text-brand" />
@@ -173,7 +161,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<BarChart3 className="h-6 w-6 text-brand" />
@@ -202,7 +190,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Components Library */}
 						{fileData.components && Object.keys(fileData.components || {}).length > 0 && (
-							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
 										<Palette className="h-5 w-5 text-brand" />
@@ -211,13 +199,12 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								</CardHeader>
 								<CardContent>
 									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-										{Object.values(fileData.components || {})
+										{Object.entries(fileData.components || {})
 											.slice(0, 6)
-											// biome-ignore lint/suspicious/noExplicitAny: raw Figma component payload is dynamically shaped
-											.map((component: any, index: number) => (
+											.map(([nodeId, component]) => (
 												<Card
-													key={component.key || index}
-													className="border-border/30 bg-background/80 transition-all duration-300 hover:shadow-lg"
+													key={nodeId}
+													className="border-border/30 bg-background/80 transition-shadow duration-300 hover:shadow-lg"
 												>
 													<CardContent className="p-4">
 														<div className="mb-3 flex items-center gap-3">
@@ -233,22 +220,9 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 																</p>
 															</div>
 														</div>
-														{component.thumbnail_url && (
-															<div className="relative aspect-[4/3] overflow-hidden rounded bg-secondary">
-																<Image
-																	src={component.thumbnail_url}
-																	alt={component.name || "Component"}
-																	fill
-																	className="object-contain"
-																	sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-																/>
-															</div>
-														)}
-														{!component.thumbnail_url && (
-															<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
-																<Layers className="h-8 w-8 text-muted-foreground" />
-															</div>
-														)}
+														<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
+															<Layers className="h-8 w-8 text-muted-foreground" />
+														</div>
 													</CardContent>
 												</Card>
 											))}
@@ -350,7 +324,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 					{/* Sidebar */}
 					<div className="space-y-6">
 						{/* File Information */}
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">File Information</CardTitle>
 							</CardHeader>
@@ -360,7 +334,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 									<span className="text-sm">Last Modified</span>
 								</div>
 								<p className="font-medium text-foreground">
-									{new Date(fileData.lastModified || fileData.last_modified).toLocaleDateString()}
+									{new Date(fileData.lastModified).toLocaleDateString()}
 								</p>
 
 								{fileData.version && (
@@ -376,7 +350,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</Card>
 
 						{/* Quick Stats */}
-						<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">Quick Stats</CardTitle>
 							</CardHeader>
@@ -404,7 +378,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Complexity Assessment */}
 						{complexityAssessment && (
-							<Card className="border-border/30 bg-secondary/50 transition-all duration-300 hover:border-brand/30 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="text-foreground">Complexity Assessment</CardTitle>
 								</CardHeader>

@@ -11,7 +11,10 @@ interface FigmaNode {
  * the REST API keyed by node id, so they are read with `Object.keys`, not indexed.
  */
 export interface FigmaFile {
-	components?: Record<string, { key: string; name: string; description?: string }>;
+	components?: Record<
+		string,
+		{ key: string; name: string; description?: string; thumbnail_url?: string }
+	>;
 	document?: FigmaNode;
 	key: string;
 	last_modified: string;

@@ -84,7 +84,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 										)
 									)}
 
-									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-all duration-300 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
+									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-300 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
 								</div>
 
 								{(project.featured || project.flagship) && (proof || leadMetric) && (
