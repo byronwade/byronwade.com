@@ -54,7 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		},
 	];
 
-	const blogSlugs = await getAllBlogSlugs();
+	const [blogSlugs, projectSlugs] = await Promise.all([getAllBlogSlugs(), getAllProjectSlugs()]);
 	const blogPages: MetadataRoute.Sitemap = await Promise.all(
 		blogSlugs.map(async (slug) => {
 			const post = await getBlogPost(slug);
@@ -67,7 +67,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		})
 	);
 
-	const projectSlugs = await getAllProjectSlugs();
 	const projectPages: MetadataRoute.Sitemap = await Promise.all(
 		projectSlugs.map(async (slug) => {
 			const project = await getProject(slug);

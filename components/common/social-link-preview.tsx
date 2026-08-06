@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
@@ -76,7 +76,7 @@ function EmailPreviewContent() {
 	};
 
 	return (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -84,33 +84,33 @@ function EmailPreviewContent() {
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
+			<m.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
 				<Mail className="h-4 w-4 text-amber-700 dark:text-amber-500" />
 				<div>
 					<p className="font-medium text-foreground text-xs">Contact Me</p>
 					<p className="text-[10px] text-muted-foreground">Let's connect</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Email */}
-			<motion.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
+			<m.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
 				<code className="font-mono text-[11px] text-amber-700 dark:text-amber-400">
 					byron@byronwade.com
 				</code>
-			</motion.div>
+			</m.div>
 
 			{/* Availability */}
-			<motion.div variants={itemVariants} className="mb-3 space-y-1">
+			<m.div variants={itemVariants} className="mb-3 space-y-1">
 				{["Available for projects", "Quick response"].map((item) => (
 					<div key={item} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
 						<span className="text-[8px] text-amber-700 dark:text-amber-500">●</span>
 						<span>{item}</span>
 					</div>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.button
+			<m.button
 				variants={itemVariants}
 				onClick={copyEmail}
 				type="button"
@@ -118,27 +118,27 @@ function EmailPreviewContent() {
 			>
 				<AnimatePresence mode="wait">
 					{copied ? (
-						<motion.span
+						<m.span
 							key="copied"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 						>
 							Copied!
-						</motion.span>
+						</m.span>
 					) : (
-						<motion.span
+						<m.span
 							key="copy"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 						>
 							Copy Email
-						</motion.span>
+						</m.span>
 					)}
 				</AnimatePresence>
-			</motion.button>
-		</motion.div>
+			</m.button>
+		</m.div>
 	);
 }
 
@@ -180,7 +180,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 	};
 
 	const renderGitHubContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -188,24 +188,24 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-56"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="mb-3 flex items-center gap-2">
+			<m.div variants={itemVariants} className="mb-3 flex items-center gap-2">
 				<Github className="h-4 w-4 text-muted-foreground" />
 				<span className="font-medium text-foreground text-xs">byronwade</span>
 				<span className="ml-auto text-[10px] text-muted-foreground">Code Activity</span>
-			</motion.div>
+			</m.div>
 
 			{isLoading ? (
-				<motion.div variants={itemVariants} className="flex items-center justify-center py-4">
-					<motion.div
+				<m.div variants={itemVariants} className="flex items-center justify-center py-4">
+					<m.div
 						animate={{ rotate: 360 }}
 						transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
 						className="h-4 w-4 rounded-full border-2 border-brand border-t-transparent"
 					/>
-				</motion.div>
+				</m.div>
 			) : githubStats ? (
 				<>
 					{/* Stats Row */}
-					<motion.div variants={itemVariants} className="mb-3 flex gap-1">
+					<m.div variants={itemVariants} className="mb-3 flex gap-1">
 						{[
 							{ icon: GitCommit, value: githubStats.totalCommits, label: "commits" },
 							{ icon: Folder, value: githubStats.totalRepos, label: "repos" },
@@ -216,14 +216,14 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 								<p className="text-[9px] text-muted-foreground">{stat.label}</p>
 							</div>
 						))}
-					</motion.div>
+					</m.div>
 
 					{/* Mini Contribution Graph - Last 35 days (5 weeks) */}
 					{githubStats.contributionDays.length > 0 && (
-						<motion.div variants={itemVariants} className="mb-3">
+						<m.div variants={itemVariants} className="mb-3">
 							<div className="grid grid-cols-7 gap-[2px]">
 								{githubStats.contributionDays.slice(-35).map((day, idx) => (
-									<motion.div
+									<m.div
 										key={day.date}
 										initial={{ opacity: 0 }}
 										animate={{ opacity: 1 }}
@@ -233,15 +233,15 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 									/>
 								))}
 							</div>
-						</motion.div>
+						</m.div>
 					)}
 
 					{/* Languages Bar */}
 					{githubStats.topLanguages.length > 0 && (
-						<motion.div variants={itemVariants}>
+						<m.div variants={itemVariants}>
 							<div className="mb-1.5 flex h-1.5 overflow-hidden rounded-full bg-muted">
 								{githubStats.topLanguages.slice(0, 4).map((lang) => (
-									<motion.div
+									<m.div
 										key={lang.name}
 										initial={{ scaleX: 0 }}
 										animate={{ scaleX: 1 }}
@@ -265,13 +265,13 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 									</span>
 								))}
 							</div>
-						</motion.div>
+						</m.div>
 					)}
 				</>
 			) : null}
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://github.com/byronwade"
 				target="_blank"
@@ -279,12 +279,12 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				className="mt-3 block w-full rounded bg-muted py-1.5 text-center font-medium text-[10px] text-foreground transition-colors hover:bg-muted/80"
 			>
 				View Profile
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderLinkedInContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -292,24 +292,24 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="mb-3 flex items-center gap-2">
+			<m.div variants={itemVariants} className="mb-3 flex items-center gap-2">
 				<Linkedin className="h-4 w-4 text-[#0a66c2]" />
 				<div>
 					<p className="font-medium text-foreground text-xs">Byron Wade</p>
 					<p className="text-[10px] text-muted-foreground">Full Stack Developer</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Experience */}
-			<motion.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
+			<m.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
 				<p className="font-semibold text-foreground text-sm">8+ Years</p>
 				<p className="text-[10px] text-muted-foreground">Web Development & Business</p>
-			</motion.div>
+			</m.div>
 
 			{/* Skills */}
-			<motion.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
+			<m.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
 				{["React", "Next.js", "TypeScript", "Node.js"].map((skill, idx) => (
-					<motion.span
+					<m.span
 						key={skill}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
@@ -317,12 +317,12 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 						className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-foreground"
 					>
 						{skill}
-					</motion.span>
+					</m.span>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://linkedin.com/in/byronwade"
 				target="_blank"
@@ -330,12 +330,12 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				className="block w-full rounded bg-[#0a66c2] py-1.5 text-center font-medium text-[10px] text-white transition-colors hover:bg-[#004182]"
 			>
 				View Profile
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderTwitterContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -343,26 +343,26 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
+			<m.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
 				<Twitter className="h-4 w-4 text-foreground" />
 				<div>
 					<p className="font-medium text-foreground text-xs">Byron Wade</p>
 					<p className="text-[10px] text-muted-foreground">@byron_c_wade</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Bio */}
-			<motion.p
+			<m.p
 				variants={itemVariants}
 				className="mb-2.5 text-[11px] text-foreground/80 leading-relaxed"
 			>
 				Building tools for service professionals. Always shipping.
-			</motion.p>
+			</m.p>
 
 			{/* Topics */}
-			<motion.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
+			<m.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
 				{["#webdev", "#nextjs", "#typescript"].map((tag, idx) => (
-					<motion.span
+					<m.span
 						key={tag}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
@@ -370,12 +370,12 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 						className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
 					>
 						{tag}
-					</motion.span>
+					</m.span>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://twitter.com/byron_c_wade"
 				target="_blank"
@@ -383,8 +383,8 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 				className="block w-full rounded bg-primary py-1.5 text-center font-medium text-[10px] text-primary-foreground transition-colors hover:bg-primary/90"
 			>
 				Follow on X
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderEmailContent = () => <EmailPreviewContent />;
@@ -405,22 +405,24 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 	};
 
 	return (
-		<HoverCard
-			open={isOpen}
-			onOpenChange={(open) => {
-				setIsOpen(open);
-				if (open && platform === "github" && !githubStats && !isLoading) {
-					fetchGitHubStats();
-				}
-			}}
-		>
-			<HoverCardTrigger render={children as React.ReactElement} />
-			<HoverCardContent
-				className="z-[9999] rounded-lg border border-border bg-popover p-3 shadow-2xl"
-				sideOffset={8}
+		<LazyMotion features={domAnimation} strict>
+			<HoverCard
+				open={isOpen}
+				onOpenChange={(open) => {
+					setIsOpen(open);
+					if (open && platform === "github" && !githubStats && !isLoading) {
+						fetchGitHubStats();
+					}
+				}}
 			>
-				<AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
-			</HoverCardContent>
-		</HoverCard>
+				<HoverCardTrigger render={children as React.ReactElement} />
+				<HoverCardContent
+					className="z-[9999] rounded-lg border border-border bg-popover p-3 shadow-2xl"
+					sideOffset={8}
+				>
+					<AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
+				</HoverCardContent>
+			</HoverCard>
+		</LazyMotion>
 	);
 }

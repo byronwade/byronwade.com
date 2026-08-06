@@ -20,7 +20,13 @@ function parseTags(raw: unknown): string[] | undefined {
 	if (!Array.isArray(raw)) {
 		return;
 	}
-	const tags = raw.map((tag) => String(tag).trim()).filter(Boolean);
+	const tags = raw.reduce<string[]>((acc, tag) => {
+		const trimmed = String(tag).trim();
+		if (trimmed) {
+			acc.push(trimmed);
+		}
+		return acc;
+	}, []);
 	return tags.length > 0 ? tags : undefined;
 }
 

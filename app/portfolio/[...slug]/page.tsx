@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { CheckCircle, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +9,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { projects } from "@/lib/portfolio-data";
+import { cn } from "@/lib/utils";
+
+/** Staggered entrance for the gallery, matching the reveal utilities in globals.css. */
+const REVEAL_DELAYS = [
+	"reveal-delay-1",
+	"reveal-delay-2",
+	"reveal-delay-3",
+	"reveal-delay-4",
+] as const;
 
 export default function ProjectDetailsPage(props: { params: Promise<{ slug: string[] }> }) {
 	const params = use(props.params);
@@ -25,11 +33,7 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 			{/* Hero Section */}
 			<div className="relative bg-secondary/50">
 				<div className="container mx-auto px-4 py-24 sm:py-32">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
-					>
+					<div className="reveal">
 						<Badge variant="outline">{project.status}</Badge>
 						<h1 className="mt-4 font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl">
 							{project.title}
@@ -60,7 +64,7 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 								</Button>
 							)}
 						</div>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 
@@ -74,11 +78,9 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 							<h2 className="mb-8 font-bold text-3xl">Gallery</h2>
 							<div className="grid grid-cols-1 gap-8">
 								{project.gallery.map((src, index) => (
-									<motion.div
+									<div
 										key={src}
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{ delay: index * 0.1 }}
+										className={cn("reveal", REVEAL_DELAYS[index % REVEAL_DELAYS.length])}
 									>
 										<Image
 											src={src}
@@ -87,7 +89,7 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 											height={800}
 											className="rounded-lg object-cover shadow-lg"
 										/>
-									</motion.div>
+									</div>
 								))}
 							</div>
 						</div>

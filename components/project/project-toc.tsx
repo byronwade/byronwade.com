@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TocItem } from "@/lib/markdown-utils";
 import { cn } from "@/lib/utils";
 
@@ -65,7 +65,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 		return () => observer.disconnect();
 	}, [items]);
 
-	const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+	const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
 		event.preventDefault();
 		const el = document.getElementById(id);
 		if (!el) {
@@ -79,7 +79,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 		}
 		el.setAttribute("tabindex", "-1");
 		el.focus({ preventScroll: true });
-	}, []);
+	};
 
 	if (items.length < 3) {
 		return null;
