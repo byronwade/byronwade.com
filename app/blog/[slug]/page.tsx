@@ -49,22 +49,13 @@ export async function generateMetadata({
 		title: post.title,
 		description:
 			post.excerpt ||
-			`Read ${post.title} by Byron Wade. Full-stack developer insights, web development tips, and performance optimization strategies.`,
-		keywords: [
-			"Blog",
-			"Web Development",
-			"JavaScript",
-			"React",
-			"Next.js",
-			"Programming",
-			"Tutorial",
-			...(post.tags ?? []),
-		],
+			`Read ${post.title} by Byron Wade, with lessons from plumbing, field service, product, and software.`,
+		keywords: ["Blog", "Byron Wade", ...(post.tags ?? [])],
 		image: ogImage,
 		type: "article",
 		author: "Byron Wade",
 		publishedTime: post.date,
-		modifiedTime: post.date,
+		modifiedTime: post.updated ?? post.date,
 		tags: post.tags ?? [],
 		canonical: url,
 	});
@@ -91,7 +82,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 		description: post.excerpt || "",
 		author: "Byron Wade",
 		publishedTime: post.date,
-		modifiedTime: post.date,
+		modifiedTime: post.updated ?? post.date,
 		image: ogImage,
 		url,
 		tags: post.tags,
@@ -130,6 +121,14 @@ async function BlogPostContent({ slug }: { slug: string }) {
 					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-muted-foreground text-xs tabular-nums">
 						{post.date && (
 							<time dateTime={post.date}>{format(new Date(post.date), "MMMM d, yyyy")}</time>
+						)}
+						{post.updated && post.updated !== post.date && (
+							<>
+								<span aria-hidden="true">·</span>
+								<time dateTime={post.updated}>
+									Updated {format(new Date(post.updated), "MMMM d, yyyy")}
+								</time>
+							</>
 						)}
 						<span aria-hidden="true">·</span>
 						<span>{post.readingTime} min read</span>
