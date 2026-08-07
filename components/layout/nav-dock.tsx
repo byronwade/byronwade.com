@@ -37,7 +37,7 @@ function NavDockItem({ item, pathname }: { item: NavItem; pathname: string }) {
 }
 
 /**
- * Primary navigation dock — a `--dock`-toned capsule of destinations, floating
+ * Primary navigation dock: a `--dock`-toned capsule of destinations, floating
  * centered (top on sm+, bottom on phones). Utility actions (search, GitHub, theme,
  * donate) live in the far-right DockToolbar; this dock is navigation only.
  */

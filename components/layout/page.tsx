@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Page-level typographic structure — the pieces every route was hand-rolling.
+ * Page-level typographic structure: the pieces every route was hand-rolling.
  *
  * Before this file, seven routes each wrote their own `h1` class string and
  * their own title/lede spacing, and they had drifted: three different heading
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  * every page re-declares the role from scratch.
  *
  * These are foundation, not templates. §7.1 requires each route to keep its own
- * organizing move and §13 rejects one layout repeated across unrelated pages —
+ * organizing move and §13 rejects one layout repeated across unrelated pages
  * so what is shared here is the *identity* block and the *turn* in the argument,
  * never the arrangement of the content beneath them.
  */
@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
  * Route or object identity. One per page, per §5.2.
  *
  * `lede` is the single orientation passage; anything longer belongs in the body.
- * `aside` is for a control that acts on the whole page — a refresh, a print —
+ * `aside` is for a control that acts on the whole page, a refresh, a print
  * and sits opposite the title rather than under the lede, so it never reads as
  * the page's primary action.
  */
@@ -52,7 +52,7 @@ export function PageHeader({
 }
 
 /**
- * Long-form document body — the legal pages.
+ * Long-form document body: the legal pages.
  *
  * These two pages were the only users of `@tailwindcss/typography`, which meant
  * the site shipped two type scales: the plugin's on `/privacy` and `/terms`, and
@@ -82,7 +82,7 @@ export function Prose({ children, className }: { children: ReactNode; className?
 /**
  * A major turn in the page's argument (§5.2 "section heading").
  *
- * `link` is the escape hatch to the full index — the pattern the homepage
+ * `link` is the escape hatch to the full index, the pattern the homepage
  * sections were each re-implementing with slightly different colours and
  * arrow glyphs.
  */

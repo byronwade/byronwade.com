@@ -16,11 +16,11 @@ Here is a technical deep dive into how Rebuzzle works, moving beyond simple prom
 
 Rebuzzle is built on a modern, production-ready stack designed for modularity and scale. At its core, it utilizes **Next.js 15** and the **Vercel AI SDK**, backed by **MongoDB** for vector storage and analytics.
 
-The system isn't static; it operates on a serverless, event-driven model. This allows the infrastructure to scale automatically, handling the rigorous computational demands of vector embeddings and multi-step AI reasoning without maintaining expensive, idle servers.
+The system isn't static. It operates on a serverless, event-driven model. This allows the infrastructure to scale automatically, handling the rigorous computational demands of vector embeddings and multi-step AI reasoning without maintaining expensive, idle servers.
 
 ## The Core: Multi-Agent Orchestration
 
-The secret sauce of Rebuzzle isn't a single prompt; it's a team of four specialized AI agents working in concert. Using the Vercel AI SDK, we orchestrate these agents to mimic a human editorial team:
+The secret sauce of Rebuzzle isn't a single prompt. It's a team of four specialized AI agents working in concert. Using the Vercel AI SDK, we orchestrate these agents to mimic a human editorial team:
 
 1.  **The Generator Agent:** Uses Chain-of-Thought (CoT) reasoning to conceptualize the puzzle. It doesn't just "guess"; it plans a visual strategy, considers phonetic relationships, and drafts the content.
 
@@ -60,7 +60,7 @@ If a puzzle is marked as "Medium" difficulty but has a 90% abandonment rate, the
 
 ## Conclusion
 
-Rebuzzle represents a shift from simple generative AI to **agentic AI workflows**. By combining chain-of-thought reasoning, adversarial testing, and vector search, we've created a system that doesn't just generate content, it thinks, evaluates, and learns.
+Rebuzzle represents a shift from simple generative AI to **agentic AI workflows**. By combining chain-of-thought reasoning, adversarial testing, and vector search, we've created a system that does does more than generate content. It thinks, evaluates, and learns.
 
 Visit [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) to start solving today's puzzle.
 

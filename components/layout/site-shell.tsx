@@ -7,7 +7,7 @@ interface SiteShellProps {
 	width?: "narrow" | "wide";
 }
 
-/** Content width + gutter wrapper — header/footer/background come from SiteLayout */
+/** Content width + gutter wrapper, header/footer/background come from SiteLayout */
 export function SiteShell({ children, width = "narrow", className }: SiteShellProps) {
 	const maxWidth = width === "narrow" ? "max-w-2xl" : "max-w-5xl";
 

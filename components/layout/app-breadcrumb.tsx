@@ -15,10 +15,10 @@ const NAV_RESERVE = 420;
 const GAP = 12;
 
 /**
- * Breadcrumb pill — a matched-sibling overlay in the top-left header group, sharing
+ * Breadcrumb pill: a matched-sibling overlay in the top-left header group, sharing
  * the corner-pill material with the launcher (40px, dark `--dock`, `rounded-3xl`).
- * Ported from the byronwade-ui chrome. Renders the full trail responsively —
- * collapsing to `root / … / current` on desktop and `‹ Current` on mobile — with
+ * Ported from the byronwade-ui chrome. Renders the full trail responsively
+ * collapsing to `root / … / current` on desktop and `‹ Current` on mobile, with
  * the collapse budget computed from stable inputs (viewport width, pinned left
  * edge, the nav reserve).
  */
@@ -72,9 +72,9 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 
 	return (
 		// This pill shares the top row with two other fixed elements: the launcher
-		// to its left and the centre-anchored nav dock. It was overlapping both —
-		// the toolbar painted over it at 390px, and a long page title ran straight
-		// under the nav dock at 1440px. The ceiling is now the distance from the
+		// to its left and the centre-anchored nav dock. It was overlapping both of
+		// them. The toolbar painted over it at 390px, and a long page title ran
+		// straight under the nav dock at 1440px. The ceiling is now the distance from the
 		// launcher to the dock's left edge (half the viewport, less half the dock
 		// and the launcher), and it only renders where that distance is usable.
 		// Nothing is lost below `lg`: the nav dock already shows the section.
@@ -82,7 +82,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 			aria-label="Breadcrumb"
 			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
 		>
-			{/* DESKTOP — full trail, collapsing to root / … / current. */}
+			{/* DESKTOP, full trail, collapsing to root / … / current. */}
 			<ol
 				ref={rootRef}
 				style={maxW === Number.POSITIVE_INFINITY ? undefined : { maxWidth: maxW }}
@@ -135,7 +135,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 				)}
 			</ol>
 
-			{/* MOBILE — current only, with a back-chevron to the parent level. */}
+			{/* MOBILE, current only, with a back-chevron to the parent level. */}
 			<ol className="flex min-w-0 items-center gap-1 sm:hidden">
 				{parent && (
 					<li className="flex shrink-0 items-center">
@@ -153,7 +153,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 				</li>
 			</ol>
 
-			{/* Hidden measuring twin — always the full desktop row. */}
+			{/* Hidden measuring twin, always the full desktop row. */}
 			<ol
 				ref={twinRef}
 				aria-hidden="true"

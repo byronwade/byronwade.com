@@ -16,7 +16,7 @@ const WHITESPACE = /\s+/;
 const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
-/** X (formerly Twitter) brand glyph — lucide's `X` is the close icon, not the logo. */
+/** X (formerly Twitter) brand glyph, lucide's `X` is the close icon, not the logo. */
 function XIcon({ className }: { className?: string }) {
 	return (
 		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
@@ -71,7 +71,7 @@ function go(href: string, router: ReturnType<typeof useRouter>) {
 }
 
 /**
- * Far-right utility toolbar — search · GitHub · theme · donate. Shares the
+ * Far-right utility toolbar: search · GitHub · theme · donate. Shares the
  * `--dock` capsule material with the nav dock and launcher. The capsule **morphs
  * in place** into one of two panels: the ⌘K search spotlight, or a donation ask
  * (the pink heart). Ported from the byronwade-ui dock morph; right-anchored so the
@@ -118,7 +118,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		[close, router]
 	);
 
-	/* — slot sizing: keep the reserved footprint synced to the compact pill — */
+	/*, slot sizing: keep the reserved footprint synced to the compact pill ,  */
 	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 40 });
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
@@ -154,7 +154,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		deps: [mode],
 	});
 
-	/* — follow the panel's live size while open (results filtering, mode swap) — */
+	/*, follow the panel's live size while open (results filtering, mode swap) ,  */
 	useIsoLayoutEffect(() => {
 		const morph = morphRef.current;
 		const panel = panelRef.current;
@@ -186,7 +186,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 			?.scrollIntoView({ block: "nearest" });
 	}, [active, mode]);
 
-	/* — global ⌘K toggles search — */
+	/*, global ⌘K toggles search ,  */
 	React.useEffect(() => {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -203,7 +203,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		};
 	}, []);
 
-	/* — Esc + click-away close — */
+	/*. Esc + click-away close ,  */
 	React.useEffect(() => {
 		if (!open) {
 			return;
@@ -275,13 +275,13 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	return (
 		<TooltipProvider delay={350}>
 			<div className="pointer-events-none fixed top-3 right-3 z-50 print:hidden">
-				{/* SLOT — reserves the collapsed pill's footprint so nothing reflows. */}
+				{/* SLOT, reserves the collapsed pill's footprint so nothing reflows. */}
 				<div
 					ref={rootRef}
 					style={{ width: slot.w || undefined, height: slot.h }}
 					className="pointer-events-none relative"
 				>
-					{/* MORPH CAPSULE — right-anchored; blooms down and to the left. */}
+					{/* MORPH CAPSULE, right-anchored; blooms down and to the left. */}
 					<div
 						ref={morphRef}
 						className={cn(
@@ -289,7 +289,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							open ? "rounded-2xl" : "rounded-3xl"
 						)}
 					>
-						{/* COMPACT — the toolbar. */}
+						{/* COMPACT, the toolbar. */}
 						<div
 							ref={compactRef}
 							className={cn(
@@ -385,7 +385,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							</Tooltip>
 						</div>
 
-						{/* PANEL — the morph target (search spotlight or donation ask). */}
+						{/* PANEL, the morph target (search spotlight or donation ask). */}
 						<div
 							ref={panelRef}
 							id={panelId}
@@ -414,7 +414,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									<p className="text-[13px] text-dock-foreground leading-relaxed">
 										Donations keep my open-source projects free and maintained. And every month I
 										give <span className="font-semibold text-dock-active-foreground">20%</span> of
-										what I receive to a non-profit of my choice — so a little goes a long way.
+										what I receive to a non-profit of my choice, so a little goes a long way.
 									</p>
 									<a
 										href={SPONSOR_URL}

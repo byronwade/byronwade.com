@@ -8,12 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 
 /**
- * Homepage "writing" — the second turn.
+ * Homepage "writing". The second turn.
  *
  * Same index primitives as selected work, deliberately different row content:
  * §7.1 gives the blog chronology-with-the-lede-visible, so a row carries the
  * excerpt and its date rather than outcomes and metrics. Sharing the structure
- * while differing in substance is the point — the alternative was two hand-made
+ * while differing in substance is the point. The alternative was two hand-made
  * copies of the same markup that had already drifted apart.
  */
 async function BlogList() {

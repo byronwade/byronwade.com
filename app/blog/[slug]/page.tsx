@@ -117,8 +117,8 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    flush against the article's first paragraph. */}
 			<div className="flex w-full flex-col gap-10">
 				{/* The article's own identity block. Three levels of single-child <div>
-			    wrapper were removed with it, and the share row moved to the foot —
-			    sharing is something a reader does after reading, and having it in
+			    wrapper were removed with it, and the share row moved to the foot.
+			    Sharing is something a reader does after reading, and having it in
 			    both places meant the same control competed with itself. */}
 				<header className="reveal flex w-full flex-col gap-3">
 					<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">

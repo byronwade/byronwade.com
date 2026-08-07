@@ -4,7 +4,7 @@ import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 
 /**
- * Site footer — Shared profile.
+ * Site footer: Shared profile.
  *
  * Rebuilt to use the site's own grammar rather than the generic
  * logo/tagline/link-column/social-circles template: hairline rules, mono
@@ -32,7 +32,7 @@ const SOCIAL = [
 
 /**
  * One social link. The GitHub activity card moved here with the social links
- * when the homepage opening was cut back to a single action — hovering a GitHub
+ * when the homepage opening was cut back to a single action. Hovering a GitHub
  * link to see the profile is where a visitor expects it, and §6.1 rates a hover
  * card as occasional rather than repeated exposure.
  */
@@ -85,7 +85,7 @@ export default function Footer() {
 					</div>
 
 					{/* No rule per row. §13 rejects borders around every row, and at footer
-					    width these were short ragged dashes rather than structure — the
+					    width these were short ragged dashes rather than structure. The
 					    spacing already separates five links. */}
 					<nav aria-label="Footer" className="flex flex-col gap-2">
 						{NAV.map((link) => (

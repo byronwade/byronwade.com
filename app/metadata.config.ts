@@ -5,7 +5,7 @@ export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
 	title: {
 		template: "%s | Byron Wade",
-		default: "Byron Wade — Software for Service Businesses",
+		default: "Byron Wade, Software for Service Businesses",
 	},
 	description:
 		"Full-stack developer and operator building products for service businesses. From a $2.4M plumbing company to Thorbis, Goodmarks, and modern Next.js apps.",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 		locale: "en_US",
 		alternateLocale: "en_GB",
 		siteName: "Byron Wade",
-		title: "Byron Wade — Software for Service Businesses",
+		title: "Byron Wade, Software for Service Businesses",
 		description:
 			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
 		url: "https://byronwade.com",
@@ -73,13 +73,13 @@ export const metadata: Metadata = {
 				).toString(),
 				width: 1200,
 				height: 630,
-				alt: "Byron Wade — Software for Service Businesses",
+				alt: "Byron Wade, Software for Service Businesses",
 			},
 		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Byron Wade — Software for Service Businesses",
+		title: "Byron Wade, Software for Service Businesses",
 		description:
 			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
 		creator: "@byron_c_wade",

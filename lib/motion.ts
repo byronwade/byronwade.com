@@ -3,7 +3,7 @@
  *
  * JS-driven animation (the capsule morph, the theme wipe) needs the same curves
  * and durations CSS uses. Reading them at call time rather than re-declaring
- * them keeps one scale — `DESIGN.md` §6.2. Before this existed the same
+ * them keeps one scale: `DESIGN.md` §6.2. Before this existed the same
  * `cubic-bezier` literal was copy-pasted into four files.
  *
  * The fallbacks match globals.css and only apply during SSR, where no computed

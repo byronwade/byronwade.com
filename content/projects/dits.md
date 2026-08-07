@@ -1,22 +1,21 @@
 ---
-title: "Dits — Media-First Version Control"
+title: "Dits, Media-First Version Control"
 url: "https://dits.byronwade.com"
 category: "Hobby"
 type: "hobby"
 date: 2025-12-09
-excerpt: "A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and other binary beasts."
+excerpt: "A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and everything else Git was never built for."
 ---
 
-# Dits — Media-First Version Control (Longform Portfolio Summary)
+# Dits, Media-First Version Control
 
-A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and other binary beasts. This document is a website-ready, 1000+ line explainer that blends product value, architecture, safety guarantees, roadmap, and operations—all distilled from the `docs/` corpus.
+Dits is a Git-style, content-addressed version control system I built for large
+media files. Video, game builds, 3D scenes, RAW photo libraries, and everything
+else that Git chokes on.
 
-## How to Use This Summary
-
-- Share as a project profile on a personal site or portfolio.
-- Lift sections for talks, one-pagers, or RFP answers.
-- Skim top sections for story; dive into appendices for technical depth.
-- All statements align with the documented architecture, APIs, and operations playbooks in `docs/`.
+The write-up below goes deep. The early sections cover why it exists and how it
+works, and the later ones get into the architecture and the operational side. If
+you only want the idea, the first few sections are enough.
 
 ## Table of Contents (Quick Jump)
 
@@ -60,22 +59,22 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Content-defined chunking so only changed bytes move.
 - Format-aware: keeps MP4 atoms intact, aligns to keyframes.
 - QUIC delta sync with Bloom-filter-based have/want negotiation.
-- Virtual filesystem mounts for on-demand hydration; locks prevent binary conflicts.
-- Open core you can self-host; optional cloud (Ditshub) shares the same protocol.
+- Virtual filesystem mounts for on-demand hydration. Locks prevent binary conflicts.
+- Open core you can self-host. Optional cloud (Ditshub) shares the same protocol.
 
 ## The Problem Space
 
 - Traditional VCS treats every binary edit as a full-file replacement.
 - Cloud drives are ad hoc: duplicate copies, unclear provenance, weak history.
-- Rendered video re-encodes rewrite all bytes; small tweaks cost gigabytes.
-- Game builds and 3D scenes are non-mergeable; teams serialize work via naming.
+- Rendered video re-encodes rewrite all bytes. Small tweaks cost gigabytes.
+- Game builds and 3D scenes are non-mergeable. Teams serialize work via naming.
 - Bandwidth remains scarce relative to 4K/8K asset sizes.
-- Creative pipelines span multiple tools; proprietary project formats trap history.
+- Creative pipelines span multiple tools. Proprietary project formats trap history.
 - Teams lack reproducibility: “Which build shipped?” often cannot be answered.
 
 ## One-Line Solution
 
-- A content-addressed, FastCDC-chunked VCS with manifest-driven file recipes, QUIC-based delta sync, keyframe-aware media handling, and a virtual filesystem for just-in-time hydration—so media versions travel as small deltas, not multi-gigabyte blobs.
+- A content-addressed, FastCDC-chunked VCS with manifest-driven file recipes, QUIC-based delta sync, keyframe-aware media handling, and a virtual filesystem for just-in-time hydration, so media versions travel as small deltas, not multi-gigabyte blobs.
 
 ## Who It Serves
 
@@ -90,34 +89,34 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 - Stores only changed chunks, not whole files.
 - Deduplicates across files, versions, and even repositories when shared.
-- Respects media structure: no chunking through MP4 `moov`; keyframes stay intact.
+- Respects media structure: no chunking through MP4 `moov`. Keyframes stay intact.
 - Partial clone and on-demand hydration replace full repo downloads.
-- Explicit locks prevent binary conflicts; merge semantics reserved for mergeable project files.
-- Open protocol and formats; no vendor lock-in.
+- Explicit locks prevent binary conflicts. Merge semantics reserved for mergeable project files.
+- Open protocol and formats. No vendor lock-in.
 
 ## Core Architecture (Two-Layer Model)
 
-- Layer 1: Universal bucket — every file chunked via FastCDC, hashed with BLAKE3, stored in a content-addressable store.
-- Layer 2: Smart, file-type-aware logic — domain-specific behaviors for video, games, 3D, and photo to maximize dedup and preserve playability.
-- Commits: DAG of manifests (file recipes) and trees; Git-like operations with binary awareness.
+- Layer 1: Universal bucket. every file chunked via FastCDC, hashed with BLAKE3, stored in a content-addressable store.
+- Layer 2: Smart, file-type-aware logic. domain-specific behaviors for video, games, 3D, and photo to maximize dedup and preserve playability.
+- Commits: DAG of manifests (file recipes) and trees. Git-like operations with binary awareness.
 - Project graphs: optional higher-level graphs for timelines/builds/dependencies.
 
 ## Content Pipeline (FastCDC → BLAKE3 → CAS)
 
-- Ingest: stream file bytes through FastCDC; boundaries adapt to content.
+- Ingest: stream file bytes through FastCDC. Boundaries adapt to content.
 - Hash: each chunk hashed via BLAKE3 for speed and parallelism.
 - Store: content-addressable store ensures duplicates are stored once.
 - Manifest: file version = ordered list of chunk refs + metadata.
 - Tree/Commit: repository state = map of paths to manifests, wrapped in a commit.
-- Rebuild: read manifest → concatenate chunks → emit file; checksums verified on read.
+- Rebuild: read manifest → concatenate chunks → emit file. Checksums verified on read.
 
 ## Manifest and Index Formats (Highlights)
 
 - Manifest header: magic `MANI`, version, compression flags, checksums, timestamps, repo/commit ids.
 - Manifest entries: path, entry type, mode, size, content hash, chunk list, metadata, asset metadata, timestamps.
 - ChunkRef flags: keyframe, metadata, encrypted, storage class, compressed size optional.
-- Index: `.dits/index` caches staging/working tree; tracks chunk indices, locks, split index, untracked cache, fsmonitor.
-- Atomicity: temp + rename; journal-based recovery for index integrity.
+- Index: `.dits/index` caches staging/working tree. Tracks chunk indices, locks, split index, untracked cache, fsmonitor.
+- Atomicity: temp + rename. Journal-based recovery for index integrity.
 
 ## Data Structures (Canonical Objects)
 
@@ -127,33 +126,33 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Commit: hash, parents, tree hash, author/committer, message, timestamp.
 - Branch: mutable ref to commit.
 - Tag: immutable ref to commit.
-- Lock: tracked in index; server-coordinated for multi-user workflows.
-- Remote: endpoint + auth; supports S3-compatible storage and QUIC transport.
+- Lock: tracked in index. Server-coordinated for multi-user workflows.
+- Remote: endpoint + auth. Supports S3-compatible storage and QUIC transport.
 - Reflog: planned history of ref movements for recovery.
 
 ## Algorithms (FastCDC, Keyframe Alignment, Bloom Filters, Delta Sync)
 
 - FastCDC: rolling gear hash, content-defined boundaries, min/avg/max sizing, normalization for smooth distributions.
 - Keyframe alignment: parses ISOBMFF (`stss`, `stsz`, `stco/co64`, `stsc`) to align chunk boundaries to keyframes when feasible.
-- Transparent decompression: checksum-verified reads with optional on-the-fly decompress; always verify BLAKE3 post-read.
+- Transparent decompression: checksum-verified reads with optional on-the-fly decompress. Always verify BLAKE3 post-read.
 - Bloom filters: compress “have” sets for sync; ~1KB can represent ~10k chunks with low FP rate.
-- Delta sync: have/want negotiation to upload only missing chunks; resumable transfers.
+- Delta sync: have/want negotiation to upload only missing chunks. Resumable transfers.
 - QUIC tuning: idle timeouts, stream limits, congestion control for high throughput.
 
 ## Sync and Transport (QUIC Wire Protocol)
 
 - Frames: magic `DITS`, version, type, flags (compressed/encrypted/chunked/final), payload length, request id, payload.
 - Message types: PING/PONG, AUTH/AUTH_OK/FAIL, CHECK/UPLOAD/DOWNLOAD, MANIFEST GET/PUSH, SYNC REQUEST/RESPONSE, BLOOM_FILTER, DELTA_REQUEST/DATA.
-- Resumable upload: server tracks confirmed bytes; client resumes from last ack.
-- Multiplexing: concurrent streams over one QUIC connection; keep-alives for liveness.
-- Security: TLS 1.3 over QUIC; planned client-side convergent encryption phase.
+- Resumable upload: server tracks confirmed bytes. Client resumes from last ack.
+- Multiplexing: concurrent streams over one QUIC connection. Keep-alives for liveness.
+- Security: TLS 1.3 over QUIC. Planned client-side convergent encryption phase.
 
 ## Virtual Filesystem and Locking
 
-- VFS: FUSE/WinFSP mount exposes repo as a drive; hydrates chunks on access; prefers local cache.
-- Partial clone: list files without full download; hydrate on-demand.
-- Locking: explicit locks for non-mergeable binaries; lock state reflected in index and enforced via server coordination.
-- Read-only when locked by others; writable when owned; prevents silent conflicts.
+- VFS: FUSE/WinFSP mount exposes repo as a drive. Hydrates chunks on access. Prefers local cache.
+- Partial clone: list files without full download. Hydrate on-demand.
+- Locking: explicit locks for non-mergeable binaries. Lock state reflected in index and enforced via server coordination.
+- Read-only when locked by others. Writable when owned. Prevents silent conflicts.
 
 ## Storage Layout and Garbage Collection
 
@@ -169,48 +168,48 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 - Client L1: in-memory LRU for hot chunks.
 - Client L2: disk cache in `.dits/objects` for recently accessed chunks.
-- Server cache: tuneable per backend; optional Redis for coordination.
-- Prefetch: when reading chunk N, prefetch N+1/N+2; keyframe-aware hints.
+- Server cache: tuneable per backend. Optional Redis for coordination.
+- Prefetch: when reading chunk N, prefetch N+1/N+2. Keyframe-aware hints.
 - Bloom filter exchange reduces have-list bandwidth.
 
 ## Security and Safety Checklist
 
 - Mandatory checksum verification on every read (BLAKE3).
-- No hardcoded secrets; environment/vault only.
-- Parameterized queries; avoid string concatenation for SQL.
-- TLS 1.3 on transport; QUIC security.
-- Advisory locks for atomic ref counts; row locks on critical paths.
+- No hardcoded secrets. Environment/vault only.
+- Parameterized queries. Avoid string concatenation for SQL.
+- TLS 1.3 on transport. QUIC security.
+- Advisory locks for atomic ref counts. Row locks on critical paths.
 - Input validation at boundaries: path traversal rejection, size limits, absolute-path rejection from clients.
 - Locking and audit logging for sensitive operations.
-- Rate limiting on public endpoints; resource-level permissions.
+- Rate limiting on public endpoints. Resource-level permissions.
 - Planned convergent encryption with per-repo salt and RBAC key hierarchy.
-- Deterministic nonces prohibited; use content hash + randomness for AEAD.
+- Deterministic nonces prohibited. Use content hash + randomness for AEAD.
 
 ## Performance Targets and Benchmarks
 
 - Chunk 1GB: <5s with FastCDC + parallel hashing.
 - Hash 1GB: <1s with BLAKE3 parallelism.
-- LAN upload: >500 MB/s; WAN: saturate link.
+- LAN upload: >500 MB/s. WAN: saturate link.
 - Clone 10GB: <2 minutes on 1 Gbps with cache.
 - Status: <100ms with index/untracked cache/fsmonitor.
-- VFS open: <50ms when cached; streamed when missing.
+- VFS open: <50ms when cached. Streamed when missing.
 - Bloom filter have-list: ~1KB for ~10k chunks at ~1% FP.
 
 ## Deployment and Self-Hosting
 
-- Docker Compose: dits-server + Postgres + Redis + MinIO; env vars for DB/Redis/S3/JWT.
-- Kubernetes: separate config/secrets; readiness/liveness probes; horizontal scaling; persistent volumes for caches.
-- S3-compatible storage supported; direct chunk upload; metadata in Postgres.
+- Docker Compose: dits-server + Postgres + Redis + MinIO. Env vars for DB/Redis/S3/JWT.
+- Kubernetes: separate config/secrets. Readiness/liveness probes. Horizontal scaling. Persistent volumes for caches.
+- S3-compatible storage supported. Direct chunk upload. Metadata in Postgres.
 - Tuning: QUIC parameters, cache sizes, GC windows, lifecycle policies for hot/warm/cold storage.
 
 ## Operations and Runbooks (Highlights)
 
-- Network drops: QUIC resumability; resume from confirmed bytes.
+- Network drops: QUIC resumability. Resume from confirmed bytes.
 - Cache corruption: checksum detect → refetch → quarantine bad objects.
-- Lock contention: expose status; admins clear stale locks with audit trail.
-- High latency: tune QUIC cwnd/streams/keep-alive; use proxy/hologram mode.
+- Lock contention: expose status. Admins clear stale locks with audit trail.
+- High latency: tune QUIC cwnd/streams/keep-alive. Use proxy/hologram mode.
 - Storage pressure: run GC, move cold chunks, monitor object growth.
-- Runbooks: service down, scaling, database issues, high latency—all documented in `docs/operations/runbooks/`.
+- Runbooks: service down, scaling, database issues, high latency, all documented in `docs/operations/runbooks/`.
 
 ## CLI Usage Cheat Sheet
 
@@ -238,70 +237,70 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - REST: repos, branches, tags, users/teams, permissions, locks, manifest listing, webhooks.
 - Webhooks: push/pull/lock events with documented payloads.
 - Wire protocol (QUIC): chunk/manifest operations, sync negotiation.
-- SDKs: Rust, Go, Python, JavaScript; consistent chunk/manifest abstractions.
+- SDKs: Rust, Go, Python, JavaScript. Consistent chunk/manifest abstractions.
 
 ## Roadmap (9 Phases)
 
-- Phase 1: Engine — local chunking/dedup; bit-for-bit checkout.
-- Phase 2: Structure awareness — MP4 atom exploder; metadata-only changes avoid re-upload.
-- Phase 3: Virtual filesystem — mounted drive; just-in-time hydration.
+- Phase 1: Engine. local chunking/dedup. Bit-for-bit checkout.
+- Phase 2: Structure awareness. MP4 atom exploder. Metadata-only changes avoid re-upload.
+- Phase 3: Virtual filesystem. mounted drive. Just-in-time hydration.
 - Phase 3.5: Git parity milestones.
-- Phase 4: Collaboration & sync — QUIC delta sync; push/pull missing chunks only.
-- Phase 5: Conflict & locking — binary locks; visual diff assistance.
-- Phase 6: The Hologram — proxy-based editing (`checkout --proxy`).
-- Phase 7: The Spiderweb — dependency parsing to prevent “media offline.”
-- Phase 8: Deep Freeze — tiered storage lifecycle (hot/cold).
-- Phase 9: The Black Box — client-side convergent encryption with RBAC keys.
+- Phase 4: Collaboration & sync. QUIC delta sync. Push/pull missing chunks only.
+- Phase 5: Conflict & locking. binary locks. Visual diff assistance.
+- Phase 6: The Hologram. proxy-based editing (`checkout --proxy`).
+- Phase 7: The Spiderweb. dependency parsing to prevent “media offline.”
+- Phase 8: Deep Freeze. tiered storage lifecycle (hot/cold).
+- Phase 9: The Black Box. client-side convergent encryption with RBAC keys.
 
 ## Business and Compliance Notes
 
-- Open core: self-host fully offline; hosted Ditshub optional.
-- Compliance: documented considerations in `business/compliance.md`; audit logging, auth, and permission model.
+- Open core: self-host fully offline. Hosted Ditshub optional.
+- Compliance: documented considerations in `business/compliance.md`. Audit logging, auth, and permission model.
 - Pricing: outlined in `business/pricing.md` for hosted options.
 - SLA: service targets in `business/sla.md` for uptime/response.
-- Competitors: analysis in `business/competitors.md`; Dits differentiates via content-defined chunking, open formats, and VFS.
+- Competitors: analysis in `business/competitors.md`. Dits differentiates via content-defined chunking, open formats, and VFS.
 
 ## Migration and CI/CD
 
-- Migration guidance in `guides/migration.md`; re-chunk assets, maintain provenance.
-- CI/CD integration in `guides/cicd-integration.md`; use manifests as build inputs; push artifacts as chunks.
+- Migration guidance in `guides/migration.md`. Re-chunk assets, maintain provenance.
+- CI/CD integration in `guides/cicd-integration.md`. Use manifests as build inputs. Push artifacts as chunks.
 - Artifact reuse: dedup across builds reduces pipeline transfer costs.
 
 ## Edge Cases and Failure Modes (Selected)
 
-- Partial manifest writes: detect via trailing checksum; rebuild from journal.
+- Partial manifest writes: detect via trailing checksum. Rebuild from journal.
 - Connection drops mid-upload: resumable checkpoints via QUIC.
-- Variable frame rate video: adjust keyframe weighting; avoid aggressive shifts.
-- Lock staleness: TTL and admin override; audit recorded.
-- Reference count underflow: DB constraints; halt GC and rebuild from manifests.
+- Variable frame rate video: adjust keyframe weighting. Avoid aggressive shifts.
+- Lock staleness: TTL and admin override. Audit recorded.
+- Reference count underflow: DB constraints. Halt GC and rebuild from manifests.
 
 ## Known Issues and Solutions (Highlights)
 
-- STOR-C1: missing checksum verification — mandate BLAKE3 verify on read.
-- STOR-C2: race in ref counting — use advisory locks + transactions.
-- NET-C1: no partition detection — add quorum-based detector.
-- SEC-C2: deterministic nonces break AEAD — mix content hash + randomness.
-- OPS-C1: manual DB failover — documented runbook and HA guidance.
+- STOR-C1: missing checksum verification. mandate BLAKE3 verify on read.
+- STOR-C2: race in ref counting. use advisory locks + transactions.
+- NET-C1: no partition detection. add quorum-based detector.
+- SEC-C2: deterministic nonces break AEAD. mix content hash + randomness.
+- OPS-C1: manual DB failover. documented runbook and HA guidance.
 
 ## Disaster Recovery and Backup
 
-- Backups: documented in `operations/backup-restore.md`; snapshot DB + object store; verify checksums.
-- Restore: prioritize manifests + refs; rehydrate chunks; validate hashes post-restore.
+- Backups: documented in `operations/backup-restore.md`. Snapshot DB + object store. Verify checksums.
+- Restore: prioritize manifests + refs. Rehydrate chunks. Validate hashes post-restore.
 - DR drills: recommended cadence and success criteria.
-- Rebuild index: recover from journal; verify against manifests.
+- Rebuild index: recover from journal. Verify against manifests.
 
 ## Troubleshooting and Quick Fixes
 
 - Quick fix workflow in `workflows/quick-fix.md` for urgent patches.
-- High latency: tune QUIC; enable proxy mode; check cache hit rate.
-- Missing media: run dependency parser; ensure paths stable via VFS.
-- Corruption alerts: quarantine chunk; refetch from remote or peer.
+- High latency: tune QUIC. Enable proxy mode. Check cache hit rate.
+- Missing media: run dependency parser. Ensure paths stable via VFS.
+- Corruption alerts: quarantine chunk. Refetch from remote or peer.
 
 ## Team Collaboration Patterns
 
 - Locks to protect non-mergeable assets.
-- Branching for timelines/builds; merge where semantic diffs are possible.
-- Audit logs for sensitive operations; webhooks to downstream systems.
+- Branching for timelines/builds. Merge where semantic diffs are possible.
+- Audit logs for sensitive operations. Webhooks to downstream systems.
 - Onboarding: `workflows/first-time-setup.md` for new contributors.
 - Daily ops: `workflows/daily-workflow.md` for routine use.
 
@@ -337,17 +336,17 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 ## Performance and Benchmark Notes
 
 - Hashing throughput benefits from SIMD (AVX2/AVX-512/NEON/AMX).
-- Chunking is streaming; memory bounded by buffer and max chunk size.
-- QUIC uses keep-alives; max streams configurable.
-- Cache hit paths reach 1+ GB/s reads; remote fetch dominated by link speed.
+- Chunking is streaming. Memory bounded by buffer and max chunk size.
+- QUIC uses keep-alives. Max streams configurable.
+- Cache hit paths reach 1+ GB/s reads. Remote fetch dominated by link speed.
 
 ## Security Deep Dive (Highlights)
 
-- JWT-based auth for server; SSO/SAML planned for hosted.
+- JWT-based auth for server. SSO/SAML planned for hosted.
 - Resource-level permissions and audit logging.
 - Rate limiting across public endpoints.
-- No skipping checksum verification; corruption triggers recovery.
-- Chunk encryption planned with convergent scheme; keys wrapped per repo.
+- No skipping checksum verification. Corruption triggers recovery.
+- Chunk encryption planned with convergent scheme. Keys wrapped per repo.
 
 ## Operations: Monitoring and Observability
 
@@ -359,13 +358,13 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 ## Deployment Patterns
 
 - Single-node lab: docker-compose with local disks.
-- Small team: compose with S3-compatible backend; nightly backups.
+- Small team: compose with S3-compatible backend. Nightly backups.
 - Production: K8s with HPA, dedicated Postgres/Redis, S3/Blob storage, object lifecycle policies.
 - Edge caching: optional CDN/front cache for media-heavy reads.
 
 ## Contributing and Development
 
-- Conventional commits; branches `feature/*`, `fix/*`, `docs/*`, `refactor/*`.
+- Conventional commits. Branches `feature/*`, `fix/*`, `docs/*`, `refactor/*`.
 - Rust 1.75+, Node 20+ for web UI, Postgres 15+, Docker.
 - Run `cargo fmt`, `cargo clippy`, `cargo test` before PRs.
 - Plugin SDK guidance in `development/plugin-sdk.md`.
@@ -392,26 +391,26 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 ## Database Schema (Condensed)
 
 - Postgres stores manifests, refs, locks, users, permissions, chunk refs.
-- Advisory locks for ref counting; transactions ensure atomic updates.
+- Advisory locks for ref counting. Transactions ensure atomic updates.
 - Constraints prevent refcount underflow.
 
 ## Caching and Client Behavior
 
-- Client index caches file metadata; status diff uses cached hashes.
+- Client index caches file metadata. Status diff uses cached hashes.
 - Fsmonitor extension for faster status detection.
 - Sparse checkout planned via index extensions.
 
 ## Virtual Filesystem Experience
 
-- Mount repository; browse without full download.
+- Mount repository. Browse without full download.
 - Lazy hydration fetches missing chunks when accessed.
-- Cache-first; remote fallback; checksum verify on read.
+- Cache-first. Remote fallback. Checksum verify on read.
 - Supports read-only when locks held elsewhere.
 
 ## Locking and Collaboration
 
-- Lock API to acquire/release; reflects in index flags.
-- Binary assets treated as non-mergeable; locking is first-class.
+- Lock API to acquire/release. Reflects in index flags.
+- Binary assets treated as non-mergeable. Locking is first-class.
 - Audit logs capture lock lifecycle.
 
 ## Roadmap Notes (Phases Expanded)
@@ -428,70 +427,70 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## Business Layer Details
 
-- Pricing tiers described for hosted offering; self-host remains free/open.
+- Pricing tiers described for hosted offering. Self-host remains free/open.
 - Compliance focus: auth, audit, encryption plans, data residency via S3 selection.
 - SLA targets: uptime, response windows, and support channels.
 
 ## Competitor Positioning
 
-- Git LFS: pointer-based; Dits is first-class CAS with dedup and VFS.
-- Perforce: centralized/proprietary; Dits is distributed/open with chunk dedup.
-- Cloud drives: lack history and dedup; Dits provides versioned manifests and chunk reuse.
+- Git LFS: pointer-based. Dits is first-class CAS with dedup and VFS.
+- Perforce: centralized/proprietary. Dits is distributed/open with chunk dedup.
+- Cloud drives: lack history and dedup. Dits provides versioned manifests and chunk reuse.
 
 ## Migration Guidance (Condensed)
 
-- Re-chunk existing assets; maintain path mapping.
+- Re-chunk existing assets. Maintain path mapping.
 - Validate reconstructed outputs against source via checksum.
 - Stage migration in phases: pilot repo, then broad rollout.
 
 ## CI/CD Integration (Condensed)
 
-- Use manifests as immutable build inputs; avoid re-uploading artifacts.
-- Cache-aware pipelines reduce bandwidth; only changed chunks move.
+- Use manifests as immutable build inputs. Avoid re-uploading artifacts.
+- Cache-aware pipelines reduce bandwidth. Only changed chunks move.
 - Webhooks trigger downstream builds/tests on push/pull/lock events.
 
 ## Edge Cases (More Detail)
 
 - Missing keyframe table: treat all frames as keyframes (ProRes/DNxHD).
 - Long-GOP gaps: insert intermediate CDC boundaries respecting max size.
-- Sparse files: handle via chunk metadata; avoid unnecessary uploads.
+- Sparse files: handle via chunk metadata. Avoid unnecessary uploads.
 - Large directories: index sharding planned for scale.
 
 ## Failure Modes and Handling
 
-- Partial transfers: resumable; verify checksums; retry idempotently.
+- Partial transfers: resumable. Verify checksums. Retry idempotently.
 - Corrupt chunk detection: quarantine and restore from replica/remote.
-- Tier mismatch: correct routing; revalidate after migration.
-- Lock expiration: leases with TTL; admin override recorded.
+- Tier mismatch: correct routing. Revalidate after migration.
+- Lock expiration: leases with TTL. Admin override recorded.
 
 ## Disaster Recovery (More Detail)
 
-- Backup cadence: DB + objects; verify with checksum.
+- Backup cadence: DB + objects. Verify with checksum.
 - Restore ordering: DB first, then objects, then cache warmup.
-- GC safety: checkpointing; resume sweeps after interruption.
+- GC safety: checkpointing. Resume sweeps after interruption.
 - Incident runbooks: service down, scaling, high latency, DB issues.
 
 ## Troubleshooting Playbook
 
 - VFS slow: inspect cache hits, network RTT, QUIC stream counts.
 - Sync stuck: check Bloom filter mismatch, permissions, lock states.
-- Status incorrect: rebuild index from journal; verify fsmonitor state.
-- High storage: run GC; review dedup ratio; move cold tiers.
+- Status incorrect: rebuild index from journal. Verify fsmonitor state.
+- High storage: run GC. Review dedup ratio. Move cold tiers.
 
 ## Team Collaboration (Expanded)
 
-- Branch per timeline/build; merge when safe, otherwise lock.
-- Permissions per repo; audit logs for sensitive actions.
+- Branch per timeline/build. Merge when safe, otherwise lock.
+- Permissions per repo. Audit logs for sensitive actions.
 - Webhooks to notify render farms/CI of new commits or locks.
-- Onboarding guide for first-time setup; daily workflow recommendations.
+- Onboarding guide for first-time setup. Daily workflow recommendations.
 
 ## Tech Stack Notes (More Detail)
 
-- Axum server with tower middleware; tracing for observability.
+- Axum server with tower middleware. Tracing for observability.
 - SQLx with compile-time query checking for Postgres.
 - Redis for lock coordination and cache hints.
-- Quinn for QUIC; configurable stream counts and idle timeouts.
-- Fuser/Dokany for VFS; platform-specific tuning.
+- Quinn for QUIC. Configurable stream counts and idle timeouts.
+- Fuser/Dokany for VFS. Platform-specific tuning.
 
 ## Testing (Expanded)
 
@@ -506,21 +505,21 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - SIMD acceleration for hashing/chunking on x86_64/ARM.
 - io_uring on Linux for async I/O (where available).
 - Connection pooling and keep-alives for QUIC.
-- Prefetch heuristics for sequential reads; keyframe-aware.
+- Prefetch heuristics for sequential reads. Keyframe-aware.
 
 ## Safety and Security (Expanded)
 
-- AES-GCM planned for encrypted chunks; convergent scheme with salt.
+- AES-GCM planned for encrypted chunks. Convergent scheme with salt.
 - Nonces derived from content hash + random component.
-- Strict input validation on paths; reject traversal and oversize inputs.
-- Zero logging of secrets; sensitive data redacted.
+- Strict input validation on paths. Reject traversal and oversize inputs.
+- Zero logging of secrets. Sensitive data redacted.
 - Audit logging with request/user/repo context.
 
 ## Glossary (Extended)
 
-- CDC: Content-defined chunking; boundaries follow content patterns.
+- CDC: Content-defined chunking. Boundaries follow content patterns.
 - FastCDC: Optimized CDC variant with normalization and gear hash.
-- CAS: Content-addressable store; objects keyed by hash.
+- CAS: Content-addressable store. Objects keyed by hash.
 - Chunk: Small binary unit with hash, size, offset.
 - Manifest: Recipe describing how to rebuild a file from chunks.
 - Tree: Directory mapping of manifests.
@@ -538,13 +537,13 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Black Box: Client-side convergent encryption phase.
 - Index: Staging/working tree cache with chunk info and locks.
 - Reflog: Planned history of ref movements for recovery.
-- Chunk refcount: Number of manifests referencing a chunk; drives GC.
+- Chunk refcount: Number of manifests referencing a chunk. Drives GC.
 - Tier migration: Moving chunks between hot/warm/cold storage safely.
 - Saga: Multi-step workflow with compensating actions.
 - Fsmonitor: Filesystem monitoring to speed status detection.
 - Sparse checkout: Planned selective materialization of paths.
 - Proxy: Lower-res asset for editing without originals.
-- Partial clone: Clone metadata without all objects; hydrate on access.
+- Partial clone: Clone metadata without all objects. Hydrate on access.
 - Bloom FP rate: False-positive rate tuning for have-lists.
 - Idle timeout: QUIC setting governing connection liveness.
 - Keep-alive: Periodic ping to maintain QUIC connections.
@@ -601,7 +600,7 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - SIMD: CPU vectorization to accelerate hashing/chunking.
 - io_uring: Linux async I/O facility for performance.
 - LRU cache: Least-recently-used policy for chunk cache.
-- Bloom FP: False-positive probability; tune via bit count per entry.
+- Bloom FP: False-positive probability. Tune via bit count per entry.
 - Stream limit: QUIC max concurrent streams.
 - Congestion window: QUIC parameter for throughput.
 - TLS 1.3: Security layer for QUIC.
@@ -617,11 +616,11 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - HPA: Horizontal Pod Autoscaler for K8s deployments.
 - Lifecycle policy: Object storage tiering rules.
 - Bloom filter size: Tuned to chunk count for sync efficiency.
-- Hash verification: Mandatory on reads; critical safety rule.
+- Hash verification: Mandatory on reads. Critical safety rule.
 - Convergent encryption: Dedup-preserving encryption with per-repo salt.
 - Nonce derivation: Combine content hash + randomness.
 - Checksum mismatch: Triggers recovery workflow.
-- Chunk recovery: Fetch from replicas/remote; quarantine bad copy.
+- Chunk recovery: Fetch from replicas/remote. Quarantine bad copy.
 - Reference integrity: Hash-based validation of manifests.
 - Split index: Index optimization for large repos.
 - Untracked cache: Speeds status by caching untracked files.
@@ -641,7 +640,7 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Restore: Replace working tree paths from index/commit.
 - Tag: Named pointer to commit.
 - Branch: Movable pointer to commit.
-- Merge: Combine commits; locks help for binaries.
+- Merge: Combine commits. Locks help for binaries.
 - Conflict: Resolved via locks or manual steps for mergeable files.
 - Storage backend: Local disk, S3-compatible, others.
 - Scheduler: Governs parallel uploads/downloads.
@@ -653,7 +652,7 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 - Compliance logging: Audit trails for sensitive actions.
 - Data residency: Choose storage region via S3 backend.
 - Rollback: Use commits/tags to return to prior state.
-- Immutable objects: Chunks/manifests never mutate; only refs move.
+- Immutable objects: Chunks/manifests never mutate. Only refs move.
 - DAG: Directed acyclic graph of commits.
 - Parent pointers: Enable merges and history traversal.
 - Clone: Copy repo metadata and optionally objects.
@@ -726,16 +725,16 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 
 ## FAQ (Condensed)
 
-- How is this different from Git LFS? Built for binaries from the ground up; content-defined chunking; VFS; dedup across repos; open formats.
-- Can I use it offline? Yes, full local workflow; remotes optional.
-- What file types? Any; video gets format-aware optimizations; works for games, 3D, photos, code if desired.
-- How are locks enforced? Distributed locks with TTL and server coordination; index reflects state; read-only when locked by others.
-- What happens on corruption? Hash mismatch triggers recovery from replicas/remote; quarantine bad chunk.
+- How is this different from Git LFS? Built for binaries from the ground up. Content-defined chunking. VFS; dedup across repos. Open formats.
+- Can I use it offline? Yes, full local workflow. Remotes optional.
+- What file types? Any. Video gets format-aware optimizations. Works for games, 3D, photos, code if desired.
+- How are locks enforced? Distributed locks with TTL and server coordination. Index reflects state. Read-only when locked by others.
+- What happens on corruption? Hash mismatch triggers recovery from replicas/remote. Quarantine bad chunk.
 - How resumable are uploads? QUIC resumable uploads resume from last confirmed byte.
-- How do I deploy? Docker Compose for small teams; Kubernetes for production; S3-compatible storage supported.
-- How do I back up? Backup DB + objects; verify checksums; follow DR guide.
-- Does it support encryption? Planned convergent encryption (Phase 9); TLS 1.3 already.
-- How fast is it? Chunk 1GB <5s; hash 1GB <1s; LAN uploads >500 MB/s; status <100ms.
+- How do I deploy? Docker Compose for small teams. Kubernetes for production. S3-compatible storage supported.
+- How do I back up? Backup DB + objects. Verify checksums. Follow DR guide.
+- Does it support encryption? Planned convergent encryption (Phase 9). TLS 1.3 already.
+- How fast is it? Chunk 1GB <5s. Hash 1GB <1s. LAN uploads >500 MB/s. Status <100ms.
 
 ## Contact and Links
 
@@ -748,6 +747,6 @@ A Git-style, content-addressed VCS engineered for large media: video, game build
 ## Closing Note
 
 - Dits aims to be the Git of heavy media: deduped, verifiable, fast, open, and fit for modern creative and game pipelines.
-- This summary captures the documented system; see source docs for deeper implementation details.
-- Contributions and feedback welcome—open issues or join the discussion.
+- This summary captures the documented system. See source docs for deeper implementation details.
+- Contributions and feedback welcome, open issues or join the discussion.
 

@@ -11,7 +11,7 @@ const GITHUB_URL = "https://github.com/byronwade";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
-/** Every product under the byronwade umbrella — the launcher is the cross-app switcher. */
+/** Every product under the byronwade umbrella, the launcher is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 	{
 		name: "byronwade/ui",
@@ -43,7 +43,7 @@ const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 ];
 
 /**
- * Top-left launcher — a slim, horizontal identity pill (the inverse-material twin
+ * Top-left launcher: a slim, horizontal identity pill (the inverse-material twin
  * of the floating dock), ported from the byronwade-ui design-system chrome.
  * Collapsed it's a dark `--dock`-toned pill (the byronwade mark + an app-switcher
  * grid). The pill morphs in place into a browse panel: every product under the
@@ -72,7 +72,7 @@ export function AppLauncher() {
 		}
 		const sync = () => {
 			if (morph.style.width) {
-				return; // morphed open — leave the slot alone
+				return; // morphed open, leave the slot alone
 			}
 			setSlot({ w: morph.offsetWidth, h: morph.offsetHeight });
 		};
@@ -137,7 +137,7 @@ export function AppLauncher() {
 					open ? "rounded-2xl" : "rounded-3xl"
 				)}
 			>
-				{/* COMPACT — the collapsed (natural) size. */}
+				{/* COMPACT, the collapsed (natural) size. */}
 				<div
 					ref={compactRef}
 					className={cn(
@@ -147,7 +147,7 @@ export function AppLauncher() {
 				>
 					<Link
 						href="/"
-						aria-label="Byron Wade — home"
+						aria-label="Byron Wade, home"
 						className={cn(
 							"font-signature",
 							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-dock-active-foreground text-lg leading-none transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
@@ -194,7 +194,7 @@ export function AppLauncher() {
 					</div>
 
 					<div className="flex flex-col gap-0.5 px-2 pb-2">
-						{/* Current product — the site you're on. */}
+						{/* Current product, the site you're on. */}
 						<Link
 							href="/"
 							onClick={() => setOpen(false)}

@@ -11,7 +11,7 @@ type LoadingState = "loading" | "loaded" | "error";
  * aspect ratio rather than the requested one.
  *
  * Retrying re-runs the fetch through an explicit key, because the inputs are
- * unchanged — the point of a retry is to repeat an identical request.
+ * unchanged: the point of a retry is to repeat an identical request.
  */
 export function useScreenshot(href: string, captureWidth: number, captureHeight: number) {
 	const [status, setStatus] = useState<LoadingState>("loading");

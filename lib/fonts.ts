@@ -1,14 +1,14 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
-// Body / UI — Geist, the byronwade/ui design-system typeface
+// Body / UI. Geist, the byronwade/ui design-system typeface
 export const geistSans = Geist({
 	subsets: ["latin"],
 	display: "swap",
 	variable: "--font-sans",
 });
 
-// Monospace — code, metrics, technical labels
+// Monospace, code, metrics, technical labels
 export const geistMono = Geist_Mono({
 	subsets: ["latin"],
 	display: "swap",

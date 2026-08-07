@@ -38,7 +38,7 @@ export default function TermsPage() {
 
 					<h2>Intellectual property</h2>
 					<p>
-						All content on this site — including code, design, text, and images — is owned by Byron
+						All content on this site, including code, design, text, and images, is owned by Byron
 						Wade unless otherwise noted, and may not be reproduced without permission. Project work
 						shown in the portfolio remains the property of its respective owners.
 					</p>

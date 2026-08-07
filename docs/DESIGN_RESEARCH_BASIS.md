@@ -15,18 +15,18 @@ abstract:
 
 | Source principle | What it changed in this repository |
 | --- | --- |
-| Emil Kowalski — separate operating modes | `AGENTS.md` opens with a mode table; reference and review are read-only, and a URL is explicitly not permission to edit |
-| Emil Kowalski — motion gate before curve | `DESIGN.md` §6.1; the gate is run before any animation, and failing frequency/purpose/function means shipping no animation |
-| Emil Kowalski — exact ingredients, one scale | `--motion-*` tokens in `app/globals.css`. Before adoption the same `cubic-bezier(.22,1,.36,1)` was copy-pasted into four files with no owner |
-| Linear — quiet chrome, strong alignment | The dock stays planar and quiet; elevation is reserved for transient layers |
-| Visitors — subject-specific organizing move | `DESIGN.md` §7.1 assigns each route its own move and forbids transplanting one to another |
-| Cursor — the real work is the proof | The homepage leads with evidence rather than preamble |
-| Apple HIG — reduced motion changes the experience | A global `prefers-reduced-motion` block, so motion is never load-bearing |
-| WCAG 2.2 — alternatives to dragging | `hooks/use-drag-resize.ts` ships arrow-key and Home handling beside the pointer path |
-| WCAG 2.2 — focus not obscured | The floating dock must never cover a focused control |
+| Emil Kowalski, separate operating modes | `AGENTS.md` opens with a mode table; reference and review are read-only, and a URL is explicitly not permission to edit |
+| Emil Kowalski, motion gate before curve | `DESIGN.md` §6.1; the gate is run before any animation, and failing frequency/purpose/function means shipping no animation |
+| Emil Kowalski, exact ingredients, one scale | `--motion-*` tokens in `app/globals.css`. Before adoption the same `cubic-bezier(.22,1,.36,1)` was copy-pasted into four files with no owner |
+| Linear, quiet chrome, strong alignment | The dock stays planar and quiet; elevation is reserved for transient layers |
+| Visitors, subject-specific organizing move | `DESIGN.md` §7.1 assigns each route its own move and forbids transplanting one to another |
+| Cursor, the real work is the proof | The homepage leads with evidence rather than preamble |
+| Apple HIG, reduced motion changes the experience | A global `prefers-reduced-motion` block, so motion is never load-bearing |
+| WCAG 2.2, alternatives to dragging | `hooks/use-drag-resize.ts` ships arrow-key and Home handling beside the pointer path |
+| WCAG 2.2, focus not obscured | The floating dock must never cover a focused control |
 | Core Web Vitals | `lighthouse-budget.json`, plus field data through `@vercel/speed-insights` |
-| Design Tokens CG — one runtime truth | `app/globals.css` is the only place a design value is defined; `PROJECT_PROFILE.md` records it as the owner |
-| Cleveland & McGill | No charts exist. Adding one requires naming the reader question first — the research is why the bar is set there rather than at "add a dashboard" |
+| Design Tokens CG, one runtime truth | `app/globals.css` is the only place a design value is defined; `PROJECT_PROFILE.md` records it as the owner |
+| Cleveland & McGill | No charts exist. Adding one requires naming the reader question first, the research is why the bar is set there rather than at "add a dashboard" |
 
 The cautions section at the end of this file is the most important part. This
 site is a single-owner personal portfolio, not Linear, Shopify, or Cursor. Their

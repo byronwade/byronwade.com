@@ -1,4 +1,4 @@
-# Project profile — byronwade.com
+# Project profile, byronwade.com
 
 Completed adaptation of `PROJECT_PROFILE_TEMPLATE.md`. `DESIGN.md` and
 `AGENTS.md` are only authoritative once this file is accurate; keep it current
@@ -9,7 +9,7 @@ Every entry below was verified against the repository, not assumed.
 ## Identity
 
 - **Project name:** byronwade.com
-- **One-sentence purpose:** Byron Wade's personal site — the work, the writing,
+- **One-sentence purpose:** Byron Wade's personal site, the work, the writing,
   and a way to get in touch.
 - **Product maturity:** pre-production, single owner. Internal backward
   compatibility is not a default requirement.
@@ -37,7 +37,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Primary traits:** direct, evidence-first, quietly confident, technically
   literate
 - **Traits to avoid:** salesy, playful, corporate, mysterious, hype-driven
-- **Warmth level:** warm — the canvas is warm off-white, not clinical white
+- **Warmth level:** warm, the canvas is warm off-white, not clinical white
 - **Density level:** comfortable for reading, compact for indexes. Never sparse
   for its own sake.
 - **Motion personality:** crisp and near-still. Motion confirms and orients; it
@@ -45,10 +45,10 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Writing voice:** first person, plain, specific. Numbers where numbers help.
   No superlatives without evidence.
 - **Reference products and the exact principle borrowed:**
-  - Linear — quiet chrome, strong alignment, dense indexes that still breathe
-  - Cursor — the real work is the proof; atmosphere frames it, never replaces it
-  - Visitors — each page gets its own organizing move rather than one template
-  - Apple HIG — direct manipulation, immediate response, reduced motion respected
+  - Linear: quiet chrome, strong alignment, dense indexes that still breathe
+  - Cursor: the real work is the proof; atmosphere frames it, never replaces it
+  - Visitors: each page gets its own organizing move rather than one template
+  - Apple HIG: direct manipulation, immediate response, reduced motion respected
 - **Visual identities that must not be copied:** any of the above. Borrow the
   principle, express it through this site's own warm-neutral identity.
 
@@ -56,7 +56,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
-| Workbench | No | — | No authenticated or repeat-use operational surface exists |
+| Workbench | No | - | No authenticated or repeat-use operational surface exists |
 | Guided | Yes | `/contact`, the inline contact sheet | Single focused task, interruption- and failure-aware |
 | Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
@@ -68,16 +68,16 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Root agent protocol:** `AGENTS.md` (`CLAUDE.md` points at it; it holds no rules of its own)
 - **Nested instruction locations:** none currently
 - **Architecture decisions:** `docs/ARCHITECTURE.md`
-- **Runtime token owner:** `app/globals.css` — `:root` and `.dark` blocks, surfaced
+- **Runtime token owner:** `app/globals.css`, `:root` and `.dark` blocks, surfaced
   to Tailwind through `@theme inline`. The only place a design value is defined.
 - **Component/primitives owner:** `components/ui/`
-- **Recipes/patterns owner:** feature folders — `components/home/`, `blog/`,
+- **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
   `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
 - **Icon owner and approved family:** `lucide-react`. One family, no exceptions.
-  The X/Twitter glyph in `dock-toolbar.tsx` is a documented exception — lucide's
+  The X/Twitter glyph in `dock-toolbar.tsx` is a documented exception, lucide's
   `X` is the close icon, not the logo.
-- **Typography owner and loading strategy:** `lib/fonts.ts` — Geist (`--font-sans`),
+- **Typography owner and loading strategy:** `lib/fonts.ts`. Geist (`--font-sans`),
   Geist Mono (`--font-geist-mono`), and a local signature face
   (`--font-signature`), all `display: swap`, self-hosted through `next/font`.
   `next/font` loaders are server-only; client components use the CSS variable.
@@ -105,7 +105,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Public API stability requirements:** published route URLs, `/api/*` and
   `/feed.xml` response shapes, and `content/` front-matter keys are stable
   contracts.
-- **Persisted data compatibility requirements:** none — no database.
+- **Persisted data compatibility requirements:** none, no database.
 - **Pre-production migration policy:** prefer the better contract, migrate every
   caller, delete the old path. Do not keep parallel implementations.
 - **Generated-code ownership:** `next-env.d.ts` and `.next/types` are generated by
@@ -122,8 +122,8 @@ from the profile and makes first-visit clarity the dominant design concern.
   submission through `lib/actions/send-email.ts`
 - **Search and command palette:** `components/layout/dock-toolbar.tsx`, index built
   by `lib/search-index.ts`
-- **Filters and saved views:** none — no surface needs them yet
-- **Tables/lists:** none — no tabular data on this site
+- **Filters and saved views:** none, no surface needs them yet
+- **Tables/lists:** none, no tabular data on this site
 - **Cards/panels:** `components/ui/card.tsx`
 - **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`,
   `hover-card.tsx`, `tooltip.tsx`. There is no dialog primitive; the one modal
@@ -131,7 +131,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Inspectors:** `components/project/project-toc.tsx`
 - **Charts/data visualization:** none installed
 - **Toasts/notifications:** `sonner` via `components/ui/sonner.tsx`
-- **Drag and drop:** `hooks/use-drag-resize.ts` — the preview width handle. Has a
+- **Drag and drop:** `hooks/use-drag-resize.ts`, the preview width handle. Has a
   keyboard path (arrows, Home), which WCAG 2.2 requires.
 - **Virtualization:** none. No list is long enough to justify it.
 - **AI surfaces:** none
@@ -144,14 +144,14 @@ from the profile and makes first-visit clarity the dominant design concern.
 | --- | --- | --- | --- | --- |
 | Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive uses it | No second primitive library. Radix was removed entirely. |
 | Motion | `framer-motion` | ^11.18.2 | Needed only by `social-link-preview`; loaded through `LazyMotion` + `m` | CSS first. A library import must justify itself against `.reveal` and CSS transitions. |
-| Command menu | in-house (`dock-toolbar`) | — | The morph capsule is the product; `cmdk` was removed | Do not reintroduce a command-menu dependency |
-| Toasts | `sonner` | ^2.0.5 | Already standardized | — |
-| Charts | none | — | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
-| Drag and drop | in-house hook | — | One width handle; a library would be heavier than the behavior | — |
-| Virtualization | none | — | Not needed at this scale | — |
+| Command menu | in-house (`dock-toolbar`) | - | The morph capsule is the product; `cmdk` was removed | Do not reintroduce a command-menu dependency |
+| Toasts | `sonner` | ^2.0.5 | Already standardized | - |
+| Charts | none | - | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
+| Drag and drop | in-house hook | - | One width handle; a library would be heavier than the behavior | - |
+| Virtualization | none | - | Not needed at this scale | - |
 | State management | React + `nuqs` | ^2.8.5 | URL-shareable state; no global store needed | Do not add a store for local state |
-| Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | — | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
-| Theme management | `next-themes` | ^0.4.6 | Light default, system aware | — |
+| Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
+| Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
 
 ## Design tokens and defaults
 
@@ -188,7 +188,7 @@ use them correctly.
 
 - **Install:** `npm ci`
 - **Development:** `npm run dev`
-- **Affected tests:** none — there is no test runner in this repository
+- **Affected tests:** none, there is no test runner in this repository
 - **Package tests:** none
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
@@ -200,7 +200,7 @@ use them correctly.
   keyboard passes are required for critical flows.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
-- **Dead code:** `npm run knip` — currently at zero
+- **Dead code:** `npm run knip`, currently at zero
 - **Bundle/performance:** `npm run build:analyze`, `npm run perf:budget`
 - **Visual regression:** none
 - **Marketing SEO/Core Web Vitals:** `npm run perf:budget` against

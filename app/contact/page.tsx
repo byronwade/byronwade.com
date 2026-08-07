@@ -7,7 +7,7 @@ import ContactClient from "./contact-client";
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Contact",
 	description:
-		"Get in touch with Byron Wade — full-stack developer. Reach out about development work, collaborations, or software for service businesses.",
+		"Get in touch with Byron Wade, full stack developer. Reach out about development work, collaborations, or software for service businesses.",
 	keywords: ["Contact", "Byron Wade", "Hire Developer", "Full Stack Developer", "Web Development"],
 	image: generateOGImageUrl({
 		title: "Contact",

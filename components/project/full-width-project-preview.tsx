@@ -254,7 +254,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	const previewContent = (
 		<div
 			// Animating width/height is normally avoided (DESIGN.md §6.1), but this
-			// frame *is* the resizing object — a transform would misrepresent the
+			// frame *is* the resizing object, a transform would misrepresent the
 			// viewport being previewed. Occasional tier, 300ms = --motion-slow.
 			className={cn(
 				"relative flex flex-col transition-[width,height] duration-300 ease-out",
@@ -438,7 +438,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		<div ref={wrapperRef} className="w-full">
 			{isFullscreen && mounted && typeof document !== "undefined"
 				? createPortal(
-						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog — role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
+						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog, role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
 						<div
 							ref={dialogRef}
 							className="fixed inset-0 z-[9998] flex flex-col bg-black/95 p-6 backdrop-blur-sm"

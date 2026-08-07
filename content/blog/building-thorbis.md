@@ -10,7 +10,7 @@ tags:
 
 After years of working with field service companies and witnessing the daily struggles of dispatchers, technicians, and business owners, I decided to build **Thorbis**, a comprehensive field service management platform designed from the ground up with modern technology, real-world workflows, and operational excellence at its core.
 
-This isn't just another software project. It's a response to the fragmented, outdated, and often frustrating tools that service companies have been forced to use. Thorbis represents what field service management should be: fast, reliable, secure, and built for the people who actually use it every day.
+This is not a side project. It is a response to the fragmented, outdated, and often frustrating tools that service companies have been forced to use. Thorbis represents what field service management should be: fast, reliable, secure, and built for the people who actually use it every day.
 
 ## What is Thorbis?
 
@@ -26,7 +26,7 @@ After working with national HVAC brands and seeing how field service companies o
 
 **Outdated Technology**: Many field service platforms are built on legacy architectures that can't leverage modern web technologies. They're slow, clunky, and don't take advantage of server-side rendering, streaming, or modern React patterns. This results in poor performance, especially on mobile devices where technicians spend most of their time.
 
-**Security Gaps**: Row-Level Security (RLS) is often an afterthought or partially implemented. Critical tables containing customer data, payment information, and communications lack proper access controls. This isn't just a technical issue, it's a compliance and trust issue.
+**Security Gaps**: Row-Level Security (RLS) is often an afterthought or partially implemented. Critical tables containing customer data, payment information, and communications lack proper access controls. This is not only a technical issue. It is a compliance and trust issue.
 
 **One-Size-Fits-All Approach**: Most platforms force every business into the same workflow, regardless of industry or size. An HVAC company has different needs than a plumbing business, but existing solutions don't adapt. Customization is expensive, time-consuming, or simply not possible.
 
@@ -38,7 +38,7 @@ I set out to build a platform that puts operators first, automates with empathy,
 
 ## Modern Architecture from Day One
 
-Thorbis is built on **Next.js 16** with **React 19**, leveraging the App Router, Partial Prerendering (PPR), and server-side rendering by default. This isn't just about using the latest technology, it's about building a platform that can scale, perform, and evolve.
+Thorbis is built on **Next.js 16** with **React 19**, using the App Router, Partial Prerendering (PPR), and server-side rendering by default. This is about more than using the latest technology. It is about building a platform that can scale, perform, and evolve.
 
 By default, everything is a server component. This means less JavaScript sent to the browser, faster initial page loads, and better SEO. Client components are only used when interactivity is actually needed.
 
@@ -56,7 +56,7 @@ The messaging interface is optimized for mobile, with offline support and fast p
 
 ## Industry Best Practices Built In
 
-Thorbis doesn't just implement features, it implements them the way industry leaders do it. After analyzing ServiceTitan, Jobber, and Housecall Pro, we've incorporated their best practices while avoiding their mistakes.
+Thorbis implements features the way the industry leaders do it. After analyzing ServiceTitan, Jobber, and Housecall Pro, we've incorporated their best practices while avoiding their mistakes.
 
 The price book structure uses three distinct item types (Services, Materials, Equipment) with hierarchical categories, following ServiceTitan's proven approach. Job workflow includes comprehensive lifecycle tracking with 47+ critical fields for costing, scheduling, warranty, and compliance, matching enterprise-level platforms.
 
@@ -72,7 +72,7 @@ Property enrichment features pull in demographics, air quality, elevation, flood
 
 ## Technical Innovations
 
-Thorbis leverages Next.js 16's Partial Prerendering to get the best of both worlds: static performance for the shell and dynamic data for personalized content. This means pages load instantly while still showing real-time data.
+Thorbis uses Next.js 16's Partial Prerendering to get both: static performance for the shell and dynamic data for personalized content. This means pages load instantly while still showing real-time data.
 
 Instead of building separate API routes for every mutation, Thorbis uses Server Actions. This reduces boilerplate, improves type safety, and makes the codebase more maintainable. Server Actions are authenticated, validated, and secure by default.
 

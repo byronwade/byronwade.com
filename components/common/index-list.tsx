@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * The site's index row — the one structure that genuinely repeats.
+ * The site's index row. This is the one structure that genuinely repeats.
  *
  * Five files had independently written the same class string:
  *
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  * copies of shared components") exist to stop. It lives here now.
  *
  * The behaviour it encodes: hairline-separated rows, no card wrapper, and a
- * spotlight — hovering one row dims its peers so the row under the cursor is
+ * spotlight: hovering one row dims its peers so the row under the cursor is
  * the only thing at full strength. §13 rejects both the card grid and the
  * border-around-every-row reflex; an open row separated by a single rule is
  * what is left, and the spotlight is what gives it depth without a box.
@@ -63,7 +63,7 @@ export function IndexRow({
 /**
  * The class an index row's link or button must carry to participate in the
  * spotlight. Exported as a string rather than a wrapper component because the
- * element varies — `next/link`, a plain anchor, a button — and wrapping each
+ * element varies: `next/link`, a plain anchor, a button, and wrapping each
  * variant would put a div between the rule and the target.
  */
 export const indexRowLinkClass =

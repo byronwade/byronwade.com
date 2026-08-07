@@ -6,13 +6,13 @@ import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 
 /**
- * The `/projects` index — a ranked list where each row carries its own evidence
+ * The `/projects` index: a ranked list where each row carries its own evidence
  * (DESIGN.md §7.1).
  *
  * Two things went in this rebuild. The `INDEX` label above the list was an
  * all-caps eyebrow, which §13 rejects by name, and it labelled a list that is
  * self-evidently a list. The `01 02 03` row numerals went with it: they implied
- * a rank the sort does not actually assert — flagships first, then recency — so
+ * a rank the sort does not actually assert, flagships first, then recency, so
  * they were decoration pretending to be data, and they cost the row its whole
  * left column.
  *
@@ -30,7 +30,7 @@ function yearOf(date?: string): string {
 }
 
 /**
- * The right-hand marker. Exactly one of status, concept, or year — a row that
+ * The right-hand marker. Exactly one of status, concept, or year, a row that
  * showed two competed with its own title for attention.
  */
 function RowMarker({ project }: { project: Project }) {

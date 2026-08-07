@@ -26,7 +26,7 @@ export async function generateMetadata() {
 	return generateSEOMetadata({
 		title: "Writing",
 		description:
-			"Notes on building products, design systems, and software for service businesses — from field operations to modern Next.js apps.",
+			"Notes on building products, design systems, and software for service businesses, from field operations to modern Next.js apps.",
 		keywords: [
 			"Blog",
 			"Writing",
@@ -44,13 +44,13 @@ export async function generateMetadata() {
 }
 
 /**
- * Writing index — Showcase profile.
+ * Writing index: Showcase profile.
  *
  * The organizing move for /blog (DESIGN.md §7.1) is chronology with the lede
  * visible, so scanning is reading. Posts group by year and every row keeps its
  * excerpt. This is an open list on hairlines rather than a card: a card around
  * the whole list would be decoration, and §13 rejects bordered rows. The grammar
- * deliberately matches components/project/projects-index.tsx — one index pattern
+ * deliberately matches components/project/projects-index.tsx: one index pattern
  * for the site, two kinds of content.
  */
 async function BlogList() {
@@ -132,7 +132,7 @@ async function BlogList() {
 
 /**
  * Mirrors a real row rather than showing rounded slabs. The previous fallback
- * was three 64px pills, which meant the layout jumped on every load — §4.7 puts
+ * was three 64px pills, which meant the layout jumped on every load. §4.7 puts
  * that squarely in the design's remit, not the implementation's.
  */
 function BlogFallback() {
@@ -171,7 +171,7 @@ export default function BlogPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
 					<PageHeader
-						lede="Notes from building products and running a service business — design systems, field ops, and the software that has to work in the truck."
+						lede="Notes from building products and running a service business. Design systems, field ops, and the software that has to work out in the truck."
 						title="Writing"
 					/>
 

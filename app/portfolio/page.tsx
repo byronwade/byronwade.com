@@ -76,8 +76,8 @@ interface PortfolioReposState {
 }
 
 /**
- * Loads the repository list, keeping the request lifecycle — abort on unmount,
- * timeout, refresh-vs-initial-load — out of the rendering component.
+ * Loads the repository list, keeping the request lifecycle, abort on unmount,
+ * timeout, refresh-vs-initial-load, out of the rendering component.
  */
 function usePortfolioRepos(): PortfolioReposState {
 	const [repos, setRepos] = useState<GitHubRepo[]>([]);
@@ -199,7 +199,7 @@ function RepoSkeletonList() {
 }
 
 /**
- * One repository row — Showcase profile.
+ * One repository row: Showcase profile.
  *
  * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
  * activity sorted by signal. A card grid worked against that: cards give every
@@ -331,7 +331,7 @@ export default function PortfolioPage() {
 								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-muted-foreground text-sm"
 								role="status"
 							>
-								Showing a partial response — some GitHub data may be stale. Refresh to try again.
+								This is a partial response, so some GitHub data may be stale. Refresh to try again.
 							</p>
 						)}
 						<IndexList as="ol">

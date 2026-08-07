@@ -9,7 +9,7 @@ RUN apk add --no-cache python3 make g++
 
 COPY package.json package-lock.json ./
 # `npm ci` installs exactly the lockfile. Lifecycle scripts must run so sharp
-# fetches its platform binary — without them image optimization fails at runtime.
+# fetches its platform binary, without them image optimization fails at runtime.
 RUN npm ci
 
 COPY . .

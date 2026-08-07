@@ -3,7 +3,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 
 /**
- * 404 — Shared profile.
+ * 404. Shared profile.
  *
  * Rebuilt to the same grammar as the rest of the site. The previous version used
  * gradient text on the numeral and a decorative rule-star-rule ornament, both of

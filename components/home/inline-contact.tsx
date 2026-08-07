@@ -71,7 +71,7 @@ export function InlineContact({
 			});
 			if (result.success) {
 				toast.success("Message sent!", {
-					description: "Thanks for reaching out — I’ll get back to you soon.",
+					description: "Thanks for reaching out. I’ll get back to you soon.",
 				});
 				setFormData({
 					name: "",
@@ -104,7 +104,7 @@ export function InlineContact({
 				<div className="flex flex-col">
 					<span className="font-medium text-sm">Start a conversation</span>
 					<span className="text-muted-foreground text-xs">
-						Product builds, service software, or an intro — brief is fine.
+						Product builds, service software, or just an intro. Brief is fine.
 					</span>
 				</div>
 				<button

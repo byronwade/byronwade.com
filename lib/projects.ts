@@ -155,7 +155,7 @@ export async function getAllProjectSlugs(): Promise<string[]> {
 	}
 }
 
-/** Featured projects for the homepage — ordered by `order`, then date. */
+/** Featured projects for the homepage, ordered by `order`, then date. */
 export async function getFeaturedProjects(limit = 4): Promise<Project[]> {
 	const projects = await getProjects();
 	return projects

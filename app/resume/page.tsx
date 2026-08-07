@@ -28,7 +28,7 @@ const jsonLdData: WithContext<Person> = {
 	url: "https://byronwade.com",
 	jobTitle: "Founder & Full Stack Developer",
 	description:
-		"Founder at Thorbis, building field management software for service professionals. 8+ years experience scaling businesses from startup to multi-million dollar operations.",
+		"Founder at Thorbis, building field management software for service professionals. About eight years running service businesses and writing the software they need.",
 	address: {
 		"@type": "PostalAddress",
 		addressLocality: "Jasper",
@@ -71,7 +71,7 @@ const workExperience = [
 		company: "Thorbis",
 		companyUrl: "https://thorbis.com",
 		location: "Jasper, GA",
-		period: "Jun 2025 — Present",
+		period: "Jun 2025 - Present",
 		description:
 			"Building a field management system for service professionals. Combining real-world experience running a plumbing company with modern web technologies to solve problems I encountered firsthand.",
 		current: true,
@@ -80,7 +80,7 @@ const workExperience = [
 		role: "Service Plumber",
 		company: "ServiceWise Electric & Plumbing",
 		location: "Georgia",
-		period: "Apr 2025 — Nov 2025",
+		period: "Apr 2025 - Nov 2025",
 		description:
 			"Provided residential and commercial plumbing services with focus on customer satisfaction, diagnostic expertise, and efficient problem resolution.",
 	},
@@ -88,7 +88,7 @@ const workExperience = [
 		role: "General Manager",
 		company: "Lanier Plumbing Services, LLC",
 		location: "Alpharetta, GA",
-		period: "Sep 2024 — Apr 2025",
+		period: "Sep 2024 - Apr 2025",
 		description:
 			"Led operations for a growing commercial plumbing contractor with focus on estimation accuracy, service department development, and operational efficiency.",
 	},
@@ -97,19 +97,19 @@ const workExperience = [
 		company: "Wade's Plumbing & Septic",
 		companyUrl: "https://wadesplumbingandseptic.com",
 		location: "Los Gatos, CA",
-		period: "2021 — 2024",
+		period: "2021 - 2024",
 		// The homepage now states plainly that this company closed, so the resume
 		// says so too. §9 keeps claims qualified, and a résumé that reports the
 		// revenue without the ending contradicts the opening of the site.
 		description:
-			"Built and managed a plumbing and septic service company, scaling from startup to $2.4M annual revenue in its second year. The company did not survive that growth and closed in 2024 — the operational failures behind it are what Thorbis was built to solve.",
+			"Built and ran a plumbing and septic service company. Scaled it from startup to $2.4M in annual revenue in the second year. The company did not survive that growth and closed in 2024. The operational problems behind that are what I built Thorbis to fix.",
 		highlight: "$2.4M",
 	},
 	{
 		role: "Foreman Plumber & Project Manager",
 		company: "Garrison Septic & Plumbing",
 		location: "Scotts Valley, CA",
-		period: "2016 — 2021",
+		period: "2016 - 2021",
 		description:
 			"Dual role managing field operations and project oversight for residential and commercial plumbing and septic installations.",
 	},
@@ -201,8 +201,9 @@ export default function ResumePage() {
 					<section className="reveal reveal-delay-1 w-full">
 						<div className="flex flex-col gap-4">
 							<p className="text-base text-foreground leading-relaxed sm:text-lg">
-								Results-driven professional with 8+ years of experience scaling businesses from
-								startup to multi-million dollar operations. Currently building{" "}
+								I have spent about eight years running service businesses and building the software
+								they need. I grew a plumbing company from nothing to $2.4M and then lost it, and
+								that is where most of what I know about this work came from. Right now I am building{" "}
 								<a
 									href="https://thorbis.com"
 									target="_blank"
@@ -214,9 +215,9 @@ export default function ResumePage() {
 								, a field management system for service professionals.
 							</p>
 							<p className="text-muted-foreground leading-relaxed">
-								<span className="font-medium text-foreground">Open to opportunities</span> — Looking
-								for full-time roles in software development, technical leadership, or positions
-								where I can leverage both my development skills and hands-on business experience.
+								<span className="font-medium text-foreground">Open to opportunities.</span> I am
+								looking for full time work in software development or technical leadership, or
+								anywhere that both the engineering side and the running-a-business side are useful.
 							</p>
 							<div className="flex flex-wrap items-center gap-2 pt-1">
 								<Button
@@ -309,7 +310,7 @@ export default function ResumePage() {
 						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
 							Skills
 						</h2>
-						{/* Not pills. These are read, not pressed — §5.4 makes a pill a
+						{/* Not pills. These are read, not pressed. §5.4 makes a pill a
 						    semantic shape, and giving forty static strings the shape of a
 						    control made the section look like a filter bar. */}
 						<ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-muted-foreground">
@@ -352,7 +353,7 @@ export default function ResumePage() {
 									Interested in working together?
 								</h2>
 								<p className="text-muted-foreground text-sm">
-									Tell me what you’re building — product roles, service software, or an intro.
+									Tell me what you’re building. Product roles, service software, or just an intro.
 								</p>
 							</div>
 							<Button

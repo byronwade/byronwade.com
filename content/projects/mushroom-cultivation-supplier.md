@@ -8,15 +8,15 @@ excerpt: "Zugzology: A premium e-commerce platform that serves as the foundation
 
 # Building Zugzology: Why a Mushroom Supply Store is the Foundation for the Future of Agricultural Field Management
 
-When I set out to build Zugzology, I wasn't just creating another e-commerce store. I was laying the groundwork for something much larger, a comprehensive field management system that will revolutionize how agricultural operations track, monitor, and optimize their cultivation processes.
+Zugzology started as an e-commerce store for mushroom cultivation supplies, but I built it as a way to work out the harder problem underneath. Growers need something to track and monitor a cultivation run, and a store that already handles their inventory and their orders is a reasonable place to start learning what that would take.
 
-This article explores why Zugzology exists, what makes it unique, and how it serves as a critical stepping stone toward building the next generation of agricultural technology.
+What follows is why it exists, how it is built, and where I think it goes.
 
 ---
 
 ## What is Zugzology?
 
-Zugzology is a premium e-commerce platform specializing in mushroom cultivation supplies. But to call it just a "store" would be a disservice. It's a fully-featured, enterprise-grade web application built with cutting-edge technology that rivals platforms used by Amazon, Netflix, and other industry leaders.
+Zugzology is an e-commerce platform for mushroom cultivation supplies. It is a real application rather than a template on a hosted cart, and most of the engineering went into the parts a shop actually feels: search, inventory accuracy, and how fast a page comes back.
 
 ### The Technical Foundation
 
@@ -39,7 +39,7 @@ Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represen
 **For Customers:**
 - Lightning-fast product browsing with intelligent search
 - Personalized recommendations powered by AI
-- Seamless authentication via Shopify Customer Accounts
+- Authentication through Shopify Customer Accounts
 - Wishlist functionality with batch loading
 - Real-time inventory and pricing
 - Expert growing guides and educational content
@@ -272,7 +272,7 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 
 - **Challenge**: Multiple AI providers with different capabilities
 - **Solution**: Fallback systems and provider abstraction
-- **Application**: Field predictions will use the same robust AI infrastructure
+- **Application**: Field predictions will use the same AI infrastructure
 
 ---
 

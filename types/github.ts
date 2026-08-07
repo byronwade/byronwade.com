@@ -1,5 +1,5 @@
 /**
- * A GitHub repository as this app consumes it — the fields the portfolio route,
+ * A GitHub repository as this app consumes it, the fields the portfolio route,
  * the portfolio page, and the sort in `getGitHubRepositories` actually read.
  *
  * Nullability mirrors the GitHub REST API: `description`, `homepage`, and

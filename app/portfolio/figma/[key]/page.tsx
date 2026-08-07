@@ -258,7 +258,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						{/* The generated "case study" that used to sit here was removed. Every
 						    field in it was invented: view, like, and comment counts derived from
 						    the page count, a "4-8 weeks" duration, a team that does not exist, and
-						    five generic results — rendered identically for any Figma file key.
+						    five generic results, rendered identically for any Figma file key.
 						    DESIGN.md §9 requires real numbers with their source and §3.2 forbids
 						    manufacturing precision. What is left on this page is what the Figma
 						    API actually returns. */}

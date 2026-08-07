@@ -4,7 +4,7 @@
  * This is the single source of truth: `lib/portfolio-data.ts` tags its
  * `unstable_cache` entries with these values, and `/api/cache/revalidate`
  * validates incoming tags against them. Adding a tag here is what makes it
- * revalidatable — a raw string literal anywhere else silently drifts out of
+ * revalidatable: a raw string literal anywhere else silently drifts out of
  * reach of the endpoint.
  */
 export const CACHE_TAGS = {

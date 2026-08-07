@@ -11,7 +11,7 @@ import { useRevealedEmail } from "@/hooks/use-revealed-email";
  * The only interactive island on the homepage opening.
  *
  * Reduced to one action. This previously carried a primary button, a secondary
- * button, and five social pills — seven controls stacked under the claim, which
+ * button, and five social pills. Seven controls stacked under the claim, which
  * is a toolbar, not an opening. DESIGN.md §5.1 allows one earned primary action
  * per region, and §13 rejects making every control a pill; the social links now
  * live only in the footer, where a visitor looks for them anyway, and the email

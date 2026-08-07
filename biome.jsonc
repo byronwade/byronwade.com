@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   // Ultracite's rule presets. `core` is the base; `react` and `next` add the
-  // framework rules that match this stack. Rules come from here — everything
+  // framework rules that match this stack. Rules come from here, everything
   // below is repository-specific and deliberately overrides the preset.
   "extends": [
     "ultracite/biome/core",
@@ -40,7 +40,7 @@
   },
   // Preset rules turned off deliberately. Each conflicts with a decision this
   // repository has already made and documented in AGENTS.md, or is inaccurate
-  // for this stack — none is off because it was inconvenient to satisfy.
+  // for this stack, none is off because it was inconvenient to satisfy.
   "linter": {
     "rules": {
       "complexity": {
@@ -85,8 +85,9 @@
         // with `ultracite/biome/type-aware`.
         "noUnnecessaryConditions": "off",
         // Guards against `{0 && <X/>}` rendering a literal 0. Every `&&` render
-        // here tests a string or an object — verified, no numeric conditions —
-        // so the rewrite would change no behaviour, and there is no autofix.
+        // here tests a string or an object. Verified: there are no numeric
+        // conditions, so the rewrite would change no behaviour, and there is
+        // no autofix.
         // Reinstate this if numeric conditions ever appear in JSX.
         "noLeakedRender": "off"
       }
@@ -106,7 +107,7 @@
         // rendered order anywhere code iterates an object's keys. It moved
         // Mobile ahead of Tablet in the project preview's viewport toggle.
         //
-        // Class sorting (useSortedClasses) stays on — that one is safe.
+        // Class sorting (useSortedClasses) stays on. That one is safe.
         "useSortedAttributes": "off",
         "useSortedKeys": "off"
       }

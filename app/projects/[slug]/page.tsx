@@ -66,7 +66,7 @@ async function ProjectPageContent({ slug }: { slug: string }) {
 /**
  * Sits inside the real shell so the loading state and the loaded page share one
  * gutter and one measure. The previous fallback built its own full-screen
- * container with a decorative gradient over it — a second layout, and a
+ * container with a decorative gradient over it. That was a second layout, and a
  * decorative gradient §5.1 rejects, shown only while the page was blank.
  */
 function ProjectFallback() {

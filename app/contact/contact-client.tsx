@@ -19,18 +19,18 @@ import {
 } from "@/lib/contact-form";
 
 /**
- * `/contact` — Guided profile.
+ * `/contact`: Guided profile.
  *
  * §7.1 gives this route exactly one organizing move: one task, nothing else on
  * the page competing. It was not honouring that. A bordered card sat beside the
  * form holding an email address, a location, and three icon-only social circles
- * — a second destination on a page whose whole job is the first one. That card
+ * It was a second destination on a page whose whole job is the first one. That card
  * is gone. The address survives as a fallback line beneath the form, where it
  * reads as "or do this instead" rather than as a competing column.
  *
  * Also removed: three all-caps eyebrows (§13), icon-only social circles with no
  * visible label (§5.6), and a pill-shaped `select` that matched no other input
- * on the site (§5.4 — a pill is a semantic shape, not a default).
+ * on the site (§5.4 makes a pill a semantic shape, not a default).
  *
  * §3.3 requires explicit submitting, failed, and succeeded states. Toasts alone
  * did not satisfy that: they vanish, and a visitor who looks away misses the
@@ -79,7 +79,7 @@ export default function ContactClient() {
 				// it has actually been delivered.
 				setFormData(EMPTY_FORM);
 				toast.success("Message sent", {
-					description: "Thanks for reaching out — I'll get back to you soon.",
+					description: "Thanks for reaching out. I'll get back to you soon.",
 				});
 			} else {
 				const reason = result.error || "Please try again, or email me directly.";
@@ -88,7 +88,8 @@ export default function ContactClient() {
 			}
 		} catch (error) {
 			console.error("Contact form submit failed", error);
-			const reason = "Something went wrong on the way out. Your message is still here — try again.";
+			const reason =
+				"Something went wrong on the way out. Your message is still here, so try again.";
 			setStatus({ kind: "failed", reason });
 			toast.error("Something went wrong", { description: reason });
 		} finally {
@@ -102,7 +103,7 @@ export default function ContactClient() {
 		<SiteShell>
 			<div className="flex flex-col gap-10">
 				<PageHeader
-					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on — I usually reply within a day or two."
+					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two."
 					title="Get in touch"
 				/>
 
@@ -135,7 +136,7 @@ export default function ContactClient() {
 
 					<div className="flex flex-col gap-2">
 						<Label htmlFor="topic">What is this about?</Label>
-						{/* Matches Input's height, radius, and focus treatment exactly — a
+						{/* Matches Input's height, radius, and focus treatment exactly. A
 						    native select styled as a peer rather than as its own control. */}
 						<select
 							className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm dark:bg-input/30"
@@ -155,7 +156,7 @@ export default function ContactClient() {
 					<div className="flex flex-col gap-2">
 						<Label htmlFor="message">Message</Label>
 						{/* `field-sizing-content` on the primitive overrides `rows`, so the
-						    empty field collapsed to 64px — the smallest thing on a page whose
+						    empty field collapsed to 64px, which was the smallest thing on a page whose
 						    entire job is writing a message. The floor is set here. */}
 						<Textarea
 							className="min-h-40 resize-y"

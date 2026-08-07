@@ -16,7 +16,7 @@ interface CapsuleMorphOptions {
 	durationMs: number;
 	/** The shared capsule that resizes between the two states. */
 	morphRef: RefObject<HTMLElement | null>;
-	/** Runs once the open animation has been started — used to move focus. */
+	/** Runs once the open animation has been started, used to move focus. */
 	onOpened?: () => void;
 	/** Whether the panel is currently open. */
 	open: boolean;

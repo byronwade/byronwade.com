@@ -23,7 +23,7 @@ interface FrameSizeOptions {
 /**
  * Computes the frame's display size, tracking both the container (via
  * ResizeObserver) and the viewport (for fullscreen). The result is always
- * aspect-correct — the frame is letterboxed rather than cropped, so a tall
+ * aspect-correct: the frame is letterboxed rather than cropped, so a tall
  * screenshot never overflows its box.
  */
 export function useFrameSize({

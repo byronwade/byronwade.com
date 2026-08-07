@@ -1,6 +1,6 @@
 /**
  * Contact details, encoded so they never appear as plain text in the shipped
- * HTML or JS source. Base64 is obfuscation, not encryption — it defeats bulk
+ * HTML or JS source. Base64 is obfuscation, not encryption, it defeats bulk
  * scrapers, not a determined reader. See docs/SPAM_PROTECTION.md.
  *
  * This lives in lib/ so both the UI components and the structured-data helpers
@@ -33,7 +33,7 @@ export const CONTACT_ENCODED = {
  * Values safe to embed in JSON-LD.
  *
  * Structured data is served in the initial HTML, so anything here is readable
- * by every crawler — which is the point for search engines and the problem for
+ * by every crawler: which is the point for search engines and the problem for
  * harvesters. These are deliberately a role address and a masked number, not
  * the real ones the click-to-reveal components decode.
  */

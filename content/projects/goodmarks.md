@@ -8,9 +8,9 @@ status: "Live"
 tagline: "reputation, protected"
 order: 1
 date: 2026-05-17
-excerpt: "My flagship product — a mobile-first review platform that routes happy customers to public reviews and unhappy ones to a private inbox, so a business gets every chance to fix a problem before it becomes a one-star rating."
-problem: "Angry customers post publicly; delighted ones rarely do — so local businesses get a review profile worse than the service they deliver."
-outcome: "Happy customers route to public reviews; unhappy ones land in a private inbox first — reputation protected before it breaks."
+excerpt: "My flagship product. A mobile-first review platform that sends happy customers to public reviews and unhappy ones to a private inbox, so a business gets a chance to fix the problem before it turns into a one-star rating."
+problem: "Angry customers post publicly and happy ones usually do not, so local businesses end up with a review profile worse than the service they give."
+outcome: "Happy customers go to public reviews and unhappy ones land in a private inbox first, so the reputation gets protected before it breaks."
 metrics:
   - label: Status
     value: "Live"
@@ -28,7 +28,7 @@ metrics:
 
 ## The Problem
 
-For a local business, online reviews are oxygen. A handful of one-star ratings can quietly choke off new customers for months, and most owners never see the complaint until it's already public and permanent. At the same time, the customers who *loved* the service — the ones who would happily leave a glowing review — almost never do, because nobody asked them at the right moment in the right way.
+For a local business, online reviews are oxygen. A handful of one-star ratings can quietly choke off new customers for months, and most owners never see the complaint until it's already public and permanent. Meanwhile the customers who *loved* the service, the ones who would happily leave a glowing review, almost never do. Nobody asked them at the right moment in the right way.
 
 The result is a brutal asymmetry: angry customers are motivated to post publicly, delighted customers aren't, and the average business ends up with a review profile that's far worse than the experience it actually delivers.
 
@@ -40,24 +40,24 @@ Goodmarks exists to close that gap.
 
 At its core, Goodmarks is a **smart review-routing engine**. When a business asks a customer for feedback, the customer first rates their experience privately. From there, the flow splits:
 
-- **Happy customers** are guided straight to the public platforms that matter — Google, and wherever else the business competes for visibility.
+- **Happy customers** go straight to the public platforms that matter. Google, and wherever else the business is competing to be seen.
 - **Unhappy customers** are routed into a **private inbox** instead, giving the owner a chance to make it right before frustration becomes a permanent one-star review.
 
-This isn't about hiding bad feedback — it's about giving every business the same shot at service recovery that big brands have, and making sure public reviews reflect resolved relationships rather than heat-of-the-moment anger.
+This is not about hiding bad feedback. It is about giving a small business the same shot at fixing things that the big brands get, so the public reviews reflect a relationship that got sorted out instead of somebody typing while they are still angry.
 
 ### Beyond routing
 
 Goodmarks grew into a full reputation toolkit:
 
-**Multi-channel collection** — Requests go out over SMS and email, and customers can also leave feedback through QR codes placed on receipts, tables, counters, and vehicles. Every channel funnels into the same routing logic.
+**Multi-channel collection.** Requests go out over SMS and email, and customers can also leave feedback through QR codes placed on receipts, tables, counters, and vehicles. Every channel funnels into the same routing logic.
 
-**Tap-to-review with NFC** — Goodmarks writes review links directly to NFC tags, so a customer can tap their phone on a card or sticker and land straight in the review flow. It's the lowest-friction collection method there is, and it works in the physical world where service actually happens.
+**Tap-to-review with NFC.** Goodmarks writes review links directly to NFC tags, so a customer can tap their phone on a card or sticker and land straight in the review flow. It's the lowest-friction collection method there is, and it works in the physical world where service actually happens.
 
-**Referral gifting** — Five-star reviewers can be automatically thanked with a gift, with budget controls so the program never runs away from the owner. It closes the loop: your happiest customers become your cheapest, most credible marketing channel.
+**Referral gifting.** Five-star reviewers can be automatically thanked with a gift, with budget controls so the program never runs away from the owner. It closes the loop: your happiest customers become your cheapest, most credible marketing channel.
 
-**A reputation dashboard** — Route views, ratings over time, public click-through, and an at-a-glance "review protection score" let an owner see, in seconds, whether their reputation is trending up or down.
+**A reputation dashboard.** Route views, ratings over time, public click-through, and an at-a-glance "review protection score" let an owner see, in seconds, whether their reputation is trending up or down.
 
-**Customization and rules** — Branding, email templates, and routing rules are all configurable so the experience feels like the business's own, not a generic third-party form.
+**Customization and rules.** Branding, email templates, and routing rules are all configurable so the experience feels like the business's own, not a generic third-party form.
 
 ---
 
@@ -67,17 +67,17 @@ Goodmarks is a cross-platform mobile app built with **Expo** and **React Native*
 
 A few decisions that mattered:
 
-**Native hardware, not just screens.** Goodmarks leans into what a phone can actually do — NFC tag writing, device contact import for building campaigns, push notifications for new feedback, and biometric (Face ID / fingerprint) unlock to protect a business's reputation data. These aren't web features bolted onto a mobile shell; they're the reason the product feels native.
+**Native hardware, not just screens.** Goodmarks leans into what a phone can actually do. NFC tag writing, device contact import for building campaigns, push notifications for new feedback, and biometric unlock with Face ID or a fingerprint to protect a business's reputation data. These are not web features bolted onto a mobile shell. They are the reason the product feels native.
 
 **Subscriptions through the stores.** Billing runs through native App Store and Google Play subscriptions rather than a separate payment processor, with an annual plan that rewards commitment. It keeps signup friction near zero and purchases inside the platform customers already trust.
 
-**Resilience as a feature.** Background tasks handle review notifications, API keys live in secure local storage, and the app is built to behave gracefully when connectivity drops — because the counter of a busy shop is exactly where signal goes to die. Recent work has gone into hardening exactly these edges (offline-state handling, keyboard-avoidance, accessibility passes).
+**Resilience as a feature.** Background tasks handle review notifications, API keys live in secure local storage, and the app is built to behave gracefully when connectivity drops, because the counter of a busy shop is exactly where signal goes to die. Recent work has gone into hardening exactly these edges (offline-state handling, keyboard-avoidance, accessibility passes).
 
 ---
 
 ## Why It's the Flagship
 
-Goodmarks is the product where everything I care about as a developer shows up at once: a real problem with real stakes for real businesses, a thesis that's a little contrarian (protect the relationship, don't just farm stars), and an execution bar high enough to ship to two app stores and keep iterating. It's not a prototype or a tech demo — it's a finished, actively maintained product that earns its keep.
+Goodmarks is the product where everything I care about as a developer shows up at once: a real problem with real stakes for real businesses, a thesis that's a little contrarian (protect the relationship, don't just farm stars), and an execution bar high enough to ship to two app stores and keep iterating. It is not a prototype or a tech demo. It is a finished product that I still maintain and it earns its keep.
 
 If you run a business that lives and dies by its reputation, Goodmarks makes sure the version of you that the internet sees is the version your best customers already know.
 

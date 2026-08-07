@@ -22,7 +22,7 @@ function tagOverlapScore(current: BlogPost, candidate: BlogPost): number {
 }
 
 /**
- * Related posts — prefer shared tags, then fall back to recent writing.
+ * Related posts: prefer shared tags, then fall back to recent writing.
  */
 export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps) {
 	const [current, allPosts] = await Promise.all([getBlogPost(currentSlug), getBlogPosts()]);

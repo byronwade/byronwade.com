@@ -15,7 +15,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 	return (
 		<>
 			{/* No decorative background layer. DESIGN.md §13 rejects grid backgrounds
-			    and decorative glows, and §2 puts the work — not atmosphere — in front.
+			    and decorative glows, and §2 puts the work, not atmosphere, in front.
 			    A clean plate is also what lets the opening's scale read as composition
 			    rather than as texture. */}
 

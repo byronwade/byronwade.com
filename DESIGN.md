@@ -1,5 +1,5 @@
 ---
-name: Warm Precision — byronwade.com
+name: Warm Precision, byronwade.com
 version: 2.0
 status: adopted baseline
 principle: "Warm precision. Quiet power."
@@ -21,7 +21,7 @@ runtime_ownership:
   motion: app/globals.css (--motion-*)
 ---
 
-# Warm Precision — design standard for byronwade.com
+# Warm Precision, design standard for byronwade.com
 
 This is the design authority for this repository. It owns judgment:
 information architecture, composition, interaction, motion, accessibility,
@@ -48,7 +48,7 @@ exceptions this file refers to. Read it first.
 5. Runtime tokens in `app/globals.css` and the component APIs in `components/ui/`.
 6. `docs/UI_GUIDELINES.md` for the binding interaction and accessibility rules.
 7. Existing implementation, only where it does not contradict the above.
-8. Screenshots, archived designs, and external references — evidence, never proof.
+8. Screenshots, archived designs, and external references, evidence, never proof.
 
 Hard rules:
 
@@ -80,7 +80,7 @@ The synthesis, for this site:
 
 This site uses four. `PROJECT_PROFILE.md` maps each to its routes.
 
-### 3.1 Showcase — `/`, `/projects`, `/portfolio`, `/blog`
+### 3.1 Showcase, `/`, `/projects`, `/portfolio`, `/blog`
 
 Public pages whose job is to make a visitor understand and decide.
 
@@ -94,7 +94,7 @@ Public pages whose job is to make a visitor understand and decide.
 Composition may be bespoke. Tokens, forms, icons, focus behavior, and motion
 vocabulary may not.
 
-### 3.2 Evidence — `/resume`, `/projects/[slug]`
+### 3.2 Evidence, `/resume`, `/projects/[slug]`
 
 Pages where the reader arrives with a question and needs a defensible answer.
 
@@ -104,7 +104,7 @@ Pages where the reader arrives with a question and needs a defensible answer.
 - Preserve units, periods, and sources. Do not manufacture precision.
 - The comparison or the artifact is the dominant object, not a card wrapper.
 
-### 3.3 Guided — `/contact` and the inline contact sheet
+### 3.3 Guided, `/contact` and the inline contact sheet
 
 One focused task, frequently interrupted, often on a phone.
 
@@ -119,9 +119,9 @@ One focused task, frequently interrupted, often on a phone.
 All profiles share semantic color roles, typography, spacing, shape, elevation,
 focus and input states, motion tokens, reduced-motion behavior, component
 ownership, and error/loading/empty states. A profile changes composition and
-density — never interaction correctness.
+density, never interaction correctness.
 
-### 3.5 Workbench — not used
+### 3.5 Workbench, not used
 
 No authenticated or repeat-use operational surface exists here. The page
 archetypes for resource indexes, ledgers, inboxes, and admin queues are
@@ -136,7 +136,7 @@ Each page has exactly one dominant object:
 
 | Route | Dominant object |
 | --- | --- |
-| `/` | Who Byron is and the proof — not the avatar, not the nav |
+| `/` | Who Byron is and the proof, not the avatar, not the nav |
 | `/projects` | The list of real case studies |
 | `/projects/[slug]` | The case study and its live artifact |
 | `/portfolio` | The repositories themselves |
@@ -145,7 +145,7 @@ Each page has exactly one dominant object:
 | `/resume` | The record |
 | `/contact` | The form |
 
-Nothing — card, gradient, dock, or animation — may become more visually
+Nothing, card, gradient, dock, or animation, may become more visually
 important than that object.
 
 ### 4.2 Calmness comes from hierarchy, not emptiness
@@ -171,14 +171,14 @@ critical action has a visible or keyboard-discoverable route.
 
 ### 4.5 Depth communicates behavior
 
-Persistent structure is planar — borders and tone separate regions. Elevation is
+Persistent structure is planar, borders and tone separate regions. Elevation is
 reserved for transient layers: popovers, hover cards, the dock, the fullscreen
 preview. Shadow is not decoration.
 
 ### 4.6 Familiarity before novelty
 
 Novel composition is welcome on Showcase pages. Novel *control behavior* is not.
-Use the platform, then Base UI, then custom — in that order.
+Use the platform, then Base UI, then custom, in that order.
 
 ### 4.7 Performance is part of design
 
@@ -198,7 +198,7 @@ The palette is warm-neutral OKLCH with a single restrained amber brand.
   region. It is **not** a default container color.
 - `success`, `warning`, `destructive`, and `brand` are separate semantic
   families even where two currently resolve to the same value.
-- Status never relies on color alone — pair it with text, icon, or shape.
+- Status never relies on color alone. pair it with text, icon, or shape.
 - Dark mode preserves hierarchy; it is not an inversion.
 - No decorative gradients, gradient text, neon glow, or glassmorphism.
 - No page-local palette. If a value is needed twice, it becomes a token.
@@ -211,14 +211,14 @@ wordmark only. All three are owned by `lib/fonts.ts`.
 | Role | Use |
 | --- | --- |
 | Display | One page-defining statement, where scale is earned |
-| Page title | Route or object identity — one `h1` per page |
+| Page title | Route or object identity, one `h1` per page |
 | Section heading | A major turn in the page's argument |
 | Lede | One short orientation passage under the title |
 | Body | Reading |
 | Compact body | Index rows, metadata, inspectors |
 | Label | Controls and field names |
 | Metadata | Dates, source, freshness |
-| Data | Counts, currency, durations — tabular numerals |
+| Data | Counts, currency, durations, tabular numerals |
 | Mono | Code, paths, commands, identifiers |
 
 Rules:
@@ -275,25 +275,25 @@ contains no animation.
 | Occasional (contact sheet, fullscreen preview, hover card) | Standard functional motion |
 | Rare or first-view (page entrance) | The delight budget may be spent, once |
 
-**2. Purpose** — name one: feedback, spatial consistency, state indication,
+**2. Purpose**, name one: feedback, spatial consistency, state indication,
 continuity, explanation, or rare delight. "It looks good" is not a purpose for
 anything a visitor sees repeatedly.
 
-**3. Function** — never move content the visitor is reading.
+**3. Function**, never move content the visitor is reading.
 
-**4. Tool** — cheapest capable: CSS transition → `.reveal` animation →
+**4. Tool**, cheapest capable: CSS transition → `.reveal` animation →
 Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
 Do not add a library for a fade.
 
-**5. Properties** — `transform` and `opacity`. `clip-path` deliberately (the
+**5. Properties**, `transform` and `opacity`. `clip-path` deliberately (the
 theme-toggle wipe). Never animate `width`, `height`, `top`, or `left` on a
 repeated interaction.
 
-**6. Ingredients** — use the tokens in §6.2. Do not introduce a parallel scale.
+**6. Ingredients**, use the tokens in §6.2. Do not introduce a parallel scale.
 
-**7. Interruption** — define retrigger, reversal, and exit before shipping.
+**7. Interruption**, define retrigger, reversal, and exit before shipping.
 
-**8. Access** — reduced motion ships with the implementation, not after.
+**8. Access**, reduced motion ships with the implementation, not after.
 
 ### 6.2 Ingredients
 
@@ -306,7 +306,7 @@ Owned by `app/globals.css`:
 --motion-fast:   120ms;  /* press, hover, color */
 --motion-base:   200ms;  /* popover, tooltip, dropdown */
 --motion-slow:   300ms;  /* capsule morph, sheet */
---motion-drawer: 480ms;  /* theme wipe — the one deliberate flourish */
+--motion-drawer: 480ms;  /* theme wipe, the one deliberate flourish */
 
 --motion-scene:      640ms;  /* first-view page entrance (`.reveal`) */
 --motion-scene-step:  90ms;  /* stagger between staged elements in one opening */
@@ -317,7 +317,7 @@ be used for a page entrance. It is not a fourth general duration: nothing a
 visitor triggers repeatedly may reach for it.
 
 Never `ease-in` for an entrance; it delays visible response. Linear only for
-continuous motion. Durations are budgets, not a second scale — repeated values
+continuous motion. Durations are budgets, not a second scale, repeated values
 get promoted into the tokens above.
 
 ### 6.3 Physicality
@@ -336,7 +336,7 @@ get promoted into the tokens above.
 
 `globals.css` collapses animation and transition durations globally under
 `prefers-reduced-motion`. Because of that, motion may never be the only way to
-understand sequence, state, or completion — the reduced experience must remain
+understand sequence, state, or completion, the reduced experience must remain
 complete, not broken.
 
 ### 6.5 Feel-check
@@ -354,9 +354,9 @@ states its move, and the move does not transplant to another route:
 
 | Route | Organizing move |
 | --- | --- |
-| `/` | Claim, then immediate proof — the numbers and the shipped work sit in the first screen, not below three sections of preamble |
+| `/` | Claim, then immediate proof, the numbers and the shipped work sit in the first screen, not below three sections of preamble |
 | `/projects` | A ranked index where each row carries its own evidence: problem, outcome, status |
-| `/projects/[slug]` | The live artifact beside the story — the reader can see the thing while reading about it |
+| `/projects/[slug]` | The live artifact beside the story, the reader can see the thing while reading about it |
 | `/portfolio` | Raw open-source activity, pulled live, sorted by signal |
 | `/blog` | Chronology with the lede visible, so scanning is reading |
 | `/resume` | One record, two reading speeds, printable |
@@ -369,7 +369,7 @@ title alone does not qualify. Available openings: product-led, claim-and-proof,
 comparison-led, workflow-sequence, evidence-led.
 
 For a substantial page, compare at least two materially different compositions
-before building — change topology and sequence, not card styling.
+before building, change topology and sequence, not card styling.
 
 ### 7.3 Shareable state
 
@@ -378,25 +378,25 @@ are worth sharing. `nuqs` is available.
 
 ## 8. Component contracts
 
-- **Buttons** — one dominant primary action per region; verb-first labels;
+- **Buttons:** one dominant primary action per region; verb-first labels;
   loading preserves width; no page-local wrappers for spacing or color.
-- **Forms** — visible labels; helper text explains format or consequence;
+- **Forms:** visible labels; helper text explains format or consequence;
   validation beside the field; invalid input is preserved, never cleared or
   silently clamped; native input types and autocomplete.
-- **Search** — global search lives in the dock; results identify type and
+- **Search:** global search lives in the dock; results identify type and
   context; Escape and arrow keys behave predictably; empty results offer a route out.
-- **Cards** — justified only when content has independent identity, state, or
+- **Cards:** justified only when content has independent identity, state, or
   selection. Never to create spacing, to make a number look important, or to
   fill a grid. No nested cards.
-- **Tabs** — switch representations of one object; active state is not
+- **Tabs:** switch representations of one object; active state is not
   color-only; object context is preserved.
-- **Overlays** — accessible name, sensible initial focus, contained keyboard
+- **Overlays:** accessible name, sensible initial focus, contained keyboard
   navigation when modal, Escape, a visible close route, and focus return.
-- **Empty, loading, error** — every surface that can be empty, slow, or fail has
+- **Empty, loading, error:** every surface that can be empty, slow, or fail has
   a designed state. Empty explains what is missing and the next step. Errors say
   what failed, what is still safe, and what to do.
-- **Status** — text with a semantic cue, distinguishable in monochrome.
-- **Charts** — none exist. Adding one requires naming the reader's question
+- **Status:** text with a semantic cue, distinguishable in monochrome.
+- **Charts:** none exist. Adding one requires naming the reader's question
   first, preferring position and length, and providing a table alternative.
 
 ## 9. Content and voice
@@ -423,18 +423,18 @@ and reflow; reduced-motion support; a non-drag alternative wherever dragging
 exists; dialog focus containment and return; hover-revealed content also
 available on keyboard focus.
 
-Accessibility is not claimed from static inspection. Critical flows —
-navigating, reading a post, submitting the contact form — are checked with a
+Accessibility is not claimed from static inspection. Critical flows , 
+navigating, reading a post, submitting the contact form, are checked with a
 keyboard.
 
 ## 11. Responsive behavior
 
 Recomposition, not shrinking.
 
-- **Desktop** — full composition, docked table of contents, keyboard accelerators.
-- **Tablet / narrow** — preserve the primary work; move secondary panels to
+- **Desktop:** full composition, docked table of contents, keyboard accelerators.
+- **Tablet / narrow:** preserve the primary work; move secondary panels to
   overlays; reduce chrome before reducing readability.
-- **Mobile** — one column; full-width sheets; the next action stays reachable;
+- **Mobile:** one column; full-width sheets; the next action stays reachable;
   the dock does not cover focused controls; wide content scrolls horizontally
   rather than being mangled into stacked labels.
 
@@ -515,7 +515,7 @@ critical failure.
 2. Primary action or decision
 3. Information hierarchy
 4. Data and state trust
-5. Named composition — the route uses an intentional organizing move
+5. Named composition, the route uses an intentional organizing move
 6. Density and readability
 7. State coverage
 8. Interaction quality

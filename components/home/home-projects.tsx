@@ -8,7 +8,7 @@ import { getFeaturedProjects } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 
 /**
- * Homepage "selected work" — the first turn after the opening.
+ * Homepage "selected work". The first turn after the opening.
  *
  * Rebuilt onto the shared index primitives rather than its own copy of the
  * spotlight markup. What stays local is the *content* of a row: this section's

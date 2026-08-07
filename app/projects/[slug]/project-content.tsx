@@ -134,7 +134,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 
 						{/* Problem and outcome are the argument of an Evidence page (§3.2), so
 						    they are set as a plain definition list on a hairline rather than
-						    in two tinted cards with all-caps labels — §13 rejects the card
+						    in two tinted cards with all-caps labels. §13 rejects the card
 						    wrapper and the eyebrow, and §3.2 says the comparison itself is the
 						    dominant object, not the box around it. */}
 						{(project.problem || project.outcome) && (

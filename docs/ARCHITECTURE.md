@@ -17,9 +17,9 @@ the header.
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
 
-- `components/home/home-interactive.tsx` — intro, bio, social links
-- `components/home/home-projects.tsx` — project list
-- `components/home/home-blog.tsx` — recent posts
+- `components/home/home-interactive.tsx`. intro, bio, social links
+- `components/home/home-projects.tsx`. project list
+- `components/home/home-blog.tsx`. recent posts
 
 ## Route map
 
@@ -48,9 +48,9 @@ components/
 
 ## Data
 
-- `lib/portfolio-data.ts` — GitHub / Dribbble / Figma APIs
-- `lib/projects.ts`, `lib/blog.ts` — Markdown content (`gray-matter`)
-- `lib/seo.ts` — Metadata and JSON-LD structured data
-- `lib/analytics.ts` — Vercel analytics events
-- `lib/cache.ts` — `CACHE_TAGS`, the single source of truth for cache tags
-- `lib/actions/send-email.ts` — contact form server action (Resend)
+- `lib/portfolio-data.ts`. GitHub / Dribbble / Figma APIs
+- `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
+- `lib/seo.ts`. Metadata and JSON-LD structured data
+- `lib/analytics.ts`. Vercel analytics events
+- `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
+- `lib/actions/send-email.ts`. contact form server action (Resend)

@@ -1,6 +1,6 @@
 # byronwade.com
 
-Personal portfolio for Byron Wade — full-stack developer. An editorial homepage,
+Personal portfolio for Byron Wade, full-stack developer. An editorial homepage,
 case-study projects, a live GitHub portfolio, a Markdown blog, and a resume.
 
 ## Quick start
@@ -16,7 +16,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Route | Purpose |
 |-------|---------|
-| `/` | Editorial homepage — intro, projects, recent posts |
+| `/` | Editorial homepage, intro, projects, recent posts |
 | `/projects`, `/projects/[slug]` | Case studies from Markdown (`content/projects/`) |
 | `/portfolio` | Live GitHub repositories (`/api/portfolio`) |
 | `/blog`, `/blog/[slug]` | Blog from Markdown (`content/blog/`) |
@@ -28,14 +28,14 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full folder map.
 
 ## Governance
 
-This repository runs on the **Warm Precision** kit — a design standard plus an
+This repository runs on the **Warm Precision** kit, a design standard plus an
 agent protocol, adapted to this project rather than pasted into it.
 
 | File | Owns | Read it when |
 |---|---|---|
 | [`PROJECT_PROFILE.md`](PROJECT_PROFILE.md) | Users, owners, dependencies, commands, budgets, exceptions | **First.** The other two are only authoritative once this is accurate |
-| [`DESIGN.md`](DESIGN.md) | Design judgment — composition, density, motion, accessibility, the quality gate | Any change that renders UI |
-| [`AGENTS.md`](AGENTS.md) | How work is done — operating modes, reuse ladder, cleanup bounds, verification | Every task |
+| [`DESIGN.md`](DESIGN.md) | Design judgment, composition, density, motion, accessibility, the quality gate | Any change that renders UI |
+| [`AGENTS.md`](AGENTS.md) | How work is done, operating modes, reuse ladder, cleanup bounds, verification | Every task |
 | [`docs/DESIGN_RESEARCH_BASIS.md`](docs/DESIGN_RESEARCH_BASIS.md) | Why the standard says what it says | Only when revising the standard |
 
 Two rules do most of the work:
@@ -57,12 +57,12 @@ and point at the code that holds the values.
 | `npm run dev` | Dev server |
 | `npm run dev:turbo` | Dev with Turbopack |
 | `npm run build` | Production build |
-| `npm run lint` / `lint:fix` | Ultracite over Biome — **CI gate** |
-| `npm run type-check` | `next typegen` + strict TypeScript — **CI gate** |
-| `npm run knip` | Unused files, exports, types, deps — **CI gate**, at zero |
-| `npm run build` | Production build — **CI gate** |
+| `npm run lint` / `lint:fix` | Ultracite over Biome ,  **CI gate** |
+| `npm run type-check` | `next typegen` + strict TypeScript ,  **CI gate** |
+| `npm run knip` | Unused files, exports, types, deps ,  **CI gate**, at zero |
+| `npm run build` | Production build ,  **CI gate** |
 | `npm run check` | Lint with fixes, then type-check and knip |
-| `npm run audit:react` | react-doctor — React codebase health |
+| `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
 | `npm run audit:deploy` | `vercel build` (needs a linked project) |
 | `npm run perf:budget` | Build + Lighthouse against `lighthouse-budget.json` |

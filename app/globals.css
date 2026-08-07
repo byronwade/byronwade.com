@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────
-   byronwade/ui foundation — token theme mapping (Tailwind v4)
+   byronwade/ui foundation, token theme mapping (Tailwind v4)
    Brand follows --brand; override it to re-skin rings and selection.
    ───────────────────────────────────────────────────────────── */
 @theme inline {
@@ -92,7 +92,7 @@
   --brand: oklch(0.72 0.14 85);
   --brand-foreground: oklch(0.22 0.04 80);
   --brand-muted: oklch(0.96 0.04 90);
-  /* Money, growth, shipped, healthy. A real green — never an alias of brand. */
+  /* Money, growth, shipped, healthy. A real green, never an alias of brand. */
   --success: oklch(0.52 0.12 152);
   --success-foreground: oklch(0.99 0.002 95);
   --success-muted: oklch(0.95 0.03 152);
@@ -107,7 +107,7 @@
   --chart-5: oklch(0.269 0.01 75);
   --radius: 0.75rem;
 
-  /* ── Motion (DESIGN.md §6.2) — the one motion scale. ──
+  /* ── Motion (DESIGN.md §6.2), the one motion scale. ──
      Theme-independent, so they live here rather than in a theme block. Before
      these existed the same curve was copy-pasted into four TypeScript files. */
   --motion-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -117,7 +117,7 @@
   --motion-base: 200ms;
   --motion-slow: 300ms;
   --motion-drawer: 480ms;
-  /* First-view page entrance only — the "rare or first-view" row of the §6.1
+  /* First-view page entrance only, the "rare or first-view" row of the §6.1
      frequency table, where the delight budget may be spent once. Promoted here
      because `.reveal` had been carrying an untokened 0.6s of its own. */
   --motion-scene: 640ms;
@@ -253,7 +253,7 @@
 
   /* ── Sequenced entrance ──
      Scroll-driven, so scenes arrive as they are reached instead of all firing
-     on load. CSS-only — the tool ladder in §6.1 says use the cheapest capable
+     on load. CSS-only, the tool ladder in §6.1 says use the cheapest capable
      tool, and this needs no JavaScript and no observer.
 
      Everything is visible by default. The animation only attaches where
@@ -329,7 +329,7 @@
 /*
  * Theme-toggle morph (byronwade/ui). The nav dock drives the light/dark swap
  * through the View Transitions API and animates `::view-transition-new(root)`
- * with an expanding clip-path circle anchored at the toggle button — so the new
+ * with an expanding clip-path circle anchored at the toggle button, so the new
  * theme blooms outward from the trigger. We disable the default cross-fade and
  * stack the incoming snapshot on top so the circle reveals it.
  */
