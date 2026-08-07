@@ -9,9 +9,16 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Least privilege for GITHUB_TOKEN, flagged by CodeQL on PR #29. Without this
+# block the token inherits the repository default, which can be write-all; this
+# job only ever needs to read the checkout, so anything a compromised dependency
+# in `npm ci` could reach is limited to that.
+permissions:
+  contents: read
+
 jobs:
   check:
-    name: Lint and type-check
+    name: Lint, type-check, dead code, build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,5 +35,15 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # `type-check` runs `next typegen` first: next-env.d.ts and the generated
+      # route types are gitignored, so tsc cannot resolve `next/*` without them.
       - name: Type-check
         run: npm run type-check
+
+      # Fails on unused files, exports, types, and dependencies. This is what
+      # keeps deleted features from leaving orphaned modules behind.
+      - name: Dead code
+        run: npm run knip
+
+      - name: Build
+        run: npm run build

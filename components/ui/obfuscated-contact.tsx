@@ -1,33 +1,8 @@
 "use client";
 
-import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// Base64 encoded contact info (additional layer of obfuscation)
-// byron@byronwade.com
-const ENCODED_EMAIL = "Ynlyb25AYnlyb253YWRlLmNvbQ==";
-// +18312958460
-const ENCODED_PHONE = "KzE4MzEyOTU4NDYw";
-// +1 (831) 295-8460
-const ENCODED_PHONE_DISPLAY = "KzEgKDgzMSkgMjk1LTg0NjA=";
-
-// Decode function
-const decode = (encoded: string): string => {
-	try {
-		return atob(encoded);
-	} catch {
-		return "";
-	}
-};
-
-// Additional obfuscation: split and reverse parts
-const _obfuscateEmail = (email: string): { user: string; domain: string } => {
-	const [user, domain] = email.split("@");
-	return {
-		user: user.split("").reverse().join(""),
-		domain: domain.split("").reverse().join(""),
-	};
-};
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
+import { Mail, Phone } from "@/lib/icons";
 
 // Component that only renders after client-side hydration
 const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
@@ -57,15 +32,11 @@ export const ObfuscatedEmail = ({
 	showIcon = false,
 	variant = "link",
 }: ObfuscatedEmailProps) => {
+	// The decoded value is derived from `revealed`, so it does not need its own
+	// state or an effect to keep the two in sync. Rendering happens inside
+	// ClientOnlyContact, so `atob` always has a browser to run in.
 	const [revealed, setRevealed] = useState(false);
-	const [email, setEmail] = useState("");
-
-	useEffect(() => {
-		if (revealed) {
-			const decoded = decode(ENCODED_EMAIL);
-			setEmail(decoded);
-		}
-	}, [revealed]);
+	const email = revealed ? decodeContact(CONTACT_ENCODED.email) : "";
 
 	const handleReveal = () => {
 		setRevealed(true);
@@ -75,7 +46,7 @@ export const ObfuscatedEmail = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Mail className="inline w-4 h-4 mr-2" />}
+					{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						email
 					) : (
@@ -91,11 +62,11 @@ export const ObfuscatedEmail = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Mail className="inline w-4 h-4 mr-2" />}
+				{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
-						className="hover:text-primary transition-colors"
+						className="transition-colors hover:text-primary"
 						// Additional protection: use JavaScript to build the href
 						onClick={(e) => {
 							e.preventDefault();
@@ -107,7 +78,7 @@ export const ObfuscatedEmail = ({
 				) : (
 					<button
 						onClick={handleReveal}
-						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						className="text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
 						type="button"
 					>
 						Click to reveal email
@@ -120,11 +91,12 @@ export const ObfuscatedEmail = ({
 
 interface ObfuscatedPhoneProps {
 	className?: string;
+	displayFormat?: boolean;
 	showIcon?: boolean;
 	variant?: "link" | "text";
-	displayFormat?: boolean;
 }
 
+/** @public Documented in docs/SPAM_PROTECTION.md. */
 export const ObfuscatedPhone = ({
 	className = "",
 	showIcon = false,
@@ -132,17 +104,12 @@ export const ObfuscatedPhone = ({
 	displayFormat = true,
 }: ObfuscatedPhoneProps) => {
 	const [revealed, setRevealed] = useState(false);
-	const [phone, setPhone] = useState("");
-	const [displayPhone, setDisplayPhone] = useState("");
-
-	useEffect(() => {
-		if (revealed) {
-			const decodedPhone = decode(ENCODED_PHONE);
-			const decodedDisplay = decode(ENCODED_PHONE_DISPLAY);
-			setPhone(decodedPhone);
-			setDisplayPhone(displayFormat ? decodedDisplay : decodedPhone);
-		}
-	}, [revealed, displayFormat]);
+	const phone = revealed ? decodeContact(CONTACT_ENCODED.phone) : "";
+	const displayPhone = revealed
+		? displayFormat
+			? decodeContact(CONTACT_ENCODED.phoneDisplay)
+			: phone
+		: "";
 
 	const handleReveal = () => {
 		setRevealed(true);
@@ -152,7 +119,7 @@ export const ObfuscatedPhone = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Phone className="inline w-4 h-4 mr-2" />}
+					{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						displayPhone
 					) : (
@@ -168,11 +135,11 @@ export const ObfuscatedPhone = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Phone className="inline w-4 h-4 mr-2" />}
+				{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}
-						className="hover:text-primary transition-colors"
+						className="transition-colors hover:text-primary"
 						onClick={(e) => {
 							e.preventDefault();
 							window.location.href = `tel:${phone}`;
@@ -183,7 +150,7 @@ export const ObfuscatedPhone = ({
 				) : (
 					<button
 						onClick={handleReveal}
-						className="text-primary hover:text-primary/80 transition-colors underline hover:no-underline"
+						className="text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
 						type="button"
 					>
 						Click to reveal phone
@@ -192,35 +159,4 @@ export const ObfuscatedPhone = ({
 			</span>
 		</ClientOnlyContact>
 	);
-};
-
-// Component for structured data - returns obfuscated values for bots
-export const getObfuscatedContactForSchema = () => {
-	// Return partially obfuscated data for structured data
-	return {
-		email: `contact${String.fromCharCode(64)}byronwade.com`, // Use a business email format
-		telephone: "+1-8xx-xxx-xxxx", // Partially obfuscated
-	};
-};
-
-// Hook to get real contact info only on client-side interaction
-export const useContactInfo = () => {
-	const [contactInfo, setContactInfo] = useState<{
-		email: string;
-		phone: string;
-		phoneDisplay: string;
-	} | null>(null);
-
-	const revealContactInfo = () => {
-		if (!contactInfo) {
-			setContactInfo({
-				email: decode(ENCODED_EMAIL),
-				phone: decode(ENCODED_PHONE),
-				phoneDisplay: decode(ENCODED_PHONE_DISPLAY),
-			});
-		}
-		return contactInfo;
-	};
-
-	return { contactInfo, revealContactInfo };
 };

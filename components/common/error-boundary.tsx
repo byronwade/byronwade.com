@@ -1,14 +1,14 @@
 "use client";
 
-import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertTriangle, Home, RefreshCw } from "@/lib/icons";
 
 interface ErrorBoundaryState {
-	hasError: boolean;
 	error?: Error;
 	errorInfo?: React.ErrorInfo;
+	hasError: boolean;
 }
 
 interface ErrorBoundaryProps {
@@ -93,7 +93,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 			);
 
 			return (
-				<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 flex items-center justify-center p-4">
+				<div className="flex min-h-screen items-center justify-center p-4">
 					<Card className="w-full max-w-md">
 						<CardHeader className="text-center">
 							<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
@@ -111,7 +111,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 						<CardContent className="space-y-4">
 							{process.env.NODE_ENV === "development" && error && (
 								<div className="rounded-md bg-muted p-3">
-									<p className="text-sm font-mono text-muted-foreground">{error.message}</p>
+									<p className="font-mono text-muted-foreground text-sm">{error.message}</p>
 								</div>
 							)}
 
@@ -127,7 +127,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 							</div>
 
 							{isWebpackError && (
-								<p className="text-xs text-muted-foreground text-center">
+								<p className="text-center text-muted-foreground text-xs">
 									If this error persists, try clearing your browser cache or refreshing the page.
 								</p>
 							)}
@@ -139,35 +139,6 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 		return this.props.children;
 	}
-}
-
-// Hook version for functional components
-export function useErrorHandler() {
-	return React.useCallback((error: Error, errorInfo?: React.ErrorInfo) => {
-		console.error("Error caught by useErrorHandler:", error, errorInfo);
-
-		// Handle specific webpack errors
-		if (error.message.includes("Cannot read properties of undefined (reading 'call')")) {
-			console.warn("Detected webpack module loading error. Reloading page...");
-			window.location.reload();
-		}
-	}, []);
-}
-
-// Higher-order component for wrapping components with error boundary
-export function withErrorBoundary<P extends object>(
-	Component: React.ComponentType<P>,
-	fallback?: React.ComponentType<{ error: Error; retry: () => void }>
-) {
-	const WrappedComponent = (props: P) => (
-		<ErrorBoundary fallback={fallback}>
-			<Component {...props} />
-		</ErrorBoundary>
-	);
-
-	WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
-
-	return WrappedComponent;
 }
 
 export default ErrorBoundary;

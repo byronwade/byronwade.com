@@ -60,7 +60,7 @@ This solves the critical problem of communication context loss that plagues exis
 
 ## Technical Choices That Make a Difference
 
-Building with **Next.js 16** and **React 19** isn't just about using modern technology, it's about building a platform that can scale, perform, and evolve.
+Building with **Next.js 16** and **React 19** is about more than using modern technology, it's about building a platform that can scale, perform, and evolve.
 
 **Server Components First**: By default, everything is a server component. This means less JavaScript sent to the browser, faster initial page loads, and better SEO. Client components are only used when interactivity is actually needed.
 
@@ -72,13 +72,13 @@ Building with **Next.js 16** and **React 19** isn't just about using modern tech
 
 ## Security and Compliance from Day One
 
-Row-Level Security (RLS) is often an afterthought or partially implemented in existing platforms. Critical tables containing customer data, payment information, and communications lack proper access controls. This isn't just a technical issue, it's a compliance and trust issue.
+Row-Level Security (RLS) is often an afterthought or partially implemented in existing platforms. Critical tables containing customer data, payment information, and communications lack proper access controls. This is not only a technical issue. It is a compliance and trust issue.
 
 In Thorbis, Row-Level Security is enabled on all tables. Server-side validation with Zod ensures data integrity. Every mutation goes through proper authentication and authorization checks. Security isn't added later, it's built in from the beginning.
 
 ## Industry Best Practices, Not Generic Solutions
 
-Thorbis doesn't just implement features, it implements them the way industry leaders do it. After analyzing ServiceTitan, Jobber, and Housecall Pro, we've incorporated their best practices while avoiding their mistakes.
+Thorbis implements features the way the industry leaders do it. After analyzing ServiceTitan, Jobber, and Housecall Pro, we've incorporated their best practices while avoiding their mistakes.
 
 The price book structure uses three distinct item types (Services, Materials, Equipment) with hierarchical categories, following ServiceTitan's proven approach. Job workflow includes comprehensive lifecycle tracking with 47+ critical fields for costing, scheduling, warranty, and compliance, matching enterprise-level platforms.
 
@@ -100,7 +100,7 @@ The goal isn't to add every possible feature, but to solve the core problems tha
 
 Building Thorbis has been a journey of understanding what field service companies actually need versus what existing platforms provide. The most important lessons:
 
-1. **Architecture matters more than features**: A well-architected system can grow; a poorly architected one will collapse under its own weight.
+1. **Architecture matters more than features**: A well-architected system can grow. A poorly architected one will collapse under its own weight.
 
 2. **Performance is a feature**: Users notice fast applications more than they notice slow ones with more features.
 

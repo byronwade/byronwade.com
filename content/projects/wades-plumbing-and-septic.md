@@ -8,10 +8,10 @@ tagline: "trust at emergency speed"
 order: 4
 date: 2023-10-01
 excerpt: "A conversion-focused website built on trust, speed, and local authenticity for a plumbing and septic business serving two states."
-problem: "Emergency plumbing searchers bounce from slow, generic franchise sites — and dual-state SEO is easy to get wrong."
+problem: "People with an emergency bounce off slow, generic franchise sites, and running SEO across two states is easy to get wrong."
 outcome: "A fast, neighborly site that ranks in two markets and makes calling feel obvious under stress."
 metrics:
-  - label: Business
+  - label: Peak revenue
     value: "$2.4M yr-2"
   - label: Markets
     value: "CA + GA"
@@ -22,7 +22,7 @@ metrics:
 # Building Wade's Plumbing and Septic: Designing for Trust in a Skeptical Industry
 
 
---- 
+---
 
 
 ## The Design Strategy: Anti-Corporate and Built for Speed
@@ -75,7 +75,7 @@ By using a custom Tailwind build instead of bloated page builders, I prioritized
 
 The strongest psychological hook on the site is the "No Upsell" promise. Homeowners are terrified of being scammed by plumbers who show up and find "problems" that don't exist. By explicitly stating "No upselling" and "Honest recommendations," I'm disarming their defense mechanisms immediately.
 
-The brand is positioned as the *Ally* against the *Predatory Industry*. This isn't just marketing copy, it's addressing the #1 pain point customers have in this industry.
+The brand is positioned as the *Ally* against the *Predatory Industry*. That is not marketing copy. It addresses the number one thing customers in this industry are worried about.
 
 ### Cognitive Ease: The "Granny Test"
 
@@ -89,7 +89,7 @@ I listed technical services like "Hydro Jetting" and "Advanced Septic Treatment 
 
 ### Social Proof and Humanization
 
-I emphasized "Family Owned" and "Real People" to leverage the *In-Group Bias*. People prefer to buy from "neighbors" (their in-group) rather than faceless corporations (the out-group). In a world where most plumbing sites look identical, being human is a differentiator.
+I leaned on "Family Owned" and "Real People" because of *In-Group Bias*. People prefer to buy from "neighbors" (their in-group) rather than faceless corporations (the out-group). In a world where most plumbing sites look identical, being human is a differentiator.
 
 ---
 
@@ -109,7 +109,7 @@ Most plumbing sites shout "WE ARE THE BEST" and "CHEAPEST PRICES." I went the ot
 
 ## The Result
 
-This wasn't just a website, it was a conversion funnel built on understanding customer psychology, technical performance, and local SEO. Every design decision was made with one question in mind: "Does this help a stressed homeowner trust us enough to pick up the phone?"
+This was not really a website. It was a conversion funnel built on customer psychology, page speed, and local SEO. Every design decision was made with one question in mind: "Does this help a stressed homeowner trust us enough to pick up the phone?"
 
 In an industry where trust is broken, the design strategy that wins isn't about looking the most professional. It's about being the most trustworthy, the fastest, and the easiest to contact when someone's basement is flooding.
 

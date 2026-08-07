@@ -1,11 +1,20 @@
 export interface DribbbleShot {
-	id: number;
-	title: string;
-	description?: string;
-	html_url: string;
-	width?: number;
-	height?: number;
 	animated?: boolean;
+	attachments?: Array<{
+		id: number;
+		url: string;
+		thumbnail_url: string;
+		size: number;
+		content_type: string;
+	}>;
+	buckets_count?: number; // Collections this shot is in
+	// Color palette extracted from the shot
+	colors?: string[];
+	comments_count?: number;
+	description?: string;
+	height?: number;
+	html_url: string;
+	id: number;
 	images: {
 		four_x?: string | null; // Highest quality (1600x1200)
 		hidpi: string | null; // High quality (800x600)
@@ -14,21 +23,33 @@ export interface DribbbleShot {
 		normal: string; // Normal quality (400x300)
 		teaser: string; // Thumbnail (200x150)
 	};
-	published_at?: string;
-	updated_at?: string;
-	tags?: string[];
-	views_count?: number;
 	likes_count?: number;
-	comments_count?: number;
-	rebounds_count?: number; // Shots inspired by this one
-	buckets_count?: number; // Collections this shot is in
-	attachments?: Array<{
+	// Project context
+	project?: {
 		id: number;
-		url: string;
-		thumbnail_url: string;
-		size: number;
-		content_type: string;
-	}>;
+		name: string;
+		description?: string;
+		shots_count?: number;
+		created_at?: string;
+	};
+	published_at?: string;
+	rebounds_count?: number; // Shots inspired by this one
+	tags?: string[];
+	// Team information if applicable
+	team?: {
+		id: number;
+		name: string;
+		login: string;
+		html_url: string;
+		avatar_url: string;
+		bio?: string;
+		location?: string;
+		members_count?: number;
+		shots_count?: number;
+		created_at?: string;
+	};
+	title: string;
+	updated_at?: string;
 	user?: {
 		id?: number;
 		name?: string;
@@ -58,91 +79,7 @@ export interface DribbbleShot {
 		teams_count?: number;
 		created_at?: string;
 	};
-	// Color palette extracted from the shot
-	colors?: string[];
-	// Project context
-	project?: {
-		id: number;
-		name: string;
-		description?: string;
-		shots_count?: number;
-		created_at?: string;
-	};
-	// Team information if applicable
-	team?: {
-		id: number;
-		name: string;
-		login: string;
-		html_url: string;
-		avatar_url: string;
-		bio?: string;
-		location?: string;
-		members_count?: number;
-		shots_count?: number;
-		created_at?: string;
-	};
+	views_count?: number;
+	width?: number;
 }
-
-// Extended analytics interface for shot performance
-export interface DribbbleShotAnalytics {
-	shotId: number;
-	// Engagement metrics
-	engagement_rate?: number;
-	views_to_likes_ratio?: number;
-	comments_to_views_ratio?: number;
-	// Performance over time
-	daily_views?: Array<{
-		date: string;
-		views: number;
-		likes: number;
-		comments: number;
-	}>;
-	// Geographic data
-	top_countries?: Array<{
-		country: string;
-		views: number;
-		percentage: number;
-	}>;
-	// Referral sources
-	referral_sources?: Array<{
-		source: string;
-		views: number;
-		percentage: number;
-	}>;
-	// Device analytics
-	device_breakdown?: {
-		desktop: number;
-		mobile: number;
-		tablet: number;
-	};
-}
-
 // User portfolio analytics
-export interface DribbbleUserAnalytics {
-	userId: number;
-	// Overall performance
-	total_views: number;
-	total_likes: number;
-	total_comments: number;
-	total_rebounds: number;
-	// Growth metrics
-	followers_growth?: Array<{
-		date: string;
-		count: number;
-	}>;
-	// Engagement trends
-	engagement_trends?: Array<{
-		period: string;
-		avg_likes_per_shot: number;
-		avg_views_per_shot: number;
-		avg_comments_per_shot: number;
-	}>;
-	// Top performing shots
-	top_shots?: Array<{
-		shot_id: number;
-		title: string;
-		views: number;
-		likes: number;
-		engagement_score: number;
-	}>;
-}

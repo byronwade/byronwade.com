@@ -22,7 +22,7 @@ export async function buildSearchIndex(): Promise<SearchEntry[]> {
 
 	const projectEntries: SearchEntry[] = projects.map((p) => ({
 		kind: "Project",
-		label: p.title.split(":")[0],
+		label: p.title.split(":")[0] ?? p.title,
 		href: `/projects/${p.slug}`,
 		meta: p.status ?? p.category,
 		keywords: [p.tagline, p.excerpt, p.category].filter(Boolean).join(" "),

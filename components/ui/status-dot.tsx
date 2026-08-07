@@ -1,6 +1,5 @@
+import type { StatusTone } from "@/lib/status-tone";
 import { cn } from "@/lib/utils";
-
-export type StatusTone = "success" | "warning" | "danger" | "info" | "neutral";
 
 const dot: Record<StatusTone, string> = {
 	success: "bg-success",

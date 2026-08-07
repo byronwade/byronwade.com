@@ -1,9 +1,9 @@
 "use client";
 
-import { Image as ImageIcon, Monitor } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Image as ImageIcon, Monitor } from "@/lib/icons";
 
 interface FigmaInteractiveViewerProps {
 	fileKey: string;
@@ -21,23 +21,23 @@ export function FigmaInteractiveViewer({
 	return (
 		<div className="space-y-6">
 			{/* View Mode Toggle */}
-			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h3 className="text-xl font-bold text-white mb-2">DESIGN VIEWER</h3>
-					<p className="text-gray-400 text-sm">
+					<h3 className="mb-2 font-bold text-white text-xl">DESIGN VIEWER</h3>
+					<p className="text-muted-foreground text-sm">
 						{viewMode === "interactive"
 							? "Interactive Figma embed - zoom, pan, and explore the design"
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<div className="flex items-center gap-2 bg-gray-800/50 rounded-lg p-1 shrink-0">
+				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1">
 					<Button
 						size="sm"
 						variant={viewMode === "interactive" ? "default" : "ghost"}
 						onClick={() => setViewMode("interactive")}
 						className="h-8 px-3 text-xs"
 					>
-						<Monitor className="w-3 h-3 mr-1" />
+						<Monitor className="mr-1 h-3 w-3" />
 						Interactive
 					</Button>
 					<Button
@@ -46,7 +46,7 @@ export function FigmaInteractiveViewer({
 						onClick={() => setViewMode("static")}
 						className="h-8 px-3 text-xs"
 					>
-						<ImageIcon className="w-3 h-3 mr-1" />
+						<ImageIcon className="mr-1 h-3 w-3" />
 						Preview
 					</Button>
 				</div>
@@ -54,11 +54,11 @@ export function FigmaInteractiveViewer({
 
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
-				<div className="relative group">
-					<div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-					<div className="relative bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800">
-						<div className="relative w-full h-[700px] sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
+				<div className="group relative">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
+						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
+								sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
 								style={{ border: "none" }}
 								width="100%"
 								height="100%"
@@ -75,14 +75,14 @@ export function FigmaInteractiveViewer({
 
 			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
-				<div className="relative group">
-					<div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-					<div className="relative bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800">
+				<div className="group relative">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative aspect-[16/9] w-full">
 							<Image
 								src={imageUrl}
 								alt={fileName}
 								fill
+								sizes="(min-width: 1280px) 1200px, 100vw"
 								className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
 								priority
 							/>
@@ -93,12 +93,11 @@ export function FigmaInteractiveViewer({
 
 			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
-				<div className="relative group">
-					<div className="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500" />
-					<div className="relative bg-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-800 p-12 text-center">
-						<ImageIcon className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-						<p className="text-gray-400">No static preview available for this design.</p>
-						<p className="text-gray-500 text-sm mt-2">
+				<div className="group relative">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
+						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
+						<p className="text-muted-foreground">No static preview available for this design.</p>
+						<p className="mt-2 text-muted-foreground/70 text-sm">
 							Switch to Interactive mode to view the design.
 						</p>
 					</div>

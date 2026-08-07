@@ -1,26 +1,27 @@
 import type { Metadata } from "next";
+import { getContactForStructuredData } from "@/lib/contact";
+import { siteUrl } from "@/lib/site";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 const siteName = "Byron Wade";
 const defaultDescription =
 	"Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions.";
 const defaultAuthor = "Byron Wade";
 
-export interface SEOConfig {
-	title: string;
-	description?: string;
-	keywords?: string[];
-	image?: string;
-	type?: "website" | "article" | "project";
-	author?: string;
-	publishedTime?: string;
-	modifiedTime?: string;
-	tags?: string[];
-	canonical?: string;
-	noindex?: boolean;
-	nofollow?: boolean;
+interface SEOConfig {
 	alternateLanguages?: Record<string, string>;
+	author?: string;
+	canonical?: string;
+	description?: string;
+	image?: string;
+	keywords?: string[];
+	modifiedTime?: string;
+	nofollow?: boolean;
+	noindex?: boolean;
+	publishedTime?: string;
 	structuredData?: Record<string, unknown>;
+	tags?: string[];
+	title: string;
+	type?: "website" | "article" | "project";
 }
 
 /**
@@ -46,8 +47,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	const fullTitle = title.includes("|") ? title : `${title} | ${siteName}`;
 	const ogImage =
 		image ||
-		`${baseUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&type=${type}${tags.length > 0 ? `&tags=${encodeURIComponent(tags.join(", "))}` : ""}${publishedTime ? `&date=${encodeURIComponent(publishedTime)}` : ""}`;
-	const pageUrl = canonical || baseUrl;
+		`${siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&type=${type}${tags.length > 0 ? `&tags=${encodeURIComponent(tags.join(", "))}` : ""}${publishedTime ? `&date=${encodeURIComponent(publishedTime)}` : ""}`;
+	const pageUrl = canonical || siteUrl;
 
 	// Combine default keywords with page-specific ones
 	const allKeywords = [
@@ -67,11 +68,11 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	];
 
 	const metadata: Metadata = {
-		metadataBase: new URL(baseUrl),
+		metadataBase: new URL(siteUrl),
 		title: fullTitle,
 		description,
 		keywords: allKeywords,
-		authors: [{ name: author, url: baseUrl }],
+		authors: [{ name: author, url: siteUrl }],
 		creator: author,
 		publisher: author,
 		applicationName: siteName,
@@ -104,7 +105,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
 				...alternateLanguages,
 			},
 			types: {
-				"application/rss+xml": `${baseUrl}/feed.xml`,
+				"application/rss+xml": `${siteUrl}/feed.xml`,
 			},
 		},
 		openGraph: {
@@ -176,7 +177,7 @@ export function generateOGImageUrl(params: {
 		...(author ? { author } : {}),
 		...(date ? { date } : {}),
 	});
-	return `${baseUrl}/api/og?${queryParams.toString()}`;
+	return `${siteUrl}/api/og?${queryParams.toString()}`;
 }
 
 /**
@@ -219,15 +220,15 @@ export function generateArticleStructuredData(params: {
 		author: {
 			"@type": "Person",
 			name: author,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		publisher: {
 			"@type": "Organization",
 			name: siteName,
-			url: baseUrl,
+			url: siteUrl,
 			logo: {
 				"@type": "ImageObject",
-				url: `${baseUrl}/logo.avif`,
+				url: `${siteUrl}/logo.avif`,
 			},
 		},
 		datePublished: publishedTime,
@@ -262,18 +263,18 @@ export function generateWebSiteStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
 		name: siteName,
-		url: baseUrl,
+		url: siteUrl,
 		description: defaultDescription,
 		publisher: {
 			"@type": "Person",
 			name: defaultAuthor,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		potentialAction: {
 			"@type": "SearchAction",
 			target: {
 				"@type": "EntryPoint",
-				urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+				urlTemplate: `${siteUrl}/search?q={search_term_string}`,
 			},
 			"query-input": "required name=search_term_string",
 		},
@@ -288,8 +289,8 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "Organization",
 		name: siteName,
-		url: baseUrl,
-		logo: `${baseUrl}/logo.avif`,
+		url: siteUrl,
+		logo: `${siteUrl}/logo.avif`,
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
@@ -298,7 +299,7 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		contactPoint: {
 			"@type": "ContactPoint",
 			contactType: "Professional",
-			email: "byron@byronwade.com",
+			email: getContactForStructuredData().email,
 			areaServed: "US",
 			availableLanguage: "English",
 		},
@@ -313,8 +314,8 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "Person",
 		name: defaultAuthor,
-		url: baseUrl,
-		image: `${baseUrl}/avatar.avif`,
+		url: siteUrl,
+		image: `${siteUrl}/avatar.avif`,
 		sameAs: [
 			"https://github.com/byronwade",
 			"https://linkedin.com/in/byronwade",
@@ -343,7 +344,7 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 			addressRegion: "GA",
 			addressCountry: "US",
 		},
-		email: "byron@byronwade.com",
+		email: getContactForStructuredData().email,
 		hasOccupation: {
 			"@type": "Occupation",
 			name: "Full Stack Developer",
@@ -377,15 +378,15 @@ export function generateProjectStructuredData(params: {
 		author: {
 			"@type": "Person",
 			name: defaultAuthor,
-			url: baseUrl,
+			url: siteUrl,
 		},
 		publisher: {
 			"@type": "Organization",
 			name: siteName,
-			url: baseUrl,
+			url: siteUrl,
 			logo: {
 				"@type": "ImageObject",
-				url: `${baseUrl}/logo.avif`,
+				url: `${siteUrl}/logo.avif`,
 			},
 		},
 		...(url
@@ -417,47 +418,5 @@ export function generateProjectStructuredData(params: {
 					keywords: category,
 				}
 			: {}),
-	};
-}
-
-/**
- * Extract keywords from text
- */
-export function extractKeywords(text: string, maxKeywords = 10): string[] {
-	// Simple keyword extraction - could be enhanced with NLP
-	const words = text.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-	const wordFreq: Record<string, number> = {};
-
-	for (const word of words) {
-		wordFreq[word] = (wordFreq[word] || 0) + 1;
-	}
-
-	return Object.entries(wordFreq)
-		.sort(([, a], [, b]) => b - a)
-		.slice(0, maxKeywords)
-		.map(([word]) => word.charAt(0).toUpperCase() + word.slice(1));
-}
-
-/**
- * Generate canonical URL
- */
-export function generateCanonicalUrl(path: string): string {
-	return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
-}
-
-/**
- * Generate sitemap entry
- */
-export function generateSitemapEntry(
-	url: string,
-	lastModified?: Date,
-	changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
-	priority?: number
-) {
-	return {
-		url,
-		lastModified: lastModified?.toISOString() || new Date().toISOString(),
-		changeFrequency,
-		priority,
 	};
 }

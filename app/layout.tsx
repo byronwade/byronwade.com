@@ -7,17 +7,17 @@ import {
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import "./globals.css";
-import { ErrorBoundary, ThemeProvider } from "@/components/common";
+import { ErrorBoundary, ReactScan, ThemeProvider } from "@/components/common";
+import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
 import { Toaster } from "@/components/ui/sonner";
 import { customFont, geistMono, geistSans } from "@/lib/fonts";
-import { metadata, viewport } from "./metadata.config";
+
+export { metadata, viewport } from "./metadata.config";
 
 const personJsonLd = generatePersonStructuredData();
 const organizationJsonLd = generateOrganizationStructuredData();
 const websiteJsonLd = generateWebSiteStructuredData();
-
-export { metadata, viewport };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -28,26 +28,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="dns-prefetch" href="//api.figma.com" />
 			</head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${customFont.variable} min-h-screen bg-background font-sans antialiased touch-pan-y`}
+				className={`${geistSans.variable} ${geistMono.variable} ${customFont.variable} min-h-screen touch-pan-y bg-background font-sans antialiased`}
 			>
 				<a href="#main-content" className="skip-link">
 					Skip to main content
 				</a>
-				<script
-					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
-				/>
-				<script
-					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-				/>
-				<script
-					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-				/>
+				<JsonLd data={personJsonLd} />
+				<JsonLd data={organizationJsonLd} />
+				<JsonLd data={websiteJsonLd} />
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="light"
@@ -63,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</ThemeProvider>
 				<Analytics />
 				<SpeedInsights />
+				<ReactScan />
 			</body>
 		</html>
 	);

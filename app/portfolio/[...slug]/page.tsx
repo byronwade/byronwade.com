@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +7,17 @@ import { use } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { CheckCircle, ExternalLink, Github } from "@/lib/icons";
 import { projects } from "@/lib/portfolio-data";
+import { cn } from "@/lib/utils";
+
+/** Staggered entrance for the gallery, matching the reveal utilities in globals.css. */
+const REVEAL_DELAYS = [
+	"reveal-delay-1",
+	"reveal-delay-2",
+	"reveal-delay-3",
+	"reveal-delay-4",
+] as const;
 
 export default function ProjectDetailsPage(props: { params: Promise<{ slug: string[] }> }) {
 	const params = use(props.params);
@@ -25,16 +33,12 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 			{/* Hero Section */}
 			<div className="relative bg-secondary/50">
 				<div className="container mx-auto px-4 py-24 sm:py-32">
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.5 }}
-					>
+					<div className="reveal">
 						<Badge variant="outline">{project.status}</Badge>
-						<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mt-4">
+						<h1 className="mt-4 font-bold text-4xl tracking-tight sm:text-5xl md:text-6xl">
 							{project.title}
 						</h1>
-						<p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-3xl">
+						<p className="mt-6 max-w-3xl text-lg text-muted-foreground md:text-xl">
 							{project.longDescription}
 						</p>
 						<div className="mt-8 flex flex-wrap gap-4">
@@ -60,34 +64,32 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 								</Button>
 							)}
 						</div>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 
 			{/* Main Content */}
 			<div className="container mx-auto px-4 py-16 sm:py-24">
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+				<div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
 					{/* Left Column */}
 					<div className="lg:col-span-2">
 						{/* Gallery */}
 						<div className="mb-16">
-							<h2 className="text-3xl font-bold mb-8">Gallery</h2>
+							<h2 className="mb-8 font-bold text-3xl">Gallery</h2>
 							<div className="grid grid-cols-1 gap-8">
 								{project.gallery.map((src, index) => (
-									<motion.div
+									<div
 										key={src}
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{ delay: index * 0.1 }}
+										className={cn("reveal", REVEAL_DELAYS[index % REVEAL_DELAYS.length])}
 									>
 										<Image
 											src={src}
 											alt={`${project.title} gallery image ${index + 1}`}
 											width={1200}
 											height={800}
-											className="rounded-lg shadow-lg object-cover"
+											className="rounded-lg object-cover shadow-lg"
 										/>
-									</motion.div>
+									</div>
 								))}
 							</div>
 						</div>
@@ -96,20 +98,20 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 
 						{/* Project Deep Dive */}
 						<div>
-							<h2 className="text-3xl font-bold mb-8">Project Deep Dive</h2>
+							<h2 className="mb-8 font-bold text-3xl">Project Deep Dive</h2>
 							<div className="space-y-12">
 								<div>
-									<h3 className="text-2xl font-semibold mb-4 text-primary">The Problem</h3>
+									<h3 className="mb-4 font-semibold text-2xl text-primary">The Problem</h3>
 									<p className="text-lg text-muted-foreground leading-relaxed">{project.problem}</p>
 								</div>
 								<div>
-									<h3 className="text-2xl font-semibold mb-4 text-primary">The Solution</h3>
+									<h3 className="mb-4 font-semibold text-2xl text-primary">The Solution</h3>
 									<p className="text-lg text-muted-foreground leading-relaxed">
 										{project.solution}
 									</p>
 								</div>
 								<div>
-									<h3 className="text-2xl font-semibold mb-4 text-primary">The Outcome</h3>
+									<h3 className="mb-4 font-semibold text-2xl text-primary">The Outcome</h3>
 									<p className="text-lg text-muted-foreground leading-relaxed">{project.outcome}</p>
 								</div>
 							</div>
@@ -121,10 +123,10 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 						<div className="sticky top-24 space-y-12">
 							{/* Tech Stack */}
 							<div>
-								<h3 className="text-2xl font-semibold mb-4">Tech Stack</h3>
+								<h3 className="mb-4 font-semibold text-2xl">Tech Stack</h3>
 								<div className="flex flex-wrap gap-3">
 									{project.techStack.map((tech) => (
-										<Badge key={tech.name} variant="secondary" className="text-sm px-3 py-1">
+										<Badge key={tech.name} variant="secondary" className="px-3 py-1 text-sm">
 											{tech.name}
 										</Badge>
 									))}
@@ -133,11 +135,11 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 
 							{/* Key Features */}
 							<div>
-								<h3 className="text-2xl font-semibold mb-4">Key Features</h3>
+								<h3 className="mb-4 font-semibold text-2xl">Key Features</h3>
 								<ul className="space-y-3">
 									{project.keyFeatures.map((feature) => (
 										<li key={feature} className="flex items-start">
-											<CheckCircle className="w-5 h-5 mr-3 text-success flex-shrink-0 mt-1" />
+											<CheckCircle className="mt-1 mr-3 h-5 w-5 flex-shrink-0 text-success" />
 											<span className="text-muted-foreground">{feature}</span>
 										</li>
 									))}
@@ -146,7 +148,7 @@ export default function ProjectDetailsPage(props: { params: Promise<{ slug: stri
 
 							{/* Tags */}
 							<div>
-								<h3 className="text-2xl font-semibold mb-4">Project Tags</h3>
+								<h3 className="mb-4 font-semibold text-2xl">Project Tags</h3>
 								<div className="flex flex-wrap gap-2">
 									{project.tags.map((tag) => (
 										<Badge key={tag} variant="outline">

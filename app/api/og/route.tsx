@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -24,14 +24,14 @@ async function getFontData(): Promise<ArrayBuffer> {
 }
 
 interface OGImageParams {
-	title: string;
+	author?: string;
+	date?: string;
 	description?: string;
-	type?: "website" | "article" | "project" | "blog";
 	image?: string;
 	siteName?: string;
 	tags?: string;
-	author?: string;
-	date?: string;
+	title: string;
+	type?: "website" | "article" | "project" | "blog";
 }
 
 export async function GET(request: NextRequest) {
@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
 								maxWidth: "800px",
 							}}
 						>
-							{description.length > 150 ? `${description.substring(0, 150)}...` : description}
+							{description.length > 150 ? `${description.slice(0, 150)}...` : description}
 						</p>
 					)}
 

@@ -1,6 +1,7 @@
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
-import { CACHE_TAGS } from "@/lib/cache";
+import { CACHE_TAGS, type CacheTag } from "@/lib/cache";
+import { siteUrl } from "@/lib/site";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Validate the tag
-		const validTags = Object.values(CACHE_TAGS);
+		const validTags: readonly CacheTag[] = Object.values(CACHE_TAGS);
 		if (!validTags.includes(tag)) {
 			return NextResponse.json({ error: "Invalid tag", validTags }, { status: 400 });
 		}
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET endpoint to show cache status
-export async function GET() {
+export function GET() {
 	return NextResponse.json({
 		availableTags: Object.values(CACHE_TAGS),
 		usage: {
@@ -44,7 +45,7 @@ export async function GET() {
 			},
 		},
 		example: {
-			curl: `curl -X POST ${process.env.NEXT_PUBLIC_SITE_URL}/api/cache/revalidate -H "Content-Type: application/json" -d '{"tag":"portfolio","secret":"your-secret"}'`,
+			curl: `curl -X POST ${siteUrl}/api/cache/revalidate -H "Content-Type: application/json" -d '{"tag":"portfolio","secret":"your-secret"}'`,
 		},
 	});
 }

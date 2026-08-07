@@ -1,4 +1,4 @@
-# Modern evergreen targets — exclude Opera Mini so eslint-plugin-compat
+# Modern evergreen targets, exclude Opera Mini so eslint-plugin-compat
 # does not flag standard APIs like fetch.
 last 2 Chrome versions
 last 2 Firefox versions

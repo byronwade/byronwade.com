@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import { JsonLd } from "@/components/common/json-ld";
+import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -8,9 +10,9 @@ import {
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 
 export async function generateMetadata() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
 	const ogImage = generateOGImageUrl({
 		title: "Projects",
 		description:
@@ -32,7 +34,7 @@ export async function generateMetadata() {
 		],
 		image: ogImage,
 		type: "website",
-		canonical: `${baseUrl}/projects`,
+		canonical: `${siteUrl}/projects`,
 	});
 }
 
@@ -45,11 +47,15 @@ function sortForIndex(projects: Project[]): Project[] {
 	return [...projects].sort((a, b) => {
 		const aLead = Boolean(a.flagship || a.featured);
 		const bLead = Boolean(b.flagship || b.featured);
-		if (aLead !== bLead) return aLead ? -1 : 1;
+		if (aLead !== bLead) {
+			return aLead ? -1 : 1;
+		}
 		if (aLead && bLead) {
 			const orderA = a.order ?? Number.POSITIVE_INFINITY;
 			const orderB = b.order ?? Number.POSITIVE_INFINITY;
-			if (orderA !== orderB) return orderA - orderB;
+			if (orderA !== orderB) {
+				return orderA - orderB;
+			}
 		}
 		return timeOf(b.date) - timeOf(a.date);
 	});
@@ -61,7 +67,7 @@ async function ProjectsList() {
 
 	if (sorted.length === 0) {
 		return (
-			<p className="text-sm leading-relaxed text-muted-foreground">
+			<p className="text-muted-foreground text-sm leading-relaxed">
 				No projects yet. Check back soon.
 			</p>
 		);
@@ -70,18 +76,17 @@ async function ProjectsList() {
 	return <ProjectsIndex projects={sorted} />;
 }
 
+/** Mirrors the real row's height and rules so the swap does not shift layout. */
 function IndexFallback() {
 	return (
-		<div className="flex animate-pulse flex-col">
-			<div className="h-8 border-b border-border" />
-			{Array.from({ length: 6 }).map((_, i) => (
-				<div
-					// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows
-					key={i}
-					className="flex items-center gap-4 border-b border-border py-5"
-				>
-					<div className="h-3 w-6 rounded bg-muted" />
-					<div className="h-4 w-32 rounded bg-muted" />
+		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
+			<p className="sr-only" role="status">
+				Loading projects…
+			</p>
+			{["a", "b", "c", "d", "e", "f"].map((id) => (
+				<div className="flex items-center gap-4 border-border border-b py-5" key={`skeleton-${id}`}>
+					<div className="h-4 w-40 rounded bg-muted" />
+					<div className="h-3 w-56 rounded bg-muted/70" />
 					<div className="ml-auto h-3 w-10 rounded bg-muted" />
 				</div>
 			))}
@@ -90,40 +95,25 @@ function IndexFallback() {
 }
 
 export default async function ProjectsPage() {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-		{ name: "Home", url: baseUrl },
-		{ name: "Projects", url: `${baseUrl}/projects` },
+		{ name: "Home", url: siteUrl },
+		{ name: "Projects", url: `${siteUrl}/projects` },
 	]);
 
 	return (
 		<>
 			{/* Structured Data */}
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
-			/>
+			<JsonLd data={websiteStructuredData} />
+			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">
-					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-							Projects
-						</h1>
-						<p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
-							Selected products, client work, and experiments — case studies with outcomes where it
-							matters, built with React, Next.js, and full-stack tools.
-						</p>
-					</header>
+					<PageHeader
+						lede="Selected products, client work, and experiments. Case studies carry the outcome where there is one to report."
+						title="Projects"
+					/>
 
 					<div className="reveal reveal-delay-1 w-full">
 						<Suspense fallback={<IndexFallback />}>

@@ -1,17 +1,17 @@
 "use client";
 
-import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import * as React from "react";
-import { customFont } from "@/lib/fonts";
+import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
+import { useThemeToggle } from "@/hooks/use-theme-toggle";
+import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";
 
-const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
-/** Every product under the byronwade umbrella — the launcher is the cross-app switcher. */
+/** Every product under the byronwade umbrella, the launcher is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 	{
 		name: "byronwade/ui",
@@ -43,7 +43,7 @@ const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 ];
 
 /**
- * Top-left launcher — a slim, horizontal identity pill (the inverse-material twin
+ * Top-left launcher: a slim, horizontal identity pill (the inverse-material twin
  * of the floating dock), ported from the byronwade-ui design-system chrome.
  * Collapsed it's a dark `--dock`-toned pill (the byronwade mark + an app-switcher
  * grid). The pill morphs in place into a browse panel: every product under the
@@ -56,7 +56,6 @@ export function AppLauncher() {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
-	const collapsedRef = React.useRef<{ w: number; h: number } | null>(null);
 
 	const panelId = React.useId();
 
@@ -68,9 +67,13 @@ export function AppLauncher() {
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
 		const morph = morphRef.current;
-		if (!compact || !morph) return;
+		if (!(compact && morph)) {
+			return;
+		}
 		const sync = () => {
-			if (morph.style.width) return; // morphed open — leave the slot alone
+			if (morph.style.width) {
+				return; // morphed open, leave the slot alone
+			}
 			setSlot({ w: morph.offsetWidth, h: morph.offsetHeight });
 		};
 		sync();
@@ -79,86 +82,32 @@ export function AppLauncher() {
 		return () => ro.disconnect();
 	}, []);
 
-	// Width + height + radius morph between the compact pill and the open panel,
-	// cross-fading the contents — the signature launcher choreography.
-	useIsoLayoutEffect(() => {
-		const morph = morphRef.current;
-		const compact = compactRef.current;
-		const panel = panelRef.current;
-		if (!morph || !compact || !panel) return;
-
-		const reduce =
-			typeof window !== "undefined" &&
-			window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		const ease = "cubic-bezier(.22,1,.36,1)";
-		const T = `width 200ms ${ease}, height 200ms ${ease}, border-radius 200ms ${ease}`;
-
-		const release = () => {
-			morph.style.transition = "none";
-			morph.style.width = "";
-			morph.style.height = "";
-			void morph.offsetWidth;
-			morph.style.transition = "";
-		};
-
-		if (open) {
-			if (!collapsedRef.current) {
-				collapsedRef.current = { w: morph.offsetWidth, h: morph.offsetHeight };
-			}
-			const sw = morph.offsetWidth;
-			const sh = morph.offsetHeight;
-			const ew = panel.offsetWidth;
-			const eh = panel.offsetHeight;
-			compact.style.transitionDelay = "0ms";
-			compact.style.opacity = "0";
-			panel.style.transitionDelay = reduce ? "0ms" : "30ms";
-			panel.style.opacity = "1";
-			if (reduce) {
-				morph.style.transition = "none";
-				morph.style.width = `${ew}px`;
-				morph.style.height = `${eh}px`;
-				return;
-			}
-			morph.style.transition = "none";
-			morph.style.width = `${sw}px`;
-			morph.style.height = `${sh}px`;
-			void morph.offsetWidth; // reflow
-			morph.style.transition = T;
-			morph.style.width = `${ew}px`;
-			morph.style.height = `${eh}px`;
-			panel.focus({ preventScroll: true });
-		} else if (collapsedRef.current && morph.style.width) {
-			const { w: cw, h: ch } = collapsedRef.current;
-			panel.style.transitionDelay = "0ms";
-			panel.style.opacity = "0";
-			compact.style.transitionDelay = reduce ? "0ms" : "70ms";
-			compact.style.opacity = "1";
-			if (reduce) {
-				release();
-				return;
-			}
-			morph.style.transition = T;
-			morph.style.width = `${cw}px`;
-			morph.style.height = `${ch}px`;
-			const onEnd = (e: TransitionEvent) => {
-				if (e.propertyName !== "height") return;
-				release();
-				morph.removeEventListener("transitionend", onEnd);
-			};
-			morph.addEventListener("transitionend", onEnd);
-			return () => morph.removeEventListener("transitionend", onEnd);
-		}
-	}, [open]);
+	useCapsuleMorph({
+		open,
+		morphRef,
+		compactRef,
+		panelRef,
+		durationMs: 200,
+		openDelayMs: 30,
+		closeDelayMs: 70,
+		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+	});
 
 	// Esc + click-away close.
 	React.useEffect(() => {
-		if (!open) return;
+		if (!open) {
+			return;
+		}
 		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") setOpen(false);
+			if (e.key === "Escape") {
+				setOpen(false);
+			}
 		};
 		const onDown = (e: PointerEvent) => {
 			const target = e.target as Element | null;
-			if (!rootRef.current || rootRef.current.contains(target)) return;
+			if (!rootRef.current || rootRef.current.contains(target)) {
+				return;
+			}
 			setOpen(false);
 		};
 		document.addEventListener("keydown", onKey);
@@ -169,7 +118,7 @@ export function AppLauncher() {
 		};
 	}, [open]);
 
-	const { resolvedTheme, setTheme } = useTheme();
+	const { toggleTheme } = useThemeToggle();
 
 	return (
 		<div
@@ -177,18 +126,18 @@ export function AppLauncher() {
 			style={{
 				width: slot.w,
 				height: slot.h,
-				transition: "width 200ms cubic-bezier(.22,1,.36,1)",
+				transition: "width var(--motion-base) var(--motion-ease-drawer)",
 			}}
 			className="relative z-10 shrink-0"
 		>
 			<div
 				ref={morphRef}
 				className={cn(
-					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-white/5 bg-dock text-dock-foreground shadow-float [will-change:width,height]",
+					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
 					open ? "rounded-2xl" : "rounded-3xl"
 				)}
 			>
-				{/* COMPACT — the collapsed (natural) size. */}
+				{/* COMPACT, the collapsed (natural) size. */}
 				<div
 					ref={compactRef}
 					className={cn(
@@ -198,10 +147,10 @@ export function AppLauncher() {
 				>
 					<Link
 						href="/"
-						aria-label="Byron Wade — home"
+						aria-label="Byron Wade, home"
 						className={cn(
-							customFont.className,
-							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-lg leading-none text-dock-active-foreground transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
+							"font-signature",
+							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-dock-active-foreground text-lg leading-none transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
 						)}
 					>
 						Byron Wade
@@ -215,7 +164,7 @@ export function AppLauncher() {
 						title="All products"
 						className="flex size-8 items-center justify-center rounded-full text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 					>
-						<LayoutGrid className="size-4" strokeWidth={2} />
+						<LayoutGrid className="size-4" />
 					</button>
 				</div>
 
@@ -233,9 +182,7 @@ export function AppLauncher() {
 					)}
 				>
 					<div className="flex items-center justify-between p-3.5 pb-2">
-						<span className="text-[10px] font-semibold tracking-wider text-dock-foreground/70 uppercase">
-							Switch product
-						</span>
+						<span className="text-[11px] text-dock-foreground/70">Switch product</span>
 						<button
 							type="button"
 							onClick={() => setOpen(false)}
@@ -247,7 +194,7 @@ export function AppLauncher() {
 					</div>
 
 					<div className="flex flex-col gap-0.5 px-2 pb-2">
-						{/* Current product — the site you're on. */}
+						{/* Current product, the site you're on. */}
 						<Link
 							href="/"
 							onClick={() => setOpen(false)}
@@ -257,14 +204,14 @@ export function AppLauncher() {
 								<span className="size-2 rounded-full bg-brand" />
 							</span>
 							<div className="min-w-0 leading-tight">
-								<div className="truncate text-[13px] font-semibold text-dock-active-foreground">
+								<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
 									byronwade<span className="text-dock-foreground">.com</span>
 								</div>
 								<div className="truncate text-[11px] text-dock-foreground">
 									Portfolio & developer
 								</div>
 							</div>
-							<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-medium text-brand">
+							<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 font-medium text-[10px] text-brand">
 								Current
 							</span>
 						</Link>
@@ -277,11 +224,11 @@ export function AppLauncher() {
 								rel="noreferrer"
 								className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-dock-active"
 							>
-								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 text-[13px] font-bold text-dock-active-foreground">
+								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-muted font-bold text-[13px] text-dock-active-foreground">
 									{p.mark}
 								</span>
 								<div className="min-w-0 leading-tight">
-									<div className="truncate text-[13px] font-semibold text-dock-active-foreground">
+									<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
 										{p.name}
 									</div>
 									<div className="truncate text-[11px] text-dock-foreground">{p.desc}</div>
@@ -291,18 +238,18 @@ export function AppLauncher() {
 						))}
 					</div>
 
-					<div className="flex items-center gap-2 border-t border-white/5 bg-black/25 p-3">
+					<div className="flex items-center gap-2 border-dock-border border-t bg-dock-muted p-3">
 						<a
 							href={GITHUB_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active text-[13px] font-semibold text-dock-active-foreground transition-colors hover:bg-white/15"
+							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
 						>
 							<GitFork className="size-4" /> GitHub
 						</a>
 						<button
 							type="button"
-							onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+							onClick={toggleTheme}
 							aria-label="Toggle theme"
 							className="flex size-9 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>

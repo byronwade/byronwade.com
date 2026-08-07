@@ -1,8 +1,10 @@
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { SiteShell } from "@/components/layout/site-shell";
 import { getAllProjectSlugs, getProject } from "@/lib/projects";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import { ProjectContent } from "./project-content";
 
 export const viewport: Viewport = {
@@ -31,8 +33,7 @@ export async function generateMetadata({
 		return {};
 	}
 
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
-	const url = `${baseUrl}/projects/${slug}`;
+	const url = `${siteUrl}/projects/${slug}`;
 	const ogImage = generateOGImageUrl({
 		title: project.title,
 		description: project.excerpt || "",
@@ -62,25 +63,32 @@ async function ProjectPageContent({ slug }: { slug: string }) {
 	return <ProjectContent project={project} />;
 }
 
+/**
+ * Sits inside the real shell so the loading state and the loaded page share one
+ * gutter and one measure. The previous fallback built its own full-screen
+ * container with a decorative gradient over it. That was a second layout, and a
+ * decorative gradient §5.1 rejects, shown only while the page was blank.
+ */
+function ProjectFallback() {
+	return (
+		<SiteShell width="wide">
+			<div aria-busy="true" className="flex w-full animate-pulse flex-col gap-4">
+				<p className="sr-only" role="status">
+					Loading project…
+				</p>
+				<div className="h-4 w-24 rounded bg-muted/70" />
+				<div className="h-9 w-3/4 max-w-2xl rounded bg-muted" />
+				<div className="h-4 w-1/2 max-w-xl rounded bg-muted/70" />
+			</div>
+		</SiteShell>
+	);
+}
+
 export default async function ProjectPage({ params }: ProjectPageProps) {
 	const { slug } = await params;
 
 	return (
-		<Suspense
-			fallback={
-				<div className="relative min-h-screen w-full bg-[var(--background)]">
-					<div className="fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10 pointer-events-none" />
-					<div className="relative flex justify-center py-12 px-4 sm:py-16 md:py-20 safe-top safe-bottom">
-						<div className="flex flex-col gap-8 sm:gap-12 md:gap-16 items-center w-full max-w-2xl">
-							<div className="animate-pulse w-full">
-								<div className="h-8 bg-[var(--muted)] rounded w-3/4 mb-4" />
-								<div className="h-4 bg-[var(--muted)] rounded w-1/2" />
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-		>
+		<Suspense fallback={<ProjectFallback />}>
 			<ProjectPageContent slug={slug} />
 		</Suspense>
 	);

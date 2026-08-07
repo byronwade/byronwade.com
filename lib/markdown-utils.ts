@@ -1,9 +1,16 @@
+/** Hoisted so it compiles once, not per call. */
+const HEADING_LINE = /^#\s+\S/;
+const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const LINE_BREAK = /\r?\n/;
+const FENCE_LINE = /^\s*(```|~~~)/;
+const ATX_HEADING = /^(#{2,3})\s+(.+?)\s*#*\s*$/;
+
 import { format, isValid, parseISO } from "date-fns";
 
 export interface TocItem {
+	depth: 2 | 3;
 	id: string;
 	text: string;
-	depth: 2 | 3;
 }
 
 /**
@@ -38,7 +45,9 @@ export function createSlugger(): (text: string) => string {
 
 /** Convert React children (string | number | array | element) into plain text. */
 export function childrenToText(children: React.ReactNode): string {
-	if (children == null || typeof children === "boolean") return "";
+	if (children === null || typeof children === "boolean") {
+		return "";
+	}
 	if (typeof children === "string" || typeof children === "number") {
 		return String(children);
 	}
@@ -71,13 +80,19 @@ function stripInline(text: string): string {
  * both visually redundant and an accessibility issue (multiple H1s per page).
  */
 export function stripLeadingH1(markdown: string): string {
-	if (!markdown) return "";
-	const lines = markdown.split(/\r?\n/);
+	if (!markdown) {
+		return "";
+	}
+	const lines = markdown.split(LINE_BREAK);
 	let i = 0;
-	while (i < lines.length && lines[i].trim() === "") i++;
-	if (i < lines.length && /^#\s+\S/.test(lines[i])) {
+	while (i < lines.length && lines[i]?.trim() === "") {
+		i++;
+	}
+	if (i < lines.length && HEADING_LINE.test(lines[i] ?? "")) {
 		lines.splice(0, i + 1);
-		while (lines.length && lines[0].trim() === "") lines.shift();
+		while (lines.length && lines[0]?.trim() === "") {
+			lines.shift();
+		}
 		return lines.join("\n");
 	}
 	return markdown;
@@ -88,24 +103,32 @@ export function stripLeadingH1(markdown: string): string {
  * Skips fenced code blocks so `## ...` inside a code sample is ignored.
  */
 export function extractToc(markdown: string): TocItem[] {
-	if (!markdown) return [];
+	if (!markdown) {
+		return [];
+	}
 	const slugger = createSlugger();
 	const items: TocItem[] = [];
 	let inFence = false;
 
-	for (const rawLine of markdown.split(/\r?\n/)) {
-		if (/^\s*(```|~~~)/.test(rawLine)) {
+	for (const rawLine of markdown.split(LINE_BREAK)) {
+		if (FENCE_LINE.test(rawLine)) {
 			inFence = !inFence;
 			continue;
 		}
-		if (inFence) continue;
+		if (inFence) {
+			continue;
+		}
 
-		const match = rawLine.match(/^(#{2,3})\s+(.+?)\s*#*\s*$/);
-		if (!match) continue;
+		const match = rawLine.match(ATX_HEADING);
+		if (!match) {
+			continue;
+		}
 
-		const depth = match[1].length as 2 | 3;
-		const text = stripInline(match[2]);
-		if (!text) continue;
+		const depth = (match[1]?.length ?? 2) as 2 | 3;
+		const text = stripInline(match[2] ?? "");
+		if (!text) {
+			continue;
+		}
 
 		items.push({ id: slugger(text), text, depth });
 	}
@@ -136,14 +159,15 @@ function normalizeDateOnly(d: Date): Date {
  * dates, numbers, and strings defensively.
  */
 function toDate(value: unknown): Date | null {
-	if (value instanceof Date) return isValid(value) ? normalizeDateOnly(value) : null;
+	if (value instanceof Date) {
+		return isValid(value) ? normalizeDateOnly(value) : null;
+	}
 	if (typeof value === "number") {
 		const fromNumber = new Date(value);
 		return isValid(fromNumber) ? fromNumber : null;
 	}
 	if (typeof value === "string" && value.trim()) {
-		const parsed =
-			value.includes("T") || /^\d{4}-\d{2}-\d{2}$/.test(value) ? parseISO(value) : new Date(value);
+		const parsed = value.includes("T") || DATE_ONLY.test(value) ? parseISO(value) : new Date(value);
 		return isValid(parsed) ? parsed : null;
 	}
 	return null;
@@ -155,7 +179,9 @@ function toDate(value: unknown): Date | null {
  */
 export function safeFormatDate(value: unknown, pattern = "MMMM d, yyyy"): string {
 	const parsed = toDate(value);
-	if (!parsed) return "";
+	if (!parsed) {
+		return "";
+	}
 	try {
 		return format(parsed, pattern);
 	} catch {

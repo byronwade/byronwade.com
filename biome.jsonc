@@ -1,0 +1,133 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  // Ultracite's rule presets. `core` is the base; `react` and `next` add the
+  // framework rules that match this stack. Rules come from here, everything
+  // below is repository-specific and deliberately overrides the preset.
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/react",
+    "ultracite/biome/next",
+    // Import-graph rules: no cycles, no undeclared dependencies, no reaching
+    // into another package's private files. These enforce the architecture
+    // invariants in AGENTS.md mechanically instead of by review.
+    "ultracite/biome/type-aware"
+  ],
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    // public/ holds static assets, not source; Biome should not lint or format them.
+    "includes": ["!node_modules", "!.next", "!.turbo", "!public", "!**/*.css"]
+  },
+  // House style. Ultracite's core preset defaults to 2-space indent at 80
+  // columns; this repository is tabs at 100 throughout, and reformatting every
+  // file to match a preset buys nothing.
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  // Preset rules turned off deliberately. Each conflicts with a decision this
+  // repository has already made and documented in AGENTS.md, or is inaccurate
+  // for this stack, none is off because it was inconvenient to satisfy.
+  "linter": {
+    "rules": {
+      "complexity": {
+        // `void promise` is how this codebase marks a deliberately unawaited
+        // promise. Removing it would make those reads ambiguous.
+        "noVoid": "off"
+      },
+      "correctness": {
+        // Wants `.js` suffixes on relative imports. That is native-ESM
+        // resolution; this project is bundled by Turbopack with `moduleResolution:
+        // bundler`, where extensionless imports are correct.
+        "useImportExtensions": "off",
+        // Biome's resolver cannot see React 19's type exports and reports
+        // `react has no export named Suspense`, which is false.
+        "noUnresolvedImports": "off"
+      },
+      "performance": {
+        // Each feature folder's index.ts is its public interface, per the
+        // architecture invariants in AGENTS.md.
+        "noBarrelFile": "off",
+        // `import * as React` and `import * as Figma` are the idiomatic forms
+        // for those packages.
+        "noNamespaceImport": "off",
+        // React Compiler is enabled, so inline handlers are memoized for free.
+        // Satisfying this rule would mean adding the manual useCallback wrappers
+        // that AGENTS.md tells us not to add without a measured need.
+        "noJsxPropsBind": "off"
+      },
+      "style": {
+        // Pure preference, and `for (let i = n; i >= 0; i--)` is the clearest
+        // way to write the reverse scans in the GitHub streak calculation.
+        "noIncrementDecrement": "off",
+        // Flags readable two-level ternaries in JSX where the alternative is a
+        // helper function per branch.
+        "noNestedTernary": "off",
+        "useDestructuring": "off"
+      },
+      "suspicious": {
+        // Needs type information to be accurate, and Ultracite's type-aware
+        // preset is not enabled here. Without it the rule calls genuine
+        // `ref.current` null-guards unnecessary. Turn this back on together
+        // with `ultracite/biome/type-aware`.
+        "noUnnecessaryConditions": "off",
+        // Guards against `{0 && <X/>}` rendering a literal 0. Every `&&` render
+        // here tests a string or an object. Verified: there are no numeric
+        // conditions, so the rewrite would change no behaviour, and there is
+        // no autofix.
+        // Reinstate this if numeric conditions ever appear in JSX.
+        "noLeakedRender": "off"
+      }
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        // Both of these are off deliberately, not out of laziness.
+        //
+        // useSortedAttributes duplicated whole JSX attributes when it ran over
+        // this codebase (`render={...}` emitted twice in app/resume/page.tsx,
+        // `components={{...}}` in components/common/markdown.tsx), and sorting
+        // attributes across a `{...spread}` silently changes which value wins.
+        //
+        // useSortedKeys reorders object literals alphabetically, which changes
+        // rendered order anywhere code iterates an object's keys. It moved
+        // Mobile ahead of Tablet in the project preview's viewport toggle.
+        //
+        // Class sorting (useSortedClasses) stays on. That one is safe.
+        "useSortedAttributes": "off",
+        "useSortedKeys": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      // Base UI primitives are thin wrappers that forward props, so the
+      // control an a11y rule looks for lives at the call site, not here.
+      "includes": ["components/ui/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noLabelWithoutControl": "off",
+            "useSemanticElements": "off",
+            "useFocusableInteractive": "off",
+            "useAriaPropsForRole": "off"
+          }
+        }
+      }
+    }
+  ]
+}

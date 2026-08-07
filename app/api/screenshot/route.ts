@@ -1,37 +1,64 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { getProjects } from "@/lib/projects";
 
 export const dynamic = "force-dynamic";
+
+/**
+ * This endpoint spends the site's ScreenshotOne quota, so it only captures URLs
+ * the site already publishes. The allowlist is derived from the project content
+ * rather than hardcoded, so it cannot drift as projects are added or removed.
+ */
+async function isAllowedTarget(candidate: URL): Promise<boolean> {
+	if (candidate.protocol !== "https:") {
+		return false;
+	}
+	const projects = await getProjects();
+	return projects.some((project) => {
+		if (!project.url) {
+			return false;
+		}
+		try {
+			return new URL(project.url).hostname === candidate.hostname;
+		} catch {
+			return false;
+		}
+	});
+}
 
 export async function GET(request: NextRequest) {
 	try {
 		const searchParams = request.nextUrl.searchParams;
 		const url = searchParams.get("url");
-		const width = Math.min(parseInt(searchParams.get("width") || "1920", 10), 1920);
-		const height = Math.min(parseInt(searchParams.get("height") || "1080", 10), 1200);
+		const width = Math.min(Number.parseInt(searchParams.get("width") || "1920", 10), 1920);
+		const height = Math.min(Number.parseInt(searchParams.get("height") || "1080", 10), 1200);
 		const mode = searchParams.get("mode") || "static";
 		const format = searchParams.get("format") || (mode === "scroll" ? "webm" : "jpg");
-		const imageQuality = parseInt(
+		const imageQuality = Number.parseInt(
 			searchParams.get("quality") || (mode === "scroll" ? "85" : "90"),
 			10
 		);
-		const delay = parseInt(searchParams.get("delay") || "0", 10);
-		const duration = parseInt(searchParams.get("duration") || "3", 10);
-		const scrollDelay = parseInt(searchParams.get("scrollDelay") || "200", 10);
-		const scrollDuration = parseInt(searchParams.get("scrollDuration") || "1000", 10);
-		const scrollBy = parseInt(searchParams.get("scrollBy") || "800", 10);
+		const delay = Number.parseInt(searchParams.get("delay") || "0", 10);
+		const duration = Number.parseInt(searchParams.get("duration") || "3", 10);
+		const scrollDelay = Number.parseInt(searchParams.get("scrollDelay") || "200", 10);
+		const scrollDuration = Number.parseInt(searchParams.get("scrollDuration") || "1000", 10);
+		const scrollBy = Number.parseInt(searchParams.get("scrollBy") || "800", 10);
 
 		if (!url) {
 			return NextResponse.json({ error: "URL parameter is required" }, { status: 400 });
 		}
 
-		// Validate URL
+		let target: URL;
 		try {
-			new URL(url);
+			target = new URL(url);
 		} catch {
 			return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
 		}
 
-		const accessKey = process.env.SCREENSHOTONE_ACCESS_KEY || "PhW5mnvZ53L5nA";
+		if (!(await isAllowedTarget(target))) {
+			return NextResponse.json({ error: "URL is not an allowed target" }, { status: 403 });
+		}
+
+		const accessKey = process.env.SCREENSHOTONE_ACCESS_KEY;
 		if (!accessKey) {
 			return NextResponse.json({ error: "Missing SCREENSHOTONE_ACCESS_KEY" }, { status: 500 });
 		}

@@ -6,8 +6,8 @@ import { childrenToText, createSlugger } from "@/lib/markdown-utils";
 import { cn } from "@/lib/utils";
 
 interface MarkdownProps {
-	content: string;
 	className?: string;
+	content: string;
 }
 
 /**
@@ -25,7 +25,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div
 			className={cn(
-				"relative flex min-w-full shrink-0 flex-col gap-5 text-base font-normal text-[var(--foreground)]",
+				"relative flex min-w-full shrink-0 flex-col gap-5 font-normal text-[var(--foreground)] text-base",
 				className
 			)}
 		>
@@ -76,7 +76,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						if (isInline) {
 							return (
 								<code
-									className="rounded bg-[var(--muted)] px-1.5 py-0.5 font-mono text-sm text-brand"
+									className="rounded bg-[var(--muted)] px-1.5 py-0.5 font-mono text-brand text-sm"
 									{...props}
 								>
 									{children}
@@ -115,7 +115,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h1: ({ children, ...props }) => (
 						<h1
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 text-2xl font-semibold text-[var(--foreground)]"
+							className="mt-8 mb-4 scroll-mt-24 font-semibold text-2xl text-[var(--foreground)]"
 							{...props}
 						>
 							{children}
@@ -124,7 +124,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h2: ({ children, ...props }) => (
 						<h2
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 text-xl font-semibold text-[var(--foreground)]"
+							className="mt-8 mb-4 scroll-mt-24 font-semibold text-[var(--foreground)] text-xl"
 							{...props}
 						>
 							{children}
@@ -133,7 +133,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h3: ({ children, ...props }) => (
 						<h3
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 text-lg font-semibold text-[var(--foreground)]"
+							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-lg"
 							{...props}
 						>
 							{children}
@@ -142,7 +142,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h4: ({ children, ...props }) => (
 						<h4
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 text-base font-semibold text-[var(--foreground)]"
+							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-base"
 							{...props}
 						>
 							{children}
@@ -150,7 +150,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					),
 					blockquote: ({ children, ...props }) => (
 						<blockquote
-							className="my-4 border-l-2 border-brand py-1 pl-4 italic text-[var(--muted-foreground)]"
+							className="my-4 border-brand border-l-2 py-1 pl-4 text-[var(--muted-foreground)] italic"
 							{...props}
 						>
 							{children}

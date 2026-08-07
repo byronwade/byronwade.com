@@ -40,7 +40,7 @@ Instead of starting directly with the FMS, I decided to build a modern CMS that 
 
 - **Performance-first mindset**: Starting with Next.js 16's Server Components ensures we're building with performance as a first-class concern
 
-- **Modern development practices**: This project allows me to experiment with cutting-edge React patterns and Next.js features
+- **Modern development practices**: This project lets me experiment with cutting-edge React patterns and Next.js features
 
 ---
 
@@ -48,7 +48,7 @@ Instead of starting directly with the FMS, I decided to build a modern CMS that 
 
 ### Server-First Architecture
 
-This isn't just another React application. The entire system is built on Next.js 16's Server Components architecture, which means:
+This is not a normal React application. The whole system is built on Next.js 16's Server Components architecture, which means:
 
 - **Zero JavaScript by default**: Most pages render entirely on the server, sending minimal JavaScript to the client
 
@@ -264,11 +264,11 @@ The UI is built on shadcn/ui, which provides:
 
 The current CMS provides:
 
-✅ Content modeling and management  
-✅ Visual database schema builder  
-✅ Media management  
-✅ Analytics dashboard  
-✅ User interface patterns  
+✅ Content modeling and management
+✅ Visual database schema builder
+✅ Media management
+✅ Analytics dashboard
+✅ User interface patterns
 ✅ Performance optimizations
 
 ### Phase 2: FMS-Specific Features (Next)
@@ -309,7 +309,7 @@ With a solid foundation, we can add:
 
 Building the CMS first has taught me that:
 
-- **Architecture matters more than features**: A well-architected system can grow; a poorly architected one will collapse
+- **Architecture matters more than features**: A well-architected system can grow. A poorly architected one will collapse
 
 - **Performance is a feature**: Users notice fast applications more than they notice slow ones
 
@@ -355,7 +355,7 @@ But perhaps most importantly, building the CMS first has forced me to think deep
 
 - How to create software that truly serves its users
 
-The Field Management System won't just be a database of fields and crops, it will be a comprehensive tool that helps farmers make better decisions, increase yields, reduce costs, and manage their operations more effectively. And it will be built on a foundation that's already proven its worth.
+The Field Management System will be more than a database of fields and crops. It will be a comprehensive tool that helps farmers make better decisions, increase yields, reduce costs, and manage their operations more effectively. And it will be built on a foundation that's already proven its worth.
 
 ---
 

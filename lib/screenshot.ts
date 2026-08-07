@@ -16,10 +16,14 @@ export async function fetchScreenshot(
 ): Promise<string> {
 	const key = `${href}|${width}x${height}`;
 	const cached = previewCache.get(key);
-	if (cached) return cached;
+	if (cached) {
+		return cached;
+	}
 
 	const existing = inflight.get(key);
-	if (existing) return existing;
+	if (existing) {
+		return existing;
+	}
 
 	const promise = (async () => {
 		const params = new URLSearchParams({
@@ -31,7 +35,9 @@ export async function fetchScreenshot(
 			quality: "90",
 		});
 		const resp = await fetch(`/api/screenshot?${params.toString()}`);
-		if (!resp.ok) throw new Error(`screenshot request failed (${resp.status})`);
+		if (!resp.ok) {
+			throw new Error(`screenshot request failed (${resp.status})`);
+		}
 		const data = (await resp.json()) as { url?: unknown };
 		if (typeof data?.url !== "string" || data.url.trim() === "") {
 			throw new Error("screenshot response missing url");

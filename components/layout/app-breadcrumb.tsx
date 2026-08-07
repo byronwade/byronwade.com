@@ -1,24 +1,24 @@
 "use client";
 
-import { ChevronLeft, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ChevronLeft, MoreHorizontal } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
-const useIsoLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
 /** Room reserved around the centered nav dock so the breadcrumb never crowds it. */
 const NAV_RESERVE = 420;
 const GAP = 12;
 
 /**
- * Breadcrumb pill — a matched-sibling overlay in the top-left header group, sharing
+ * Breadcrumb pill: a matched-sibling overlay in the top-left header group, sharing
  * the corner-pill material with the launcher (40px, dark `--dock`, `rounded-3xl`).
- * Ported from the byronwade-ui chrome. Renders the full trail responsively —
- * collapsing to `root / … / current` on desktop and `‹ Current` on mobile — with
+ * Ported from the byronwade-ui chrome. Renders the full trail responsively
+ * collapsing to `root / … / current` on desktop and `‹ Current` on mobile, with
  * the collapse budget computed from stable inputs (viewport width, pinned left
  * edge, the nav reserve).
  */
@@ -37,7 +37,9 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 	useIsoLayoutEffect(() => {
 		const root = rootRef.current;
 		const twin = twinRef.current;
-		if (!root || !twin) return;
+		if (!(root && twin)) {
+			return;
+		}
 		const compute = () => {
 			const W = window.innerWidth;
 			const left = root.getBoundingClientRect().left;
@@ -55,18 +57,32 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 		};
 	}, [trailKey, crumbs.length]);
 
-	if (crumbs.length <= 1) return null;
+	if (crumbs.length <= 1) {
+		return null;
+	}
 
-	const last = crumbs[crumbs.length - 1];
-	const parent = crumbs[crumbs.length - 2];
+	const first = crumbs[0];
+	const last = crumbs.at(-1);
+	const parent = crumbs.at(-2);
 	const middle = crumbs.slice(1, -1);
 
+	if (!(first && last)) {
+		return null;
+	}
+
 	return (
+		// This pill shares the top row with two other fixed elements: the launcher
+		// to its left and the centre-anchored nav dock. It was overlapping both of
+		// them. The toolbar painted over it at 390px, and a long page title ran
+		// straight under the nav dock at 1440px. The ceiling is now the distance from the
+		// launcher to the dock's left edge (half the viewport, less half the dock
+		// and the launcher), and it only renders where that distance is usable.
+		// Nothing is lost below `lg`: the nav dock already shows the section.
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 flex h-[40px] items-center overflow-hidden rounded-3xl border border-white/5 bg-dock px-4 text-[13px] shadow-float"
+			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
 		>
-			{/* DESKTOP — full trail, collapsing to root / … / current. */}
+			{/* DESKTOP, full trail, collapsing to root / … / current. */}
 			<ol
 				ref={rootRef}
 				style={maxW === Number.POSITIVE_INFINITY ? undefined : { maxWidth: maxW }}
@@ -74,7 +90,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 			>
 				{collapsed ? (
 					<>
-						<CrumbLink crumb={crumbs[0]} />
+						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
 							<Popover>
@@ -83,7 +99,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 										<button
 											type="button"
 											aria-label="Show hidden breadcrumb levels"
-											className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-white/30"
+											className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-ring"
 										>
 											<MoreHorizontal className="size-4" />
 										</button>
@@ -92,7 +108,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 								<PopoverContent
 									align="start"
 									sideOffset={8}
-									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-white/5 bg-dock p-1.5 text-dock-foreground ring-0"
+									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-dock-border bg-dock p-1.5 text-dock-foreground ring-0"
 								>
 									{middle.map((c) => (
 										<Link
@@ -119,7 +135,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 				)}
 			</ol>
 
-			{/* MOBILE — current only, with a back-chevron to the parent level. */}
+			{/* MOBILE, current only, with a back-chevron to the parent level. */}
 			<ol className="flex min-w-0 items-center gap-1 sm:hidden">
 				{parent && (
 					<li className="flex shrink-0 items-center">
@@ -128,7 +144,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 							aria-label={`Back to ${parent.label}`}
 							className="-ml-1 flex size-6 items-center justify-center rounded-md text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>
-							<ChevronLeft className="size-4" strokeWidth={2.5} />
+							<ChevronLeft className="size-4" />
 						</Link>
 					</li>
 				)}
@@ -137,7 +153,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 				</li>
 			</ol>
 
-			{/* Hidden measuring twin — always the full desktop row. */}
+			{/* Hidden measuring twin, always the full desktop row. */}
 			<ol
 				ref={twinRef}
 				aria-hidden="true"
@@ -163,7 +179,7 @@ function CrumbLink({ crumb, current }: { crumb: Crumb; current?: boolean }) {
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"truncate rounded-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30",
+					"truncate rounded-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
 					current
 						? "font-semibold text-dock-active-foreground"
 						: "text-dock-foreground hover:text-dock-active-foreground"

@@ -1,13 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "highlight.js/styles/github-dark.css";
-@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────
-   byronwade/ui foundation — token theme mapping (Tailwind v4)
-   Brand follows --brand; override it to re-skin rings/charts/success.
+   byronwade/ui foundation, token theme mapping (Tailwind v4)
+   Brand follows --brand; override it to re-skin rings and selection.
    ───────────────────────────────────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
@@ -33,13 +32,21 @@
   --color-brand-muted: var(--brand-muted);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+  --color-type-product: var(--type-product);
+  --color-type-client: var(--type-client);
+  --color-type-concept: var(--type-concept);
+  --color-type-hobby: var(--type-hobby);
   --color-dock: var(--dock);
   --color-dock-foreground: var(--dock-foreground);
   --color-dock-muted: var(--dock-muted);
   --color-dock-active: var(--dock-active);
   --color-dock-active-foreground: var(--dock-active-foreground);
+  --color-dock-border: var(--dock-border);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -65,6 +72,9 @@
   --font-heading: var(--font-sans);
   --font-display: var(--font-sans);
   --font-signature: var(--font-signature);
+  --ease-out-token: var(--motion-ease-out);
+  --ease-in-out-token: var(--motion-ease-in-out);
+  --ease-drawer: var(--motion-ease-drawer);
 }
 
 :root {
@@ -88,10 +98,28 @@
   --brand: oklch(0.72 0.14 85);
   --brand-foreground: oklch(0.22 0.04 80);
   --brand-muted: oklch(0.96 0.04 90);
-  --success: var(--brand);
+  /* Money, growth, shipped, healthy. A real green, never an alias of brand. */
+  --success: oklch(0.52 0.12 152);
   --success-foreground: oklch(0.99 0.002 95);
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.26 0.05 70);
+  --success-muted: oklch(0.95 0.03 152);
+  /* Attention without alarm. Orange at hue 62, clear of brand's amber at 85. */
+  --warning: oklch(0.66 0.15 62);
+  --warning-foreground: oklch(0.99 0.002 95);
+  /* Informational, not a status. Used for live/external things. */
+  --info: oklch(0.55 0.13 245);
+  --info-muted: oklch(0.95 0.03 245);
+
+  /* ── Taxonomy (DESIGN.md §5.1) ──
+     These classify, they never indicate status, which is why they are a
+     separate family from success/warning/destructive rather than borrowed from
+     it. Before this existed, "product" was rendered in the success green, so
+     the palette claimed an outcome where it only meant a category.
+     Every use is paired with its written label, so nothing depends on hue.
+     Chroma is held near 0.11 so no one type shouts over the others. */
+  --type-product: oklch(0.52 0.11 200);
+  --type-client: oklch(0.52 0.11 262);
+  --type-concept: oklch(0.52 0.11 305);
+  --type-hobby: oklch(0.54 0.11 25);
   --ring: var(--brand);
   --chart-1: var(--brand);
   --chart-2: oklch(0.556 0.01 75);
@@ -99,11 +127,29 @@
   --chart-4: oklch(0.371 0.01 75);
   --chart-5: oklch(0.269 0.01 75);
   --radius: 0.75rem;
-  --dock: oklch(0.235 0.006 72);
-  --dock-foreground: oklch(0.72 0.006 75);
-  --dock-muted: oklch(1 0 0 / 10%);
-  --dock-active: oklch(1 0 0 / 14%);
-  --dock-active-foreground: oklch(0.99 0 0);
+
+  /* ── Motion (DESIGN.md §6.2), the one motion scale. ──
+     Theme-independent, so they live here rather than in a theme block. Before
+     these existed the same curve was copy-pasted into four TypeScript files. */
+  --motion-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --motion-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 300ms;
+  --motion-drawer: 480ms;
+  /* First-view page entrance only, the "rare or first-view" row of the §6.1
+     frequency table, where the delight budget may be spent once. Promoted here
+     because `.reveal` had been carrying an untokened 0.6s of its own. */
+  --motion-scene: 640ms;
+  --motion-scene-step: 90ms;
+
+  --dock: oklch(0.995 0.003 92);
+  --dock-foreground: oklch(0.50 0.01 75);
+  --dock-muted: oklch(0.27 0.008 70 / 6%);
+  --dock-active: oklch(0.27 0.008 70 / 7%);
+  --dock-active-foreground: oklch(0.27 0.008 70);
+  --dock-border: oklch(0.90 0.004 85);
   --sidebar: oklch(0.974 0.005 88);
   --sidebar-foreground: oklch(0.27 0.008 70);
   --sidebar-primary: oklch(0.3 0.01 70);
@@ -135,18 +181,27 @@
   --brand: oklch(0.78 0.14 85);
   --brand-foreground: oklch(0.22 0.04 80);
   --brand-muted: oklch(0.34 0.06 85);
-  --success: var(--brand);
-  --success-foreground: oklch(0.985 0.001 95);
-  --warning: oklch(0.82 0.15 78);
+  --success: oklch(0.74 0.14 152);
+  --success-foreground: oklch(0.16 0.02 152);
+  --success-muted: oklch(0.30 0.05 152);
+  --warning: oklch(0.76 0.15 62);
   --warning-foreground: oklch(0.26 0.05 70);
+  --info: oklch(0.74 0.13 245);
+  --info-muted: oklch(0.30 0.05 245);
+  /* Lifted for dark, same hues, so hierarchy is preserved rather than inverted. */
+  --type-product: oklch(0.75 0.11 200);
+  --type-client: oklch(0.75 0.11 262);
+  --type-concept: oklch(0.76 0.11 305);
+  --type-hobby: oklch(0.74 0.12 25);
   --ring: var(--brand);
   --chart-1: var(--brand);
   --chart-2: oklch(0.556 0.01 75);
   --chart-3: oklch(0.439 0.01 75);
   --chart-4: oklch(0.371 0.01 75);
   --chart-5: oklch(0.269 0.01 75);
-  --dock: oklch(0.205 0.007 70);
+  --dock: oklch(0.245 0.007 70);
   --dock-foreground: oklch(0.72 0.008 75);
+  --dock-border: oklch(1 0 0 / 8%);
   --dock-muted: oklch(1 0 0 / 8%);
   --dock-active: oklch(1 0 0 / 14%);
   --dock-active-foreground: oklch(0.99 0 0);
@@ -208,37 +263,40 @@
 }
 
 @layer utilities {
-  /* ── Foundation utilities ── */
-  .bg-grid {
-    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 12%, transparent) 1px, transparent 0);
-    background-size: 28px 28px;
+  /* ── Motion utilities (DESIGN.md §6.3) ──
+     Hover-driven *motion* is gated to fine pointers. On touch, hover is
+     emulated and sticks after a tap, so an effect that reads as a hint on a
+     mouse becomes a stuck state on a phone. Colour and shadow hovers are cheap
+     and stay ungated; transform, filter, and opacity spotlights do not. */
+  .hover-motion {
+    transition: none;
   }
-  .bg-grid-lines {
-    background-image: linear-gradient(to right, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px);
-    background-size: 56px 56px;
+  @media (hover: hover) and (pointer: fine) {
+    .hover-motion {
+      transition-property: opacity, transform, filter;
+      transition-duration: var(--motion-fast);
+      transition-timing-function: var(--motion-ease-out);
+    }
   }
-  .glow-brand {
-    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--brand) 28%, transparent) 0%, transparent 70%);
-  }
-  .text-gradient {
-    background: linear-gradient(180deg, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 62%, transparent) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .text-gradient-brand {
-    background: linear-gradient(135deg, var(--foreground) 0%, var(--brand) 120%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .mask-fade-x {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+
+  /* ── Sequenced entrance ──
+     Scroll-driven, so scenes arrive as they are reached instead of all firing
+     on load. CSS-only, the tool ladder in §6.1 says use the cheapest capable
+     tool, and this needs no JavaScript and no observer.
+
+     Everything is visible by default. The animation only attaches where
+     `animation-timeline` is supported, so an unsupported browser shows the
+     finished state rather than blank space, and the global
+     prefers-reduced-motion block collapses it to nothing. Content is never
+     hidden behind motion. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scene-enter {
+        animation: reveal-up linear both;
+        animation-timeline: view();
+        animation-range: entry 8% cover 26%;
+      }
+    }
   }
   .shadow-float {
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.08), 0 8px 24px -8px oklch(0 0 0 / 0.22), 0 16px 48px -16px oklch(0 0 0 / 0.18);
@@ -252,20 +310,6 @@
   }
 
   /* ── Site utilities ── */
-  .site-atmosphere {
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in oklch, var(--brand) 9%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, color-mix(in oklch, var(--brand) 5%, transparent), transparent 55%),
-      var(--background);
-  }
-  .site-grain {
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-  }
-  .dark .site-grain {
-    opacity: 0.2;
-  }
   .link-underline {
     @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
   }
@@ -288,18 +332,21 @@
     @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
-  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ── */
+  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ──
+     One cadence, driven by the tokens above, so a staged opening and an ordinary
+     page entrance cannot drift into two motion systems. The stagger is what makes
+     an opening read as sequence rather than as one block fading in. */
   .reveal {
-    animation: reveal-up 0.6s var(--tw-ease, cubic-bezier(0, 0, 0.2, 1)) forwards;
+    animation: reveal-up var(--motion-scene) var(--motion-ease-out) forwards;
   }
-  .reveal-delay-1 { animation-delay: 0.08s; opacity: 0; }
-  .reveal-delay-2 { animation-delay: 0.16s; opacity: 0; }
-  .reveal-delay-3 { animation-delay: 0.24s; opacity: 0; }
-  .reveal-delay-4 { animation-delay: 0.32s; opacity: 0; }
-  .reveal-delay-5 { animation-delay: 0.40s; opacity: 0; }
-  .reveal-delay-6 { animation-delay: 0.48s; opacity: 0; }
-  .reveal-delay-7 { animation-delay: 0.56s; opacity: 0; }
-  .reveal-delay-8 { animation-delay: 0.64s; opacity: 0; }
+  .reveal-delay-1 { animation-delay: calc(1 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-2 { animation-delay: calc(2 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-3 { animation-delay: calc(3 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-4 { animation-delay: calc(4 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-5 { animation-delay: calc(5 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-6 { animation-delay: calc(6 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-7 { animation-delay: calc(7 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-8 { animation-delay: calc(8 * var(--motion-scene-step)); opacity: 0; }
 }
 
 @keyframes reveal-up {
@@ -310,7 +357,7 @@
 /*
  * Theme-toggle morph (byronwade/ui). The nav dock drives the light/dark swap
  * through the View Transitions API and animates `::view-transition-new(root)`
- * with an expanding clip-path circle anchored at the toggle button — so the new
+ * with an expanding clip-path circle anchored at the toggle button, so the new
  * theme blooms outward from the trigger. We disable the default cross-fade and
  * stack the incoming snapshot on top so the circle reveals it.
  */

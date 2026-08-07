@@ -1,16 +1,17 @@
 "use client";
 
-import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
+import { IndexList, IndexRow } from "@/components/common";
+import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
-import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
+import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
-import { customFont } from "@/lib/fonts";
+import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {
@@ -27,7 +28,7 @@ const jsonLdData: WithContext<Person> = {
 	url: "https://byronwade.com",
 	jobTitle: "Founder & Full Stack Developer",
 	description:
-		"Founder at Thorbis, building field management software for service professionals. 8+ years experience scaling businesses from startup to multi-million dollar operations.",
+		"Founder at Thorbis, building field management software for service professionals. About eight years running service businesses and writing the software they need.",
 	address: {
 		"@type": "PostalAddress",
 		addressLocality: "Jasper",
@@ -70,7 +71,7 @@ const workExperience = [
 		company: "Thorbis",
 		companyUrl: "https://thorbis.com",
 		location: "Jasper, GA",
-		period: "Jun 2025 — Present",
+		period: "Jun 2025 - Present",
 		description:
 			"Building a field management system for service professionals. Combining real-world experience running a plumbing company with modern web technologies to solve problems I encountered firsthand.",
 		current: true,
@@ -79,7 +80,7 @@ const workExperience = [
 		role: "Service Plumber",
 		company: "ServiceWise Electric & Plumbing",
 		location: "Georgia",
-		period: "Apr 2025 — Nov 2025",
+		period: "Apr 2025 - Nov 2025",
 		description:
 			"Provided residential and commercial plumbing services with focus on customer satisfaction, diagnostic expertise, and efficient problem resolution.",
 	},
@@ -87,7 +88,7 @@ const workExperience = [
 		role: "General Manager",
 		company: "Lanier Plumbing Services, LLC",
 		location: "Alpharetta, GA",
-		period: "Sep 2024 — Apr 2025",
+		period: "Sep 2024 - Apr 2025",
 		description:
 			"Led operations for a growing commercial plumbing contractor with focus on estimation accuracy, service department development, and operational efficiency.",
 	},
@@ -96,16 +97,19 @@ const workExperience = [
 		company: "Wade's Plumbing & Septic",
 		companyUrl: "https://wadesplumbingandseptic.com",
 		location: "Los Gatos, CA",
-		period: "2021 — 2024",
+		period: "2021 - 2024",
+		// The homepage now states plainly that this company closed, so the resume
+		// says so too. §9 keeps claims qualified, and a résumé that reports the
+		// revenue without the ending contradicts the opening of the site.
 		description:
-			"Built and managed a multi-million dollar plumbing and septic service company. Scaled company from startup to $2.4M annual revenue in second year of business.",
+			"Built and ran a plumbing and septic service company. Scaled it from startup to $2.4M in annual revenue in the second year. The company did not survive that growth and closed in 2024. The operational problems behind that are what I built Thorbis to fix.",
 		highlight: "$2.4M",
 	},
 	{
 		role: "Foreman Plumber & Project Manager",
 		company: "Garrison Septic & Plumbing",
 		location: "Scotts Valley, CA",
-		period: "2016 — 2021",
+		period: "2016 - 2021",
 		description:
 			"Dual role managing field operations and project oversight for residential and commercial plumbing and septic installations.",
 	},
@@ -133,7 +137,7 @@ const certifications: { name: string; year: string; pending?: boolean }[] = [
 
 export default function ResumePage() {
 	const [emailCopied, setEmailCopied] = useState(false);
-	const email = "byron@byronwade.com";
+	const email = useRevealedEmail();
 
 	const copyEmail = async () => {
 		try {
@@ -147,12 +151,7 @@ export default function ResumePage() {
 
 	return (
 		<>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data is safe and necessary for SEO
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
-				id="person-jsonld"
-			/>
+			<JsonLd data={jsonLdData} />
 
 			<SiteShell>
 				<div className="flex w-full flex-col gap-12 sm:gap-16">
@@ -170,16 +169,14 @@ export default function ResumePage() {
 									/>
 								</div>
 								<div className="flex flex-col gap-1 pt-1">
-									<h1
-										className={`${customFont.className} text-2xl font-medium text-foreground sm:text-3xl`}
-									>
+									<h1 className="font-medium font-signature text-2xl text-foreground sm:text-3xl">
 										Byron Wade
 									</h1>
 									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
 								</div>
 							</div>
 
-							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-muted-foreground text-sm">
 								<button
 									type="button"
 									onClick={copyEmail}
@@ -196,15 +193,6 @@ export default function ResumePage() {
 									<MapPin className="size-4" />
 									Jasper, GA
 								</span>
-								<a
-									href="/api/resume-pdf"
-									download="Byron_Wade_Resume.pdf"
-									onClick={() => analytics.resumeDownload("pdf")}
-									className="flex items-center gap-2 transition-colors hover:text-brand"
-								>
-									<Download className="size-4" />
-									<span>Download PDF</span>
-								</a>
 							</div>
 						</div>
 					</header>
@@ -212,9 +200,10 @@ export default function ResumePage() {
 					{/* Summary */}
 					<section className="reveal reveal-delay-1 w-full">
 						<div className="flex flex-col gap-4">
-							<p className="text-base leading-relaxed text-foreground sm:text-lg">
-								Results-driven professional with 8+ years of experience scaling businesses from
-								startup to multi-million dollar operations. Currently building{" "}
+							<p className="text-base text-foreground leading-relaxed sm:text-lg">
+								I have spent about eight years running service businesses and building the software
+								they need. I grew a plumbing company from nothing to $2.4M and then lost it, and
+								that is where most of what I know about this work came from. Right now I am building{" "}
 								<a
 									href="https://thorbis.com"
 									target="_blank"
@@ -225,10 +214,10 @@ export default function ResumePage() {
 								</a>
 								, a field management system for service professionals.
 							</p>
-							<p className="leading-relaxed text-muted-foreground">
-								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
-								full-time roles in software development, technical leadership, or positions where I
-								can leverage both my development skills and hands-on business experience.
+							<p className="text-muted-foreground leading-relaxed">
+								<span className="font-medium text-foreground">Open to opportunities.</span> I am
+								looking for full time work in software development or technical leadership, or
+								anywhere that both the engineering side and the running-a-business side are useful.
 							</p>
 							<div className="flex flex-wrap items-center gap-2 pt-1">
 								<Button
@@ -260,7 +249,7 @@ export default function ResumePage() {
 
 					{/* Experience */}
 					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						<h2 className="mb-8 font-heading font-semibold text-foreground text-xl tracking-tight">
 							Experience
 						</h2>
 						<div className="flex flex-col gap-10">
@@ -275,11 +264,11 @@ export default function ResumePage() {
 												</StatusPill>
 											)}
 										</h3>
-										<span className="shrink-0 text-sm tabular-nums text-muted-foreground">
+										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
 											{job.period}
 										</span>
 									</div>
-									<p className="text-sm text-muted-foreground">
+									<p className="text-muted-foreground text-sm">
 										{job.companyUrl ? (
 											<a
 												href={job.companyUrl}
@@ -296,16 +285,16 @@ export default function ResumePage() {
 										{" · "}
 										{job.location}
 									</p>
-									<p className="mt-2 leading-relaxed text-muted-foreground">
+									<p className="mt-2 text-muted-foreground leading-relaxed">
 										{(() => {
-											if (!job.highlight || !job.description.includes(job.highlight)) {
+											if (!(job.highlight && job.description.includes(job.highlight))) {
 												return job.description;
 											}
 											const idx = job.description.indexOf(job.highlight);
 											return (
 												<>
 													{job.description.slice(0, idx)}
-													<span className="font-medium text-brand">{job.highlight}</span>
+													<span className="font-medium text-foreground">{job.highlight}</span>
 													{job.description.slice(idx + job.highlight.length)}
 												</>
 											);
@@ -318,48 +307,53 @@ export default function ResumePage() {
 
 					{/* Skills */}
 					<section className="reveal reveal-delay-3 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
 							Skills
 						</h2>
-						<div className="flex flex-wrap gap-2">
+						{/* Not pills. These are read, not pressed. §5.4 makes a pill a
+						    semantic shape, and giving forty static strings the shape of a
+						    control made the section look like a filter bar. */}
+						<ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-muted-foreground">
 							{skills.map((skill) => (
-								<span key={skill} className={pillLinkClass}>
+								<li className="text-sm" key={skill}>
 									{skill}
-								</span>
+								</li>
 							))}
-						</div>
+						</ul>
 					</section>
 
 					{/* Certifications */}
 					<section className="reveal reveal-delay-4 w-full">
-						<h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Licenses & Certifications
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+							Licenses and certifications
 						</h2>
-						<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+						{/* Hairlines, not a bordered card. §13 rejects both the card wrapper
+						    and a border around every row; the site already has one index
+						    grammar and this is a list like any other. `pending` is stated in
+						    words rather than tinted, so it survives print and colour blindness. */}
+						<IndexList>
 							{certifications.map((cert) => (
-								<div
-									key={`${cert.name}-${cert.year}`}
-									className="flex items-center justify-between gap-4 px-4 py-3"
-								>
-									<span className="text-foreground">{cert.name}</span>
-									<span
-										className={`shrink-0 text-sm tabular-nums ${cert.pending ? "text-brand" : "text-muted-foreground"}`}
-									>
-										{cert.year}
-									</span>
-								</div>
+								<IndexRow key={`${cert.name}-${cert.year}`}>
+									<div className="flex items-center justify-between gap-4 py-3">
+										<span className="text-foreground">{cert.name}</span>
+										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
+											{cert.year}
+											{cert.pending && " · in progress"}
+										</span>
+									</div>
+								</IndexRow>
 							))}
-						</div>
+						</IndexList>
 					</section>
 
-					<section className="reveal reveal-delay-5 w-full border-t border-border pt-10">
+					<section className="reveal reveal-delay-5 w-full border-border border-t pt-10">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex flex-col gap-1">
-								<h2 className="font-heading text-lg font-semibold tracking-tight">
+								<h2 className="font-heading font-semibold text-lg tracking-tight">
 									Interested in working together?
 								</h2>
-								<p className="text-sm text-muted-foreground">
-									Tell me what you’re building — product roles, service software, or an intro.
+								<p className="text-muted-foreground text-sm">
+									Tell me what you’re building. Product roles, service software, or just an intro.
 								</p>
 							</div>
 							<Button

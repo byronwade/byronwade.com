@@ -5,7 +5,7 @@ import { track } from "@vercel/analytics";
 /**
  * Portfolio-specific event types for analytics tracking
  */
-export type AnalyticsEvent =
+type AnalyticsEvent =
 	| { name: "project_view"; properties: { projectSlug: string; projectTitle: string } }
 	| {
 			name: "project_click";
@@ -27,8 +27,10 @@ export type AnalyticsEvent =
  * Track a custom analytics event
  * @param event - The event to track with name and properties
  */
-export function trackEvent(event: AnalyticsEvent): void {
-	if (typeof window === "undefined") return;
+function trackEvent(event: AnalyticsEvent): void {
+	if (typeof window === "undefined") {
+		return;
+	}
 
 	try {
 		track(event.name, event.properties);
@@ -36,22 +38,6 @@ export function trackEvent(event: AnalyticsEvent): void {
 		// Silently fail in case of errors (e.g., ad blockers)
 		if (process.env.NODE_ENV === "development") {
 			console.error("Analytics tracking error:", error);
-		}
-	}
-}
-
-/**
- * Track a page view manually (usually handled automatically by Analytics component)
- * @param pathname - The pathname of the page
- */
-export function trackPageView(pathname: string): void {
-	if (typeof window === "undefined") return;
-
-	try {
-		track("page_view", { pathname });
-	} catch (error) {
-		if (process.env.NODE_ENV === "development") {
-			console.error("Page view tracking error:", error);
 		}
 	}
 }

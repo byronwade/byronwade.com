@@ -1,37 +1,38 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
 import type React from "react";
 import { useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
+import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "@/lib/icons";
 
 interface ContributionDay {
-	date: string;
 	count: number;
+	date: string;
 	level: 0 | 1 | 2 | 3 | 4;
 }
 
 interface LanguageStats {
+	color: string;
 	name: string;
 	percentage: number;
-	color: string;
 }
 
 interface GitHubStats {
-	totalContributions: number;
+	contributionDays: ContributionDay[];
 	currentStreak: number;
 	longestStreak: number;
-	contributionDays: ContributionDay[];
 	topLanguages: LanguageStats[];
 	totalCommits: number;
+	totalContributions: number;
 	totalPRs: number;
 	totalRepos: number;
 }
 
 interface SocialLinkPreviewProps {
-	platform: "github" | "linkedin" | "twitter" | "email";
 	children: React.ReactNode;
+	platform: "github" | "linkedin" | "twitter" | "email";
 }
 
 const containerVariants = {
@@ -70,13 +71,13 @@ function EmailPreviewContent() {
 	const [copied, setCopied] = useState(false);
 
 	const copyEmail = () => {
-		navigator.clipboard.writeText("byron@byronwade.com");
+		navigator.clipboard.writeText(decodeContact(CONTACT_ENCODED.email));
 		setCopied(true);
 		setTimeout(() => setCopied(false), 2000);
 	};
 
 	return (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -84,61 +85,61 @@ function EmailPreviewContent() {
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-2.5">
+			<m.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
 				<Mail className="h-4 w-4 text-amber-700 dark:text-amber-500" />
 				<div>
-					<p className="text-xs font-medium text-foreground">Contact Me</p>
+					<p className="font-medium text-foreground text-xs">Contact Me</p>
 					<p className="text-[10px] text-muted-foreground">Let's connect</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Email */}
-			<motion.div variants={itemVariants} className="bg-muted/60 rounded px-2.5 py-2 mb-2.5">
-				<code className="text-[11px] text-amber-700 dark:text-amber-400 font-mono">
-					byron@byronwade.com
+			<m.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
+				<code className="font-mono text-[11px] text-amber-700 dark:text-amber-400">
+					{decodeContact(CONTACT_ENCODED.email)}
 				</code>
-			</motion.div>
+			</m.div>
 
 			{/* Availability */}
-			<motion.div variants={itemVariants} className="space-y-1 mb-3">
+			<m.div variants={itemVariants} className="mb-3 space-y-1">
 				{["Available for projects", "Quick response"].map((item) => (
 					<div key={item} className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-						<span className="text-amber-700 dark:text-amber-500 text-[8px]">●</span>
+						<span className="text-[8px] text-amber-700 dark:text-amber-500">●</span>
 						<span>{item}</span>
 					</div>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.button
+			<m.button
 				variants={itemVariants}
 				onClick={copyEmail}
 				type="button"
-				className="w-full py-1.5 bg-amber-700 dark:bg-amber-500 hover:bg-amber-800 dark:hover:bg-amber-600 text-white dark:text-black text-[10px] font-medium rounded transition-colors"
+				className="w-full rounded bg-amber-700 py-1.5 font-medium text-[10px] text-white transition-colors hover:bg-amber-800 dark:bg-amber-500 dark:text-black dark:hover:bg-amber-600"
 			>
 				<AnimatePresence mode="wait">
 					{copied ? (
-						<motion.span
+						<m.span
 							key="copied"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 						>
 							Copied!
-						</motion.span>
+						</m.span>
 					) : (
-						<motion.span
+						<m.span
 							key="copy"
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 						>
 							Copy Email
-						</motion.span>
+						</m.span>
 					)}
 				</AnimatePresence>
-			</motion.button>
-		</motion.div>
+			</m.button>
+		</m.div>
 	);
 }
 
@@ -148,12 +149,16 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 	const [isOpen, setIsOpen] = useState(false);
 
 	const fetchGitHubStats = async () => {
-		if (platform !== "github" || githubStats || isLoading) return;
+		if (platform !== "github" || githubStats || isLoading) {
+			return;
+		}
 
 		setIsLoading(true);
 		try {
 			const response = await fetch("/api/github/stats");
-			if (!response.ok) throw new Error("Failed to fetch");
+			if (!response.ok) {
+				throw new Error("Failed to fetch");
+			}
 			const data = await response.json();
 			if (!data.error) {
 				setGithubStats(data);
@@ -176,7 +181,7 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 	};
 
 	const renderGitHubContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -184,42 +189,42 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-56"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-3">
+			<m.div variants={itemVariants} className="mb-3 flex items-center gap-2">
 				<Github className="h-4 w-4 text-muted-foreground" />
-				<span className="text-xs font-medium text-foreground">byronwade</span>
-				<span className="text-[10px] text-muted-foreground ml-auto">Code Activity</span>
-			</motion.div>
+				<span className="font-medium text-foreground text-xs">byronwade</span>
+				<span className="ml-auto text-[10px] text-muted-foreground">Code Activity</span>
+			</m.div>
 
 			{isLoading ? (
-				<motion.div variants={itemVariants} className="flex items-center justify-center py-4">
-					<motion.div
+				<m.div variants={itemVariants} className="flex items-center justify-center py-4">
+					<m.div
 						animate={{ rotate: 360 }}
 						transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-						className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full"
+						className="h-4 w-4 rounded-full border-2 border-brand border-t-transparent"
 					/>
-				</motion.div>
+				</m.div>
 			) : githubStats ? (
 				<>
 					{/* Stats Row */}
-					<motion.div variants={itemVariants} className="flex gap-1 mb-3">
+					<m.div variants={itemVariants} className="mb-3 flex gap-1">
 						{[
 							{ icon: GitCommit, value: githubStats.totalCommits, label: "commits" },
 							{ icon: Folder, value: githubStats.totalRepos, label: "repos" },
 							{ icon: Flame, value: githubStats.currentStreak, label: "streak" },
 						].map((stat) => (
-							<div key={stat.label} className="flex-1 bg-muted/60 rounded px-2 py-1.5 text-center">
-								<p className="text-xs font-semibold text-foreground">{stat.value}</p>
+							<div key={stat.label} className="flex-1 rounded bg-muted/60 px-2 py-1.5 text-center">
+								<p className="font-semibold text-foreground text-xs">{stat.value}</p>
 								<p className="text-[9px] text-muted-foreground">{stat.label}</p>
 							</div>
 						))}
-					</motion.div>
+					</m.div>
 
 					{/* Mini Contribution Graph - Last 35 days (5 weeks) */}
 					{githubStats.contributionDays.length > 0 && (
-						<motion.div variants={itemVariants} className="mb-3">
+						<m.div variants={itemVariants} className="mb-3">
 							<div className="grid grid-cols-7 gap-[2px]">
 								{githubStats.contributionDays.slice(-35).map((day, idx) => (
-									<motion.div
+									<m.div
 										key={day.date}
 										initial={{ opacity: 0 }}
 										animate={{ opacity: 1 }}
@@ -229,20 +234,24 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 									/>
 								))}
 							</div>
-						</motion.div>
+						</m.div>
 					)}
 
 					{/* Languages Bar */}
 					{githubStats.topLanguages.length > 0 && (
-						<motion.div variants={itemVariants}>
-							<div className="flex h-1.5 rounded-full overflow-hidden bg-muted mb-1.5">
+						<m.div variants={itemVariants}>
+							<div className="mb-1.5 flex h-1.5 overflow-hidden rounded-full bg-muted">
 								{githubStats.topLanguages.slice(0, 4).map((lang) => (
-									<motion.div
+									<m.div
 										key={lang.name}
-										initial={{ width: 0 }}
-										animate={{ width: `${lang.percentage}%` }}
+										initial={{ scaleX: 0 }}
+										animate={{ scaleX: 1 }}
 										transition={{ delay: 0.2, duration: 0.4 }}
-										style={{ backgroundColor: lang.color }}
+										style={{
+											backgroundColor: lang.color,
+											width: `${lang.percentage}%`,
+											transformOrigin: "left",
+										}}
 									/>
 								))}
 							</div>
@@ -250,33 +259,33 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 								{githubStats.topLanguages.slice(0, 3).map((lang) => (
 									<span key={lang.name} className="flex items-center gap-1">
 										<span
-											className="w-1.5 h-1.5 rounded-full"
+											className="h-1.5 w-1.5 rounded-full"
 											style={{ backgroundColor: lang.color }}
 										/>
 										<span className="text-[9px] text-muted-foreground">{lang.name}</span>
 									</span>
 								))}
 							</div>
-						</motion.div>
+						</m.div>
 					)}
 				</>
 			) : null}
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://github.com/byronwade"
 				target="_blank"
 				rel="noopener noreferrer"
-				className="mt-3 block w-full text-center py-1.5 bg-muted hover:bg-muted/80 text-foreground text-[10px] font-medium rounded transition-colors"
+				className="mt-3 block w-full rounded bg-muted py-1.5 text-center font-medium text-[10px] text-foreground transition-colors hover:bg-muted/80"
 			>
 				View Profile
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderLinkedInContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -284,50 +293,50 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-3">
+			<m.div variants={itemVariants} className="mb-3 flex items-center gap-2">
 				<Linkedin className="h-4 w-4 text-[#0a66c2]" />
 				<div>
-					<p className="text-xs font-medium text-foreground">Byron Wade</p>
+					<p className="font-medium text-foreground text-xs">Byron Wade</p>
 					<p className="text-[10px] text-muted-foreground">Full Stack Developer</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Experience */}
-			<motion.div variants={itemVariants} className="bg-muted/60 rounded px-2.5 py-2 mb-2.5">
-				<p className="text-sm font-semibold text-foreground">8+ Years</p>
+			<m.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
+				<p className="font-semibold text-foreground text-sm">8+ Years</p>
 				<p className="text-[10px] text-muted-foreground">Web Development & Business</p>
-			</motion.div>
+			</m.div>
 
 			{/* Skills */}
-			<motion.div variants={itemVariants} className="flex flex-wrap gap-1 mb-3">
+			<m.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
 				{["React", "Next.js", "TypeScript", "Node.js"].map((skill, idx) => (
-					<motion.span
+					<m.span
 						key={skill}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ delay: idx * 0.03 }}
-						className="px-1.5 py-0.5 bg-muted text-foreground text-[10px] rounded"
+						className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-foreground"
 					>
 						{skill}
-					</motion.span>
+					</m.span>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://linkedin.com/in/byronwade"
 				target="_blank"
 				rel="noopener noreferrer"
-				className="block w-full text-center py-1.5 bg-[#0a66c2] hover:bg-[#004182] text-white text-[10px] font-medium rounded transition-colors"
+				className="block w-full rounded bg-[#0a66c2] py-1.5 text-center font-medium text-[10px] text-white transition-colors hover:bg-[#004182]"
 			>
 				View Profile
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderTwitterContent = () => (
-		<motion.div
+		<m.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
@@ -335,48 +344,48 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 			className="w-52"
 		>
 			{/* Header */}
-			<motion.div variants={itemVariants} className="flex items-center gap-2 mb-2.5">
+			<m.div variants={itemVariants} className="mb-2.5 flex items-center gap-2">
 				<Twitter className="h-4 w-4 text-foreground" />
 				<div>
-					<p className="text-xs font-medium text-foreground">Byron Wade</p>
+					<p className="font-medium text-foreground text-xs">Byron Wade</p>
 					<p className="text-[10px] text-muted-foreground">@byron_c_wade</p>
 				</div>
-			</motion.div>
+			</m.div>
 
 			{/* Bio */}
-			<motion.p
+			<m.p
 				variants={itemVariants}
-				className="text-[11px] text-foreground/80 leading-relaxed mb-2.5"
+				className="mb-2.5 text-[11px] text-foreground/80 leading-relaxed"
 			>
 				Building tools for service professionals. Always shipping.
-			</motion.p>
+			</m.p>
 
 			{/* Topics */}
-			<motion.div variants={itemVariants} className="flex flex-wrap gap-1 mb-3">
+			<m.div variants={itemVariants} className="mb-3 flex flex-wrap gap-1">
 				{["#webdev", "#nextjs", "#typescript"].map((tag, idx) => (
-					<motion.span
+					<m.span
 						key={tag}
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
 						transition={{ delay: idx * 0.03 }}
-						className="px-1.5 py-0.5 bg-muted text-muted-foreground text-[10px] rounded"
+						className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
 					>
 						{tag}
-					</motion.span>
+					</m.span>
 				))}
-			</motion.div>
+			</m.div>
 
 			{/* CTA */}
-			<motion.a
+			<m.a
 				variants={itemVariants}
 				href="https://twitter.com/byron_c_wade"
 				target="_blank"
 				rel="noopener noreferrer"
-				className="block w-full text-center py-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-[10px] font-medium rounded transition-colors"
+				className="block w-full rounded bg-primary py-1.5 text-center font-medium text-[10px] text-primary-foreground transition-colors hover:bg-primary/90"
 			>
 				Follow on X
-			</motion.a>
-		</motion.div>
+			</m.a>
+		</m.div>
 	);
 
 	const renderEmailContent = () => <EmailPreviewContent />;
@@ -397,22 +406,24 @@ export function SocialLinkPreview({ platform, children }: SocialLinkPreviewProps
 	};
 
 	return (
-		<HoverCard
-			open={isOpen}
-			onOpenChange={(open) => {
-				setIsOpen(open);
-				if (open && platform === "github" && !githubStats && !isLoading) {
-					fetchGitHubStats();
-				}
-			}}
-		>
-			<HoverCardTrigger render={children as React.ReactElement} />
-			<HoverCardContent
-				className="p-3 bg-popover border border-border shadow-2xl rounded-lg z-[9999]"
-				sideOffset={8}
+		<LazyMotion features={domAnimation} strict>
+			<HoverCard
+				open={isOpen}
+				onOpenChange={(open) => {
+					setIsOpen(open);
+					if (open && platform === "github" && !githubStats && !isLoading) {
+						fetchGitHubStats();
+					}
+				}}
 			>
-				<AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
-			</HoverCardContent>
-		</HoverCard>
+				<HoverCardTrigger render={children as React.ReactElement} />
+				<HoverCardContent
+					className="z-[9999] rounded-lg border border-border bg-popover p-3 shadow-2xl"
+					sideOffset={8}
+				>
+					<AnimatePresence mode="wait">{renderContent()}</AnimatePresence>
+				</HoverCardContent>
+			</HoverCard>
+		</LazyMotion>
 	);
 }

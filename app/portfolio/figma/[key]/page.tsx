@@ -1,23 +1,20 @@
-import {
-	BarChart3,
-	Calendar,
-	ChevronRight,
-	ExternalLink,
-	Figma,
-	FileText,
-	GitBranch,
-	Layers,
-	Palette,
-	Zap,
-} from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DesignCaseStudy } from "@/components/ui/design-case-study";
+import {
+	BarChart3,
+	Calendar,
+	ChevronRight,
+	ExternalLink,
+	FileText,
+	GitBranch,
+	Layers,
+	Palette,
+	Zap,
+} from "@/lib/icons";
 import { getFigmaFile } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {
@@ -57,18 +54,22 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 }
 
 function getComplexityLevel(score: number): { level: string; color: string; description: string } {
-	if (score >= 80)
+	if (score >= 80) {
 		return {
 			level: "Very Complex",
 			color: "red",
 			description: "High-complexity design with many elements",
 		};
-	if (score >= 60)
+	}
+	if (score >= 60) {
 		return { level: "Complex", color: "orange", description: "Moderately complex design" };
-	if (score >= 40)
+	}
+	if (score >= 40) {
 		return { level: "Moderate", color: "yellow", description: "Well-structured design" };
-	if (score >= 20)
+	}
+	if (score >= 20) {
 		return { level: "Simple", color: "green", description: "Clean and simple design" };
+	}
 	return { level: "Minimal", color: "blue", description: "Minimal design approach" };
 }
 
@@ -80,8 +81,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		notFound();
 	}
 
-	// biome-ignore lint/suspicious/noExplicitAny: raw Figma API payload is dynamically shaped
-	const fileData = file as any;
+	const fileData = file;
 
 	// Calculate some metrics from the file data directly (no expensive API calls)
 	const pagesCount = fileData.document?.children?.length || 0;
@@ -97,98 +97,89 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		simpleComplexityScore > 0 ? getComplexityLevel(simpleComplexityScore) : null;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 py-16">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<div className="min-h-screen py-16">
+			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
-					<div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-						<Link href="/portfolio" className="hover:text-brand transition-colors">
+					<div className="mb-4 flex items-center gap-2 text-muted-foreground text-sm">
+						<Link href="/portfolio" className="transition-colors hover:text-brand">
 							Portfolio
 						</Link>
-						<ChevronRight className="w-4 h-4" />
-						<Link href="/portfolio?tab=figma" className="hover:text-brand transition-colors">
+						<ChevronRight className="h-4 w-4" />
+						<Link href="/portfolio?tab=figma" className="transition-colors hover:text-brand">
 							Figma
 						</Link>
-						<ChevronRight className="w-4 h-4" />
+						<ChevronRight className="h-4 w-4" />
 						<span className="text-foreground">{fileData.name}</span>
 					</div>
 
 					<div className="mb-6">
-						<h1 className="text-4xl font-bold text-foreground mb-4">{fileData.name}</h1>
-						<div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+						<h1 className="mb-4 font-bold text-4xl text-foreground">{fileData.name}</h1>
+						<div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
 							<div className="flex items-center gap-1">
-								<Calendar className="w-4 h-4 text-brand" />
-								<span>
-									Updated{" "}
-									{new Date(fileData.lastModified || fileData.last_modified).toLocaleDateString()}
-								</span>
+								<Calendar className="h-4 w-4 text-brand" />
+								<span>Updated {new Date(fileData.lastModified).toLocaleDateString()}</span>
 							</div>
-							{fileData.editorType && (
-								<div className="flex items-center gap-1">
-									<Figma className="w-4 h-4 text-brand" />
-									<span className="capitalize">{fileData.editorType}</span>
-								</div>
-							)}
 						</div>
 					</div>
 
 					{/* Metrics Overview */}
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+					<div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
-									<FileText className="w-6 h-6 text-brand" />
+								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
+									<FileText className="h-6 w-6 text-brand" />
 								</div>
 								<div>
-									<p className="text-2xl font-bold text-foreground">{pagesCount}</p>
-									<p className="text-sm text-muted-foreground">Pages</p>
+									<p className="font-bold text-2xl text-foreground">{pagesCount}</p>
+									<p className="text-muted-foreground text-sm">Pages</p>
 								</div>
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
-									<Palette className="w-6 h-6 text-brand" />
+								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
+									<Palette className="h-6 w-6 text-brand" />
 								</div>
 								<div>
-									<p className="text-2xl font-bold text-foreground">{componentsCount}</p>
-									<p className="text-sm text-muted-foreground">Components</p>
+									<p className="font-bold text-2xl text-foreground">{componentsCount}</p>
+									<p className="text-muted-foreground text-sm">Components</p>
 								</div>
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
-									<Zap className="w-6 h-6 text-brand" />
+								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
+									<Zap className="h-6 w-6 text-brand" />
 								</div>
 								<div>
-									<p className="text-2xl font-bold text-foreground">{stylesCount}</p>
-									<p className="text-sm text-muted-foreground">Styles</p>
+									<p className="font-bold text-2xl text-foreground">{stylesCount}</p>
+									<p className="text-muted-foreground text-sm">Styles</p>
 								</div>
 							</CardContent>
 						</Card>
 
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
-								<div className="flex items-center justify-center w-12 h-12 bg-brand/10 rounded-lg mr-4">
-									<BarChart3 className="w-6 h-6 text-brand" />
+								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
+									<BarChart3 className="h-6 w-6 text-brand" />
 								</div>
 								<div>
-									<p className="text-2xl font-bold text-foreground">{simpleComplexityScore}</p>
-									<p className="text-sm text-muted-foreground">Complexity</p>
+									<p className="font-bold text-2xl text-foreground">{simpleComplexityScore}</p>
+									<p className="text-muted-foreground text-sm">Complexity</p>
 								</div>
 							</CardContent>
 						</Card>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+				<div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 					{/* Main Content */}
-					<div className="lg:col-span-2 space-y-8">
+					<div className="space-y-8 lg:col-span-2">
 						{/* Interactive Figma Viewer */}
 						<div className="space-y-4">
-							<h3 className="text-xl font-semibold text-foreground">Design File</h3>
+							<h3 className="font-semibold text-foreground text-xl">Design File</h3>
 							<FigmaInteractiveViewer
 								fileKey={key}
 								fileName={fileData.name}
@@ -198,60 +189,46 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Components Library */}
 						{fileData.components && Object.keys(fileData.components || {}).length > 0 && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
-										<Palette className="w-5 h-5 text-brand" />
+										<Palette className="h-5 w-5 text-brand" />
 										Components ({Object.keys(fileData.components || {}).length})
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-										{Object.values(fileData.components || {})
+									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+										{Object.entries(fileData.components || {})
 											.slice(0, 6)
-											// biome-ignore lint/suspicious/noExplicitAny: raw Figma component payload is dynamically shaped
-											.map((component: any, index: number) => (
+											.map(([nodeId, component]) => (
 												<Card
-													key={component.key || index}
-													className="bg-background/80 border-border/30 hover:shadow-lg transition-all duration-300"
+													key={nodeId}
+													className="border-border/30 bg-background/80 transition-shadow duration-150 hover:shadow-lg"
 												>
 													<CardContent className="p-4">
-														<div className="flex items-center gap-3 mb-3">
-															<div className="w-10 h-10 bg-brand/10 border border-brand/30 rounded flex items-center justify-center text-brand text-xs font-medium">
+														<div className="mb-3 flex items-center gap-3">
+															<div className="flex h-10 w-10 items-center justify-center rounded border border-brand/30 bg-brand/10 font-medium text-brand text-xs">
 																{component.name?.charAt(0)?.toUpperCase() || "C"}
 															</div>
-															<div className="flex-1 min-w-0">
-																<h4 className="font-medium text-foreground truncate">
+															<div className="min-w-0 flex-1">
+																<h4 className="truncate font-medium text-foreground">
 																	{component.name || "Unnamed Component"}
 																</h4>
-																<p className="text-xs text-muted-foreground">
+																<p className="text-muted-foreground text-xs">
 																	{component.description || "No description"}
 																</p>
 															</div>
 														</div>
-														{component.thumbnail_url && (
-															<div className="relative aspect-[4/3] bg-secondary rounded overflow-hidden">
-																<Image
-																	src={component.thumbnail_url}
-																	alt={component.name || "Component"}
-																	fill
-																	className="object-contain"
-																	sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-																/>
-															</div>
-														)}
-														{!component.thumbnail_url && (
-															<div className="aspect-[4/3] bg-secondary rounded flex items-center justify-center">
-																<Layers className="w-8 h-8 text-muted-foreground" />
-															</div>
-														)}
+														<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
+															<Layers className="h-8 w-8 text-muted-foreground" />
+														</div>
 													</CardContent>
 												</Card>
 											))}
 									</div>
 									{Object.keys(fileData.components || {}).length > 6 && (
 										<div className="mt-4 text-center">
-											<p className="text-sm text-muted-foreground">
+											<p className="text-muted-foreground text-sm">
 												And {Object.keys(fileData.components || {}).length - 6} more components...
 											</p>
 										</div>
@@ -264,7 +241,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						<div className="flex flex-wrap gap-3">
 							<Button
 								render={
-									// biome-ignore lint/a11y/useAnchorContent: label is injected via Button's render prop (base-ui)
 									<a
 										href={`https://www.figma.com/file/${key}`}
 										target="_blank"
@@ -274,124 +250,68 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								}
 								size="lg"
 							>
-								<ExternalLink className="w-4 h-4 mr-2" />
+								<ExternalLink className="mr-2 h-4 w-4" />
 								Open in Figma
 							</Button>
 						</div>
 
-						{/* Case Study */}
-						<DesignCaseStudy
-							title={fileData.name}
-							description={`Deep dive into the design system and component architecture of ${fileData.name}, showcasing systematic design thinking and scalable UI patterns.`}
-							challenge="Create a comprehensive design system that maintains consistency across multiple platforms while allowing for flexibility and scalability."
-							solution="Developed a robust component library with clear design tokens, reusable patterns, and comprehensive documentation to ensure design consistency and developer efficiency."
-							metrics={{
-								views: pagesCount * 100, // Estimated based on complexity
-								likes: componentsCount * 5,
-								comments: stylesCount * 2,
-							}}
-							technical={{
-								tools: ["Figma", "Design Tokens", "Component Libraries", "Auto Layout"],
-								techniques: [
-									"Design Systems",
-									"Component Architecture",
-									"Atomic Design",
-									"Design Tokens",
-									"Auto Layout",
-								],
-								duration: "4-8 weeks",
-								team: ["Design System Team", "UI/UX Designers", "Frontend Developers"],
-							}}
-							results={[
-								"Established a scalable design system with reusable components",
-								"Improved design-to-development handoff efficiency",
-								"Maintained visual consistency across all product touchpoints",
-								"Reduced design debt and increased team productivity",
-								"Created comprehensive documentation for design patterns",
-							]}
-							process={[
-								{
-									title: "Audit & Analysis",
-									content:
-										"Conducted a comprehensive audit of existing design patterns and identified inconsistencies across the product.",
-									icon: <BarChart3 className="w-5 h-5" />,
-								},
-								{
-									title: "Token Definition",
-									content:
-										"Established design tokens for colors, typography, spacing, and other foundational elements.",
-									icon: <Palette className="w-5 h-5" />,
-								},
-								{
-									title: "Component Creation",
-									content:
-										"Built a library of reusable components with proper variants and states.",
-									icon: <Layers className="w-5 h-5" />,
-								},
-								{
-									title: "Documentation",
-									content:
-										"Created comprehensive guidelines and usage examples for the design system.",
-									icon: <FileText className="w-5 h-5" />,
-								},
-							]}
-							testimonial={{
-								quote:
-									"This design system has transformed how our team works together, creating consistency and efficiency across all our products.",
-								author: "Product Team",
-								role: "Development Team",
-							}}
-						/>
+						{/* The generated "case study" that used to sit here was removed. Every
+						    field in it was invented: view, like, and comment counts derived from
+						    the page count, a "4-8 weeks" duration, a team that does not exist, and
+						    five generic results, rendered identically for any Figma file key.
+						    DESIGN.md §9 requires real numbers with their source and §3.2 forbids
+						    manufacturing precision. What is left on this page is what the Figma
+						    API actually returns. */}
 					</div>
 
 					{/* Sidebar */}
 					<div className="space-y-6">
 						{/* File Information */}
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">File Information</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex items-center gap-2 text-muted-foreground">
-									<Calendar className="w-4 h-4 text-brand" />
+									<Calendar className="h-4 w-4 text-brand" />
 									<span className="text-sm">Last Modified</span>
 								</div>
-								<p className="text-foreground font-medium">
-									{new Date(fileData.lastModified || fileData.last_modified).toLocaleDateString()}
+								<p className="font-medium text-foreground">
+									{new Date(fileData.lastModified).toLocaleDateString()}
 								</p>
 
 								{fileData.version && (
 									<div>
-										<div className="flex items-center gap-2 text-muted-foreground mb-1">
-											<GitBranch className="w-4 h-4 text-brand" />
+										<div className="mb-1 flex items-center gap-2 text-muted-foreground">
+											<GitBranch className="h-4 w-4 text-brand" />
 											<span className="text-sm">Version</span>
 										</div>
-										<p className="text-foreground font-medium">{fileData.version}</p>
+										<p className="font-medium text-foreground">{fileData.version}</p>
 									</div>
 								)}
 							</CardContent>
 						</Card>
 
 						{/* Quick Stats */}
-						<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">Quick Stats</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-3">
-								<div className="flex justify-between items-center">
+								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Pages</span>
 									<span className="font-semibold text-foreground">{pagesCount}</span>
 								</div>
-								<div className="flex justify-between items-center">
+								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Components</span>
 									<span className="font-semibold text-foreground">{componentsCount}</span>
 								</div>
-								<div className="flex justify-between items-center">
+								<div className="flex items-center justify-between">
 									<span className="text-muted-foreground">Styles</span>
 									<span className="font-semibold text-foreground">{stylesCount}</span>
 								</div>
 								{simpleComplexityScore > 0 && (
-									<div className="flex justify-between items-center">
+									<div className="flex items-center justify-between">
 										<span className="text-muted-foreground">Complexity</span>
 										<span className="font-semibold text-foreground">{simpleComplexityScore}</span>
 									</div>
@@ -401,17 +321,17 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Complexity Assessment */}
 						{complexityAssessment && (
-							<Card className="bg-secondary/50 border-border/30 hover:shadow-xl transition-all duration-300 hover:border-brand/30">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="text-foreground">Complexity Assessment</CardTitle>
 								</CardHeader>
 								<CardContent>
-									<Card className="bg-background/80 border-border/30">
-										<CardContent className="text-center p-4">
-											<div className="text-lg font-bold text-brand mb-1">
+									<Card className="border-border/30 bg-background/80">
+										<CardContent className="p-4 text-center">
+											<div className="mb-1 font-bold text-brand text-lg">
 												{complexityAssessment.level}
 											</div>
-											<div className="text-sm text-muted-foreground">
+											<div className="text-muted-foreground text-sm">
 												{complexityAssessment.description}
 											</div>
 										</CardContent>

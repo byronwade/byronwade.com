@@ -1,4 +1,5 @@
-import { StatusDot, type StatusTone } from "@/components/ui/status-dot";
+import { StatusDot } from "@/components/ui/status-dot";
+import type { StatusTone } from "@/lib/status-tone";
 import { cn } from "@/lib/utils";
 
 const tones: Record<StatusTone, { text: string; ring: string }> = {
@@ -25,7 +26,7 @@ export function StatusPill({
 	return (
 		<span
 			className={cn(
-				"inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium",
+				"inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-medium text-xs",
 				t.ring,
 				t.text,
 				className

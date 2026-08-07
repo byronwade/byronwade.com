@@ -1,29 +1,22 @@
 {
-	"$schema": "https://unpkg.com/knip@6/schema.json",
-	"entry": [
-		"app/**/*.{ts,tsx}",
-		"next.config.{js,ts,mjs}",
-		"tailwind.config.{ts,js}",
-		"postcss.config.{js,mjs}",
-		"middleware.{ts,js}",
-		"instrumentation.{ts,js}"
-	],
-	"project": [
-		"app/**/*.{ts,tsx}",
-		"components/**/*.{ts,tsx}",
-		"lib/**/*.{ts,tsx}",
-		"hooks/**/*.{ts,tsx}",
-		"types/**/*.{ts,tsx}"
-	],
-	"ignore": [
-		"**/*.test.{ts,tsx}",
-		"**/*.spec.{ts,tsx}",
-		"**/__tests__/**",
-		"**/node_modules/**",
-		".next/**",
-		"dist/**",
-		"build/**"
-	],
-	"ignoreDependencies": ["@next/bundle-analyzer", "sharp", "highlight.js"],
-	"ignoreBinaries": ["next", "tsc", "biome", "knip", "docker-compose"]
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["app/**/*.{ts,tsx}", "next.config.js", "postcss.config.mjs"],
+  "project": [
+    "app/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "hooks/**/*.{ts,tsx}",
+    "lib/**/*.{ts,tsx}",
+    "types/**/*.{ts,tsx}"
+  ],
+  "ignore": ["**/node_modules/**", ".next/**"],
+  "ignoreDependencies": [
+    "@biomejs/biome",
+    "highlight.js",
+    "postcss-load-config",
+    "sharp",
+    "tailwindcss",
+    "tw-animate-css"
+  ],
+  "ignoreBinaries": ["docker-compose"],
+  "tags": ["-public"]
 }

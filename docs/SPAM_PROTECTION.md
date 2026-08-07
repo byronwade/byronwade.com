@@ -47,15 +47,11 @@ import { ObfuscatedEmail, ObfuscatedPhone } from "@/components/ui/obfuscated-con
 
 ### 3. Utility Functions
 
-#### Contact Utils
-Located at `lib/contact-utils.ts`
+#### Contact helpers
+Exported from `components/ui/obfuscated-contact.tsx`:
 
-Provides:
-- `getContactInfo()` - Get real contact info (server-side only)
-- `getObfuscatedContactInfo()` - Get obfuscated info for public display
-- `createMailtoLink()` - Create obfuscated mailto links
-- `createTelLink()` - Create obfuscated tel links
-- `getSchemaContactInfo()` - Get contact info for structured data
+- `getObfuscatedContactForSchema()` - Contact values for JSON-LD structured data
+- `useContactInfo()` - Decoded contact values for a client component
 
 ### 4. Metadata Protection
 
@@ -131,21 +127,32 @@ useEffect(() => {
 }, [revealed]);
 ```
 
-## Files Updated
+## Where it is used
 
-### Components
-- `components/ui/obfuscated-contact.tsx` - Main obfuscation component
-- `components/sections/contact-section.tsx` - Updated to use obfuscated contact
-- `components/footer.tsx` - Updated to use obfuscated contact
+- `lib/contact.ts`. the encoded values, the decoder, and the role address used
+  in structured data. **The only place the address may be written.**
+- `hooks/use-revealed-email.ts`. client-only accessor; returns "" until mount,
+  so the address never reaches prerendered HTML
+- `components/ui/obfuscated-contact.tsx`. the click-to-reveal components
+- `components/layout/footer.tsx`, `app/contact/contact-client.tsx`,
+  `app/resume/page.tsx`, `components/home/`, consumers
+- `app/metadata.config.ts`. `format-detection` disabled so mobile browsers do
+  not auto-linkify the revealed values
 
-### Pages
-- `app/our-work/page.tsx` - Updated metadata and contact info
-- `app/plumbing-santa-cruz/page.tsx` - Updated metadata and contact info
+### Verifying it still holds
 
-### Configuration
-- `app/layout.tsx` - Updated JSON-LD schema
-- `app/metadata.config.ts` - Format detection disabled
-- `lib/contact-utils.ts` - Utility functions for contact management
+Obfuscation is only real if the built output is clean. After changing anything
+that touches contact details:
+
+```bash
+npm run build
+grep -r "byron@byronwade.com" .next/static      # client bundle, must be empty
+grep -rl "byron@byronwade.com" .next/server/app --include=*.html   # must be empty
+```
+
+Both were failing before this check existed: `lib/seo.ts` published the address
+in JSON-LD, the resume page and the homepage hover card rendered it as text, and
+a project Markdown file printed it in prose.
 
 ## Benefits
 
@@ -169,8 +176,7 @@ useEffect(() => {
 ### Adding New Contact Information
 1. Encode the new contact info using base64
 2. Update the encoded constants in `obfuscated-contact.tsx`
-3. Update the utility functions in `contact-utils.ts`
-4. Test the obfuscation on both client and server side
+3. Test the obfuscation on both client and server side
 
 ### Updating Existing Contact Information
 1. Generate new base64 encoded values
@@ -180,7 +186,7 @@ useEffect(() => {
 
 ### Monitoring
 - Monitor contact form submissions for spam patterns
-- Track legitimate vs. spam contact attempts
+- Track legitimate vs: spam contact attempts
 - Adjust obfuscation levels if needed
 
 ## Security Notes
