@@ -168,95 +168,97 @@ function PortfolioEmptyState({
 	);
 }
 
-function RepoSkeletonGrid() {
+/** Mirrors RepoRow's shape so the swap to real data does not shift layout. */
+function RepoSkeletonList() {
 	return (
-		<div className="grid gap-4 sm:grid-cols-2" aria-busy="true">
+		<div aria-busy="true" className="flex flex-col">
 			<p className="sr-only" role="status">
 				Loading repositories…
 			</p>
 			{["a", "b", "c", "d", "e", "f"].map((id) => (
 				<div
+					className="flex animate-pulse flex-col gap-2 border-border border-b py-5 last:border-b-0"
 					key={`skeleton-${id}`}
-					className="flex min-h-40 animate-pulse flex-col gap-3 rounded-2xl border border-border bg-card p-5"
 				>
-					<div className="h-5 w-1/2 rounded bg-muted" />
-					<div className="h-4 w-full rounded bg-muted/70" />
-					<div className="h-4 w-3/4 rounded bg-muted/70" />
-					<div className="mt-auto flex gap-3 pt-2">
-						<div className="h-3 w-16 rounded bg-muted/60" />
-						<div className="h-3 w-10 rounded bg-muted/60" />
+					<div className="flex items-baseline gap-4">
+						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
+						<div className="h-4 w-1/3 rounded bg-muted" />
 					</div>
+					<div className="h-3 w-2/3 rounded bg-muted/70 sm:ml-16" />
 				</div>
 			))}
 		</div>
 	);
 }
 
-function RepoCard({ repo }: { repo: GitHubRepo }) {
+/**
+ * One repository row — Showcase profile.
+ *
+ * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
+ * activity sorted by signal. A card grid worked against that: cards give every
+ * repository the same visual weight regardless of how much traction it has, and
+ * §13 rejects the card-grid reflex outright. Star count now leads the row, so
+ * the sort order is visible as structure rather than buried in a metadata strip.
+ */
+function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
-		<a
-			href={repo.html_url}
-			target="_blank"
-			rel="noopener noreferrer"
-			className="group focus-ring flex min-h-40 flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-card transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-float"
-		>
-			<div className="flex items-start justify-between gap-3">
-				<div className="flex min-w-0 items-center gap-2">
-					<h2 className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-						{titleize(repo.name)}
-					</h2>
-					{repo.archived && (
-						<span className="shrink-0 rounded-full bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground">
-							Archived
-						</span>
-					)}
-				</div>
-				<ExternalLink className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
-			</div>
-
-			{repo.description && (
-				<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
-					{repo.description}
-				</p>
-			)}
-
-			{repo.topics && repo.topics.length > 0 && (
-				<div className="flex flex-wrap gap-1.5">
-					{repo.topics.slice(0, 4).map((topic) => (
-						<span
-							key={topic}
-							className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
-						>
-							{topic}
-						</span>
-					))}
-				</div>
-			)}
-
-			<div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-muted-foreground text-xs">
-				{repo.language && (
-					<span className="inline-flex items-center gap-1.5">
-						<span
-							className={`size-2.5 rounded-full ${languageColors[repo.language] ?? "bg-muted-foreground"}`}
-						/>
-						{repo.language}
+		<li className="border-border border-b last:border-b-0">
+			<a
+				className="group/row hover-motion flex flex-col gap-2 py-5 outline-none hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
+				href={repo.html_url}
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				<div className="flex items-baseline gap-4">
+					<span className="flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+						<Star aria-hidden="true" className="size-3" />
+						{repo.stargazers_count}
 					</span>
-				)}
-				<span className="inline-flex items-center gap-1">
-					<Star className="size-3.5" />
-					{repo.stargazers_count}
-				</span>
-				<span className="inline-flex items-center gap-1">
-					<GitFork className="size-3.5" />
-					{repo.forks_count}
-				</span>
-				{repo.pushed_at && (
-					<span className="ml-auto whitespace-nowrap text-muted-foreground/80">
-						Updated {format(new Date(repo.pushed_at), "MMM yyyy")}
+
+					<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
+						<span className="truncate font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+							{titleize(repo.name)}
+						</span>
+						{repo.archived && (
+							<span className="shrink-0 font-mono text-[10px] text-muted-foreground uppercase tracking-wide">
+								Archived
+							</span>
+						)}
 					</span>
+
+					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
+						{repo.language && (
+							<span className="inline-flex items-center gap-1.5">
+								<span
+									className={`size-2 rounded-full ${languageColors[repo.language] ?? "bg-muted-foreground"}`}
+								/>
+								{repo.language}
+							</span>
+						)}
+						{repo.forks_count > 0 && (
+							<span className="inline-flex items-center gap-1">
+								<GitFork aria-hidden="true" className="size-3" />
+								{repo.forks_count}
+							</span>
+						)}
+						{repo.pushed_at && (
+							<time dateTime={repo.pushed_at}>{format(new Date(repo.pushed_at), "MMM yyyy")}</time>
+						)}
+					</span>
+
+					<ExternalLink
+						aria-hidden="true"
+						className="size-3.5 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-150 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
+					/>
+				</div>
+
+				{repo.description && (
+					<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
+						{repo.description}
+					</p>
 				)}
-			</div>
-		</a>
+			</a>
+		</li>
 	);
 }
 
@@ -307,7 +309,7 @@ export default function PortfolioPage() {
 				</header>
 
 				{loading ? (
-					<RepoSkeletonGrid />
+					<RepoSkeletonList />
 				) : error || repos.length === 0 ? (
 					<PortfolioEmptyState
 						degraded={degraded}
@@ -325,11 +327,11 @@ export default function PortfolioPage() {
 								Showing a partial response — some GitHub data may be stale. Refresh to try again.
 							</p>
 						)}
-						<div className="grid gap-4 sm:grid-cols-2">
+						<ol className="group/list flex flex-col">
 							{repos.slice(0, visibleRepos).map((repo) => (
-								<RepoCard key={repo.id} repo={repo} />
+								<RepoRow key={repo.id} repo={repo} />
 							))}
-						</div>
+						</ol>
 
 						{visibleRepos < repos.length && (
 							<div className="text-center">
