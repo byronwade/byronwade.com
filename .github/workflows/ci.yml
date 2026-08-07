@@ -9,6 +9,13 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Least privilege for GITHUB_TOKEN, flagged by CodeQL on PR #29. Without this
+# block the token inherits the repository default, which can be write-all; this
+# job only ever needs to read the checkout, so anything a compromised dependency
+# in `npm ci` could reach is limited to that.
+permissions:
+  contents: read
+
 jobs:
   check:
     name: Lint, type-check, dead code, build
