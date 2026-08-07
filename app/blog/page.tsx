@@ -5,7 +5,6 @@ import { Suspense } from "react";
 import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
 import { SiteShell } from "@/components/layout/site-shell";
-import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 import {
 	generateBreadcrumbStructuredData,
@@ -42,50 +41,93 @@ export async function generateMetadata() {
 	});
 }
 
+/**
+ * Writing index — Showcase profile.
+ *
+ * The organizing move for /blog (DESIGN.md §7.1) is chronology with the lede
+ * visible, so scanning is reading. Posts group by year and every row keeps its
+ * excerpt. This is an open list on hairlines rather than a card: a card around
+ * the whole list would be decoration, and §13 rejects bordered rows. The grammar
+ * deliberately matches components/project/projects-index.tsx — one index pattern
+ * for the site, two kinds of content.
+ */
 async function BlogList() {
 	const posts = await getBlogPosts();
 
 	if (posts.length === 0) {
 		return (
 			<p className="text-muted-foreground text-sm leading-relaxed">
-				No blog posts yet. Check back soon.
+				Nothing published yet. The first post is in progress.
 			</p>
 		);
 	}
 
+	// Posts arrive newest-first; grouping preserves that order inside each year.
+	const byYear = new Map<string, typeof posts>();
+	for (const post of posts) {
+		const year = post.date ? String(new Date(post.date).getFullYear()) : "Undated";
+		const bucket = byYear.get(year);
+		if (bucket) {
+			bucket.push(post);
+		} else {
+			byYear.set(year, [post]);
+		}
+	}
+
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
-			{posts.map((post) => (
-				<Link
-					key={post.slug}
-					href={`/blog/${post.slug}`}
-					className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
-				>
-					<div className="flex items-start justify-between gap-4">
-						<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-							{post.title}
+		<div className="flex flex-col gap-10">
+			{[...byYear.entries()].map(([year, yearPosts]) => (
+				<section className="flex flex-col" key={year}>
+					<div className="flex items-baseline justify-between border-border border-b pb-3">
+						<h2 className="font-mono text-muted-foreground text-xs tabular-nums tracking-[0.18em]">
+							{year}
+						</h2>
+						<span className="font-mono text-muted-foreground text-xs tabular-nums">
+							{String(yearPosts.length).padStart(2, "0")}
 						</span>
-						<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
-							<Badge variant="muted">
-								<Clock />
-								{post.readingTime} min
-							</Badge>
-							{post.date && (
-								<time className="hidden sm:inline">
-									{format(new Date(post.date), "MMM d, yyyy")}
-								</time>
-							)}
-						</div>
 					</div>
-					{post.excerpt && (
-						<p className="line-clamp-2 max-w-2xl text-muted-foreground text-sm leading-relaxed">
-							{post.excerpt}
-						</p>
-					)}
-					{post.tags && post.tags.length > 0 && (
-						<TagList tags={post.tags} limit={4} className="pt-0.5" />
-					)}
-				</Link>
+
+					<ol className="group/list flex flex-col">
+						{yearPosts.map((post) => (
+							<li className="border-border border-b last:border-b-0" key={post.slug}>
+								<Link
+									className="group/row hover-motion flex flex-col gap-2 py-5 outline-none hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
+									href={`/blog/${post.slug}`}
+								>
+									<div className="flex items-baseline gap-4">
+										{post.date && (
+											<time
+												className="w-12 shrink-0 font-mono text-muted-foreground/70 text-xs tabular-nums"
+												dateTime={post.date}
+											>
+												{format(new Date(post.date), "MMM d")}
+											</time>
+										)}
+										<span className="min-w-0 flex-1 font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+											{post.title}
+										</span>
+										<span className="hidden shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
+											<Clock aria-hidden="true" className="size-3" />
+											{post.readingTime}m
+										</span>
+									</div>
+
+									{post.excerpt && (
+										<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
+											{post.excerpt}
+										</p>
+									)}
+
+									{post.tags && post.tags.length > 0 && (
+										<div className="sm:pl-16">
+											<TagList className="pt-0.5" limit={4} tags={post.tags} />
+										</div>
+									)}
+								</Link>
+							</li>
+						))}
+					</ol>
+				</section>
 			))}
 		</div>
 	);
