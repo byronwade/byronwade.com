@@ -1,4 +1,4 @@
-import type { Icon, IconProps } from "@phosphor-icons/react";
+import type { Icon, IconProps, IconWeight } from "@phosphor-icons/react";
 import {
 	ArrowClockwise,
 	ArrowElbowDownLeft,
@@ -84,14 +84,24 @@ import {
  */
 
 /**
- * Applies the family's default weight while leaving it overridable. `weight`
- * comes before the spread on purpose: a call site that genuinely needs a solid
- * or regular glyph can still pass one.
+ * Binds a weight to a glyph while leaving it overridable. `weight` comes before
+ * the spread on purpose: a call site that genuinely needs a solid or regular
+ * glyph can still pass one.
+ *
+ * Every export goes through here, including the brand marks, so all of them
+ * carry a `displayName`. Anonymous arrow components show up as `<Unknown>` in
+ * React DevTools and in component stacks, which is miserable when an icon is
+ * the thing rendering wrong.
  */
-function duotone(Base: Icon, name: string) {
-	const Wrapped = (props: IconProps) => <Base weight="duotone" {...props} />;
+function withWeight(Base: Icon, weight: IconWeight, name: string) {
+	const Wrapped = (props: IconProps) => <Base weight={weight} {...props} />;
 	Wrapped.displayName = name;
 	return Wrapped;
+}
+
+/** The family default. */
+function duotone(Base: Icon, name: string) {
+	return withWeight(Base, "duotone", name);
 }
 
 /** The type an icon-taking prop should use. Replaces lucide's `LucideIcon`. */
@@ -151,9 +161,9 @@ export const Sun = duotone(PhSun, "Sun");
 // glyph in dock-toolbar.tsx is gone and its exception in PROJECT_PROFILE.md
 // with it. Brand marks stay at `fill` weight: a duotone company logo reads as
 // a rendering bug rather than a style.
-export const Github = (props: IconProps) => <GithubLogo weight="fill" {...props} />;
-export const Linkedin = (props: IconProps) => <LinkedinLogo weight="fill" {...props} />;
-export const Twitter = (props: IconProps) => <XLogo weight="fill" {...props} />;
+export const Github = withWeight(GithubLogo, "fill", "Github");
+export const Linkedin = withWeight(LinkedinLogo, "fill", "Linkedin");
+export const Twitter = withWeight(XLogo, "fill", "Twitter");
 export const Heart = duotone(PhHeart, "Heart");
 
 // Figma and project-preview chrome
