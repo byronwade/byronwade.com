@@ -223,6 +223,22 @@
 }
 
 @layer utilities {
+  /* ── Motion utilities (DESIGN.md §6.3) ──
+     Hover-driven *motion* is gated to fine pointers. On touch, hover is
+     emulated and sticks after a tap, so an effect that reads as a hint on a
+     mouse becomes a stuck state on a phone. Colour and shadow hovers are cheap
+     and stay ungated; transform, filter, and opacity spotlights do not. */
+  .hover-motion {
+    transition: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hover-motion {
+      transition-property: opacity, transform, filter;
+      transition-duration: var(--motion-fast);
+      transition-timing-function: var(--motion-ease-out);
+    }
+  }
+
   /* ── Foundation utilities ── */
   .bg-grid {
     background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 12%, transparent) 1px, transparent 0);

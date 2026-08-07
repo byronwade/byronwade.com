@@ -42,7 +42,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 							<Link
 								href={`/projects/${project.slug}`}
 								className={cn(
-									"group/row flex flex-col gap-2 py-5 outline-none transition-opacity duration-300",
+									"group/row hover-motion flex flex-col gap-2 py-5 outline-none",
 									"hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
 								)}
 							>
@@ -84,7 +84,7 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
 										)
 									)}
 
-									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-300 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
+									<ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-150 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand" />
 								</div>
 
 								{(project.featured || project.flagship) && (proof || leadMetric) && (

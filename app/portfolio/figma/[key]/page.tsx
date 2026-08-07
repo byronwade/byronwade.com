@@ -125,7 +125,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 					{/* Metrics Overview */}
 					<div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<FileText className="h-6 w-6 text-brand" />
@@ -137,7 +137,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<Palette className="h-6 w-6 text-brand" />
@@ -149,7 +149,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<Zap className="h-6 w-6 text-brand" />
@@ -161,7 +161,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
 									<BarChart3 className="h-6 w-6 text-brand" />
@@ -190,7 +190,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Components Library */}
 						{fileData.components && Object.keys(fileData.components || {}).length > 0 && (
-							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
 										<Palette className="h-5 w-5 text-brand" />
@@ -204,7 +204,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 											.map(([nodeId, component]) => (
 												<Card
 													key={nodeId}
-													className="border-border/30 bg-background/80 transition-shadow duration-300 hover:shadow-lg"
+													className="border-border/30 bg-background/80 transition-shadow duration-150 hover:shadow-lg"
 												>
 													<CardContent className="p-4">
 														<div className="mb-3 flex items-center gap-3">
@@ -324,7 +324,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 					{/* Sidebar */}
 					<div className="space-y-6">
 						{/* File Information */}
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">File Information</CardTitle>
 							</CardHeader>
@@ -350,7 +350,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</Card>
 
 						{/* Quick Stats */}
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
 								<CardTitle className="text-foreground">Quick Stats</CardTitle>
 							</CardHeader>
@@ -378,7 +378,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 						{/* Complexity Assessment */}
 						{complexityAssessment && (
-							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-300 hover:border-brand/30 hover:shadow-xl">
+							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="text-foreground">Complexity Assessment</CardTitle>
 								</CardHeader>
