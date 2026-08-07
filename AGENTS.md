@@ -392,6 +392,30 @@ Known false positives in this repository, confirmed by reading the code:
   `docs/SPAM_PROTECTION.md`.
 - `unused-dependency: sharp` — Next.js loads it for image optimization without
   an import.
+- `iframe-missing-sandbox` on `components/portfolio/figma-viewer.tsx` — the
+  sandbox is present. The rule objects to `allow-scripts` with
+  `allow-same-origin`, which is only dangerous when the framed document shares
+  our origin; this frames figma.com, and the embed needs both to run.
+- `rendering-hydration-no-flicker` / `no-initialize-state` on the `mounted`
+  flags and `useRevealedEmail` — those effects are the point. They keep
+  portal-dependent markup and the contact address out of prerendered HTML.
+
+Accepted, and not worth changing:
+
+- `prefer-html-dialog` on the launcher and dock panels. A native `<dialog>`
+  would give focus trapping for free, but those panels *are* the morph capsule;
+  replacing the element would break the animation the component exists for. The
+  fullscreen preview already implements `role="dialog"`, `aria-modal`, Escape,
+  and focus return by hand.
+- `react-compiler-no-manual-memoization` inside `hooks/`. A hook's returned
+  callbacks are part of its public contract — consumers put them in dependency
+  arrays — so stable identity is deliberate there even though the compiler
+  would otherwise handle it.
+- `ObfuscatedPhone` is exported but unused. It is tagged `@public` and
+  documented; the phone channel is kept ready deliberately.
+- `react-hooks-js/todo` — the React Compiler declines to optimize seven
+  functions that wrap `await` in `try`/`catch`. Restructuring working error
+  handling to suit the compiler is not a trade worth making.
 
 Two Ultracite **assists** are disabled after they damaged this codebase, and
 they should stay that way unless upstream fixes them: `useSortedAttributes`
