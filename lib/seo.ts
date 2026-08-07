@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getContactForStructuredData } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
 
 const siteName = "Byron Wade";
@@ -298,7 +299,7 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		contactPoint: {
 			"@type": "ContactPoint",
 			contactType: "Professional",
-			email: "byron@byronwade.com",
+			email: getContactForStructuredData().email,
 			areaServed: "US",
 			availableLanguage: "English",
 		},
@@ -343,7 +344,7 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 			addressRegion: "GA",
 			addressCountry: "US",
 		},
-		email: "byron@byronwade.com",
+		email: getContactForStructuredData().email,
 		hasOccupation: {
 			"@type": "Occupation",
 			name: "Full Stack Developer",

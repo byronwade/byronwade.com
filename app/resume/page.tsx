@@ -10,6 +10,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
+import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
 
 // Server-side obfuscated contact info for structured data
@@ -133,7 +134,7 @@ const certifications: { name: string; year: string; pending?: boolean }[] = [
 
 export default function ResumePage() {
 	const [emailCopied, setEmailCopied] = useState(false);
-	const email = "byron@byronwade.com";
+	const email = useRevealedEmail();
 
 	const copyEmail = async () => {
 		try {

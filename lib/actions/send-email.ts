@@ -1,6 +1,7 @@
 "use server";
 
 import { Resend } from "resend";
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
 
 interface EmailProps {
 	attachments?: Array<{
@@ -252,6 +253,8 @@ interface SendEmailResponse {
 export async function sendEmail(formData: EmailProps): Promise<SendEmailResponse> {
 	try {
 		const resend = new Resend(process.env.RESEND_API_KEY);
+		// Server-only, but decoded from the shared source so the address has one home.
+		const ownerEmail = decodeContact(CONTACT_ENCODED.email);
 		const userTemplate = generateUserEmailTemplate(formData);
 		const adminTemplate = generateAdminEmailTemplate(formData);
 		const emailAttachments = prepareAttachments(formData.attachments || []);
@@ -259,16 +262,16 @@ export async function sendEmail(formData: EmailProps): Promise<SendEmailResponse
 		// Send both emails concurrently
 		const [userEmail, adminEmail] = await Promise.all([
 			resend.emails.send({
-				from: "Byron Wade <byron@byronwade.com>",
+				from: `Byron Wade <${ownerEmail}>`,
 				to: formData.email,
 				subject: userTemplate.subject,
-				replyTo: "byron@byronwade.com",
+				replyTo: ownerEmail,
 				html: userTemplate.html,
 				attachments: emailAttachments,
 			}),
 			resend.emails.send({
-				from: "Contact Form <byron@byronwade.com>",
-				to: "byron@byronwade.com",
+				from: `Contact Form <${ownerEmail}>`,
+				to: ownerEmail,
 				subject: adminTemplate.subject,
 				replyTo: formData.email,
 				html: adminTemplate.html,

@@ -9,6 +9,7 @@ import { InlineContact } from "@/components/home/inline-contact";
 import { Button } from "@/components/ui/button";
 import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
 
 const socials = [
 	{ id: "github", label: "GitHub", href: "https://github.com/byronwade", icon: Github },
@@ -22,7 +23,7 @@ const pillClass = pillLinkClass;
 export function HomeInteractive() {
 	const [copiedButton, setCopiedButton] = useState<string | null>(null);
 	const [contactOpen, setContactOpen] = useState(false);
-	const email = "byron@byronwade.com";
+	const email = decodeContact(CONTACT_ENCODED.email);
 
 	const copyEmail = async (buttonId: string) => {
 		try {

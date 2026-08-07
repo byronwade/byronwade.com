@@ -222,11 +222,11 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		resetWidth();
 	}, [isFullscreen, resetWidth]);
 
-	// When the preset changes, drop any manual sizing.
-	// biome-ignore lint/correctness/useExhaustiveDependencies: reset sizing only when the preset changes
+	// A preset change replaces the frame size, so any manual width is stale.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: `preset` is the trigger; resetWidth is stable.
 	useEffect(() => {
 		resetWidth();
-	}, [preset]);
+	}, [preset, resetWidth]);
 
 	// Fullscreen: lock scroll, ESC to close, manage focus.
 	useEffect(() => {

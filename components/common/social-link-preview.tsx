@@ -5,6 +5,7 @@ import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "lucid
 import type React from "react";
 import { useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
 
 interface ContributionDay {
 	count: number;
@@ -70,7 +71,7 @@ function EmailPreviewContent() {
 	const [copied, setCopied] = useState(false);
 
 	const copyEmail = () => {
-		navigator.clipboard.writeText("byron@byronwade.com");
+		navigator.clipboard.writeText(decodeContact(CONTACT_ENCODED.email));
 		setCopied(true);
 		setTimeout(() => setCopied(false), 2000);
 	};
@@ -95,7 +96,7 @@ function EmailPreviewContent() {
 			{/* Email */}
 			<m.div variants={itemVariants} className="mb-2.5 rounded bg-muted/60 px-2.5 py-2">
 				<code className="font-mono text-[11px] text-amber-700 dark:text-amber-400">
-					byron@byronwade.com
+					{decodeContact(CONTACT_ENCODED.email)}
 				</code>
 			</m.div>
 

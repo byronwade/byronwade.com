@@ -1,8 +1,10 @@
 import { getBlogPosts } from "@/lib/blog";
+import { getContactForStructuredData } from "@/lib/contact";
 import { siteUrl } from "@/lib/site";
 
 export async function GET() {
 	const posts = await getBlogPosts();
+	const { email: contactEmail } = getContactForStructuredData();
 
 	const escapeXml = (str: string) =>
 		str
@@ -24,7 +26,7 @@ export async function GET() {
 			<guid isPermaLink="true">${siteUrl}/blog/${post.slug}</guid>
 			<description>${escapeXml(post.excerpt || `Read ${post.title} on Byron Wade's blog`)}</description>
 			<pubDate>${new Date(post.date).toUTCString()}</pubDate>
-			<author>byron@byronwade.com (Byron Wade)</author>${categories}
+			<author>${contactEmail} (Byron Wade)</author>${categories}
 		</item>`;
 		})
 		.join("");
@@ -39,8 +41,8 @@ export async function GET() {
 		<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 		<atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
 		<copyright>Copyright ${new Date().getFullYear()} Byron Wade. All rights reserved.</copyright>
-		<managingEditor>byron@byronwade.com (Byron Wade)</managingEditor>
-		<webMaster>byron@byronwade.com (Byron Wade)</webMaster>
+		<managingEditor>${contactEmail} (Byron Wade)</managingEditor>
+		<webMaster>${contactEmail} (Byron Wade)</webMaster>
 		<ttl>60</ttl>
 		<image>
 			<url>${siteUrl}/logo.avif</url>

@@ -116,4 +116,4 @@ wormhole mount wormhole.byronwade.com/j/MARS-WIND ~/mnt/wormhole
 
 ## Contact
 
-byron@byronwade.com - Feedback and collaborators welcome.
+Feedback and collaborators welcome — reach out via [the contact page](/contact).

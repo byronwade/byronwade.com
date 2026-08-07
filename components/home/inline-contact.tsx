@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/lib/actions/send-email";
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
 import {
 	buildContactMessage,
 	CONTACT_TOPICS,
@@ -25,7 +26,7 @@ interface InlineContactProps {
 export function InlineContact({
 	open,
 	onClose,
-	email = "byron@byronwade.com",
+	email = decodeContact(CONTACT_ENCODED.email),
 }: InlineContactProps) {
 	const [copied, setCopied] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);

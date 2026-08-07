@@ -2,23 +2,7 @@
 
 import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
-
-// Base64 encoded contact info (additional layer of obfuscation)
-// byron@byronwade.com
-const ENCODED_EMAIL = "Ynlyb25AYnlyb253YWRlLmNvbQ==";
-// +18312958460
-const ENCODED_PHONE = "KzE4MzEyOTU4NDYw";
-// +1 (831) 295-8460
-const ENCODED_PHONE_DISPLAY = "KzEgKDgzMSkgMjk1LTg0NjA=";
-
-// Decode function
-const decode = (encoded: string): string => {
-	try {
-		return atob(encoded);
-	} catch {
-		return "";
-	}
-};
+import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
 
 // Component that only renders after client-side hydration
 const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
@@ -48,15 +32,11 @@ export const ObfuscatedEmail = ({
 	showIcon = false,
 	variant = "link",
 }: ObfuscatedEmailProps) => {
+	// The decoded value is derived from `revealed`, so it does not need its own
+	// state or an effect to keep the two in sync. Rendering happens inside
+	// ClientOnlyContact, so `atob` always has a browser to run in.
 	const [revealed, setRevealed] = useState(false);
-	const [email, setEmail] = useState("");
-
-	useEffect(() => {
-		if (revealed) {
-			const decoded = decode(ENCODED_EMAIL);
-			setEmail(decoded);
-		}
-	}, [revealed]);
+	const email = revealed ? decodeContact(CONTACT_ENCODED.email) : "";
 
 	const handleReveal = () => {
 		setRevealed(true);
@@ -124,17 +104,12 @@ export const ObfuscatedPhone = ({
 	displayFormat = true,
 }: ObfuscatedPhoneProps) => {
 	const [revealed, setRevealed] = useState(false);
-	const [phone, setPhone] = useState("");
-	const [displayPhone, setDisplayPhone] = useState("");
-
-	useEffect(() => {
-		if (revealed) {
-			const decodedPhone = decode(ENCODED_PHONE);
-			const decodedDisplay = decode(ENCODED_PHONE_DISPLAY);
-			setPhone(decodedPhone);
-			setDisplayPhone(displayFormat ? decodedDisplay : decodedPhone);
-		}
-	}, [revealed, displayFormat]);
+	const phone = revealed ? decodeContact(CONTACT_ENCODED.phone) : "";
+	const displayPhone = revealed
+		? displayFormat
+			? decodeContact(CONTACT_ENCODED.phoneDisplay)
+			: phone
+		: "";
 
 	const handleReveal = () => {
 		setRevealed(true);
@@ -184,37 +159,4 @@ export const ObfuscatedPhone = ({
 			</span>
 		</ClientOnlyContact>
 	);
-};
-
-// Component for structured data - returns obfuscated values for bots
-/** @public Documented in docs/SPAM_PROTECTION.md. */
-export const getObfuscatedContactForSchema = () => {
-	// Return partially obfuscated data for structured data
-	return {
-		email: `contact${String.fromCharCode(64)}byronwade.com`, // Use a business email format
-		telephone: "+1-8xx-xxx-xxxx", // Partially obfuscated
-	};
-};
-
-// Hook to get real contact info only on client-side interaction
-/** @public Documented in docs/SPAM_PROTECTION.md. */
-export const useContactInfo = () => {
-	const [contactInfo, setContactInfo] = useState<{
-		email: string;
-		phone: string;
-		phoneDisplay: string;
-	} | null>(null);
-
-	const revealContactInfo = () => {
-		if (!contactInfo) {
-			setContactInfo({
-				email: decode(ENCODED_EMAIL),
-				phone: decode(ENCODED_PHONE),
-				phoneDisplay: decode(ENCODED_PHONE_DISPLAY),
-			});
-		}
-		return contactInfo;
-	};
-
-	return { contactInfo, revealContactInfo };
 };
