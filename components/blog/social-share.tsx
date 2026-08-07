@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Copy, Linkedin, Share2, Twitter } from "lucide-react";
 import { useEffect, useState } from "react";
 import { pillLinkClass } from "@/components/ui/pill";
+import { Check, Copy, Linkedin, Share2, Twitter } from "@/lib/icons";
 
 interface SocialShareProps {
 	className?: string;

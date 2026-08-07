@@ -1,5 +1,11 @@
 "use client";
 
+import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { useDragResize } from "@/hooks/use-drag-resize";
+import { useFrameSize } from "@/hooks/use-frame-size";
+import { useScreenshot } from "@/hooks/use-screenshot";
 import {
 	ExternalLink,
 	Globe,
@@ -13,13 +19,7 @@ import {
 	RotateCcw,
 	Smartphone,
 	Tablet,
-} from "lucide-react";
-import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { useDragResize } from "@/hooks/use-drag-resize";
-import { useFrameSize } from "@/hooks/use-frame-size";
-import { useScreenshot } from "@/hooks/use-screenshot";
+} from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 interface FullWidthProjectPreviewProps {
@@ -77,11 +77,7 @@ function PreviewToolbar({
 					<span className="size-2.5 rounded-full bg-border" />
 				</div>
 				<div className="flex min-w-0 items-center gap-1.5 rounded-md bg-background/60 px-2 py-1">
-					<Globe
-						className="size-3.5 shrink-0 text-muted-foreground"
-						strokeWidth={1.5}
-						aria-hidden="true"
-					/>
+					<Globe className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
 					<span className="truncate font-mono text-foreground text-xs">{url}</span>
 				</div>
 			</div>
@@ -108,7 +104,7 @@ function PreviewToolbar({
 										: "text-muted-foreground hover:bg-brand/5 hover:text-brand"
 								)}
 							>
-								<Icon className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+								<Icon className="size-3.5" aria-hidden="true" />
 							</button>
 						);
 					})}
@@ -125,7 +121,7 @@ function PreviewToolbar({
 						title="Reset width"
 						className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
 					>
-						<RotateCcw className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+						<RotateCcw className="size-3.5" aria-hidden="true" />
 					</button>
 				)}
 
@@ -138,9 +134,9 @@ function PreviewToolbar({
 					className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
 				>
 					{isFullscreen ? (
-						<Minimize2 className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+						<Minimize2 className="size-3.5" aria-hidden="true" />
 					) : (
-						<Maximize2 className="size-3.5" strokeWidth={1.5} aria-hidden="true" />
+						<Maximize2 className="size-3.5" aria-hidden="true" />
 					)}
 				</button>
 
@@ -154,7 +150,7 @@ function PreviewToolbar({
 					className="flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 font-medium text-primary-foreground text-xs shadow-sm transition-colors hover:bg-primary/90"
 				>
 					<span className="hidden sm:inline">Visit</span>
-					<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
+					<ExternalLink className="size-3" aria-hidden="true" />
 				</a>
 			</div>
 		</div>
@@ -293,11 +289,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				>
 					{status === "error" ? (
 						<div className="flex flex-col items-center justify-center gap-3 p-6 text-center">
-							<ImageOff
-								className="size-9 text-muted-foreground"
-								strokeWidth={1.5}
-								aria-hidden="true"
-							/>
+							<ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />
 							<div className="space-y-1">
 								<p className="font-medium text-foreground text-sm">Preview unavailable</p>
 								<p className="max-w-xs text-muted-foreground text-xs">
@@ -310,7 +302,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 									onClick={retry}
 									className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 font-medium text-foreground text-xs transition-colors hover:bg-muted"
 								>
-									<RefreshCw className="size-3" strokeWidth={1.5} aria-hidden="true" />
+									<RefreshCw className="size-3" aria-hidden="true" />
 									Retry
 								</button>
 								<a
@@ -320,7 +312,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 									className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs transition-colors hover:bg-primary/90"
 								>
 									Open site
-									<ExternalLink className="size-3" strokeWidth={1.5} aria-hidden="true" />
+									<ExternalLink className="size-3" aria-hidden="true" />
 								</a>
 							</div>
 						</div>
@@ -425,7 +417,6 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 									"size-3 transition-colors",
 									isResizing ? "text-primary-foreground" : "text-foreground group-hover:text-brand"
 								)}
-								strokeWidth={1.5}
 								aria-hidden="true"
 							/>
 						</span>

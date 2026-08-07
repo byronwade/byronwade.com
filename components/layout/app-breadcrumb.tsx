@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronLeft, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ChevronLeft, MoreHorizontal } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
@@ -144,7 +144,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 							aria-label={`Back to ${parent.label}`}
 							className="-ml-1 flex size-6 items-center justify-center rounded-md text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>
-							<ChevronLeft className="size-4" strokeWidth={2.5} />
+							<ChevronLeft className="size-4" />
 						</Link>
 					</li>
 				)}

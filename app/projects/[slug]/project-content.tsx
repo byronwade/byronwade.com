@@ -1,4 +1,3 @@
-import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
 import { Markdown, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
@@ -6,6 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
 import { extractToc, safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
 import type { Project, ProjectType } from "@/lib/projects";
 import {
@@ -31,11 +31,20 @@ const typeLabels: Record<ProjectType, string> = {
 	hobby: "Hobby",
 };
 
-const typeBadgeVariant: Record<ProjectType, "success" | "secondary" | "outline"> = {
-	product: "success",
-	client: "secondary",
-	concept: "outline",
-	hobby: "outline",
+/**
+ * One hue per project type, from the `--type-*` family in globals.css.
+ *
+ * This used to map `product` onto the `success` variant, which made the palette
+ * assert a positive outcome where it only meant a category, and it flattened
+ * concept and hobby into the same outline treatment so two different kinds of
+ * work looked identical. These are classification colours; the label is always
+ * beside them, so §5.1's "status never relies on colour alone" is not in play.
+ */
+const typeBadgeVariant: Record<ProjectType, "product" | "client" | "concept" | "hobby"> = {
+	product: "product",
+	client: "client",
+	concept: "concept",
+	hobby: "hobby",
 };
 
 function extractDomain(url?: string): string {

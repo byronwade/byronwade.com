@@ -1,7 +1,6 @@
 "use client";
 
 import { format } from "date-fns";
-import { ExternalLink, GitFork, Github, RefreshCw, Star } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import {
 	EmptyState,
@@ -14,20 +13,32 @@ import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
+import { ExternalLink, GitFork, Github, RefreshCw, Star } from "@/lib/icons";
 import type { GitHubRepo } from "@/types/github";
 
-const languageColors: Record<string, string> = {
-	TypeScript: "bg-blue-500",
-	JavaScript: "bg-yellow-400",
-	Python: "bg-sky-500",
-	Go: "bg-cyan-500",
-	Rust: "bg-orange-600",
-	Java: "bg-red-500",
-	Ruby: "bg-rose-600",
-	PHP: "bg-indigo-500",
-	CSS: "bg-pink-500",
-	HTML: "bg-orange-500",
-};
+/**
+ * Language dots, drawn from the taxonomy family rather than raw Tailwind hues.
+ *
+ * This was ten hardcoded palette colours (`bg-blue-500`, `bg-rose-600`, and so
+ * on), which is exactly the page-local palette §5.1 forbids: none of them were
+ * tokens, none had a dark-mode counterpart, and they were the most saturated
+ * thing on the page. Language is a classification, so it reuses the same four
+ * `--type-*` hues the project types use, assigned stably by name.
+ */
+const LANGUAGE_TONES = [
+	"bg-type-product",
+	"bg-type-client",
+	"bg-type-concept",
+	"bg-type-hobby",
+] as const;
+
+function languageTone(language: string): string {
+	let hash = 0;
+	for (const char of language) {
+		hash = (hash + char.charCodeAt(0)) % LANGUAGE_TONES.length;
+	}
+	return LANGUAGE_TONES[hash] ?? "bg-muted-foreground";
+}
 
 const WORD_SEPARATORS = /[-_]/;
 
@@ -238,9 +249,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
 						{repo.language && (
 							<span className="inline-flex items-center gap-1.5">
-								<span
-									className={`size-2 rounded-full ${languageColors[repo.language] ?? "bg-muted-foreground"}`}
-								/>
+								<span className={`size-2 rounded-full ${languageTone(repo.language)}`} />
 								{repo.language}
 							</span>
 						)}

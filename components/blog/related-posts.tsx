@@ -1,9 +1,9 @@
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
+import { Clock } from "@/lib/icons";
 
 interface RelatedPostsProps {
 	currentSlug: string;

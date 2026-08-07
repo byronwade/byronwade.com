@@ -26,7 +26,7 @@ function NavDockItem({ item, pathname }: { item: NavItem; pathname: string }) {
 					/>
 				}
 			>
-				<item.icon className="size-4 shrink-0" strokeWidth={2} />
+				<item.icon className="size-4 shrink-0" />
 				<span className="hidden sm:inline">{item.label}</span>
 			</TooltipTrigger>
 			<TooltipContent className="sm:hidden" sideOffset={10}>

@@ -1,11 +1,11 @@
 "use client";
 
 import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
-import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "lucide-react";
 import type React from "react";
 import { useState } from "react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
+import { Flame, Folder, GitCommit, Github, Linkedin, Mail, Twitter } from "@/lib/icons";
 
 interface ContributionDay {
 	count: number;

@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader2, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/layout/page";
@@ -17,6 +16,7 @@ import {
 	type ContactTopicValue,
 	DEFAULT_CONTACT_TOPIC,
 } from "@/lib/contact-form";
+import { Loader2, Send } from "@/lib/icons";
 
 /**
  * `/contact`: Guided profile.

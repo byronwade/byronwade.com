@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
+import { ArrowUpRight, GitFork, LayoutGrid, Moon, Sun, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
 const GITHUB_URL = "https://github.com/byronwade";
@@ -164,7 +164,7 @@ export function AppLauncher() {
 						title="All products"
 						className="flex size-8 items-center justify-center rounded-full text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 					>
-						<LayoutGrid className="size-4" strokeWidth={2} />
+						<LayoutGrid className="size-4" />
 					</button>
 				</div>
 

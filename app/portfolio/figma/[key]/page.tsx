@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	BarChart3,
 	Calendar,
@@ -8,13 +14,7 @@ import {
 	Layers,
 	Palette,
 	Zap,
-} from "lucide-react";
-import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from "@/lib/icons";
 import { getFigmaFile } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {

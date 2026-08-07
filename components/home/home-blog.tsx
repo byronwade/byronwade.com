@@ -1,11 +1,11 @@
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { TagList } from "@/components/common/tag-list";
 import { Section } from "@/components/layout/page";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
+import { Clock } from "@/lib/icons";
 
 /**
  * Homepage "writing". The second turn.

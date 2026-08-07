@@ -1,12 +1,23 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
-import { Box, CornerDownLeft, Github, Hash, Heart, Moon, PenLine, Search, Sun } from "lucide-react";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
+import type { IconComponent } from "@/lib/icons";
+import {
+	Box,
+	CornerDownLeft,
+	Github,
+	Hash,
+	Heart,
+	Moon,
+	PenLine,
+	Search,
+	Sun,
+	Twitter,
+} from "@/lib/icons";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
 
@@ -15,15 +26,6 @@ const GITHUB_URL = "https://github.com/byronwade";
 const WHITESPACE = /\s+/;
 const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
-
-/** X (formerly Twitter) brand glyph, lucide's `X` is the close icon, not the logo. */
-function XIcon({ className }: { className?: string }) {
-	return (
-		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-			<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-		</svg>
-	);
-}
 
 const ITEM =
 	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring";
@@ -37,7 +39,7 @@ const KIND_LABEL: Record<SearchKind, string> = {
 	Project: "Projects",
 	Writing: "Writing",
 };
-const KIND_ICON: Record<SearchKind, LucideIcon> = { Page: Hash, Project: Box, Writing: PenLine };
+const KIND_ICON: Record<SearchKind, IconComponent> = { Page: Hash, Project: Box, Writing: PenLine };
 
 type Mode = "search" | "donate" | null;
 
@@ -308,7 +310,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										/>
 									}
 								>
-									<Search className="size-4 shrink-0" strokeWidth={2} />
+									<Search className="size-4 shrink-0" />
 								</TooltipTrigger>
 								<TooltipContent sideOffset={10}>Search · ⌘K</TooltipContent>
 							</Tooltip>
@@ -323,7 +325,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											aria-label="GitHub"
 											className={cn(ITEM, ITEM_IDLE)}
 										>
-											<Github className="size-4 shrink-0" strokeWidth={2} />
+											<Github className="size-4 shrink-0" />
 										</a>
 									}
 								/>
@@ -340,7 +342,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											aria-label="X (@byron_c_wade)"
 											className={cn(ITEM, ITEM_IDLE)}
 										>
-											<XIcon className="size-3.5 shrink-0" />
+											<Twitter className="size-3.5 shrink-0" />
 										</a>
 									}
 								/>
@@ -358,8 +360,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										/>
 									}
 								>
-									<Moon className="size-4 shrink-0 dark:hidden" strokeWidth={2} />
-									<Sun className="hidden size-4 shrink-0 dark:block" strokeWidth={2} />
+									<Moon className="size-4 shrink-0 dark:hidden" />
+									<Sun className="hidden size-4 shrink-0 dark:block" />
 								</TooltipTrigger>
 								<TooltipContent sideOffset={10}>Toggle theme</TooltipContent>
 							</Tooltip>
@@ -379,7 +381,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									    pink heart here was the most saturated thing on every page and the
 									    only off-palette colour in persistent chrome (§5.1). The Sponsors
 									    pink stays inside the panel, where donating is the subject. */}
-									<Heart className="size-4 shrink-0" strokeWidth={2} />
+									<Heart className="size-4 shrink-0" />
 								</TooltipTrigger>
 								<TooltipContent sideOffset={10}>Support open source</TooltipContent>
 							</Tooltip>

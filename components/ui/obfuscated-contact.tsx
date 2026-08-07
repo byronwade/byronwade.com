@@ -1,8 +1,8 @@
 "use client";
 
-import { Mail, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
+import { Mail, Phone } from "@/lib/icons";
 
 // Component that only renders after client-side hydration
 const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {

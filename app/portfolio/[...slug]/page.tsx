@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckCircle, ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,6 +7,7 @@ import { use } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { CheckCircle, ExternalLink, Github } from "@/lib/icons";
 import { projects } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 

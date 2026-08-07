@@ -35,6 +35,12 @@
   --color-success-muted: var(--success-muted);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+  --color-type-product: var(--type-product);
+  --color-type-client: var(--type-client);
+  --color-type-concept: var(--type-concept);
+  --color-type-hobby: var(--type-hobby);
   --color-dock: var(--dock);
   --color-dock-foreground: var(--dock-foreground);
   --color-dock-muted: var(--dock-muted);
@@ -99,6 +105,21 @@
   /* Attention without alarm. Orange at hue 62, clear of brand's amber at 85. */
   --warning: oklch(0.66 0.15 62);
   --warning-foreground: oklch(0.99 0.002 95);
+  /* Informational, not a status. Used for live/external things. */
+  --info: oklch(0.55 0.13 245);
+  --info-muted: oklch(0.95 0.03 245);
+
+  /* ── Taxonomy (DESIGN.md §5.1) ──
+     These classify, they never indicate status, which is why they are a
+     separate family from success/warning/destructive rather than borrowed from
+     it. Before this existed, "product" was rendered in the success green, so
+     the palette claimed an outcome where it only meant a category.
+     Every use is paired with its written label, so nothing depends on hue.
+     Chroma is held near 0.11 so no one type shouts over the others. */
+  --type-product: oklch(0.52 0.11 200);
+  --type-client: oklch(0.52 0.11 262);
+  --type-concept: oklch(0.52 0.11 305);
+  --type-hobby: oklch(0.54 0.11 25);
   --ring: var(--brand);
   --chart-1: var(--brand);
   --chart-2: oklch(0.556 0.01 75);
@@ -165,6 +186,13 @@
   --success-muted: oklch(0.30 0.05 152);
   --warning: oklch(0.76 0.15 62);
   --warning-foreground: oklch(0.26 0.05 70);
+  --info: oklch(0.74 0.13 245);
+  --info-muted: oklch(0.30 0.05 245);
+  /* Lifted for dark, same hues, so hierarchy is preserved rather than inverted. */
+  --type-product: oklch(0.75 0.11 200);
+  --type-client: oklch(0.75 0.11 262);
+  --type-concept: oklch(0.76 0.11 305);
+  --type-hobby: oklch(0.74 0.12 25);
   --ring: var(--brand);
   --chart-1: var(--brand);
   --chart-2: oklch(0.556 0.01 75);

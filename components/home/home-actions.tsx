@@ -1,11 +1,11 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { InlineContact } from "@/components/home/inline-contact";
 import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
+import { ArrowRight } from "@/lib/icons";
 
 /**
  * The only interactive island on the homepage opening.

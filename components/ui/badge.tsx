@@ -16,6 +16,12 @@ const badgeVariants = cva(
 				success: "bg-success/10 text-success focus-visible:ring-success/20 [a]:hover:bg-success/20",
 				warning: "bg-warning/10 text-warning focus-visible:ring-warning/20 [a]:hover:bg-warning/20",
 				muted: "bg-muted text-muted-foreground [a]:hover:bg-muted/70",
+				info: "bg-info/10 text-info focus-visible:ring-info/20 [a]:hover:bg-info/20",
+				// Taxonomy, not status. See the --type-* block in globals.css.
+				product: "bg-type-product/10 text-type-product [a]:hover:bg-type-product/20",
+				client: "bg-type-client/10 text-type-client [a]:hover:bg-type-client/20",
+				concept: "bg-type-concept/10 text-type-concept [a]:hover:bg-type-concept/20",
+				hobby: "bg-type-hobby/10 text-type-hobby [a]:hover:bg-type-hobby/20",
 				outline: "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
 				ghost: "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
 				link: "text-primary underline-offset-4 hover:underline",

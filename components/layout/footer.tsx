@@ -1,7 +1,7 @@
-import { Github, Linkedin, Twitter } from "lucide-react";
 import { SocialLinkPreview } from "@/components/common";
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
+import { Github, Linkedin, Twitter } from "@/lib/icons";
 
 /**
  * Site footer: Shared profile.

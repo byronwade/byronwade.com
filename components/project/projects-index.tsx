@@ -1,7 +1,7 @@
-import { ArrowUpRight, Sparkle } from "lucide-react";
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { StatusPill } from "@/components/ui/status-pill";
+import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 
@@ -30,6 +30,34 @@ function yearOf(date?: string): string {
 }
 
 /**
+ * The type mark: a single colour-coded word from the `--type-*` family.
+ *
+ * Set as plain coloured text rather than a filled pill, because a second pill
+ * beside the status pill turns every row into a badge rack, and §13 rejects
+ * making every control a pill. The word itself carries the meaning, so the hue
+ * is reinforcement rather than the signal.
+ */
+const TYPE_TONE: Record<string, string> = {
+	product: "text-type-product",
+	client: "text-type-client",
+	concept: "text-type-concept",
+	hobby: "text-type-hobby",
+};
+
+function TypeMark({ type }: { type?: string }) {
+	if (!type) {
+		return null;
+	}
+	return (
+		<span
+			className={`hidden shrink-0 font-medium text-xs capitalize sm:inline ${TYPE_TONE[type] ?? "text-muted-foreground"}`}
+		>
+			{type}
+		</span>
+	);
+}
+
+/**
  * The right-hand marker. Exactly one of status, concept, or year, a row that
  * showed two competed with its own title for attention.
  */
@@ -39,13 +67,6 @@ function RowMarker({ project }: { project: Project }) {
 		return (
 			<StatusPill className="shrink-0 capitalize" pulse={tone.pulse} tone={tone.tone}>
 				{project.status}
-			</StatusPill>
-		);
-	}
-	if (project.type === "concept") {
-		return (
-			<StatusPill className="shrink-0" tone="neutral">
-				Concept
 			</StatusPill>
 		);
 	}
@@ -84,6 +105,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 									)}
 								</span>
 
+								<TypeMark type={project.type} />
 								<RowMarker project={project} />
 
 								<ArrowUpRight

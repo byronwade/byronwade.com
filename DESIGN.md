@@ -17,7 +17,7 @@ profiles_not_in_use:
 runtime_ownership:
   tokens: app/globals.css
   components: components/ui
-  icons: lucide-react
+  icons: "@phosphor-icons/react (duotone), via lib/icons.tsx"
   motion: app/globals.css (--motion-*)
 ---
 
@@ -199,6 +199,10 @@ The palette is warm-neutral OKLCH with a single restrained amber brand.
   region. It is **not** a default container color.
 - `success`, `warning`, `destructive`, and `brand` are separate semantic
   families even where two currently resolve to the same value.
+- `--type-*` is a **taxonomy** family, not a status one. It classifies work
+  (product, client, concept, hobby) and must never be read as an outcome. Never
+  borrow a status colour to mean a category, or the palette starts asserting
+  things the content does not.
 - Status never relies on color alone. pair it with text, icon, or shape.
 - Dark mode preserves hierarchy; it is not an inversion.
 - No decorative gradients, gradient text, neon glow, or glassmorphism.
@@ -252,10 +256,12 @@ not all float. `shadow-float` is for transient layers only.
 
 ### 5.6 Icons
 
-`lucide-react`, one family. 16px in dense contexts, 20px standard, 24px only
+`@phosphor-icons/react` at duotone weight, one family, imported only through
+`lib/icons.tsx`. 16px in dense contexts, 20px standard, 24px only
 where hierarchy earns it. Icons support labels rather than replacing them.
 Icon-only controls require an accessible name. No icons in decorative colored
-tiles.
+tiles. Brand marks (GitHub, LinkedIn, X) stay at `fill` weight; a duotone
+company logo reads as a rendering fault rather than a style.
 
 ## 6. Motion
 

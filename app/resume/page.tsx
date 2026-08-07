@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
+import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
 
 // Server-side obfuscated contact info for structured data
 const obfuscatedContact = {

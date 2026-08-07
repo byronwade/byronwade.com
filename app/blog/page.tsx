@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
@@ -8,6 +7,7 @@ import { TagList } from "@/components/common/tag-list";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getBlogPosts } from "@/lib/blog";
+import { Clock } from "@/lib/icons";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,

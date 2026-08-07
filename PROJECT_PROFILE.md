@@ -74,9 +74,9 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
   `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
-- **Icon owner and approved family:** `lucide-react`. One family, no exceptions.
-  The X/Twitter glyph in `dock-toolbar.tsx` is a documented exception, lucide's
-  `X` is the close icon, not the logo.
+- **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
+  through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
+  glyph is gone: Phosphor ships `XLogo`, so that exception no longer exists.
 - **Typography owner and loading strategy:** `lib/fonts.ts`. Geist (`--font-sans`),
   Geist Mono (`--font-geist-mono`), and a local signature face
   (`--font-signature`), all `display: swap`, self-hosted through `next/font`.
@@ -247,7 +247,6 @@ the user's instruction each time.
 
 | Exception | Reason | Owner | Review date | Replacement plan |
 | --- | --- | --- | --- | --- |
-| Custom X/Twitter glyph outside lucide | lucide's `X` is the close icon, not the brand logo | `components/layout/dock-toolbar.tsx` | When lucide ships a brand set | Replace with the canonical family |
 | `components/ui/**` a11y rule relaxations | Base UI primitives forward props, so the control an a11y rule looks for is at the call site | `biome.jsonc` | On any primitive rewrite | Keep call sites correct; the relaxation never applies to application UI |
 | `ObfuscatedPhone` exported but unused | Documented public API of the spam-protection module; the phone channel is kept ready | `components/ui/obfuscated-contact.tsx` | If still unused after the redesign | Delete and update `docs/SPAM_PROTECTION.md` together |
 | GitHub Sponsors pink inside the donate panel | It is the Sponsors brand mark, and the panel is a transient surface where donating is the subject; the resting toolbar icon inherits dock colour so no off-palette colour is ever persistent | `components/layout/dock-toolbar.tsx` | If a second off-palette brand colour appears | Promote to a `--sponsor` token or drop the brand tint |

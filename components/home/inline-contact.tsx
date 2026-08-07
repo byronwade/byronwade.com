@@ -1,6 +1,5 @@
 "use client";
 
-import { Check, Copy, Loader2, Mail, Send, X } from "lucide-react";
 import { type FormEvent, useId, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -16,6 +15,7 @@ import {
 	type ContactTopicValue,
 	DEFAULT_CONTACT_TOPIC,
 } from "@/lib/contact-form";
+import { Check, Copy, Loader2, Mail, Send, X } from "@/lib/icons";
 
 interface InlineContactProps {
 	email?: string;

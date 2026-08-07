@@ -1,8 +1,8 @@
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Section } from "@/components/layout/page";
 import { StatusPill } from "@/components/ui/status-pill";
+import { ArrowUpRight } from "@/lib/icons";
 import type { Project } from "@/lib/projects";
 import { getFeaturedProjects } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
