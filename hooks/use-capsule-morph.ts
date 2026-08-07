@@ -1,10 +1,9 @@
 "use client";
 
 import { type RefObject, useEffect, useLayoutEffect } from "react";
+import { motionToken } from "@/lib/motion";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
-
-const EASE = "cubic-bezier(.22,1,.36,1)";
 
 interface CapsuleMorphOptions {
 	/** Delay before the pill fades back in. */
@@ -56,7 +55,8 @@ export function useCapsuleMorph({
 		}
 
 		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		const transition = `width ${durationMs}ms ${EASE}, height ${durationMs}ms ${EASE}, border-radius ${durationMs}ms ${EASE}`;
+		const ease = motionToken("--motion-ease-drawer");
+		const transition = `width ${durationMs}ms ${ease}, height ${durationMs}ms ${ease}, border-radius ${durationMs}ms ${ease}`;
 
 		// Hand sizing back to the layout once the animation is done, so the
 		// capsule keeps tracking its natural content size.

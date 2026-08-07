@@ -126,7 +126,7 @@ export function AppLauncher() {
 			style={{
 				width: slot.w,
 				height: slot.h,
-				transition: "width 200ms cubic-bezier(.22,1,.36,1)",
+				transition: "width var(--motion-base) var(--motion-ease-drawer)",
 			}}
 			className="relative z-10 shrink-0"
 		>

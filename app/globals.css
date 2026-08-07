@@ -65,6 +65,9 @@
   --font-heading: var(--font-sans);
   --font-display: var(--font-sans);
   --font-signature: var(--font-signature);
+  --ease-out-token: var(--motion-ease-out);
+  --ease-in-out-token: var(--motion-ease-in-out);
+  --ease-drawer: var(--motion-ease-drawer);
 }
 
 :root {
@@ -99,6 +102,18 @@
   --chart-4: oklch(0.371 0.01 75);
   --chart-5: oklch(0.269 0.01 75);
   --radius: 0.75rem;
+
+  /* ── Motion (DESIGN.md §6.2) — the one motion scale. ──
+     Theme-independent, so they live here rather than in a theme block. Before
+     these existed the same curve was copy-pasted into four TypeScript files. */
+  --motion-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --motion-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-slow: 300ms;
+  --motion-drawer: 480ms;
+
   --dock: oklch(0.235 0.006 72);
   --dock-foreground: oklch(0.72 0.006 75);
   --dock-muted: oklch(1 0 0 / 10%);

@@ -3,10 +3,7 @@
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
 import { flushSync } from "react-dom";
-
-/** Matches the dock/launcher motion curve so the reveal feels like the rest of the chrome. */
-const EASE = "cubic-bezier(.22,1,.36,1)";
-const DURATION_MS = 480;
+import { motionDuration, motionToken } from "@/lib/motion";
 
 type ViewTransitionDocument = Document & {
 	startViewTransition?: (callback: () => void) => { ready: Promise<void> };
@@ -42,8 +39,8 @@ export function useThemeToggle() {
 					document.documentElement.animate(
 						{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
 						{
-							duration: DURATION_MS,
-							easing: EASE,
+							duration: motionDuration("--motion-drawer"),
+							easing: motionToken("--motion-ease-drawer"),
 							pseudoElement: "::view-transition-new(root)",
 						}
 					);
