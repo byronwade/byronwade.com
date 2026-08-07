@@ -29,10 +29,10 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 
 ## What Memoria Does
 
-**Reveals hidden coupling** by mining git history to find files that change together, even without imports.  
-**Assigns a risk score** so you and the AI know when to slow down.  
-**Surfaces static dependents** using git grep to catch direct importers.  
-**Builds a pre-flight checklist** of files to verify or update before the change is "done."  
+**Reveals hidden coupling** by mining git history to find files that change together, even without imports.
+**Assigns a risk score** so you and the AI know when to slow down.
+**Surfaces static dependents** using git grep to catch direct importers.
+**Builds a pre-flight checklist** of files to verify or update before the change is "done."
 **Runs 100% locally.** No API keys, no cloud upload, and it works offline.
 
 ---

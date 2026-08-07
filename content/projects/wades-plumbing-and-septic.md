@@ -22,7 +22,7 @@ metrics:
 # Building Wade's Plumbing and Septic: Designing for Trust in a Skeptical Industry
 
 
---- 
+---
 
 
 ## The Design Strategy: Anti-Corporate and Built for Speed

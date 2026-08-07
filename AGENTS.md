@@ -39,7 +39,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 ## The stack (verified facts)
 
 | Concern | Reality |
-|---|---|
+| --- | --- |
 | Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack (`next.config.js`) |
 | Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
@@ -60,7 +60,6 @@ Ultracite 7 defaults to the oxlint/oxfmt toolchain. This repository pins it to
 below those `extends` is a deliberate repository-level override with a comment
 explaining why; read those comments before re-enabling a rule.
 
-
 ## Commands
 
 ```bash
@@ -79,7 +78,6 @@ CI (`.github/workflows/ci.yml`) runs all four gates on every pull request and
 push to `main`. `type-check` runs `next typegen` first because `next-env.d.ts`
 and the generated route types are gitignored, without it tsc cannot resolve
 `next/*` on a clean checkout.
-
 
 ## Authority
 
@@ -170,7 +168,6 @@ type, API client, or abstraction, search these first:
 No exact name match does not mean no equivalent exists. Search by behavior and
 domain meaning, not just by identifier.
 
-
 ## Reuse decision ladder
 
 Choose the first sound option:
@@ -260,7 +257,6 @@ not cleanup.
   JSDoc tag and a doc entry justifying it.
 - Do not add packages, layers, services, or configuration for hypothetical
   future use.
-
 
 ## Simplicity and code quality
 
@@ -396,7 +392,6 @@ Contact details are deliberately obfuscated to resist harvesting. See
 - Server actions and route handlers are public endpoints. Validate and normalize
   every input there; never trust client-side checks alone.
 
-
 ## Accessibility
 
 Target WCAG 2.2 AA. [`docs/UI_GUIDELINES.md`](docs/UI_GUIDELINES.md) is binding.
@@ -477,7 +472,7 @@ CI gates, run these periodically, after a feature lands, before a release, or
 whenever the codebase feels like it has accumulated drift.
 
 | Tool | Command | What it catches |
-|---|---|---|
+| --- | --- | --- |
 | Ultracite / Biome | `npm run lint` | Lint + formatting, Ultracite's rule preset. `npm run lint:fix` applies safe fixes. **CI gate.** |
 | knip | `npm run knip` | Unused files, exports, types, dependencies. **CI gate.** |
 | react-doctor | `npm run audit:react` | React codebase health, anti-patterns, dead code, dependency supply chain. Scores the repo. |
@@ -562,7 +557,6 @@ cycles and undeclared dependencies fail CI.
 React Scan overlaps with `reactCompiler: true`, which already memoizes
 automatically. A re-render it flags is worth chasing only when it is measurable;
 see the Performance protocol above before changing anything on its say-so.
-
 
 ## Verification gate
 

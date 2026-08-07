@@ -48,7 +48,8 @@ exceptions this file refers to. Read it first.
 5. Runtime tokens in `app/globals.css` and the component APIs in `components/ui/`.
 6. `docs/UI_GUIDELINES.md` for the binding interaction and accessibility rules.
 7. Existing implementation, only where it does not contradict the above.
-8. Screenshots, archived designs, and external references, evidence, never proof.
+8. Screenshots, archived designs, and external references. These are evidence,
+   never proof.
 
 Hard rules:
 
@@ -145,8 +146,8 @@ Each page has exactly one dominant object:
 | `/resume` | The record |
 | `/contact` | The form |
 
-Nothing, card, gradient, dock, or animation, may become more visually
-important than that object.
+No card, gradient, dock, or animation may become more visually important than
+that object.
 
 ### 4.2 Calmness comes from hierarchy, not emptiness
 
@@ -266,34 +267,28 @@ curve.
 Run in order. Failing any of the first three means the correct implementation
 contains no animation.
 
-**1. Frequency**
+1. **Frequency.** Match the default to how often a visitor meets it:
 
-| Exposure | Default |
-| --- | --- |
-| Every visit, keyboard-driven (nav, theme toggle, search open) | Instant or near-instant |
-| Common (hover, focus, press) | Imperceptible feedback only |
-| Occasional (contact sheet, fullscreen preview, hover card) | Standard functional motion |
-| Rare or first-view (page entrance) | The delight budget may be spent, once |
+   | Exposure | Default |
+   | --- | --- |
+   | Every visit, keyboard-driven (nav, theme toggle, search open) | Instant or near-instant |
+   | Common (hover, focus, press) | Imperceptible feedback only |
+   | Occasional (contact sheet, fullscreen preview, hover card) | Standard functional motion |
+   | Rare or first-view (page entrance) | The delight budget may be spent, once |
 
-**2. Purpose**, name one: feedback, spatial consistency, state indication,
-continuity, explanation, or rare delight. "It looks good" is not a purpose for
-anything a visitor sees repeatedly.
-
-**3. Function**, never move content the visitor is reading.
-
-**4. Tool**, cheapest capable: CSS transition → `.reveal` animation →
-Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
-Do not add a library for a fade.
-
-**5. Properties**, `transform` and `opacity`. `clip-path` deliberately (the
-theme-toggle wipe). Never animate `width`, `height`, `top`, or `left` on a
-repeated interaction.
-
-**6. Ingredients**, use the tokens in §6.2. Do not introduce a parallel scale.
-
-**7. Interruption**, define retrigger, reversal, and exit before shipping.
-
-**8. Access**, reduced motion ships with the implementation, not after.
+2. **Purpose.** Name one: feedback, spatial consistency, state indication,
+   continuity, explanation, or rare delight. "It looks good" is not a purpose
+   for anything a visitor sees repeatedly.
+3. **Function.** Never move content the visitor is reading.
+4. **Tool.** Cheapest capable: CSS transition → `.reveal` animation →
+   Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
+   Do not add a library for a fade.
+5. **Properties.** `transform` and `opacity`. `clip-path` deliberately (the
+   theme-toggle wipe). Never animate `width`, `height`, `top`, or `left` on a
+   repeated interaction.
+6. **Ingredients.** Use the tokens in §6.2. Do not introduce a parallel scale.
+7. **Interruption.** Define retrigger, reversal, and exit before shipping.
+8. **Access.** Reduced motion ships with the implementation, not after.
 
 ### 6.2 Ingredients
 
@@ -423,9 +418,9 @@ and reflow; reduced-motion support; a non-drag alternative wherever dragging
 exists; dialog focus containment and return; hover-revealed content also
 available on keyboard focus.
 
-Accessibility is not claimed from static inspection. Critical flows , 
-navigating, reading a post, submitting the contact form, are checked with a
-keyboard.
+Accessibility is not claimed from static inspection. The critical flows are
+checked with a keyboard: navigating, reading a post, and submitting the
+contact form.
 
 ## 11. Responsive behavior
 

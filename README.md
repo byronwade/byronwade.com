@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Routes
 
 | Route | Purpose |
-|-------|---------|
+| ------- | --------- |
 | `/` | Editorial homepage, intro, projects, recent posts |
 | `/projects`, `/projects/[slug]` | Case studies from Markdown (`content/projects/`) |
 | `/portfolio` | Live GitHub repositories (`/api/portfolio`) |
@@ -32,7 +32,7 @@ This repository runs on the **Warm Precision** kit, a design standard plus an
 agent protocol, adapted to this project rather than pasted into it.
 
 | File | Owns | Read it when |
-|---|---|---|
+| --- | --- | --- |
 | [`PROJECT_PROFILE.md`](PROJECT_PROFILE.md) | Users, owners, dependencies, commands, budgets, exceptions | **First.** The other two are only authoritative once this is accurate |
 | [`DESIGN.md`](DESIGN.md) | Design judgment, composition, density, motion, accessibility, the quality gate | Any change that renders UI |
 | [`AGENTS.md`](AGENTS.md) | How work is done, operating modes, reuse ladder, cleanup bounds, verification | Every task |
@@ -53,7 +53,7 @@ and point at the code that holds the values.
 ## Scripts
 
 | Command | Description |
-|---------|-------------|
+| --------- | ------------- |
 | `npm run dev` | Dev server |
 | `npm run dev:turbo` | Dev with Turbopack |
 | `npm run build` | Production build |
@@ -85,7 +85,7 @@ is there and what it replaces.
 Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
 
 | Variable | Used for |
-|---|---|
+| --- | --- |
 | `GITHUB_API_TOKEN` | GitHub repos and stats on `/portfolio` |
 | `DRIBBBLE_ACCESS_TOKEN` | Dribbble shots |
 | `FIGMA_ACCESS_TOKEN` | Figma files and the `/portfolio/figma` viewer |
