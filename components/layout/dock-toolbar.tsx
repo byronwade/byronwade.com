@@ -375,7 +375,11 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										/>
 									}
 								>
-									<Heart className="size-4 shrink-0 fill-pink-500 text-pink-500" strokeWidth={2} />
+									{/* Resting chrome inherits dock colour like its neighbours. A filled
+									    pink heart here was the most saturated thing on every page and the
+									    only off-palette colour in persistent chrome (§5.1). The Sponsors
+									    pink stays inside the panel, where donating is the subject. */}
+									<Heart className="size-4 shrink-0" strokeWidth={2} />
 								</TooltipTrigger>
 								<TooltipContent sideOffset={10}>Support open source</TooltipContent>
 							</Tooltip>

@@ -118,6 +118,11 @@
   --motion-base: 200ms;
   --motion-slow: 300ms;
   --motion-drawer: 480ms;
+  /* First-view page entrance only — the "rare or first-view" row of the §6.1
+     frequency table, where the delight budget may be spent once. Promoted here
+     because `.reveal` had been carrying an untokened 0.6s of its own. */
+  --motion-scene: 640ms;
+  --motion-scene-step: 90ms;
 
   --dock: oklch(0.995 0.003 92);
   --dock-foreground: oklch(0.50 0.01 75);
@@ -247,37 +252,24 @@
     }
   }
 
-  /* ── Foundation utilities ── */
-  .bg-grid {
-    background-image: radial-gradient(circle at 1px 1px, color-mix(in oklch, var(--foreground) 12%, transparent) 1px, transparent 0);
-    background-size: 28px 28px;
-  }
-  .bg-grid-lines {
-    background-image: linear-gradient(to right, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklch, var(--border) 70%, transparent) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-  .glow-brand {
-    background: radial-gradient(60% 60% at 50% 0%, color-mix(in oklch, var(--brand) 28%, transparent) 0%, transparent 70%);
-  }
-  .text-gradient {
-    background: linear-gradient(180deg, var(--foreground) 0%, color-mix(in oklch, var(--foreground) 62%, transparent) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .text-gradient-brand {
-    background: linear-gradient(135deg, var(--foreground) 0%, var(--brand) 120%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .mask-fade-x {
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  }
-  .full-bleed {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
+  /* ── Sequenced entrance ──
+     Scroll-driven, so scenes arrive as they are reached instead of all firing
+     on load. CSS-only — the tool ladder in §6.1 says use the cheapest capable
+     tool, and this needs no JavaScript and no observer.
+
+     Everything is visible by default. The animation only attaches where
+     `animation-timeline` is supported, so an unsupported browser shows the
+     finished state rather than blank space, and the global
+     prefers-reduced-motion block collapses it to nothing. Content is never
+     hidden behind motion. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .scene-enter {
+        animation: reveal-up linear both;
+        animation-timeline: view();
+        animation-range: entry 8% cover 26%;
+      }
+    }
   }
   .shadow-float {
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.08), 0 8px 24px -8px oklch(0 0 0 / 0.22), 0 16px 48px -16px oklch(0 0 0 / 0.18);
@@ -291,20 +283,6 @@
   }
 
   /* ── Site utilities ── */
-  .site-atmosphere {
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in oklch, var(--brand) 9%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, color-mix(in oklch, var(--brand) 5%, transparent), transparent 55%),
-      var(--background);
-  }
-  .site-grain {
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-  }
-  .dark .site-grain {
-    opacity: 0.2;
-  }
   .link-underline {
     @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
   }
@@ -327,18 +305,21 @@
     @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
-  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ── */
+  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ──
+     One cadence, driven by the tokens above, so a staged opening and an ordinary
+     page entrance cannot drift into two motion systems. The stagger is what makes
+     an opening read as sequence rather than as one block fading in. */
   .reveal {
-    animation: reveal-up 0.6s var(--tw-ease, cubic-bezier(0, 0, 0.2, 1)) forwards;
+    animation: reveal-up var(--motion-scene) var(--motion-ease-out) forwards;
   }
-  .reveal-delay-1 { animation-delay: 0.08s; opacity: 0; }
-  .reveal-delay-2 { animation-delay: 0.16s; opacity: 0; }
-  .reveal-delay-3 { animation-delay: 0.24s; opacity: 0; }
-  .reveal-delay-4 { animation-delay: 0.32s; opacity: 0; }
-  .reveal-delay-5 { animation-delay: 0.40s; opacity: 0; }
-  .reveal-delay-6 { animation-delay: 0.48s; opacity: 0; }
-  .reveal-delay-7 { animation-delay: 0.56s; opacity: 0; }
-  .reveal-delay-8 { animation-delay: 0.64s; opacity: 0; }
+  .reveal-delay-1 { animation-delay: calc(1 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-2 { animation-delay: calc(2 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-3 { animation-delay: calc(3 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-4 { animation-delay: calc(4 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-5 { animation-delay: calc(5 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-6 { animation-delay: calc(6 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-7 { animation-delay: calc(7 * var(--motion-scene-step)); opacity: 0; }
+  .reveal-delay-8 { animation-delay: calc(8 * var(--motion-scene-step)); opacity: 0; }
 }
 
 @keyframes reveal-up {

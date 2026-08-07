@@ -51,7 +51,7 @@ async function BlogList() {
 
 export function HomeBlog() {
 	return (
-		<section className="reveal reveal-delay-7 flex w-full flex-col gap-5">
+		<section className="flex w-full max-w-3xl flex-col gap-5">
 			<div className="flex items-baseline justify-between">
 				<div className="flex flex-col gap-1">
 					<h2 className="font-heading font-semibold text-xl tracking-tight sm:text-2xl">Writing</h2>

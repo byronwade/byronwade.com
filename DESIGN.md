@@ -307,7 +307,14 @@ Owned by `app/globals.css`:
 --motion-base:   200ms;  /* popover, tooltip, dropdown */
 --motion-slow:   300ms;  /* capsule morph, sheet */
 --motion-drawer: 480ms;  /* theme wipe — the one deliberate flourish */
+
+--motion-scene:      640ms;  /* first-view page entrance (`.reveal`) */
+--motion-scene-step:  90ms;  /* stagger between staged elements in one opening */
 ```
+
+`--motion-scene` is the "rare or first-view" row of the §6.1 table and may only
+be used for a page entrance. It is not a fourth general duration: nothing a
+visitor triggers repeatedly may reach for it.
 
 Never `ease-in` for an entrance; it delays visible response. Linear only for
 continuous motion. Durations are budgets, not a second scale — repeated values

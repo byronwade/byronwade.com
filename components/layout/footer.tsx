@@ -1,4 +1,5 @@
 import { Github, Linkedin, Twitter } from "lucide-react";
+import { SocialLinkPreview } from "@/components/common";
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 
@@ -29,6 +30,31 @@ const SOCIAL = [
 	{ name: "X", href: "https://twitter.com/byron_c_wade", icon: Twitter },
 ];
 
+/**
+ * One social link. The GitHub activity card moved here with the social links
+ * when the homepage opening was cut back to a single action — hovering a GitHub
+ * link to see the profile is where a visitor expects it, and §6.1 rates a hover
+ * card as occasional rather than repeated exposure.
+ */
+function SocialIcon({ social }: { social: (typeof SOCIAL)[number] }) {
+	const link = (
+		<a
+			aria-label={social.name}
+			className="text-muted-foreground transition-colors hover:text-foreground"
+			href={social.href}
+			rel="noopener noreferrer"
+			target="_blank"
+		>
+			<social.icon aria-hidden="true" className="size-4" />
+		</a>
+	);
+
+	if (social.name === "GitHub") {
+		return <SocialLinkPreview platform="github">{link}</SocialLinkPreview>;
+	}
+	return link;
+}
+
 export default function Footer() {
 	return (
 		<footer className="mt-24 border-border border-t">
@@ -38,7 +64,16 @@ export default function Footer() {
 					<div className="flex max-w-sm flex-col gap-3">
 						<p className="font-mono text-muted-foreground text-xs tracking-[0.18em]">BYRON WADE</p>
 						<p className="text-muted-foreground text-sm leading-relaxed">
-							Product engineering for service businesses. Currently building Thorbis.
+							Product engineering for service businesses. Currently building{" "}
+							<a
+								className="link-underline"
+								href="https://thorbis.com"
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								Thorbis
+							</a>
+							.
 						</p>
 						<ObfuscatedEmail
 							className="w-fit text-muted-foreground text-sm hover:text-foreground"
@@ -67,16 +102,7 @@ export default function Footer() {
 
 					<div className="flex items-center gap-5">
 						{SOCIAL.map((social) => (
-							<a
-								aria-label={social.name}
-								className="text-muted-foreground transition-colors hover:text-foreground"
-								href={social.href}
-								key={social.name}
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								<social.icon aria-hidden="true" className="size-4" />
-							</a>
+							<SocialIcon key={social.name} social={social} />
 						))}
 						<span aria-hidden="true" className="h-4 w-px bg-border" />
 						<Link

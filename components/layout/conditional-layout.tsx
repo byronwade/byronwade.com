@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { buildSearchIndex } from "@/lib/search-index";
 import { AppBreadcrumb } from "./app-breadcrumb";
 import { AppLauncher } from "./app-launcher";
-import Background from "./background";
 import { DockToolbar } from "./dock-toolbar";
 import Footer from "./footer";
 import { NavDock } from "./nav-dock";
@@ -15,7 +14,10 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 
 	return (
 		<>
-			<Background />
+			{/* No decorative background layer. DESIGN.md §13 rejects grid backgrounds
+			    and decorative glows, and §2 puts the work — not atmosphere — in front.
+			    A clean plate is also what lets the opening's scale read as composition
+			    rather than as texture. */}
 
 			{/* Top-left header group: identity launcher + breadcrumb pill. */}
 			<div className="pointer-events-none fixed top-3 left-3 z-50 flex items-start gap-2 print:hidden">

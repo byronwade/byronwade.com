@@ -78,7 +78,10 @@ async function FeaturedList() {
 
 export function HomeProjects() {
 	return (
-		<section className="reveal reveal-delay-6 flex w-full flex-col gap-5">
+		// Left-aligned to the shell edge, not centred inside it: the opening and
+		// every section share one left margin, which is what holds the page together
+		// once the scenes are set this far apart.
+		<section className="flex w-full max-w-3xl flex-col gap-5">
 			<div className="flex items-baseline justify-between gap-4">
 				<div className="flex flex-col gap-1">
 					<h2 className="font-heading font-semibold text-xl tracking-tight sm:text-2xl">
