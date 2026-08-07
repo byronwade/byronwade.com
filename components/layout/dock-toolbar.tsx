@@ -26,7 +26,7 @@ function XIcon({ className }: { className?: string }) {
 }
 
 const ITEM =
-	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30";
+	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring";
 const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-active-foreground";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
@@ -285,7 +285,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 					<div
 						ref={morphRef}
 						className={cn(
-							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-white/5 bg-dock text-dock-foreground shadow-float [will-change:width,height]",
+							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
 							open ? "rounded-2xl" : "rounded-3xl"
 						)}
 					>
@@ -445,11 +445,11 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											aria-label="Search"
 											className="h-6 flex-1 bg-transparent text-dock-active-foreground text-sm outline-none placeholder:text-dock-foreground/60"
 										/>
-										<kbd className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground/70">
+										<kbd className="rounded border border-dock-border bg-dock-muted px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground/70">
 											esc
 										</kbd>
 									</div>
-									<div className="h-px bg-white/5" aria-hidden="true" />
+									<div className="h-px bg-dock-border" aria-hidden="true" />
 									<div ref={listRef} className="scrollbar-thin max-h-80 overflow-y-auto p-1.5">
 										{flat.length === 0 ? (
 											<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground/70">
@@ -466,15 +466,15 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											))
 										)}
 									</div>
-									<div className="flex items-center gap-3 border-white/5 border-t bg-black/20 px-3.5 py-2 text-[11px] text-dock-foreground/70">
+									<div className="flex items-center gap-3 border-dock-border border-t bg-dock-muted px-3.5 py-2 text-[11px] text-dock-foreground/70">
 										<span className="flex items-center gap-1">
-											<kbd className="rounded border border-white/10 bg-white/5 px-1 font-mono">
+											<kbd className="rounded border border-dock-border bg-dock-muted px-1 font-mono">
 												↑↓
 											</kbd>
 											navigate
 										</span>
 										<span className="flex items-center gap-1">
-											<kbd className="flex items-center rounded border border-white/10 bg-white/5 px-1 font-mono">
+											<kbd className="flex items-center rounded border border-dock-border bg-dock-muted px-1 font-mono">
 												<CornerDownLeft className="size-3" />
 											</kbd>
 											open

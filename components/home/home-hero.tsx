@@ -1,4 +1,5 @@
 import { getProjects } from "@/lib/projects";
+import { cn } from "@/lib/utils";
 import { HomeActions } from "./home-actions";
 
 /**
@@ -10,12 +11,27 @@ import { HomeActions } from "./home-actions";
  * only the action row is a client island, because only it needs state.
  */
 
-/** One shipped-evidence fact. `value` uses tabular numerals — DESIGN.md §5.2. */
-function Fact({ value, label }: { value: string; label: string }) {
+/**
+ * One shipped-evidence fact. Tabular numerals per DESIGN.md §5.2.
+ *
+ * `tone` is semantic, not decorative: `success` marks a positive financial
+ * outcome, which is what the green family exists for (§5.1). Facts that carry no
+ * status — a duration, a count — stay neutral. Colour here has to mean
+ * something, or it is decoration, and the label carries the meaning on its own
+ * so nothing depends on colour alone.
+ */
+function Fact({ value, label, tone }: { value: string; label: string; tone?: "success" }) {
 	return (
 		<div className="flex flex-col gap-1">
 			<dt className="sr-only">{label}</dt>
-			<dd className="font-semibold text-2xl text-foreground tabular-nums sm:text-3xl">{value}</dd>
+			<dd
+				className={cn(
+					"font-semibold text-2xl tabular-nums sm:text-3xl",
+					tone === "success" ? "text-success" : "text-foreground"
+				)}
+			>
+				{value}
+			</dd>
 			<p aria-hidden="true" className="text-muted-foreground text-sm">
 				{label}
 			</p>
@@ -43,7 +59,7 @@ export async function HomeHero() {
 
 			{/* Proof, in the first viewport. */}
 			<dl className="reveal reveal-delay-1 grid grid-cols-2 gap-6 border-border border-y py-6 sm:grid-cols-3 sm:gap-8">
-				<Fact label="Year-two revenue, built from zero" value="$2.4M" />
+				<Fact label="Year-two revenue, built from zero" tone="success" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
 				<Fact label="Projects written up here" value={String(shippedProjects)} />
 			</dl>

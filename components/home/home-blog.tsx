@@ -14,15 +14,15 @@ async function BlogList() {
 	}
 
 	return (
-		<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+		<div className="group/list flex flex-col border-border border-t">
 			{recentPosts.map((post) => (
 				<Link
 					key={post.slug}
 					href={`/blog/${post.slug}`}
-					className="group flex flex-col gap-2 px-4 py-4 transition-colors hover:bg-muted"
+					className="group/row hover-motion flex flex-col gap-2 border-border border-b py-5 outline-none last:border-b-0 hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
 				>
 					<div className="flex items-start justify-between gap-4">
-						<span className="font-medium text-foreground transition-colors group-hover:text-brand">
+						<span className="font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
 							{post.title}
 						</span>
 						<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">

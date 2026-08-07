@@ -1,9 +1,21 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Twitter } from "lucide-react";
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
-import { customFont } from "@/lib/fonts";
 
-const navLinks = [
+/**
+ * Site footer — Shared profile.
+ *
+ * Rebuilt to use the site's own grammar rather than the generic
+ * logo/tagline/link-column/social-circles template: hairline rules, mono
+ * tabular labels, and open rows, matching the three indexes.
+ *
+ * Brand is deliberately absent. DESIGN.md §5.1 reserves it for authorship,
+ * focus, selection, and the one earned primary action; the previous footer spent
+ * it on an icon tint, four hover states, and a decorative bullet, which is what
+ * made it stop meaning anything.
+ */
+
+const NAV = [
 	{ name: "Projects", href: "/projects" },
 	{ name: "Portfolio", href: "/portfolio" },
 	{ name: "Blog", href: "/blog" },
@@ -11,78 +23,72 @@ const navLinks = [
 	{ name: "Contact", href: "/contact" },
 ];
 
-const socialLinks = [
+const SOCIAL = [
 	{ name: "GitHub", href: "https://github.com/byronwade", icon: Github },
 	{ name: "LinkedIn", href: "https://linkedin.com/in/byronwade", icon: Linkedin },
-	{ name: "Twitter", href: "https://twitter.com/byronwade", icon: Twitter },
+	{ name: "X", href: "https://twitter.com/byron_c_wade", icon: Twitter },
 ];
 
 export default function Footer() {
 	return (
-		<footer className="mt-28 border-border border-t">
-			<div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-				<div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
-					<div className="max-w-sm space-y-4">
-						<Link
-							href="/"
-							className={`${customFont.className} inline-flex text-2xl text-foreground transition-colors hover:text-brand`}
-						>
-							Byron Wade
-						</Link>
+		<footer className="mt-24 border-border border-t">
+			{/* pb-28 below `sm` clears the bottom-fixed nav dock; see site-shell.tsx. */}
+			<div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-28 sm:px-6 sm:pb-12">
+				<div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
+					<div className="flex max-w-sm flex-col gap-3">
+						<p className="font-mono text-muted-foreground text-xs tracking-[0.18em]">BYRON WADE</p>
 						<p className="text-muted-foreground text-sm leading-relaxed">
-							Full-stack developer building fast, thoughtful web applications with Next.js, React,
-							and TypeScript.
+							Product engineering for service businesses. Currently building Thorbis.
 						</p>
-						<div className="flex items-center gap-2 text-muted-foreground text-sm">
-							<Mail className="size-4 text-brand" aria-hidden="true" />
-							<ObfuscatedEmail
-								className="text-muted-foreground hover:text-foreground"
-								showIcon={false}
-								variant="link"
-							/>
-						</div>
+						<ObfuscatedEmail
+							className="w-fit text-muted-foreground text-sm hover:text-foreground"
+							showIcon={false}
+							variant="link"
+						/>
 					</div>
 
-					<div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
-						<nav aria-label="Footer" className="flex flex-col gap-3">
-							{navLinks.map((link) => (
-								<Link
-									key={link.href}
-									href={link.href}
-									className="text-muted-foreground text-sm transition-colors hover:text-foreground"
-								>
-									{link.name}
-								</Link>
-							))}
-						</nav>
-
-						<div className="flex gap-1.5">
-							{socialLinks.map((social) => (
-								<a
-									key={social.name}
-									href={social.href}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={social.name}
-									className="inline-flex size-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground"
-								>
-									<social.icon className="size-[1.05rem]" />
-								</a>
-							))}
-						</div>
-					</div>
+					<nav aria-label="Footer" className="flex flex-col">
+						{NAV.map((link) => (
+							<Link
+								className="border-border border-b py-2.5 text-muted-foreground text-sm transition-colors last:border-b-0 hover:text-foreground sm:min-w-40"
+								href={link.href}
+								key={link.href}
+							>
+								{link.name}
+							</Link>
+						))}
+					</nav>
 				</div>
 
-				<div className="mt-12 flex flex-col items-center justify-between gap-4 border-border border-t pt-8 text-muted-foreground text-sm sm:flex-row">
-					<p className="flex items-center gap-2">
-						<span className="size-1.5 rounded-full bg-brand" aria-hidden="true" />©{" "}
-						{new Date().getFullYear()} Byron Wade. All rights reserved.
+				<div className="mt-10 flex flex-col items-start justify-between gap-4 border-border border-t pt-6 sm:flex-row sm:items-center">
+					<p className="font-mono text-muted-foreground/80 text-xs tabular-nums">
+						© {new Date().getFullYear()} Byron Wade
 					</p>
-					<div className="flex items-center gap-6">
-						<Link href="/privacy" className="transition-colors hover:text-foreground">
+
+					<div className="flex items-center gap-5">
+						{SOCIAL.map((social) => (
+							<a
+								aria-label={social.name}
+								className="text-muted-foreground transition-colors hover:text-foreground"
+								href={social.href}
+								key={social.name}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								<social.icon aria-hidden="true" className="size-4" />
+							</a>
+						))}
+						<span aria-hidden="true" className="h-4 w-px bg-border" />
+						<Link
+							className="text-muted-foreground text-xs transition-colors hover:text-foreground"
+							href="/privacy"
+						>
 							Privacy
 						</Link>
-						<Link href="/terms" className="transition-colors hover:text-foreground">
+						<Link
+							className="text-muted-foreground text-xs transition-colors hover:text-foreground"
+							href="/terms"
+						>
 							Terms
 						</Link>
 					</div>

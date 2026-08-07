@@ -20,7 +20,7 @@ function NavDockItem({ item, pathname }: { item: NavItem; pathname: string }) {
 						aria-label={item.label}
 						aria-current={active ? "page" : undefined}
 						className={cn(
-							"relative flex h-8 items-center gap-1.5 rounded-full px-2.5 font-medium text-[13px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30 sm:px-3",
+							"relative flex h-8 items-center gap-1.5 rounded-full px-2.5 font-medium text-[13px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring sm:px-3",
 							active ? ITEM_ACTIVE : ITEM_IDLE
 						)}
 					/>
@@ -48,7 +48,7 @@ export function NavDock() {
 			<div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 sm:top-3 sm:bottom-auto print:hidden">
 				<nav
 					aria-label="Primary"
-					className="pointer-events-auto flex items-center gap-1 rounded-3xl border border-white/5 bg-dock p-[3px] text-dock-foreground shadow-float"
+					className="pointer-events-auto flex items-center gap-1 rounded-3xl border border-dock-border bg-dock p-[3px] text-dock-foreground shadow-float"
 				>
 					{navItems.map((item) => (
 						<NavDockItem key={item.href} item={item} pathname={pathname} />

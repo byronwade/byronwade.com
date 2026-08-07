@@ -14,9 +14,11 @@ export function SiteShell({ children, width = "narrow", className }: SiteShellPr
 	return (
 		<div
 			className={cn(
-				// Small top (the layout's <main> already clears the floating chrome) +
-				// generous bottom before the footer.
-				"mx-auto w-full px-4 pt-6 pb-14 sm:px-6 sm:pt-8 sm:pb-20",
+				// The nav dock is fixed to the bottom of the viewport below `sm`
+				// (nav-dock.tsx) and occupies roughly 72px including its offset.
+				// Reserving less than that lets it cover the last control on the
+				// page, which WCAG 2.2 §2.4.11 forbids for anything focusable.
+				"mx-auto w-full px-4 pt-6 pb-28 sm:px-6 sm:pt-8 sm:pb-20",
 				maxWidth,
 				className
 			)}

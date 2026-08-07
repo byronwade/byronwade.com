@@ -133,7 +133,7 @@ export function AppLauncher() {
 			<div
 				ref={morphRef}
 				className={cn(
-					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-white/5 bg-dock text-dock-foreground shadow-float [will-change:width,height]",
+					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
 					open ? "rounded-2xl" : "rounded-3xl"
 				)}
 			>
@@ -226,7 +226,7 @@ export function AppLauncher() {
 								rel="noreferrer"
 								className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-dock-active"
 							>
-								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-white/10 font-bold text-[13px] text-dock-active-foreground">
+								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-muted font-bold text-[13px] text-dock-active-foreground">
 									{p.mark}
 								</span>
 								<div className="min-w-0 leading-tight">
@@ -240,12 +240,12 @@ export function AppLauncher() {
 						))}
 					</div>
 
-					<div className="flex items-center gap-2 border-white/5 border-t bg-black/25 p-3">
+					<div className="flex items-center gap-2 border-dock-border border-t bg-dock-muted p-3">
 						<a
 							href={GITHUB_URL}
 							target="_blank"
 							rel="noreferrer"
-							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-white/15"
+							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
 						>
 							<GitFork className="size-4" /> GitHub
 						</a>

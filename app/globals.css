@@ -7,7 +7,7 @@
 
 /* ─────────────────────────────────────────────────────────────
    byronwade/ui foundation — token theme mapping (Tailwind v4)
-   Brand follows --brand; override it to re-skin rings/charts/success.
+   Brand follows --brand; override it to re-skin rings and selection.
    ───────────────────────────────────────────────────────────── */
 @theme inline {
   --color-background: var(--background);
@@ -33,6 +33,7 @@
   --color-brand-muted: var(--brand-muted);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-dock: var(--dock);
@@ -40,6 +41,7 @@
   --color-dock-muted: var(--dock-muted);
   --color-dock-active: var(--dock-active);
   --color-dock-active-foreground: var(--dock-active-foreground);
+  --color-dock-border: var(--dock-border);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -91,10 +93,13 @@
   --brand: oklch(0.72 0.14 85);
   --brand-foreground: oklch(0.22 0.04 80);
   --brand-muted: oklch(0.96 0.04 90);
-  --success: var(--brand);
+  /* Money, growth, shipped, healthy. A real green — never an alias of brand. */
+  --success: oklch(0.52 0.12 152);
   --success-foreground: oklch(0.99 0.002 95);
-  --warning: oklch(0.78 0.16 75);
-  --warning-foreground: oklch(0.26 0.05 70);
+  --success-muted: oklch(0.95 0.03 152);
+  /* Attention without alarm. Orange at hue 62, clear of brand's amber at 85. */
+  --warning: oklch(0.66 0.15 62);
+  --warning-foreground: oklch(0.99 0.002 95);
   --ring: var(--brand);
   --chart-1: var(--brand);
   --chart-2: oklch(0.556 0.01 75);
@@ -114,11 +119,12 @@
   --motion-slow: 300ms;
   --motion-drawer: 480ms;
 
-  --dock: oklch(0.235 0.006 72);
-  --dock-foreground: oklch(0.72 0.006 75);
-  --dock-muted: oklch(1 0 0 / 10%);
-  --dock-active: oklch(1 0 0 / 14%);
-  --dock-active-foreground: oklch(0.99 0 0);
+  --dock: oklch(0.995 0.003 92);
+  --dock-foreground: oklch(0.50 0.01 75);
+  --dock-muted: oklch(0.27 0.008 70 / 6%);
+  --dock-active: oklch(0.27 0.008 70 / 7%);
+  --dock-active-foreground: oklch(0.27 0.008 70);
+  --dock-border: oklch(0.90 0.004 85);
   --sidebar: oklch(0.974 0.005 88);
   --sidebar-foreground: oklch(0.27 0.008 70);
   --sidebar-primary: oklch(0.3 0.01 70);
@@ -150,9 +156,10 @@
   --brand: oklch(0.78 0.14 85);
   --brand-foreground: oklch(0.22 0.04 80);
   --brand-muted: oklch(0.34 0.06 85);
-  --success: var(--brand);
-  --success-foreground: oklch(0.985 0.001 95);
-  --warning: oklch(0.82 0.15 78);
+  --success: oklch(0.74 0.14 152);
+  --success-foreground: oklch(0.16 0.02 152);
+  --success-muted: oklch(0.30 0.05 152);
+  --warning: oklch(0.76 0.15 62);
   --warning-foreground: oklch(0.26 0.05 70);
   --ring: var(--brand);
   --chart-1: var(--brand);
@@ -160,8 +167,9 @@
   --chart-3: oklch(0.439 0.01 75);
   --chart-4: oklch(0.371 0.01 75);
   --chart-5: oklch(0.269 0.01 75);
-  --dock: oklch(0.205 0.007 70);
+  --dock: oklch(0.245 0.007 70);
   --dock-foreground: oklch(0.72 0.008 75);
+  --dock-border: oklch(1 0 0 / 8%);
   --dock-muted: oklch(1 0 0 / 8%);
   --dock-active: oklch(1 0 0 / 14%);
   --dock-active-foreground: oklch(0.99 0 0);

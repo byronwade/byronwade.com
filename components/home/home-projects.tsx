@@ -15,12 +15,12 @@ function FeaturedProject({ project }: { project: Project }) {
 		<li>
 			<Link
 				href={`/projects/${project.slug}`}
-				className="group flex flex-col gap-3 border-border border-b py-5 outline-none transition-colors last:border-b-0 focus-visible:bg-muted/60"
+				className="group/row hover-motion flex flex-col gap-3 border-border border-b py-5 outline-none last:border-b-0 hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
 			>
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex min-w-0 flex-col gap-1.5">
 						<div className="flex flex-wrap items-center gap-2">
-							<span className="font-medium text-foreground transition-colors group-hover:text-brand group-focus-visible:text-brand">
+							<span className="font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
 								{title}
 							</span>
 							{tone && project.status && (
@@ -32,7 +32,7 @@ function FeaturedProject({ project }: { project: Project }) {
 						{project.tagline && <p className="text-muted-foreground text-sm">{project.tagline}</p>}
 					</div>
 					<ArrowUpRight
-						className="size-4 shrink-0 text-muted-foreground/60 transition-[transform,color] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-brand"
+						className="size-4 shrink-0 text-muted-foreground/60 transition-[transform,color] group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
 						aria-hidden="true"
 					/>
 				</div>
@@ -68,7 +68,7 @@ async function FeaturedList() {
 	}
 
 	return (
-		<ul className="overflow-hidden rounded-2xl border border-border bg-card px-4 sm:px-5">
+		<ul className="group/list flex flex-col border-border border-t">
 			{featured.map((project) => (
 				<FeaturedProject key={project.slug} project={project} />
 			))}

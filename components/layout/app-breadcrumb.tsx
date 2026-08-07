@@ -73,7 +73,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 	return (
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 flex h-[40px] items-center overflow-hidden rounded-3xl border border-white/5 bg-dock px-4 text-[13px] shadow-float"
+			className="pointer-events-auto relative z-0 flex h-[40px] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float"
 		>
 			{/* DESKTOP — full trail, collapsing to root / … / current. */}
 			<ol
@@ -92,7 +92,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 										<button
 											type="button"
 											aria-label="Show hidden breadcrumb levels"
-											className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-white/30"
+											className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-ring"
 										>
 											<MoreHorizontal className="size-4" />
 										</button>
@@ -101,7 +101,7 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 								<PopoverContent
 									align="start"
 									sideOffset={8}
-									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-white/5 bg-dock p-1.5 text-dock-foreground ring-0"
+									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-dock-border bg-dock p-1.5 text-dock-foreground ring-0"
 								>
 									{middle.map((c) => (
 										<Link
@@ -172,7 +172,7 @@ function CrumbLink({ crumb, current }: { crumb: Crumb; current?: boolean }) {
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"truncate rounded-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-white/30",
+					"truncate rounded-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
 					current
 						? "font-semibold text-dock-active-foreground"
 						: "text-dock-foreground hover:text-dock-active-foreground"
