@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
+import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
 
@@ -49,37 +50,38 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 			<h3 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
 				Related posts
 			</h3>
-			<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+			{/* The site's index grammar, not a bordered card with a tinted fill and a
+			    hover background. §13 rejects the card wrapper and the border-per-row;
+			    this is the same list the blog index uses, three rows long. */}
+			<IndexList>
 				{relatedPosts.map((post) => (
-					<Link
-						key={post.slug}
-						href={`/blog/${post.slug}`}
-						className="group flex flex-col gap-1.5 px-4 py-4 transition-colors hover:bg-muted"
-					>
-						<div className="flex items-start justify-between gap-4">
-							<span className="truncate font-medium text-foreground transition-colors group-hover:text-brand">
-								{post.title}
-							</span>
-							<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
-								<Badge variant="muted">
-									<Clock />
-									{post.readingTime} min
-								</Badge>
-								{post.date && (
-									<time className="hidden sm:inline">
-										{format(new Date(post.date), "MMM d, yyyy")}
-									</time>
-								)}
+					<IndexRow key={post.slug}>
+						<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
+							<div className="flex items-start justify-between gap-4">
+								<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
+									{post.title}
+								</span>
+								<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
+									<Badge variant="muted">
+										<Clock />
+										{post.readingTime} min
+									</Badge>
+									{post.date && (
+										<time className="hidden sm:inline">
+											{format(new Date(post.date), "MMM d, yyyy")}
+										</time>
+									)}
+								</div>
 							</div>
-						</div>
-						{post.excerpt && (
-							<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
-								{post.excerpt}
-							</p>
-						)}
-					</Link>
+							{post.excerpt && (
+								<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
+									{post.excerpt}
+								</p>
+							)}
+						</Link>
+					</IndexRow>
 				))}
-			</div>
+			</IndexList>
 		</div>
 	);
 }

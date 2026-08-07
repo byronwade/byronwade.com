@@ -11,7 +11,7 @@ excerpt: "A conversion-focused website built on trust, speed, and local authenti
 problem: "Emergency plumbing searchers bounce from slow, generic franchise sites — and dual-state SEO is easy to get wrong."
 outcome: "A fast, neighborly site that ranks in two markets and makes calling feel obvious under stress."
 metrics:
-  - label: Business
+  - label: Peak revenue
     value: "$2.4M yr-2"
   - label: Markets
     value: "CA + GA"

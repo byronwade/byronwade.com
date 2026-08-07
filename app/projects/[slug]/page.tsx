@@ -1,6 +1,7 @@
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { SiteShell } from "@/components/layout/site-shell";
 import { getAllProjectSlugs, getProject } from "@/lib/projects";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
@@ -62,25 +63,32 @@ async function ProjectPageContent({ slug }: { slug: string }) {
 	return <ProjectContent project={project} />;
 }
 
+/**
+ * Sits inside the real shell so the loading state and the loaded page share one
+ * gutter and one measure. The previous fallback built its own full-screen
+ * container with a decorative gradient over it — a second layout, and a
+ * decorative gradient §5.1 rejects, shown only while the page was blank.
+ */
+function ProjectFallback() {
+	return (
+		<SiteShell width="wide">
+			<div aria-busy="true" className="flex w-full animate-pulse flex-col gap-4">
+				<p className="sr-only" role="status">
+					Loading project…
+				</p>
+				<div className="h-4 w-24 rounded bg-muted/70" />
+				<div className="h-9 w-3/4 max-w-2xl rounded bg-muted" />
+				<div className="h-4 w-1/2 max-w-xl rounded bg-muted/70" />
+			</div>
+		</SiteShell>
+	);
+}
+
 export default async function ProjectPage({ params }: ProjectPageProps) {
 	const { slug } = await params;
 
 	return (
-		<Suspense
-			fallback={
-				<div className="relative min-h-screen w-full bg-[var(--background)]">
-					<div className="pointer-events-none fixed inset-0 bg-gradient-to-br from-[var(--background)] via-[var(--background)] to-[hsl(var(--muted))] opacity-30 dark:opacity-10" />
-					<div className="safe-top safe-bottom relative flex justify-center px-4 py-12 sm:py-16 md:py-20">
-						<div className="flex w-full max-w-2xl flex-col items-center gap-8 sm:gap-12 md:gap-16">
-							<div className="w-full animate-pulse">
-								<div className="mb-4 h-8 w-3/4 rounded bg-[var(--muted)]" />
-								<div className="h-4 w-1/2 rounded bg-[var(--muted)]" />
-							</div>
-						</div>
-					</div>
-				</div>
-			}
-		>
+		<Suspense fallback={<ProjectFallback />}>
 			<ProjectPageContent slug={slug} />
 		</Suspense>
 	);

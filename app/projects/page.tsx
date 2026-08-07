@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { JsonLd } from "@/components/common/json-ld";
+import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -75,18 +76,17 @@ async function ProjectsList() {
 	return <ProjectsIndex projects={sorted} />;
 }
 
+/** Mirrors the real row's height and rules so the swap does not shift layout. */
 function IndexFallback() {
 	return (
-		<div className="flex animate-pulse flex-col">
-			<div className="h-8 border-border border-b" />
-			{Array.from({ length: 6 }).map((_, i) => (
-				<div
-					// biome-ignore lint/suspicious/noArrayIndexKey: static skeleton rows
-					key={i}
-					className="flex items-center gap-4 border-border border-b py-5"
-				>
-					<div className="h-3 w-6 rounded bg-muted" />
-					<div className="h-4 w-32 rounded bg-muted" />
+		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
+			<p className="sr-only" role="status">
+				Loading projects…
+			</p>
+			{["a", "b", "c", "d", "e", "f"].map((id) => (
+				<div className="flex items-center gap-4 border-border border-b py-5" key={`skeleton-${id}`}>
+					<div className="h-4 w-40 rounded bg-muted" />
+					<div className="h-3 w-56 rounded bg-muted/70" />
 					<div className="ml-auto h-3 w-10 rounded bg-muted" />
 				</div>
 			))}
@@ -110,15 +110,10 @@ export default async function ProjectsPage() {
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">
-					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
-							Projects
-						</h1>
-						<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
-							Selected products, client work, and experiments — case studies with outcomes where it
-							matters, built with React, Next.js, and full-stack tools.
-						</p>
-					</header>
+					<PageHeader
+						lede="Selected products, client work, and experiments. Case studies carry the outcome where there is one to report."
+						title="Projects"
+					/>
 
 					<div className="reveal reveal-delay-1 w-full">
 						<Suspense fallback={<IndexFallback />}>

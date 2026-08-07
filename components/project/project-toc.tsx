@@ -87,9 +87,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 
 	return (
 		<nav aria-label="On this page" className="flex flex-col gap-3 text-sm">
-			<p className="font-semibold text-muted-foreground text-xs uppercase tracking-wide">
-				On this page
-			</p>
+			<p className="text-muted-foreground text-xs">On this page</p>
 			<ul className="flex flex-col gap-0.5 border-border border-l">
 				{items.map((item) => {
 					const isActive = activeId === item.id;

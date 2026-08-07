@@ -132,21 +132,22 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							</p>
 						)}
 
+						{/* Problem and outcome are the argument of an Evidence page (§3.2), so
+						    they are set as a plain definition list on a hairline rather than
+						    in two tinted cards with all-caps labels — §13 rejects the card
+						    wrapper and the eyebrow, and §3.2 says the comparison itself is the
+						    dominant object, not the box around it. */}
 						{(project.problem || project.outcome) && (
-							<dl className="mt-1 grid gap-3 sm:grid-cols-2">
+							<dl className="mt-1 flex flex-col gap-4 border-border border-t pt-4 sm:flex-row sm:gap-10">
 								{project.problem && (
-									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
-										<dt className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
-											Problem
-										</dt>
+									<div className="flex flex-1 flex-col gap-1">
+										<dt className="text-muted-foreground text-xs">Problem</dt>
 										<dd className="text-foreground text-sm leading-relaxed">{project.problem}</dd>
 									</div>
 								)}
 								{project.outcome && (
-									<div className="flex flex-col gap-1 rounded-2xl border border-border bg-muted/30 px-4 py-3">
-										<dt className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
-											Outcome
-										</dt>
+									<div className="flex flex-1 flex-col gap-1">
+										<dt className="text-muted-foreground text-xs">Outcome</dt>
 										<dd className="text-foreground text-sm leading-relaxed">{project.outcome}</dd>
 									</div>
 								)}
@@ -224,19 +225,17 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					{/* Footer nav */}
 					<div className="reveal reveal-delay-3 flex w-full flex-col gap-4 border-border border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
 						<Link
-							className="inline-flex items-center gap-2 font-medium text-muted-foreground text-sm transition-colors hover:text-brand"
-							aria-label="Back to projects"
+							className="inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
 							href="/projects"
 						>
-							<ArrowLeft className="size-4" aria-hidden="true" />
+							<ArrowLeft aria-hidden="true" className="size-4" />
 							Back to projects
 						</Link>
+						{/* Brand is not a link colour (§5.1). The underline carries the
+						    affordance; weight carries the emphasis. */}
 						<div className="flex flex-wrap items-center gap-3 text-sm">
 							<span className="text-muted-foreground">Want something like this?</span>
-							<Link
-								href="/contact"
-								className="font-medium text-brand transition-colors hover:underline"
-							>
+							<Link className="link-underline font-medium" href="/contact">
 								Start a conversation →
 							</Link>
 						</div>

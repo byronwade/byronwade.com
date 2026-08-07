@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
+import { IndexList, IndexRow } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
-import { pillLinkClass } from "@/components/ui/pill";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
@@ -98,8 +98,11 @@ const workExperience = [
 		companyUrl: "https://wadesplumbingandseptic.com",
 		location: "Los Gatos, CA",
 		period: "2021 — 2024",
+		// The homepage now states plainly that this company closed, so the resume
+		// says so too. §9 keeps claims qualified, and a résumé that reports the
+		// revenue without the ending contradicts the opening of the site.
 		description:
-			"Built and managed a multi-million dollar plumbing and septic service company. Scaled company from startup to $2.4M annual revenue in second year of business.",
+			"Built and managed a plumbing and septic service company, scaling from startup to $2.4M annual revenue in its second year. The company did not survive that growth and closed in 2024 — the operational failures behind it are what Thorbis was built to solve.",
 		highlight: "$2.4M",
 	},
 	{
@@ -190,15 +193,6 @@ export default function ResumePage() {
 									<MapPin className="size-4" />
 									Jasper, GA
 								</span>
-								<a
-									href="/api/resume-pdf"
-									download="Byron_Wade_Resume.pdf"
-									onClick={() => analytics.resumeDownload("pdf")}
-									className="flex items-center gap-2 transition-colors hover:text-brand"
-								>
-									<Download className="size-4" />
-									<span>Download PDF</span>
-								</a>
 							</div>
 						</div>
 					</header>
@@ -220,9 +214,9 @@ export default function ResumePage() {
 								, a field management system for service professionals.
 							</p>
 							<p className="text-muted-foreground leading-relaxed">
-								<span className="font-medium text-brand">Open to opportunities</span> — Looking for
-								full-time roles in software development, technical leadership, or positions where I
-								can leverage both my development skills and hands-on business experience.
+								<span className="font-medium text-foreground">Open to opportunities</span> — Looking
+								for full-time roles in software development, technical leadership, or positions
+								where I can leverage both my development skills and hands-on business experience.
 							</p>
 							<div className="flex flex-wrap items-center gap-2 pt-1">
 								<Button
@@ -254,7 +248,7 @@ export default function ResumePage() {
 
 					{/* Experience */}
 					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
+						<h2 className="mb-8 font-heading font-semibold text-foreground text-xl tracking-tight">
 							Experience
 						</h2>
 						<div className="flex flex-col gap-10">
@@ -299,7 +293,7 @@ export default function ResumePage() {
 											return (
 												<>
 													{job.description.slice(0, idx)}
-													<span className="font-medium text-brand">{job.highlight}</span>
+													<span className="font-medium text-foreground">{job.highlight}</span>
 													{job.description.slice(idx + job.highlight.length)}
 												</>
 											);
@@ -312,38 +306,43 @@ export default function ResumePage() {
 
 					{/* Skills */}
 					<section className="reveal reveal-delay-3 w-full">
-						<h2 className="mb-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
 							Skills
 						</h2>
-						<div className="flex flex-wrap gap-2">
+						{/* Not pills. These are read, not pressed — §5.4 makes a pill a
+						    semantic shape, and giving forty static strings the shape of a
+						    control made the section look like a filter bar. */}
+						<ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-muted-foreground">
 							{skills.map((skill) => (
-								<span key={skill} className={pillLinkClass}>
+								<li className="text-sm" key={skill}>
 									{skill}
-								</span>
+								</li>
 							))}
-						</div>
+						</ul>
 					</section>
 
 					{/* Certifications */}
 					<section className="reveal reveal-delay-4 w-full">
-						<h2 className="mb-6 font-semibold text-muted-foreground text-xs uppercase tracking-wider">
-							Licenses & Certifications
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+							Licenses and certifications
 						</h2>
-						<div className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+						{/* Hairlines, not a bordered card. §13 rejects both the card wrapper
+						    and a border around every row; the site already has one index
+						    grammar and this is a list like any other. `pending` is stated in
+						    words rather than tinted, so it survives print and colour blindness. */}
+						<IndexList>
 							{certifications.map((cert) => (
-								<div
-									key={`${cert.name}-${cert.year}`}
-									className="flex items-center justify-between gap-4 px-4 py-3"
-								>
-									<span className="text-foreground">{cert.name}</span>
-									<span
-										className={`shrink-0 text-sm tabular-nums ${cert.pending ? "text-brand" : "text-muted-foreground"}`}
-									>
-										{cert.year}
-									</span>
-								</div>
+								<IndexRow key={`${cert.name}-${cert.year}`}>
+									<div className="flex items-center justify-between gap-4 py-3">
+										<span className="text-foreground">{cert.name}</span>
+										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
+											{cert.year}
+											{cert.pending && " · in progress"}
+										</span>
+									</div>
+								</IndexRow>
 							))}
-						</div>
+						</IndexList>
 					</section>
 
 					<section className="reveal reveal-delay-5 w-full border-border border-t pt-10">

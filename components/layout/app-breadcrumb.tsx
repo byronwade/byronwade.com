@@ -71,9 +71,16 @@ export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 	}
 
 	return (
+		// This pill shares the top row with two other fixed elements: the launcher
+		// to its left and the centre-anchored nav dock. It was overlapping both —
+		// the toolbar painted over it at 390px, and a long page title ran straight
+		// under the nav dock at 1440px. The ceiling is now the distance from the
+		// launcher to the dock's left edge (half the viewport, less half the dock
+		// and the launcher), and it only renders where that distance is usable.
+		// Nothing is lost below `lg`: the nav dock already shows the section.
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 flex h-[40px] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float"
+			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
 		>
 			{/* DESKTOP — full trail, collapsing to root / … / current. */}
 			<ol

@@ -2,8 +2,10 @@ import { format } from "date-fns";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
+import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getBlogPosts } from "@/lib/blog";
 import {
@@ -77,23 +79,16 @@ async function BlogList() {
 	return (
 		<div className="flex flex-col gap-10">
 			{[...byYear.entries()].map(([year, yearPosts]) => (
-				<section className="flex flex-col" key={year}>
-					<div className="flex items-baseline justify-between border-border border-b pb-3">
-						<h2 className="font-mono text-muted-foreground text-xs tabular-nums tracking-[0.18em]">
-							{year}
-						</h2>
-						<span className="font-mono text-muted-foreground text-xs tabular-nums">
-							{String(yearPosts.length).padStart(2, "0")}
-						</span>
-					</div>
+				<section className="flex flex-col gap-3" key={year}>
+					{/* The year is the only thing that needs saying between groups. The
+					    per-year post count that used to sit opposite it was a number no
+					    reader had asked for, competing with the dates in every row. */}
+					<h2 className="font-mono text-muted-foreground text-xs tabular-nums">{year}</h2>
 
-					<ol className="group/list flex flex-col">
+					<IndexList as="ol">
 						{yearPosts.map((post) => (
-							<li className="border-border border-b last:border-b-0" key={post.slug}>
-								<Link
-									className="group/row hover-motion flex flex-col gap-2 py-5 outline-none hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
-									href={`/blog/${post.slug}`}
-								>
+							<IndexRow key={post.slug}>
+								<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
 									<div className="flex items-baseline gap-4">
 										{post.date && (
 											<time
@@ -103,7 +98,9 @@ async function BlogList() {
 												{format(new Date(post.date), "MMM d")}
 											</time>
 										)}
-										<span className="min-w-0 flex-1 font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+										<span
+											className={`min-w-0 flex-1 font-medium text-foreground ${indexRowAccentClass}`}
+										>
 											{post.title}
 										</span>
 										<span className="hidden shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
@@ -124,10 +121,34 @@ async function BlogList() {
 										</div>
 									)}
 								</Link>
-							</li>
+							</IndexRow>
 						))}
-					</ol>
+					</IndexList>
 				</section>
+			))}
+		</div>
+	);
+}
+
+/**
+ * Mirrors a real row rather than showing rounded slabs. The previous fallback
+ * was three 64px pills, which meant the layout jumped on every load — §4.7 puts
+ * that squarely in the design's remit, not the implementation's.
+ */
+function BlogFallback() {
+	return (
+		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
+			<p className="sr-only" role="status">
+				Loading posts…
+			</p>
+			{["a", "b", "c", "d", "e"].map((id) => (
+				<div className="flex flex-col gap-2 border-border border-b py-5" key={`skeleton-${id}`}>
+					<div className="flex items-baseline gap-4">
+						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
+						<div className="h-4 w-1/3 rounded bg-muted" />
+					</div>
+					<div className="h-3 w-2/3 rounded bg-muted/70 sm:ml-16" />
+				</div>
 			))}
 		</div>
 	);
@@ -149,26 +170,13 @@ export default function BlogPage() {
 
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-10">
-					<header className="reveal flex w-full flex-col gap-3">
-						<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
-							Writing
-						</h1>
-						<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
-							Notes from building products and running a service business — design systems, field
-							ops, and the software that has to work in the truck.
-						</p>
-					</header>
+					<PageHeader
+						lede="Notes from building products and running a service business — design systems, field ops, and the software that has to work in the truck."
+						title="Writing"
+					/>
 
 					<div className="reveal reveal-delay-1 w-full">
-						<Suspense
-							fallback={
-								<div className="animate-pulse space-y-2">
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-									<div className="h-16 rounded-2xl bg-muted" />
-								</div>
-							}
-						>
+						<Suspense fallback={<BlogFallback />}>
 							<BlogList />
 						</Suspense>
 					</div>

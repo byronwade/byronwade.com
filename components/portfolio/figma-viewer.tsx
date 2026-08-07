@@ -24,13 +24,13 @@ export function FigmaInteractiveViewer({
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<h3 className="mb-2 font-bold text-white text-xl">DESIGN VIEWER</h3>
-					<p className="text-gray-400 text-sm">
+					<p className="text-muted-foreground text-sm">
 						{viewMode === "interactive"
 							? "Interactive Figma embed - zoom, pan, and explore the design"
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-gray-800/50 p-1">
+				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1">
 					<Button
 						size="sm"
 						variant={viewMode === "interactive" ? "default" : "ghost"}
@@ -55,8 +55,7 @@ export function FigmaInteractiveViewer({
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
 				<div className="group relative">
-					<div className="hover-motion absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl group-hover:blur-2xl" />
-					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
 								sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
@@ -77,8 +76,7 @@ export function FigmaInteractiveViewer({
 			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
 				<div className="group relative">
-					<div className="hover-motion absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl group-hover:blur-2xl" />
-					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative aspect-[16/9] w-full">
 							<Image
 								src={imageUrl}
@@ -96,11 +94,10 @@ export function FigmaInteractiveViewer({
 			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
 				<div className="group relative">
-					<div className="hover-motion absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-xl group-hover:blur-2xl" />
-					<div className="relative overflow-hidden rounded-2xl border border-gray-800 bg-gray-900/50 p-12 text-center backdrop-blur-sm">
-						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-gray-500" />
-						<p className="text-gray-400">No static preview available for this design.</p>
-						<p className="mt-2 text-gray-500 text-sm">
+					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
+						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
+						<p className="text-muted-foreground">No static preview available for this design.</p>
+						<p className="mt-2 text-muted-foreground/70 text-sm">
 							Switch to Interactive mode to view the design.
 						</p>
 					</div>

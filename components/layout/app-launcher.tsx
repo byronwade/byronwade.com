@@ -182,9 +182,7 @@ export function AppLauncher() {
 					)}
 				>
 					<div className="flex items-center justify-between p-3.5 pb-2">
-						<span className="font-semibold text-[10px] text-dock-foreground/70 uppercase tracking-wider">
-							Switch product
-						</span>
+						<span className="text-[11px] text-dock-foreground/70">Switch product</span>
 						<button
 							type="button"
 							onClick={() => setOpen(false)}

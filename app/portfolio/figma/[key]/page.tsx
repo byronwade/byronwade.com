@@ -15,7 +15,6 @@ import { notFound } from "next/navigation";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DesignCaseStudy } from "@/components/ui/design-case-study";
 import { getFigmaFile } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {
@@ -98,7 +97,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		simpleComplexityScore > 0 ? getComplexityLevel(simpleComplexityScore) : null;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-background to-secondary/20 py-16">
+		<div className="min-h-screen py-16">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
 					<div className="mb-4 flex items-center gap-2 text-muted-foreground text-sm">
@@ -256,69 +255,13 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</Button>
 						</div>
 
-						{/* Case Study */}
-						<DesignCaseStudy
-							title={fileData.name}
-							description={`Deep dive into the design system and component architecture of ${fileData.name}, showcasing systematic design thinking and scalable UI patterns.`}
-							challenge="Create a comprehensive design system that maintains consistency across multiple platforms while allowing for flexibility and scalability."
-							solution="Developed a robust component library with clear design tokens, reusable patterns, and comprehensive documentation to ensure design consistency and developer efficiency."
-							metrics={{
-								views: pagesCount * 100, // Estimated based on complexity
-								likes: componentsCount * 5,
-								comments: stylesCount * 2,
-							}}
-							technical={{
-								tools: ["Figma", "Design Tokens", "Component Libraries", "Auto Layout"],
-								techniques: [
-									"Design Systems",
-									"Component Architecture",
-									"Atomic Design",
-									"Design Tokens",
-									"Auto Layout",
-								],
-								duration: "4-8 weeks",
-								team: ["Design System Team", "UI/UX Designers", "Frontend Developers"],
-							}}
-							results={[
-								"Established a scalable design system with reusable components",
-								"Improved design-to-development handoff efficiency",
-								"Maintained visual consistency across all product touchpoints",
-								"Reduced design debt and increased team productivity",
-								"Created comprehensive documentation for design patterns",
-							]}
-							process={[
-								{
-									title: "Audit & Analysis",
-									content:
-										"Conducted a comprehensive audit of existing design patterns and identified inconsistencies across the product.",
-									icon: <BarChart3 className="h-5 w-5" />,
-								},
-								{
-									title: "Token Definition",
-									content:
-										"Established design tokens for colors, typography, spacing, and other foundational elements.",
-									icon: <Palette className="h-5 w-5" />,
-								},
-								{
-									title: "Component Creation",
-									content:
-										"Built a library of reusable components with proper variants and states.",
-									icon: <Layers className="h-5 w-5" />,
-								},
-								{
-									title: "Documentation",
-									content:
-										"Created comprehensive guidelines and usage examples for the design system.",
-									icon: <FileText className="h-5 w-5" />,
-								},
-							]}
-							testimonial={{
-								quote:
-									"This design system has transformed how our team works together, creating consistency and efficiency across all our products.",
-								author: "Product Team",
-								role: "Development Team",
-							}}
-						/>
+						{/* The generated "case study" that used to sit here was removed. Every
+						    field in it was invented: view, like, and comment counts derived from
+						    the page count, a "4-8 weeks" duration, a team that does not exist, and
+						    five generic results — rendered identically for any Figma file key.
+						    DESIGN.md §9 requires real numbers with their source and §3.2 forbids
+						    manufacturing precision. What is left on this page is what the Figma
+						    API actually returns. */}
 					</div>
 
 					{/* Sidebar */}

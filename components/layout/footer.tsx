@@ -62,7 +62,9 @@ export default function Footer() {
 			<div className="mx-auto w-full max-w-5xl px-4 pt-12 pb-28 sm:px-6 sm:pb-12">
 				<div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
 					<div className="flex max-w-sm flex-col gap-3">
-						<p className="font-mono text-muted-foreground text-xs tracking-[0.18em]">BYRON WADE</p>
+						{/* Sentence case. The tracked-out all-caps version here was the same
+						    eyebrow reflex §13 rejects, applied to my own name. */}
+						<p className="font-medium text-foreground text-sm">Byron Wade</p>
 						<p className="text-muted-foreground text-sm leading-relaxed">
 							Product engineering for service businesses. Currently building{" "}
 							<a
@@ -82,10 +84,13 @@ export default function Footer() {
 						/>
 					</div>
 
-					<nav aria-label="Footer" className="flex flex-col">
+					{/* No rule per row. §13 rejects borders around every row, and at footer
+					    width these were short ragged dashes rather than structure — the
+					    spacing already separates five links. */}
+					<nav aria-label="Footer" className="flex flex-col gap-2">
 						{NAV.map((link) => (
 							<Link
-								className="border-border border-b py-2.5 text-muted-foreground text-sm transition-colors last:border-b-0 hover:text-foreground sm:min-w-40"
+								className="w-fit text-muted-foreground text-sm transition-colors hover:text-foreground"
 								href={link.href}
 								key={link.href}
 							>

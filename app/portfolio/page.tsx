@@ -3,7 +3,14 @@
 import { format } from "date-fns";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { EmptyState } from "@/components/common";
+import {
+	EmptyState,
+	IndexList,
+	IndexRow,
+	indexRowAccentClass,
+	indexRowLinkClass,
+} from "@/components/common";
+import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
@@ -202,21 +209,23 @@ function RepoSkeletonList() {
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
-		<li className="border-border border-b last:border-b-0">
+		<IndexRow>
 			<a
-				className="group/row hover-motion flex flex-col gap-2 py-5 outline-none hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40"
+				className={indexRowLinkClass}
 				href={repo.html_url}
 				rel="noopener noreferrer"
 				target="_blank"
 			>
 				<div className="flex items-baseline gap-4">
-					<span className="flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+					<span
+						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums ${indexRowAccentClass}`}
+					>
 						<Star aria-hidden="true" className="size-3" />
 						{repo.stargazers_count}
 					</span>
 
 					<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-						<span className="truncate font-medium text-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand">
+						<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
 							{titleize(repo.name)}
 						</span>
 						{repo.archived && (
@@ -258,7 +267,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 					</p>
 				)}
 			</a>
-		</li>
+		</IndexRow>
 	);
 }
 
@@ -269,44 +278,42 @@ export default function PortfolioPage() {
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
-				<header className="reveal flex w-full flex-col gap-3">
-					<div className="flex flex-wrap items-end justify-between gap-3">
-						<div className="flex flex-col gap-3">
-							<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
-								Portfolio
-							</h1>
-							<p className="max-w-2xl text-base text-muted-foreground leading-relaxed">
-								Open-source work and experiments. Pulled live from{" "}
-								<a
-									href="https://github.com/byronwade"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="link-underline font-medium"
-								>
-									GitHub
-								</a>
-								. For in-depth case studies, see{" "}
-								<Link href="/projects" className="link-underline font-medium">
-									projects
-								</Link>
-								.
-							</p>
-						</div>
-						{!loading && (
+				<PageHeader
+					aside={
+						loading ? null : (
 							<Button
-								type="button"
-								variant="outline"
-								size="sm"
+								className="gap-2"
 								disabled={refreshing}
 								onClick={reload}
-								className="gap-2"
+								size="sm"
+								type="button"
+								variant="outline"
 							>
 								<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
 								{refreshing ? "Refreshing…" : "Refresh"}
 							</Button>
-						)}
-					</div>
-				</header>
+						)
+					}
+					lede={
+						<>
+							Open-source work and experiments. Pulled live from{" "}
+							<a
+								className="link-underline font-medium"
+								href="https://github.com/byronwade"
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								GitHub
+							</a>
+							. For in-depth case studies, see{" "}
+							<Link className="link-underline font-medium" href="/projects">
+								projects
+							</Link>
+							.
+						</>
+					}
+					title="Portfolio"
+				/>
 
 				{loading ? (
 					<RepoSkeletonList />
@@ -327,11 +334,11 @@ export default function PortfolioPage() {
 								Showing a partial response — some GitHub data may be stale. Refresh to try again.
 							</p>
 						)}
-						<ol className="group/list flex flex-col">
+						<IndexList as="ol">
 							{repos.slice(0, visibleRepos).map((repo) => (
 								<RepoRow key={repo.id} repo={repo} />
 							))}
-						</ol>
+						</IndexList>
 
 						{visibleRepos < repos.length && (
 							<div className="text-center">

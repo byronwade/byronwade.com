@@ -1,6 +1,14 @@
+import Link from "next/link";
 import { getProjects } from "@/lib/projects";
-import { cn } from "@/lib/utils";
 import { HomeActions } from "./home-actions";
+
+/**
+ * The post that carries the full account of the plumbing company closing.
+ * Named here so the claim in the opening and the caveat on the figure both
+ * point at the same source, and so a rename breaks the build rather than
+ * leaving the claim unsupported.
+ */
+const FAILURE_POST_SLUG = "scaling-plumbing-business";
 
 /**
  * Homepage opening — Showcase profile, claim-and-proof composed as a title card.
@@ -33,21 +41,17 @@ import { HomeActions } from "./home-actions";
 /**
  * One shipped-evidence fact. Tabular numerals per DESIGN.md §5.2.
  *
- * `tone` is semantic, not decorative: `success` marks a positive financial
- * outcome, which is what the green family exists for (§5.1). Facts that carry
- * no status — a duration, a count — stay neutral. The label carries the meaning
- * on its own, so nothing depends on colour alone.
+ * Nothing here is tinted. `$2.4M` was previously set in the success green, which
+ * §5.1 reserves for a positive outcome — and the outcome was that the company
+ * closed. Colouring a revenue figure green while the label says the business
+ * failed would have made the palette contradict the copy, so every figure is
+ * neutral and the label carries the meaning.
  */
-function Fact({ value, label, tone }: { value: string; label: string; tone?: "success" }) {
+function Fact({ value, label }: { value: string; label: string }) {
 	return (
 		<div className="flex flex-col gap-1.5">
 			<dt className="sr-only">{label}</dt>
-			<dd
-				className={cn(
-					"font-semibold text-2xl tabular-nums tracking-tight sm:text-4xl",
-					tone === "success" ? "text-success" : "text-foreground"
-				)}
-			>
+			<dd className="font-semibold text-2xl text-foreground tabular-nums tracking-tight sm:text-4xl">
 				{value}
 			</dd>
 			<p aria-hidden="true" className="text-muted-foreground text-xs sm:text-sm">
@@ -71,15 +75,22 @@ export async function HomeHero() {
 			</p>
 
 			{/* One statement, balanced rather than hand-broken: forced line breaks
-			    read as composition at one width and as raggedness at every other. */}
+			    read as composition at one width and as raggedness at every other.
+			    The reversal in the middle is the point — §9 requires claims here to
+			    stay qualified, and the company closing is the qualification. Writing
+			    it as a success would have been the easier headline and a false one. */}
 			<h1 className="reveal reveal-delay-1 max-w-4xl text-balance font-heading font-semibold text-[2.6rem] leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[5rem] lg:leading-[0.94]">
-				I grew a plumbing company to $2.4M, then built the software it needed.
+				I grew a plumbing company to $2.4M. Then I lost it. Now I build the software it needed.
 			</h1>
 
 			<div className="reveal reveal-delay-2 flex flex-col gap-6">
 				<p className="max-w-md text-base text-muted-foreground leading-relaxed">
 					Dispatch, phones, reputation, and the design system underneath them. The problems come
-					from the truck and the office; the answers ship as code.
+					from the truck and the office; the answers ship as code.{" "}
+					<Link className="link-underline" href={`/blog/${FAILURE_POST_SLUG}`}>
+						What went wrong
+					</Link>
+					.
 				</p>
 
 				<HomeActions />
@@ -87,7 +98,7 @@ export async function HomeHero() {
 
 			{/* The floor of the frame — and the proof, still inside the first screen. */}
 			<dl className="reveal reveal-delay-3 grid grid-cols-3 gap-4 border-border border-t pt-6 sm:gap-10 sm:pt-8">
-				<Fact label="Year-two revenue, from zero" tone="success" value="$2.4M" />
+				<Fact label="Year-two revenue, before it closed" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
 				<Fact label="Projects written up here" value={String(shippedProjects)} />
 			</dl>

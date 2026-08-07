@@ -462,7 +462,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										) : (
 											groups.map((g) => (
 												<div className="mb-1 last:mb-0" key={g.kind}>
-													<div className="px-2.5 pt-1.5 pb-1 font-semibold text-[10px] text-dock-foreground/50 uppercase tracking-wider">
+													<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground/60">
 														{KIND_LABEL[g.kind]}
 													</div>
 													{g.items.map((e) => Row(e, cursor++))}
