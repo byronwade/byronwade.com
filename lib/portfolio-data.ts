@@ -5,6 +5,30 @@ import type { DribbbleShot } from "@/types/dribbble";
 import type { FigmaFile } from "@/types/figma";
 import type { GitHubRepo } from "@/types/github";
 
+/**
+ * Headers for GitHub's REST API.
+ *
+ * Two things were wrong here. `Authorization: token ${process.env.GITHUB_TOKEN}`
+ * was sent unconditionally, so with no token configured the header read
+ * `token undefined` and GitHub answered 401. An unauthenticated request would
+ * have succeeded, just at a lower rate limit, so a missing token was turning a
+ * working call into a failing one. And neither call sent a `User-Agent`, which
+ * GitHub's REST API requires and rejects with 403 when absent.
+ *
+ * Recovered from claude/wonderful-lamport-fq541q before that branch was deleted.
+ */
+function githubHeaders(): Record<string, string> {
+	const token = process.env.GITHUB_TOKEN || process.env.GITHUB_API_TOKEN;
+	const headers: Record<string, string> = {
+		Accept: "application/vnd.github+json",
+		"User-Agent": "byronwade.com",
+	};
+	if (token) {
+		headers.Authorization = `Bearer ${token}`;
+	}
+	return headers;
+}
+
 // Utility function to add timeout to fetch requests
 const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: number } = {}) => {
 	const { timeout = 3000, ...fetchOptions } = options; // Reduced to 3s for speed
@@ -335,9 +359,7 @@ export const getGitHubStats = unstable_cache(
 	async () => {
 		try {
 			const response = await fetch("https://api.github.com/users/byronwade", {
-				headers: {
-					Authorization: `token ${process.env.GITHUB_TOKEN}`,
-				},
+				headers: githubHeaders(),
 			});
 
 			if (!response.ok) {
@@ -385,16 +407,11 @@ const PRIORITY_PROJECTS = [
 // Fetch all GitHub repositories
 export const getGitHubRepositories = unstable_cache(
 	async (): Promise<GitHubRepo[]> => {
-		const token = process.env.GITHUB_TOKEN || process.env.GITHUB_API_TOKEN;
-
 		try {
 			const response = await fetchWithTimeout(
 				"https://api.github.com/users/byronwade/repos?sort=updated&per_page=100",
 				{
-					headers: {
-						Accept: "application/vnd.github+json",
-						...(token ? { Authorization: `Bearer ${token}` } : {}),
-					},
+					headers: githubHeaders(),
 					timeout: 5000,
 				}
 			);
