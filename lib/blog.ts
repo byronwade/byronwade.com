@@ -14,6 +14,7 @@ export interface BlogPost {
 	slug: string;
 	tags?: string[];
 	title: string;
+	updated?: string;
 }
 
 function parseTags(raw: unknown): string[] | undefined {
@@ -28,6 +29,19 @@ function parseTags(raw: unknown): string[] | undefined {
 		return acc;
 	}, []);
 	return tags.length > 0 ? tags : undefined;
+}
+
+function parseDate(raw: unknown): string | undefined {
+	if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
+		return raw.toISOString();
+	}
+
+	if (typeof raw !== "string") {
+		return;
+	}
+
+	const date = raw.trim();
+	return date && !Number.isNaN(Date.parse(date)) ? date : undefined;
 }
 
 function calculateReadingTime(content: string): number {
@@ -53,7 +67,8 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 				return {
 					slug,
 					title: data.title || slug,
-					date: data.date || new Date().toISOString(),
+					date: parseDate(data.date) ?? new Date().toISOString(),
+					updated: parseDate(data.updated),
 					excerpt: data.excerpt,
 					tags: parseTags(data.tags),
 					content,
@@ -79,7 +94,8 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 		return {
 			slug,
 			title: data.title || slug,
-			date: data.date || new Date().toISOString(),
+			date: parseDate(data.date) ?? new Date().toISOString(),
+			updated: parseDate(data.updated),
 			excerpt: data.excerpt,
 			tags: parseTags(data.tags),
 			content,
