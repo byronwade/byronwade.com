@@ -30,12 +30,22 @@ export function isResumePdfResponse(status: number, contentType: string | null):
 const RESUME_PDF_TIMEOUT_MS = 60_000;
 
 /**
- * The PDF body, or null when the route fails, the network fails, or no complete
- * PDF arrives in time. The timeout covers the body too, so a stalled stream ends.
+ * The PDF body, or null when the route fails, the network fails, no complete
+ * PDF arrives in time, or the caller's `signal` aborts (the visitor left the
+ * page). The timeout covers the body too, so a stalled stream ends.
  */
-export async function fetchResumePdf(timeoutMs = RESUME_PDF_TIMEOUT_MS): Promise<Blob | null> {
+export async function fetchResumePdf({
+	timeoutMs = RESUME_PDF_TIMEOUT_MS,
+	signal,
+}: {
+	timeoutMs?: number;
+	signal?: AbortSignal;
+} = {}): Promise<Blob | null> {
+	const timeout = AbortSignal.timeout(timeoutMs);
 	try {
-		const response = await fetch("/api/resume-pdf", { signal: AbortSignal.timeout(timeoutMs) });
+		const response = await fetch("/api/resume-pdf", {
+			signal: signal ? AbortSignal.any([timeout, signal]) : timeout,
+		});
 		if (!isResumePdfResponse(response.status, response.headers.get("content-type"))) {
 			return null;
 		}
