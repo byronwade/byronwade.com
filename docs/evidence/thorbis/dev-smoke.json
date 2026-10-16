@@ -1,0 +1,13 @@
+{
+  "command": "npm run dev -- --port 3197 --hostname 127.0.0.1",
+  "status": 200,
+  "viewport": 768,
+  "themes": ["light", "dark"],
+  "geometry": {
+    "font": "Inter",
+    "size": "32px",
+    "top": 220,
+    "overflow": false
+  },
+  "pageErrors": []
+}

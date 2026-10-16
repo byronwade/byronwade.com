@@ -1,0 +1,95 @@
+{
+  "score": 0.62,
+  "lighthouseVersion": "12.8.2",
+  "timings": [
+    {
+      "metric": "first-contentful-paint",
+      "value": 1080.06,
+      "budget": 2000
+    },
+    {
+      "metric": "largest-contentful-paint",
+      "value": 6639.180000000001,
+      "budget": 3000
+    },
+    {
+      "metric": "cumulative-layout-shift",
+      "value": 0,
+      "budget": 0.1
+    },
+    {
+      "metric": "total-blocking-time",
+      "value": 609,
+      "budget": 300
+    },
+    {
+      "metric": "speed-index",
+      "value": 2073.082555934674,
+      "budget": 3000
+    }
+  ],
+  "resources": [
+    {
+      "resourceType": "total",
+      "label": "Total",
+      "requestCount": 54,
+      "transferSize": 1064920
+    },
+    {
+      "resourceType": "other",
+      "label": "Other",
+      "requestCount": 26,
+      "transferSize": 545460
+    },
+    {
+      "resourceType": "script",
+      "label": "Script",
+      "requestCount": 23,
+      "transferSize": 403339
+    },
+    {
+      "resourceType": "font",
+      "label": "Font",
+      "requestCount": 2,
+      "transferSize": 72318
+    },
+    {
+      "resourceType": "document",
+      "label": "Document",
+      "requestCount": 1,
+      "transferSize": 24617
+    },
+    {
+      "resourceType": "stylesheet",
+      "label": "Stylesheet",
+      "requestCount": 2,
+      "transferSize": 19186
+    },
+    {
+      "resourceType": "image",
+      "label": "Image",
+      "requestCount": 0,
+      "transferSize": 0
+    },
+    {
+      "resourceType": "media",
+      "label": "Media",
+      "requestCount": 0,
+      "transferSize": 0
+    },
+    {
+      "resourceType": "third-party",
+      "label": "Third-party",
+      "requestCount": 0,
+      "transferSize": 0
+    }
+  ],
+  "failures": [
+    "largest-contentful-paint: 6639.180000000001 > 3000",
+    "total-blocking-time: 609 > 300",
+    "script bytes: 403339 > 307200",
+    "total bytes: 1064920 > 1024000",
+    "script count: 23 > 10",
+    "total count: 54 > 50"
+  ]
+}

@@ -1,104 +1,63 @@
-# Portfolio client boundary result
+# Thorbis Design adoption result
 
-VERDICT: PASS
+Mode: Implementation; repository writes, scoped commits and branch pushes authorized.
 
-- **Mode:** Implementation. Scoped source, dependency, test, and documentation
-  writes; commits and publication to `bot/portfolio-boundary` authorized. No
-  merge, force push, deployment command, environment/dashboard change, or
-  credential-value inspection.
-- **Decision:** Extract the existing static catalog into
-  `lib/portfolio-projects.ts`; keep API/cache functions in
-  `lib/portfolio-data.ts` behind `import "server-only"`. The client catch-all
-  page imports only the static catalog.
-- **Reused:** Existing project records, their private type, API implementations,
-  cache tags, server API/Figma callers, and native rendered-test infrastructure.
-  The Markdown project loader remains a separate content contract.
-- **Created or extended:** One client-safe catalog module, the conventional
-  `server-only@0.0.1` marker dependency, and a production client-chunk regression
-  in `tests/rendered/portfolio-boundary.test.mjs`. No UI code was copied.
-- **Recursive cleanup:** Removed the static export/type from the API module and
-  migrated its sole consumer without a compatibility re-export. Import searches
-  confirm only server callers remain. Catalog ownership and test command
-  documentation now describe the split. Knip reports no unused surface.
-- **Mechanical prevention:** Next.js rejects future client imports of the API
-  module. `npm run test:rendered` independently scans every emitted client
-  JavaScript chunk for portfolio environment symbols, API/cache helpers, the
-  Figma SDK, and `next/cache`.
+Decision: a faithful CSS/Tailwind/Base UI **port**, not an installed Thorbis package.
+Source: byronwade/thorbis-design at 46b6654d02fda9d8fde737395185c3141df52cd2.
+The upstream manifest is private, no registry manifest was found, and npm search returned [].
+The reference checkout was read-only. See docs/THORBIS-DESIGN-PORT.md for provenance/sync.
+
+## Acceptance evidence
+
+| Criterion | Result | Evidence |
+| --- | --- | --- |
+| 1. Lint, type-check, build | PASS | npm run check (lint, types, knip) and production build pass; 39 routes generated. |
+| 2. Desktop/mobile, light/dark comparison | PASS | Four side-by-side comparisons at 1440/390; browser.json proves 12 live color roles match, Inter 32px headings, 13px nav and 14px card titles. |
+| 3. Old palette/raw colors | PASS | Native design-contract sensor and grep over migrated UI/docs show no old palette or raw color outside the source token block. |
+| 4. No-JS first paint | PASS | Native SSR contract and 1440/390 no-JS browser screenshots; heading and ancestors visible, no opacity-zero content entrance. |
+| 5. Axe/contrast/keyboard | PASS | Eight home cases plus 24 open shell states: zero serious/critical axe findings; AA text and enabled field boundary contrast. Focus clears sticky header; Escape/shortcut focus return, reduced motion and contact validation/reveal pass. |
+| 6. Performance budget | BLOCKED | largest-contentful-paint: 3333.61255 > 3000; total-blocking-time: 328 > 300 |
+| 7. Design ownership/sync docs | PASS | DESIGN.md and docs/THORBIS-DESIGN-PORT.md adopt Thorbis, pin source, map adapters and document AA deviations. |
+| 8. Ready PR distribution/pin disclosure | PENDING PR LINK | Ready PR body will explicitly state port and the full source commit; no merge authorized. |
 
 ## Verification
 
-All release checks ran locally on Node 24.21.0 / Next.js 16.2.7.
+- npm test: 116/116 pass (contact/cache/date/design contracts; fixture transport).
+- npm run check: lint, type-check and knip pass.
+- npm run build: pass, via npm run perf:budget; expected optional Figma/Dribbble warnings allowed.
+- npm run test:rendered: 4/4 pass; 38 dates across eight pages and 41 client chunks checked.
+- node scripts/verify-thorbis-browser.mjs: pass; eight width/theme cases, 24 panels, nine routes, two no-JS widths, contact draft/error/reveal, shortcut and reduced-motion checks.
+- Hidden npm run dev smoke: 768px light/dark, HTTP 200, no overflow/runtime errors; captured process tree stopped.
+- Token/font adapter idempotence, reference cleanliness, source asset SHA checks, contact leak scan and git diff --check recorded with final evidence.
+- npm run perf:budget: FAIL; Lighthouse 12.8.2, default mobile simulated profile, unchanged lighthouse-budget.json.
 
-| Command / check | Result |
-| --- | --- |
-| `npm run lint` | PASS; 123 files, no fixes, exit 0 |
-| `npm run type-check` | PASS; route type generation and strict TypeScript, exit 0 |
-| `npm run knip` | PASS; no unused files/exports/dependencies, exit 0 |
-| `npm run build` | PASS; 39 prerendered pages, exit 0 |
-| `npm run test:rendered` | PASS; 2 tests, 0 failures; scanned 26 client chunks |
-| Exact-symbol `rg -l` over `.next/static/chunks/**/*.js` | PASS; 0 matching client files |
-| `rg -l` for API/cache symbols in `.next/server/chunks` | 6 matching server chunks; server implementation retained |
-| Raw-contact probe over client scripts and prerendered HTML | PASS; 0 matching files |
-| Catalog/API comparison with `38261e9` | PASS; catalog unchanged; API differs only by extraction and guard |
-| `git diff --check` and full branch diff review | PASS |
+## Measured dependency cleanup
 
-The independent client grep used:
+Reused Base UI APIs, nav-config, content loaders, contact actions, obfuscated contact,
+search and theme hooks. Ported canonical tokens/primitives; no new runtime dependency.
+Removed obsolete preview/Framer/hover-card/tooltip and unused query-state provider.
+Deferred contact/breadcrumb code and colocated notifications with contact consumers.
+Shared initial primitive code; removed oversized favicon shadowing; preserved originals.
+Consolidated font ownership in CSS. Contact delivery and published routes stay intact.
+No content/blog, content/projects or shop edits entered the branch diff.
 
-```text
-\b(GITHUB_(API_TOKEN|TOKEN)|FIGMA_(ACCESS_TOKEN|TEAM_ID)|DRIBBBLE_TOKEN|unstable_cache|CACHE_TAGS|githubHeaders|getFigmaFiles?|getGitHub(Stats|Repositories)|getDribbbleShots)\b|figma-js|next/cache
-```
+Mechanical prevention: source pin guard; named-type merge sensor; raw-color/favicon/
+rendered preload contracts; reproducible browser/contrast checks; budget runner exits
+nonzero for exceeded limits. No automatic GitHub Actions or production deployment.
 
-Exact symbol boundaries distinguish this repository's `CACHE_TAGS` from Next's
-unrelated `NEXT_CACHE_TAGS_HEADER` constant. The regression contains the same
-boundary; no chunk or module exemptions were added.
+## Design evidence and limits
 
-Before migration, adding the guard while retaining the original client import
-made `npm run build` exit 1 as expected. Turbopack traced the forbidden import
-through both browser and SSR client paths in
-`app/portfolio/[...slug]/page.tsx`. The final build passes with the guard intact.
+Showcase home/Shared shell: compact experience beside current Thorbis work, then
+qualified proof and writing. Both themes at 1440, 768, 390 and 320px, with focus,
+empty search, invalid contact, touch targets, source tokens and first paint checked.
+Navigation is immediate; no content entrance animation. Occasional retained panels
+use source timing, trigger anchoring, four-times-slower inspection, interruption and
+focus return; reduced motion snaps. Signature font still loads on resume.
 
-Catalog SHA-256:
-`9867999e766ab94ed9d17676cdd76c3b187ff2555ef3a0a2405a76ac46dacb06`.
+Local Chromium viewport emulation is not a physical-device, Safari or screen-reader
+certification. Existing dependency alerts and optional React Scan diagnostic updates
+remain outside this design port. There is no real-user production speed claim.
 
-## Rendered smoke and design evidence
+Remaining acceptance blocker: default mobile LCP 3334ms (limit 3000) and TBT 328ms (limit 300). Remaining traces are dominated by Next bootstrap/hydration. Further performance work is required before merge; no budget relaxation or metric substitution was used.
 
-Headless Chrome via existing `puppeteer-core`, against an owned local production
-server on `127.0.0.1:3317`, with browser cache disabled:
-
-| Route | Desktop 1440 × 1000 | Phone 390 × 844 |
-| --- | --- | --- |
-| `/projects` | 200; Projects heading and Thorbis link | 200; same |
-| `/projects/thorbis` | 200; Thorbis case-study heading | 200; same |
-| `/portfolio/thorbis` | 200; Thorbis.com heading and key features | 200; same |
-| `/portfolio/thorbis-ai` | 200; AI Platform heading and key features | 200; same |
-| `/portfolio/thorbis-mobile` | 200; Mobile Platform heading and key features | 200; same |
-
-All ten navigations passed. Zero browser runtime exceptions; zero requests to
-`/api/portfolio`; keyboard Tab reached a focusable control on every page.
-Light and dark media preferences were exercised; visual theme fidelity was not
-audited. The local smoke transcript is `.next/portfolio-boundary-smoke.json`.
-The isolated browser and owned server were closed after the run.
-
-No composition, styles, interactions, content, or motion changed. Existing
-Showcase/Evidence profiles and organizing moves are preserved. A design/motion
-redesign gate and performance comparison are not applicable; no speed claim is
-made. Full accessibility/state/visual regression and `npm run dev` checks were
-not run for this import-only page change. Contact action `npm test` was not run
-because contact behavior is outside scope; its existing rendered check passed.
-
-## Remaining findings and publication
-
-- Build used existing fallbacks when Figma credentials were unavailable and the
-  Dribbble request failed. Live third-party data freshness was not validated.
-- Smoke observed local resource failures: 404 for Vercel telemetry scripts,
-  500 from `/api/screenshot`, and 400 from `/_next/image`. Main documents,
-  project data, and keyboard focus rendered successfully. These resources and
-  their implementations were not changed in this boundary fix.
-- Shared toolkit advisory reservation failed because its configuration names a
-  missing unrelated workspace. Native command exit/output evidence was used;
-  toolkit configuration and cleanup quarantine were untouched.
-- No GitHub Actions workflow was dispatched. The existing repository-managed
-  CodeQL limitation documented in `PROJECT_PROFILE.md` remains outside scope.
-- Pushed `bot/portfolio-boundary` and opened ready PR
-  [#46](https://github.com/byronwade/byronwade.com/pull/46) to `main`. Verified
-  `isDraft: false` and `state: OPEN`. Not merged; next step is owner review.
+VERDICT: BLOCKED unchanged mobile performance budget
