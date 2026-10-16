@@ -2,6 +2,7 @@ import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
+import { safeFormatDate } from "@/lib/markdown-utils";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 import { cn } from "@/lib/utils";
@@ -20,14 +21,6 @@ import { cn } from "@/lib/utils";
  * The count survives, because "how much work is here" is a real question a
  * visitor arrives with. It sits beside each group's heading on the page.
  */
-
-function yearOf(date?: string): string {
-	if (!date) {
-		return "";
-	}
-	const d = new Date(date);
-	return Number.isNaN(d.getTime()) ? "" : String(d.getFullYear());
-}
 
 /**
  * The type mark: a single colour-coded word from the `--type-*` family.
@@ -70,7 +63,7 @@ function RowMarker({ project }: { project: Project }) {
 			</StatusPill>
 		);
 	}
-	const year = yearOf(project.date);
+	const year = safeFormatDate(project.date, "yyyy");
 	return year ? (
 		<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">{year}</span>
 	) : null;

@@ -159,3 +159,21 @@ production deployment, or merge.
 - Final owned-browser Lighthouse exits 0: performance 67, accessibility 100, best practices 96, SEO 100. Manual budget comparisons still miss LCP (4211ms > 3000), TBT (820ms > 300), script/font/total bytes and requests; no budget pass, improvement, or regression claim. Initial diagnostics remain separately labeled. Lighthouse 12 ignores the existing budget flag; enforcement restoration remains follow-up.
 - Final evidence aggregation exits 0; scans find zero raw owner contact matches in 47 client assets and 40 prerendered HTML files. Evidence formatted with the existing formatter; final `npm run lint` checks 133 files, exit 0; `git diff --check` clean. Read-only review and closure review have no remaining blocking finding.
 - Commit the refreshed artifacts, push only bot/projects-refresh, and open a READY PR to main with sources, the 15-project recommendation table, screenshots and receipts. Publication commits use [skip ci] to honor local-only checks (GitHub documents skip instructions for push/pull_request); no workflow or repository setting is changed. The PR depends on design-system checkpoint 30cceba; no open design-system PR found at preparation.
+
+## Publication result
+- Pushed only bot/projects-refresh at 438f6f6; remote head matches. READY PR https://github.com/byronwade/byronwade.com/pull/53 is OPEN, isDraft false, base main, head bot/projects-refresh, MERGEABLE. No merge or production deployment performed.
+- PR body includes all nine source rows, all fifteen editorial recommendations, eight production captures, exact local check results and known performance misses. It explicitly depends on the integrated design-system implementation/PR.
+- GitHub repository-level dynamic CodeQL ignored the skip instruction and started after PR creation (event dynamic, refs/pull/53/head). Cancelled only this PR's run 38856335244; confirmed completed/cancelled. No remote check used for acceptance and no security setting changed. The tracked CI is manual; default CodeQL setup needs owner reconciliation with the local-only policy.
+- Final bounded QA preview closed automatically, exit 0. Earlier port-3000 preview remains untouched after automatic approval review blocked cleanup/restart and a detached launch; final evidence came from the allowed bounded preview.
+- Publication notes and RESULT.md stay local to avoid another source push solely for handoff notes and another automatic CodeQL run. Published application/source and evidence are complete at 438f6f6; checks reference source 42f239c, with only evidence/docs changed afterward.
+
+
+## Loop 10: PR #53 integrates publication-date policy (#54)
+- Mode: Migration or cleanup; branch merge, push, PR update and conditional squash authorized.
+- Fetched origin/main c48f33207bae3a20e9ccec92f7dd065d1539daf1 into published head 438f6f6; no rebase or force push.
+- Only conflict: project title wrapping. Retained branch min-w-0 layout for long current-work titles; kept main safeFormatDate year rendering and all publication-date changes/tests.
+- No content/projects file changed by integration. All 24 pre-merge entries must remain, including all 15 earlier projects.
+- Reused canonical markdown-utils calendar formatter; removed obsolete yearOf through the main merge. No new components, motion, dependencies or palette.
+- Existing uncommitted handoff notes preserved before merge; original RESULT saved locally at .next/pr53-integration/before-RESULT.md.
+- Shared-kit advisory reservation failed on a configured missing unrelated directory; configuration unchanged. Native exit/output evidence will be captured.
+- Verification pending: Node 24 lint/type-check/knip/build/native tests/rendered tests, original content/browser/contrast/accessibility helpers, full diff and remote gates. No merge authorization gate is yet claimed passed.

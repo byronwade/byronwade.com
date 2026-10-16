@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { TagList } from "@/components/common/tag-list";
@@ -6,6 +5,7 @@ import { Section } from "@/components/layout/page";
 import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
 import { Clock } from "@/lib/icons";
+import { safeFormatDate } from "@/lib/markdown-utils";
 
 // Thorbis chronological rows; dates and excerpts remain server-rendered.
 async function BlogList() {
@@ -31,9 +31,9 @@ async function BlogList() {
 									{post.readingTime} min
 								</Badge>
 								{post.date && (
-									<span className="hidden sm:inline">
-										{format(new Date(post.date), "MMM d, yyyy")}
-									</span>
+									<time className="hidden sm:inline" dateTime={post.date}>
+										{safeFormatDate(post.date, "MMM d, yyyy")}
+									</time>
 								)}
 							</div>
 						</div>
