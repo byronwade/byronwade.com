@@ -54,6 +54,8 @@ components/
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
   client-safe, with no API, cache, or environment dependencies
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
+  Blog posts with `draft: true` are available only in development. The shared
+  loader excludes them from production pages, search, RSS, sitemap, and slugs.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags

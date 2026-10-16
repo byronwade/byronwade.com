@@ -30,6 +30,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 			)}
 		>
 			<ReactMarkdown
+				skipHtml
 				remarkPlugins={[remarkGfm]}
 				rehypePlugins={[rehypeHighlight]}
 				components={{

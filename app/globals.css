@@ -96,6 +96,7 @@
  * Source: src/styles/tokens.generated.css + src/styles.css light overrides.
  * Sync: scripts/port-thorbis-tokens.mjs; mapping: docs/THORBIS-DESIGN-PORT.md.
  * Raw design values belong only in this token block. */
+
 /* thorbis-tokens:start */
 :root {
   --thorbis-accent: oklch(52% 0.17 264.4);
@@ -258,6 +259,7 @@
   --shadow-work-panel: 0 1px 2px rgb(0 0 0 / 0.45);
   --shadow-work-photo: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px rgb(0 0 0 / 0.18);
 }
+
 /* thorbis-tokens:end */
 
 :root {
@@ -312,6 +314,7 @@
   --chart-3: var(--foreground);
   --chart-4: var(--muted-foreground);
   --chart-5: var(--foreground);
+
   /* Existing consumers share Thorbis's one curve and two duration budgets. */
   --motion-ease-out: var(--ease-out);
   --motion-ease-in-out: var(--ease-out);
@@ -333,10 +336,12 @@
     scroll-behavior: smooth;
     scroll-padding-block: 8rem 6rem;
   }
+
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 3px;
   }
+
   @media (forced-colors: active) {
     :focus-visible { outline-color: Highlight; }
   }
