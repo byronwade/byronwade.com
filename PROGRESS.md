@@ -9,7 +9,7 @@ lint, type-check, knip, and build; review the diff; push and open a ready PR.
 
 Acceptance: valid existing frontmatter plus `draft: true`; 900–1500 visible
 words; dev slug renders; production listing hides the draft; all author TODOs
-listed in the PR; checks pass. No publishing, merging, external messages,
+listed in the PR; checks pass. No production deployment, PR merge, external messages,
 new design primitives, or edits to other worktrees.
 
 Existing candidates: `lib/blog.ts` owns loading; `/blog`, RSS, sitemap, route
@@ -46,3 +46,15 @@ inspect source/live examples and registry; port through existing CSS/Tailwind/
 Base UI owners; document provenance; run local checks, accessibility, no-JS,
 responsive/theme screenshots and perf budget; open a ready PR without merging.
 No source implementation or verification was included in the fetched revision.
+
+Loop 3: npm ci completed. Native tests: 40/40 pass; draft regression fails on
+the original loader as expected. Type-check passed. Lint initially exposed
+CRLF checkout drift; normalized local files to indexed LF and refreshed the
+index, leaving only intended source changes. Test loops now use Promise.all;
+lint passes (125 files, zero findings). Knip running.
+
+Browser caught author comments rendered as text by ReactMarkdown. Repository
+search found no authored raw HTML outside the new comments. Extend canonical
+Markdown with its skipHtml option, keeping comments out of the reading surface
+without enabling HTML execution. Next: repeat dev browser pass, rerun relevant
+checks, production build, HTTP visibility verification, and full diff review.
