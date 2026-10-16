@@ -33,3 +33,16 @@ root. Do not change toolkit config; use ordinary hidden local command execution.
 Dependencies absent in this worktree; npm ci running. Design-system branch is not
 yet on origin; recheck before opening the PR. Next: commit/push, run checks and
 rendered verification, then record results here and in RESULT.md.
+
+Loop 2: merged origin/bot/design-system at aff0151. This revision contains the
+adoption plan only, with no token/component changes yet. Its intent is preserved
+below. Check for a newer revision before opening the PR; branch already pushed,
+so use merge (never rebase/force-push). The only merge conflict was this handoff.
+
+Design-system lane handoff: scope is tokens, shared primitives, homepage, nav,
+footer, first paint, tablet overlap, focus, and structured data. Thorbis source
+revision 46b6654d02fda9d8fde737395185c3141df52cd2, private manifest. Its plan:
+inspect source/live examples and registry; port through existing CSS/Tailwind/
+Base UI owners; document provenance; run local checks, accessibility, no-JS,
+responsive/theme screenshots and perf budget; open a ready PR without merging.
+No source implementation or verification was included in the fetched revision.
