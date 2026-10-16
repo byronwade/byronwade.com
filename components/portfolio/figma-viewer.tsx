@@ -59,7 +59,7 @@ export function FigmaInteractiveViewer({
 
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
-				<div className="group relative">
+				<div className="relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
@@ -80,7 +80,7 @@ export function FigmaInteractiveViewer({
 
 			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
-				<div className="group relative">
+				<div className="relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative aspect-[16/9] w-full">
 							<Image
@@ -88,7 +88,7 @@ export function FigmaInteractiveViewer({
 								alt={fileName}
 								fill
 								sizes="(min-width: 1280px) 1200px, 100vw"
-								className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
+								className="object-contain"
 								priority
 							/>
 						</div>
@@ -98,7 +98,7 @@ export function FigmaInteractiveViewer({
 
 			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
-				<div className="group relative">
+				<div className="relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
 						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
 						<p className="text-muted-foreground">No static preview available for this design.</p>

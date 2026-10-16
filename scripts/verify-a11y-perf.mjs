@@ -153,7 +153,12 @@ async function auditPage(url, route, width, theme) {
 	page.on("pageerror", (error) => runtimeErrors.push(error.message));
 	await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
 	await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
-	await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
+	await page.evaluateOnNewDocument((value) => {
+		// Lighthouse also visits an opaque about:blank document while resetting.
+		if (window.top === window && location.origin !== "null") {
+			localStorage.setItem("theme", value);
+		}
+	}, theme);
 	await prepareFigmaFrame(page, route, runtimeErrors);
 	try {
 		const navigation = await page.goto(`${url}${route}`, {
