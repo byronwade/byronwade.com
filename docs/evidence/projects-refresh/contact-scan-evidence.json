@@ -1,0 +1,14 @@
+{
+  "scans": [
+    {
+      "surface": "client chunks",
+      "files": 44,
+      "matches": 0
+    },
+    {
+      "surface": "prerendered HTML",
+      "files": 40,
+      "matches": 0
+    }
+  ]
+}

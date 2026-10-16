@@ -1,0 +1,84 @@
+{
+  "node": "v24.21.0",
+  "revision": "9d7b2669cb32d7878b8c722c78b2266dfd65e779",
+  "commands": [
+    {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "durationSeconds": 17
+    },
+    {
+      "command": "npm run type-check",
+      "exitCode": 0,
+      "durationSeconds": 302
+    },
+    {
+      "command": "npm run knip",
+      "exitCode": 0,
+      "durationSeconds": 18
+    },
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "durationSeconds": 4,
+      "testSummary": ["ℹ tests 39", "ℹ pass 39", "ℹ fail 0"]
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "durationSeconds": 134
+    },
+    {
+      "command": "npm run test:rendered",
+      "exitCode": 0,
+      "durationSeconds": 5,
+      "testSummary": ["ℹ tests 2", "ℹ pass 2", "ℹ fail 0"]
+    }
+  ],
+  "previousRuns": [
+    {
+      "node": "v24.21.0",
+      "revision": "bd9cb6174c63cefd76c2536949ea16e127a09822",
+      "commands": [
+        {
+          "command": "npm run lint",
+          "exitCode": 0,
+          "durationSeconds": 29
+        },
+        {
+          "command": "npm run type-check",
+          "exitCode": 0,
+          "durationSeconds": 43
+        },
+        {
+          "command": "npm run knip",
+          "exitCode": 0,
+          "durationSeconds": 22
+        },
+        {
+          "command": "npm test",
+          "exitCode": 0,
+          "durationSeconds": 5
+        },
+        {
+          "command": "npm run build",
+          "exitCode": 0,
+          "durationSeconds": 1129
+        },
+        {
+          "command": "npm run test:rendered",
+          "exitCode": 0,
+          "durationSeconds": 44
+        }
+      ],
+      "previousAttempts": [
+        {
+          "command": "npm run build",
+          "exitCode": 1,
+          "durationSeconds": 6,
+          "reason": "Next.js build lock held by the preceding verification build; retry after it closes."
+        }
+      ]
+    }
+  ]
+}

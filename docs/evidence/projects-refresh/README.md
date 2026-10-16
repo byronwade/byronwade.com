@@ -8,7 +8,13 @@ earlier bodies and non-grouping frontmatter match baseline `38261e9`.
 - `rendered-evidence.json`: viewport/theme observations, route headings and dates,
   exact index links, keyboard navigation, disclosure focus return, and contact reveal.
 - `performance-evidence.json`: initial Lighthouse diagnostics and manual budget
-  comparisons. These measurements are not a performance baseline or a budget pass.
+  comparisons, plus the final targeted accessibility audit. Initial performance
+  measurements predate main's portfolio boundary fix; they are not a measurement
+  of the final combined bundle, a performance baseline, or a budget pass.
+- `verification-evidence.json`: exact local commands and exit results, with the
+  preceding verification run retained separately from the integrated head.
+- `contact-scan-evidence.json`: raw owner contact scans of client assets and
+  prerendered HTML. Revealed contact details are never included in this evidence.
 
 Screenshots cover `/projects` and `/projects/movies` at desktop 1440 × 1000 and
 mobile 390 × 844, in light and dark themes. Contact details were not revealed in
