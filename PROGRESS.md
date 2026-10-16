@@ -1,5 +1,135 @@
 # Thorbis Design adoption
 
+## PR #56 LCP and merge follow-up — October 16, 2026
+
+Final application: be1b8ba410476a9abbe5dc0ce82f2bff3d808928. Full npm run perf:budget PASS: LCP
+2896.842ms, TBT 175ms, FCP 965.614ms, CLS 0, Speed Index 1083.628ms; all
+resource limits pass (168117 script bytes / 9, 262435 total bytes / 14).
+Native 149, check, build, rendered 8 and final production browser matrix PASS.
+Zero contact/client-secret matches; original 20 font hashes match. No budget or
+profile change. Evidence and PR update prepared; push/status/squash merge next.
+
+
+Current authorization supersedes the historical review-only handoff below: integrate
+main, fix the unchanged performance budget, push, and squash-merge #56 after all
+local gates and browser checks pass. No force push, admin merge, Actions dispatch,
+shop/content deletion, production environment or domain changes are authorized.
+
+- Operating mode: Implementation. Showcase home and Shared delivery infrastructure.
+- Target: LCP below 3000ms; every existing timing/resource budget, native test,
+  lint/type/knip/build/rendered gate passes; 1440/390 light/dark and actual theme
+  toggle verification retained; record merge SHA in RESULT.md.
+- Dominant object and organizing move stay unchanged: experience beside current
+  product, followed by qualified proof and writing. No composition or motion work.
+- Existing candidates inspected: root font preload/global faces, HomeHero,
+  HomeActions, SiteLayout, shell controls, production splitting and budget runner.
+- Reuse/configure: test Next's built-in inlineCss rather than introduce a custom
+  critical-CSS pipeline. The diagnostic report flags the stylesheet as blocking;
+  observed heading paint is 636ms, simulated LCP 3311ms. Inlining trades stylesheet
+  caching for a larger HTML response; it is an experimental Next option.
+- Dependency cone: delivery configuration, rendered delivery contract, browser
+  evidence and performance/acceptance documentation. Content and tokens unchanged.
+- Normal merge 2bb59e7 includes origin/main 5d3b47a without conflicts.
+- Integrated baseline `npm run perf:budget` fails: LCP 3443.108ms, TBT 559ms;
+  all resource budgets pass. Baseline log is retained locally. No profile/budget
+  changes. Verification remains serial on Byron-Home.
+- Shared toolkit snapshot works; reservation/job runner fail on a stale configured
+  root. Configuration was left untouched; ordinary commands retain local logs.
+- Verification plan: same budget command, npm test/check/build/test:rendered,
+  production browser matrix, development home smoke, secret scan and full diff.
+- CSS inlining experiment rejected and reverted: LCP 3620.651ms, TBT 923ms,
+  document transfer 55209 bytes (baseline 19498). No configuration change retained.
+- Closed search eagerly imported Base UI Input and its field graph. Extracted the
+  existing search/query/selection behavior into a deferred DockSearch feature;
+  the toolbar still owns the capsule, shortcuts, close and return focus. Reused
+  existing dynamic-import, Input, icon, navigation and morph contracts. A status
+  placeholder handles cold loading, and mounted search focuses its input.
+- Removed initial closed-search filtering and its synchronized active-state
+  effect; reopening naturally resets query/selection. Empty-result ArrowDown
+  retains a valid zero index. No new package, token, wrapper primitive or motion.
+- Native suite now includes main #55: 146/146 pass. Initial check caught the new
+  harness's await-in-loop; switched to its existing serial helper. Rechecking.
+- Deferred search rejected and reverted: only 2691 initial script bytes saved;
+  LCP 3216.046ms/TBT 379ms still fail. The extra loading lifecycle was not retained.
+  A browser-only content-visibility probe did not skip these nearby lists. Font
+  range and headline-wrap probes did not show a repeatable sufficient CPU gain;
+  none were applied. Original UI, fonts, tokens and shell behavior remain intact.
+- Emitted-module inspection found the actual payload defect: 45 Phosphor glyph
+  definitions in one 112823-byte module (25253 gzip bytes), including off-route
+  preview glyphs. The canonical facade's factory calls prevented independent
+  module placement across routes. Split wrappers into individual glyph modules;
+  keep the same pure public facade and one shared weight/display-name factory.
+  No caller migration or icon change is required. The webpack sharing rule now
+  shares the factory rather than forcing the complete facade into initial code.
+- Added an actual initial-script boundary sensor to the existing rendered home
+  tests. It fails against the prior build, identifying the shared chunk containing
+  preview glyphs. New source passes lint, strict types and knip. Rebuilding and
+  measuring the same budget next; no PASS claim yet.
+- The first split build exposed the other ownership defect: the named sharing
+  group combined modules used by any two initial route entries. Its initial
+  scope is now the real app/page + app/layout overlap. Independent glyph modules
+  alone cannot fix a group that eagerly merges unrelated routes. All 60 original
+  glyph/weight/display-name mappings match exactly; no API or caller changes.
+- Next's client graph still retained facade re-exports in the intermediate build.
+  Its installed SWC barrel transform proves the pure facade maps directly to each
+  glyph module. Enabled the existing optimizePackageImports capability for that
+  facade; no custom loader, dependency, runtime behavior or measurement change.
+- Icon-boundary regression now passes (5/5 rendered tests). Retry after one
+  Chrome launch failure measures LCP 3189.390ms/TBT 225ms, script 195200 bytes;
+  all gates except LCP pass. The initial bundle no longer contains preview glyphs.
+- Emitted module inspection also identifies duplicated Next link/helper modules
+  and unused common-barrel clients in home/page + layout. Apply the same existing
+  import optimizer to the pure common facade and include Next in the bounded
+  sharing group. This removes duplicate/bootstrap work without changing any
+  navigation, component, token, font, profile or budget contract. Re-measuring.
+- Common/Next pruning measures LCP 3137.888ms, TBT 360.028ms, script 185991 bytes.
+  The root not-found entry, always present on home, still duplicates roughly 7KB
+  of link/button helpers. Include that exact root entry and canonical Button in
+  bounded sharing; unrelated route entries remain outside it.
+- The trace also shows a whole-document style invalidation from header clearance.
+  Repository search confirms only html scroll padding consumes the variable.
+  Set native scrollPaddingBlockStart directly and remove the inherited custom
+  property. Keep the same no-JS 16rem/6rem defaults and live measured clearance;
+  keyboard/reflow behavior remains under browser verification.
+- Root-entry sharing measures LCP 3061.690ms/TBT 407ms, script 177681 bytes.
+  Glyph/bundle boundary checks hold, but the budget still fails.
+- Static launcher/toolbar SVGs now render in their existing server feature owners
+  and pass as ReactNode slots to client interaction leaves. Public component
+  imports and props stay unchanged; all search/theme/capsule/dismissal logic is
+  preserved. No deferred-open lifecycle or font compromise is introduced.
+  This boundary owns a concrete invariant: static glyph definitions stay off
+  the initial client graph. Extended the rendered sensor to cover these glyphs,
+  with the remaining client contact-action glyph as a positive control.
+- Latest npm run check passes lint, strict types and knip (214 files). Measuring
+  the exact production command before the final full browser and release matrix.
+- Server slots measure LCP 3035.974ms/TBT 343.675ms, script 168227 bytes, total
+  262595 bytes, CLS zero. The remaining miss is explicit; no acceptance PASS yet.
+  Run the full browser matrix, then replicate the unchanged budget before more
+  source changes. All abandoned experiments remain absent from the application.
+- Full production browser verification passes: eight width/theme cases with
+  actual toggle round trips, 24 open panels, four keyboard widths, nine routes,
+  two no-JS views, contact draft/invalid/reveal and reduced motion. Serious/critical
+  axe findings are zero; contrast, mobile targets and focus checks pass. Fresh
+  desktop-light and mobile-dark screenshots reviewed.
+- Serial unchanged-budget replications: 3068.041ms LCP / 305ms TBT (fail), then
+  2960.946ms LCP / 273.351ms TBT (all limits pass). Same source/profile/budget.
+- Canonical npm run dev (Turbopack) passes HTTP 200 at 1440/390, dark/light via
+  actual toggles, Inter 32px, no overflow or page errors. An internal-startup
+  harness had returned 500; that discarded probe was not the canonical command.
+  The owned canonical dev process tree exited and port 54669 no longer listens.
+  Optional React Scan/react-grab version warning remains outside scope.
+- Final full build-and-budget attempt: build passes all 47 pages; LCP 2755.594ms
+  passes, TBT 358.5ms fails. Record workstation timing variability; keep application
+  and measurement settings frozen. Finish remaining release checks and repeat the
+  complete command before publication. No merge yet.
+- Two more full unchanged runs remain inconsistent: LCP 3074.292ms/TBT 284ms,
+  then LCP 3076.917ms/TBT 334ms. Do not publish a selected passing sample.
+- Compose React Suspense boundaries around the synchronous server-rendered header,
+  home action and footer contact leaf. These preserve their existing HTML while
+  enabling selective hydration of separate interaction regions. No new loading
+  UI, timer, dependency or measurement setting. Verify no-JS navigation/heading,
+  context/theme behavior, and the full browser matrix again if measurement passes.
+
 Implementation mode, authorized October 16, 2026. Scope: tokens, shared primitives,
 homepage, nav, footer, first paint, tablet overlap, focus and structured data.
 Reference clone D:/Dev/thorbis-design remains read-only. No content lane edits,

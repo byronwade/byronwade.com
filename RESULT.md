@@ -1,69 +1,98 @@
-# Thorbis Design adoption result
+# PR #56 result
 
-Mode: Implementation; repository writes, scoped commits and branch pushes authorized.
+Mode: **Implementation**. Repository writes, normal merges, commits, push and squash
+merge are authorized. No shop, payment, environment/domain or content deletion work.
 
-Decision: a faithful CSS/Tailwind/Base UI **port**, not an installed Thorbis package.
-Source: byronwade/thorbis-design at 46b6654d02fda9d8fde737395185c3141df52cd2.
-The upstream manifest is private, no registry manifest was found, and npm search returned [].
-The reference checkout was read-only. See docs/THORBIS-DESIGN-PORT.md for provenance/sync.
+Decision: retain the Thorbis CSS/Tailwind/Base UI port and fix homepage delivery.
+The upstream source stays pinned to `46b6654d02fda9d8fde737395185c3141df52cd2`;
+this is a port of a private application, not an installed package.
 
-## Acceptance evidence
+## Acceptance
 
-| Criterion | Result | Evidence |
-| --- | --- | --- |
-| 1. Lint, type-check, build | PASS | npm run check (lint, types, knip) and production build pass; 47 static pages generated. |
-| 2. Desktop/mobile, light/dark comparison | PASS | Four side-by-side comparisons at 1440/390; browser.json proves 12 live color roles match, Inter 32px headings, 13px nav and 14px card titles. |
-| 3. Old palette/raw colors | PASS | Native design-contract sensor and grep over migrated UI/docs show no old palette or raw color outside the source token block. |
-| 4. No-JS first paint | PASS | Native SSR contract and 1440/390 no-JS browser screenshots; heading and ancestors visible, no opacity-zero content entrance. |
-| 5. Axe/contrast/keyboard | PASS | Eight home cases plus 24 open shell states: zero serious/critical axe findings; AA text, enabled field boundary contrast and 44px mobile targets. Focus clears sticky header; Escape/shortcut focus return, reduced motion and contact validation/reveal pass. |
-| 6. Performance budget | BLOCKED | largest-contentful-paint: 3266.371 > 3000 |
-| 7. Design ownership/sync docs | PASS | DESIGN.md and docs/THORBIS-DESIGN-PORT.md adopt Thorbis, pin source, map adapters and document AA deviations. |
-| 8. Ready PR distribution/pin disclosure | PASS | [PR #56](https://github.com/byronwade/byronwade.com/pull/56), isDraft=false, main base, explicitly states port and source commit; unmerged. |
+| Criterion | Evidence |
+| --- | --- |
+| Integrate main normally | Merge `2bb59e7` includes #55; merge `c0beb8f` includes main `2101118` (#58 resume/PDF). No history rewrite. |
+| Native tests | `npm test`: 149 pass, zero failures/skips. |
+| Local quality gates | `npm run check`: lint, strict types and knip pass. |
+| Production build | `npm run build`, executed by `npm run perf:budget`: 47 pages pass. |
+| Rendered contracts | `npm run test:rendered`: 8 pass; 38 dates/eight pages, 41 client chunks, resume print/privacy and home bundle boundary. |
+| Performance | Full `npm run perf:budget` exits 0; unchanged mobile profile and all limits. Values below. |
+| Browser/design | `node scripts/verify-thorbis-browser.mjs`: PASS; eight width/theme cases, 24 panels, four keyboard widths, two no-JS widths and nine routes. |
+| External status and merge | Pending push, status inspection and requested squash merge. |
 
-## Verification
+Application commit: `be1b8ba410476a9abbe5dc0ce82f2bff3d808928`. Fresh contact HTML/client and server-environment-name
+scans: zero matches; 20 original font hashes match pinned evidence; protected content,
+budget/runner and font tree diff empty. `git diff --check` passes.
 
-- npm test: 117/117 pass (contact/cache/date/design contracts; fixture transport).
-- npm run check: lint, type-check and knip pass.
-- npm run build: pass, via npm run perf:budget; expected optional Figma/Dribbble warnings allowed.
-- npm run test:rendered: 4/4 pass; 38 dates across eight pages and 41 client chunks checked.
-- node scripts/verify-thorbis-browser.mjs: pass; eight width/theme cases, 24 panels, nine routes, two no-JS widths, contact draft/error/reveal, measured interactive targets, shortcut and reduced-motion checks.
-- Hidden npm run dev smoke at the font-preload checkpoint: 768px light/dark, HTTP 200, no overflow/runtime errors; captured process tree stopped. The final production matrix covers consolidated font delivery.
-- Token/font adapter idempotence, reference cleanliness, source asset SHA checks, contact leak scan and git diff --check recorded with final evidence.
-- npm run perf:budget: FAIL; Lighthouse 12.8.2, default mobile simulated profile, unchanged lighthouse-budget.json.
+## Performance evidence
 
-## Measured dependency cleanup
+Lighthouse 12.8.2, default mobile simulated profile, local Byron-Home. Neither
+`lighthouse-budget.json` nor `scripts/perf-budget.mjs` changed. The baseline below
+is the integrated #55 tree before this follow-up; the earlier PR LCP was 3266ms.
 
-Reused Base UI APIs, nav-config, content loaders, contact actions, obfuscated contact,
-search and theme hooks. Ported canonical tokens/primitives; no new runtime dependency.
-Removed obsolete preview/Framer/hover-card/tooltip and unused query-state provider.
-Deferred contact/breadcrumb code and colocated notifications with contact consumers.
-Shared initial primitive code; removed oversized favicon shadowing; preserved originals.
-Consolidated font ownership in CSS. Contact delivery and published routes stay intact.
-No content/blog, content/projects or shop edits entered the branch diff. Main #52/#53 content, grouping and draft rules are retained.
+| Metric | Integrated baseline | Passing follow-up | Limit |
+| --- | ---: | ---: | ---: |
+| LCP | 3443.108ms | 2896.842ms | 3000ms |
+| FCP | — | 965.614ms | 2000ms |
+| TBT | 559ms | 175ms | 300ms |
+| CLS | — | 0 | 0.1 |
+| Speed Index | — | 1083.628ms | 3000ms |
+| JavaScript | 203017 bytes | 168117 bytes / 9 requests | 300KiB / 10 |
+| All resources | 294456 bytes | 262435 bytes / 14 requests | 1000KiB / 50 |
+| Fonts | — | 49991 bytes / 1 request | 100KiB / 5 |
+| CSS | — | 17963 bytes / 1 request | 50KiB / 3 |
+| Images | — | 0 bytes / 0 requests | 500KiB / 20 |
 
-Mechanical prevention: source pin guard; named-type merge sensor; raw-color/favicon/
-rendered preload contracts; reproducible browser/contrast checks; budget runner exits
-nonzero for exceeded limits. No production deployment. Repository CI is manual-only;
-GitHub default-setup CodeQL started automatically on PR creation despite that file.
-Cancellation was requested for run 38869318654; no Actions were manually dispatched.
-Verification receipts above are exclusively local.
+`docs/evidence/thorbis/performance.json` retains the final complete diagnostics;
+`lcp-runs.json` retains exploratory failures as well as passing samples. Local CPU
+variance was material and the LCP margin is modest. These are lab measurements,
+not a claim about production user latency. Font instancing, inline CSS, deferred
+search and selective hydration experiments were rejected and removed.
+
+## Ownership, reuse and cleanup
+
+Reused the canonical icon API, Phosphor SSR glyphs, Base UI, Button, search data,
+nav-config, theme hook, capsule hook, obfuscated contact and existing verification
+harnesses. No runtime dependency, visual token or font change was introduced here.
+
+Extended the icon implementation into independent modules behind its existing
+curated facade: all 60 glyph/weight/display-name mappings match the original.
+Next's import optimizer resolves those modules; initial sharing is bounded to the
+home, root layout and not-found entries. Server shell wrappers pass static SVG
+slots into client interaction leaves. This removes unrelated preview and static
+shell glyph definitions from initial JavaScript without changing public callers.
+
+Recursive cleanup removed the monolithic icon implementation and inherited header
+clearance variable. Native root scroll padding preserves the same measured focus
+clearance. Existing ResizeObservers now supply initial measurements without an
+extra synchronous read; closed capsules skip motion-token reads until needed.
+No abandoned font assets, deferred-search implementation or hydration experiment
+remains. Main #58's print/footer and resume fixes are retained.
+
+Mechanical prevention: the existing rendered suite now inspects actual initial
+scripts, rejects server-shell/preview glyph definitions, and has a positive
+control for the required client action glyph. It was observed failing before the
+fix and passing after. Existing timing/resource limits remain enforced. Browser
+checks now toggle the real theme control in every matrix case and assert no-JS
+navigation visibility. No automatic Actions workflow was enabled or dispatched.
 
 ## Design evidence and limits
 
-Showcase home/Shared shell: compact experience beside current Thorbis work, then
-qualified proof and writing. Both themes at 1440, 768, 390 and 320px, with focus,
-empty search, invalid contact, touch targets, source tokens and first paint checked.
-Navigation is immediate; no content entrance animation. Occasional retained panels
-use source timing, trigger anchoring, four-times-slower inspection, interruption and
-focus return; reduced motion snaps. Signature font still loads on resume.
+Showcase home / Shared shell. The dominant object remains experience beside the
+current product, followed by qualified proof and writing. No new composition or
+motion was added. Existing panel motion retains trigger anchoring, interruption,
+focus return and reduced-motion behavior; the final harness checks these paths.
 
-Local Chromium viewport emulation is not a physical-device, Safari or screen-reader
-certification. Empty home content arrays were not forced; empty search and invalid
-contact states were exercised. Existing dependency alerts and optional React Scan diagnostic updates
-remain outside this design port. There is no real-user production speed claim. The tested application includes main
-through 20d8527. Main #55 landed afterward in its screenshot/API cone; PR #56 is
-mergeable with it, but those changes are outside this local test receipt.
+Production matrix covers 1440/768/390/320 light and dark, actual theme-toggle
+round trips, 24 open panel states, four keyboard widths, two no-JS widths, nine
+routes, empty search, invalid contact, reveal, touch targets and contrast. The
+final rerun status is recorded above. Development smoke at the earlier client-slot
+checkpoint passed 1440/390 light/dark with actual toggles and no runtime errors.
 
-Remaining acceptance blocker: largest-contentful-paint: 3266.371 > 3000. Final TBT is 229ms against its 300ms limit. The trace concentrates script CPU in the Next main-app bundle; its contribution to LCP requires targeted bootstrap/RSC profiling. Further performance work is required before merge; no budget relaxation or metric substitution was used.
+Physical-device, Safari and screen-reader checks were not run. Empty home content
+arrays were not forced. There is no new image payload or content entrance motion.
+Unrelated dependency updates and shop/payment decisions remain outside scope.
+Next backlog item: review/test dependency PR #50 (Next.js update), with its own
+local regression and performance checks before accepting it.
 
-VERDICT: BLOCKED unchanged mobile performance budget
+VERDICT: LOCAL GATES PASS; final external status/merge receipt pending.

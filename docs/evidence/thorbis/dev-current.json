@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-16T09:28:35.316Z",
+  "mode": "npm run dev (Turbopack)",
+  "cases": [
+    {
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "heading": "I ran the service business. Now I build the software it needed.",
+      "size": "32px",
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "heading": "I ran the service business. Now I build the software it needed.",
+      "size": "32px",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "heading": "I ran the service business. Now I build the software it needed.",
+      "size": "32px",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "heading": "I ran the service business. Now I build the software it needed.",
+      "size": "32px",
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

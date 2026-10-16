@@ -1,0 +1,1708 @@
+{
+  "profile": "Unchanged Lighthouse 12.8.2 default mobile simulated",
+  "note": "Exploratory failures retained; final acceptance is the full npm run perf:budget result. No production latency claim.",
+  "runs": [
+    {
+      "sample": "baseline",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 953.0540000000001,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3443.108,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 559,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 2634.504395043357,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 294456
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 203017
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19498
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17850
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3443.108 > 3000",
+        "total-blocking-time: 559 > 300"
+      ]
+    },
+    {
+      "sample": "inline-css",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1106.21705,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3620.6511499999997,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 923,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 2169.898267992163,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 13,
+          "transferSize": 312317
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 203017
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 55209
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3620.6511499999997 > 3000",
+        "total-blocking-time: 923 > 300"
+      ]
+    },
+    {
+      "sample": "deferred-search",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1072.34875,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3216.0462500000003,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 379,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1669.730842051727,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 291945
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 200326
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19674
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17854
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3216.0462500000003 > 3000",
+        "total-blocking-time: 379 > 300"
+      ]
+    },
+    {
+      "sample": "icon-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 950.01458,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3314.5255150000003,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 416,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1377.255855734351,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 296592
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 205158
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19493
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17850
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3314.5255150000003 > 3000",
+        "total-blocking-time: 416 > 300"
+      ]
+    },
+    {
+      "sample": "scoped-icons",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1053.0733500000001,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3301.2934000000005,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 284,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1384.7582281115317,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 300175
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 208740
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19494
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17850
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3301.2934000000005 > 3000"]
+    },
+    {
+      "sample": "optimized-icons-retry",
+      "command": "node scripts/perf-budget.mjs",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 942.9266,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3189.3899,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 225,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1242.8500112706668,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 286636
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 195200
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19495
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17850
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3189.3899 > 3000"]
+    },
+    {
+      "sample": "bootstrap-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 939.9438,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3137.8876,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 360.0281,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1301.8264027222986,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 277609
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 185991
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19677
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17850
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3137.8876 > 3000",
+        "total-blocking-time: 360.0281 > 300"
+      ]
+    },
+    {
+      "sample": "root-entry-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 937.1264000000001,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3061.6896,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 407,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1043.1100292601222,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 269150
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 177681
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 19540
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3061.6896 > 3000",
+        "total-blocking-time: 407 > 300"
+      ]
+    },
+    {
+      "sample": "server-slots-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 928.6494,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3035.9741000000004,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 343.6753000000001,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1232.430037017134,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262595
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22439
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3035.9741000000004 > 3000",
+        "total-blocking-time: 343.6753000000001 > 300"
+      ]
+    },
+    {
+      "sample": "replication-one",
+      "command": "node scripts/perf-budget.mjs",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1132.0135,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3068.0405,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 305,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1735.208987682693,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262595
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22439
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3068.0405 > 3000",
+        "total-blocking-time: 305 > 300"
+      ]
+    },
+    {
+      "sample": "replication-two",
+      "command": "node scripts/perf-budget.mjs",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 935.2972,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2960.9458,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 273.3514,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1206.90423996562,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262595
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22439
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "sample": "final-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 963.29685,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2755.5937,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 358.5,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1301.231740023365,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262411
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22255
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["total-blocking-time: 358.5 > 300"]
+    },
+    {
+      "sample": "release-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 999.43069,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3074.2920700000004,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 284.0000000000001,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1209.4032759883175,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262411
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22255
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3074.2920700000004 > 3000"]
+    },
+    {
+      "sample": "release-budget-three",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 971.6391,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3076.9172999999996,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 333.9999999999999,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1219.8048400043392,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262298
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22142
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3076.9172999999996 > 3000",
+        "total-blocking-time: 333.9999999999999 > 300"
+      ]
+    },
+    {
+      "sample": "hydration-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 983.89345,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3117.68035,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 396,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1587.0626620303678,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262904
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168227
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22748
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17838
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3117.68035 > 3000",
+        "total-blocking-time: 396 > 300"
+      ]
+    },
+    {
+      "sample": "font-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1237.9837499999999,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3246.6450000000004,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001113270455092975,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 246,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1479.5252772032943,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 15,
+          "transferSize": 284099
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168229
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 71714
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22210
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17846
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3246.6450000000004 > 3000"]
+    },
+    {
+      "sample": "layout-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 950.3669,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2923.55035,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 230,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1063.9419228784523,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262519
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168203
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22262
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17963
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "sample": "acceptance-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 954.6660999999999,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3029.99915,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 267,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1004.3052691175118,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262986
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168202
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22730
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17963
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3029.99915 > 3000"]
+    },
+    {
+      "sample": "observer-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 965.61405,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2896.8421500000004,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 175.0000000000001,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1083.6278200026704,
+          "budget": 3000
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262435
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168117
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22264
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17963
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": []
+    }
+  ]
+}

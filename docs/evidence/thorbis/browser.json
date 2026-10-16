@@ -1,12 +1,13 @@
 {
-  "checkedAt": "2026-10-16T07:41:46.851Z",
-  "chrome": "Chrome/155.0.8059.41",
+  "checkedAt": "2026-10-16T10:24:11.915Z",
+  "chrome": "Chrome/155.0.8059.80",
   "source": "46b6654d02fda9d8fde737395185c3141df52cd2",
   "axe": "4.10.3",
   "cases": [
     {
       "width": 1440,
       "theme": "light",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -296,6 +297,7 @@
     {
       "width": 1440,
       "theme": "dark",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -585,6 +587,7 @@
     {
       "width": 390,
       "theme": "light",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -869,6 +872,7 @@
     {
       "width": 390,
       "theme": "dark",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -1153,6 +1157,7 @@
     {
       "width": 768,
       "theme": "light",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -1412,6 +1417,7 @@
     {
       "width": 768,
       "theme": "dark",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -1671,6 +1677,7 @@
     {
       "width": 320,
       "theme": "light",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -1923,6 +1930,7 @@
     {
       "width": 320,
       "theme": "dark",
+      "themeToggleRoundTrip": true,
       "axe": [],
       "geometry": {
         "overflow": false,
@@ -2298,7 +2306,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.209769) 0px 0px 0px 0.629308px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.21311) 0px 0px 0px 0.63933px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2412,7 +2420,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.21311) 0px 0px 0px 0.63933px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.40103) 0px 0px 0px 1.20309px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2667,7 +2675,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.40103) 0px 0px 0px 1.20309px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.209769) 0px 0px 0px 0.629308px, oklab(0.52 -0.0165891 -0.169189 / 0.22) 0px 8px 24px 0px, rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2704,8 +2712,8 @@
     }
   ],
   "noJavaScript": [
-    { "width": 1440, "visible": true },
-    { "width": 390, "visible": true }
+    { "width": 1440, "visible": true, "navigationVisible": true },
+    { "width": 390, "visible": true, "navigationVisible": true }
   ],
   "routes": [
     { "path": "/projects", "status": 200, "h1": "Projects" },
