@@ -146,9 +146,6 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		morphRef,
 		compactRef,
 		panelRef,
-		durationMs: 240,
-		openDelayMs: 40,
-		closeDelayMs: 80,
 		onOpened: () => {
 			if (mode === "search") {
 				inputRef.current?.focus({ preventScroll: true });
@@ -308,7 +305,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							ref={compactRef}
 							inert={open}
 							className={cn(
-								"flex items-center gap-0.5 p-1.5 transition-opacity duration-150",
+								"flex items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
 								open && "pointer-events-none"
 							)}
 						>
@@ -418,7 +415,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							inert={!open}
 							tabIndex={-1}
 							className={cn(
-								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-150",
+								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
 								panelWidth,
 								open ? "pointer-events-auto" : "pointer-events-none"
 							)}
@@ -447,7 +444,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										rel="noreferrer"
 										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
 									>
-										<Heart className="size-4 fill-white" />
+										<Heart className="size-4 fill-current" />
 										Donate via GitHub Sponsors
 									</a>
 									<button

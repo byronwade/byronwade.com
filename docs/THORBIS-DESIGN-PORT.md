@@ -22,13 +22,13 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | Local owner | Thorbis source | Translation |
 | --- | --- | --- |
 | app/globals.css token block | src/styles/tokens.generated.css; scripts/generate-stylex-tokens.mjs | Color, spacing, control dimensions, type sizes/line heights, radii, shadows, motion and layers copied; color names prefixed --thorbis- to avoid Tailwind collisions |
-| app/globals.css light overrides | src/styles.css, html[data-resolved="light"] and following shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
+| app/globals.css light overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
-| lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for personal launcher |
+| lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for the existing resume signature |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/ui/card.tsx | src/components/ui/card.tsx | Panel tone, source large radius and panel elevation; existing slots and size contract |
-| components/ui/badge.tsx | src/components/ui/badge.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
+| components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
 | components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
 | components/layout/nav-dock.tsx | src/components/site/site-shell.stylex.ts navLink/navLinkActive | Inter 13px, source pill, selected tone/short shadow, 44px targets; all destinations visible without JS |
 | conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One flow header, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
@@ -50,9 +50,12 @@ for introducing a new visual choice.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.
-- Source status colors may need a documented contrast adjustment when used for
-  small text. Rendered contrast/axe evidence decides, not visual intuition.
-- Personal signature is an identity asset, never a second body/heading typeface.
+- Canvas-computed contrast exposed small status text at 4.09:1 (warning) and
+  4.42:1 (success) on tinted badges. Apply the source badge warning foreground
+  recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
+  The dark blue action uses the source canvas for its label to meet AA; source
+  token values remain unchanged. These are explicit accessibility adaptations.
+- Personal resume signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization
 

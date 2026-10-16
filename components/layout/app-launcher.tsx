@@ -14,9 +14,9 @@ const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : Rea
 /** Every product under the byronwade umbrella, the launcher is the cross-app switcher. */
 const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 	{
-		name: "byronwade/ui",
-		desc: "Design system & morph chrome",
-		href: "https://ui.byronwade.com",
+		name: "Thorbis Design",
+		desc: "Interface guidelines & components",
+		href: "https://design.thorbis.com",
 		mark: "U",
 	},
 	{ name: "GoodMarks", desc: "Reviews & reputation", href: "https://goodmarks.io", mark: "G" },
@@ -87,9 +87,6 @@ export function AppLauncher() {
 		morphRef,
 		compactRef,
 		panelRef,
-		durationMs: 200,
-		openDelayMs: 30,
-		closeDelayMs: 70,
 		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
 	});
 
@@ -142,7 +139,7 @@ export function AppLauncher() {
 					ref={compactRef}
 					inert={open}
 					className={cn(
-						"flex flex-row items-center gap-1 p-[3px] transition-opacity duration-150",
+						"flex flex-row items-center gap-1 p-[3px] transition-opacity duration-(--motion-fast)",
 						open && "pointer-events-none"
 					)}
 				>
@@ -179,7 +176,7 @@ export function AppLauncher() {
 					inert={!open}
 					tabIndex={-1}
 					className={cn(
-						"absolute top-0 left-0 w-80 opacity-0 outline-none transition-opacity duration-150",
+						"absolute top-0 left-0 w-80 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
 						open ? "pointer-events-auto" : "pointer-events-none"
 					)}
 				>

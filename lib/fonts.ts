@@ -17,6 +17,7 @@ export const geistMono = Geist_Mono({
 
 // Custom signature font for the wordmark / personal branding
 export const customFont = localFont({
+	preload: false,
 	src: [
 		{
 			path: "../public/fonts/Modelistasignature-ownAV.otf",

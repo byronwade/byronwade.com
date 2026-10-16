@@ -138,7 +138,6 @@ export const Clock = duotone(PhClock, "Clock");
 export const FileText = duotone(PhFileText, "FileText");
 export const Flame = duotone(Fire, "Flame");
 export const Folder = duotone(PhFolder, "Folder");
-export const FolderGit2 = duotone(PhGitBranch, "FolderGit2");
 export const GitCommit = duotone(PhGitCommit, "GitCommit");
 export const GitFork = duotone(PhGitFork, "GitFork");
 export const Hash = duotone(PhHash, "Hash");

@@ -19,7 +19,7 @@
     "knip": "knip",
     "lint": "ultracite check",
     "lint:fix": "ultracite fix",
-    "perf:budget": "next build && lighthouse http://localhost:3000 --budget-path=./lighthouse-budget.json",
+    "perf:budget": "next build && node scripts/perf-budget.mjs",
     "perf:lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
     "start": "next start",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",

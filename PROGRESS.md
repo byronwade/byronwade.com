@@ -24,3 +24,45 @@ production deployment, or merge.
 - Thorbis revision 46b6654d02fda9d8fde737395185c3141df52cd2, private manifest.
 - Registry/npm verification and live inspection pending.
 - No implementation or check claims yet.
+
+## Design decision and loop 2 — port implementation
+
+- Audience: clients, employers and peers; web desktop/tablet/phone.
+- Profiles: Showcase home, Shared shell/primitives. Pattern: compact claim and
+  proof; dominant object is Byron's work, current Thorbis product beside experience.
+- Alternatives: full-height editorial title (rejected: hides work and repeats
+  original whitespace defect); card-only marketing grid (rejected: weak reading
+  hierarchy); chosen compact opening, evidence lists and quiet product panel.
+- Reuse: existing Base UI primitives, contact action/sheet, search, theme hook,
+  nav-config, project/blog loaders. Port existing primitive recipes, do not add kit.
+- State plan: static home content has no loading dependency; existing empty list
+  messages, contact validation/error/success retained. Light/dark, keyboard, touch,
+  reduced motion, 1440/768/390/320 and no-JS will be exercised in browser.
+- Motion gate: frequent navigation immediate; hover color only; no content
+  entrances. Occasional shell panels retain source-token motion and reduced path.
+- Package search returned []; no registry.json outside node_modules. Port chosen.
+- Token generator reads upstream only, namespacing source colors and preserving
+  local semantic aliases. Inter replaces Geist Sans; Geist Mono retained.
+- Header now in flow with navigation's own row below desktop. Inactive toolbar
+  panels inert, compact controls inert while open, footer has stable contrast.
+- First meaningful plan commit aff0151 pushed. Implementation checks pending;
+  npm ci still running. Toolkit reserve failed on a missing configured root.
+
+## Loop 3 — static and rendered verification
+
+- Port commit a5347a8 pushed, source remains 46b6654. Lint passed before new
+  verification scripts. Type-check passed; knip passed after restoring existing
+  GitHub social preview and removing an unused public NavItem type.
+- npm test: 39/39 passed. npm run build: passed (39 routes; expected external
+  Figma/Dribbble warnings). npm run test:rendered: 3/3 passed including new SSR
+  homepage content sensor and existing contact/portfolio contracts.
+- Browser initial light/1440: no axe violations; h1 at y=164, Inter 32px, no
+  overflow. Live token equality caught upstream's additional theme corrections
+  before the primary light block; generator now reads all explicit theme blocks
+  and excludes legacy fallback hex values. Rebuild/comparison pending.
+- Resting launcher/toolbar elevation removed to match source header tools.
+  Inter wordmark adopted; personal signature loads only when resume needs it.
+- Perf command now owns a hidden production server on an isolated port and
+  enforces timing/byte/request budgets rather than only printing Lighthouse.
+- Added browser matrix and raw-color/first-paint regression sensors. Formatting
+  briefly normalized unrelated CRLF files; git diff contains no changes in them.

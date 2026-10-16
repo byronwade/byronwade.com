@@ -172,7 +172,7 @@ loading, and layout stability. See §12.
 Thorbis source values and light/dark overrides are ported into app/globals.css.
 Existing semantic names alias those tokens so all routes share the new system.
 Inter is the UI/body face; Geist Mono is for code and technical data. The local
-signature face remains available only to the existing personal launcher.
+signature face remains available only to the existing resume identity.
 
 Use Thorbis copy roles (12, 13, 14, 16px), heading roles (16, 20, 32px), 4px
 spacing grid, 8/10/12/14px radii, source shadows and control sizes. Font sizes,

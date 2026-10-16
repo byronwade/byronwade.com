@@ -10,12 +10,22 @@ const generated = readFileSync(resolve(source, "src/styles/tokens.generated.css"
 const styles = readFileSync(resolve(source, "src/styles.css"), "utf8").replaceAll("\r\n", "\n");
 const declarations = (text) => [...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)];
 const tokens = new Map(declarations(generated).map((match) => [match[1], match[2]]));
-const lightStart = styles.indexOf('html[data-resolved="light"] {\n  color-scheme: light;');
-const lightEnd = styles.indexOf("@media (prefers-color-scheme: light)", lightStart);
-if (lightStart < 0 || lightEnd < lightStart) {
-	throw new Error("Thorbis light theme source changed; inspect before regenerating");
-}
-const light = new Map(declarations(styles.slice(lightStart, lightEnd)).map((m) => [m[1], m[2]]));
+const themeEntries = (theme) => {
+	const blocks = [
+		...styles.matchAll(new RegExp(`html\\[data-resolved="${theme}"\\]\\s*\\{([^}]+)\\}`, "g")),
+	];
+	if (!blocks.length) {
+		throw new Error(`Thorbis ${theme} theme source changed; inspect before regenerating`);
+	}
+	return new Map(
+		blocks.flatMap((block) =>
+			declarations(block[1])
+				.filter((match) => tokens.has(match[1]) && !match[2].includes("#"))
+				.map((match) => [match[1], match[2]])
+		)
+	);
+};
+const light = themeEntries("light");
 // Namespacing avoids collisions with Tailwind's --color-accent semantic contract.
 const rename = (text) =>
 	text.replaceAll("--color-", "--thorbis-").replaceAll("--text-", "--thorbis-text-");
@@ -25,7 +35,9 @@ const emit = (entries) =>
 tokens.delete("--font-sans");
 tokens.delete("--font-mono");
 const dark = new Map(
-	[...tokens].filter(([name]) => name.startsWith("--color-") || name.startsWith("--shadow-"))
+	[...tokens, ...themeEntries("dark")].filter(
+		([name]) => name.startsWith("--color-") || name.startsWith("--shadow-")
+	)
 );
 const section = `/* Thorbis Design port: 46b6654d02fda9d8fde737395185c3141df52cd2.
  * Source: src/styles/tokens.generated.css + src/styles.css light overrides.

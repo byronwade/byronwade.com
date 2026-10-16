@@ -9,14 +9,7 @@
     "types/**/*.{ts,tsx}"
   ],
   "ignore": ["**/node_modules/**", ".next/**"],
-  "ignoreDependencies": [
-    "@biomejs/biome",
-    "highlight.js",
-    "postcss-load-config",
-    "sharp",
-    "tailwindcss",
-    "tw-animate-css"
-  ],
+  "ignoreDependencies": ["@biomejs/biome", "postcss-load-config", "sharp"],
   "ignoreBinaries": ["docker-compose"],
   "tags": ["-public"]
 }
