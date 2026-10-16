@@ -115,3 +115,9 @@ production deployment, or merge.
 - Replaced that race with an `onClosed` callback on the existing useCapsuleMorph lifecycle. Pending focus targets are consumed after the closing DOM state commits. Toolbar button clicks provide their invoker explicitly; shortcuts retain current focus.
 - Fresh serial gates are running after the lifecycle correction. Then rerun the focused disclosure probe and full browser evidence, followed by final Lighthouse and publication.
 - Local helper directory: C:/Users/bcw19/AppData/Local/Temp/projects-refresh-20261015. `qa-server.cjs` provides the bounded preview; `verify.cjs` captures/asserts the UI; `content-check.cjs` checks content preservation and build routes. Use Node 24.21.0 from C:/Users/bcw19/AppData/Roaming/fnm/node-versions/v24.21.0/installation/node.exe. Runtime JSON evidence is only authoritative after those assertions exit 0.
+
+## Loop 6 result / publication integration
+- Source fix 7c5156d passed all four gates, 39 contact tests, and rendered contact contract 1/1.
+- Focused disclosure probe passed 3/3. Full production browser assertions now pass: 11 viewport/theme observations, all 24 HTTP headings and dates, current 9 + earlier 15, no overflow, visible Tab/Enter focus with no hidden ancestor, all 6 disclosure open/Escape/focus-return cases across normal/reduced motion, footer email reveal, zero page errors. All eight screenshots were regenerated before revealing contact details.
+- The prior harness wait for total network quiescence was inappropriate for background prefetch activity; readiness now checks the destination heading and committed frames. Product assertions are unchanged.
+- origin/main advanced to 65596a5 (#48, owner-only contact delivery). It changes only contact action/tests/docs. Rebase this unpublished branch onto it and rerun the local gates before publishing; Projects source and captured UI are unchanged by that integration.
