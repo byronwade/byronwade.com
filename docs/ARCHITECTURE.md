@@ -34,6 +34,17 @@ the header.
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/privacy`, `/terms` | Legal |
 
+### Resume PDF export
+
+`/api/resume-pdf` prints `/resume` only after a successful HTTP navigation.
+An HTTP error or missing navigation response returns the existing generic 500
+JSON with `Cache-Control: no-store`, so an error page cannot be cached as a PDF.
+Successful exports retain the shared filename and one-hour cache policy. Email
+hydration remains best-effort; the server-rendered record can print without it.
+The browser closes on both success and failure. Native Node regressions in
+`tests/resume-pdf-route.test.mjs` exercise the route with a synthetic browser;
+they do not launch Chromium or call production.
+
 ## Components
 
 ```

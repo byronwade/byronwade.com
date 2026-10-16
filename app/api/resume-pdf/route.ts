@@ -28,10 +28,14 @@ export async function GET() {
 				? siteUrl
 				: `http://localhost:${process.env.PORT ?? "3000"}`;
 
-		await page.goto(`${origin}/resume`, {
+		const response = await page.goto(`${origin}/resume`, {
 			waitUntil: "networkidle0",
 			timeout: 30_000,
 		});
+		// Navigation can resolve on HTTP errors. Never print and cache an error page.
+		if (!response?.ok()) {
+			throw new Error("Resume page failed to load");
+		}
 
 		// The record is server-rendered; the email line is decoded after hydration
 		// (docs/SPAM_PROTECTION.md), so wait for it rather than for an arbitrary delay.
@@ -55,7 +59,7 @@ export async function GET() {
 		});
 
 		// Return PDF as response
-		return new NextResponse(pdf as BlobPart, {
+		return new NextResponse(new Uint8Array(pdf).buffer, {
 			headers: {
 				"Content-Type": "application/pdf",
 				"Content-Disposition": `attachment; filename="${RESUME_PDF_FILENAME}"`,
@@ -64,7 +68,10 @@ export async function GET() {
 		});
 	} catch (error) {
 		console.error("PDF generation error:", error);
-		return NextResponse.json({ error: "Failed to generate PDF" }, { status: 500 });
+		return NextResponse.json(
+			{ error: "Failed to generate PDF" },
+			{ status: 500, headers: { "Cache-Control": "no-store" } }
+		);
 	} finally {
 		// Ensure browser is always closed to avoid leaks
 		if (browser) {
