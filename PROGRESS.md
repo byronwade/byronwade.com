@@ -81,3 +81,23 @@ production deployment, or merge.
 - Render exposed repeated taglines in featured rows: second line now uses the existing excerpt. Long titles wrap. Project links compose the existing focus-ring utility.
 - Unknown classifications no longer default to Hobby; six unsupported categories are omitted and the existing detail Badge shows neutral Project. Date input is normalized at the loader boundary. No new primitive, token, or motion.
 - Fresh lint/type-check/knip are running after these corrections. Final build, production rendering, performance budget, and PR remain.
+
+## Loop 3 checks
+- After final corrections: lint exit 0 (121 files), type-check exit 0, knip exit 0. Implementation committed as fcf2028.
+- `npm run perf:budget -- --chrome-flags=--headless=new --output=json --output-path=<local temp>/home-lighthouse.json --quiet`: final-source embedded production build passed (17.0s compilation, 30.4s TypeScript, 47/47 generated pages). Lighthouse portion still running.
+- Final source content assertion exit 0: 24 = 9 + 15, all 9 featured, 8 unknown dates absent, 9 TODOs, zero new metrics, all 15 earlier bodies/non-grouping fields unchanged, manifest contains all 24 detail routes. Evidence: docs/evidence/projects-refresh/content-evidence.json.
+- Raw owner email scans: zero matches in .next/static and prerendered .next/server/app HTML.
+- Latest fetch still has no origin/bot/design-system, and no open PR for that head. Conditional integration remains pending its publication; PR will declare the dependency.
+- Hidden dev server stopped by saved process identity; production server on 3000 remains for final evidence. No production deployment.
+
+## Loop 4: verification findings
+- Production browser pass: 11 viewport/theme observations, 24 detail URLs with expected SSR headings, 9 + 15 exact index links, no overflow at 320/390/768/1440/2560, desktop Tab/Enter with a visible ring, zero page errors. Eight production screenshots replace the dev drafts.
+- Targeted Lighthouse confirmed neutral StatusPill contrast at 4.3:1 and focusable descendants in two closed global panels. Fixed the canonical neutral variant with existing foreground token; closed panels and inactive compact controls are inert; explicit closes restore focus to the opener. No motion values changed.
+- Final review corrected the date adapter to preserve date-only calendar days in all 16 dated entries. Native content assertions cover those dates plus unknown dates/categories.
+- Lighthouse 12.8.2 removed budget support (upstream #15950); the existing CLI flag is ignored. Manual budget comparisons show misses on / and /projects (LCP ~7.1s, TBT 0.9–1.0s, script/font bytes and requests). No baseline, regression, or performance-improvement claim. Restoring enforcement is recorded in PROJECT_PROFILE.md and docs/PERFORMANCE.md.
+- Fresh serial lint/type-check/knip/build running after these small accessibility and date corrections. Browser disclosure open/Escape/focus-return checks and final screenshots will follow.
+- origin/main advanced to 8765f9d (contact corrections, #47). After committing this loop, integrate it on this unpublished branch and verify the combined result. origin/bot/design-system remains absent.
+
+## Loop 4 check result
+- Serial `npm run lint`, `npm run type-check`, `npm run knip`, and `npm run build`: all exit 0 after the date and disclosure/contrast fixes. Lint checked 124 files; build compiled in 29.2s, checked TypeScript in 28.2s, and generated 47/47 pages.
+- Commit these verified corrections, then rebase this unpublished branch onto origin/main at 8765f9d. Recheck the combined result, including the merged contact regressions, before final production evidence and PR publication.

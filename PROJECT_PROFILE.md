@@ -216,7 +216,14 @@ use them correctly.
 
 ## Performance budgets
 
-From `lighthouse-budget.json`, applied to `/*`.
+Targets from `lighthouse-budget.json`, scoped to `/*`.
+
+The current `perf:budget` command builds and reports on the homepage. Installed
+Lighthouse 12.8.2 does not read `--budget-path`: built-in budgets were removed in
+[Lighthouse 12](https://github.com/GoogleChrome/lighthouse/pull/15950). Its exit code
+does not establish a budget pass. Compare report values with the file until local
+budget enforcement is restored; the projects refresh records both homepage and
+Projects measurements in `docs/evidence/projects-refresh/performance-evidence.json`.
 
 | Surface | Metric | Budget | Measurement method | Environment |
 | --- | --- | --- | --- | --- |
@@ -247,6 +254,7 @@ the user's instruction each time.
 | Automated tests | Contact-action regressions via `npm test`; other domains uncovered | Contact changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
+| Performance budget enforcement | `perf:budget` reports Lighthouse results but its removed budget flag is ignored | No | Restore a local report-to-budget assertion with a measured baseline; do not treat CLI exit 0 as a budget pass | `docs/evidence/projects-refresh/` |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
 | React Compiler bailouts | 7, all `try`/`catch` around `await` | No | Leave unless the surrounding code is being rewritten anyway | `AGENTS.md` § Audit tooling |
