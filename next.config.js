@@ -60,7 +60,7 @@ const nextConfig = {
 		// Next's framework/lib groups keep React and the router shared. Avoid
 		// extra tiny vendor/default groups per entry: the homepage must stay
 		// within the existing ten-script budget, including Vercel diagnostics.
-		return {
+		const client = {
 			...production,
 			optimization: {
 				...config.optimization,
@@ -92,6 +92,7 @@ const nextConfig = {
 				},
 			},
 		};
+		return client;
 	},
 
 	...(process.env.NODE_ENV === "production" && {

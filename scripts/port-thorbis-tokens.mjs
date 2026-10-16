@@ -81,7 +81,7 @@ const fontStart = "/* thorbis-fonts:start */";
 const fontEnd = "/* thorbis-fonts:end */";
 const current = readFileSync(target, "utf8").replace(
 	/\/\* thorbis-fonts:start \*\/[\s\S]*?\/\* thorbis-fonts:end \*\//,
-	`${fontStart}\n/* Thorbis src/styles.css font faces @ ${sourceCommit}; licenses: public/fonts/*-OFL.txt. */\n${fontFaces.join("\n")}\n${fontEnd}`
+	`${fontStart}\n\n/* Thorbis src/styles.css font faces @ ${sourceCommit}; licenses: public/fonts/*-OFL.txt. */\n\n${fontFaces.join("\n\n")}\n\n${fontEnd}`
 );
 if (!current.includes(fontStart)) {
 	throw new Error("Missing Thorbis font destination marker");

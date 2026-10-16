@@ -397,7 +397,7 @@ production deployment, or merge.
 ## Review handoff
 
 - Pushed source 9580afa and evidence 63ada08. Ready PR:
-  https://github.com/byronwade/byronwade.com/pull/56 — OPEN, isDraft=false,
+  [PR #56](https://github.com/byronwade/byronwade.com/pull/56) — OPEN, isDraft=false,
   base main, head bot/design-system, MERGEABLE. No merge or deployment requested.
 - PR body says PORT (no package), full source 46b6654d02fda9d8fde737395185c3141df52cd2,
   four immutable side-by-side screenshot links, actual local results and LCP blocker.
