@@ -56,4 +56,8 @@ components/
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
+- `lib/screenshot-capture.ts`. Server-only project previews: `/api/screenshot`
+  returns a same-origin image URL and `/api/screenshot/image` fetches the capture
+  with the provider key, only for published project URLs at the sizes in
+  `lib/screenshot-viewports.ts`
 - `lib/actions/send-email.ts`. contact form server action (Resend)
