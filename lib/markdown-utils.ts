@@ -1,11 +1,33 @@
 /** Hoisted so it compiles once, not per call. */
 const HEADING_LINE = /^#\s+\S/;
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
+const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/;
 const LINE_BREAK = /\r?\n/;
 const FENCE_LINE = /^\s*(```|~~~)/;
 const ATX_HEADING = /^(#{2,3})\s+(.+?)\s*#*\s*$/;
 
 import { format, isValid, parseISO } from "date-fns";
+
+/**
+ * Validate authored front-matter dates without inventing missing parts or using
+ * the build machine's timezone. Calendar strings retain their authored day;
+ * YAML Date objects retain the full instant, including any authored time.
+ */
+export function parseContentDate(value: unknown): string | undefined {
+	if (value instanceof Date) {
+		return isValid(value) ? value.toISOString() : undefined;
+	}
+	if (typeof value !== "string") {
+		return;
+	}
+
+	const date = value.trim();
+	if (!(DATE_ONLY.test(date) || ISO_TIMESTAMP.test(date))) {
+		return;
+	}
+	// Metadata, sorting and RSS also consume these values with the native parser.
+	return isValid(parseISO(date)) && Number.isFinite(Date.parse(date)) ? date : undefined;
+}
 
 export interface TocItem {
 	depth: 2 | 3;
