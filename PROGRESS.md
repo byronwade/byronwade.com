@@ -39,7 +39,7 @@
 - Risks: no browser Stripe SDK, bespoke palette, or imagery; keep secrets server-only,
   validate product IDs and checkout response, preserve the site's performance budget.
 
-## Loop 1 — reconnaissance
+## Loop 1 â€” reconnaissance
 
 - Read AGENTS.md, CLAUDE.md, DESIGN.md, PROJECT_PROFILE.md, docs/UI_GUIDELINES.md,
   shared toolkit guidance, and Stripe/commit/browser skills.
@@ -47,7 +47,7 @@
 - No remote design-system branch appeared in the initial branch listing; recheck
   before publishing. Next: inspect equivalent components and server contracts.
 
-## Loop 2 — implementation and focused regression checks
+## Loop 2 â€” implementation and focused regression checks
 
 - Created the three routes, catalog, native server-action form, and Checkout
   boundary using platform fetch; no new dependency, token, or primitive.
@@ -66,7 +66,7 @@
 - Next: lint/type-check/build, render states and viewports, axe and keyboard,
   performance budget, full diff review, design-system recheck, and PR evidence.
 
-## Loop 3 — full verification
+## Loop 3 â€” full verification
 
 - Dependency install completed (653 packages, approximately 9 minutes); no lockfile
   or dependency changes. Native Node 24 shop regressions now pass 22/22 after
@@ -80,7 +80,7 @@
   no-key/live-key states, no-JS preview, axe, light/dark and responsive screenshots.
   The fixture is test evidence only, never a real Stripe session.
 
-## Loop 4 — rendered findings
+## Loop 4 â€” rendered findings
 
 - Full lint passes (130 files), type-check passes, knip passes, and no-key
   production build passes. Expected Figma/Dribbble credential warnings only.
@@ -95,7 +95,7 @@
 - Next: rebuild/re-run checks after this fix, finish axe/keyboard/fixture states,
   measure performance, inspect secrets/diff, and publish the branch/ready PR.
 
-## Loop 5 — verification recovery
+## Loop 5 â€” verification recovery
 
 - Native-link regressions correctly failed against the old production HTML
   (red). Rebuild is in progress to establish green against the corrected routes.
@@ -118,7 +118,7 @@
   important animation opt-out (`animate-none!`); no shared motion/token change.
   Browser verification now explicitly checks the normal-motion computed value.
 
-## Loop 6 — axe remediation in the shared shell
+## Loop 6 â€” axe remediation in the shared shell
 
 - Latest shop build, full type-check, lint, knip, and three rendered tests pass.
 - Full-page axe exposed existing shared-shell failures, not shop content:
@@ -134,7 +134,7 @@
 - Format generated JSON evidence before final lint. The failed axe report is an
   honest intermediate artifact and will be replaced only by fresh rendered results.
 
-## Loop 7 — keyboard clearance and final boundary review
+## Loop 7 â€” keyboard clearance and final boundary review
 
 - Full-page axe now reports zero violations for no-key desktop/mobile, both themes,
   tablet, wide, 320px reflow, both return routes, live-key fallback, and enabled
@@ -150,7 +150,7 @@
 - Final release gates are running on this source; then regenerate all evidence,
   run the prescribed performance budget plus `/shop`, and publish.
 
-## Loop 8 — acceptance evidence and performance findings
+## Loop 8 â€” acceptance evidence and performance findings
 
 - Final source: lint, type-check, knip, no-key build pass; native tests 57/57;
   rendered tests 3/3. Production browser pass completed: 13 scenarios, zero axe
@@ -167,7 +167,7 @@
 - CLI exit 0 emitted no budget audits. Final evidence will explicitly compare raw
   metrics/resources to the canonical budget; no performance-pass claim is made.
 
-## Loop 9 — final ARIA review and comparison evidence
+## Loop 9 â€” final ARIA review and comparison evidence
 
 - Measured unchanged `/privacy`: score 73, LCP 4.4s, font transfer identical at
   165.68 KiB, scripts 388.01 KiB versus shop 389.76 KiB. Both exceed shared budgets.
@@ -184,13 +184,13 @@
 - Re-running local gates and the keyboard/axe matrix for this focused lifecycle
   correction, then commit evidence, final secret/diff review, push, and ready PR.
 
-## Loop 10 — verified compiler fix and final browser evidence
+## Loop 10 â€” verified compiler fix and final browser evidence
 
 - Cold compiler traces identified the apparent stalls: the icon barrels loaded
   1,512 CSR and 1,513 SSR declarations. The package explicitly exports public
   per-icon SSR and types entry points, so the canonical module now uses those.
   No icon exports, weights, consumers, dependency versions, or visual system changed.
-- After trace: zero CSR and 59 SSR declarations; total source files 4,479 → 1,508.
+- After trace: zero CSR and 59 SSR declarations; total source files 4,479 â†’ 1,508.
   Strict cold type-check, knip, production build, and three rendered tests pass.
   Import cleanup and trace evidence committed as `3b8417c`.
 - Latest production browser matrix passes: 13 scenarios, zero axe violations,
@@ -201,7 +201,7 @@
   `tsconfig.tsbuildinfo`, and re-run the standard lint/type-check commands. Then
   finish the results/PR with shared performance-budget debt explicitly recorded.
 
-## Loop 11 — final upstream integration
+## Loop 11 â€” final upstream integration
 
 - Standard lint/type-check passed after clearing the stale generated cache;
   native tests 57/57 and rendered tests 3/3 passed on the pre-integration tree.
@@ -216,7 +216,7 @@
 - No `origin/bot/design-system` ref was available at the latest fetch. Document
   the pending design-system dependency in the PR and recheck before publication.
 
-## Loop 12 — ready for publication
+## Loop 12 â€” ready for publication
 
 - Current source includes main `8765f9d`. All four local release gates pass without
   a Stripe key. Native tests 62/62; rendered tests 3/3; post-merge browser matrix
@@ -232,7 +232,7 @@
   and open a ready PR to main. Never merge or deploy. Re-fetch the design-system
   ref immediately before publication and note the dependency if still unavailable.
 
-## Loop 13 — preserve owner-only contact delivery
+## Loop 13 â€” preserve owner-only contact delivery
 
 - Before publication, main advanced again to `65596a5` (PR #48). Merged it as
   `d4fbe38` so the branch preserves owner-only contact delivery. The merge changed
@@ -350,7 +350,7 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
 - `.github/workflows/ci.yml` is manual-only. The profile records a separate
   repository CodeQL default-setup limitation; do not change repository settings.
 
-## PR #49 check-repair loop — 2026-10-16
+## PR #49 check-repair loop â€” 2026-10-16
 
 Operating mode: Implementation; commits/push to bot/shop and PR-body updates authorized.
 Target and acceptance criteria: merge origin/main without rewriting history; resolve
@@ -497,3 +497,208 @@ poll gh pr checks 49 for up to 20 minutes and update the PR with actual results.
 - Final step: commit/push these report-only changes, verify the final head's
   checks and ancestry, and refresh the PR body with the exact final head.
   This handoff is rebased onto main by merge; PR 49 is not merged into main.
+
+## Integrated PR 52 historical progress
+
+The following records PR 52 only; current PR 49 permissions remain above.
+
+### AI agents blog draft progress
+
+Operating mode: Implementation. Stay in `bot/blog-post` in this worktree.
+
+Plan: sync origin/main; read all six existing posts and content consumers; write
+one 900â€“1500 word first-person draft; add minimal centralized draft exclusion;
+verify local rendering with screenshots and production exclusion; run local
+lint, type-check, knip, and build; review the diff; push and open a ready PR.
+
+Acceptance: valid existing frontmatter plus `draft: true`; 900â€“1500 visible
+words; dev slug renders; production listing hides the draft; all author TODOs
+listed in the PR; checks pass. No production deployment, PR merge, external messages,
+new design primitives, or edits to other worktrees.
+
+Existing candidates: `lib/blog.ts` owns loading; `/blog`, RSS, sitemap, route
+generation, and search consume it. No draft filtering exists. Extend that owner
+instead of adding route-specific filters. Reuse existing Markdown rendering.
+Dependency cone: one new post, blog loader, focused native Node regression,
+and these local handoff notes. No visual or motion changes planned.
+
+Loop 1: merged origin/main at c69030b, including contact and Node 24 changes.
+Read all six posts and required guidance. Draft written (1159 whitespace-delimited
+body words, excluding frontmatter and HTML comments); three author TODOs.
+Extended the canonical blog loader to hide drafts outside development, sharing
+that boundary with list, direct lookup, and slug consumers. Removed duplicated
+frontmatter parsing and raw slug enumeration. Added native Node regression
+coverage for development, production, test, explicit false, and absent draft.
+No UI, token, or motion changes. Existing reading surface: prose dominant,
+workflow sequence; inspect desktop/mobile, light/dark, keyboard/reduced motion.
+
+Toolkit reservation and job launcher both failed on a missing unrelated configured
+root. Do not change toolkit config; use ordinary hidden local command execution.
+Dependencies absent in this worktree; npm ci running. Design-system branch is not
+yet on origin; recheck before opening the PR. Next: commit/push, run checks and
+rendered verification, then record results here and in RESULT.md.
+
+Loop 2: merged origin/bot/design-system at aff0151. This revision contains the
+adoption plan only, with no token/component changes yet. Its intent is preserved
+below. Check for a newer revision before opening the PR; branch already pushed,
+so use merge (never rebase/force-push). The only merge conflict was this handoff.
+
+Design-system lane handoff: scope is tokens, shared primitives, homepage, nav,
+footer, first paint, tablet overlap, focus, and structured data. Thorbis source
+revision 46b6654d02fda9d8fde737395185c3141df52cd2, private manifest. Its plan:
+inspect source/live examples and registry; port through existing CSS/Tailwind/
+Base UI owners; document provenance; run local checks, accessibility, no-JS,
+responsive/theme screenshots and perf budget; open a ready PR without merging.
+No source implementation or verification was included in the fetched revision.
+
+Loop 3: npm ci completed. Native tests: 40/40 pass; draft regression fails on
+the original loader as expected. Type-check passed. Lint initially exposed
+CRLF checkout drift; normalized local files to indexed LF and refreshed the
+index, leaving only intended source changes. Test loops now use Promise.all;
+lint passes (125 files, zero findings). Knip running.
+
+Browser caught author comments rendered as text by ReactMarkdown. Repository
+search found no authored raw HTML outside the new comments. Extend canonical
+Markdown with its skipHtml option, keeping comments out of the reading surface
+without enabling HTML execution. Next: repeat dev browser pass, rerun relevant
+checks, production build, HTTP visibility verification, and full diff review.
+
+Loop 4: dev browser pass succeeded: 1148 rendered body words; one h1, six h2s;
+TODO comments invisible; no horizontal overflow at 1440x1000/light, 390x844/dark,
+768x1024/light, 2560x1440/dark. Reduced-motion enabled; skip-to-main followed by
+Tab and keyboard Back to writing both work; no page errors. Screenshots captured
+and inspected. Initial browser assertions were corrected to allow existing HTML
+classes and native skip-link sequential-focus behavior; no application changes
+were required for those two checks. All review server trees stopped after use.
+
+Design-system implementation a5347a8 arrived during verification and is now
+merged (no code conflicts). Read its updated DESIGN.md, profile and port map.
+It ports tokens, core primitives, Inter and layout font wiring; no package changes.
+Re-running all four local gates against this revision, then refreshing screenshots
+and production exclusion checks. A prior preview displayed October 15 for date-only
+October 16 frontmatter because the existing formatter uses the host timezone;
+record this date-formatting issue for a separate site-wide fix.
+
+Loop 5: integrated-tree checks passed: lint (126 files, zero findings),
+type-check, knip, npm run build (39 generated pages), npm test (40/40).
+Build emitted the allowed Figma credential/Dribbble fallback warnings. A shell
+runner typo invoked npm build once; corrected to npm run build, which passed.
+Repeated dev browser verification after the token/font merge: all four viewports,
+themes, keyboard paths, hidden comments, 1148 rendered words, and no page errors
+passed. Refreshed both committed review screenshots to the Thorbis token revision.
+Build/preview jobs are local and hidden; none use other worktrees.
+
+Production runtime visibility, rendered tests, generated-contact scans and a
+Lighthouse budget check are in progress. Port 3000 is occupied, so do not run the
+hardcoded perf:budget script against it. Use the same build and Lighthouse budget
+on this worktree's own production server at 127.0.0.1:3212 instead. No performance
+improvement claim is being made. Next: collect actual runtime/budget results,
+write RESULT.md locally, finalize PR body with all three TODOs, push and open a
+ready PR to main; never merge.
+
+Final loop: ready/open [PR #52](https://github.com/byronwade/byronwade.com/pull/52)
+All four acceptance criteria PASS. Runtime production checks exclude the draft
+from /blog, /feed.xml, /sitemap.xml and / (all 200). Published post returns 200.
+Draft URL shows Page not found with noindex and no article content; Next streams
+this fallback with HTTP 200, so do not describe it as a literal HTTP 404.
+Production browser had no page errors. Added a production-listing screenshot.
+PR body includes all three author TODOs verbatim (programmatically compared).
+
+Supplementary Lighthouse did NOT pass: valid 12.8.2 report, LCP 7247ms, TBT 802ms,
+total 1195897 bytes, script 402666 bytes, font 188800 bytes; request counts 59 total
+and 23 scripts exceed the existing budgets. CLI exit 1 was EPERM during Chrome
+temporary-folder cleanup. Left denied folder alone. No runtime error in report.
+The installed CLI ignored budget-path (no budget config/audits); compared measured
+values directly to lighthouse-budget.json. Record homepage performance and a real
+budget-enforcement sensor for the design/performance owner, outside this post.
+
+RESULT.md contains criterion evidence, scope, limitations, and VERDICT: PASS for
+the requested draft acceptance. Keep it uncommitted as a local handoff; PR body
+contains the review evidence, performance findings and date-format caveat.
+Source gates and browser screenshots all use integrated a5347a8. All local review
+server trees stopped. Next: Byron reviews prose and the three TODOs. Never merge.
+
+### PR 52 Codacy and merge follow-up
+
+The current request authorizes fixing Codacy, pushing, and squash-merging after
+Codacy succeeds and all real checks pass. It supersedes the earlier no-merge
+handoff above. Operating mode: Implementation; this worktree only, no force push,
+admin merge, rule suppression, or changes to the post's `draft: true` flag.
+
+Loop 1: fetched origin and merged main at c48f332, including cache-secret and
+publication-date fixes. No merge conflicts. Codacy check 116821667172 reports six
+issues and zero annotations. Its public issue API identifies exactly six added
+findings: MD034 in this log, three comment-empty-line-before occurrences, one
+rule-empty-line-before, and one at-rule-empty-line-before in app/globals.css.
+Fixed the URL with a Markdown link and inserted the five required blank lines.
+Updated the canonical token generator to preserve both marker-comment fixes on
+regeneration. No CSS declaration, token value, selector, motion, or UI changed.
+
+Decision: reuse existing lint configs, CSS ownership, generator, and native Node
+tests; no new abstraction or package. Dependency cone: stylesheet whitespace,
+generator template, and handoff notes. Verify markdownlint, lint, type-check,
+knip, build, tests (including blog drafts), rendered tests, whitespace-only CSS
+equivalence, full diff, and unchanged draft. Then push and poll checks before
+the authorized squash merge. Existing design review findings remain separate
+from these six Codacy findings and will be recorded in RESULT.md.
+
+Toolkit reservation failed on a missing unrelated configured root; no toolkit
+configuration or quarantine changes. Native command exits provide evidence.
+The pre-existing local RESULT.md report is preserved and extended locally.
+
+Loop 2: lint passed (130 files), knip passed, and all 114 native tests passed,
+including blog drafts, cache-refresh, contact, and content dates. Markdownlint
+passed all six root documents with zero issues. A temporary local Stylelint 14
+config selecting the three reported spacing rules reproduced all five CSS
+findings: 22 warnings before, 17 after, with none at the five Codacy locations.
+The other 17 warnings predate this fix; this is a targeted reproduction, not a
+claim that the whole stylesheet is Stylelint-clean. No lint config was committed
+or weakened. CSS whitespace equivalence and unchanged-post assertions passed.
+Production compilation passed; independent type-check and build type validation
+are still running. Wait for actual exits before publishing.
+
+Loop 3: type-check passed; build passed (39 pages, existing Figma/Dribbble
+fallback warnings). Rendered tests passed 3/3, checking contact semantics, 39
+dates across eight pages, and 26 client chunks. Raw-contact scans found no
+matches in client output or prerendered HTML; no draft slug in prerendered HTML.
+The post remains unchanged with `draft: true`. Full source diff reviewed;
+git diff --check passed. Only this log, five CSS blank lines, and two generator
+template blank lines are staged for the fix; the prior local RESULT report is
+preserved outside the commit. Next: commit, normal push, poll Codacy and all
+real checks, then squash merge using the verified head SHA without admin.
+
+## PR 49 integration after PR 52 - 2026-10-16
+
+- Mode: Implementation. Merge origin/main into bot/shop; never merge PR 49,
+  force-push, use admin overrides, or enable live payments.
+- Started clean at b0ac10a. Fetched main 0e9f5cd, including PR 54 and PR 52.
+- Only conflict: this progress log. Preserve shop history and append PR 52's
+  historical evidence below; its branch-specific permissions are historical.
+- Application files merged automatically. Preserve incoming draft exclusion,
+  Thorbis tokens/primitives, and existing shop placeholders/noindex/test guard.
+- Reuse existing catalog, checkout boundary, shared primitives and native tests;
+  no new product, dependency, abstraction, or independent visual system.
+- Verify on Node 24: lint, type-check, knip, build, native and rendered tests,
+  source preservation, noindex/unlinked, credential/contact scans and full diff.
+- Toolkit reservation failed on its existing missing configured root. Leave
+  configuration and other worktrees alone; record native command exit evidence.
+- Push normally, observe checks, update the PR body and RESULT.md, then stop.
+  Byron must choose real products before any merge.
+
+### Post-52 local verification
+
+- Node v24.21.0 / npm 11.19.0. Lint passed (143 files, no fixes), type-check
+  passed, knip passed, production build passed (41 pages), native tests passed
+  137/137, and rendered tests passed 5/5. Existing module-type warnings and
+  expected fixture delivery diagnostics are unchanged.
+- Source assertions preserve all 11 shop/manifest/template files exactly.
+  Three placeholder products, three noindex routes, and navigation/search/
+  sitemap exclusion pass. Zero live Stripe patterns in 321 tracked files and
+  the single local env template. No real provider test or key was used.
+- Production scans: 30 client scripts and 34 prerendered HTML files contain
+  no raw contact details; clients contain no Stripe secret symbol/key pattern.
+  Both return routes are noindex; no draft slug appears in prerendered HTML.
+- Reviewed the integration diff and original shop dependency cone. Incoming
+  source matches main, outgoing shop source is unchanged, and whitespace checks
+  pass. Focused browser verification is running with worktree-local ignored
+  fixtures; final evidence and remote checks will be recorded in RESULT.md.

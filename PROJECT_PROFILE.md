@@ -37,7 +37,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Primary traits:** direct, evidence-first, quietly confident, technically
   literate
 - **Traits to avoid:** salesy, playful, corporate, mysterious, hype-driven
-- **Warmth level:** warm, the canvas is warm off-white, not clinical white
+- **Warmth level:** warm, the canvas is the Thorbis light canvas, with a corresponding neutral dark theme
 - **Density level:** comfortable for reading, compact for indexes. Never sparse
   for its own sake.
 - **Motion personality:** crisp and near-still. Motion confirms and orients; it
@@ -50,7 +50,7 @@ from the profile and makes first-visit clarity the dominant design concern.
   - Visitors: each page gets its own organizing move rather than one template
   - Apple HIG: direct manipulation, immediate response, reduced motion respected
 - **Visual identities that must not be copied:** any of the above. Borrow the
-  principle, express it through this site's own warm-neutral identity.
+  principle, express it through Thorbis Design, as explicitly directed by Byron.
 
 ## Surface profiles
 
@@ -77,7 +77,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
   through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
   glyph is gone: Phosphor ships `XLogo`, so that exception no longer exists.
-- **Typography owner and loading strategy:** `lib/fonts.ts`. Geist (`--font-sans`),
+- **Typography owner and loading strategy:** `lib/fonts.ts`. Inter (`--font-inter`),
   Geist Mono (`--font-geist-mono`), and a local signature face
   (`--font-signature`), all `display: swap`, self-hosted through `next/font`.
   `next/font` loaders are server-only; client components use the CSS variable.
@@ -164,12 +164,12 @@ use them correctly.
 
 - **Color model and semantic families:** OKLCH. Families: surface
   (`background`/`card`/`popover`/`muted`), text (`foreground`/`muted-foreground`),
-  structural (`border`/`input`/`ring`), `brand` (warm amber, ~`oklch(0.72 0.14 85)`),
+  structural (`border`/`input`/`ring`), `brand` (Thorbis electric blue),
   `success`, `warning`, `destructive`, and a `dock` family for the dark chrome.
 - **Light/dark/high-contrast policy:** light default; `.dark` is a deliberate
   re-mapping, not an inversion. No separate high-contrast theme.
 - **Spacing scale:** Tailwind's 4px grid, 8px dominant rhythm.
-- **Radius scale:** derived from `--radius: 0.75rem` through `--radius-sm` … `4xl`.
+- **Radius scale:** derived from `--radius: 0.625rem` through `--radius-sm` … `4xl`.
 - **Elevation scale:** `.shadow-card` and `.shadow-float` utilities in
   `globals.css`. Persistent regions use borders and tone; transient layers use
   `shadow-float`.
@@ -177,9 +177,8 @@ use them correctly.
   Guided surfaces.
 - **Type roles:** `--font-sans` body/heading, `--font-geist-mono` for data and
   code, `--font-signature` for the wordmark only.
-- **Motion curves:** `--motion-ease-out`, `--motion-ease-in-out`, `--motion-ease-drawer`.
-- **Motion duration scale:** `--motion-fast` (120ms), `--motion-base` (200ms),
-  `--motion-slow` (300ms), `--motion-drawer` (480ms).
+- **Motion curve:** Thorbis `--ease-out`, aliased by the existing motion names.
+- **Motion duration scale:** `--motion-fast` (120ms), `--motion-overlay` (180ms); other duration names alias the overlay budget.
 - **Spring defaults:** none. Nothing on this site is gesture-driven except the
   preview width handle, which tracks the pointer one-to-one with no easing.
 - **Reduced-motion behavior:** a global `prefers-reduced-motion` block in

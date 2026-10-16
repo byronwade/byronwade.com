@@ -11,7 +11,7 @@ import { ErrorBoundary, ReactScan, ThemeProvider } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
 import { Toaster } from "@/components/ui/sonner";
-import { customFont, geistMono, geistSans } from "@/lib/fonts";
+import { customFont, geistMono, interSans } from "@/lib/fonts";
 
 export { metadata, viewport } from "./metadata.config";
 
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="dns-prefetch" href="//api.figma.com" />
 			</head>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} ${customFont.variable} min-h-screen touch-pan-y bg-background font-sans antialiased`}
+				className={`${interSans.variable} ${geistMono.variable} ${customFont.variable} min-h-screen touch-pan-y bg-background font-sans antialiased`}
 			>
 				<a href="#main-content" className="skip-link">
 					Skip to main content
