@@ -244,3 +244,17 @@
   publish this reviewed snapshot without chasing unrelated future main changes.
 - Production build completed with exit 0 on `65596a5` integration. The source is
   frozen for publication; no shop/chrome UI changed in the last contact-only merge.
+
+## Published handoff
+
+- Pushed only `bot/shop`; opened ready PR #49 to `main`:
+  https://github.com/byronwade/byronwade.com/pull/49.
+- Final local gates pass, including 62 native tests and 3 rendered contracts.
+  Final secret/contact scans and `git diff --check` are clean. Seven screenshots,
+  13 zero-violation axe scenarios, keyboard/ARIA evidence, and explicit shared
+  performance-budget misses are committed and linked in the PR.
+- `RESULT.md` remains local intentionally; it ends with `VERDICT: PASS` for the six
+  acceptance criteria. Real Stripe checkout needs a local test key and the documented
+  procedure. Design-system integration remains conditional on its unpublished branch.
+- No merge, production deployment, live payment, remote env/domain change, or
+  other-worktree mutation. Byron reviews. No local verification server remains.
