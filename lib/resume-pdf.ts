@@ -25,8 +25,8 @@ export function isResumePdfResponse(status: number, contentType: string | null):
 	return mediaType === "application/pdf";
 }
 
-// The route can take ~50s on a cold start (browser launch, a 30s page load and a
-// 10s email wait), so this must stay above those bounds, not be trimmed to "feel" faster.
+// The route's own worst case is about 50s (browser launch, a 30s page load and a
+// 10s email wait). Keep this above those bounds; trimming it would cut off real PDFs.
 const RESUME_PDF_TIMEOUT_MS = 60_000;
 
 /**
