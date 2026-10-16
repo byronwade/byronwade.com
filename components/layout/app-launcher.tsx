@@ -56,8 +56,16 @@ export function AppLauncher() {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
+	const triggerRef = React.useRef<HTMLButtonElement>(null);
+	const restoreFocusRef = React.useRef(false);
 
 	const panelId = React.useId();
+
+	// The document listener below depends on this focus-restoring action's identity.
+	const closePanel = React.useCallback(() => {
+		restoreFocusRef.current = true;
+		setOpen(false);
+	}, []);
 
 	// The launcher is an overlay-in-a-slot: the absolutely-positioned morph blooms
 	// right + down. The slot reserves the collapsed pill's footprint (seeded with
@@ -91,6 +99,18 @@ export function AppLauncher() {
 		openDelayMs: 30,
 		closeDelayMs: 70,
 		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+		onClosed: () => {
+			if (!restoreFocusRef.current) {
+				return;
+			}
+			restoreFocusRef.current = false;
+			if (
+				document.activeElement === document.body ||
+				panelRef.current?.contains(document.activeElement)
+			) {
+				triggerRef.current?.focus({ preventScroll: true });
+			}
+		},
 	});
 
 	// Esc + click-away close.
@@ -100,7 +120,7 @@ export function AppLauncher() {
 		}
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
-				setOpen(false);
+				closePanel();
 			}
 		};
 		const onDown = (e: PointerEvent) => {
@@ -116,7 +136,7 @@ export function AppLauncher() {
 			document.removeEventListener("keydown", onKey);
 			document.removeEventListener("pointerdown", onDown);
 		};
-	}, [open]);
+	}, [open, closePanel]);
 
 	const { toggleTheme } = useThemeToggle();
 
@@ -133,13 +153,14 @@ export function AppLauncher() {
 			<div
 				ref={morphRef}
 				className={cn(
-					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
-					open ? "rounded-2xl" : "rounded-3xl"
+					"pointer-events-auto absolute top-0 left-0 inline-flex transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
+					open ? "rounded-xl shadow-float" : "rounded-full"
 				)}
 			>
 				{/* COMPACT, the collapsed (natural) size. */}
 				<div
 					ref={compactRef}
+					inert={open}
 					className={cn(
 						"flex flex-row items-center gap-1 p-[3px] transition-opacity duration-150",
 						open && "pointer-events-none"
@@ -149,20 +170,21 @@ export function AppLauncher() {
 						href="/"
 						aria-label="Byron Wade, home"
 						className={cn(
-							"font-signature",
-							"flex h-8 shrink-0 items-center whitespace-nowrap px-2 text-dock-active-foreground text-lg leading-none transition-colors [-webkit-text-stroke:0.6px_currentColor] hover:text-brand"
+							"font-sans",
+							"hidden h-11 shrink-0 items-center whitespace-nowrap px-2 font-medium text-copy-14 text-dock-active-foreground leading-none transition-colors hover:text-brand min-[380px]:flex"
 						)}
 					>
 						Byron Wade
 					</Link>
 					<button
+						ref={triggerRef}
 						type="button"
 						aria-haspopup="dialog"
 						aria-expanded={open}
 						aria-controls={panelId}
 						onClick={() => setOpen(true)}
 						title="All products"
-						className="flex size-8 items-center justify-center rounded-full text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
+						className="flex size-11 items-center justify-center rounded-full text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 					>
 						<LayoutGrid className="size-4" />
 					</button>
@@ -175,6 +197,7 @@ export function AppLauncher() {
 					role="dialog"
 					aria-label="All products"
 					aria-hidden={!open}
+					inert={!open}
 					tabIndex={-1}
 					className={cn(
 						"absolute top-0 left-0 w-80 opacity-0 outline-none transition-opacity duration-150",
@@ -185,7 +208,7 @@ export function AppLauncher() {
 						<span className="text-[11px] text-dock-foreground/70">Switch product</span>
 						<button
 							type="button"
-							onClick={() => setOpen(false)}
+							onClick={closePanel}
 							aria-label="Close menu"
 							className="flex size-7 items-center justify-center rounded-lg text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>

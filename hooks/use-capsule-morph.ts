@@ -16,6 +16,8 @@ interface CapsuleMorphOptions {
 	durationMs: number;
 	/** The shared capsule that resizes between the two states. */
 	morphRef: RefObject<HTMLElement | null>;
+	/** Return focus after compact controls are active again. */
+	onClosed?: () => void;
 	/** Runs once the open animation has been started, used to move focus. */
 	onOpened?: () => void;
 	/** Whether the panel is currently open. */
@@ -44,6 +46,7 @@ export function useCapsuleMorph({
 	openDelayMs,
 	closeDelayMs,
 	onOpened,
+	onClosed,
 	deps = [],
 }: CapsuleMorphOptions) {
 	useIsoLayoutEffect(() => {
@@ -100,6 +103,7 @@ export function useCapsuleMorph({
 			return;
 		}
 
+		onClosed?.();
 		panel.style.transitionDelay = "0ms";
 		panel.style.opacity = "0";
 		compact.style.transitionDelay = reduce ? "0ms" : `${closeDelayMs}ms`;

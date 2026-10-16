@@ -1,3 +1,4 @@
+// Thorbis Design port: site/site-header + site-shell.stylex @ 46b6654.
 import type { ReactNode } from "react";
 import { buildSearchIndex } from "@/lib/search-index";
 import { AppBreadcrumb } from "./app-breadcrumb";
@@ -8,37 +9,27 @@ import { NavDock } from "./nav-dock";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
 	const searchEntries = await buildSearchIndex();
-	// href → label map for the chrome breadcrumb pill (dynamic project/blog titles
-	// come from the same source as ⌘K search).
 	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
-
 	return (
-		<>
-			{/* No decorative background layer. DESIGN.md §13 rejects grid backgrounds
-			    and decorative glows, and §2 puts the work, not atmosphere, in front.
-			    A clean plate is also what lets the opening's scale read as composition
-			    rather than as texture. */}
-
-			{/* Top-left header group: identity launcher + breadcrumb pill. */}
-			<div className="pointer-events-none fixed top-3 left-3 z-50 flex items-start gap-2 print:hidden">
-				<AppLauncher />
-				<AppBreadcrumb labels={pathLabels} />
-			</div>
-
-			{/* Far-right utility toolbar: search · GitHub · theme · donate. */}
-			<DockToolbar entries={searchEntries} />
-
-			<div className="relative flex min-h-screen flex-col">
-				<NavDock />
-				{/* Top padding clears the floating chrome (launcher + nav dock) so it
-				    never sits on top of page content. */}
-				<main id="main-content" className="flex-1 pt-14 sm:pt-20">
-					{children}
-				</main>
-				<Footer />
-				{/* Clearance for the floating dock, which sits at the bottom on phones. */}
-				<div aria-hidden="true" className="h-24 shrink-0 sm:hidden" />
-			</div>
-		</>
+		<div className="relative flex min-h-screen flex-col">
+			<header className="relative z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] print:hidden">
+				<div className="flex min-w-0 items-center gap-2">
+					<AppLauncher />
+					<span className="hidden xl:inline">
+						<AppBreadcrumb labels={pathLabels} />
+					</span>
+				</div>
+				<div className="col-span-2 row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1">
+					<NavDock />
+				</div>
+				<div className="col-start-2 row-start-1 justify-self-end lg:col-start-3">
+					<DockToolbar entries={searchEntries} />
+				</div>
+			</header>
+			<main id="main-content" className="min-w-0 flex-1">
+				{children}
+			</main>
+			<Footer />
+		</div>
 	);
 }

@@ -2,8 +2,8 @@
 title: "Wade's Plumbing and Septic"
 url: "https://wadesplumbingandseptic.com"
 category: "Client Work"
-featured: true
-status: "Live"
+featured: false
+status: "Archived"
 tagline: "trust at emergency speed"
 order: 4
 date: 2023-10-01

@@ -4,6 +4,8 @@ url: "https://zugz.byronwade.com"
 category: "Client Work"
 date: 2023-09-01
 excerpt: "Zugzology: A premium e-commerce platform that serves as the foundation for the future of agricultural field management technology."
+status: "Archived"
+featured: false
 ---
 
 # Building Zugzology: Why a Mushroom Supply Store is the Foundation for the Future of Agricultural Field Management

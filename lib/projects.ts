@@ -41,9 +41,15 @@ export interface Project {
 
 const projectsDirectory = join(process.cwd(), "content/projects");
 
-function resolveType(data: matter.GrayMatterFile<string>["data"]): ProjectType {
-	if (data.type) {
-		return data.type;
+function resolveType(data: matter.GrayMatterFile<string>["data"]): ProjectType | undefined {
+	const explicitType: unknown = data.type;
+	if (
+		explicitType === "client" ||
+		explicitType === "product" ||
+		explicitType === "concept" ||
+		explicitType === "hobby"
+	) {
+		return explicitType;
 	}
 	if (data.category) {
 		const cat = String(data.category).toLowerCase();
@@ -60,7 +66,6 @@ function resolveType(data: matter.GrayMatterFile<string>["data"]): ProjectType {
 			return "hobby";
 		}
 	}
-	return "hobby";
 }
 
 function parseMetrics(raw: unknown): ProjectMetric[] | undefined {
@@ -92,7 +97,13 @@ function toProject(slug: string, fileContents: string): Project {
 		url: data.url,
 		category: data.category,
 		type: resolveType(data),
-		date: data.date || new Date().toISOString(),
+		// Undated work must not acquire a fabricated publication date at build time.
+		date:
+			data.date instanceof Date
+				? data.date.toISOString().slice(0, 10)
+				: typeof data.date === "string"
+					? data.date
+					: undefined,
 		excerpt: data.excerpt,
 		flagship,
 		featured: data.featured === true || (data.featured !== false && flagship),

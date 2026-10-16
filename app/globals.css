@@ -99,7 +99,7 @@
 
 /* thorbis-tokens:start */
 :root {
-  --thorbis-accent: oklch(55.8% 0.188 264.4);
+  --thorbis-accent: oklch(52% 0.17 264.4);
   --thorbis-accent-foreground: oklch(100% 0 none);
   --thorbis-accent-hover: oklch(50% 0.188 264.4);
   --thorbis-bg: oklch(96.8% 0.009 84.6);
@@ -109,12 +109,12 @@
   --thorbis-busy: oklch(22.4% 0.014 72);
   --thorbis-code-bg: oklch(93.5% 0.011 84.6);
   --thorbis-code-fg: oklch(22.4% 0.014 72);
-  --thorbis-danger: oklch(62.6% 0.193 23);
+  --thorbis-danger: oklch(52% 0.17 23);
   --thorbis-fg: oklch(22.4% 0.014 72);
   --thorbis-field: oklch(93.2% 0.012 84.6);
   --thorbis-focus: oklch(55.8% 0.188 264.4);
   --thorbis-forest: oklch(38% 0.052 147.2);
-  --thorbis-info: oklch(62.3% 0.188 259.8);
+  --thorbis-info: oklch(52% 0.16 259.8);
   --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
   --thorbis-link-decoration: oklch(66% 0.012 68);
   --thorbis-marker: oklch(48.5% 0.015 68);
@@ -122,8 +122,8 @@
   --thorbis-on-panel: oklch(96.2% 0.008 84.6);
   --thorbis-panel: oklch(99.15% 0.0035 84.6);
   --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
-  --thorbis-success: oklch(62.7% 0.17 149.2);
-  --thorbis-warning: oklch(82.7% 0.171 80.5);
+  --thorbis-success: oklch(50% 0.14 149.2);
+  --thorbis-warning: oklch(54% 0.13 80.5);
   --thorbis-work-body: oklch(94% 0.013 259.8);
   --thorbis-work-canvas: oklch(14.5% 0 none);
   --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
@@ -156,7 +156,7 @@
       0 1px 1px color-mix(in oklab, var(--thorbis-fg) 10%, transparent);
   --shadow-field: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),
       inset 0 1px 1px color-mix(in oklab, var(--thorbis-fg) 4%, transparent);
-  --shadow-layer: 0 1px 2px rgb(0 0 0 / 0.28), 0 18px 48px rgb(0 0 0 / 0.34);
+  --shadow-layer: 0 1px 2px rgb(35 28 20 / 0.08), 0 18px 48px rgb(35 28 20 / 0.14);
   --shadow-panel: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 6%, transparent),
       0 1px 2px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
   --shadow-photo: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),

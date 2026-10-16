@@ -5,6 +5,8 @@ category: "Product"
 type: "product"
 date: 2025-12-09
 excerpt: "Peer-to-peer distributed filesystem: share a folder with a join code and mount it anywhere, no uploads, no accounts, zero monthly fees."
+status: "Archived"
+featured: false
 ---
 
 # Wormhole - Mount Any Folder. Any Computer. No Setup.

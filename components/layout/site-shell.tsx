@@ -14,11 +14,7 @@ export function SiteShell({ children, width = "narrow", className }: SiteShellPr
 	return (
 		<div
 			className={cn(
-				// The nav dock is fixed to the bottom of the viewport below `sm`
-				// (nav-dock.tsx) and occupies roughly 72px including its offset.
-				// Reserving less than that lets it cover the last control on the
-				// page, which WCAG 2.2 §2.4.11 forbids for anything focusable.
-				"mx-auto w-full px-4 pt-6 pb-28 sm:px-6 sm:pt-8 sm:pb-20",
+				"mx-auto w-full px-4 pt-8 pb-12 sm:px-6 sm:pt-10 sm:pb-16",
 				maxWidth,
 				className
 			)}

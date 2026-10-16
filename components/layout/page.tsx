@@ -36,9 +36,9 @@ export function PageHeader({
 	className?: string;
 }) {
 	return (
-		<header className={cn("reveal flex w-full flex-col gap-3", className)}>
+		<header className={cn("flex w-full flex-col gap-3", className)}>
 			<div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-				<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
+				<h1 className="font-heading font-medium text-foreground text-heading-32 tracking-tight">
 					{title}
 				</h1>
 				{aside}
@@ -103,7 +103,7 @@ export function Section({
 		<section className={cn("flex w-full flex-col gap-5", className)}>
 			<div className="flex items-baseline justify-between gap-4">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-heading font-semibold text-xl tracking-tight sm:text-2xl">{title}</h2>
+					<h2 className="font-heading font-medium text-heading-20 tracking-tight">{title}</h2>
 					{description && <p className="text-muted-foreground text-sm">{description}</p>}
 				</div>
 				{link}

@@ -4,6 +4,8 @@ url: "https://reactpress.byronwade.com/rp-admin"
 category: "Hobby Project"
 date: 2024-01-01
 excerpt: "A complete recreation of the WordPress admin interface rebuilt with Next.js 15 and React 18, serving as a foundation for modern field management systems."
+status: "Archived"
+featured: false
 ---
 
 # ReactPress: Building the Foundation for Modern Field Management Systems

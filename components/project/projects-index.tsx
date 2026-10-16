@@ -5,6 +5,7 @@ import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
+import { cn } from "@/lib/utils";
 
 /**
  * The `/projects` index: a ranked list where each row carries its own evidence
@@ -18,8 +19,7 @@ import { statusTone } from "@/lib/status-tone";
  * left column.
  *
  * The count survives, because "how much work is here" is a real question a
- * visitor arrives with. It now sits with the page's lede rather than as a
- * header strip over the list.
+ * visitor arrives with. It sits beside each group's heading on the page.
  */
 
 /**
@@ -73,18 +73,19 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 	return (
 		<IndexList as="ol">
 			{projects.map((project) => {
-				const proof = project.outcome || project.tagline;
+				const proof = project.outcome || project.excerpt;
 				const leadMetric = project.metrics?.[0];
 				const carriesEvidence = Boolean(project.featured || project.flagship);
 
 				return (
 					<IndexRow key={project.slug}>
-						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
+						<Link
+							className={cn(indexRowLinkClass, "focus-ring")}
+							href={`/projects/${project.slug}`}
+						>
 							<div className="flex items-center gap-4">
 								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-									<span
-										className={`font-medium text-foreground sm:shrink-0 ${indexRowAccentClass}`}
-									>
+									<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
 										{project.title.split(":")[0]}
 									</span>
 									{project.flagship && (
@@ -105,7 +106,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 								<ArrowUpRight
 									aria-hidden="true"
-									className="size-4 shrink-0 text-muted-foreground/50 transition-[transform,color] group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand"
+									className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
 								/>
 							</div>
 

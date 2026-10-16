@@ -2,9 +2,9 @@
 title: "SignalRoute: The Phone System That Runs Itself"
 url: "https://getsignalroute.com"
 category: "Product"
-flagship: true
-featured: true
-status: "In development"
+flagship: false
+featured: false
+status: "Archived"
 tagline: "the phone that runs itself"
 order: 2
 date: 2026-06-01

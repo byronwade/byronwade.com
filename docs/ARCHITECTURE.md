@@ -7,17 +7,18 @@ Tailwind CSS.
 ## Layout
 
 Every page is wrapped by `components/layout/conditional-layout.tsx` (`SiteLayout`),
-which renders the atmospheric `Background`, the `Header`, the page `main`, and the
-`Footer`. Content width and gutters come from `components/layout/site-shell.tsx`.
+which renders a flow header with launcher, wrapping navigation and toolbar, the
+page `main`, and the `Footer`. Content width and gutters come from
+`components/layout/site-shell.tsx`.
 
-Theme is light/dark via `next-themes` (dark default, system aware) with a toggle in
+Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
 
 ## Homepage
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
 
-- `components/home/home-interactive.tsx`. intro, bio, social links
+- `components/home/home-hero.tsx`. intro, bio, social links
 - `components/home/home-projects.tsx`. project list
 - `components/home/home-blog.tsx`. recent posts
 
@@ -37,7 +38,7 @@ the header.
 
 ```
 components/
-  layout/        # Header, footer, site shell, background, nav dock, launcher
+  layout/        # Flow header, footer, site shell, nav dock, toolbar, launcher
   home/          # Homepage building blocks
   blog/          # Blog UI
   project/       # Project preview UI
