@@ -249,9 +249,131 @@
   "finalAccessibility": {
     "route": "/projects",
     "lighthouseVersion": "12.8.2",
-    "auditedAt": "2026-10-16T04:58:11.484Z",
+    "auditedAt": "2026-10-16T05:29:50.021Z",
     "method": "Programmatic Lighthouse with an explicitly owned headless browser; browser.close completed",
     "score": 1,
     "failures": []
-  }
+  },
+  "finalPerformance": {
+    "route": "/projects",
+    "stage": "Final integrated Thorbis implementation 30cceba and main f84a344",
+    "auditedAt": "2026-10-16T05:29:50.021Z",
+    "lighthouseVersion": "12.8.2",
+    "formFactor": "mobile",
+    "scores": {
+      "performance": 0.67,
+      "accessibility": 1,
+      "best-practices": 0.96,
+      "seo": 1
+    },
+    "budgetPass": false,
+    "comparisons": [
+      {
+        "kind": "timing",
+        "metric": "first-contentful-paint",
+        "budget": 2000,
+        "actual": 1060.7982,
+        "pass": true
+      },
+      {
+        "kind": "timing",
+        "metric": "largest-contentful-paint",
+        "budget": 3000,
+        "actual": 4210.7982,
+        "pass": false
+      },
+      {
+        "kind": "timing",
+        "metric": "cumulative-layout-shift",
+        "budget": 0.1,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "timing",
+        "metric": "total-blocking-time",
+        "budget": 300,
+        "actual": 819.6009000000015,
+        "pass": false
+      },
+      {
+        "kind": "timing",
+        "metric": "speed-index",
+        "budget": 3000,
+        "actual": 1659.8162328547728,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "script",
+        "budget": 300,
+        "actual": 390.765625,
+        "pass": false
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "total",
+        "budget": 1000,
+        "actual": 1165.40625,
+        "pass": false
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "stylesheet",
+        "budget": 50,
+        "actual": 18.650390625,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "image",
+        "budget": 500,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "font",
+        "budget": 100,
+        "actual": 184.375,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "script",
+        "budget": 10,
+        "actual": 22,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "total",
+        "budget": 50,
+        "actual": 70,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "stylesheet",
+        "budget": 3,
+        "actual": 2,
+        "pass": true
+      },
+      {
+        "kind": "requestCount",
+        "metric": "image",
+        "budget": 20,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "requestCount",
+        "metric": "font",
+        "budget": 5,
+        "actual": 3,
+        "pass": true
+      }
+    ]
+  },
+  "revision": "42f239c2f64f41fb92e20c503e97f9a985988bb2"
 }

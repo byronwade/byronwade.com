@@ -1,0 +1,99 @@
+{
+  "revision": "42f239c2f64f41fb92e20c503e97f9a985988bb2",
+  "method": "Rendered empty-form validation plus computed existing success-role contrast before submission; WCAG sRGB calculation against composited ancestor backgrounds. No successful delivery was attempted.",
+  "postRequests": 0,
+  "results": [
+    {
+      "route": "/contact",
+      "theme": "light",
+      "successRole": {
+        "foreground": "oklch(0.5 0.14 149.2)",
+        "background": [247, 244, 238],
+        "ratio": 5.123202448844248,
+        "fontSize": "14px"
+      },
+      "fieldError": {
+        "foreground": "oklch(0.52 0.17 23)",
+        "background": [247, 244, 238],
+        "ratio": 5.4915071593737625,
+        "fontSize": "14px"
+      },
+      "failureStatus": {
+        "foreground": "oklch(0.52 0.17 23)",
+        "background": [247, 244, 238],
+        "ratio": 5.4915071593737625,
+        "fontSize": "14px"
+      },
+      "invalidFieldFocused": true
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "successRole": {
+        "foreground": "oklch(0.5 0.14 149.2)",
+        "background": [253, 252, 250],
+        "ratio": 5.485126668656521,
+        "fontSize": "14px"
+      },
+      "fieldError": {
+        "foreground": "oklch(0.52 0.17 23)",
+        "background": [253, 252, 250],
+        "ratio": 5.879449947911864,
+        "fontSize": "14px"
+      },
+      "failureStatus": {
+        "foreground": "oklch(0.52 0.17 23)",
+        "background": [253, 252, 250],
+        "ratio": 5.879449947911864,
+        "fontSize": "14px"
+      },
+      "invalidFieldFocused": true
+    },
+    {
+      "route": "/contact",
+      "theme": "dark",
+      "successRole": {
+        "foreground": "oklch(0.627 0.17 149.2)",
+        "background": [10, 10, 10],
+        "ratio": 6.007204489616128,
+        "fontSize": "14px"
+      },
+      "fieldError": {
+        "foreground": "oklch(0.626 0.193 23)",
+        "background": [10, 10, 10],
+        "ratio": 5.058627047368378,
+        "fontSize": "14px"
+      },
+      "failureStatus": {
+        "foreground": "oklch(0.626 0.193 23)",
+        "background": [10, 10, 10],
+        "ratio": 5.058627047368378,
+        "fontSize": "14px"
+      },
+      "invalidFieldFocused": true
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "successRole": {
+        "foreground": "oklch(0.627 0.17 149.2)",
+        "background": [23, 23, 23],
+        "ratio": 5.439711578638206,
+        "fontSize": "14px"
+      },
+      "fieldError": {
+        "foreground": "oklch(0.626 0.193 23)",
+        "background": [23, 23, 23],
+        "ratio": 4.580745031927586,
+        "fontSize": "14px"
+      },
+      "failureStatus": {
+        "foreground": "oklch(0.626 0.193 23)",
+        "background": [23, 23, 23],
+        "ratio": 4.580745031927586,
+        "fontSize": "14px"
+      },
+      "invalidFieldFocused": true
+    }
+  ]
+}

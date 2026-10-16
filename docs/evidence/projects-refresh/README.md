@@ -7,10 +7,14 @@ earlier bodies and non-grouping frontmatter match baseline `38261e9`.
   twenty-four generated detail routes.
 - `rendered-evidence.json`: viewport/theme observations, route headings and dates,
   exact index links, keyboard navigation, disclosure focus return, and contact reveal.
-- `performance-evidence.json`: initial Lighthouse diagnostics and manual budget
-  comparisons, plus the final targeted accessibility audit. Initial performance
+- `performance-evidence.json`: initial Lighthouse diagnostics, final integrated
+  `/projects` performance/accessibility audit, and manual budget comparisons. Initial performance
   measurements predate main's portfolio boundary fix; they are not a measurement
   of the final combined bundle, a performance baseline, or a budget pass.
+- `contact-contrast-evidence.json`: both contact forms in light/dark, rendered
+  empty-form errors and the existing success-role color before submission. WCAG
+  contrast is calculated from browser-resolved colors and ancestor backgrounds;
+  zero POST requests. This does not claim successful email delivery.
 - `verification-evidence.json`: exact local commands and exit results, with the
   preceding verification run retained separately from the integrated head.
 - `contact-scan-evidence.json`: raw owner contact scans of client assets and
