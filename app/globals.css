@@ -60,159 +60,265 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-  --font-sans: var(--font-sans);
+  --radius-md: var(--radius);
+  --radius-2xl: var(--radius-lg);
+  --radius-3xl: var(--radius-lg);
+  --radius-4xl: var(--radius-pill);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --font-display: var(--font-sans);
+  --font-heading: var(--font-inter);
+  --font-display: var(--font-inter);
   --font-signature: var(--font-signature);
+  --color-field: var(--thorbis-field);
+  --color-body: var(--thorbis-body);
+  --shadow-card: var(--shadow-panel);
+  --shadow-float: var(--shadow-layer);
+  --text-copy-12: var(--thorbis-text-copy-12);
+  --text-copy-12--line-height: var(--thorbis-text-copy-12--line-height);
+  --text-copy-13: var(--thorbis-text-copy-13);
+  --text-copy-13--line-height: var(--thorbis-text-copy-13--line-height);
+  --text-copy-14: var(--thorbis-text-copy-14);
+  --text-copy-14--line-height: var(--thorbis-text-copy-14--line-height);
+  --text-copy-16: var(--thorbis-text-copy-16);
+  --text-copy-16--line-height: var(--thorbis-text-copy-16--line-height);
+  --text-heading-16: var(--thorbis-text-heading-16);
+  --text-heading-16--line-height: var(--thorbis-text-heading-16--line-height);
+  --text-heading-20: var(--thorbis-text-heading-20);
+  --text-heading-20--line-height: var(--thorbis-text-heading-20--line-height);
+  --text-heading-32: var(--thorbis-text-heading-32);
+  --text-heading-32--line-height: var(--thorbis-text-heading-32--line-height);
   --ease-out-token: var(--motion-ease-out);
   --ease-in-out-token: var(--motion-ease-in-out);
   --ease-drawer: var(--motion-ease-drawer);
 }
 
+/* Thorbis Design port: 46b6654d02fda9d8fde737395185c3141df52cd2.
+ * Source: src/styles/tokens.generated.css + src/styles.css light overrides.
+ * Sync: scripts/port-thorbis-tokens.mjs; mapping: docs/THORBIS-DESIGN-PORT.md.
+ * Raw design values belong only in this token block. */
+/* thorbis-tokens:start */
 :root {
-  --background: oklch(0.985 0.003 92);
-  --foreground: oklch(0.27 0.008 70);
-  --card: oklch(0.992 0.003 92);
-  --card-foreground: oklch(0.27 0.008 70);
-  --popover: oklch(0.994 0.003 92);
-  --popover-foreground: oklch(0.27 0.008 70);
-  --primary: oklch(0.3 0.01 70);
-  --primary-foreground: oklch(0.99 0.002 95);
-  --secondary: oklch(0.967 0.004 90);
-  --secondary-foreground: oklch(0.27 0.008 70);
-  --muted: oklch(0.963 0.004 90);
-  --muted-foreground: oklch(0.553 0.01 75);
-  --accent: oklch(0.963 0.004 90);
-  --accent-foreground: oklch(0.27 0.008 70);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 85);
-  --input: oklch(0.92 0.004 85);
-  --brand: oklch(0.72 0.14 85);
-  --brand-foreground: oklch(0.22 0.04 80);
-  --brand-muted: oklch(0.96 0.04 90);
-  /* Money, growth, shipped, healthy. A real green, never an alias of brand. */
-  --success: oklch(0.52 0.12 152);
-  --success-foreground: oklch(0.99 0.002 95);
-  --success-muted: oklch(0.95 0.03 152);
-  /* Attention without alarm. Orange at hue 62, clear of brand's amber at 85. */
-  --warning: oklch(0.66 0.15 62);
-  --warning-foreground: oklch(0.99 0.002 95);
-  /* Informational, not a status. Used for live/external things. */
-  --info: oklch(0.55 0.13 245);
-  --info-muted: oklch(0.95 0.03 245);
-
-  /* ── Taxonomy (DESIGN.md §5.1) ──
-     These classify, they never indicate status, which is why they are a
-     separate family from success/warning/destructive rather than borrowed from
-     it. Before this existed, "product" was rendered in the success green, so
-     the palette claimed an outcome where it only meant a category.
-     Every use is paired with its written label, so nothing depends on hue.
-     Chroma is held near 0.11 so no one type shouts over the others. */
-  --type-product: oklch(0.52 0.11 200);
-  --type-client: oklch(0.52 0.11 262);
-  --type-concept: oklch(0.52 0.11 305);
-  --type-hobby: oklch(0.54 0.11 25);
-  --ring: var(--brand);
-  --chart-1: var(--brand);
-  --chart-2: oklch(0.556 0.01 75);
-  --chart-3: oklch(0.439 0.01 75);
-  --chart-4: oklch(0.371 0.01 75);
-  --chart-5: oklch(0.269 0.01 75);
-  --radius: 0.75rem;
-
-  /* ── Motion (DESIGN.md §6.2), the one motion scale. ──
-     Theme-independent, so they live here rather than in a theme block. Before
-     these existed the same curve was copy-pasted into four TypeScript files. */
-  --motion-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --motion-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --motion-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --thorbis-accent: oklch(55.8% 0.188 264.4);
+  --thorbis-accent-foreground: oklch(100% 0 none);
+  --thorbis-accent-hover: oklch(50% 0.188 264.4);
+  --thorbis-bg: oklch(96.8% 0.009 84.6);
+  --thorbis-body: oklch(38.2% 0.018 68);
+  --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
+  --thorbis-burnt: oklch(49.6% 0.143 34);
+  --thorbis-busy: oklch(22.4% 0.014 72);
+  --thorbis-code-bg: oklch(93.5% 0.011 84.6);
+  --thorbis-code-fg: oklch(22.4% 0.014 72);
+  --thorbis-danger: oklch(62.6% 0.193 23);
+  --thorbis-fg: oklch(22.4% 0.014 72);
+  --thorbis-field: oklch(93.2% 0.012 84.6);
+  --thorbis-focus: oklch(55.8% 0.188 264.4);
+  --thorbis-forest: oklch(38% 0.052 147.2);
+  --thorbis-info: oklch(62.3% 0.188 259.8);
+  --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
+  --thorbis-link-decoration: oklch(66% 0.012 68);
+  --thorbis-marker: oklch(48.5% 0.015 68);
+  --thorbis-olive: oklch(47.9% 0.05 115.3);
+  --thorbis-on-panel: oklch(96.2% 0.008 84.6);
+  --thorbis-panel: oklch(99.15% 0.0035 84.6);
+  --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
+  --thorbis-success: oklch(62.7% 0.17 149.2);
+  --thorbis-warning: oklch(82.7% 0.171 80.5);
+  --thorbis-work-body: oklch(94% 0.013 259.8);
+  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
+  --thorbis-work-field: oklab(11.31% 0 0);
+  --thorbis-work-marker: oklch(78% 0 none);
+  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-type: oklch(96.8% 0.009 84.6);
+  --control-comfortable: 2.25rem;
+  --control-compact: 2rem;
+  --control-target: 2.5rem;
+  --control-touch: 2.75rem;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --field-separator-label-offset: -0.55rem;
+  --font-weight-medium: 500;
   --motion-fast: 120ms;
-  --motion-base: 200ms;
-  --motion-slow: 300ms;
-  --motion-drawer: 480ms;
-  /* First-view page entrance only, the "rare or first-view" row of the §6.1
-     frequency table, where the delight budget may be spent once. Promoted here
-     because `.reveal` had been carrying an untokened 0.6s of its own. */
-  --motion-scene: 640ms;
-  --motion-scene-step: 90ms;
-
-  --dock: oklch(0.995 0.003 92);
-  --dock-foreground: oklch(0.50 0.01 75);
-  --dock-muted: oklch(0.27 0.008 70 / 6%);
-  --dock-active: oklch(0.27 0.008 70 / 7%);
-  --dock-active-foreground: oklch(0.27 0.008 70);
-  --dock-border: oklch(0.90 0.004 85);
-  --sidebar: oklch(0.974 0.005 88);
-  --sidebar-foreground: oklch(0.27 0.008 70);
-  --sidebar-primary: oklch(0.3 0.01 70);
-  --sidebar-primary-foreground: oklch(0.99 0.002 95);
-  --sidebar-accent: oklch(0.955 0.0045 88);
-  --sidebar-accent-foreground: oklch(0.27 0.008 70);
-  --sidebar-border: oklch(0.91 0.004 85);
-  --sidebar-ring: oklch(0.708 0.008 75);
+  --motion-overlay: 180ms;
+  --radius: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-pill: 999px;
+  --radius-sm: 0.5rem;
+  --radius-xl: 0.75rem;
+  --scroll-spy-bottom-offset: max(calc(var(--spacing) * 3), calc(env(safe-area-inset-bottom) + var(--spacing) * 2));
+  --scroll-spy-trigger-height: calc(var(--spacing) * 11);
+  --shadow-accent-action: 0 8px 24px color-mix(in oklab, var(--thorbis-accent) 22%, transparent), inset 0 1px rgb(255 255 255 / 0.2);
+  --shadow-button: 0 1px 0 oklch(100% 0 0/0.7) inset,
+      0 1px 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent);
+  --shadow-button-press: 0 1px 0 color-mix(in oklab, var(--thorbis-fg) 8%, transparent) inset;
+  --shadow-commit: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 16%, transparent),
+      0 1px 0 color-mix(in oklab, var(--thorbis-bg) 40%, transparent) inset,
+      0 1px 1px color-mix(in oklab, var(--thorbis-fg) 10%, transparent);
+  --shadow-field: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),
+      inset 0 1px 1px color-mix(in oklab, var(--thorbis-fg) 4%, transparent);
+  --shadow-layer: 0 1px 2px rgb(0 0 0 / 0.28), 0 18px 48px rgb(0 0 0 / 0.34);
+  --shadow-panel: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 6%, transparent),
+      0 1px 2px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
+  --shadow-photo: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),
+      0 1px 2px color-mix(in oklab, var(--thorbis-fg) 6%, transparent),
+      0 8px 20px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
+  --shadow-photo-lift: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 10%, transparent),
+      0 18px 40px color-mix(in oklab, var(--thorbis-fg) 10%, transparent);
+  --shadow-short: 0 1px 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent);
+  --shadow-work-field: inset 0 0 0 1px rgb(255 255 255 / 0.1), inset 0 1px 1px rgb(0 0 0 / 0.35);
+  --shadow-work-panel: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-work-photo: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px rgb(0 0 0 / 0.18);
+  --spacing: 0.25rem;
+  --thorbis-text-copy-11: 0.6875rem;
+  --thorbis-text-copy-12: 0.75rem;
+  --thorbis-text-copy-12--line-height: 1.4;
+  --thorbis-text-copy-13: 0.8125rem;
+  --thorbis-text-copy-13--line-height: 1.45;
+  --thorbis-text-copy-14: 0.875rem;
+  --thorbis-text-copy-14--line-height: 1.5;
+  --thorbis-text-copy-16: 1rem;
+  --thorbis-text-copy-16--line-height: 1.625;
+  --thorbis-text-heading-16: 1rem;
+  --thorbis-text-heading-16--line-height: 1.5;
+  --thorbis-text-heading-20: 1.25rem;
+  --thorbis-text-heading-20--line-height: 1.2;
+  --thorbis-text-heading-32: 2rem;
+  --thorbis-text-heading-32--line-height: 1.25;
+  --ui-control-height-compact: 2rem;
+  --ui-control-height-field: 2.25rem;
+  --ui-control-height-touch: 2.75rem;
+  --ui-hover: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
+  --ui-rim: var(--thorbis-rim, color-mix(in oklab, var(--thorbis-fg) 10%, transparent));
+  --ui-rim-strong: color-mix(in oklab, var(--thorbis-fg) 18%, transparent);
+  --ui-selected: color-mix(in oklab, var(--thorbis-fg) 9%, var(--thorbis-panel));
+  --z-card-active: 6;
+  --z-card-controls: 2;
+  --z-chrome: 40;
+  --z-confetti: 69;
+  --z-control-overlay: 10;
+  --z-dialog: 80;
+  --z-dialog-panel: 81;
+  --z-dialog-scrim: 55;
+  --z-inspiration-dock: 30;
+  --z-inspiration-mobile-dock: 48;
+  --z-layer: 60;
+  --z-mark: 1;
+  --z-mobile-dock: 45;
+  --z-notice: 70;
+  --z-popover: 50;
+  --z-site-dock: 50;
+  --z-skip: 80;
+  --z-toast: 90;
+  --z-tooltip: 70;
+  --z-underlay: -1;
 }
-
 .dark {
-  --background: oklch(0.16 0.006 70);
-  --foreground: oklch(0.928 0.004 83);
-  --card: oklch(0.205 0.007 70);
-  --card-foreground: oklch(0.928 0.004 83);
-  --popover: oklch(0.215 0.007 70);
-  --popover-foreground: oklch(0.928 0.004 83);
-  --primary: oklch(0.922 0.004 83);
-  --primary-foreground: oklch(0.2 0.006 70);
-  --secondary: oklch(0.268 0.007 70);
-  --secondary-foreground: oklch(0.928 0.004 83);
-  --muted: oklch(0.255 0.007 70);
-  --muted-foreground: oklch(0.715 0.009 75);
-  --accent: oklch(0.285 0.008 70);
-  --accent-foreground: oklch(0.95 0.004 83);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.285 0.006 70);
-  --input: oklch(0.32 0.007 70);
-  --brand: oklch(0.78 0.14 85);
-  --brand-foreground: oklch(0.22 0.04 80);
-  --brand-muted: oklch(0.34 0.06 85);
-  --success: oklch(0.74 0.14 152);
-  --success-foreground: oklch(0.16 0.02 152);
-  --success-muted: oklch(0.30 0.05 152);
-  --warning: oklch(0.76 0.15 62);
-  --warning-foreground: oklch(0.26 0.05 70);
-  --info: oklch(0.74 0.13 245);
-  --info-muted: oklch(0.30 0.05 245);
-  /* Lifted for dark, same hues, so hierarchy is preserved rather than inverted. */
-  --type-product: oklch(0.75 0.11 200);
-  --type-client: oklch(0.75 0.11 262);
-  --type-concept: oklch(0.76 0.11 305);
-  --type-hobby: oklch(0.74 0.12 25);
-  --ring: var(--brand);
+  --thorbis-accent: oklch(55.8% 0.188 264.4);
+  --thorbis-accent-foreground: oklch(100% 0 none);
+  --thorbis-accent-hover: oklch(63.2% 0.157 265.4);
+  --thorbis-bg: oklch(14.5% 0 none);
+  --thorbis-body: oklch(94% 0.013 259.8);
+  --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
+  --thorbis-burnt: oklch(49.6% 0.143 34);
+  --thorbis-busy: oklch(96.8% 0.009 84.6);
+  --thorbis-code-bg: oklch(20.5% 0 none);
+  --thorbis-code-fg: oklch(96.8% 0.009 84.6);
+  --thorbis-danger: oklch(62.6% 0.193 23);
+  --thorbis-fg: oklch(96.8% 0.009 84.6);
+  --thorbis-field: color-mix(in oklab, black 22%, var(--thorbis-bg));
+  --thorbis-focus: oklch(55.8% 0.188 264.4);
+  --thorbis-forest: oklch(38% 0.052 147.2);
+  --thorbis-info: oklch(62.3% 0.188 259.8);
+  --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
+  --thorbis-link-decoration: oklch(55.6% 0 none);
+  --thorbis-marker: oklch(78% 0 none);
+  --thorbis-olive: oklch(47.9% 0.05 115.3);
+  --thorbis-on-panel: color-mix(in oklab, var(--thorbis-fg) 9%, var(--thorbis-panel));
+  --thorbis-panel: oklch(20.5% 0 none);
+  --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
+  --thorbis-success: oklch(62.7% 0.17 149.2);
+  --thorbis-warning: oklch(82.7% 0.171 80.5);
+  --thorbis-work-body: oklch(94% 0.013 259.8);
+  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
+  --thorbis-work-field: oklab(11.31% 0 0);
+  --thorbis-work-marker: oklch(78% 0 none);
+  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-type: oklch(96.8% 0.009 84.6);
+  --shadow-accent-action: 0 8px 24px color-mix(in oklab, var(--thorbis-accent) 22%, transparent), inset 0 1px rgb(255 255 255 / 0.2);
+  --shadow-button: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 1px 1px rgb(0 0 0 / 0.2);
+  --shadow-button-press: 0 1px 0 rgb(0 0 0 / 0.22) inset;
+  --shadow-commit: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-bg) 20%, transparent), 0 1px 0 color-mix(in oklab, var(--thorbis-bg) 24%, transparent) inset, 0 1px 1px rgb(0 0 0 / 0.22);
+  --shadow-field: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 12%, transparent), inset 0 1px 1px rgb(0 0 0 / 0.28);
+  --shadow-layer: 0 1px 2px rgb(0 0 0 / 0.28), 0 18px 48px rgb(0 0 0 / 0.34);
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.32);
+  --shadow-photo: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 9%, transparent), 0 1px 2px rgb(0 0 0 / 0.38), 0 8px 20px rgb(0 0 0 / 0.2);
+  --shadow-photo-lift: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 14%, transparent), 0 18px 40px rgb(0 0 0 / 0.55);
+  --shadow-short: 0 1px 1px rgb(0 0 0 / 0.35);
+  --shadow-work-field: inset 0 0 0 1px rgb(255 255 255 / 0.1), inset 0 1px 1px rgb(0 0 0 / 0.35);
+  --shadow-work-panel: 0 1px 2px rgb(0 0 0 / 0.45);
+  --shadow-work-photo: inset 0 0 0 1px rgb(255 255 255 / 0.08), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 20px rgb(0 0 0 / 0.18);
+}
+/* thorbis-tokens:end */
+
+:root {
+  --background: var(--thorbis-bg);
+  --foreground: var(--thorbis-fg);
+  --card: var(--thorbis-panel);
+  --card-foreground: var(--thorbis-fg);
+  --popover: var(--thorbis-panel);
+  --popover-foreground: var(--thorbis-fg);
+  --primary: var(--thorbis-fg);
+  --primary-foreground: var(--thorbis-bg);
+  --secondary: var(--thorbis-on-panel);
+  --secondary-foreground: var(--thorbis-fg);
+  --muted: var(--thorbis-on-panel);
+  --muted-foreground: var(--thorbis-marker);
+  --accent: var(--thorbis-on-panel);
+  --accent-foreground: var(--thorbis-fg);
+  --destructive: var(--thorbis-danger);
+  --border: var(--thorbis-border);
+  --input: var(--thorbis-border);
+  --ring: var(--thorbis-focus);
+  --brand: var(--thorbis-accent);
+  --brand-foreground: var(--thorbis-accent-foreground);
+  --brand-muted: var(--thorbis-on-panel);
+  --success: var(--thorbis-success);
+  --success-foreground: var(--thorbis-bg);
+  --success-muted: var(--thorbis-on-panel);
+  --warning: var(--thorbis-warning);
+  --warning-foreground: var(--thorbis-bg);
+  --info: var(--thorbis-info);
+  --info-muted: var(--thorbis-on-panel);
+  --type-product: var(--thorbis-marker);
+  --type-client: var(--thorbis-marker);
+  --type-concept: var(--thorbis-marker);
+  --type-hobby: var(--thorbis-marker);
+  --dock: var(--thorbis-panel);
+  --dock-foreground: var(--thorbis-marker);
+  --dock-muted: var(--thorbis-on-panel);
+  --dock-active: var(--thorbis-on-panel);
+  --dock-active-foreground: var(--thorbis-fg);
+  --dock-border: var(--thorbis-border);
+  --sidebar: var(--thorbis-panel);
+  --sidebar-foreground: var(--thorbis-fg);
+  --sidebar-primary: var(--thorbis-fg);
+  --sidebar-primary-foreground: var(--thorbis-bg);
+  --sidebar-accent: var(--thorbis-on-panel);
+  --sidebar-accent-foreground: var(--thorbis-fg);
+  --sidebar-border: var(--thorbis-border);
+  --sidebar-ring: var(--thorbis-focus);
   --chart-1: var(--brand);
-  --chart-2: oklch(0.556 0.01 75);
-  --chart-3: oklch(0.439 0.01 75);
-  --chart-4: oklch(0.371 0.01 75);
-  --chart-5: oklch(0.269 0.01 75);
-  --dock: oklch(0.245 0.007 70);
-  --dock-foreground: oklch(0.72 0.008 75);
-  --dock-border: oklch(1 0 0 / 8%);
-  --dock-muted: oklch(1 0 0 / 8%);
-  --dock-active: oklch(1 0 0 / 14%);
-  --dock-active-foreground: oklch(0.99 0 0);
-  --sidebar: oklch(0.15 0.006 70);
-  --sidebar-foreground: oklch(0.715 0.009 75);
-  --sidebar-primary: oklch(0.922 0.004 83);
-  --sidebar-primary-foreground: oklch(0.2 0.006 70);
-  --sidebar-accent: oklch(0.255 0.007 70);
-  --sidebar-accent-foreground: oklch(0.95 0.004 83);
-  --sidebar-border: oklch(0.275 0.006 70);
-  --sidebar-ring: oklch(0.556 0.006 75);
+  --chart-2: var(--muted-foreground);
+  --chart-3: var(--foreground);
+  --chart-4: var(--muted-foreground);
+  --chart-5: var(--foreground);
+  /* Existing consumers share Thorbis's one curve and two duration budgets. */
+  --motion-ease-out: var(--ease-out);
+  --motion-ease-in-out: var(--ease-out);
+  --motion-ease-drawer: var(--ease-out);
+  --motion-base: var(--motion-overlay);
+  --motion-slow: var(--motion-overlay);
+  --motion-drawer: var(--motion-overlay);
 }
 
 @layer base {
@@ -220,11 +326,19 @@
     @apply border-border outline-ring/50;
   }
   html {
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
+    scroll-padding-block: 8rem 6rem;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  @media (forced-colors: active) {
+    :focus-visible { outline-color: Highlight; }
   }
   body {
     @apply bg-background text-foreground;
@@ -233,7 +347,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     letter-spacing: -0.006em;
-    line-height: 1.6;
+    line-height: var(--text-copy-16--line-height);
   }
   h1, h2, h3, h4 {
     letter-spacing: -0.02em;
@@ -279,31 +393,8 @@
     }
   }
 
-  /* ── Sequenced entrance ──
-     Scroll-driven, so scenes arrive as they are reached instead of all firing
-     on load. CSS-only, the tool ladder in §6.1 says use the cheapest capable
-     tool, and this needs no JavaScript and no observer.
-
-     Everything is visible by default. The animation only attaches where
-     `animation-timeline` is supported, so an unsupported browser shows the
-     finished state rather than blank space, and the global
-     prefers-reduced-motion block collapses it to nothing. Content is never
-     hidden behind motion. */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .scene-enter {
-        animation: reveal-up linear both;
-        animation-timeline: view();
-        animation-range: entry 8% cover 26%;
-      }
-    }
-  }
-  .shadow-float {
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.08), 0 8px 24px -8px oklch(0 0 0 / 0.22), 0 16px 48px -16px oklch(0 0 0 / 0.18);
-  }
-  .shadow-card {
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 1px 3px oklch(0 0 0 / 0.04);
-  }
+  .shadow-float { box-shadow: var(--shadow-layer); }
+  .shadow-card { box-shadow: var(--shadow-panel); }
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
@@ -322,7 +413,7 @@
     border-radius: var(--radius-md);
     background: var(--popover);
     color: var(--popover-foreground);
-    box-shadow: 0 1px 2px oklch(0 0 0 / 0.2);
+    box-shadow: var(--shadow-layer);
   }
   .skip-link:focus {
     left: 1rem;
@@ -332,26 +423,6 @@
     @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 
-  /* ── Reveal entrance (was .animate-in; renamed to avoid tw-animate-css clash) ──
-     One cadence, driven by the tokens above, so a staged opening and an ordinary
-     page entrance cannot drift into two motion systems. The stagger is what makes
-     an opening read as sequence rather than as one block fading in. */
-  .reveal {
-    animation: reveal-up var(--motion-scene) var(--motion-ease-out) forwards;
-  }
-  .reveal-delay-1 { animation-delay: calc(1 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-2 { animation-delay: calc(2 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-3 { animation-delay: calc(3 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-4 { animation-delay: calc(4 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-5 { animation-delay: calc(5 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-6 { animation-delay: calc(6 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-7 { animation-delay: calc(7 * var(--motion-scene-step)); opacity: 0; }
-  .reveal-delay-8 { animation-delay: calc(8 * var(--motion-scene-step)); opacity: 0; }
-}
-
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /*

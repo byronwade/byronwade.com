@@ -1,11 +1,11 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import localFont from "next/font/local";
 
-// Body / UI. Geist, the byronwade/ui design-system typeface
-export const geistSans = Geist({
+// Thorbis Design: Inter UI/body and Geist Mono. Source: src/styles.css @ 46b6654.
+export const interSans = Inter({
 	subsets: ["latin"],
 	display: "swap",
-	variable: "--font-sans",
+	variable: "--font-inter",
 });
 
 // Monospace, code, metrics, technical labels
