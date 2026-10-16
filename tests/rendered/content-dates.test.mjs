@@ -4,8 +4,6 @@ import { test } from "node:test";
 
 const TIME_ELEMENT = /<time\b([^>]*)>([\s\S]*?)<\/time>/gi;
 const DATETIME_ATTRIBUTE = /datetime="([^"]+)"/i;
-const HTML_COMMENT = /<!--[\s\S]*?-->/g;
-const UPDATED_PREFIX = /^Updated /;
 
 function assertCalendarDates(html, route) {
 	const times = [...html.matchAll(TIME_ELEMENT)];
@@ -20,8 +18,12 @@ function assertCalendarDates(html, route) {
 			{ month: "long", day: "numeric", year: "numeric" },
 			{ month: "short", day: "numeric", year: "numeric" },
 			{ month: "short", day: "numeric" },
-		].map((options) => date.toLocaleDateString("en-US", { ...options, timeZone }));
-		const displayed = content.replace(HTML_COMMENT, "").trim().replace(UPDATED_PREFIX, "");
+		].flatMap((options) => {
+			const label = date.toLocaleDateString("en-US", { ...options, timeZone });
+			// React can separate adjacent text children with an empty HTML comment.
+			return [label, `Updated ${label}`, `Updated <!-- -->${label}`];
+		});
+		const displayed = content.trim();
 		assert.ok(
 			expected.includes(displayed),
 			`${route}: ${machineDate} displayed as ${displayed}; expected ${expected.join(" or ")}`
