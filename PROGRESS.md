@@ -672,8 +672,8 @@ real checks, then squash merge using the verified head SHA without admin.
 - Mode: Implementation. Merge origin/main into bot/shop; never merge PR 49,
   force-push, use admin overrides, or enable live payments.
 - Started clean at b0ac10a. Fetched main 0e9f5cd, including PR 54 and PR 52.
-- Only conflict: this progress log. Preserve shop history and append PR 52's
-  historical evidence below; its branch-specific permissions are historical.
+- Only conflict: this progress log. Preserve shop history and retain PR 52's
+  historical evidence above; its branch-specific permissions are historical.
 - Application files merged automatically. Preserve incoming draft exclusion,
   Thorbis tokens/primitives, and existing shop placeholders/noindex/test guard.
 - Reuse existing catalog, checkout boundary, shared primitives and native tests;
@@ -702,3 +702,19 @@ real checks, then squash merge using the verified head SHA without admin.
   source matches main, outgoing shop source is unchanged, and whitespace checks
   pass. Focused browser verification is running with worktree-local ignored
   fixtures; final evidence and remote checks will be recorded in RESULT.md.
+
+### Post-52 browser and remote handoff
+
+- Merge 5733000 was pushed normally. PR 49 is OPEN and MERGEABLE against main
+  0e9f5cd, mergedAt null, and no auto-merge request. All 10 active checks are
+  SUCCESS, including Codacy and Vercel; two Cursor checks are NEUTRAL.
+- Focused production Chrome pass: 11 scenarios passed. Desktop/mobile in both
+  themes, 320px and tablet reflow, no-JS preview, both keyboard return links,
+  rejected invalid live-key fixture, and intercepted test-checkout pending/error/
+  retry passed. Zero page errors; all three owned servers stopped. Visually
+  inspected desktop light, mobile dark and focused mobile error screenshots.
+- Local ignored evidence is in .next/pr49-post52. No fresh axe, performance,
+  device, full shell audit or authenticated-provider claim is made.
+- RESULT.md records current evidence and VERDICT: READY_FOR_BYRON. Commit/push
+  these report-only changes, then confirm the final head's checks and update the
+  PR body. Byron must pick real products before any merge. Never merge PR 49.
