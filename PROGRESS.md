@@ -24,15 +24,16 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
   catalog without an unrelated content migration.
 - Dependency cone: static portfolio catalog, catch-all page import, API module,
   guard dependency if required, architecture data ownership documentation.
-- Verification: baseline production build and symbol scan, then local lint,
-  type-check, knip, production build, repeat client-symbol scan, boundary
-  rejection check, and headless route smoke for `/projects`, a Markdown project
+- Verification: reproduce the original import's server-only boundary rejection,
+  then local lint, type-check, knip, production build, client-symbol scan, and
+  headless route smoke for `/projects`, a Markdown project
   detail, and static portfolio details. Review the full diff and run
   `git diff --check`. Record evidence in `RESULT.md`.
 
 ## Plan
 
-1. Install locked dependencies and reproduce the client chunk contamination.
+1. Install locked dependencies and reproduce the invalid client import with a
+   server-only compiler guard before migrating the consumer.
 2. Extract the static catalog, enforce the API boundary, and commit the fix.
 3. Run release gates and smoke checks; fix only findings in this dependency cone.
 4. Write `RESULT.md` with `VERDICT: PASS` or `BLOCKED`, commit evidence, push
@@ -40,7 +41,26 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
 
 ## Progress
 
-- Reconnaissance complete; dependency installation in progress.
+- Reconnaissance and dependency installation complete (`npm ci`: 653 packages;
+  `npm install --save-exact server-only@0.0.1 --no-audit --no-fund`: exit 0).
+- Added the server-only marker before changing the consumer so the original
+  import can be checked against the compiler boundary. Added a compiled client
+  chunk regression to the existing native `test:rendered` suite; it reports
+  filenames only, never chunk contents or credential values.
+- Negative boundary check: `npm run build` on Node 24.21.0 exited 1 as expected
+  with the old client import still present. Turbopack reported that
+  `server-only` cannot be imported from a Client Component and traced both the
+  browser and SSR client paths through `app/portfolio/[...slug]/page.tsx`.
+- Extracted the existing private type and catalog into `lib/portfolio-projects.ts`
+  and migrated the sole static consumer. API implementations and their server
+  callers are unchanged. Documented the distinct owners and guard dependency.
+- Compared both modules with `38261e9`: catalog is unchanged (SHA-256
+  `9867999e766ab94ed9d17676cdd76c3b187ff2555ef3a0a2405a76ac46dacb06`),
+  API module differs only by extraction and guard. Import search confirms only
+  the API route and server Figma page still import `portfolio-data`.
+- `npm run lint`: PASS, 123 files, no fixes. Initial test-loop and formatting
+  findings were corrected. Type generation passed; TypeScript is running.
+  Remaining checks and production smoke must pass before publishing.
 - Shared toolkit advisory reservation could not initialize: its configured
   roots include a missing unrelated septic workspace. No configuration or
   quarantine changes made. Use native command exit/output evidence instead.

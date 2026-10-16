@@ -152,6 +152,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | State management | React + `nuqs` | ^2.8.5 | URL-shareable state; no global store needed | Do not add a store for local state |
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
 | Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
+| Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
 
 ## Design tokens and defaults
 
