@@ -87,8 +87,10 @@ components/
   Invalid optional update/project dates are omitted. No loader substitutes the
   build date. The sitemap uses an article's update date when present and leaves
   modification dates off undated projects.
-  Quote dates when strict calendar validation is needed: the YAML engine
-  normalizes impossible unquoted calendar dates before returning Date objects.
+  `readContentMatter` in `lib/content-matter.ts` keeps js-yaml's timestamp
+  constructor, but only for real calendar days. Impossible unquoted dates such
+  as `2026-02-30` stay the original text and fail the same validation as quoted
+  dates, instead of shifting onto another day. Other front-matter keys are unchanged.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags

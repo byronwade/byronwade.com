@@ -1,6 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import matter from "gray-matter";
+import { readContentMatter } from "@/lib/content-matter";
 import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so each compiles once rather than per file/post. */
@@ -63,7 +63,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 	try {
 		const fullPath = join(blogDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
-		const { data, content } = matter(fileContents);
+		const { data, content } = readContentMatter(fileContents);
 
 		// Local previews only. All readers, including direct URLs, share this boundary.
 		if (data.draft === true && process.env.NODE_ENV !== "development") {
