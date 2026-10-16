@@ -12,6 +12,13 @@ const imageRemotePatterns = [
 	{ hostname: "image.thum.io", protocol: "https" },
 ];
 
+// @sparticuz/chromium reads its compressed browser from bin/ at runtime by a
+// computed path, so file tracing misses it. Without these files the deployed
+// resume PDF route fails before it can launch a browser.
+const routeFileTracingIncludes = Object.fromEntries([
+	["/api/resume-pdf", ["./node_modules/@sparticuz/chromium/bin/**"]],
+]);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	cacheComponents: false,
@@ -30,12 +37,7 @@ const nextConfig = {
 		remotePatterns: imageRemotePatterns,
 		...(process.env.NODE_ENV === "development" ? { unoptimized: true } : {}),
 	},
-	// @sparticuz/chromium reads its compressed browser from bin/ at runtime by a
-	// computed path, so file tracing misses it. Without these files the deployed
-	// resume PDF route fails before it can launch a browser.
-	outputFileTracingIncludes: {
-		"/api/resume-pdf": ["./node_modules/@sparticuz/chromium/bin/**"],
-	},
+	outputFileTracingIncludes: routeFileTracingIncludes,
 	poweredByHeader: false,
 
 	// React Compiler (stable in Next.js 16): automatically memoizes components
