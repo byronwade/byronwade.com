@@ -302,6 +302,9 @@ async function checkShellStates(page) {
 				);
 				states.push(await readState(page, label));
 				states.push(await checkCapsuleKeyboard(page, label));
+				if (label === "All products") {
+					states.push(await checkShortcutScope(page, label));
+				}
 				if (label === "Search") {
 					await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
 					await page.waitForFunction(() => document.body.textContent.includes("No results"));
@@ -380,6 +383,22 @@ async function checkShellStates(page) {
 			}),
 		Promise.resolve()
 	);
+	await page.focus('button[aria-label="Support open source"]');
+	await page.keyboard.press("Enter");
+	await page.waitForSelector(
+		'[role="dialog"][aria-label="Support open source"][aria-hidden="false"]'
+	);
+	await page.keyboard.down("Control");
+	await page.keyboard.press("k");
+	await page.keyboard.up("Control");
+	await page.waitForSelector('[role="dialog"][aria-label="Search"][aria-hidden="false"]');
+	await page.evaluate(() => window.dispatchEvent(new Event("open-command-palette")));
+	await page.keyboard.press("Escape");
+	await page.waitForFunction(
+		() =>
+			document.activeElement === document.querySelector('button[aria-label="Support open source"]')
+	);
+	states.push({ name: "Support to search keeps the original invoking control", passed: true });
 	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
 	await page.click('button[aria-label="Toggle theme"]');
@@ -404,6 +423,24 @@ async function checkShellStates(page) {
 	);
 	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
 	return states;
+}
+
+async function checkShortcutScope(page, label) {
+	await page.keyboard.down("Control");
+	await page.keyboard.press("k");
+	await page.keyboard.up("Control");
+	await page.evaluate(() => window.dispatchEvent(new Event("open-command-palette")));
+	// A forbidden open could mount the deferred dialog several commits later.
+	await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 500)));
+	const dialogs = await page.evaluate(() =>
+		[...document.querySelectorAll('dialog[open], [role="dialog"][aria-hidden="false"]')].map(
+			(dialog) => dialog.getAttribute("aria-label")
+		)
+	);
+	if (dialogs.length !== 1 || dialogs[0] !== label) {
+		throw new Error(`Search shortcut conflicted with ${label}: ${JSON.stringify(dialogs)}`);
+	}
+	return { name: `${label} owns dialog shortcuts`, passed: true };
 }
 
 async function checkReducedStyles(page) {
@@ -497,6 +534,12 @@ async function checkPreviewStates(page, width) {
 	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 	await page.click('button[aria-label="Enter fullscreen"]');
 	await page.waitForSelector("dialog[open]");
+	states.push(
+		await checkShortcutScope(
+			page,
+			await page.$eval("dialog[open]", (dialog) => dialog.getAttribute("aria-label"))
+		)
+	);
 	states.push(await readState(page, "Fullscreen preview"));
 	await Array.from({ length: 12 }).reduce(
 		(previous) =>

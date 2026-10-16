@@ -179,11 +179,21 @@ export function DockToolbarClient({
 			?.scrollIntoView({ block: "nearest" });
 	}, [active, mode]);
 
-	/*, global ⌘K toggles search ,  */
+	// Global search yields to another dialog; toolbar modes share their own scope.
 	React.useEffect(() => {
+		const anotherDialogOpen = () =>
+			[...document.querySelectorAll<HTMLElement>('dialog[open], [role="dialog"]')].some(
+				(dialog) =>
+					dialog !== panel &&
+					dialog.getClientRects().length > 0 &&
+					!dialog.closest('[hidden], [inert], [aria-hidden="true"]')
+			);
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
+				if (anotherDialogOpen()) {
+					return;
+				}
 				const focused = document.activeElement;
 				if (focused instanceof HTMLElement && !panel?.contains(focused)) {
 					returnFocusRef.current = focused;
@@ -192,8 +202,13 @@ export function DockToolbarClient({
 			}
 		};
 		const onOpen = () => {
+			if (anotherDialogOpen()) {
+				return;
+			}
 			const focused = document.activeElement;
-			returnFocusRef.current = focused instanceof HTMLElement ? focused : null;
+			if (focused instanceof HTMLElement && !panel?.contains(focused)) {
+				returnFocusRef.current = focused;
+			}
 			setMode("search");
 		};
 		window.addEventListener("keydown", onKey);
