@@ -56,8 +56,19 @@ export function AppLauncher() {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
+	const triggerRef = React.useRef<HTMLButtonElement>(null);
 
 	const panelId = React.useId();
+
+	// The document listener below depends on this focus-restoring action's identity.
+	const closePanel = React.useCallback(() => {
+		setOpen(false);
+		requestAnimationFrame(() => {
+			if (document.activeElement === document.body) {
+				triggerRef.current?.focus({ preventScroll: true });
+			}
+		});
+	}, []);
 
 	// The launcher is an overlay-in-a-slot: the absolutely-positioned morph blooms
 	// right + down. The slot reserves the collapsed pill's footprint (seeded with
@@ -100,7 +111,7 @@ export function AppLauncher() {
 		}
 		const onKey = (e: KeyboardEvent) => {
 			if (e.key === "Escape") {
-				setOpen(false);
+				closePanel();
 			}
 		};
 		const onDown = (e: PointerEvent) => {
@@ -116,7 +127,7 @@ export function AppLauncher() {
 			document.removeEventListener("keydown", onKey);
 			document.removeEventListener("pointerdown", onDown);
 		};
-	}, [open]);
+	}, [open, closePanel]);
 
 	const { toggleTheme } = useThemeToggle();
 
@@ -157,6 +168,7 @@ export function AppLauncher() {
 						Byron Wade
 					</Link>
 					<button
+						ref={triggerRef}
 						type="button"
 						aria-haspopup="dialog"
 						aria-expanded={open}
@@ -187,7 +199,7 @@ export function AppLauncher() {
 						<span className="text-[11px] text-dock-foreground/70">Switch product</span>
 						<button
 							type="button"
-							onClick={() => setOpen(false)}
+							onClick={closePanel}
 							aria-label="Close menu"
 							className="flex size-7 items-center justify-center rounded-lg text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 						>

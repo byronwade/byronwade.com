@@ -92,9 +92,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
+	const returnFocusRef = React.useRef<HTMLElement | null>(null);
+	const pendingFocusRef = React.useRef<HTMLElement | null>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
-	const returnFocusRef = React.useRef<HTMLElement | null>(null);
 	const panelId = React.useId();
 
 	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
@@ -108,10 +109,25 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const flat = React.useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
 	const close = React.useCallback(() => {
+		pendingFocusRef.current = panelRef.current?.contains(document.activeElement)
+			? returnFocusRef.current
+			: null;
 		setMode(null);
 		setQuery("");
 		setActive(0);
 	}, []);
+
+	// Keep the global shortcut subscription stable between disclosure state changes.
+	const showPanel = React.useCallback(
+		(nextMode: Exclude<Mode, null>, opener?: HTMLElement) => {
+			if (!open) {
+				returnFocusRef.current =
+					opener ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+			}
+			setMode(nextMode);
+		},
+		[open]
+	);
 
 	const run = React.useCallback(
 		(href: string) => {
@@ -156,7 +172,17 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 				panelRef.current?.focus({ preventScroll: true });
 			}
 		},
-		onClosed: () => returnFocusRef.current?.focus({ preventScroll: true }),
+		onClosed: () => {
+			const target = pendingFocusRef.current;
+			pendingFocusRef.current = null;
+			if (
+				target &&
+				(document.activeElement === document.body ||
+					panelRef.current?.contains(document.activeElement))
+			) {
+				target.focus({ preventScroll: true });
+			}
+		},
 		deps: [mode],
 	});
 
@@ -197,25 +223,21 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
-				const focused = document.activeElement;
-				if (focused instanceof HTMLElement && !panelRef.current?.contains(focused)) {
-					returnFocusRef.current = focused;
+				if (mode === "search") {
+					close();
+				} else {
+					showPanel("search");
 				}
-				setMode((m) => (m === "search" ? null : "search"));
 			}
 		};
-		const onOpen = () => {
-			const focused = document.activeElement;
-			returnFocusRef.current = focused instanceof HTMLElement ? focused : null;
-			setMode("search");
-		};
+		const onOpen = () => showPanel("search");
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("open-command-palette", onOpen);
 		return () => {
 			window.removeEventListener("keydown", onKey);
 			window.removeEventListener("open-command-palette", onOpen);
 		};
-	}, []);
+	}, [mode, close, showPanel]);
 
 	/*. Esc + click-away close ,  */
 	React.useEffect(() => {
@@ -317,10 +339,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("search");
-											}}
+											onClick={(event) => showPanel("search", event.currentTarget)}
 											aria-label="Search (⌘K)"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -389,10 +408,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("donate");
-											}}
+											onClick={(event) => showPanel("donate", event.currentTarget)}
 											aria-label="Support open source"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
