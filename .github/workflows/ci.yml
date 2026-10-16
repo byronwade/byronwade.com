@@ -1,9 +1,9 @@
 name: CI
 
+# Automatic GitHub Actions runs are disabled per the local/Depot-only policy.
+# Run the release gates locally before publishing; retain this as a manual reference.
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}

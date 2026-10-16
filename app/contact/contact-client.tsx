@@ -10,12 +10,7 @@ import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/lib/actions/send-email";
-import {
-	buildContactMessage,
-	CONTACT_TOPICS,
-	type ContactTopicValue,
-	DEFAULT_CONTACT_TOPIC,
-} from "@/lib/contact-form";
+import { CONTACT_TOPICS, type ContactTopicValue, DEFAULT_CONTACT_TOPIC } from "@/lib/contact-form";
 import { Loader2, Send } from "@/lib/icons";
 
 /**
@@ -66,13 +61,7 @@ export default function ContactClient() {
 		setStatus({ kind: "idle" });
 
 		try {
-			const payload = buildContactMessage(formData.topic, formData.message);
-			const result = await sendEmail({
-				name: formData.name.trim(),
-				email: formData.email.trim(),
-				message: payload.message,
-				projectType: payload.projectType,
-			});
+			const result = await sendEmail(formData);
 			if (result.success) {
 				setStatus({ kind: "sent" });
 				// Cleared only here. §3.3: never discard what the visitor typed unless
@@ -114,6 +103,7 @@ export default function ContactClient() {
 							<Input
 								autoComplete="name"
 								id="name"
+								name="name"
 								onChange={(e) => handleChange("name", e.target.value)}
 								placeholder="Your name"
 								required
@@ -125,6 +115,7 @@ export default function ContactClient() {
 							<Input
 								autoComplete="email"
 								id="email"
+								name="email"
 								onChange={(e) => handleChange("email", e.target.value)}
 								placeholder="you@example.com"
 								required
