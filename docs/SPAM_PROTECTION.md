@@ -76,10 +76,21 @@ formatDetection: {
 - Real email addresses only used in server-side operations
 - No client-side exposure of actual email addresses
 
-#### API Protection
-- Rate limiting on contact forms
-- CAPTCHA integration available
-- Form validation and sanitization
+#### Contact submission boundary
+- Both forms submit name, email, topic, and the original message to `sendEmail`.
+- The server validates unknown input, trims fields, enforces shared length limits,
+  rejects control characters in names, validates a single email address, and
+  accepts only the canonical contact topics in `lib/contact-form.ts`.
+- Email bodies are plain text. Visitor HTML is delivered literally, with no HTML
+  interpolation, uploaded attachments, or caller-controlled recipient override.
+- Owner delivery must be accepted before a confirmation is attempted. A failed
+  confirmation does not turn an accepted message into a failure or prompt a retry.
+- Provider responses and exception details remain on the server; the caller gets
+  only success or an actionable, generic error.
+- `npm test` exercises the actual server action with a fixture transport. It
+  cannot send real email. There is no added test dependency.
+- Rate limiting and CAPTCHA are not implemented. Input validation and address
+  obfuscation do not prevent automated submissions or confirmation abuse.
 
 ## Implementation Details
 

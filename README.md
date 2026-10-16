@@ -5,6 +5,9 @@ case-study projects, a live GitHub portfolio, a Markdown blog, and a resume.
 
 ## Quick start
 
+Use Node.js 24.x, as declared in `package.json`. The same declaration selects the
+Vercel build and function runtime.
+
 ```bash
 npm install
 npm run dev
@@ -57,19 +60,25 @@ and point at the code that holds the values.
 | `npm run dev` | Dev server |
 | `npm run dev:turbo` | Dev with Turbopack |
 | `npm run build` | Production build |
-| `npm run lint` / `lint:fix` | Ultracite over Biome ,  **CI gate** |
-| `npm run type-check` | `next typegen` + strict TypeScript ,  **CI gate** |
-| `npm run knip` | Unused files, exports, types, deps ,  **CI gate**, at zero |
-| `npm run build` | Production build ,  **CI gate** |
-| `npm run check` | Lint with fixes, then type-check and knip |
+| `npm run lint` / `lint:fix` | Ultracite over Biome ,  **local release gate** |
+| `npm run type-check` | `next typegen` + strict TypeScript ,  **local release gate** |
+| `npm run knip` | Unused files, exports, types, deps ,  **local release gate**, at zero |
+| `npm run build` | Production build ,  **local release gate** |
+| `npm run check` | Lint, then type-check and knip |
+| `npm test` | Contact action regressions, fixture delivery only (Node 22.18+) |
+| `npm run test:rendered` | Check native contact submit semantics after `npm run build` |
 | `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
 | `npm run audit:deploy` | `vercel build` (needs a linked project) |
 | `npm run perf:budget` | Build + Lighthouse against `lighthouse-budget.json` |
 | `npm run clear` | Remove `.next` and `node_modules` |
 
-All four gates run on every pull request. React Scan is wired into
-`npm run dev` and never reaches production.
+Run all four release gates locally before publishing, plus `npm test` for contact
+changes and `npm run test:rendered` after the build. The checked-in Actions workflow
+is manual-only; local checks or Depot are the release gate. GitHub's separate
+default CodeQL setup still creates automatic Actions runs and needs an owner
+settings change to comply with that policy. React Scan is wired into `npm run dev`
+and never reaches production.
 
 ## Tech
 

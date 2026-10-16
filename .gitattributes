@@ -1,0 +1,2 @@
+# Keep checkouts consistent with Biome's LF formatter on Windows and other hosts.
+* text=auto eol=lf

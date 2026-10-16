@@ -9,12 +9,7 @@ import { pillLinkClass } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/lib/actions/send-email";
 import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
-import {
-	buildContactMessage,
-	CONTACT_TOPICS,
-	type ContactTopicValue,
-	DEFAULT_CONTACT_TOPIC,
-} from "@/lib/contact-form";
+import { CONTACT_TOPICS, type ContactTopicValue, DEFAULT_CONTACT_TOPIC } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Mail, Send, X } from "@/lib/icons";
 
 interface InlineContactProps {
@@ -60,15 +55,8 @@ export function InlineContact({
 		}
 		setIsSubmitting(true);
 
-		const payload = buildContactMessage(formData.topic, formData.message);
-
 		try {
-			const result = await sendEmail({
-				name: formData.name.trim(),
-				email: formData.email.trim(),
-				message: payload.message,
-				projectType: payload.projectType,
-			});
+			const result = await sendEmail(formData);
 			if (result.success) {
 				toast.success("Message sent!", {
 					description: "Thanks for reaching out. I’ll get back to you soon.",

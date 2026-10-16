@@ -54,7 +54,9 @@ function Button({
 	// caller set it explicitly.
 	const resolvedNativeButton =
 		nativeButton ??
-		(render !== null && !(React.isValidElement(render) && render.type === "button")
+		(render !== undefined &&
+		render !== null &&
+		!(React.isValidElement(render) && render.type === "button")
 			? false
 			: undefined);
 

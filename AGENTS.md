@@ -46,36 +46,40 @@ When the mode is unclear, prefer reading and proposing over writing.
 | UI | `@base-ui/react` primitives wrapped in `components/ui/` (18 of them) |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
 | Lint/format | Ultracite over Biome (`biome.jsonc`), tabs, width 100, double quotes, semicolons |
-| Dead code | knip (`knip.json`), clean, a new unused export fails CI |
+| Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | **None.** There is no test runner or test script in this repository |
+| Tests | Native Node contact-action regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
 
-Ultracite 7 defaults to the oxlint/oxfmt toolchain. This repository pins it to
-`--linter biome` so there is exactly one formatter and one linter, and
-`biome.jsonc` extends `ultracite/biome/{core,react,next}`. Everything written
-below those `extends` is a deliberate repository-level override with a comment
+Ultracite detects this repository's `biome.jsonc` and runs Biome, so there is
+exactly one formatter and one linter. The configuration extends
+`ultracite/biome/{core,react,next}`. Everything written below those `extends` is a
+deliberate repository-level override with a comment
 explaining why; read those comments before re-enabling a rule.
 
 ## Commands
 
 ```bash
 npm run dev          # dev server on :3000
-npm run lint         # ultracite check                  (CI gate)
-npm run type-check   # next typegen && tsc --noEmit     (CI gate)
-npm run knip         # unused files, exports, deps      (CI gate)
-npm run build        # production build                 (CI gate)
-npm run check        # lint --fix, then type-check and knip
+npm run lint         # ultracite check                  (local release gate)
+npm run type-check   # next typegen && tsc --noEmit     (local release gate)
+npm run knip         # unused files, exports, deps      (local release gate)
+npm run build        # production build                 (local release gate)
+npm run check        # lint, then type-check and knip
+npm test             # contact-action regressions (fixture email transport)
+npm run test:rendered # native contact submit semantics, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
 ```
 
-CI (`.github/workflows/ci.yml`) runs all four gates on every pull request and
-push to `main`. `type-check` runs `next typegen` first because `next-env.d.ts`
+Run all four release gates locally before publishing. GitHub Actions must not run
+automatically; `.github/workflows/ci.yml` retains a manual reference only. Use
+local verification or Depot, per the owner's policy. Also run `npm test` for
+contact changes. `type-check` runs `next typegen` first because `next-env.d.ts`
 and the generated route types are gitignored, without it tsc cannot resolve
 `next/*` on a clean checkout.
 
@@ -252,7 +256,7 @@ not cleanup.
 - Import through path aliases (`@/components/*`, `@/lib/*`, `@/types/*`), not
   relative backdoors across folders.
 - Existing `index.ts` barrels stay curated. Do not add indiscriminate barrels or
-  widen public exports for convenience, knip fails CI on the unused surface.
+  widen public exports for convenience, knip fails release checks on the unused surface.
   An export that is genuinely public but unused in-repo needs a `@public`
   JSDoc tag and a doc entry justifying it.
 - Do not add packages, layers, services, or configuration for hypothetical
@@ -427,8 +431,9 @@ a representative measurement.
 
 ## Correctness and verification
 
-There is no test runner here, so static checks and manual verification carry the
-load. Do not claim a change is tested when it is not.
+Contact action regressions use the native Node runner (`npm test`, Node 22.18+).
+Other surfaces rely on static checks and manual verification. Do not claim a
+change is tested when it is not.
 
 ```bash
 npm run lint         # always
@@ -437,7 +442,8 @@ npm run knip         # after deleting, moving, or renaming anything
 npm run build        # for routing, data-fetching, or boundary changes
 ```
 
-All four run in CI. For UI work, also exercise the affected route in
+Run all four locally before publishing; run `npm test` for contact changes. For UI
+work, also exercise the affected route in
 `npm run dev`, including its loading, empty, and error states, and check
 keyboard, light, and dark.
 
@@ -449,12 +455,15 @@ make a change pass.
 
 When an objective failure can recur, add the smallest reliable sensor, in
 increasing order of cost: a type invariant → a Biome rule → a knip entry →
-`lighthouse-budget.json` → a CI step in `.github/workflows/ci.yml`.
+`lighthouse-budget.json` → a local release check or Depot step. Do not add
+automatic GitHub Actions runs.
 
 Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 `tsc --noEmit` under `strict` **and** `noUncheckedIndexedAccess`, knip at zero
 unused files/exports/types/dependencies, and a production build, all four
-gating every pull request.
+required locally before publishing. Contact changes also run `npm test`; after a
+production build, `npm run test:rendered` checks native contact submit semantics.
+`.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
 
 High-value sensors not yet built, in rough priority order: raw-color and
 arbitrary-radius/shadow detection, `transition: all` and parallel-easing checks,
@@ -468,13 +477,13 @@ Do not introduce a noisy repository-wide gate that will be ignored.
 ## Audit tooling
 
 Keeping this repository clean is a standing goal, not a one-off. Beyond the four
-CI gates, run these periodically, after a feature lands, before a release, or
-whenever the codebase feels like it has accumulated drift.
+local release gates, run these periodically, after a feature lands, before a
+release, or whenever the codebase feels like it has accumulated drift.
 
 | Tool | Command | What it catches |
 | --- | --- | --- |
-| Ultracite / Biome | `npm run lint` | Lint + formatting, Ultracite's rule preset. `npm run lint:fix` applies safe fixes. **CI gate.** |
-| knip | `npm run knip` | Unused files, exports, types, dependencies. **CI gate.** |
+| Ultracite / Biome | `npm run lint` | Lint + formatting, Ultracite's rule preset. `npm run lint:fix` applies safe fixes. **local release gate.** |
+| knip | `npm run knip` | Unused files, exports, types, dependencies. **local release gate.** |
 | react-doctor | `npm run audit:react` | React codebase health, anti-patterns, dead code, dependency supply chain. Scores the repo. |
 | React Scan | automatic in `npm run dev` | Unnecessary re-renders, highlighted live in the browser. |
 | shadcn | `npm run audit:ui` | Whether `components.json` and the installed primitives still line up with the registry. |
@@ -552,7 +561,7 @@ the threshold, `hooks/use-capsule-morph.ts`, `use-drag-resize.ts`,
 each owns one concern.
 
 `ultracite/biome/type-aware` is enabled for its import-graph rules, so import
-cycles and undeclared dependencies fail CI.
+cycles and undeclared dependencies fail release checks.
 
 React Scan overlaps with `reactCompiler: true`, which already memoizes
 automatically. A re-render it flags is worth chasing only when it is measurable;

@@ -187,9 +187,12 @@ use them correctly.
 ## Commands and verification
 
 - **Install:** `npm ci`
+- **Node runtime:** 24.x, declared in `package.json` and the lockfile root; this
+  overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev`
-- **Affected tests:** none, there is no test runner in this repository
-- **Package tests:** none
+- **Affected tests:** `npm test`, contact-action regression tests with a fixture email transport
+- **Rendered contract:** `npm run test:rendered` after `npm run build`, native submit semantics on `/contact`
+- **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
@@ -206,6 +209,7 @@ use them correctly.
 - **Marketing SEO/Core Web Vitals:** `npm run perf:budget` against
   `lighthouse-budget.json`; field data via `@vercel/speed-insights`
 - **Repository diff check:** `git diff --check`
+- **Release policy:** run lint, type-check, knip, and build locally (or on Depot); no automatic GitHub Actions CI. The checked-in workflow is manual-only.
 
 ## Performance budgets
 
@@ -237,7 +241,8 @@ the user's instruction each time.
 
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
-| Automated tests | None exist | No gate possible | Add a regression test with the first bug fix that admits one | This table |
+| Automated tests | Contact-action regressions via `npm test`; other domains uncovered | Contact changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs` |
+| Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
