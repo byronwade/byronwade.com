@@ -6,7 +6,7 @@ import { siteUrl } from "@/lib/site";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET() {
 	let browser: Browser | undefined;
 	try {
 		// Launch chromium that works in serverless environments (Vercel)
@@ -20,8 +20,12 @@ export async function GET(request: Request) {
 
 		const page = await browser.newPage();
 
-		// The deployed origin in production; whichever server answered this request otherwise.
-		const origin = process.env.NODE_ENV === "production" ? siteUrl : new URL(request.url).origin;
+		// The deployed origin in production; the local server otherwise. Never derived
+		// from the request, so a caller cannot point the browser elsewhere.
+		const origin =
+			process.env.NODE_ENV === "production"
+				? siteUrl
+				: `http://localhost:${process.env.PORT ?? "3000"}`;
 
 		await page.goto(`${origin}/resume`, {
 			waitUntil: "networkidle0",
