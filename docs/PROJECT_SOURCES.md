@@ -1,6 +1,6 @@
 # Projects refresh sources
 
-Reviewed October 15, 2026. Research is limited to Byron's public GitHub repositories
+Reviewed October 15–16, 2026. Research is limited to Byron's public GitHub repositories
 and existing site copy. Current-work selection and names come from Byron's brief;
 an Active label identifies the portfolio group, not a released product. No new
 metrics, clients, adoption figures, or measured outcomes are claimed.
@@ -8,7 +8,7 @@ metrics, clients, adoption figures, or measured outcomes are claimed.
 | Project | Sources | Limits / follow-up |
 | --- | --- | --- |
 | Thorbis Network / FMS | [Public repository](https://github.com/byronwade/local.thorbis.com), [README](https://github.com/byronwade/local.thorbis.com/blob/main/README.md), [previous site write-up](https://github.com/byronwade/byronwade.com/blob/38261e9/content/projects/thorbis.md) | Conservative service-business scope only. Older public README and existing site describe different stack generations, so no current stack or launch claim. TODO confirms Network/FMS naming; the earlier CMS article uses FMS for agriculture. |
-| Thorbis Design | [Design repository and README](https://github.com/byronwade/Design), Byron's supplied design.thorbis.com address | README supports tokens, components, patterns, specimens, and verification tooling. TODO confirms mapping to Thorbis Design, published package, dates, adoption. No release claim. |
+| Thorbis Design | [Existing site port notes](https://github.com/byronwade/byronwade.com/blob/30cceba/docs/THORBIS-DESIGN-PORT.md), [site design contract](https://github.com/byronwade/byronwade.com/blob/30cceba/DESIGN.md), Byron's supplied design.thorbis.com address | The published design-system implementation establishes this site's CSS/Tailwind port and Base UI interaction layer. It replaces the earlier provisional association with the separate Design repository. TODO covers preferred public upstream link, dates, wider adoption, and outcomes; no published-package claim. |
 | Subfield | [Public repository inventory](https://api.github.com/users/byronwade/repos?per_page=100), existing site search | No matching public description found. Name and current selection only; TODO requests scope, links, stack, dates. |
 | Hollowveil | [Public repository inventory](https://api.github.com/users/byronwade/repos?per_page=100), existing site search | No matching public description found. No genre or features inferred. TODO requests description and category confirmation. |
 | Movies | [Repository](https://github.com/byronwade/movies.byronwade.com), [home route](https://github.com/byronwade/movies.byronwade.com/blob/main/src/routes/index.tsx), [package manifest](https://github.com/byronwade/movies.byronwade.com/blob/main/package.json) | Source supports a discovery feed and React/TypeScript/TanStack Start/Router/Vite. TODO requests canonical URL, dates, release state. No launch, user, or recommendation-quality claim. |

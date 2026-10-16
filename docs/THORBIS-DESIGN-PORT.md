@@ -52,6 +52,8 @@ for introducing a new visual choice.
   than copying an upstream same-tone foreground/background defect.
 - Source status colors may need a documented contrast adjustment when used for
   small text. Rendered contrast/axe evidence decides, not visual intuition.
+- Existing neutral status pills retain foreground text on their muted surface,
+  preserving the site's measured contrast correction through the semantic aliases.
 - Personal signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization

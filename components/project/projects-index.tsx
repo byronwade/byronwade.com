@@ -113,7 +113,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 								<ArrowUpRight
 									aria-hidden="true"
-									className="size-4 shrink-0 text-muted-foreground/50 transition-[transform,color] group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand group-focus-visible/row:text-brand"
+									className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
 								/>
 							</div>
 

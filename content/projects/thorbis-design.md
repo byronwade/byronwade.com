@@ -6,18 +6,18 @@ status: "Active"
 tagline: "shared design foundations"
 order: 1
 url: "https://design.thorbis.com"
-excerpt: "Shared tokens, components, and patterns for consistent interfaces across my projects."
-# TODO(Byron): Confirm how the public Design repository maps to Thorbis Design, the published package/site, release dates, and adoption scope.
+excerpt: "The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns."
+# TODO(Byron): Confirm the preferred public upstream link, release dates, broader adoption, and supported outcomes. This site uses the documented CSS/Tailwind port; no published package or wider adoption is asserted.
 ---
 
 # Thorbis Design
 
 ## Design foundations
 
-My public [Design repository](https://github.com/byronwade/Design) documents a design SDK for AI-assisted product development. It brings together semantic tokens, UI primitives, shared components, page patterns, and reference screens.
+Thorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.
 
-## How I approach it
+## Used by this site
 
-The repository’s central rule is to assemble from existing foundations before inventing a new interface. It also documents checks for token consistency, duplicate ownership, contrast, and rendered states.
+This site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The [port notes](https://github.com/byronwade/byronwade.com/blob/30cceba/docs/THORBIS-DESIGN-PORT.md) document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.
 
-Thorbis Design is part of my current work on those shared foundations. I’ll add a fuller account of its adoption as that work develops.
+I’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.
