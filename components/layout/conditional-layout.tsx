@@ -12,7 +12,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
 	return (
 		<div className="relative flex min-h-screen flex-col">
-			<header className="relative z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] print:hidden">
+			<header className="sticky top-3 z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] print:hidden">
 				<div className="flex min-w-0 items-center gap-2">
 					<AppLauncher />
 					<span className="hidden xl:inline">

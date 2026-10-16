@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import * as React from "react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { IconComponent } from "@/lib/icons";
@@ -17,6 +16,7 @@ import {
 	Search,
 	Sun,
 	Twitter,
+	X,
 } from "@/lib/icons";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
@@ -120,26 +120,6 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		},
 		[close, router]
 	);
-
-	/*, slot sizing: keep the reserved footprint synced to the compact pill ,  */
-	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 52 });
-	useIsoLayoutEffect(() => {
-		const compact = compactRef.current;
-		const morph = morphRef.current;
-		if (!(compact && morph)) {
-			return;
-		}
-		const sync = () => {
-			if (morph.style.width) {
-				return;
-			}
-			setSlot({ w: morph.offsetWidth, h: morph.offsetHeight });
-		};
-		sync();
-		const ro = new ResizeObserver(sync);
-		ro.observe(compact);
-		return () => ro.disconnect();
-	}, []);
 
 	useCapsuleMorph({
 		open,
@@ -281,148 +261,118 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 
 	let cursor = 0;
 	const panelWidth =
-		mode === "donate" ? "w-[min(22rem,calc(100vw-1.5rem))]" : "w-[min(34rem,calc(100vw-1.5rem))]";
+		mode === "donate" ? "w-[min(22rem,calc(100vw-3rem))]" : "w-[min(34rem,calc(100vw-3rem))]";
 
 	return (
-		<TooltipProvider delay={350}>
-			<div className="pointer-events-none relative z-50 w-40 sm:w-60 print:hidden">
-				{/* SLOT, reserves the collapsed pill's footprint so nothing reflows. */}
+		<div className="pointer-events-none relative z-50 w-[calc(var(--control-touch)*3+var(--spacing)*4+2px)] sm:w-[calc(var(--control-target)*5+var(--spacing)*5+2px)] print:hidden">
+			{/* SLOT, reserves the collapsed pill's footprint so nothing reflows. */}
+			<div
+				ref={rootRef}
+				className="pointer-events-none relative h-[calc(var(--control-touch)+var(--spacing)*3+2px)] w-full sm:h-[calc(var(--control-target)+var(--spacing)*3+2px)]"
+			>
+				{/* MORPH CAPSULE, right-anchored; blooms down and to the left. */}
 				<div
-					ref={rootRef}
-					style={{ width: slot.w || undefined, height: slot.h }}
-					className="pointer-events-none relative"
+					ref={morphRef}
+					className={cn(
+						"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
+						open ? "rounded-xl shadow-float" : "rounded-full"
+					)}
 				>
-					{/* MORPH CAPSULE, right-anchored; blooms down and to the left. */}
 					<div
-						ref={morphRef}
+						ref={compactRef}
+						inert={open}
 						className={cn(
-							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
-							open ? "rounded-xl shadow-float" : "rounded-full"
+							"flex items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
+							open && "pointer-events-none"
 						)}
 					>
-						{/* COMPACT, the toolbar. */}
-						<div
-							ref={compactRef}
-							inert={open}
-							className={cn(
-								"flex items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
-								open && "pointer-events-none"
-							)}
+						<button
+							type="button"
+							aria-label="Search (⌘K)"
+							title="Search · Command K"
+							className={cn(ITEM, ITEM_IDLE)}
+							onClick={(event) => {
+								returnFocusRef.current = event.currentTarget;
+								setMode("search");
+							}}
 						>
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<button
-											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("search");
-											}}
-											aria-label="Search (⌘K)"
-											className={cn(ITEM, ITEM_IDLE)}
-										/>
-									}
-								>
-									<Search className="size-4 shrink-0" />
-								</TooltipTrigger>
-								<TooltipContent sideOffset={10}>Search · ⌘K</TooltipContent>
-							</Tooltip>
-
-							<span className="hidden sm:contents">
-								<Tooltip>
-									<TooltipTrigger
-										render={
-											<a
-												href={GITHUB_URL}
-												target="_blank"
-												rel="noreferrer"
-												aria-label="GitHub"
-												className={cn(ITEM, ITEM_IDLE)}
-											>
-												<Github className="size-4 shrink-0" />
-											</a>
-										}
-									/>
-									<TooltipContent sideOffset={10}>GitHub</TooltipContent>
-								</Tooltip>
-
-								<Tooltip>
-									<TooltipTrigger
-										render={
-											<a
-												href={X_URL}
-												target="_blank"
-												rel="noreferrer"
-												aria-label="X (@byron_c_wade)"
-												className={cn(ITEM, ITEM_IDLE)}
-											>
-												<Twitter className="size-3.5 shrink-0" />
-											</a>
-										}
-									/>
-									<TooltipContent sideOffset={10}>X · @byron_c_wade</TooltipContent>
-								</Tooltip>
-							</span>
-
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<button
-											type="button"
-											onClick={toggleTheme}
-											aria-label="Toggle theme"
-											className={cn(ITEM, ITEM_IDLE)}
-										/>
-									}
-								>
-									<Moon className="size-4 shrink-0 dark:hidden" />
-									<Sun className="hidden size-4 shrink-0 dark:block" />
-								</TooltipTrigger>
-								<TooltipContent sideOffset={10}>Toggle theme</TooltipContent>
-							</Tooltip>
-
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<button
-											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("donate");
-											}}
-											aria-label="Support open source"
-											className={cn(ITEM, ITEM_IDLE)}
-										/>
-									}
-								>
-									{/* Resting chrome inherits dock colour like its neighbours. A filled
-									    pink heart here was the most saturated thing on every page and the
-									    only off-palette colour in persistent chrome (§5.1). The Sponsors
-									    pink stays inside the panel, where donating is the subject. */}
-									<Heart className="size-4 shrink-0" />
-								</TooltipTrigger>
-								<TooltipContent sideOffset={10}>Support open source</TooltipContent>
-							</Tooltip>
-						</div>
-
-						{/* PANEL, the morph target (search spotlight or donation ask). */}
-						<div
-							ref={panelRef}
-							id={panelId}
-							role="dialog"
-							aria-label={mode === "donate" ? "Support open source" : "Search"}
-							aria-hidden={!open}
-							inert={!open}
-							tabIndex={-1}
-							className={cn(
-								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
-								panelWidth,
-								open ? "pointer-events-auto" : "pointer-events-none"
-							)}
+							<Search className="size-4" />
+						</button>
+						<span className="hidden sm:contents">
+							<a
+								href={GITHUB_URL}
+								target="_blank"
+								rel="noreferrer"
+								aria-label="GitHub"
+								title="GitHub"
+								className={cn(ITEM, ITEM_IDLE)}
+							>
+								<Github className="size-4" />
+							</a>
+							<a
+								href={X_URL}
+								target="_blank"
+								rel="noreferrer"
+								aria-label="X (@byron_c_wade)"
+								title="X"
+								className={cn(ITEM, ITEM_IDLE)}
+							>
+								<Twitter className="size-3.5" />
+							</a>
+						</span>
+						<button
+							type="button"
+							aria-label="Toggle theme"
+							title="Toggle theme"
+							className={cn(ITEM, ITEM_IDLE)}
+							onClick={toggleTheme}
 						>
-							{mode === "donate" ? (
+							<Moon className="size-4 dark:hidden" />
+							<Sun className="hidden size-4 dark:block" />
+						</button>
+						<button
+							type="button"
+							aria-label="Support open source"
+							title="Support open source"
+							className={cn(ITEM, ITEM_IDLE)}
+							onClick={(event) => {
+								returnFocusRef.current = event.currentTarget;
+								setMode("donate");
+							}}
+						>
+							<Heart className="size-4" />
+						</button>
+					</div>
+
+					{/* PANEL, the morph target (search spotlight or donation ask). */}
+					<div
+						ref={panelRef}
+						id={panelId}
+						role="dialog"
+						aria-label={mode === "donate" ? "Support open source" : "Search"}
+						aria-hidden={!open}
+						inert={!open}
+						tabIndex={-1}
+						className={cn(
+							"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
+							panelWidth,
+							open ? "pointer-events-auto" : "pointer-events-none"
+						)}
+					>
+						{open && (
+							<button
+								type="button"
+								aria-label="Close panel"
+								onClick={close}
+								className="absolute top-1.5 right-2 z-10 grid size-11 place-items-center rounded-full text-dock-foreground hover:bg-dock-active"
+							>
+								<X aria-hidden="true" className="size-4" />
+							</button>
+						)}
+						{open &&
+							(mode === "donate" ? (
 								<div className="flex flex-col gap-3 p-4">
-									<div className="flex items-center gap-2.5">
+									<div className="flex items-center gap-2.5 pr-12">
 										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-brand-muted">
 											<Heart className="size-4 fill-brand text-brand" />
 										</span>
@@ -457,7 +407,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 								</div>
 							) : (
 								<>
-									<div className="flex items-center gap-2.5 px-3.5 py-3">
+									<div className="flex items-center gap-2.5 px-3.5 py-3 pr-16">
 										<Search className="size-4 shrink-0 text-dock-foreground/70" />
 										<input
 											ref={inputRef}
@@ -508,11 +458,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										<span className="ml-auto tabular-nums">{flat.length} results</span>
 									</div>
 								</>
-							)}
-						</div>
+							))}
 					</div>
 				</div>
 			</div>
-		</TooltipProvider>
+		</div>
 	);
 }

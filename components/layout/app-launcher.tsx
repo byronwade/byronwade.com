@@ -57,6 +57,7 @@ export function AppLauncher() {
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
 
+	const triggerRef = React.useRef<HTMLButtonElement>(null);
 	const panelId = React.useId();
 
 	// The launcher is an overlay-in-a-slot: the absolutely-positioned morph blooms
@@ -88,6 +89,7 @@ export function AppLauncher() {
 		compactRef,
 		panelRef,
 		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+		onClosed: () => triggerRef.current?.focus({ preventScroll: true }),
 	});
 
 	// Esc + click-away close.
@@ -144,6 +146,7 @@ export function AppLauncher() {
 					)}
 				>
 					<Link
+						prefetch={false}
 						href="/"
 						aria-label="Byron Wade, home"
 						className={cn(
@@ -159,6 +162,7 @@ export function AppLauncher() {
 						aria-expanded={open}
 						aria-controls={panelId}
 						onClick={() => setOpen(true)}
+						ref={triggerRef}
 						title="All products"
 						className="flex size-11 items-center justify-center rounded-full text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 					>
@@ -176,86 +180,91 @@ export function AppLauncher() {
 					inert={!open}
 					tabIndex={-1}
 					className={cn(
-						"absolute top-0 left-0 w-80 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
+						"absolute top-0 left-0 w-[min(20rem,calc(100vw-3rem))] opacity-0 outline-none transition-opacity duration-(--motion-fast)",
 						open ? "pointer-events-auto" : "pointer-events-none"
 					)}
 				>
-					<div className="flex items-center justify-between p-3.5 pb-2">
-						<span className="text-[11px] text-dock-foreground/70">Switch product</span>
-						<button
-							type="button"
-							onClick={() => setOpen(false)}
-							aria-label="Close menu"
-							className="flex size-7 items-center justify-center rounded-lg text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
-						>
-							<X className="size-4" />
-						</button>
-					</div>
-
-					<div className="flex flex-col gap-0.5 px-2 pb-2">
-						{/* Current product, the site you're on. */}
-						<Link
-							href="/"
-							onClick={() => setOpen(false)}
-							className="group flex items-center gap-3 rounded-xl bg-brand/10 p-2 transition-colors hover:bg-brand/15"
-						>
-							<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-active-foreground">
-								<span className="size-2 rounded-full bg-brand" />
-							</span>
-							<div className="min-w-0 leading-tight">
-								<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
-									byronwade<span className="text-dock-foreground">.com</span>
-								</div>
-								<div className="truncate text-[11px] text-dock-foreground">
-									Portfolio & developer
-								</div>
+					{open && (
+						<>
+							<div className="flex items-center justify-between p-3.5 pb-2">
+								<span className="text-[11px] text-dock-foreground/70">Switch product</span>
+								<button
+									type="button"
+									onClick={() => setOpen(false)}
+									aria-label="Close menu"
+									className="flex size-11 items-center justify-center rounded-lg text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
+								>
+									<X className="size-4" />
+								</button>
 							</div>
-							<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 font-medium text-[10px] text-brand">
-								Current
-							</span>
-						</Link>
 
-						{PRODUCTS.map((p) => (
-							<a
-								key={p.href}
-								href={p.href}
-								target="_blank"
-								rel="noreferrer"
-								className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-dock-active"
-							>
-								<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-muted font-bold text-[13px] text-dock-active-foreground">
-									{p.mark}
-								</span>
-								<div className="min-w-0 leading-tight">
-									<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
-										{p.name}
+							<div className="flex flex-col gap-0.5 px-2 pb-2">
+								{/* Current product, the site you're on. */}
+								<Link
+									prefetch={false}
+									href="/"
+									onClick={() => setOpen(false)}
+									className="group flex items-center gap-3 rounded-xl bg-brand/10 p-2 transition-colors hover:bg-brand/15"
+								>
+									<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-active-foreground">
+										<span className="size-2 rounded-full bg-brand" />
+									</span>
+									<div className="min-w-0 leading-tight">
+										<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
+											byronwade<span className="text-dock-foreground">.com</span>
+										</div>
+										<div className="truncate text-[11px] text-dock-foreground">
+											Portfolio & developer
+										</div>
 									</div>
-									<div className="truncate text-[11px] text-dock-foreground">{p.desc}</div>
-								</div>
-								<ArrowUpRight className="ml-auto size-4 shrink-0 text-dock-foreground/40 transition-colors group-hover:text-dock-foreground" />
-							</a>
-						))}
-					</div>
+									<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 font-medium text-[10px] text-brand">
+										Current
+									</span>
+								</Link>
 
-					<div className="flex items-center gap-2 border-dock-border border-t bg-dock-muted p-3">
-						<a
-							href={GITHUB_URL}
-							target="_blank"
-							rel="noreferrer"
-							className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
-						>
-							<GitFork className="size-4" /> GitHub
-						</a>
-						<button
-							type="button"
-							onClick={toggleTheme}
-							aria-label="Toggle theme"
-							className="flex size-9 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
-						>
-							<Moon className="size-4 dark:hidden" />
-							<Sun className="hidden size-4 dark:block" />
-						</button>
-					</div>
+								{PRODUCTS.map((p) => (
+									<a
+										key={p.href}
+										href={p.href}
+										target="_blank"
+										rel="noreferrer"
+										className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-dock-active"
+									>
+										<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-dock-muted font-bold text-[13px] text-dock-active-foreground">
+											{p.mark}
+										</span>
+										<div className="min-w-0 leading-tight">
+											<div className="truncate font-semibold text-[13px] text-dock-active-foreground">
+												{p.name}
+											</div>
+											<div className="truncate text-[11px] text-dock-foreground">{p.desc}</div>
+										</div>
+										<ArrowUpRight className="ml-auto size-4 shrink-0 text-dock-foreground/40 transition-colors group-hover:text-dock-foreground" />
+									</a>
+								))}
+							</div>
+
+							<div className="flex items-center gap-2 border-dock-border border-t bg-dock-muted p-3">
+								<a
+									href={GITHUB_URL}
+									target="_blank"
+									rel="noreferrer"
+									className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
+								>
+									<GitFork className="size-4" /> GitHub
+								</a>
+								<button
+									type="button"
+									onClick={toggleTheme}
+									aria-label="Toggle theme"
+									className="flex size-9 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
+								>
+									<Moon className="size-4 dark:hidden" />
+									<Sun className="hidden size-4 dark:block" />
+								</button>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

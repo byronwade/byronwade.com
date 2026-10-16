@@ -2,6 +2,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: process.env.ANALYZE === "true",
 });
 
+const sharedUiPackages =
+	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|sonner|nuqs|next-themes|class-variance-authority|clsx|tailwind-merge|react-compiler-runtime)[\\/]/;
+
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
 	{ hostname: "figma-alpha-api.s3.us-west-2.amazonaws.com", protocol: "https" },
@@ -18,9 +21,8 @@ const nextConfig = {
 	compress: true,
 
 	experimental: {
-		// Tree-shake barrel-file libraries so only the icons/helpers actually used
-		// ship to the client. lucide-react alone is imported across 40+ files.
-		optimizePackageImports: ["lucide-react", "date-fns", "framer-motion", "@radix-ui/react-icons"],
+		// Use installed packages only; icon imports are narrowed in lib/icons.tsx.
+		optimizePackageImports: ["date-fns"],
 	},
 
 	images: {
@@ -37,6 +39,45 @@ const nextConfig = {
 	reactCompiler: true,
 	reactStrictMode: true,
 	turbopack: {},
+	webpack(config, { dev, isServer }) {
+		if (dev) {
+			return config;
+		}
+		// This diagnostic is development-only. Webpack otherwise resolves its
+		// package metadata before removing the NODE_ENV-guarded dynamic import.
+		const production = {
+			...config,
+			resolve: {
+				...config.resolve,
+				alias: { ...config.resolve.alias, "react-scan": false },
+			},
+		};
+		if (isServer) {
+			return production;
+		}
+		// Repeated UI infrastructure is one shared request. Feature-only modules
+		// stay deferred; the 10-script Lighthouse gate checks this split locally.
+		return {
+			...production,
+			optimization: {
+				...config.optimization,
+				splitChunks: {
+					...config.optimization.splitChunks,
+					cacheGroups: {
+						...config.optimization.splitChunks.cacheGroups,
+						sharedUi: {
+							test: sharedUiPackages,
+							name: "shared-ui",
+							chunks: "all",
+							minChunks: 2,
+							enforce: true,
+							priority: 35,
+						},
+					},
+				},
+			},
+		};
+	},
 
 	...(process.env.NODE_ENV === "production" && {
 		async headers() {

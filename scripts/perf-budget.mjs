@@ -49,7 +49,15 @@ await withProductionServer(async (url) => {
 				{
 					score: lhr.categories.performance.score,
 					lighthouseVersion: lhr.lighthouseVersion,
- diagnostics: Object.fromEntries(["network-requests", "bootup-time", "mainthread-work-breakdown", "largest-contentful-paint-element", "lcp-breakdown-insight"].map((name) => [name, lhr.audits[name]?.details])),
+					diagnostics: Object.fromEntries(
+						[
+							"network-requests",
+							"bootup-time",
+							"mainthread-work-breakdown",
+							"largest-contentful-paint-element",
+							"lcp-breakdown-insight",
+						].map((name) => [name, lhr.audits[name]?.details])
+					),
 					timings,
 					resources,
 					failures,

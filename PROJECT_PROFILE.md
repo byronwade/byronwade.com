@@ -126,8 +126,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Filters and saved views:** none, no surface needs them yet
 - **Tables/lists:** none, no tabular data on this site
 - **Cards/panels:** `components/ui/card.tsx`
-- **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`,
-  `hover-card.tsx`, `tooltip.tsx`. There is no dialog primitive; the one modal
+- **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`. There is no dialog primitive; the one modal
   (fullscreen preview) is a portal in `full-width-project-preview.tsx`.
 - **Inspectors:** `components/project/project-toc.tsx`
 - **Charts/data visualization:** none installed
@@ -144,7 +143,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Capability | Approved owner | Version/range | Why | Replacement or overlap policy |
 | --- | --- | --- | --- | --- |
 | Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive uses it | No second primitive library. Radix was removed entirely. |
-| Motion | `framer-motion` | ^11.18.2 | Needed only by `social-link-preview`; loaded through `LazyMotion` + `m` | CSS first. A library import must justify itself against `.reveal` and CSS transitions. |
+| Motion | CSS and Web Animations API | platform | Thorbis transitions and existing capsule/theme behavior | No motion package; the footer preview and its sole dependency were removed |
 | Command menu | in-house (`dock-toolbar`) | - | The morph capsule is the product; `cmdk` was removed | Do not reintroduce a command-menu dependency |
 | Toasts | `sonner` | ^2.0.5 | Already standardized | - |
 | Charts | none | - | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
@@ -174,7 +173,7 @@ use them correctly.
 - **Control-size scale:** owned by `button.tsx` variants. Touch targets ≥44px on
   Guided surfaces.
 - **Type roles:** `--font-sans` body/heading, `--font-geist-mono` for data and
-  code, `--font-signature` for the wordmark only.
+  code, `--font-signature` for the resume signature only.
 - **Motion curve:** Thorbis `--ease-out`, aliased by the existing motion names.
 - **Motion duration scale:** `--motion-fast` (120ms), `--motion-overlay` (180ms); other duration names alias the overlay budget.
 - **Spring defaults:** none. Nothing on this site is gesture-driven except the
@@ -190,7 +189,8 @@ use them correctly.
 - **Install:** `npm ci`
 - **Node runtime:** 24.x, declared in `package.json` and the lockfile root; this
   overrides Vercel's retired Node 20 project default without a dashboard change.
-- **Development:** `npm run dev`
+- **Development:** `npm run dev` (Turbopack); production uses Next webpack to
+  keep shared UI requests within the existing Lighthouse budget.
 - **Affected tests:** `npm test`, contact-action and cache-refresh regressions with fixture email/cache operations
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
@@ -200,7 +200,7 @@ use them correctly.
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
 - **Format check:** same command; `npm run lint:fix` writes
-- **Build:** `npm run build`
+- **Build:** `npm run build` (`next build --webpack`)
 - **End-to-end:** none
 - **Accessibility:** no automated suite. Biome's a11y rules run in lint; manual
   keyboard passes are required for critical flows.

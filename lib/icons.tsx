@@ -24,10 +24,7 @@ import { DotsThree } from "@phosphor-icons/react/dist/ssr/DotsThree";
 import { DownloadSimple } from "@phosphor-icons/react/dist/ssr/DownloadSimple";
 import { Envelope } from "@phosphor-icons/react/dist/ssr/Envelope";
 import { FileText as PhFileText } from "@phosphor-icons/react/dist/ssr/FileText";
-import { Fire } from "@phosphor-icons/react/dist/ssr/Fire";
-import { Folder as PhFolder } from "@phosphor-icons/react/dist/ssr/Folder";
 import { GitBranch as PhGitBranch } from "@phosphor-icons/react/dist/ssr/GitBranch";
-import { GitCommit as PhGitCommit } from "@phosphor-icons/react/dist/ssr/GitCommit";
 import { GitFork as PhGitFork } from "@phosphor-icons/react/dist/ssr/GitFork";
 import { GithubLogo } from "@phosphor-icons/react/dist/ssr/GithubLogo";
 import { Globe as PhGlobe } from "@phosphor-icons/react/dist/ssr/Globe";
@@ -106,85 +103,82 @@ function duotone(Base: Icon, name: string) {
 export type IconComponent = (props: IconProps) => React.JSX.Element;
 
 // Navigation and direction
-export const ArrowLeft = duotone(PhArrowLeft, "ArrowLeft");
-export const ArrowRight = duotone(PhArrowRight, "ArrowRight");
-export const ArrowUpRight = duotone(PhArrowUpRight, "ArrowUpRight");
-export const ChevronLeft = duotone(CaretLeft, "ChevronLeft");
-export const CornerDownLeft = duotone(ArrowElbowDownLeft, "CornerDownLeft");
-export const ExternalLink = duotone(ArrowSquareOut, "ExternalLink");
-export const Home = duotone(House, "Home");
-export const MoreHorizontal = duotone(DotsThree, "MoreHorizontal");
+export const ArrowLeft = /* @__PURE__ */ duotone(PhArrowLeft, "ArrowLeft");
+export const ArrowRight = /* @__PURE__ */ duotone(PhArrowRight, "ArrowRight");
+export const ArrowUpRight = /* @__PURE__ */ duotone(PhArrowUpRight, "ArrowUpRight");
+export const ChevronLeft = /* @__PURE__ */ duotone(CaretLeft, "ChevronLeft");
+export const CornerDownLeft = /* @__PURE__ */ duotone(ArrowElbowDownLeft, "CornerDownLeft");
+export const ExternalLink = /* @__PURE__ */ duotone(ArrowSquareOut, "ExternalLink");
+export const Home = /* @__PURE__ */ duotone(House, "Home");
+export const MoreHorizontal = /* @__PURE__ */ duotone(DotsThree, "MoreHorizontal");
 
 // Actions
-export const Check = duotone(PhCheck, "Check");
-export const Copy = duotone(PhCopy, "Copy");
-export const Download = duotone(DownloadSimple, "Download");
-export const RefreshCw = duotone(ArrowsClockwise, "RefreshCw");
-export const Search = duotone(MagnifyingGlass, "Search");
-export const Send = duotone(PaperPlaneTilt, "Send");
-export const Share2 = duotone(ShareNetwork, "Share2");
-export const X = duotone(PhX, "X");
+export const Check = /* @__PURE__ */ duotone(PhCheck, "Check");
+export const Copy = /* @__PURE__ */ duotone(PhCopy, "Copy");
+export const Download = /* @__PURE__ */ duotone(DownloadSimple, "Download");
+export const RefreshCw = /* @__PURE__ */ duotone(ArrowsClockwise, "RefreshCw");
+export const Search = /* @__PURE__ */ duotone(MagnifyingGlass, "Search");
+export const Send = /* @__PURE__ */ duotone(PaperPlaneTilt, "Send");
+export const Share2 = /* @__PURE__ */ duotone(ShareNetwork, "Share2");
+export const X = /* @__PURE__ */ duotone(PhX, "X");
 
 // Status and feedback
-export const AlertTriangle = duotone(Warning, "AlertTriangle");
-export const CheckCircle = duotone(PhCheckCircle, "CheckCircle");
-export const Loader2 = duotone(SpinnerGap, "Loader2");
-export const Sparkle = duotone(PhSparkle, "Sparkle");
-export const Star = duotone(PhStar, "Star");
+export const AlertTriangle = /* @__PURE__ */ duotone(Warning, "AlertTriangle");
+export const CheckCircle = /* @__PURE__ */ duotone(PhCheckCircle, "CheckCircle");
+export const Loader2 = /* @__PURE__ */ duotone(SpinnerGap, "Loader2");
+export const Sparkle = /* @__PURE__ */ duotone(PhSparkle, "Sparkle");
+export const Star = /* @__PURE__ */ duotone(PhStar, "Star");
 
 // Objects and content
-export const Box = duotone(Cube, "Box");
-export const Clock = duotone(PhClock, "Clock");
-export const FileText = duotone(PhFileText, "FileText");
-export const Flame = duotone(Fire, "Flame");
-export const Folder = duotone(PhFolder, "Folder");
-export const GitCommit = duotone(PhGitCommit, "GitCommit");
-export const GitFork = duotone(PhGitFork, "GitFork");
-export const Hash = duotone(PhHash, "Hash");
-export const LayoutGrid = duotone(SquaresFour, "LayoutGrid");
-export const Monitor = duotone(PhMonitor, "Monitor");
-export const PenLine = duotone(PencilSimpleLine, "PenLine");
+export const Box = /* @__PURE__ */ duotone(Cube, "Box");
+export const Clock = /* @__PURE__ */ duotone(PhClock, "Clock");
+export const FileText = /* @__PURE__ */ duotone(PhFileText, "FileText");
+export const GitFork = /* @__PURE__ */ duotone(PhGitFork, "GitFork");
+export const Hash = /* @__PURE__ */ duotone(PhHash, "Hash");
+export const LayoutGrid = /* @__PURE__ */ duotone(SquaresFour, "LayoutGrid");
+export const Monitor = /* @__PURE__ */ duotone(PhMonitor, "Monitor");
+export const PenLine = /* @__PURE__ */ duotone(PencilSimpleLine, "PenLine");
 
 // Contact and identity
-export const Mail = duotone(Envelope, "Mail");
-export const MapPin = duotone(PhMapPin, "MapPin");
-export const Phone = duotone(PhPhone, "Phone");
+export const Mail = /* @__PURE__ */ duotone(Envelope, "Mail");
+export const MapPin = /* @__PURE__ */ duotone(PhMapPin, "MapPin");
+export const Phone = /* @__PURE__ */ duotone(PhPhone, "Phone");
 
 // Theme
-export const Moon = duotone(PhMoon, "Moon");
-export const Sun = duotone(PhSun, "Sun");
+export const Moon = /* @__PURE__ */ duotone(PhMoon, "Moon");
+export const Sun = /* @__PURE__ */ duotone(PhSun, "Sun");
 
 // Brands. Phosphor carries the real marks, which is why the hand-rolled X
 // glyph in dock-toolbar.tsx is gone and its exception in PROJECT_PROFILE.md
 // with it. Brand marks stay at `fill` weight: a duotone company logo reads as
 // a rendering bug rather than a style.
-export const Github = withWeight(GithubLogo, "fill", "Github");
-export const Linkedin = withWeight(LinkedinLogo, "fill", "Linkedin");
-export const Twitter = withWeight(XLogo, "fill", "Twitter");
-export const Heart = duotone(PhHeart, "Heart");
+export const Github = /* @__PURE__ */ withWeight(GithubLogo, "fill", "Github");
+export const Linkedin = /* @__PURE__ */ withWeight(LinkedinLogo, "fill", "Linkedin");
+export const Twitter = /* @__PURE__ */ withWeight(XLogo, "fill", "Twitter");
+export const Heart = /* @__PURE__ */ duotone(PhHeart, "Heart");
 
 // Figma and project-preview chrome
-export const BarChart3 = duotone(ChartBar, "BarChart3");
-export const Calendar = duotone(CalendarBlank, "Calendar");
-export const ChevronRight = duotone(CaretRight, "ChevronRight");
-export const GitBranch = duotone(PhGitBranch, "GitBranch");
-export const Globe = duotone(PhGlobe, "Globe");
-export const Grip = duotone(DotsSixVertical, "Grip");
-export const Image = duotone(PhImage, "Image");
-export const ImageOff = duotone(PhImage, "ImageOff");
-export const Laptop = duotone(PhLaptop, "Laptop");
-export const Layers = duotone(Stack, "Layers");
-export const Maximize2 = duotone(CornersOut, "Maximize2");
-export const Minimize2 = duotone(CornersIn, "Minimize2");
-export const Palette = duotone(PhPalette, "Palette");
-export const RotateCcw = duotone(ArrowClockwise, "RotateCcw");
-export const Smartphone = duotone(DeviceMobile, "Smartphone");
-export const Tablet = duotone(DeviceTablet, "Tablet");
-export const Zap = duotone(Lightning, "Zap");
+export const BarChart3 = /* @__PURE__ */ duotone(ChartBar, "BarChart3");
+export const Calendar = /* @__PURE__ */ duotone(CalendarBlank, "Calendar");
+export const ChevronRight = /* @__PURE__ */ duotone(CaretRight, "ChevronRight");
+export const GitBranch = /* @__PURE__ */ duotone(PhGitBranch, "GitBranch");
+export const Globe = /* @__PURE__ */ duotone(PhGlobe, "Globe");
+export const Grip = /* @__PURE__ */ duotone(DotsSixVertical, "Grip");
+export const Image = /* @__PURE__ */ duotone(PhImage, "Image");
+export const ImageOff = /* @__PURE__ */ duotone(PhImage, "ImageOff");
+export const Laptop = /* @__PURE__ */ duotone(PhLaptop, "Laptop");
+export const Layers = /* @__PURE__ */ duotone(Stack, "Layers");
+export const Maximize2 = /* @__PURE__ */ duotone(CornersOut, "Maximize2");
+export const Minimize2 = /* @__PURE__ */ duotone(CornersIn, "Minimize2");
+export const Palette = /* @__PURE__ */ duotone(PhPalette, "Palette");
+export const RotateCcw = /* @__PURE__ */ duotone(ArrowClockwise, "RotateCcw");
+export const Smartphone = /* @__PURE__ */ duotone(DeviceMobile, "Smartphone");
+export const Tablet = /* @__PURE__ */ duotone(DeviceTablet, "Tablet");
+export const Zap = /* @__PURE__ */ duotone(Lightning, "Zap");
 
 // Sonner's toast status glyphs. It expects these exact names.
-export const CircleCheckIcon = duotone(PhCheckCircle, "CircleCheckIcon");
-export const InfoIcon = duotone(Info, "InfoIcon");
-export const Loader2Icon = duotone(SpinnerGap, "Loader2Icon");
-export const OctagonXIcon = duotone(XCircle, "OctagonXIcon");
-export const TriangleAlertIcon = duotone(Warning, "TriangleAlertIcon");
+export const CircleCheckIcon = /* @__PURE__ */ duotone(PhCheckCircle, "CircleCheckIcon");
+export const InfoIcon = /* @__PURE__ */ duotone(Info, "InfoIcon");
+export const Loader2Icon = /* @__PURE__ */ duotone(SpinnerGap, "Loader2Icon");
+export const OctagonXIcon = /* @__PURE__ */ duotone(XCircle, "OctagonXIcon");
+export const TriangleAlertIcon = /* @__PURE__ */ duotone(Warning, "TriangleAlertIcon");

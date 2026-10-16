@@ -31,7 +31,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
 | components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
 | components/layout/nav-dock.tsx | src/components/site/site-shell.stylex.ts navLink/navLinkActive | Inter 13px, source pill, selected tone/short shadow, 44px targets; all destinations visible without JS |
-| conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One flow header, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
+| conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One sticky header in flow, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
 | components/layout/page.tsx; common/index-list.tsx | src/components/rules/page.tsx; site-shell.stylex.ts section | Source 32px title/20px section roles; stable-contrast evidence rows, shared focus |
 | components/home/home-hero.tsx, home-projects.tsx, home-blog.tsx | src/components/rules/page.tsx; src/components/ui/card.tsx; site-shell.stylex.ts | Site-specific claim/proof composition using source roles, panel and existing content loaders |
 | components/layout/footer.tsx | src/components/site/site-footer.tsx; site-shell.stylex.ts footer | Brand/author and navigation regions, source type/tone, textual social links, source attribution; existing obfuscated email |
@@ -45,7 +45,7 @@ for introducing a new visual choice.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.
 - The light theme stays the default; next-themes owns persistence and dark mode.
 - No page-entry/scroll fade. Content is server-rendered and immediately visible.
-- A flow header and wrapping text navigation replace independently fixed capsules.
+- A single sticky header in flow and wrapping text navigation replace independently fixed capsules.
   This retains the header landmark and prevents tablet overlap and focus clipping.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
@@ -55,6 +55,10 @@ for introducing a new visual choice.
   recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
   The dark blue action uses the source canvas for its label to meet AA; source
   token values remain unchanged. These are explicit accessibility adaptations.
+- The footer uses source-style text links. Its obsolete animated GitHub preview
+  and the unused Framer/hover-card paths were removed. Closed contact code loads
+  on first intentional open and remains mounted to preserve drafts. Shared/home
+  navigation starts route requests on navigation instead of speculative prefetch.
 - Personal resume signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization

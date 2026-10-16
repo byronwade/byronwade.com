@@ -16,6 +16,7 @@ interface LinkProps extends NextLinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorE
 
 export const Link = ({ className, children, ref, ...props }: LinkProps) => (
 	<NextLink
+		prefetch={false}
 		{...props}
 		ref={ref}
 		className={cn(

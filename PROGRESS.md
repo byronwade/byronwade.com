@@ -66,3 +66,23 @@ production deployment, or merge.
   enforces timing/byte/request budgets rather than only printing Lighthouse.
 - Added browser matrix and raw-color/first-paint regression sensors. Formatting
   briefly normalized unrelated CRLF files; git diff contains no changes in them.
+
+## Loop 4 — measured performance and final responsive fixes
+
+- Initial enforced Lighthouse: FCP 1080ms, LCP 6639ms, TBT 609ms, CLS 0;
+  403339 script bytes/23 requests, 54 total requests/1064920 bytes. Failed gates
+  were preserved in performance-before.json; no budget was raised.
+- Diagnostics confirm 26 other/RSC requests, 23 script requests, 17 initial JS
+  tags and two 239KB favicon requests. Home was prefetching multiple routes and
+  rendering an unused contact form dependency graph and a Framer footer preview.
+- Disabled speculative prefetch on home/shared navigation. Contact code now loads
+  on first intentional open, then stays mounted across closes to preserve drafts.
+- Thorbis footer uses ordinary social links; removed unused hover preview, its
+  sole framer-motion dependency, unused hover-card and icons (confirmed by knip).
+- Testing existing Next webpack production bundling against the 10-script budget;
+  development remains Turbopack. This is a measured comparison, not yet a claim.
+- Desktop/390/768 light and dark passed axe, contrast and source color parity.
+  320 focus check exposed smooth-scroll delay; global keyboard scrolling is now
+  native/instant. Full matrix will be rerun on the final build.
+- Main advanced with cache revalidation security PR #51; fetched and merged
+  f84a344. PR #49 remains open; its shell accessibility intents are retained.

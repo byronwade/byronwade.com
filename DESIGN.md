@@ -54,7 +54,7 @@ workflow vocabulary into unrelated personal content.
 The homepage is compact claim-and-proof: experience beside the current product,
 then documented work and writing. Content renders immediately, including with
 JavaScript disabled. No viewport-height spacer, bottom-aligned hero, opacity-zero
-entrance or scroll reveal may hide that content. The header participates in flow;
+entrance or scroll reveal may hide that content. The single sticky header participates in flow;
 at narrow widths navigation wraps into its own row, with visible text and focus.
 
 ## 3. Surface profiles
@@ -204,7 +204,7 @@ contains no animation.
    for anything a visitor sees repeatedly.
 3. **Function.** Never move content the visitor is reading.
 4. **Tool.** Cheapest capable: CSS transition →
-   Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
+   Web Animations API.
    Do not add a library for a fade.
 5. **Properties.** `transform` and `opacity`. `clip-path` deliberately (the
    theme-toggle wipe). Never animate `width`, `height`, `top`, or `left` on a

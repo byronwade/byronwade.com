@@ -10,6 +10,7 @@ export const interSans = Inter({
 
 // Monospace, code, metrics, technical labels
 export const geistMono = Geist_Mono({
+	preload: false,
 	subsets: ["latin"],
 	display: "swap",
 	variable: "--font-geist-mono",

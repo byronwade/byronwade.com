@@ -23,6 +23,7 @@ const report = {
 	keyboard: [],
 	noJavaScript: [],
 	routes: [],
+	interactions: {},
 };
 
 // Browser cases stay serial so viewport/focus state and machine load stay isolated.
@@ -201,7 +202,10 @@ async function checkKeyboard(page, width) {
 				const style = getComputedStyle(element);
 				const rect = element.getBoundingClientRect();
 				return {
-					label: element.getAttribute("aria-label") || element.textContent.trim().slice(0, 70),
+					label:
+						element.getAttribute("aria-label") ||
+						element.getAttribute("title") ||
+						element.textContent.trim().slice(0, 70),
 					outline: style.outlineStyle,
 					outlineWidth: style.outlineWidth,
 					shadow: style.boxShadow,
@@ -227,6 +231,39 @@ async function checkKeyboard(page, width) {
 		"Search (⌘K)"
 	);
 	report.keyboard.push({ width, steps, searchFocusReturn: true });
+}
+
+async function checkInteractions(url) {
+	const page = await browser.newPage();
+	await page.setViewport({ width: 390, height: 1000 });
+	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+	await page.goto(url, { waitUntil: "networkidle2" });
+	await page.click('main button[data-slot="button"]');
+	const name = 'section[aria-label="Contact"] input[name="name"]';
+	await page.waitForSelector(name);
+	await page.type(name, "Browser verification draft");
+	await page.click('section[aria-label="Contact"] button[aria-label="Close"]');
+	await page.click('main button[data-slot="button"]');
+	assert.equal(await page.$eval(name, (element) => element.value), "Browser verification draft");
+	await page.click('section[aria-label="Contact"] button[type="submit"]');
+	await page.waitForFunction(() => document.activeElement.getAttribute("name") === "email");
+	await page.screenshot({ path: `${destination}/contact-error-390.png`, fullPage: true });
+	await page.click("footer button");
+	assert.ok(await page.$('footer a[href^="mailto:"]'));
+	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
+	await page.click('button[aria-label="Toggle theme"]');
+	await page.waitForFunction(
+		(value) => document.documentElement.classList.contains("dark") !== value,
+		{},
+		before
+	);
+	report.interactions = {
+		contactDraftPreserved: true,
+		invalidEmailFocused: true,
+		footerReveal: true,
+		reducedMotionThemeToggle: true,
+	};
+	await page.close();
 }
 
 try {
@@ -267,8 +304,19 @@ try {
 			report.noJavaScript.push({ width, visible });
 			await page.close();
 		});
+		await checkInteractions(url);
 		await serial(
-			["/projects", "/portfolio", "/blog", "/resume", "/contact", "/privacy", "/terms"],
+			[
+				"/projects",
+				"/projects/byronwade-ui",
+				"/portfolio",
+				"/blog",
+				"/blog/building-thorbis",
+				"/resume",
+				"/contact",
+				"/privacy",
+				"/terms",
+			],
 			async (path) => {
 				const page = await browser.newPage();
 				const response = await page.goto(`${url}${path}`, { waitUntil: "networkidle2" });
