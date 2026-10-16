@@ -7,6 +7,7 @@ const JSON_LD = /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/
 const PRINT_HIDDEN_SECTION = /<(section|div|footer) class="[^"]*\bprint:hidden\b[^"]*"/;
 const PRINT_HIDDEN_FOOTER = /<footer class="[^"]*\bprint:hidden\b/;
 const OVERSTATED = /multi-million/i;
+const MAIN = `id="main-content"`;
 
 async function readResume() {
 	const file = new URL("../../.next/server/app/resume.html", import.meta.url);
@@ -21,13 +22,20 @@ async function readResume() {
 function isInsidePrintHidden(html, marker) {
 	const at = html.indexOf(marker);
 	assert.ok(at > 0, `${marker} should be on the page`);
-	const before = html.slice(0, at);
+	// Page content only: the site header is print-hidden as a whole.
+	const before = html.slice(html.indexOf(MAIN), at);
 	return [...before.matchAll(new RegExp(PRINT_HIDDEN_SECTION, "g"))].some((open) => {
 		const tag = open[1];
 		const between = before.slice(open.index + open[0].length);
-		const opened = between.split(`<${tag}`).length - 1;
-		const closed = between.split(`</${tag}>`).length - 1;
-		return closed <= opened;
+		// Walk same-name tags in order; the element is closed once depth returns to zero.
+		let depth = 1;
+		for (const [, closing] of between.matchAll(new RegExp(`<(/?)${tag}\\b`, "g"))) {
+			depth += closing ? -1 : 1;
+			if (depth === 0) {
+				return false;
+			}
+		}
+		return true;
 	});
 }
 
@@ -51,7 +59,8 @@ test("the resume record is in the prerendered HTML, without the real contact det
 
 	const person = [...html.matchAll(JSON_LD)]
 		.map(([, json]) => JSON.parse(json))
-		.find((data) => data["@type"] === "Person" && data.jobTitle);
+		// The site-wide Person block comes first; the resume adds its credentials.
+		.find((data) => data["@type"] === "Person" && data.hasCredential);
 	assert.ok(person, "/resume should carry its Person JSON-LD");
 	assert.equal(person.email, "contact@byronwade.com", "JSON-LD uses the published role address");
 	assert.equal(person.telephone, "+1-8xx-xxx-xxxx", "JSON-LD uses the masked number");
