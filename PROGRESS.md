@@ -183,3 +183,22 @@ production deployment, or merge.
 - Source fallback font chain is copied exactly. Regenerated slow-motion evidence
   uses 720ms (four times 180ms); reduced-motion assertion accepts the CSS global
   0.01ms snap. Full final production matrix remains pending.
+
+## Loop 10 — consolidated font delivery
+
+- Isolated repeat with no overlapping local verification: FCP 1085ms, LCP 3387ms,
+  TBT 278ms, CLS zero, 203166 script bytes / 9 requests. Only LCP still fails.
+  Next bootstrap/hydration dominates the remaining script trace; no claim that
+  machine contention alone explains the LCP miss.
+- Removed the last separate blocking font stylesheet by porting the remaining
+  exact Geist Mono files/faces and OFL into the CSS owner. Existing resume OTF
+  stays a deferred site identity face. Removed unused lib/fonts.ts and root
+  font-loader classes; all callers and font aliases migrated.
+- Contact invalid-state check found dark email boundary contrast 2:1 from an
+  old alpha danger border. Input/textarea now retain solid source danger borders
+  in both themes. New production browser run will verify this case.
+- Current lint/type/knip pass; production compilation/type generation pass. Final
+  build/performance, full browser matrix, rendered contracts and report pending.
+- After this candidate, any remaining budget miss will be recorded explicitly;
+  no budget changes, metric substitutions, CSS experiments or broad runtime
+  migration will be used to manufacture acceptance.

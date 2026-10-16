@@ -78,10 +78,10 @@ from the profile and makes first-visit clarity the dominant design concern.
   through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
   glyph is gone: Phosphor ships `XLogo`, so that exception no longer exists.
 - **Typography owner and loading strategy:** `app/globals.css` declares the exact
-  Thorbis Inter faces (`--font-inter`); the root layout explicitly preloads Latin.
-  `lib/fonts.ts` loads Geist Mono (`--font-geist-mono`) and the existing local
-  signature (`--font-signature`) with `next/font`, without global preloads. All
-  faces use swap; loaders stay server-only and clients use CSS variables.
+  Thorbis Inter (`--font-inter`) and Geist Mono (`--font-geist-mono`) faces, plus
+  the existing resume signature (`--font-signature`). The root layout preloads
+  only Latin Inter. Other subsets, Mono and the signature load when used. All
+  faces use swap; the token port script copies source assets and OFL licenses.
 - **Motion token owner:** `app/globals.css` (`--motion-*`). Established as part of
   adopting this standard; before that the curve was copy-pasted in four files.
 - **Theme owner:** `next-themes`, light default, system aware, toggled from the

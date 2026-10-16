@@ -19,7 +19,9 @@ const generated = readFileSync(resolve(source, "src/styles/tokens.generated.css"
 const styles = readFileSync(resolve(source, "src/styles.css"), "utf8").replaceAll("\r\n", "\n");
 const fontFaces = [...styles.matchAll(/@font-face\s*\{[^}]+\}/g)]
 	.map(([face]) => face)
-	.filter((face) => face.includes("font-family: 'Inter'"));
+	.filter(
+		(face) => face.includes("font-family: 'Inter'") || face.includes("font-family: 'Geist Mono'")
+	);
 if (!fontFaces.length) {
 	throw new Error("Missing upstream Inter font faces");
 }
@@ -28,7 +30,7 @@ const fontFiles = new Set(
 		[...face.matchAll(/\/fonts\/([\w.-]+\.woff2)/g)].map((match) => match[1])
 	)
 );
-for (const file of [...fontFiles, "inter-OFL.txt"]) {
+for (const file of [...fontFiles, "inter-OFL.txt", "geistmono-OFL.txt"]) {
 	copyFileSync(resolve(source, "public/fonts", file), resolve("public/fonts", file));
 }
 const declarations = (text) => [...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)];
@@ -54,7 +56,7 @@ const rename = (text) =>
 	text.replaceAll("--color-", "--thorbis-").replaceAll("--text-", "--thorbis-text-");
 const emit = (entries) =>
 	[...entries].map(([name, value]) => `  ${rename(name)}: ${rename(value)};`).join("\n");
-// Inter faces are copied above; next/font owns deferred Mono/signature faces.
+// Font files/faces are copied above; local semantic aliases own family names.
 tokens.delete("--font-sans");
 tokens.delete("--font-mono");
 const dark = new Map(
@@ -79,7 +81,7 @@ const fontStart = "/* thorbis-fonts:start */";
 const fontEnd = "/* thorbis-fonts:end */";
 const current = readFileSync(target, "utf8").replace(
 	/\/\* thorbis-fonts:start \*\/[\s\S]*?\/\* thorbis-fonts:end \*\//,
-	`${fontStart}\n/* Thorbis src/styles.css font faces @ ${sourceCommit}; OFL: public/fonts/inter-OFL.txt. */\n${fontFaces.join("\n")}\n${fontEnd}`
+	`${fontStart}\n/* Thorbis src/styles.css font faces @ ${sourceCommit}; licenses: public/fonts/*-OFL.txt. */\n${fontFaces.join("\n")}\n${fontEnd}`
 );
 if (!current.includes(fontStart)) {
 	throw new Error("Missing Thorbis font destination marker");

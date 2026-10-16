@@ -245,6 +245,8 @@ async function checkKeyboard(page, width) {
 		),
 		JSON.stringify(steps)
 	);
+	await page.focus('nav[aria-label="Primary"] a[href="/projects"]');
+	await page.screenshot({ path: `${destination}/focus-${width}-light.png` });
 	await page.click('button[aria-label="Search (⌘K)"]');
 	await page.keyboard.press("Escape");
 	assert.equal(
@@ -444,6 +446,14 @@ try {
 				const page = await browser.newPage();
 				const response = await page.goto(`${url}${path}`, { waitUntil: "networkidle2" });
 				assert.equal(response.status(), 200);
+				if (path === "/resume") {
+					const signature = await page.$eval(".font-signature", (element) => ({
+						family: getComputedStyle(element).fontFamily,
+						loaded: document.fonts.check('400 48px "Byron Signature"'),
+					}));
+					assert.ok(signature.family.includes("Byron Signature") && signature.loaded);
+					report.signature = signature;
+				}
 				report.routes.push({
 					path,
 					status: response.status(),

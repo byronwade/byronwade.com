@@ -25,7 +25,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | app/globals.css theme overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
 | lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
-| app/globals.css font block; public/fonts/UcCo* and UcC53*; app/layout.tsx; lib/fonts.ts | src/styles.css Inter @font-face blocks; public/fonts (14 Inter subsets and inter-OFL.txt); src/stylex/tokens.stylex.ts | Exact Inter font files/faces and license copied, Latin explicitly preloaded; Geist Mono self-hosted with next/font; signature retained only for resume |
+| app/globals.css font block; public/fonts/UcCo*, UcC53*, or3n*; app/layout.tsx | src/styles.css Inter/Geist Mono @font-face blocks; public/fonts (Inter/Geist Mono subsets and OFL licenses); src/stylex/tokens.stylex.ts | Exact font files/faces and licenses copied; Latin Inter explicitly preloaded; Mono deferred; existing signature face retained only for resume |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/ui/card.tsx | src/components/ui/card.tsx | Panel tone, source large radius and panel elevation; existing slots and size contract |
@@ -56,7 +56,8 @@ for introducing a new visual choice.
   recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
   The dark blue action uses the source canvas for its label to meet AA; source
   token values remain unchanged. Input/textarea rims use the source marker role
-  for 3:1 field-boundary contrast. These are explicit accessibility adaptations.
+  for 3:1 field-boundary contrast; invalid fields retain solid source danger
+  borders in dark mode. These are explicit accessibility adaptations.
 - The footer uses source-style text links. Its obsolete animated GitHub preview
   and the unused Framer/hover-card paths were removed. Closed contact code loads
   on first intentional open and remains mounted to preserve drafts. Shared/home
@@ -67,7 +68,8 @@ for introducing a new visual choice.
 - Inter uses the pinned font bytes and source face descriptors. The generated
   next/font manifest was empty in the local Windows webpack build, delaying
   Inter until CSS discovery. Explicit source-font preload removes that dependency
-  without an experimental CSS flag. A rendered contract checks the preload.
+  without an experimental CSS flag. All font faces share the same CSS owner,
+  avoiding an extra blocking font stylesheet. A rendered contract checks preload.
 - The browser favicon reuses the existing 32px image instead of fetching the
   239KB original. The original remains at public/icon-original.png; /icon.png
   stays owned by the app route. A regression test prevents public shadowing.
@@ -81,7 +83,7 @@ for introducing a new visual choice.
    checked out by its owner, run:
    `node scripts/port-thorbis-tokens.mjs D:/Dev/thorbis-design`.
    This only reads upstream, replaces marked token/font blocks and copies source
-   Inter files/license into this app.
+   Inter/Mono files and licenses into this app.
 3. Review generated changes. Update headers and this map with the script pin
    together. Keep aliases as the only bridge; do not leave old/new palettes or displaced font assets.
 4. Port changes to the canonical existing primitives. Preserve Base UI keyboard,
