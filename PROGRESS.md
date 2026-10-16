@@ -77,6 +77,10 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
   acceptance criteria. No UI or external-service changes made.
 - Implementation commit: `82935f2`. Final evidence/documentation commit and
   publication are next; open a ready PR and do not merge.
+- Evidence committed as `4741b60`; branch pushed. Ready PR
+  [#46](https://github.com/byronwade/byronwade.com/pull/46) targets `main`.
+  Verified open, not draft, with the pushed commit. No merge performed. All
+  acceptance criteria are satisfied; owner review is the next step.
 - Shared toolkit advisory reservation could not initialize: its configured
   roots include a missing unrelated septic workspace. No configuration or
   quarantine changes made. Use native command exit/output evidence instead.
