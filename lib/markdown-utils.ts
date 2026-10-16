@@ -138,8 +138,9 @@ export function extractToc(markdown: string): TocItem[] {
 
 /**
  * YAML frontmatter date-only values (`2025-12-09`) become a `Date` at UTC
- * midnight. Formatting that in a timezone behind UTC silently rolls back a day,
- * so reinterpret pure UTC-midnight dates as the same calendar day in local time.
+ * midnight, and the blog loader serializes them to ISO strings. Formatting that
+ * instant behind UTC rolls back a day. Both representations must keep the same
+ * calendar day when formatted locally.
  */
 function normalizeDateOnly(d: Date): Date {
 	if (
@@ -168,7 +169,7 @@ function toDate(value: unknown): Date | null {
 	}
 	if (typeof value === "string" && value.trim()) {
 		const parsed = value.includes("T") || DATE_ONLY.test(value) ? parseISO(value) : new Date(value);
-		return isValid(parsed) ? parsed : null;
+		return isValid(parsed) ? normalizeDateOnly(parsed) : null;
 	}
 	return null;
 }
