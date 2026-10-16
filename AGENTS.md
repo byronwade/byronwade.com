@@ -49,7 +49,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | Native Node contact-action and cache-refresh regressions via `npm test` (Node 22.18+); no added test dependencies |
+| Tests | Native Node contact-action, cache-refresh, and content-date regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
@@ -69,8 +69,8 @@ npm run type-check   # next typegen && tsc --noEmit     (local release gate)
 npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
-npm test             # contact-action and cache-refresh regressions (fixtures only)
-npm run test:rendered # contact submit semantics + portfolio client bundles, after build
+npm test             # contact, cache-refresh, and content-date regressions (no live services)
+npm run test:rendered # contact semantics + portfolio bundles + writing dates, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -431,9 +431,9 @@ a representative measurement.
 
 ## Correctness and verification
 
-Contact-action and cache-refresh regressions use the native Node runner
-(`npm test`, Node 22.18+). Other surfaces rely on static checks and manual
-verification. Do not claim a change is tested when it is not.
+Contact-action, cache-refresh, and content-date regressions use the native Node runner
+(`npm test`, Node 22.18+); run it when changing those behaviors. Other surfaces rely
+on static checks and manual verification. Do not claim a change is tested when it is not.
 
 ```bash
 npm run lint         # always
@@ -463,7 +463,10 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
 production build, `npm run test:rendered` checks native contact submit semantics
-and the portfolio client bundle boundary.
+and the portfolio client bundle boundary, plus visible writing dates against their
+machine-readable values. Content dates use the existing `safeFormatDate` /
+`safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw
+UTC-midnight strings, which can shift the calendar day and year group.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
 
 High-value sensors not yet built, in rough priority order: raw-color and
