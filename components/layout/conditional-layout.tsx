@@ -19,14 +19,16 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 			    A clean plate is also what lets the opening's scale read as composition
 			    rather than as texture. */}
 
-			{/* Top-left header group: identity launcher + breadcrumb pill. */}
-			<div className="pointer-events-none fixed top-3 left-3 z-50 flex items-start gap-2 print:hidden">
-				<AppLauncher />
-				<AppBreadcrumb labels={pathLabels} />
-			</div>
+			<header>
+				{/* Top-left header group: identity launcher + breadcrumb pill. */}
+				<div className="pointer-events-none fixed top-3 left-3 z-50 flex items-start gap-2 print:hidden">
+					<AppLauncher />
+					<AppBreadcrumb labels={pathLabels} />
+				</div>
 
-			{/* Far-right utility toolbar: search · GitHub · theme · donate. */}
-			<DockToolbar entries={searchEntries} />
+				{/* Far-right utility toolbar: search · GitHub · theme · donate. */}
+				<DockToolbar entries={searchEntries} />
+			</header>
 
 			<div className="relative flex min-h-screen flex-col">
 				<NavDock />

@@ -294,6 +294,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 						{/* COMPACT, the toolbar. */}
 						<div
 							ref={compactRef}
+							inert={open}
 							className={cn(
 								"flex items-center gap-1 p-[3px] transition-opacity duration-150",
 								open && "pointer-events-none"
@@ -315,39 +316,43 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 								<TooltipContent sideOffset={10}>Search · ⌘K</TooltipContent>
 							</Tooltip>
 
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<a
-											href={GITHUB_URL}
-											target="_blank"
-											rel="noreferrer"
-											aria-label="GitHub"
-											className={cn(ITEM, ITEM_IDLE)}
-										>
-											<Github className="size-4 shrink-0" />
-										</a>
-									}
-								/>
-								<TooltipContent sideOffset={10}>GitHub</TooltipContent>
-							</Tooltip>
+							{/* These external links also live in the footer. Reserve narrow
+							    chrome for search, theme, and support so it cannot cover the launcher. */}
+							<span className="hidden sm:contents">
+								<Tooltip>
+									<TooltipTrigger
+										render={
+											<a
+												href={GITHUB_URL}
+												target="_blank"
+												rel="noreferrer"
+												aria-label="GitHub"
+												className={cn(ITEM, ITEM_IDLE)}
+											>
+												<Github className="size-4 shrink-0" />
+											</a>
+										}
+									/>
+									<TooltipContent sideOffset={10}>GitHub</TooltipContent>
+								</Tooltip>
 
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<a
-											href={X_URL}
-											target="_blank"
-											rel="noreferrer"
-											aria-label="X (@byron_c_wade)"
-											className={cn(ITEM, ITEM_IDLE)}
-										>
-											<Twitter className="size-3.5 shrink-0" />
-										</a>
-									}
-								/>
-								<TooltipContent sideOffset={10}>X · @byron_c_wade</TooltipContent>
-							</Tooltip>
+								<Tooltip>
+									<TooltipTrigger
+										render={
+											<a
+												href={X_URL}
+												target="_blank"
+												rel="noreferrer"
+												aria-label="X (@byron_c_wade)"
+												className={cn(ITEM, ITEM_IDLE)}
+											>
+												<Twitter className="size-3.5 shrink-0" />
+											</a>
+										}
+									/>
+									<TooltipContent sideOffset={10}>X · @byron_c_wade</TooltipContent>
+								</Tooltip>
+							</span>
 
 							<Tooltip>
 								<TooltipTrigger
@@ -394,6 +399,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							role="dialog"
 							aria-label={mode === "donate" ? "Support open source" : "Search"}
 							aria-hidden={!open}
+							inert={!open}
 							className={cn(
 								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-150",
 								panelWidth,

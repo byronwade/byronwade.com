@@ -101,7 +101,7 @@ export default function Footer() {
 				</div>
 
 				<div className="mt-10 flex flex-col items-start justify-between gap-4 border-border border-t pt-6 sm:flex-row sm:items-center">
-					<p className="font-mono text-muted-foreground/80 text-xs tabular-nums">
+					<p className="font-mono text-muted-foreground text-xs tabular-nums">
 						© {new Date().getFullYear()} Byron Wade
 					</p>
 

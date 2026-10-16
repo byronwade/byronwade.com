@@ -2,6 +2,16 @@
 
 This document outlines the comprehensive performance optimizations implemented in the Byron Wade portfolio website.
 
+## Local verification note (October 15, 2026)
+
+`perf:budget` assumes a server on port 3000. In a shared worktree environment, use
+your own production server on a free port and point the installed Lighthouse CLI
+at that origin; never measure another worktree's server. The installed CLI did
+not emit budget audits for `--budget-path`, so exit code 0 alone does not establish
+budget compliance. Compare its metric values and `resource-summary` audit against
+`lighthouse-budget.json`. The measured shop and comparison-route results, including
+budget misses, are recorded in `docs/evidence/shop/performance.json`.
+
 ## 🚀 Performance Improvements Implemented
 
 ### 1. Next.js Configuration Optimizations

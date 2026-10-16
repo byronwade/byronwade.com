@@ -117,3 +117,52 @@
   `animate-none` by source order. The three new Guided headers now use Tailwind's
   important animation opt-out (`animate-none!`); no shared motion/token change.
   Browser verification now explicitly checks the normal-motion computed value.
+
+## Loop 6 — axe remediation in the shared shell
+
+- Latest shop build, full type-check, lint, knip, and three rendered tests pass.
+- Full-page axe exposed existing shared-shell failures, not shop content:
+  hidden launcher/search panels retained focusable descendants; floating identity
+  and toolbar lacked a landmark; footer copyright opacity reduced light contrast
+  to 3.16:1; two external toolbar links crowded the launcher at 320px.
+- Focused fixes: inactive compact/panel surfaces are inert; wrap existing chrome
+  in a semantic header; use unmodified muted-foreground for copyright; show the
+  duplicated GitHub/X toolbar shortcuts from `sm` upward (footer links remain).
+- No homepage composition, project content, tokens, or primitive changes.
+- Browser tool fixture needed a Windows file URL for Node `--import`; corrected
+  outside the repo. Re-run full axe matrix after rebuilding; check footer reveal.
+- Format generated JSON evidence before final lint. The failed axe report is an
+  honest intermediate artifact and will be replaced only by fresh rendered results.
+
+## Loop 7 — keyboard clearance and final boundary review
+
+- Full-page axe now reports zero violations for no-key desktop/mobile, both themes,
+  tablet, wide, 320px reflow, both return routes, live-key fallback, and enabled
+  fixture desktop/mobile. Final error-state scan remains to finish.
+- Sequential keyboard navigation exposed bottom-dock coverage of the first mobile
+  checkout. Added `scroll-mb-28` to the checkout button and focused error, matching
+  canonical shell clearance. Dev-server check passed: focused button at y=688,
+  height 44, unobscured; Enter reached the server action, the intercepted provider
+  failure focused the error, and retry remained available.
+- Boundary review added UUID validation for the per-render submission identity
+  before building an idempotency header. Focused Node checkout tests pass 23/23,
+  including malformed identities with zero provider requests.
+- Final release gates are running on this source; then regenerate all evidence,
+  run the prescribed performance budget plus `/shop`, and publish.
+
+## Loop 8 — acceptance evidence and performance findings
+
+- Final source: lint, type-check, knip, no-key build pass; native tests 57/57;
+  rendered tests 3/3. Production browser pass completed: 13 scenarios, zero axe
+  violations, zero page errors, seven screenshots. Keyboard, pending/width,
+  unobscured focus, focused error/retry, native return links, no-JS preview, and
+  footer contact reveal pass. Normal-motion header computes `animation: none`.
+- Port 3000 became occupied. Did not use or alter that process. The prescribed
+  perf script hardcodes it; ran the equivalent installed Lighthouse CLI against
+  this worktree's own hidden production server on port 3100 instead.
+- Initial Lighthouse: score 80, LCP 4.1s, CLS 0.015, TBT 300ms. Raw resources exceed
+  script/font/total limits; signature font and duplicate site-icon transfers are
+  existing shared costs. Measuring unchanged `/privacy` as a comparison before
+  classifying this broader work for the design-system owner.
+- CLI exit 0 emitted no budget audits. Final evidence will explicitly compare raw
+  metrics/resources to the canonical budget; no performance-pass claim is made.

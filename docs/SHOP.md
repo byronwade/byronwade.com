@@ -39,9 +39,11 @@ Only a nonempty `sk_test_` credential can reach Stripe. The response must also h
   request origin, with the canonical site URL as a non-browser fallback.
 - No client supplies price, currency, quantity, or a return URL. Product IDs are
   checked against the catalog even when action arguments are forged.
-- Each rendered product form has an idempotency token. Pending submission disables
+- Each rendered product form has a validated UUID idempotency token. Pending submission disables
   the native submit control, keeps its label/width, announces progress, and shows
   the canonical spinner. Failures are announced and focused inline for retry.
+- Checkout controls and focused errors use the shell's scroll clearance so native
+  keyboard navigation keeps them above the fixed mobile dock.
 - Session creation is a mutation with `no-store`, a 10-second timeout, and no
   automatic retry. It must never use the external-read cache.
 - No webhook, fulfillment, order storage, live-mode path, browser Stripe SDK, or

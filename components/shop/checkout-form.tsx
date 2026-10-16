@@ -28,7 +28,7 @@ export function CheckoutForm({
 		<form action={action} className="flex flex-col items-start gap-3 sm:items-end">
 			<Button
 				type="submit"
-				className="h-11 w-full touch-manipulation gap-2 px-5 sm:w-auto"
+				className="h-11 w-full touch-manipulation scroll-mb-28 gap-2 px-5 sm:w-auto"
 				disabled={pending}
 				aria-busy={pending}
 				aria-label={`Try test checkout for ${productName}`}
@@ -50,7 +50,7 @@ export function CheckoutForm({
 					tabIndex={-1}
 					id={`${productId}-error`}
 					role="status"
-					className="max-w-xs rounded-md text-sm outline-ring focus-visible:outline-2 focus-visible:outline-offset-4"
+					className="max-w-xs scroll-mb-28 rounded-md text-sm outline-ring focus-visible:outline-2 focus-visible:outline-offset-4"
 				>
 					{state.error}
 				</p>

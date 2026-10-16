@@ -140,6 +140,7 @@ export function AppLauncher() {
 				{/* COMPACT, the collapsed (natural) size. */}
 				<div
 					ref={compactRef}
+					inert={open}
 					className={cn(
 						"flex flex-row items-center gap-1 p-[3px] transition-opacity duration-150",
 						open && "pointer-events-none"
@@ -175,6 +176,7 @@ export function AppLauncher() {
 					role="dialog"
 					aria-label="All products"
 					aria-hidden={!open}
+					inert={!open}
 					tabIndex={-1}
 					className={cn(
 						"absolute top-0 left-0 w-80 opacity-0 outline-none transition-opacity duration-150",
