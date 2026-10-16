@@ -366,3 +366,37 @@ real checks, then squash merge using the verified head SHA without admin.
 - Repeated a normal merge. Resolved four files: preserve both progress logs; retain the measured light status/accent/shadow corrections and missing-role guard; retain main's CSS/generator blank-line fixes; retain matching port provenance.
 - Kept #52 blog draft, production exclusion, skipHtml rendering and fixture regressions unchanged. Kept #54 calendar ownership and all 24 Projects entries unchanged.
 - New integrated source needs a complete fresh serial gate/helper run. Prior source 94a3ff7 evidence remains historical, not acceptance for this merge. No workflow was dispatched and no main push/force push/admin/deploy was used.
+
+## Loop 13: resume #53 integration and fresh verification
+
+- Mode: Implementation / integration; merge, branch push, PR update and conditional squash authorized by the current request.
+- Fresh fetch: origin/main remains 0e9f5cd. Existing local merge 76bc359 already includes it; git merge origin/main reports already up to date, and main ancestry exits 0. Preserve this completed resolution and the pre-existing RESULT.md handoff edit.
+- Target: all 24 Projects files (9 current plus 15 earlier), #54 publication-date ownership, and #52 blog/draft files preserved; six Node 24 gates and existing browser/content helpers pass before publishing. No hobby-worktree access, force push, admin override, project deletion or deployment command.
+- Reuse existing source, canonical date formatter, content loader, test scripts and temporary verification helpers; no new application concept or dependency. Dependency cone is merge resolution and refreshed acceptance evidence.
+- Reviewed merge source diff: main's blog draft, skipHtml, draft loader/test and CSS/generator whitespace changes are retained; branch light-token corrections remain. No additional source edit is currently needed.
+- Shared toolkit skill/README read; advisory reserve failed on its missing unrelated configured directory. Configuration and quarantined resources unchanged; native exits/log receipts will be retained.
+- Fresh serial checks now run with explicit Node v24.21.0 PATH. Previous receipts remain historical.
+
+## Loop 14: static and native gates
+
+- Explicit Node v24.21.0: lint PASS (9s), type-check PASS (81s), knip PASS (56s), native tests PASS (114/114, 32s). Serial production build is running; rendered/browser checks remain pending.
+- Publication-date formatter remains canonical in ProjectsIndex. Main's draft loader, skipHtml and draft regressions are retained; no dependency or workflow changes in this branch diff.
+- Reviewed the current Projects/content/token/source-ledger diff and integration source diff. No project file deletion. Preservation assertions are still running; do not treat their pending process as success.
+
+## Loop 15: integrated release gates complete
+
+- Node v24.21.0 at application source 76bc359: lint exit 0 (9s); type-check exit 0 (81s); knip exit 0 (56s); npm test exit 0 (114/114, 32s); build exit 0 (47/47 pages, 113s); test:rendered exit 0 (3/3, 8s), 38 dates across 8 pages, 26 client chunks.
+- Fresh preservation receipt passes main ancestry, all 24 project files byte-identical to 438f6f6, and all 19 main blog/Markdown/date/test files unchanged. Earlier content is not deleted.
+- Existing content helper and bounded production browser suite are running. Review identified no new source change needed. Fresh remote state remains unverified until push and check polling.
+
+
+## Loop 16: rendered evidence and publication preparation
+
+- All five existing helpers exit 0: content-check.cjs, verify.cjs, contact-contrast.cjs, accessibility.cjs and final-evidence.cjs. All 24 detail routes, 11 viewport/theme observations, native keyboard/focus, six disclosure cases and footer reveal pass; no page errors. Inspected fresh mobile light Projects and desktop dark Movies images.
+- Lighthouse accessibility 100/100, zero failed applicable audits. Raw-contact scans: zero matches in 47 client assets and 40 prerendered HTML files. Existing performance misses remain: LCP 4212ms, TBT 1208ms, script/font/total bytes and request counts; no budget or speed claim.
+- Reused all prior helpers. No source or configuration changes after the complete fresh six-gate run. Evidence pins application source 76bc359 and main 0e9f5cd. Formatting and final lint/diff review precede normal branch push and remote merge-gate inspection.
+
+## Loop 17: final local gate and push
+
+- Evidence formatting exit 0 (7 files, 5 formatted); final npm run lint exit 0 (137 files, no fixes). Full application/integration and refreshed evidence diff reviewed; git diff --check and branch diff --check exit 0.
+- Fresh fetch still main 0e9f5cd; main ancestry passes. Only documentation/evidence changed after verified application source 76bc359. Commit the evidence and normal-push bot/projects-refresh, then refresh PR body and poll remote checks; no squash before MERGEABLE plus acceptable checks.

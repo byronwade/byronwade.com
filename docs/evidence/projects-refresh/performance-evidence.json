@@ -249,19 +249,19 @@
   "finalAccessibility": {
     "route": "/projects",
     "lighthouseVersion": "12.8.2",
-    "auditedAt": "2026-10-16T06:29:05.060Z",
+    "auditedAt": "2026-10-16T06:46:45.341Z",
     "method": "Programmatic Lighthouse with an explicitly owned headless browser; browser.close completed",
     "score": 1,
     "failures": []
   },
   "finalPerformance": {
     "route": "/projects",
-    "stage": "Integrated Projects source 94a3ff7, including main c48f332 (#54) and Thorbis port 30cceba",
-    "auditedAt": "2026-10-16T06:29:05.060Z",
+    "stage": "Integrated Projects source 76bc359 with main 0e9f5cd (#52) and c48f332 (#54)",
+    "auditedAt": "2026-10-16T06:46:45.341Z",
     "lighthouseVersion": "12.8.2",
     "formFactor": "mobile",
     "scores": {
-      "performance": 0.61,
+      "performance": 0.62,
       "accessibility": 1,
       "best-practices": 0.96,
       "seo": 1
@@ -272,14 +272,14 @@
         "kind": "timing",
         "metric": "first-contentful-paint",
         "budget": 2000,
-        "actual": 1062.5768,
+        "actual": 1061.831,
         "pass": true
       },
       {
         "kind": "timing",
         "metric": "largest-contentful-paint",
         "budget": 3000,
-        "actual": 4782.8652,
+        "actual": 4211.831,
         "pass": false
       },
       {
@@ -293,14 +293,14 @@
         "kind": "timing",
         "metric": "total-blocking-time",
         "budget": 300,
-        "actual": 969.711599999999,
+        "actual": 1207.9999999999998,
         "pass": false
       },
       {
         "kind": "timing",
         "metric": "speed-index",
         "budget": 3000,
-        "actual": 1631.4045937081087,
+        "actual": 1717.9016530407678,
         "pass": true
       },
       {
@@ -314,14 +314,14 @@
         "kind": "sizeKiB",
         "metric": "total",
         "budget": 1000,
-        "actual": 1165.4150390625,
+        "actual": 1165.3271484375,
         "pass": false
       },
       {
         "kind": "sizeKiB",
         "metric": "stylesheet",
         "budget": 50,
-        "actual": 18.650390625,
+        "actual": 18.654296875,
         "pass": true
       },
       {
@@ -375,5 +375,5 @@
       }
     ]
   },
-  "revision": "94a3ff7e2f20b57a1d79aed8ab61f45b2102571c"
+  "revision": "76bc359b1e7c3592b3979fa852ec26b95e751582"
 }

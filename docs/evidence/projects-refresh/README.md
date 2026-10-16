@@ -32,7 +32,9 @@ The public factual sources and unknowns are recorded in
 [`docs/PROJECT_SOURCES.md`](../../PROJECT_SOURCES.md). Six project descriptions
 remain deliberately conservative pending Byron's frontmatter TODOs.
 
-PR #53 integration: refreshed evidence is pinned to application source `94a3ff7`,
-which merges main `c48f332` (#54). `integration-preservation.json` additionally
-asserts main ancestry, byte-identical preservation of all 24 pre-merge project
-files, and unchanged canonical date helpers and regressions from main.
+PR #53 integration: refreshed evidence is pinned to application source `76bc359`,
+which merges main `0e9f5cd` (#52) after `c48f332` (#54).
+`integration-preservation.json` asserts main ancestry, byte-identical preservation
+of all 24 pre-merge Projects files against `438f6f6`, and unchanged main blog,
+Markdown renderer, date owner and regression files. Historical command receipts
+remain under `previousRuns`.

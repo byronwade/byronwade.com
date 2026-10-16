@@ -1,9 +1,28 @@
 {
-  "sourceRevision": "94a3ff7e2f20b57a1d79aed8ab61f45b2102571c",
-  "integratedMain": "c48f33207bae3a20e9ccec92f7dd065d1539daf1",
-  "preMergeHead": "438f6f6fece515f31ee54f7b9c2341e322d85963",
+  "revision": "76bc359b1e7c3592b3979fa852ec26b95e751582",
+  "main": "0e9f5cd9d04d67a3d49aa3e505cd138aabef5547",
   "mainIsAncestor": true,
-  "all24ProjectFilesByteIdentical": true,
-  "mainDateOwnerAndRegressionsUnchanged": true,
-  "conflictResolution": "Preserve min-w-0 title wrapping; retain safeFormatDate year from main"
+  "projectsComparedTo": "438f6f6",
+  "projectFilesByteIdentical": 24,
+  "mainBlogDateAndTestFilesUnchanged": [
+    "components/common/markdown.tsx",
+    "content/blog/building-thorbis.md",
+    "content/blog/design-systems-that-earn-their-keep.md",
+    "content/blog/leading-work-with-ai-agents.md",
+    "content/blog/lessons-building-service-software.md",
+    "content/blog/nexstar-win-invoice-lose-customer.md",
+    "content/blog/scaling-plumbing-business.md",
+    "content/blog/what-service-businesses-actually-need.md",
+    "lib/blog.ts",
+    "lib/markdown-utils.ts",
+    "tests/blog-drafts.test.mjs",
+    "tests/cache-revalidation.test.mjs",
+    "tests/contact-form.test.mjs",
+    "tests/content-dates.test.mjs",
+    "tests/fixtures/next-cache.mjs",
+    "tests/fixtures/resend.mjs",
+    "tests/rendered/contact.test.mjs",
+    "tests/rendered/content-dates.test.mjs",
+    "tests/rendered/portfolio-boundary.test.mjs"
+  ]
 }
