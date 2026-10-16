@@ -229,3 +229,36 @@ production deployment, or merge.
 - Latest enforced budget run: FCP 1001ms, LCP 3270ms, TBT 391ms, CLS zero,
   203010 script bytes/9 requests, total 294244 bytes/14 requests, one stylesheet.
   LCP/TBT remain BLOCKED. Final integrated browser evidence is being refreshed.
+
+
+## Loop 12 — final touch targets and review handoff
+
+- Final target audit found small search rows, launcher theme control, social/legal
+  targets and standalone home links. Expanded these controls to 44px on mobile,
+  retained source type/color roles, and added browser geometry assertions for
+  home, open panels and invalid contact. Skip link has an opaque source surface.
+- Latest `npm run check` passes; production build generates all 47 pages. The four
+  rendered contracts pass (38 dates/eight pages and 41 client chunks).
+- Final enforced `npm run perf:budget` exits 1: LCP 3266.371ms exceeds 3000ms.
+  All other limits pass: FCP 944.186ms, TBT 228.907ms, CLS zero, Speed Index
+  1424.852ms; script 203019 bytes/nine requests, total 294457 bytes/14 requests.
+  No budget, simulated profile or metric was changed. This is a real remaining
+  acceptance blocker; targeted Next bootstrap/RSC profiling is the next step,
+  and its causal contribution to LCP still needs proof.
+- Browser refresh and final branch/evidence review are in progress. The ready PR
+  will prominently disclose the blocker and must not be merged as acceptance PASS.
+
+- Final browser command exits 0: eight themes/widths, 24 open panels, all target
+  assertions, four keyboard widths, two no-JS views and nine route smoke checks.
+  Axe serious/critical zero; text AA/field 3:1 pass. Contact draft, invalid focus,
+  reveal, reduced motion, footer shortcut, four-times-slow motion and interrupted
+  close/focus return pass. Final mobile-light and desktop-dark comparisons reviewed.
+- Final native suite: 117/117 pass. `npm run check` again exits 0, 146 files linted,
+  route types generated, strict TypeScript and knip clean. Adapter source pin and
+  clean reference verified; 20 source font hashes match; two regenerations are
+  idempotent. No contact/client-secret/raw-color/old-theme scan findings; protected
+  content lane diff is empty. Full affected source and evidence review complete.
+- Main #55 screenshot-key hardening landed after the last main integration. It
+  changes its separate screenshot/API dependency cone. Verified application base
+  remains 20d8527, recorded separately from current main 5d3b47a in sanity.json;
+  no claim that #55 was part of these test results. PR mergeability will be checked.

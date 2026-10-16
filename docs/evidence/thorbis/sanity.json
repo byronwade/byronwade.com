@@ -1,15 +1,18 @@
 {
+  "applicationCommit": "9580afa615731f16a85123f5c66871d9c5d13023",
+  "integratedMain": "20d85278ea70ccb385e86232232cdbbf2b553469",
+  "nativeTests": 117,
+  "renderedTests": 4,
   "contactStaticMatches": [],
   "contactHtmlMatches": [],
   "clientServerEnvNameMatches": [],
   "rawColorFiles": [],
+  "oldThemeFiles": [],
   "productionFilesChecked": [
     "app/contact/contact-client.tsx",
     "app/globals.css",
     "app/layout.tsx",
     "app/metadata.config.ts",
-    "app/page.tsx",
-    "components/common/index-list.tsx",
     "components/common/index.ts",
     "components/home/home-actions.tsx",
     "components/home/home-blog.tsx",
@@ -24,11 +27,7 @@
     "components/layout/footer.tsx",
     "components/layout/nav-config.ts",
     "components/layout/nav-dock.tsx",
-    "components/layout/page.tsx",
-    "components/layout/site-shell.tsx",
     "components/ui/badge.tsx",
-    "components/ui/button.tsx",
-    "components/ui/card.tsx",
     "components/ui/input.tsx",
     "components/ui/link.tsx",
     "components/ui/obfuscated-contact.tsx",
@@ -37,10 +36,12 @@
     "hooks/use-capsule-morph.ts",
     "lib/icons.tsx",
     "lib/motion.ts",
-    "lib/seo.ts",
     "lib/utils.ts"
   ],
-  "oldDesignMatches": [],
   "protectedLaneDiff": [],
-  "diffCheck": true
+  "diffCheck": true,
+  "sourceClean": true,
+  "sourceFontsChecked": 20,
+  "tokenAdapterIdempotent": true,
+  "mainAtInspection": "5d3b47a7e5f0b772e9393226f53c53cb349cdea7"
 }
