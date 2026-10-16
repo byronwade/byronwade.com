@@ -231,3 +231,16 @@
   PR noise. Commit the maintained docs/screenshots/evidence, push only `bot/shop`,
   and open a ready PR to main. Never merge or deploy. Re-fetch the design-system
   ref immediately before publication and note the dependency if still unavailable.
+
+## Loop 13 — preserve owner-only contact delivery
+
+- Before publication, main advanced again to `65596a5` (PR #48). Merged it as
+  `d4fbe38` so the branch preserves owner-only contact delivery. The merge changed
+  only the contact server action, its tests, and spam-protection documentation;
+  no shop UI or shared chrome changed after the final 13-scenario browser capture.
+- Re-running the four local gates on that integration: lint/type-check/knip and
+  62 native tests pass; production build is finishing. Run the three rendered
+  contracts against that build, retain the explicit performance findings, and
+  publish this reviewed snapshot without chasing unrelated future main changes.
+- Production build completed with exit 0 on `65596a5` integration. The source is
+  frozen for publication; no shop/chrome UI changed in the last contact-only merge.
