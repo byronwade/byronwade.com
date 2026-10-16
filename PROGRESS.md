@@ -91,3 +91,25 @@ on this worktree's own production server at 127.0.0.1:3212 instead. No performan
 improvement claim is being made. Next: collect actual runtime/budget results,
 write RESULT.md locally, finalize PR body with all three TODOs, push and open a
 ready PR to main; never merge.
+
+Final loop: ready/open PR #52: https://github.com/byronwade/byronwade.com/pull/52
+All four acceptance criteria PASS. Runtime production checks exclude the draft
+from /blog, /feed.xml, /sitemap.xml and / (all 200). Published post returns 200.
+Draft URL shows Page not found with noindex and no article content; Next streams
+this fallback with HTTP 200, so do not describe it as a literal HTTP 404.
+Production browser had no page errors. Added a production-listing screenshot.
+PR body includes all three author TODOs verbatim (programmatically compared).
+
+Supplementary Lighthouse did NOT pass: valid 12.8.2 report, LCP 7247ms, TBT 802ms,
+total 1195897 bytes, script 402666 bytes, font 188800 bytes; request counts 59 total
+and 23 scripts exceed the existing budgets. CLI exit 1 was EPERM during Chrome
+temporary-folder cleanup. Left denied folder alone. No runtime error in report.
+The installed CLI ignored budget-path (no budget config/audits); compared measured
+values directly to lighthouse-budget.json. Record homepage performance and a real
+budget-enforcement sensor for the design/performance owner, outside this post.
+
+RESULT.md contains criterion evidence, scope, limitations, and VERDICT: PASS for
+the requested draft acceptance. Keep it uncommitted as a local handoff; PR body
+contains the review evidence, performance findings and date-format caveat.
+Source gates and browser screenshots all use integrated a5347a8. All local review
+server trees stopped. Next: Byron reviews prose and the three TODOs. Never merge.
