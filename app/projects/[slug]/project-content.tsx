@@ -69,7 +69,8 @@ function extractSourceUrl(content: string): string | null {
 
 export function ProjectContent({ project }: ProjectContentProps) {
 	const domain = extractDomain(project.url);
-	const projectType = project.type ?? "hobby";
+	const projectType = project.type;
+	const projectTypeLabel = projectType ? typeLabels[projectType] : "Project";
 	const formattedDate = safeFormatDate(project.date);
 	const isoDate = safeISODate(project.date);
 	const body = stripLeadingH1(project.content);
@@ -112,8 +113,10 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					{/* Header */}
 					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
 						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-sm">
-							<Badge variant={typeBadgeVariant[projectType]}>{typeLabels[projectType]}</Badge>
-							{project.category && project.category !== typeLabels[projectType] && (
+							<Badge variant={projectType ? typeBadgeVariant[projectType] : "outline"}>
+								{projectTypeLabel}
+							</Badge>
+							{project.category && project.category !== projectTypeLabel && (
 								<>
 									<span aria-hidden="true" className="text-border">
 										·

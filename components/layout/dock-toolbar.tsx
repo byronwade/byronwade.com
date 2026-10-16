@@ -28,7 +28,7 @@ const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
 const ITEM =
-	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring";
+	"relative flex size-11 sm:size-10 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-active-foreground";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
@@ -92,9 +92,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
+	const returnFocusRef = React.useRef<HTMLElement | null>(null);
+	const pendingFocusRef = React.useRef<HTMLElement | null>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
-	const returnFocusRef = React.useRef<HTMLElement | null>(null);
 	const panelId = React.useId();
 
 	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
@@ -108,10 +109,25 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const flat = React.useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
 	const close = React.useCallback(() => {
+		pendingFocusRef.current = panelRef.current?.contains(document.activeElement)
+			? returnFocusRef.current
+			: null;
 		setMode(null);
 		setQuery("");
 		setActive(0);
 	}, []);
+
+	// Keep the global shortcut subscription stable between disclosure state changes.
+	const showPanel = React.useCallback(
+		(nextMode: Exclude<Mode, null>, opener?: HTMLElement) => {
+			if (!open) {
+				returnFocusRef.current =
+					opener ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
+			}
+			setMode(nextMode);
+		},
+		[open]
+	);
 
 	const run = React.useCallback(
 		(href: string) => {
@@ -122,7 +138,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	);
 
 	/*, slot sizing: keep the reserved footprint synced to the compact pill ,  */
-	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 40 });
+	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 52 });
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
 		const morph = morphRef.current;
@@ -156,7 +172,17 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 				panelRef.current?.focus({ preventScroll: true });
 			}
 		},
-		onClosed: () => returnFocusRef.current?.focus({ preventScroll: true }),
+		onClosed: () => {
+			const target = pendingFocusRef.current;
+			pendingFocusRef.current = null;
+			if (
+				target &&
+				(document.activeElement === document.body ||
+					panelRef.current?.contains(document.activeElement))
+			) {
+				target.focus({ preventScroll: true });
+			}
+		},
 		deps: [mode],
 	});
 
@@ -197,25 +223,21 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
-				const activeElement = document.activeElement;
-				if (activeElement instanceof HTMLElement && !panelRef.current?.contains(activeElement)) {
-					returnFocusRef.current = activeElement;
+				if (mode === "search") {
+					close();
+				} else {
+					showPanel("search");
 				}
-				setMode((m) => (m === "search" ? null : "search"));
 			}
 		};
-		const onOpen = () => {
-			const activeElement = document.activeElement;
-			returnFocusRef.current = activeElement instanceof HTMLElement ? activeElement : null;
-			setMode("search");
-		};
+		const onOpen = () => showPanel("search");
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("open-command-palette", onOpen);
 		return () => {
 			window.removeEventListener("keydown", onKey);
 			window.removeEventListener("open-command-palette", onOpen);
 		};
-	}, []);
+	}, [mode, close, showPanel]);
 
 	/*. Esc + click-away close ,  */
 	React.useEffect(() => {
@@ -288,7 +310,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 
 	return (
 		<TooltipProvider delay={350}>
-			<div className="pointer-events-none fixed top-3 right-3 z-50 print:hidden">
+			<div className="pointer-events-none relative z-50 w-40 sm:w-60 print:hidden">
 				{/* SLOT, reserves the collapsed pill's footprint so nothing reflows. */}
 				<div
 					ref={rootRef}
@@ -299,8 +321,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 					<div
 						ref={morphRef}
 						className={cn(
-							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
-							open ? "rounded-2xl" : "rounded-3xl"
+							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
+							open ? "rounded-xl shadow-float" : "rounded-full"
 						)}
 					>
 						{/* COMPACT, the toolbar. */}
@@ -308,7 +330,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							ref={compactRef}
 							inert={open}
 							className={cn(
-								"flex items-center gap-1 p-[3px] transition-opacity duration-150",
+								"flex items-center gap-0.5 p-1.5 transition-opacity duration-150",
 								open && "pointer-events-none"
 							)}
 						>
@@ -317,10 +339,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("search");
-											}}
+											onClick={(event) => showPanel("search", event.currentTarget)}
 											aria-label="Search (⌘K)"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -331,8 +350,6 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 								<TooltipContent sideOffset={10}>Search · ⌘K</TooltipContent>
 							</Tooltip>
 
-							{/* These external links also live in the footer. Reserve narrow
-							    chrome for search, theme, and support so it cannot cover the launcher. */}
 							<span className="hidden sm:contents">
 								<Tooltip>
 									<TooltipTrigger
@@ -391,10 +408,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={(event) => {
-												returnFocusRef.current = event.currentTarget;
-												setMode("donate");
-											}}
+											onClick={(event) => showPanel("donate", event.currentTarget)}
 											aria-label="Support open source"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -428,8 +442,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							{mode === "donate" ? (
 								<div className="flex flex-col gap-3 p-4">
 									<div className="flex items-center gap-2.5">
-										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-pink-500/15">
-											<Heart className="size-4 fill-pink-500 text-pink-500" />
+										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-brand-muted">
+											<Heart className="size-4 fill-brand text-brand" />
 										</span>
 										<div className="leading-tight">
 											<div className="font-semibold text-[13px] text-dock-active-foreground">
@@ -447,7 +461,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										href={SPONSOR_URL}
 										target="_blank"
 										rel="noreferrer"
-										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-pink-500 font-semibold text-[13px] text-white transition-colors hover:bg-pink-500/90"
+										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
 									>
 										<Heart className="size-4 fill-white" />
 										Donate via GitHub Sponsors

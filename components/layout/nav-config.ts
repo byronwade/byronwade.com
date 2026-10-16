@@ -1,7 +1,7 @@
 import { FileText, FolderGit2, Home, type IconComponent, LayoutGrid, PenLine } from "@/lib/icons";
 
 /** Primary destinations surfaced in the floating nav dock. */
-export interface NavItem {
+interface NavItem {
 	href: string;
 	icon: IconComponent;
 	label: string;

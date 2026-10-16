@@ -2,10 +2,11 @@
 title: "Fakebase: A Supabase You Can Throw Away"
 url: "https://fakebase.byronwade.com"
 category: "Product"
-status: "Open source"
+status: "Archived"
 tagline: "a Supabase you throw away"
 date: 2026-05-30
 excerpt: "My open-source flagship, maintained for free: a Supabase-shaped backend that runs entirely in-process with zero setup, so you can prototype at production-API speed and export to a real Supabase project when you're ready."
+featured: false
 ---
 
 # Fakebase: Prototype at Production Speed, Without the Setup Tax

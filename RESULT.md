@@ -1,123 +1,113 @@
-# PR 49 integration after PR 52
+# PR 49 re-integration after PR 55
 
 **DO NOT MERGE. Byron must choose real products before any later merge.**
-This is a placeholder, test-only shop handoff, not approval for live payments.
+This remains an unlinked placeholder preview with Stripe test checkout only.
 
 ## Mode and decision
 
-- **Mode:** Implementation. Writes stayed in the shop worktree, its branch,
-  and the authorized PR description. No other worktree was inspected or changed.
-- Merged `origin/main` at `0e9f5cd9d04d67a3d49aa3e505cd138aabef5547`, including
-  #54 and #52, into `bot/shop` with a normal two-parent merge:
-  `573300079639bdda33bd6d45ce21d6f00d1ae97e`.
-- The only conflict was `PROGRESS.md`. Preserved the shop history and retained
-  #52's log in a labeled historical section. Incoming application files match
-  main exactly. No source conflict or application repair was necessary.
-- **Reused:** catalog, test-only checkout guard/action/form, shared primitives,
-  metadata, navigation/search/sitemap ownership, native and rendered tests.
-- **Created or extended:** reconciled progress and replaced this handoff report.
-  No new application abstraction, dependency, product, price, key, or UI behavior.
-- **Recursive cleanup:** removed the log conflict without discarding either
-  history. No competing source, obsolete path, unused export, or unrelated
-  cleanup was introduced; knip passed.
-- **Mechanical prevention:** retained existing checkout, draft, contact, cache,
-  date and rendered-boundary regression sensors. No new sensor was necessary;
-  visual regression remains the documented next UI sensor.
+- **Mode:** Implementation / integration. Writes stayed in the shop worktree,
+  bot/shop and its authorized PR handoff. No other worktree was changed.
+- Merge current main `5d3b47a7e5f0b772e9393226f53c53cb349cdea7` (#53 projects,
+  #55 screenshot privacy) into previous shop head
+  `f53a4a8d661c8bbcacd0b34652a5354d655a9c05` with a normal two-parent merge.
+  The exact published merge SHA and final remote checks are recorded in the
+  [PR description](https://github.com/byronwade/byronwade.com/pull/49).
+- Conflicts: PROGRESS.md, RESULT.md, docs/ARCHITECTURE.md, app-launcher,
+  conditional-layout, dock-toolbar, footer and use-capsule-morph.
+  Main's shared shell supersedes the earlier shop fixes: its flow header,
+  footer, inert surfaces and guarded focus-return lifecycle are retained exactly.
+  Architecture retains main's layout/screenshot ownership plus shop ownership.
+  Both progress histories remain labeled; historical merge permissions apply
+  only to their original lanes. PR 49 must stay OPEN and unmerged.
+- **Reused:** existing catalog, checkout guard/action/form, metadata, shared
+  primitives/tokens, main's shell and screenshot boundary, native/rendered tests.
+- **Created or extended:** integration reports only; profile now includes the
+  incoming screenshot regressions. No new dependency, product, price, credential,
+  abstraction, visual system or payment behavior.
+- **Recursive cleanup:** removed conflict markers and competing lifecycle edits;
+  retained a single shared-shell implementation. No obsolete code or duplicate
+  checkout path added. Knip reports no findings.
+- **Mechanical prevention:** retained checkout, screenshot privacy, draft, date,
+  contact, cache and rendered-boundary regression sensors. No new sensor needed
+  for the merge; restoring local performance-budget enforcement remains recorded
+  follow-up, outside this integration.
 
 ## Fresh local verification
 
-All acceptance commands used Node `v24.21.0`, npm `11.19.0`, Next.js `16.2.7`.
-Non-login shells default to Node 22, so the installed Node 24 directory was
-explicitly placed first on PATH. Application source was frozen before checks;
-subsequent changes are handoff documentation only.
+Node `v24.21.0`, npm `11.19.0`, Next.js `16.2.7`. All commands completed with exit 0:
 
 | Command | Result |
 | --- | --- |
-| `git fetch origin` | Exit 0; main is the SHA above |
-| `git merge --no-commit --no-ff origin/main` | One log conflict, resolved; merge committed |
-| `npm run lint` | Exit 0; 143 files, no fixes |
-| `npm run type-check` | Exit 0; route generation and strict TypeScript |
-| `npm run knip` | Exit 0; no unused-code findings |
-| `npm run build` | Exit 0; 41 pages generated |
-| `npm test` | Exit 0; 137 passed, zero failed; includes 23 checkout regressions |
-| `npm run test:rendered` | Exit 0; 5 passed, zero failed |
-| `python -u .next/pr49-post52/browser-smoke.py` | Exit 0; 11 scenarios passed |
-| `git diff --check` and `git diff --cached --check` | Exit 0 |
-| `git merge-base --is-ancestor origin/main HEAD` | Exit 0 |
-| `git push origin HEAD:bot/shop` | Exit 0; ordinary fast-forward push |
+| `npm run lint` | 155 files checked, no fixes |
+| `npm run type-check` | Route generation and strict TypeScript pass |
+| `npm run knip` | No unused-code findings |
+| `npm run build` | 49/49 pages generated |
+| `npm test` | 166 passed, zero failed, skipped or cancelled |
+| `npm run test:rendered` | 5 passed, zero failed |
+| `python .next/pr49-post55/assertions.py` | Source, exclusion and production scans pass |
+| `python -u .next/pr49-post55/browser-smoke.py` | 14 scenarios pass; all owned servers stopped |
+| `git diff --check` and `git diff --cached --check` | No whitespace errors |
 
-Rendered tests checked 39 dates across eight pages, 27 portfolio client chunks,
-native contact submission, and both native shop return links. Native tests
-emitted existing module-type warnings and expected fixture delivery diagnostics.
-No authenticated provider or real Stripe session was exercised.
+Rendered tests check 38 dates across eight pages, 27 portfolio client chunks,
+contact submit semantics and both native shop return links. Native tests include
+23 checkout and 29 screenshot regressions. Existing module-type warnings,
+expected contact fixture diagnostics and Figma/Dribbble build fallbacks remain.
+No real Stripe request, authenticated provider test or live payment was made.
 
-Read-only assertions also passed:
+Read-only source and production assertions confirm:
 
-- All 11 shop route/component/catalog/checkout, manifest/lockfile and env-template
-  files match the previous shop head `b0ac10a` exactly.
-- Exactly three placeholder products retain their labels and illustrative prices.
-  All three shop routes remain noindex; navigation, search and sitemap omit shop.
-- Zero live Stripe credential-pattern matches across 321 tracked files, the one
-  local env template, and Stripe-related process variables. Invalid fixture
-  strings are test data. No live key or remote environment change was supplied.
-- Zero raw-contact matches across 30 production client scripts and 34 prerendered
-  HTML files; zero Stripe secret symbols/key patterns in clients. Both built
-  return routes are noindex; no draft slug appears in prerendered HTML.
-- Full integration diff, original shop dependency cone, callers and server/client
-  boundaries reviewed. No dependency installation or lockfile change was needed.
+- Shop routes/components/catalog/checkout/tests, env template and package files
+  are unchanged from f53a4a8. Exactly three products retain their placeholder
+  labels and illustrative prices. Checkout still fails closed without test keys.
+- All three routes remain noindex. Navigation, search and sitemap owners omit
+  shop; the live sitemap and Primary/Footer navigation also omit it. A current
+  page breadcrumb is contextual, not a shop discovery entry.
+- Main's entire shared layout, screenshot routes/helpers, projects/content,
+  date helper, SEO, globals and workflow files match origin/main exactly.
+  Publication-date and draft protections remain intact.
+- No live Stripe credential pattern across 301 tracked text files, local env
+  files or Stripe-related process values. Only .env.example exists locally.
+- No raw canonical contact details in 30 client scripts or 42 prerendered HTML
+  files. Clients contain neither Stripe nor ScreenshotOne secret symbols or
+  Stripe key patterns. Both built shop return pages remain noindex.
 
-## Design and browser evidence
+## Design evidence and limits
 
-The Guided shop retains its numbered placeholder collection and explicit preview
-notice, using main's shared Thorbis tokens, primitives and Inter font. The
-collection remains the dominant object. No new composition or motion was authored.
-Existing immediate feedback and the reduced-motion path were retained.
+The Guided shop retains the numbered three-item collection and explicit preview
+notice, now within main's flow header/footer and shared tokens. The collection
+remains dominant. No new composition or motion was authored.
 
-Fresh headless installed-Chrome checks used this worktree's production server on
-127.0.0.1:3219. Coming-soon states passed at 1440x1000 and 390x844 in both themes,
-320x844 light, and 768x1024 dark. Assertions covered one descriptive h1, three
-visible labels, noindex, no horizontal overflow, and zero page errors.
+Fresh production Chrome checks on this worktree's own 127.0.0.1:3219 server cover
+1440x1000 and 390x844 in both themes, 320x844 light, 768x1024 dark and 2560x1440
+light. One h1, three labels, noindex, no horizontal overflow and zero page errors
+pass. No-JavaScript collection, both keyboard return links, footer contact reveal,
+normal/reduced-motion launcher/search/support Enter/Escape focus return, and
+unknown-target rejection by both screenshot routes pass. Missing and invalid
+live-key fixtures show coming soon with no checkout buttons. Locally intercepted
+test checkout verifies 44px controls, disabled pending state, focused recoverable
+error and retry. No fixture request reaches Stripe. All three owned servers stop.
+Desktop light, mobile dark and mobile error screenshots were visually inspected.
+Scripts, results, logs and captures remain ignored under `.next/pr49-post55/`.
+The first browser attempt rejected its overly broad navigation assertion because
+it counted the contextual breadcrumb; the corrected full run passed with exit 0.
 
-Both return links worked through keyboard Enter; the no-JavaScript preview
-retained the collection. An invalid live-key fixture showed coming soon with no
-checkout buttons. An invalid test-key fixture with server-side Stripe transport
-intercepted locally verified 44px controls, keyboard submission, disabled pending
-state, focused recoverable error, and re-enabled retry. No Stripe call escaped
-the fixture. All three owned server processes were stopped.
+No fresh dev-mode, axe, full shell audit, Safari, screen-reader, physical-device,
+slow-motion/frame inspection, authenticated Stripe, bundle-analysis or Lighthouse
+run was made. Production runtime evidence was used for this merge-only task.
+No new accessibility certification or performance/budget-pass claim is made.
 
-Structured results, scripts, server logs and screenshots are local ignored output
-under `.next/pr49-post52/`. Desktop light, mobile dark and mobile error screenshots
-were visually inspected. The earlier committed
-[shop evidence](docs/evidence/shop/README.md) is historical, before this token merge.
-No fresh axe, full shell keyboard audit, Safari, screen-reader, physical-device,
-normal-motion/slow-motion, dev-server, authenticated Stripe, `build:analyze`, or
-`perf:budget` run was made. Production runtime checks were used for integration;
-no new accessibility, visual-parity or performance-budget claim is inferred.
+## Remote handoff and remaining findings
 
-## Remote handoff
+Normal branch push only; never force-push, squash-merge, enable auto-merge,
+dispatch a workflow or change remote environment settings. The final pushed head,
+main ancestry, OPEN/unmerged state, mergeability and checks are verified after
+publishing and recorded in the PR body. Repository-managed checks may run in
+response to the authorized push; workflow configuration is unchanged.
 
-The integration SHA above was pushed normally. GitHub reports PR 49 OPEN and
-MERGEABLE against main `0e9f5cd`, `mergedAt: null`, and no auto-merge request.
-All 10 active checks/statuses succeeded, including Codacy, CodeQL and both
-analysis jobs, GitGuardian, both Socket checks, CodeRabbit, Vercel and Vercel
-Preview Comments. Both Cursor checks remain NEUTRAL; none pending or failing.
-
-A final documentation-only commit publishes this report and completed progress.
-Its exact pushed head and fresh checks are recorded in the
-[PR description](https://github.com/byronwade/byronwade.com/pull/49) after pushing.
-Application source is identical to the verified integration SHA. No force-push,
-admin override, PR merge, workflow dispatch, or production deployment was run.
-Repository-managed automatic checks ran in response to the authorized push;
-the manual-only workflow configuration was unchanged.
-
-## Remaining findings
-
-Byron must choose real products before any merge. Existing shared performance
-budget misses and wider design-system work remain outside this integration.
-No live fulfillment, payment or remote configuration was enabled.
-
-Toolkit advisory reservation failed on a pre-existing missing configured root;
-configuration, cleanup quarantine and other worktrees were left alone. Native
-command output and exit evidence were used instead of toolkit receipts.
+Byron must select real products before any future merge. Existing performance
+budget misses and the ignored Lighthouse budget flag remain separate follow-up.
+Toolkit advisory reservation failed on its pre-existing missing configured root;
+configuration and cleanup quarantine were untouched. Native command exits were
+used instead of toolkit receipts. No unrelated redesign or live fulfillment.
 
 VERDICT: READY_FOR_BYRON

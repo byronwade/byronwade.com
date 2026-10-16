@@ -22,7 +22,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | Local owner | Thorbis source | Translation |
 | --- | --- | --- |
 | app/globals.css token block | src/styles/tokens.generated.css; scripts/generate-stylex-tokens.mjs | Color, spacing, control dimensions, type sizes/line heights, radii, shadows, motion and layers copied; color names prefixed --thorbis- to avoid Tailwind collisions |
-| app/globals.css light overrides | src/styles.css, html[data-resolved="light"] and following shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
+| app/globals.css light overrides | src/styles.css, primary html[data-resolved="light"] blocks through supported shadow refinements, before the system-theme fallback | Light status/info and accent roles, canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores generated source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
 | lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for personal launcher |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
@@ -52,6 +52,14 @@ for introducing a new visual choice.
   than copying an upstream same-tone foreground/background defect.
 - Source status colors may need a documented contrast adjustment when used for
   small text. Rendered contrast/axe evidence decides, not visual intuition.
+- Existing neutral status pills retain foreground text on their muted surface,
+  preserving the site's measured contrast correction through the semantic aliases.
+- The adapter includes the early light status/info overrides as well as the later
+  canvas and supported shadow blocks. Omitting the early block made small contact
+  feedback text fail contrast. All imported values come from the pinned source;
+  regeneration rejects a missing light status role. The separate upstream dark
+  accent override is not adopted: white action text on it calculates to 3.89:1.
+  The generated dark accent remains pending a separate contrast-reviewed port.
 - Personal signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization

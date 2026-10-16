@@ -2,9 +2,9 @@
 title: "byronwade/ui: The Design System Behind Everything"
 url: "https://ui.byronwade.com"
 category: "Product"
-flagship: true
-featured: true
-status: "In development"
+flagship: false
+featured: false
+status: "Archived"
 tagline: "one design language, every project"
 order: 3
 date: 2026-06-02

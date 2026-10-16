@@ -1,5 +1,14 @@
 # Performance Optimizations
 
+Current verification note (October 15, 2026): the installed Lighthouse 12.8.2 no
+longer supports the `--budget-path` flag used by `perf:budget`. The command builds
+and generates a homepage report, but does not enforce `lighthouse-budget.json`.
+Budget values require a separate comparison. See the
+[upstream removal](https://github.com/GoogleChrome/lighthouse/pull/15950) and the
+measured projects-refresh evidence in
+[`evidence/projects-refresh/performance-evidence.json`](evidence/projects-refresh/performance-evidence.json).
+The older optimization narrative below is historical, not a current benchmark.
+
 This document outlines the comprehensive performance optimizations implemented in the Byron Wade portfolio website.
 
 ## Local verification note (October 15, 2026)

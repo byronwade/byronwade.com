@@ -2,9 +2,9 @@
 title: "Goodmarks: Reputation Protection for Local Business"
 url: "https://goodmarks.io"
 category: "Product"
-flagship: true
-featured: true
-status: "Live"
+flagship: false
+featured: false
+status: "Archived"
 tagline: "reputation, protected"
 order: 1
 date: 2026-05-17

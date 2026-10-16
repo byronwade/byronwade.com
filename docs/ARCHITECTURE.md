@@ -7,18 +7,18 @@ Tailwind CSS.
 ## Layout
 
 Every page is wrapped by `components/layout/conditional-layout.tsx` (`SiteLayout`),
-which renders a semantic header containing the floating identity/breadcrumb and
-utility toolbar, the nav dock, the page `main`, and the footer. Content width and
-gutters come from `components/layout/site-shell.tsx`.
+which renders a flow header with launcher, wrapping navigation and toolbar, the
+page `main`, and the `Footer`. Content width and gutters come from
+`components/layout/site-shell.tsx`.
 
-Theme is light/dark via `next-themes` (light default, system aware) with a toggle
-in the utility toolbar.
+Theme is light/dark via `next-themes` (light default) with a toggle in
+the header.
 
 ## Homepage
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
 
-- `components/home/home-interactive.tsx`. intro, bio, social links
+- `components/home/home-hero.tsx`. intro, bio, social links
 - `components/home/home-projects.tsx`. project list
 - `components/home/home-blog.tsx`. recent posts
 
@@ -39,7 +39,7 @@ in the utility toolbar.
 
 ```
 components/
-  layout/        # Header/footer, site shell, nav dock, launcher, utility toolbar
+  layout/        # Flow header, footer, site shell, nav dock, toolbar, launcher
   home/          # Homepage building blocks
   blog/          # Blog UI
   project/       # Project preview UI
@@ -61,6 +61,10 @@ components/
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
+- `lib/screenshot-capture.ts`. Server-only project previews: `/api/screenshot`
+  returns a same-origin image URL and `/api/screenshot/image` fetches the capture
+  with the provider key, only for published project URLs at the sizes in
+  `lib/screenshot-viewports.ts`
 - `lib/actions/send-email.ts`. contact form server action (Resend)
 - `lib/shop/products.ts`. typed placeholder catalog; the only shop price source
 - `lib/shop/checkout.ts`, `lib/actions/create-checkout.ts`. test-only Stripe

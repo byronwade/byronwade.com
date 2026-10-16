@@ -7,18 +7,7 @@ import type { Project } from "@/lib/projects";
 import { getFeaturedProjects } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 
-/**
- * Homepage "selected work". The first turn after the opening.
- *
- * Rebuilt onto the shared index primitives rather than its own copy of the
- * spotlight markup. What stays local is the *content* of a row: this section's
- * job is proof, so each row carries outcome and up to three metrics, which the
- * blog index below deliberately does not.
- *
- * The trailing "Case studies" badge line was removed. It restated what the
- * "All projects" link already offers and put a second, weaker route to the same
- * place at the foot of the section.
- */
+// Thorbis evidence rows; existing content contract and status owner retained.
 function FeaturedProject({ project }: { project: Project }) {
 	const title = project.title.split(":")[0];
 	const metrics = project.metrics?.slice(0, 3) ?? [];
@@ -32,7 +21,7 @@ function FeaturedProject({ project }: { project: Project }) {
 						<div className="flex flex-wrap items-center gap-2">
 							<span className={`font-medium text-foreground ${indexRowAccentClass}`}>{title}</span>
 							{tone && project.status && (
-								<StatusPill className="capitalize" pulse={tone.pulse} tone={tone.tone}>
+								<StatusPill className="capitalize" tone={tone.tone}>
 									{project.status}
 								</StatusPill>
 							)}
@@ -41,7 +30,7 @@ function FeaturedProject({ project }: { project: Project }) {
 					</div>
 					<ArrowUpRight
 						aria-hidden="true"
-						className="size-4 shrink-0 text-muted-foreground/60 transition-[transform,color] group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
+						className="size-4 shrink-0 text-muted-foreground transition-[transform,color] group-hover/row:text-brand"
 					/>
 				</div>
 
@@ -67,7 +56,7 @@ function FeaturedProject({ project }: { project: Project }) {
 }
 
 async function FeaturedList() {
-	const featured = await getFeaturedProjects(5);
+	const featured = await getFeaturedProjects(3);
 
 	if (featured.length === 0) {
 		return (
@@ -86,11 +75,8 @@ async function FeaturedList() {
 
 export function HomeProjects() {
 	return (
-		// Left-aligned to the shell edge, not centred inside it: the opening and
-		// every section share one left margin, which is what holds the page
-		// together once the scenes are set this far apart.
 		<Section
-			className="max-w-3xl"
+			className=""
 			description="Proof from products and the service business that shaped them."
 			link={
 				<Link

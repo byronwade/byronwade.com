@@ -341,8 +341,11 @@ Recomposition, not shrinking.
 
 ## 12. Performance budgets
 
-`lighthouse-budget.json` is the enforcing owner. Targets: LCP ≤2.5s (budget
-currently 3s), INP ≤200ms, CLS ≤0.1 at p75.
+`lighthouse-budget.json` owns the targets: LCP ≤2.5s (budget currently 3s),
+INP ≤200ms, CLS ≤0.1 at p75. Installed Lighthouse 12 ignores the removed
+`--budget-path` flag; the current command reports results without enforcing those
+targets. Compare report values manually until local enforcement is restored, as
+recorded in PROJECT_PROFILE.md and docs/PERFORMANCE.md.
 
 Also budgeted: script bytes, image bytes, font requests, total requests.
 

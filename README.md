@@ -104,6 +104,7 @@ Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
 | `DRIBBBLE_ACCESS_TOKEN` | Dribbble shots |
 | `FIGMA_ACCESS_TOKEN` | Figma files and the `/portfolio/figma` viewer |
 | `RESEND_API_KEY` | Contact form delivery |
+| `SCREENSHOTONE_ACCESS_KEY` | Live previews on project pages, fetched server-side by `/api/screenshot/image` |
 | `REVALIDATION_SECRET` | Authorizes `POST /api/cache/revalidate` |
 | `NEXT_PUBLIC_BASE_URL` | Canonical URLs and metadata |
 
