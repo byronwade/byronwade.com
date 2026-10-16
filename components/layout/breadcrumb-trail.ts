@@ -20,7 +20,7 @@ function dedupe(crumbs: Crumb[]): Crumb[] {
 
 /**
  * Breadcrumb trail derived from the resolved browser pathname. A root "Home"
- * crumb plus a crumb per path segment, with labels
+ * crumb plus known route ancestors and the current leaf, with labels
  * resolved from the supplied map (built server-side from the search index, so
  * dynamic `[slug]` leaves get real titles); unknown segments fall back to title case.
  */
@@ -31,10 +31,14 @@ export function resolveTrail(pathname: string, labels: Record<string, string>): 
 	}
 
 	const trail: Crumb[] = [root];
+	const segments = pathname.split("/").filter(Boolean);
 	let acc = "";
-	for (const seg of pathname.split("/").filter(Boolean)) {
+	for (const [index, seg] of segments.entries()) {
 		acc += `/${seg}`;
-		trail.push({ label: labels[acc] ?? titleCase(seg), href: acc });
+		// A URL segment need not be a page (for example, /portfolio/figma).
+		if (labels[acc] !== undefined || index === segments.length - 1) {
+			trail.push({ label: labels[acc] ?? titleCase(seg), href: acc });
+		}
 	}
 	return dedupe(trail);
 }

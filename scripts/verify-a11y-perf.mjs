@@ -263,7 +263,7 @@ async function readAxe() {
 	}));
 }
 
-async function readState(page, name) {
+async function waitForMotion(page) {
 	await page.waitForFunction(() =>
 		document
 			.getAnimations()
@@ -273,6 +273,10 @@ async function readState(page, name) {
 					animation.playState !== "running"
 			)
 	);
+}
+
+async function readState(page, name) {
+	await waitForMotion(page);
 	return {
 		name,
 		violations: await page.evaluate(readAxe),
@@ -291,6 +295,8 @@ async function checkShellStates(page) {
 		(previous, { trigger, label }) =>
 			previous.then(async () => {
 				console.log(`Opening ${label}`);
+				// Independent pointer scenarios start at rest; rapid exit/reopen is tested below.
+				await waitForMotion(page);
 				await page.click(trigger);
 				await page.waitForFunction(
 					(name) => {
