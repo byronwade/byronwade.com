@@ -18,7 +18,7 @@ The reference checkout was read-only. See docs/THORBIS-DESIGN-PORT.md for proven
 | 5. Axe/contrast/keyboard | PASS | Eight home cases plus 24 open shell states: zero serious/critical axe findings; AA text, enabled field boundary contrast and 44px mobile targets. Focus clears sticky header; Escape/shortcut focus return, reduced motion and contact validation/reveal pass. |
 | 6. Performance budget | BLOCKED | largest-contentful-paint: 3266.371 > 3000 |
 | 7. Design ownership/sync docs | PASS | DESIGN.md and docs/THORBIS-DESIGN-PORT.md adopt Thorbis, pin source, map adapters and document AA deviations. |
-| 8. Ready PR distribution/pin disclosure | PENDING PR LINK | Ready PR body will explicitly state port and the full source commit; no merge authorized. |
+| 8. Ready PR distribution/pin disclosure | PASS | [PR #56](https://github.com/byronwade/byronwade.com/pull/56), isDraft=false, main base, explicitly states port and source commit; unmerged. |
 
 ## Verification
 
@@ -43,7 +43,10 @@ No content/blog, content/projects or shop edits entered the branch diff. Main #5
 
 Mechanical prevention: source pin guard; named-type merge sensor; raw-color/favicon/
 rendered preload contracts; reproducible browser/contrast checks; budget runner exits
-nonzero for exceeded limits. No automatic GitHub Actions or production deployment.
+nonzero for exceeded limits. No production deployment. Repository CI is manual-only;
+GitHub default-setup CodeQL started automatically on PR creation despite that file.
+Cancellation was requested for run 38869318654; no Actions were manually dispatched.
+Verification receipts above are exclusively local.
 
 ## Design evidence and limits
 
@@ -57,7 +60,9 @@ focus return; reduced motion snaps. Signature font still loads on resume.
 Local Chromium viewport emulation is not a physical-device, Safari or screen-reader
 certification. Empty home content arrays were not forced; empty search and invalid
 contact states were exercised. Existing dependency alerts and optional React Scan diagnostic updates
-remain outside this design port. There is no real-user production speed claim.
+remain outside this design port. There is no real-user production speed claim. The tested application includes main
+through 20d8527. Main #55 landed afterward in its screenshot/API cone; PR #56 is
+mergeable with it, but those changes are outside this local test receipt.
 
 Remaining acceptance blocker: largest-contentful-paint: 3266.371 > 3000. Final TBT is 229ms against its 300ms limit. The trace concentrates script CPU in the Next main-app bundle; its contribution to LCP requires targeted bootstrap/RSC profiling. Further performance work is required before merge; no budget relaxation or metric substitution was used.
 
