@@ -5,6 +5,9 @@ case-study projects, a live GitHub portfolio, a Markdown blog, and a resume.
 
 ## Quick start
 
+Use Node.js 24.x, as declared in `package.json`. The same declaration selects the
+Vercel build and function runtime.
+
 ```bash
 npm install
 npm run dev
@@ -71,9 +74,11 @@ and point at the code that holds the values.
 | `npm run clear` | Remove `.next` and `node_modules` |
 
 Run all four release gates locally before publishing, plus `npm test` for contact
-changes and `npm run test:rendered` after the build. GitHub Actions runs are
-manual-only and are not used for CI; local checks or Depot are the release gate.
-React Scan is wired into `npm run dev` and never reaches production.
+changes and `npm run test:rendered` after the build. The checked-in Actions workflow
+is manual-only; local checks or Depot are the release gate. GitHub's separate
+default CodeQL setup still creates automatic Actions runs and needs an owner
+settings change to comply with that policy. React Scan is wired into `npm run dev`
+and never reaches production.
 
 ## Tech
 

@@ -187,6 +187,8 @@ use them correctly.
 ## Commands and verification
 
 - **Install:** `npm ci`
+- **Node runtime:** 24.x, declared in `package.json` and the lockfile root; this
+  overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev`
 - **Affected tests:** `npm test`, contact-action regression tests with a fixture email transport
 - **Rendered contract:** `npm run test:rendered` after `npm run build`, native submit semantics on `/contact`
@@ -240,6 +242,7 @@ the user's instruction each time.
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
 | Automated tests | Contact-action regressions via `npm test`; other domains uncovered | Contact changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs` |
+| Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
