@@ -43,7 +43,11 @@ Successful exports retain the shared filename and one-hour cache policy. Email
 hydration remains best-effort; the server-rendered record can print without it.
 The browser closes on both success and failure. Native Node regressions in
 `tests/resume-pdf-route.test.mjs` exercise the route with a synthetic browser;
-they do not launch Chromium or call production.
+they do not launch Chromium or call production. The compressed browser in
+`@sparticuz/chromium/bin` is read by a computed path that file tracing cannot
+see, so `next.config.js` adds it to this route's trace with
+`outputFileTracingIncludes`; `tests/rendered/resume-pdf-trace.test.mjs` checks
+the built trace includes it and that no other route carries it.
 
 On the page, a plain Download PDF click fetches the route and saves only a
 successful `application/pdf` body (`fetchResumePdf` in `lib/resume-pdf.ts`).
