@@ -12,7 +12,10 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
 	return (
 		<div className="relative flex min-h-screen flex-col">
-			<header className="sticky top-3 z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] print:hidden">
+			{/* xl is the first width that shows the breadcrumb. The wider cap keeps
+			    a short trail such as "Home / Projects" intact while the equal side
+			    columns keep the primary nav centered on every route. */}
+			<header className="sticky top-3 z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] xl:max-w-6xl print:hidden">
 				<div className="flex min-w-0 items-center gap-2">
 					<AppLauncher />
 					<span className="hidden min-w-0 flex-1 xl:block">

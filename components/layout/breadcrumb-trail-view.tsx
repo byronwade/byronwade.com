@@ -92,13 +92,17 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 							</Popover>
 						</li>
 						<Sep />
-						<CrumbLink crumb={last} current />
+						<CrumbLink crumb={last} current truncate />
 					</>
 				) : (
 					crumbs.map((c, i) => (
 						<React.Fragment key={c.href}>
 							{i > 0 && <Sep />}
-							<CrumbLink crumb={c} current={i === crumbs.length - 1} />
+							<CrumbLink
+								crumb={c}
+								current={i === crumbs.length - 1}
+								truncate={i === crumbs.length - 1}
+							/>
 						</React.Fragment>
 					))
 				)}
@@ -123,14 +127,23 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 	);
 }
 
-function CrumbLink({ crumb, current }: { crumb: Crumb; current?: boolean }) {
+function CrumbLink({
+	crumb,
+	current,
+	truncate,
+}: {
+	crumb: Crumb;
+	current?: boolean;
+	truncate?: boolean;
+}) {
 	return (
-		<li className={cn("flex items-center", current ? "min-w-0" : "shrink-0")}>
+		<li className={cn("flex items-center", truncate ? "min-w-0" : "shrink-0")}>
 			<Link
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"min-h-6 min-w-6 truncate rounded-sm leading-6 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+					"min-h-6 min-w-6 whitespace-nowrap rounded-sm leading-6 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+					truncate && "min-w-0 truncate",
 					current
 						? "font-semibold text-dock-active-foreground"
 						: "text-dock-foreground hover:text-dock-active-foreground"
