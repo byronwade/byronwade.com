@@ -414,3 +414,17 @@ poll gh pr checks 49 for up to 20 minutes and update the PR with actual results.
   testing is outside this documentation repair; prior evidence remains linked.
 - Next: commit the Markdown correction and log cleanup, push only bot/shop,
   then poll PR #49 for up to 20 minutes. A PASS verdict requires Codacy SUCCESS.
+
+### Remote repair-head verification
+
+- Pushed `de3a3ac3075280848f250ad1da2f4b3f471b6916` only to bot/shop.
+- Codacy check `116816942144` completed at `2026-10-16T04:49:39Z`: SUCCESS,
+  "Codacy found no issues in your code", zero annotations.
+- `gh pr checks 49 --json name,state,bucket,link`: 10 SUCCESS, two NEUTRAL
+  Cursor checks as before; no failure or pending check. PR remains open/ready
+  and mergeable. No workflow dispatch or PR merge was performed.
+- Final report is `RESULT.md`. The build cleared ignored temporary files;
+  restored the archived previous shop report from the captured contents.
+- Commit/push the report-only update, recheck the resulting head, and put that
+  exact head plus fresh local/remote evidence into the PR body. Application
+  sources remain the same as the locally verified repair head.
