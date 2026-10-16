@@ -80,6 +80,8 @@ test("authored dates reject invalid values, partial days and ambiguous local tim
 		"2026",
 		"2026-01",
 		"2026-02-30",
+		"2026-02-30T00:00:00Z",
+		"2025-02-29",
 		"2026-13-01",
 		"2026-01-01T12:00:00",
 		"2026-01-01T12:00:00+25:00",

@@ -35,6 +35,10 @@ const invalidDates = [
 	["blank", 'date: "  "\n'],
 	["invalid", "date: not-a-date\n"],
 	["impossible", 'date: "2026-02-30"\n'],
+	["impossible-unquoted", "date: 2026-02-30\n"],
+	["impossible-month", "date: 2026-13-01\n"],
+	["impossible-stamp", "date: 2026-02-30T00:00:00Z\n"],
+	["non-leap", "date: 2025-02-29\n"],
 	["numeric", "date: 123\n"],
 	["object", "date: { year: 2026 }\n"],
 ];
@@ -69,6 +73,10 @@ await writeFile(
 	join(directory, "content/blog/draft.md"),
 	"---\ntitle: Draft\ndate: 2026-01-01\ndraft: true\n---\nDraft body.\n"
 );
+await writeFile(
+	join(directory, "content/blog/leap.md"),
+	"---\ntitle: Leap\ndate: 2024-02-29\n---\nLeap day.\n"
+);
 
 const { getBlogPost, getBlogPosts, getAllBlogSlugs } = await import("../lib/blog.ts");
 const { getProject, getProjects } = await import("../lib/projects.ts");
@@ -94,7 +102,7 @@ for (const [slug, , expected] of validDates) {
 }
 
 test("publication lists and slugs exclude invalid dates and production drafts", async () => {
-	const expected = ["calendar", "invalid-update", "quoted", "timestamp", "updated"];
+	const expected = ["calendar", "invalid-update", "leap", "quoted", "timestamp", "updated"];
 	assert.deepEqual((await getBlogPosts()).map((post) => post.slug).sort(), expected);
 	assert.deepEqual((await getAllBlogSlugs()).sort(), expected);
 	assert.equal(await getBlogPost("draft"), null);
@@ -137,11 +145,23 @@ test("sitemap uses authored updates and omits unknown modification dates", async
 	}
 });
 
+test("an unquoted leap day stays February 29", async () => {
+	assert.equal((await getBlogPost("leap"))?.date, "2024-02-29T00:00:00.000Z");
+});
+
+test("an impossible unquoted date leaves the rest of the project front matter", async () => {
+	const project = await getProject("impossible-unquoted");
+	assert.ok(project);
+	assert.equal(project.title, "impossible-unquoted");
+	assert.equal(project.date, undefined);
+	assert.equal(project.content.trim(), "Local content fixture.");
+});
+
 test("RSS includes only publishable posts with valid publication dates", async () => {
 	const response = await feed();
 	assert.equal(response.status, 200);
 	const xml = await response.text();
-	assert.equal([...xml.matchAll(/<item>/g)].length, 5);
+	assert.equal([...xml.matchAll(/<item>/g)].length, 6);
 	assert.equal(xml.includes("Invalid Date"), false);
 	for (const [slug] of invalidDates) {
 		assert.equal(xml.includes(`/blog/${slug}<`), false);

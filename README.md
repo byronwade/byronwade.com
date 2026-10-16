@@ -86,6 +86,8 @@ Publication dates are calendar days. Use `safeFormatDate` / `safeISODate` from
 `lib/markdown-utils.ts` for content dates and year groups, including serialized
 UTC-midnight YAML dates. Direct local formatting of those ISO strings can display
 the previous day or year. Non-midnight timestamps retain local-time formatting.
+An impossible calendar day is rejected whether or not it is quoted; it is not
+moved to the next real day.
 
 ## Tech
 

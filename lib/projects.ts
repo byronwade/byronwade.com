@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import matter from "gray-matter";
+import type matter from "gray-matter";
+import { readContentMatter } from "@/lib/content-matter";
 import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so it compiles once rather than per file. */
@@ -90,7 +91,7 @@ function parseMetrics(raw: unknown): ProjectMetric[] | undefined {
 }
 
 function toProject(slug: string, fileContents: string): Project {
-	const { data, content } = matter(fileContents);
+	const { data, content } = readContentMatter(fileContents);
 	const flagship = data.flagship === true;
 	return {
 		slug,
