@@ -1,8 +1,8 @@
 ---
-name: Warm Precision, byronwade.com
-version: 2.0
-status: adopted baseline
-principle: "Warm precision. Quiet power."
+name: Thorbis Design, byronwade.com
+version: 3.0
+status: Thorbis port adopted
+principle: "Quiet chrome. Precise work."
 adoption:
   project_profile: PROJECT_PROFILE.md
   agent_protocol: AGENTS.md
@@ -21,61 +21,41 @@ runtime_ownership:
   motion: app/globals.css (--motion-*)
 ---
 
-# Warm Precision, design standard for byronwade.com
+# Thorbis Design for byronwade.com
 
-This is the design authority for this repository. It owns judgment:
-information architecture, composition, interaction, motion, accessibility,
-responsive behavior, content hierarchy, and visual quality.
+Byron directed this site to adopt [Thorbis Design](https://design.thorbis.com).
+The authoritative upstream is [byronwade/thorbis-design](https://github.com/byronwade/thorbis-design).
+This site uses a faithful CSS/Tailwind port pinned to
+`46b6654d02fda9d8fde737395185c3141df52cd2`, with existing Base UI interaction
+APIs and Next.js rendering. It does not consume a published Thorbis package.
 
-It does not own values. Runtime values live in `app/globals.css` and component
-APIs. When this document and the code disagree about a *value*, the code wins
-and this document is wrong. When they disagree about a *decision*, this
-document wins and the code gets fixed.
+[docs/THORBIS-DESIGN-PORT.md](docs/THORBIS-DESIGN-PORT.md) maps source files,
+tokens, adapters, exceptions and synchronization. To sync, inspect the upstream
+diff, select a source revision, run the read-only token adapter, update component
+recipes, and verify both themes and responsive states before changing the pin.
+The upstream clone is a reference and must never be edited by this site’s work.
 
-The intended feeling is **warm, precise, fast, and quietly powerful**. A visitor
-should be able to tell within one viewport what Byron does and see evidence of
-it, without the interface performing.
+## 1. Authority and ownership
 
-`PROJECT_PROFILE.md` supplies the users, owners, dependencies, commands, and
-exceptions this file refers to. Read it first.
+The current task and AGENTS.md govern scope. Thorbis owns visual grammar:
+quiet chrome, precise work, Inter, Geist Mono, electric blue, neutral surfaces,
+sunk fields and lifted commits. This document owns site-specific composition,
+content and interaction rules. app/globals.css owns runtime values and semantic
+aliases; components/ui owns primitives. Never create a parallel palette or kit.
 
-## 1. Authority
+## 2. Site-specific intent
 
-1. The current user request and its acceptance criteria.
-2. The closest applicable repository instructions.
-3. `PROJECT_PROFILE.md` for users, personality, owners, paths, and exceptions.
-4. This file for design judgment.
-5. Runtime tokens in `app/globals.css` and the component APIs in `components/ui/`.
-6. `docs/UI_GUIDELINES.md` for the binding interaction and accessibility rules.
-7. Existing implementation, only where it does not contradict the above.
-8. Screenshots, archived designs, and external references. These are evidence,
-   never proof.
+This is Byron Wade’s personal site. Prospective clients, employers and peers
+need evidence of shipped work, readable writing and a reliable way to get in
+touch. Use plain first-person language. Keep claims qualified: the plumbing
+company’s revenue does not erase its closure. Do not copy the trades product’s
+workflow vocabulary into unrelated personal content.
 
-Hard rules:
-
-- There is one design authority. Do not create a second.
-- Do not copy token tables into Markdown. Link to the owner.
-- When a token or component contract changes, migrate every caller. Do not leave
-  two systems live.
-- External products are references, not templates.
-- A design reference does not grant permission to modify anything. Write
-  permission is an operating-mode decision governed by `AGENTS.md`.
-
-## 2. Design thesis
-
-| Reference | Principle adopted here | What is not copied |
-| --- | --- | --- |
-| Cursor | The real work is the proof; atmosphere frames it | Layouts, editor chrome, palette, identity |
-| Linear | Quiet chrome, strong alignment, indexes that stay dense without shouting | Issue-tracker IA, their palette |
-| Shopify Polaris | Explicit control states, mature forms, purposeful depth | Card-heavy commerce templates |
-| Visitors | Each page earns its own organizing move | Their exact sections, copy, or identity |
-| Apple HIG | Direct manipulation, immediate response, reduced motion that actually reduces | Scroll hijacking, hardware mimicry |
-| Emil Kowalski's design-engineering skills | Motion gate before motion code; separate operating modes; exact ingredients | Treating the site as an animation showcase |
-
-The synthesis, for this site:
-
-> **The work is visually dominant. The interface stays quiet until action is
-> needed. Warmth keeps it comfortable. Motion confirms; it never performs.**
+The homepage is compact claim-and-proof: experience beside the current product,
+then documented work and writing. Content renders immediately, including with
+JavaScript disabled. No viewport-height spacer, bottom-aligned hero, opacity-zero
+entrance or scroll reveal may hide that content. The header participates in flow;
+at narrow widths navigation wraps into its own row, with visible text and focus.
 
 ## 3. Surface profiles
 
@@ -187,81 +167,18 @@ A page that looks fast and responds slowly is badly designed. Every design
 decision accounts for server versus client work, bundle size, image and font
 loading, and layout stability. See §12.
 
-## 5. Foundations
+## 5. Tokens and typography
 
-Values are owned by `app/globals.css`. This section owns how they are used.
+Thorbis source values and light/dark overrides are ported into app/globals.css.
+Existing semantic names alias those tokens so all routes share the new system.
+Inter is the UI/body face; Geist Mono is for code and technical data. The local
+signature face remains available only to the existing personal launcher.
 
-### 5.1 Color
-
-The palette is warm-neutral OKLCH with a single restrained amber brand.
-
-- Brand marks authorship, focus, selection, and the one primary action in a
-  region. It is **not** a default container color.
-- `success`, `warning`, `destructive`, and `brand` are separate semantic
-  families even where two currently resolve to the same value.
-- `--type-*` is a **taxonomy** family, not a status one. It classifies work
-  (product, client, concept, hobby) and must never be read as an outcome. Never
-  borrow a status colour to mean a category, or the palette starts asserting
-  things the content does not.
-- Status never relies on color alone. pair it with text, icon, or shape.
-- Dark mode preserves hierarchy; it is not an inversion.
-- No decorative gradients, gradient text, neon glow, or glassmorphism.
-- No page-local palette. If a value is needed twice, it becomes a token.
-
-### 5.2 Typography
-
-Geist for text, Geist Mono for data and code, the signature face for the
-wordmark only. All three are owned by `lib/fonts.ts`.
-
-| Role | Use |
-| --- | --- |
-| Display | One page-defining statement, where scale is earned |
-| Page title | Route or object identity, one `h1` per page |
-| Section heading | A major turn in the page's argument |
-| Lede | One short orientation passage under the title |
-| Body | Reading |
-| Compact body | Index rows, metadata, inspectors |
-| Label | Controls and field names |
-| Metadata | Dates, source, freshness |
-| Data | Counts, currency, durations, tabular numerals |
-| Mono | Code, paths, commands, identifiers |
-
-Rules:
-
-- Sentence case.
-- Weight carries hierarchy deliberately; bold is not the default tool.
-- Peers share a role. Two project titles look the same even when one is longer.
-- Tabular numerals for anything aligned or counting.
-- Reading measure stays near 60–72 characters.
-- Reflow or rewrite before shrinking type. Never use tiny muted text for density.
-- One type scale. A feature does not get its own.
-
-### 5.3 Spacing
-
-4px grid, 8px dominant rhythm: `4 → 8 → 12 → 16 → 24 → 32 → 48 → 64 → 96`.
-
-Every visible gap has one owner. A parent that owns spacing does not have
-children adding their own margins.
-
-### 5.4 Shape
-
-Radius derives from `--radius`. `0` for edge-connected structures, small radii
-for controls, larger for panels and overlays, full only for avatars, dots, and
-intentional pills. A pill is a semantic shape, not a default button.
-
-### 5.5 Elevation
-
-Five tiers: canvas → surface → raised → overlay → modal. Persistent regions do
-not all float. `shadow-float` is for transient layers only.
-
-### 5.6 Icons
-
-`@phosphor-icons/react` at duotone weight, one family, imported only through
-`lib/icons.tsx`. 16px in dense contexts, 20px standard, 24px only
-where hierarchy earns it. Icons support labels rather than replacing them.
-Icon-only controls require an accessible name. No icons in decorative colored
-tiles. Brand marks (GitHub, LinkedIn, X) stay at `fill` weight; a duotone
-company logo reads as a rendering fault rather than a style.
+Use Thorbis copy roles (12, 13, 14, 16px), heading roles (16, 20, 32px), 4px
+spacing grid, 8/10/12/14px radii, source shadows and control sizes. Font sizes,
+line heights and elevation are tokens, not page-specific approximations.
+Electric blue indicates action/focus. Categories are neutral labels; status is
+always written. Any contrast correction must be documented against its source.
 
 ## 6. Motion
 
@@ -286,7 +203,7 @@ contains no animation.
    continuity, explanation, or rare delight. "It looks good" is not a purpose
    for anything a visitor sees repeatedly.
 3. **Function.** Never move content the visitor is reading.
-4. **Tool.** Cheapest capable: CSS transition → `.reveal` animation →
+4. **Tool.** Cheapest capable: CSS transition →
    Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
    Do not add a library for a fade.
 5. **Properties.** `transform` and `opacity`. `clip-path` deliberately (the
@@ -298,28 +215,11 @@ contains no animation.
 
 ### 6.2 Ingredients
 
-Owned by `app/globals.css`:
-
-```css
---motion-ease-out:      cubic-bezier(0.23, 1, 0.32, 1);   /* enter, exit */
---motion-ease-in-out:   cubic-bezier(0.77, 0, 0.175, 1);  /* move while on screen */
---motion-ease-drawer:   cubic-bezier(0.32, 0.72, 0, 1);   /* sheets, capsule morph */
---motion-fast:   120ms;  /* press, hover, color */
---motion-base:   200ms;  /* popover, tooltip, dropdown */
---motion-slow:   300ms;  /* capsule morph, sheet */
---motion-drawer: 480ms;  /* theme wipe, the one deliberate flourish */
-
---motion-scene:      640ms;  /* first-view page entrance (`.reveal`) */
---motion-scene-step:  90ms;  /* stagger between staged elements in one opening */
-```
-
-`--motion-scene` is the "rare or first-view" row of the §6.1 table and may only
-be used for a page entrance. It is not a fourth general duration: nothing a
-visitor triggers repeatedly may reach for it.
-
-Never `ease-in` for an entrance; it delays visible response. Linear only for
-continuous motion. Durations are budgets, not a second scale, repeated values
-get promoted into the tokens above.
+The source curve is `--ease-out`, aliased for existing consumers. Thorbis uses
+`--motion-fast` (120ms) and `--motion-overlay` (180ms). Existing duration names
+alias these two budgets; never introduce a second curve or duration scale.
+Content entrances are absent. Hover changes color; focus is immediate. Reduced
+motion disables nonessential transitions and the theme wipe.
 
 ### 6.3 Physicality
 

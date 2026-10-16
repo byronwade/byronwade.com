@@ -58,27 +58,13 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
 		const markdownFiles = files.filter((file) => file.endsWith(".md"));
 
 		const posts = await Promise.all(
-			markdownFiles.map(async (file) => {
-				const slug = file.replace(MD_EXTENSION, "");
-				const fullPath = join(blogDirectory, file);
-				const fileContents = await readFile(fullPath, "utf8");
-				const { data, content } = matter(fileContents);
-
-				return {
-					slug,
-					title: data.title || slug,
-					date: parseDate(data.date) ?? new Date().toISOString(),
-					updated: parseDate(data.updated),
-					excerpt: data.excerpt,
-					tags: parseTags(data.tags),
-					content,
-					readingTime: calculateReadingTime(content),
-				};
-			})
+			markdownFiles.map((file) => getBlogPost(file.replace(MD_EXTENSION, "")))
 		);
 
 		// Sort by date, newest first
-		return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+		return posts
+			.filter((post) => post !== null)
+			.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 	} catch (error) {
 		console.error("Error reading blog posts:", error);
 		return [];
@@ -90,6 +76,11 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 		const fullPath = join(blogDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
 		const { data, content } = matter(fileContents);
+
+		// Local previews only. All readers, including direct URLs, share this boundary.
+		if (data.draft === true && process.env.NODE_ENV !== "development") {
+			return null;
+		}
 
 		return {
 			slug,
@@ -108,13 +99,6 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 }
 
 export async function getAllBlogSlugs(): Promise<string[]> {
-	try {
-		const files = await readdir(blogDirectory);
-		return files
-			.filter((file) => file.endsWith(".md"))
-			.map((file) => file.replace(MD_EXTENSION, ""));
-	} catch (error) {
-		console.error("Error reading blog slugs:", error);
-		return [];
-	}
+	const posts = await getBlogPosts();
+	return posts.map((post) => post.slug);
 }
