@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "@/components/ui/link";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
 import { Clock } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";

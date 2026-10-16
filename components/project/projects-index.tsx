@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
