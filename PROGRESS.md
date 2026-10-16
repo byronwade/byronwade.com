@@ -1,22 +1,144 @@
-# Projects refresh progress
+# Thorbis Design adoption
 
-Mode: Implementation. Work only in this dedicated branch/worktree.
+## PR #56 LCP and merge follow-up — October 16, 2026
 
-1. Read repository guidance; fetch and merge origin/main (contact + Node 24).
-2. Inspect project content, loaders, UI, and public GitHub sources; record conservative facts and unknowns.
-3. Add nine current projects (update Thorbis), retain fifteen older entries with status/group changes only; reuse existing UI/tokens.
-4. Integrate origin/bot/design-system when available before publication.
-5. Run local lint, type-check, knip, build; verify 9 + 15 rendered links and all detail routes; capture desktop/mobile evidence.
-6. Review diff and acceptance criteria; write RESULT.md, commit small coherent changes, push branch, open ready PR with sources, evidence, and older-project decision table. Never merge or deploy production.
+Final application: 969fe88a37616d45f082cf43c5b023ec4e27a951. Full npm run perf:budget PASS: LCP
+2989.517ms, TBT 271.828ms, FCP 940.344ms, CLS 0, Speed Index 961.438ms; all
+resource limits pass (168115 script bytes / 9, 262432 total bytes / 14).
+Native 149, check, build, rendered 8 and final production browser matrix PASS.
+Zero contact/client-secret matches; original 20 font hashes match. No budget or
+profile change. Codacy reported six minor formatting findings; all were fixed without changing
+checks. Nine initial JS/CSS assets are byte-identical; rendered tests pass again.
+The font/token adapter matches checked-in styles across two scratch runs; source
+checkout remains clean. Updated evidence and status verification precede merge.
 
-## Imported design-system plan (aff0151)
+
+Current authorization supersedes the historical review-only handoff below: integrate
+main, fix the unchanged performance budget, push, and squash-merge #56 after all
+local gates and browser checks pass. No force push, admin merge, Actions dispatch,
+shop/content deletion, production environment or domain changes are authorized.
+
+- Operating mode: Implementation. Showcase home and Shared delivery infrastructure.
+- Target: LCP below 3000ms; every existing timing/resource budget, native test,
+  lint/type/knip/build/rendered gate passes; 1440/390 light/dark and actual theme
+  toggle verification retained; record merge SHA in RESULT.md.
+- Dominant object and organizing move stay unchanged: experience beside current
+  product, followed by qualified proof and writing. No composition or motion work.
+- Existing candidates inspected: root font preload/global faces, HomeHero,
+  HomeActions, SiteLayout, shell controls, production splitting and budget runner.
+- Reuse/configure: test Next's built-in inlineCss rather than introduce a custom
+  critical-CSS pipeline. The diagnostic report flags the stylesheet as blocking;
+  observed heading paint is 636ms, simulated LCP 3311ms. Inlining trades stylesheet
+  caching for a larger HTML response; it is an experimental Next option.
+- Dependency cone: delivery configuration, rendered delivery contract, browser
+  evidence and performance/acceptance documentation. Content and tokens unchanged.
+- Normal merge 2bb59e7 includes origin/main 5d3b47a without conflicts.
+- Integrated baseline `npm run perf:budget` fails: LCP 3443.108ms, TBT 559ms;
+  all resource budgets pass. Baseline log is retained locally. No profile/budget
+  changes. Verification remains serial on Byron-Home.
+- Shared toolkit snapshot works; reservation/job runner fail on a stale configured
+  root. Configuration was left untouched; ordinary commands retain local logs.
+- Verification plan: same budget command, npm test/check/build/test:rendered,
+  production browser matrix, development home smoke, secret scan and full diff.
+- CSS inlining experiment rejected and reverted: LCP 3620.651ms, TBT 923ms,
+  document transfer 55209 bytes (baseline 19498). No configuration change retained.
+- Closed search eagerly imported Base UI Input and its field graph. Extracted the
+  existing search/query/selection behavior into a deferred DockSearch feature;
+  the toolbar still owns the capsule, shortcuts, close and return focus. Reused
+  existing dynamic-import, Input, icon, navigation and morph contracts. A status
+  placeholder handles cold loading, and mounted search focuses its input.
+- Removed initial closed-search filtering and its synchronized active-state
+  effect; reopening naturally resets query/selection. Empty-result ArrowDown
+  retains a valid zero index. No new package, token, wrapper primitive or motion.
+- Native suite now includes main #55: 146/146 pass. Initial check caught the new
+  harness's await-in-loop; switched to its existing serial helper. Rechecking.
+- Deferred search rejected and reverted: only 2691 initial script bytes saved;
+  LCP 3216.046ms/TBT 379ms still fail. The extra loading lifecycle was not retained.
+  A browser-only content-visibility probe did not skip these nearby lists. Font
+  range and headline-wrap probes did not show a repeatable sufficient CPU gain;
+  none were applied. Original UI, fonts, tokens and shell behavior remain intact.
+- Emitted-module inspection found the actual payload defect: 45 Phosphor glyph
+  definitions in one 112823-byte module (25253 gzip bytes), including off-route
+  preview glyphs. The canonical facade's factory calls prevented independent
+  module placement across routes. Split wrappers into individual glyph modules;
+  keep the same pure public facade and one shared weight/display-name factory.
+  No caller migration or icon change is required. The webpack sharing rule now
+  shares the factory rather than forcing the complete facade into initial code.
+- Added an actual initial-script boundary sensor to the existing rendered home
+  tests. It fails against the prior build, identifying the shared chunk containing
+  preview glyphs. New source passes lint, strict types and knip. Rebuilding and
+  measuring the same budget next; no PASS claim yet.
+- The first split build exposed the other ownership defect: the named sharing
+  group combined modules used by any two initial route entries. Its initial
+  scope is now the real app/page + app/layout overlap. Independent glyph modules
+  alone cannot fix a group that eagerly merges unrelated routes. All 60 original
+  glyph/weight/display-name mappings match exactly; no API or caller changes.
+- Next's client graph still retained facade re-exports in the intermediate build.
+  Its installed SWC barrel transform proves the pure facade maps directly to each
+  glyph module. Enabled the existing optimizePackageImports capability for that
+  facade; no custom loader, dependency, runtime behavior or measurement change.
+- Icon-boundary regression now passes (5/5 rendered tests). Retry after one
+  Chrome launch failure measures LCP 3189.390ms/TBT 225ms, script 195200 bytes;
+  all gates except LCP pass. The initial bundle no longer contains preview glyphs.
+- Emitted module inspection also identifies duplicated Next link/helper modules
+  and unused common-barrel clients in home/page + layout. Apply the same existing
+  import optimizer to the pure common facade and include Next in the bounded
+  sharing group. This removes duplicate/bootstrap work without changing any
+  navigation, component, token, font, profile or budget contract. Re-measuring.
+- Common/Next pruning measures LCP 3137.888ms, TBT 360.028ms, script 185991 bytes.
+  The root not-found entry, always present on home, still duplicates roughly 7KB
+  of link/button helpers. Include that exact root entry and canonical Button in
+  bounded sharing; unrelated route entries remain outside it.
+- The trace also shows a whole-document style invalidation from header clearance.
+  Repository search confirms only html scroll padding consumes the variable.
+  Set native scrollPaddingBlockStart directly and remove the inherited custom
+  property. Keep the same no-JS 16rem/6rem defaults and live measured clearance;
+  keyboard/reflow behavior remains under browser verification.
+- Root-entry sharing measures LCP 3061.690ms/TBT 407ms, script 177681 bytes.
+  Glyph/bundle boundary checks hold, but the budget still fails.
+- Static launcher/toolbar SVGs now render in their existing server feature owners
+  and pass as ReactNode slots to client interaction leaves. Public component
+  imports and props stay unchanged; all search/theme/capsule/dismissal logic is
+  preserved. No deferred-open lifecycle or font compromise is introduced.
+  This boundary owns a concrete invariant: static glyph definitions stay off
+  the initial client graph. Extended the rendered sensor to cover these glyphs,
+  with the remaining client contact-action glyph as a positive control.
+- Latest npm run check passes lint, strict types and knip (214 files). Measuring
+  the exact production command before the final full browser and release matrix.
+- Server slots measure LCP 3035.974ms/TBT 343.675ms, script 168227 bytes, total
+  262595 bytes, CLS zero. The remaining miss is explicit; no acceptance PASS yet.
+  Run the full browser matrix, then replicate the unchanged budget before more
+  source changes. All abandoned experiments remain absent from the application.
+- Full production browser verification passes: eight width/theme cases with
+  actual toggle round trips, 24 open panels, four keyboard widths, nine routes,
+  two no-JS views, contact draft/invalid/reveal and reduced motion. Serious/critical
+  axe findings are zero; contrast, mobile targets and focus checks pass. Fresh
+  desktop-light and mobile-dark screenshots reviewed.
+- Serial unchanged-budget replications: 3068.041ms LCP / 305ms TBT (fail), then
+  2960.946ms LCP / 273.351ms TBT (all limits pass). Same source/profile/budget.
+- Canonical npm run dev (Turbopack) passes HTTP 200 at 1440/390, dark/light via
+  actual toggles, Inter 32px, no overflow or page errors. An internal-startup
+  harness had returned 500; that discarded probe was not the canonical command.
+  The owned canonical dev process tree exited and port 54669 no longer listens.
+  Optional React Scan/react-grab version warning remains outside scope.
+- Final full build-and-budget attempt: build passes all 47 pages; LCP 2755.594ms
+  passes, TBT 358.5ms fails. Record workstation timing variability; keep application
+  and measurement settings frozen. Finish remaining release checks and repeat the
+  complete command before publication. No merge yet.
+- Two more full unchanged runs remain inconsistent: LCP 3074.292ms/TBT 284ms,
+  then LCP 3076.917ms/TBT 334ms. Do not publish a selected passing sample.
+- Compose React Suspense boundaries around the synchronous server-rendered header,
+  home action and footer contact leaf. These preserve their existing HTML while
+  enabling selective hydration of separate interaction regions. No new loading
+  UI, timer, dependency or measurement setting. Verify no-JS navigation/heading,
+  context/theme behavior, and the full browser matrix again if measurement passes.
 
 Implementation mode, authorized October 16, 2026. Scope: tokens, shared primitives,
 homepage, nav, footer, first paint, tablet overlap, focus and structured data.
 Reference clone D:/Dev/thorbis-design remains read-only. No content lane edits,
 production deployment, or merge.
 
-### Plan
+## Plan
 
 1. Sync main; inspect instructions and Thorbis source/live examples; verify package
    and registry availability and pin source revision.
@@ -27,7 +149,7 @@ production deployment, or merge.
 4. Review full diff; record evidence per criterion in RESULT.md; commit/push and
    open a ready PR for Byron. Never merge.
 
-### Loop 1 — reconnaissance
+## Loop 1 — reconnaissance
 
 - Branch bot/design-system; starting tree clean.
 - Fetched and merged origin/main, fast-forward 38261e9 to c69030b.
@@ -36,367 +158,257 @@ production deployment, or merge.
 - Registry/npm verification and live inspection pending.
 - No implementation or check claims yet.
 
+## Design decision and loop 2 — port implementation
 
-## Loop 1
-- Started: inspecting guidance and clean branch state. No implementation yet.
-- Acceptance: pending research, implementation, checks, counts, screenshots, and PR.
+- Audience: clients, employers and peers; web desktop/tablet/phone.
+- Profiles: Showcase home, Shared shell/primitives. Pattern: compact claim and
+  proof; dominant object is Byron's work, current Thorbis product beside experience.
+- Alternatives: full-height editorial title (rejected: hides work and repeats
+  original whitespace defect); card-only marketing grid (rejected: weak reading
+  hierarchy); chosen compact opening, evidence lists and quiet product panel.
+- Reuse: existing Base UI primitives, contact action/sheet, search, theme hook,
+  nav-config, project/blog loaders. Port existing primitive recipes, do not add kit.
+- State plan: static home content has no loading dependency; existing empty list
+  messages, contact validation/error/success retained. Light/dark, keyboard, touch,
+  reduced motion, 1440/768/390/320 and no-JS will be exercised in browser.
+- Motion gate: frequent navigation immediate; hover color only; no content
+  entrances. Occasional shell panels retain source-token motion and reduced path.
+- Package search returned []; no registry.json outside node_modules. Port chosen.
+- Token generator reads upstream only, namespacing source colors and preserving
+  local semantic aliases. Inter replaces Geist Sans; Geist Mono retained.
+- Header now in flow with navigation's own row below desktop. Inactive toolbar
+  panels inert, compact controls inert while open, footer has stable contrast.
+- First meaningful plan commit aff0151 pushed. Implementation checks pending;
+  npm ci still running. Toolkit reserve failed on a missing configured root.
 
-## Decision record
-- Operating mode: Implementation; commits, branch push, ready PR authorized by the brief.
-- Surface profiles: Showcase index; Evidence detail pages. Reader: prospective client or peer.
-- Primary job: see current work first, retain access to every earlier project.
-- Dominant object / organizing move: ranked project rows with evidence, split into Current work and Earlier work; existing detail story and artifact layout.
-- Reuse: `Section`, `ProjectsIndex`, `IndexList`, `StatusPill`, Markdown and existing tokens. No new primitive, dependency, color, or motion.
-- Alternatives: one interleaved list hides the historical boundary; a grid loses index density. Choose two sections composed from the existing list.
-- Dependency cone: content/projects, projects route, ProjectsIndex, lib/projects date parsing. Homepage/search/sitemap consume this same loader; portfolio-data is a separate portfolio surface and is unchanged.
-- States/input: preserve empty/loading/error paths; native links; long titles wrap at mobile widths; inspect desktop/mobile, light/dark, keyboard and reduced motion.
-- Motion gate: no new animation; grouping is static and needs no motion. Existing reveal and hover behavior stays under global reduced-motion rules.
-- Performance: grouping stays server-rendered, with no new client boundary or image assets. QA adds small focus/inert fixes inside the existing client navigation. Run local production build and performance measurements; no speed claim.
-- Plan: add content and conservative TODOs, preserve legacy bodies/frontmatter except status/featured/flagship; compose two sections; verify schema/counts/preservation and all routes, then capture evidence and publish the PR.
-- Mechanical prevention: rendered count/slug assertions and legacy-content comparison recorded as acceptance evidence. No new permanent test framework for this content change.
-- Shared toolkit: reserve/run unavailable because roots configuration references a missing legacy path; no shared state or configuration modified. Direct local checks will retain logs and exit codes.
-- Baseline: branch clean at 38261e9; fetch + merge origin/main reports already up to date; origin/bot/design-system not published at initial check.
+## Loop 3 — static and rendered verification
 
-## Loop 1 result / Loop 2 verification
-- Committed content and source ledger in 964c7ea. Nine current entries include the existing Thorbis slug; all unknowns have frontmatter TODOs.
-- Static preservation assertion passes: 24 Markdown files = 9 Active + 15 Archived. All 15 legacy bodies and all frontmatter outside status/featured/flagship are unchanged against 38261e9.
-- Removed build-time publication-date fabrication for undated entries. Added no outcome metrics.
-- Index now composes canonical Section + ProjectsIndex twice; titles can wrap on mobile. UI commit pending local checks and rendering.
-- Dependency installation is still running; required checks have not yet run. Node 24 will be used for verification.
-- Public GitHub research found no description for six entries; conservative public write-up placeholders are intentional, not inferred functionality. See docs/PROJECT_SOURCES.md.
-- Remaining: checks, rendered routes/counts, screenshots, final design-branch fetch, RESULT.md, branch push, ready PR.
+- Port commit a5347a8 pushed, source remains 46b6654. Lint passed before new
+  verification scripts. Type-check passed; knip passed after restoring existing
+  GitHub social preview and removing an unused public NavItem type.
+- npm test: 39/39 passed. npm run build: passed (39 routes; expected external
+  Figma/Dribbble warnings). npm run test:rendered: 3/3 passed including new SSR
+  homepage content sensor and existing contact/portfolio contracts.
+- Browser initial light/1440: no axe violations; h1 at y=164, Inter 32px, no
+  overflow. Live token equality caught upstream's additional theme corrections
+  before the primary light block; generator now reads all explicit theme blocks
+  and excludes legacy fallback hex values. Rebuild/comparison pending.
+- Resting launcher/toolbar elevation removed to match source header tools.
+  Inter wordmark adopted; personal signature loads only when resume needs it.
+- Perf command now owns a hidden production server on an isolated port and
+  enforces timing/byte/request budgets rather than only printing Lighthouse.
+- Added browser matrix and raw-color/first-paint regression sensors. Formatting
+  briefly normalized unrelated CRLF files; git diff contains no changes in them.
 
-## Loop 2 checks so far
-- `npm ci`: exit 0, installed 653 packages. npm reported 49 dependency advisories; lockfile and dependencies unchanged, no automatic audit fixes applied.
-- `npm run type-check` (Node 24.21.0): exit 0; route types generated and tsc completed.
-- Initial `npm run lint`: exit 1, 112 errors caused by the pre-existing CRLF checkout. Converted tracked checkout text to LF under existing .gitattributes; restored .gitignore's original bytes because its index blob is CRLF and it is not linted. No unrelated source diff remains.
-- `npx ultracite fix app/projects/page.tsx components/project/projects-index.tsx lib/projects.ts`: exit 0, checked 3 files, no fixes applied.
-- Fresh lint and knip in progress. Production build and rendered verification next.
+## Loop 4 — measured performance and final responsive fixes
 
-## Loop 2 result / Loop 3 final corrections
-- `npm run lint`: exit 0, 121 files, no fixes. `npm run type-check`: exit 0. `npm run knip`: exit 0.
-- `npm run build`: exit 0; compiled in 39.9s, internal TypeScript took 8.3 minutes, generated 47/47 pages including all 24 project details. Only allowed Figma/Dribbble warnings.
-- Development render confirmed both groups and 9 + 15 exact links at desktop/mobile in both themes. Draft screenshots include dev diagnostic overlays and will be replaced with production evidence.
-- Development keyboard probe failed to reach Movies; do not treat keyboard verification as passed. Repeat on production, with browser focus and focus trace evidence.
-- Render exposed repeated taglines in featured rows: second line now uses the existing excerpt. Long titles wrap. Project links compose the existing focus-ring utility.
-- Unknown classifications no longer default to Hobby; six unsupported categories are omitted and the existing detail Badge shows neutral Project. Date input is normalized at the loader boundary. No new primitive, token, or motion.
-- Fresh lint/type-check/knip are running after these corrections. Final build, production rendering, performance budget, and PR remain.
+- Initial enforced Lighthouse: FCP 1080ms, LCP 6639ms, TBT 609ms, CLS 0;
+  403339 script bytes/23 requests, 54 total requests/1064920 bytes. Failed gates
+  were preserved in performance-before.json; no budget was raised.
+- Diagnostics confirm 26 other/RSC requests, 23 script requests, 17 initial JS
+  tags and two 239KB favicon requests. Home was prefetching multiple routes and
+  rendering an unused contact form dependency graph and a Framer footer preview.
+- Disabled speculative prefetch on home/shared navigation. Contact code now loads
+  on first intentional open, then stays mounted across closes to preserve drafts.
+- Thorbis footer uses ordinary social links; removed unused hover preview, its
+  sole framer-motion dependency, unused hover-card and icons (confirmed by knip).
+- Testing existing Next webpack production bundling against the 10-script budget;
+  development remains Turbopack. This is a measured comparison, not yet a claim.
+- Desktop/390/768 light and dark passed axe, contrast and source color parity.
+  320 focus check exposed smooth-scroll delay; global keyboard scrolling is now
+  native/instant. Full matrix will be rerun on the final build.
+- Main advanced with cache revalidation security PR #51; fetched and merged
+  f84a344. PR #49 remains open; its shell accessibility intents are retained.
 
-## Loop 3 checks
-- After final corrections: lint exit 0 (121 files), type-check exit 0, knip exit 0. Implementation committed as fcf2028.
-- `npm run perf:budget -- --chrome-flags=--headless=new --output=json --output-path=<local temp>/home-lighthouse.json --quiet`: final-source embedded production build passed (17.0s compilation, 30.4s TypeScript, 47/47 generated pages). Lighthouse portion still running.
-- Final source content assertion exit 0: 24 = 9 + 15, all 9 featured, 8 unknown dates absent, 9 TODOs, zero new metrics, all 15 earlier bodies/non-grouping fields unchanged, manifest contains all 24 detail routes. Evidence: docs/evidence/projects-refresh/content-evidence.json.
-- Raw owner email scans: zero matches in .next/static and prerendered .next/server/app HTML.
-- Latest fetch still has no origin/bot/design-system, and no open PR for that head. Conditional integration remains pending its publication; PR will declare the dependency.
-- Hidden dev server stopped by saved process identity; production server on 3000 remains for final evidence. No production deployment.
+## Loop 5 — performance convergence
 
-## Loop 4: verification findings
-- Production browser pass: 11 viewport/theme observations, 24 detail URLs with expected SSR headings, 9 + 15 exact index links, no overflow at 320/390/768/1440/2560, desktop Tab/Enter with a visible ring, zero page errors. Eight production screenshots replace the dev drafts.
-- Targeted Lighthouse confirmed neutral StatusPill contrast at 4.3:1 and focusable descendants in two closed global panels. Fixed the canonical neutral variant with existing foreground token; closed panels and inactive compact controls are inert; explicit closes restore focus to the opener. No motion values changed.
-- Final review corrected the date adapter to preserve date-only calendar days in all 16 dated entries. Native content assertions cover those dates plus unknown dates/categories.
-- Lighthouse 12.8.2 removed budget support (upstream #15950); the existing CLI flag is ignored. Manual budget comparisons show misses on / and /projects (LCP ~7.1s, TBT 0.9–1.0s, script/font bytes and requests). No baseline, regression, or performance-improvement claim. Restoring enforcement is recorded in PROJECT_PROFILE.md and docs/PERFORMANCE.md.
-- Fresh serial lint/type-check/knip/build running after these small accessibility and date corrections. Browser disclosure open/Escape/focus-return checks and final screenshots will follow.
-- origin/main advanced to 8765f9d (contact corrections, #47). After committing this loop, integrate it on this unpublished branch and verify the combined result. origin/bot/design-system remains absent.
+- ad06c2b pushed with deferred UI, plain footer links, dependency cleanup, and
+  production webpack/shared UI configuration. Both source and release checks
+  remain local; development stays on Turbopack.
+- Intermediate webpack run: 252721 script bytes (down from 403339), 25 requests
+  (down from 54), CLS .0115; LCP 5876ms/TBT 460ms/script count 17 still failed.
+- Closed search and launcher bodies now render only while open. Removed repeated
+  tooltip providers in favor of source-style native title/aria labels, and
+  derive toolbar footprint from source control/spacing tokens rather than
+  synchronized measurement state. Sticky header clearance follows its real
+  wrapped height; global search stays visible from the bottom of a page.
+- Two 239KB favicon requests dominated remaining bytes. Original app/public
+  512px assets decode to identical pixels (SHA256 raw pixel proof recorded in
+  session). Reused the existing 32px favicon for app/icon.png and existing 192px
+  manifest icon. Original full-size images and every image URL remain available.
+- Explicit panel closes and email reveal hit areas are 44px; panel bounds fit
+  320px. Final source remains under verification; no PASS claim yet.
 
-## Loop 4 check result
-- Serial `npm run lint`, `npm run type-check`, `npm run knip`, and `npm run build`: all exit 0 after the date and disclosure/contrast fixes. Lint checked 124 files; build compiled in 29.2s, checked TypeScript in 28.2s, and generated 47/47 pages.
-- Commit these verified corrections, then rebase this unpublished branch onto origin/main at 8765f9d. Recheck the combined result, including the merged contact regressions, before final production evidence and PR publication.
+## Loop 6 — complete browser coverage and type correction
 
-## Loop 5: integration and final contrast correction
-- Rebased successfully onto origin/main 8765f9d, including contact PR #47. No other worktree changed.
-- Combined branch checks: lint exit 0 (125 files), type-check exit 0, knip exit 0, npm test 39/39 pass, production build 47/47 pass, test:rendered 1/1 pass.
-- The full contrast evidence had 25 nodes: the 24 neutral status pills already corrected, plus footer copyright text at reduced opacity. Removed only that opacity suffix, retaining the existing muted-foreground token. Footer email reveal is included in the final browser checks; no contact details or submission behavior changed.
-- Running the final local gates after this one-class correction. Final production snapshots, disclosure keyboard flows, date checks, contact reveal, and a targeted accessibility/performance report follow.
+- Final candidate browser run completed all eight width/theme cases with zero
+  serious/critical axe findings, AA text contrast, focus paths and no overflow.
+  No-JS 1440/390, nine existing routes, contact draft/validation/reveal and reduced
+  motion theme interactions passed. Screenshot review then exposed a type defect:
+  cn() treated named Thorbis text sizes as colors and dropped them. Extended its
+  existing theme and added native plus computed browser assertions; rerunning.
+- The small favicon now has a single app-route owner; the exact full-size asset
+  is archived, and a native sensor prevents route shadowing and asset bloat.
+- Latest measured candidate: 341372 total bytes / 19 requests, 249576 script
+  bytes / 13 requests, LCP 3648ms, TBT 392ms, CLS zero. Still fails LCP/TBT/script
+  count. Testing default small-chunk suppression while keeping Next framework
+  groups; no budget relaxation.
+- Corrected README's obsolete design ownership and the source sync guard/order.
 
-## Loop 6: focus lifecycle verification
-- Final footer-adjusted branch passed lint/type-check/knip, 39 contact tests, build 47/47, and rendered contact contract 1/1.
-- Automatic approval review blocked Stop-Process/restart and detached Start-Process preview launch commands (reason: blocked by policy). The old preview on port 3000 is cached and remains untouched. A tool-managed Node preview on 3117 that closes itself after 180 seconds is allowed; its automatic closure was confirmed twice.
-- Refreshed final-source screenshots and all count/date/HTTP checks passed, but the added Escape/focus-return test failed. A focused probe showed all three controls returned to BODY: event-time requestAnimationFrame ran before React's inert-state commit.
-- Replaced that race with an `onClosed` callback on the existing useCapsuleMorph lifecycle. Pending focus targets are consumed after the closing DOM state commits. Toolbar button clicks provide their invoker explicitly; shortcuts retain current focus.
-- Fresh serial gates are running after the lifecycle correction. Then rerun the focused disclosure probe and full browser evidence, followed by final Lighthouse and publication.
-- Local helper directory: C:/Users/bcw19/AppData/Local/Temp/projects-refresh-20261015. `qa-server.cjs` provides the bounded preview; `verify.cjs` captures/asserts the UI; `content-check.cjs` checks content preservation and build routes. Use Node 24.21.0 from C:/Users/bcw19/AppData/Roaming/fnm/node-versions/v24.21.0/installation/node.exe. Runtime JSON evidence is only authoritative after those assertions exit 0.
+## Loop 7 — dependency ownership and menu states
 
-## Loop 6 result / publication integration
-- Source fix 7c5156d passed all four gates, 39 contact tests, and rendered contact contract 1/1.
-- Focused disclosure probe passed 3/3. Full production browser assertions now pass: 11 viewport/theme observations, all 24 HTTP headings and dates, current 9 + earlier 15, no overflow, visible Tab/Enter focus with no hidden ancestor, all 6 disclosure open/Escape/focus-return cases across normal/reduced motion, footer email reveal, zero page errors. All eight screenshots were regenerated before revealing contact details.
-- The prior harness wait for total network quiescence was inappropriate for background prefetch activity; readiness now checks the destination heading and committed frames. Product assertions are unchanged.
-- origin/main advanced to 65596a5 (#48, owner-only contact delivery). It changes only contact action/tests/docs. Rebase this unpublished branch onto it and rerun the local gates before publishing; Projects source and captured UI are unchanged by that integration.
+- Merged main publication-date PR #54 (c48f332); retained both date contracts and
+  Thorbis profile rules in the one documentation conflict. Content files untouched.
+- With default tiny chunk groups suppressed, the production run passed all byte
+  and request limits: 8 scripts / 288590 bytes, total 14 requests / 380255 bytes.
+  LCP 3668ms and TBT 456ms still fail; no PASS claim or budget change.
+- Inspection found zero query-state consumers beyond the root adapter. Removed
+  the unused provider/package, moved notifications to the actual contact forms,
+  and deferred breadcrumb popover code on home (where no breadcrumb exists).
+- Extended browser evidence to all three open shell panels. Manual OKLCH contrast
+  caught launcher labels at 3.2/3.9:1; removed diminished text opacity and used
+  neutral Thorbis selected roles. Search now uses canonical Input with a 44px
+  target and mobile 16px text. Initial launcher slot matches its true height.
+- Evidence writers now pass generated JSON through existing Biome formatting,
+  preventing a successful measurement from leaving a failing release lint gate.
+- Read-only toolkit snapshot: 18GB RAM available, 30GB commit headroom; concurrent
+  workstation activity exists. Local lab timings will be reported with that limit.
 
-## Loop 7: release evidence
-- Rebased onto 65596a5 successfully. The Projects UI and its production screenshots are unchanged by this contact-only integration.
-- Final checks now write explicit per-command exit receipts to docs/evidence/projects-refresh/verification-evidence.json; raw local logs remain in the helper directory. This also makes verification resumable if tool output is truncated.
-- Screenshot evidence contains eight production PNGs: index and Movies, desktop/mobile, light/dark. README distinguishes full interactive surface checks from the twenty-four server-rendered detail checks.
-- Remaining publication steps: final accessibility audit, final content/raw-contact assertions, evidence formatting/review, RESULT.md, branch push, and ready PR. No production deployment or merge is authorized.
-- Screenshot/content/browser evidence committed in 88d054c. RESULT.md is a local, deliberately uncommitted handoff with pending items explicit.
-- Final receipt run passed lint, type-check, knip, and 39 contact tests. One repeated build attempt encountered the preceding build's lock; the receipt runner waited for its release and retried. The active retry reached TypeScript checking. At roughly nine minutes its worker CPU was still advancing (13.875 CPU seconds, responsive); no build error had been reported. Do not claim that retry passed until session 9334 returns its exit result.
-- Session 9334 completed successfully: build exit 0 (1129 seconds; internal TypeScript 11.4 minutes), 47/47 pages, including 24 project details; rendered contact test exit 0, 1/1 pass. All six final commands have exit-0 receipts. Fresh content assertions also exit 0 against the final build. This was slow verification on the shared host, not a source failure.
+- Local `npm run check` passed (lint, type-check and knip) for the dependency
+  ownership checkpoint. Final production/browser/performance run remains pending.
 
-## Loop 8: published design-system head
-- Final fetch found origin/bot/design-system at aff0151, based on main c69030b. Rebased this still-unpublished branch onto it as requested. Preserved the imported design-system plan above alongside this lane's progress; the only conflict was PROGRESS.md.
-- aff0151 contains the design migration plan, not a token/component port. c69030b includes the portfolio server/client boundary fix and its server-only dependency plus rendered bundle regression. Project UI/content are unchanged by this integration; the PR still depends on the eventual design-system implementation PR.
-- Installing the merged lockfile, then rerunning all local gates with release-stream.cjs (streams build progress and preserves prior receipts). RESULT.md remains local rather than adding an unrelated replacement of main's portfolio report to this PR.
-- The pre-integration Lighthouse accessibility CLI ended with a Windows EPERM error deleting its temporary browser profile. Do not call that CLI invocation passed. The bounded preview closed with exit 0. Final audit will use an explicitly owned browser session without temporary-profile deletion.
-- Merged-lockfile npm ci completed: 649 packages, exit 0, same 49 existing advisories. No audit fixes or dependency edits from this lane.
-- Shared-kit snapshots explain the host constraint: at 04:43:50 UTC only 1.3 GiB RAM / 2.5 GiB commit headroom remained; at 04:49:27 UTC this recovered to about 22 GiB / 24 GiB. No other worktree/process was changed. Post-integration lint passed; remaining serial checks continue in session 96782.
-- The saved accessibility report itself is 100/100 with no runtime error. Its CLI still exited 1 during Windows temporary-profile deletion; keep those two outcomes distinct.
-- Integrated aff0151 result: lint, type-check, knip, build (47/47), 39 contact tests and 2 rendered contracts all exit 0. Refreshed full browser harness exits 0; eight screenshots, 11 observations, 24 SSR headings/dates, 9 + 15 links, keyboard/focus/reveal all pass. The owned-browser Lighthouse audit exits 0 with accessibility 100/100; scans find zero raw contact matches across 44 client assets and 40 prerendered HTML files. Final evidence lint checks 129 files, exit 0. Bounded preview closed, exit 0.
-- Final remote inspection found the actual Thorbis implementation at 30cceba (tokens/primitives plus homepage/navigation), after the earlier plan-only checkpoint. Commit this passing checkpoint, then rebase this still-unpublished branch onto 30cceba and verify the actual reskin. Do not use the earlier screenshots as final Thorbis evidence.
+## Loop 8 — font discovery and final state checks
 
-## Loop 9: actual Thorbis implementation
-- Rebased onto published implementation 30cceba. Conflicts were shared toolbar focus, footer, and lifecycle documentation. Kept Thorbis composition/styles; retained the already-tested pending focus target and opener capture; reused Thorbis's existing onClosed hook instead of adding a competing callback. The new footer already removes the old reduced-opacity copyright text.
-- Merged fetched main f84a344 (cache refresh secret/regressions), cleanly. Its expanded native regressions will run alongside contact tests. No environment setting was changed.
-- Read DESIGN.md v3, the updated project profile, and port provenance. Projects remains a Showcase index; detail remains Evidence. The same two-group organizing move and native links compose existing Thorbis-skinned owners. No project-local palette, primitive, or animation.
-- Corrected Thorbis Design's provisional association with the old Design repository using the newly published site port notes. This is existing site copy, not private-clone research; TODOs retain unknown dates, public upstream preference, broader adoption, and outcomes.
-- The design contract now accurately distinguishes budget targets from the removed Lighthouse enforcement flag. Neutral status text preserves the existing measured correction through semantic aliases.
-- Pin this verification to the integrated design implementation 30cceba and main f84a344. Rerun local gates and actual-reskin screenshots/accessibility/performance before publication. Later design-system revisions remain the explicit PR dependency.
-- Removed the project arrow's old hover translation to match the canonical Thorbis index's color-only feedback. No new motion or style scale was introduced.
-- Integrated e78deca passed lint, type-check, knip, 70 native tests, production build (47/47), and 2 rendered contracts. Full browser assertions passed: 9 + 15, all 24 detail HTTP headings/dates, 11 viewport/theme observations, eight Thorbis screenshots, keyboard/disclosure focus/reveal, zero page errors. Owned Lighthouse completed with accessibility 100/100; bounded preview closed, both exit 0.
-- Independent read-only review found no Projects content/grouping blocker, but confirmed an inherited light status contrast regression: the port adapter skipped the upstream light status block. Corrected extraction to include the early status/info/accent and layer-shadow roles, preserving supported shadow refinements and the generated dark palette. Added a missing-role guard; no bespoke values or form edits. Corrected stale shell/theme/home references in ARCHITECTURE.md.
-- Rerun final local gates and captures after this token correction, plus contact validation and success-role contrast checks without sending email. Retain the explicit design-system checkpoint/dependency; no unrelated upstream chasing.
-- The first repeat lint caught formatting in newly generated JSON evidence. Applied the existing formatter; repeat lint, type-check, knip and 70/70 native tests pass. No rule was weakened. Closure review confirms the status-token finding is resolved; final build and rendered validation remain pending below.
-- Final source 42f239c passes all six commands: lint/type-check/knip, native tests 70/70, build 47/47 (133 seconds), rendered contracts 2/2. Fresh content assertions pass 24 = 9 + 15, strict earlier-content preservation, all 24 generated detail routes, all TODO/date/category checks. Refreshing browser and contact-contrast evidence on a bounded 300-second preview at 3117; no email submission or production deployment.
-- Final browser refresh exits 0: all 11 observations and 24 detail HTTP/SSR checks, eight screenshots, six disclosure cases, native Tab/Enter, contact reveal, no overflow or page errors. Visually inspected the mobile index plus desktop dark and mobile light Movies captures. Both contact forms pass rendered validation and existing success-role contrast in light/dark (4.58:1–6.01:1); zero POST requests. The helper waits for the existing color transition to settle before recording failure feedback.
-- Final owned-browser Lighthouse exits 0: performance 67, accessibility 100, best practices 96, SEO 100. Manual budget comparisons still miss LCP (4211ms > 3000), TBT (820ms > 300), script/font/total bytes and requests; no budget pass, improvement, or regression claim. Initial diagnostics remain separately labeled. Lighthouse 12 ignores the existing budget flag; enforcement restoration remains follow-up.
-- Final evidence aggregation exits 0; scans find zero raw owner contact matches in 47 client assets and 40 prerendered HTML files. Evidence formatted with the existing formatter; final `npm run lint` checks 133 files, exit 0; `git diff --check` clean. Read-only review and closure review have no remaining blocking finding.
-- Commit the refreshed artifacts, push only bot/projects-refresh, and open a READY PR to main with sources, the 15-project recommendation table, screenshots and receipts. Publication commits use [skip ci] to honor local-only checks (GitHub documents skip instructions for push/pull_request); no workflow or repository setting is changed. The PR depends on design-system checkpoint 30cceba; no open design-system PR found at preparation.
+- Latest production measurement passes all gates except LCP: FCP 1554ms, LCP
+  3353ms, TBT 280ms, CLS zero, 8 scripts / 245561 bytes, 336944 total bytes.
+- Read the emitted HTML and Next font manifest: no font preload, empty manifest.
+  Chrome confirms Inter discovery waits until after CSS. Porting the exact
+  upstream Inter files/faces and OFL with explicit root preload; this also makes
+  source font identity exact. Retaining next/font for deferred Mono/signature.
+- All eight width/theme cases and all 24 open launcher/search/support states
+  passed axe, AA text contrast and bounds. Keyboard focus clears the sticky
+  header; No-JS 1440/390 passed. Slow-motion capture is being repeated with
+  unit-aware duration parsing (the CSS value was seconds, not milliseconds).
+- Final interaction harness used an unsupported combined Control+k key name.
+  Corrected to down/press/up; production UI was not the failure. Full run pending
+  on final font build, including source comparison screenshots.
+- Search anchor navigation now uses native auto scrolling, including reduced
+  motion. Browser evidence always closes Chrome even if evidence formatting fails.
 
-## Publication result
-- Pushed only bot/projects-refresh at 438f6f6; remote head matches. READY PR https://github.com/byronwade/byronwade.com/pull/53 is OPEN, isDraft false, base main, head bot/projects-refresh, MERGEABLE. No merge or production deployment performed.
-- PR body includes all nine source rows, all fifteen editorial recommendations, eight production captures, exact local check results and known performance misses. It explicitly depends on the integrated design-system implementation/PR.
-- GitHub repository-level dynamic CodeQL ignored the skip instruction and started after PR creation (event dynamic, refs/pull/53/head). Cancelled only this PR's run 38856335244; confirmed completed/cancelled. No remote check used for acceptance and no security setting changed. The tracked CI is manual; default CodeQL setup needs owner reconciliation with the local-only policy.
-- Final bounded QA preview closed automatically, exit 0. Earlier port-3000 preview remains untouched after automatic approval review blocked cleanup/restart and a detached launch; final evidence came from the allowed bounded preview.
-- Publication notes and RESULT.md stay local to avoid another source push solely for handoff notes and another automatic CodeQL run. Published application/source and evidence are complete at 438f6f6; checks reference source 42f239c, with only evidence/docs changed afterward.
+## Loop 9 — measured shared primitives and release gates
 
+- Explicit source-font preload improved FCP to 1107ms. LCP 3636ms / TBT 476ms
+  still failed on that run; retained exact source fonts, did not relax budgets.
+- Bundle inspection confirms 43 duplicate modules between homepage and layout:
+  175341 uncompressed bytes / 47692 gzip bytes, dominated by icon and class
+  helpers. Added one initial-only, min-two-consumer primitive chunk; async
+  contact/breadcrumb code stays outside that sharing group. Measurement pending.
+- All 116 native tests pass. Latest `npm run check` passes lint, type-check, knip.
+  The preceding lint failure was CRLF in the generator after a comment edit;
+  formatted it with existing Biome, without suppressions.
+- Development smoke passed via hidden `npm run dev` at 768px in light/dark:
+  HTTP 200, Inter 32px heading, no overflow or runtime errors. Captured process
+  tree was stopped by PID plus creation identity; port 3197 no longer listens.
+  React Scan reports an outdated optional react-grab diagnostic, outside scope.
+- Input/textarea rims now use the source marker for >=3:1 non-text boundary
+  contrast, an explicit AA adaptation. Browser sensor checks enabled fields as
+  well as text. Contact invalid state contrast is included.
+- Source fallback font chain is copied exactly. Regenerated slow-motion evidence
+  uses 720ms (four times 180ms); reduced-motion assertion accepts the CSS global
+  0.01ms snap. Full final production matrix remains pending.
 
-## Loop 10: PR #53 integrates publication-date policy (#54)
-- Mode: Migration or cleanup; branch merge, push, PR update and conditional squash authorized.
-- Fetched origin/main c48f33207bae3a20e9ccec92f7dd065d1539daf1 into published head 438f6f6; no rebase or force push.
-- Only conflict: project title wrapping. Retained branch min-w-0 layout for long current-work titles; kept main safeFormatDate year rendering and all publication-date changes/tests.
-- No content/projects file changed by integration. All 24 pre-merge entries must remain, including all 15 earlier projects.
-- Reused canonical markdown-utils calendar formatter; removed obsolete yearOf through the main merge. No new components, motion, dependencies or palette.
-- Existing uncommitted handoff notes preserved before merge; original RESULT read before merging and superseded by this integration report after verification.
-- Shared-kit advisory reservation failed on a configured missing unrelated directory; configuration unchanged. Native exit/output evidence will be captured.
-- Verification pending: Node 24 lint/type-check/knip/build/native tests/rendered tests, original content/browser/contrast/accessibility helpers, full diff and remote gates. No merge authorization gate is yet claimed passed.
-- Serial verification at integrated source 94a3ff7: lint exit 0 (18s), type-check exit 0 (66s), knip exit 0 (25s), npm test exit 0 (113/113, including 43 publication-date regressions). Build and rendered/browser checks pending.
-- Preservation assertions passed, but the first diagnostic receipt write failed because Next build cleared its temporary .next directory. Repeated using a durable tracked evidence destination; no application check failed.
-- All six Node v24.21.0 commands passed at 94a3ff7: lint 18s, type-check 66s, knip 25s, npm test 113/113 (27s), build 47/47 pages (125s), test:rendered 3/3 (7s). Date rendered regression is included. Build used existing Figma/Dribbble fallbacks.
-- Durable integration-preservation.json confirms main ancestry, all 24 files byte-identical to 438f6f6, and canonical date owner/tests identical to c48f332. Existing browser helpers running on a bounded local production preview at 3117.
-- content-check.cjs exit 0: 24 = 9 + 15, 15/15 original bodies/non-grouping frontmatter preserved against 38261e9, 16 known dates retained, 8 absent dates retained, 24 detail routes built. verify.cjs exit 0: 11 viewport/theme observations, 24 HTTP/SSR headings/dates, eight screenshots, native Tab/Enter and six disclosure focus-return cases, footer reveal, zero overflow/page errors. Visually inspected refreshed Projects mobile/light and Movies desktop/dark.
-- All five original final helpers completed with exit 0. Fresh Lighthouse accessibility 100/100, no failed applicable audits; raw-contact scans zero in 47 client assets and 40 prerendered HTML files. Performance diagnostics still miss budgets (see JSON); no budget or speed claim. Local VERDICT PASS; final evidence formatting/lint before push.
-- Bounded QA preview closed itself, exit 0. Refreshed evidence formatted with local Biome (7 files, 4 corrected); final npm run lint exit 0, 136 files, no fixes. Full merge/source/evidence diff reviewed; git diff checks clean. Fresh main still c48f332. Commit evidence, push only bot/projects-refresh, refresh #53 body, then inspect latest remote checks before squash.
+## Loop 10 — consolidated font delivery
 
-## Loop 11: publication and remote merge gates
-- Pushed only bot/projects-refresh at 4d3d0f7083954be54516da4290540c8a5c89c13d. Remote branch matches; main remains c48f332 and ancestry passes. Application source is identical to verified 94a3ff7; later commit is docs/evidence only.
-- Updated #53 body with actual merge note, conflict policy, fresh local results and immutable evidence links. PR reports MERGEABLE. Local verdict PASS.
-- Latest-head automatic CodeQL, GitGuardian and Vercel checks initially pending. Cursor checks are NEUTRAL; CodeRabbit and Socket checks successful. No workflow dispatch, cancellation, admin override or merge yet; waiting for actual terminal results.
-- GitHub push also reported 89 default-branch dependency vulnerabilities; dependency files are unchanged in this lane and this is not a failed latest-head check. Recorded for separate dependency work.
-- Final publication outcome notes remain local after the evidence push to avoid another docs-only push restarting all remote checks.
+- Isolated repeat with no overlapping local verification: FCP 1085ms, LCP 3387ms,
+  TBT 278ms, CLS zero, 203166 script bytes / 9 requests. Only LCP still fails.
+  Next bootstrap/hydration dominates the remaining script trace; no claim that
+  machine contention alone explains the LCP miss.
+- Removed the last separate blocking font stylesheet by porting the remaining
+  exact Geist Mono files/faces and OFL into the CSS owner. Existing resume OTF
+  stays a deferred site identity face. Removed unused lib/fonts.ts and root
+  font-loader classes; all callers and font aliases migrated.
+- Contact invalid-state check found dark email boundary contrast 2:1 from an
+  old alpha danger border. Input/textarea now retain solid source danger borders
+  in both themes. New production browser run will verify this case.
+- Current lint/type/knip pass; production compilation/type generation pass. Final
+  build/performance, full browser matrix, rendered contracts and report pending.
+- After this candidate, any remaining budget miss will be recorded explicitly;
+  no budget changes, metric substitutions, CSS experiments or broad runtime
+  migration will be used to manufacture acceptance.
 
+## Loop 11 — latest main integration
 
-## Imported #52 blog-draft progress (historical)
+- Fetched main 20d8527: #52 draft filtering and #53 project refresh, which also
+  carried an early Thorbis port snapshot from this lane. #49 remains open.
+- Preserved all incoming blog/project content, draft filtering, current/earlier
+  grouping, Markdown skipHtml, source ledger and project-lane evidence. No direct
+  edits to content/blog, content/projects or shop.
+- Resolved overlapping design owners in favor of the later source-token, font,
+  AA/focus, sticky-header and loading fixes already verified here. This prevents
+  old font loaders, unused nav icons and removed Framer preview paths returning.
+- The project lane independently recorded ignored Lighthouse budget flags and
+  preexisting misses. Preserved that fact and its evidence links; our runner
+  explicitly restores enforcement by comparing all report values with budgets.
+- Rechecking the merged tree. Evidence before this merge remains a checkpoint;
+  final screenshots, route counts, tests and performance will be refreshed.
 
-# AI agents blog draft progress
-
-Operating mode: Implementation. Stay in `bot/blog-post` in this worktree.
-
-Plan: sync origin/main; read all six existing posts and content consumers; write
-one 900–1500 word first-person draft; add minimal centralized draft exclusion;
-verify local rendering with screenshots and production exclusion; run local
-lint, type-check, knip, and build; review the diff; push and open a ready PR.
-
-Acceptance: valid existing frontmatter plus `draft: true`; 900–1500 visible
-words; dev slug renders; production listing hides the draft; all author TODOs
-listed in the PR; checks pass. No production deployment, PR merge, external messages,
-new design primitives, or edits to other worktrees.
-
-Existing candidates: `lib/blog.ts` owns loading; `/blog`, RSS, sitemap, route
-generation, and search consume it. No draft filtering exists. Extend that owner
-instead of adding route-specific filters. Reuse existing Markdown rendering.
-Dependency cone: one new post, blog loader, focused native Node regression,
-and these local handoff notes. No visual or motion changes planned.
-
-Loop 1: merged origin/main at c69030b, including contact and Node 24 changes.
-Read all six posts and required guidance. Draft written (1159 whitespace-delimited
-body words, excluding frontmatter and HTML comments); three author TODOs.
-Extended the canonical blog loader to hide drafts outside development, sharing
-that boundary with list, direct lookup, and slug consumers. Removed duplicated
-frontmatter parsing and raw slug enumeration. Added native Node regression
-coverage for development, production, test, explicit false, and absent draft.
-No UI, token, or motion changes. Existing reading surface: prose dominant,
-workflow sequence; inspect desktop/mobile, light/dark, keyboard/reduced motion.
-
-Toolkit reservation and job launcher both failed on a missing unrelated configured
-root. Do not change toolkit config; use ordinary hidden local command execution.
-Dependencies absent in this worktree; npm ci running. Design-system branch is not
-yet on origin; recheck before opening the PR. Next: commit/push, run checks and
-rendered verification, then record results here and in RESULT.md.
-
-Loop 2: merged origin/bot/design-system at aff0151. This revision contains the
-adoption plan only, with no token/component changes yet. Its intent is preserved
-below. Check for a newer revision before opening the PR; branch already pushed,
-so use merge (never rebase/force-push). The only merge conflict was this handoff.
-
-Design-system lane handoff: scope is tokens, shared primitives, homepage, nav,
-footer, first paint, tablet overlap, focus, and structured data. Thorbis source
-revision 46b6654d02fda9d8fde737395185c3141df52cd2, private manifest. Its plan:
-inspect source/live examples and registry; port through existing CSS/Tailwind/
-Base UI owners; document provenance; run local checks, accessibility, no-JS,
-responsive/theme screenshots and perf budget; open a ready PR without merging.
-No source implementation or verification was included in the fetched revision.
-
-Loop 3: npm ci completed. Native tests: 40/40 pass; draft regression fails on
-the original loader as expected. Type-check passed. Lint initially exposed
-CRLF checkout drift; normalized local files to indexed LF and refreshed the
-index, leaving only intended source changes. Test loops now use Promise.all;
-lint passes (125 files, zero findings). Knip running.
-
-Browser caught author comments rendered as text by ReactMarkdown. Repository
-search found no authored raw HTML outside the new comments. Extend canonical
-Markdown with its skipHtml option, keeping comments out of the reading surface
-without enabling HTML execution. Next: repeat dev browser pass, rerun relevant
-checks, production build, HTTP visibility verification, and full diff review.
-
-Loop 4: dev browser pass succeeded: 1148 rendered body words; one h1, six h2s;
-TODO comments invisible; no horizontal overflow at 1440x1000/light, 390x844/dark,
-768x1024/light, 2560x1440/dark. Reduced-motion enabled; skip-to-main followed by
-Tab and keyboard Back to writing both work; no page errors. Screenshots captured
-and inspected. Initial browser assertions were corrected to allow existing HTML
-classes and native skip-link sequential-focus behavior; no application changes
-were required for those two checks. All review server trees stopped after use.
-
-Design-system implementation a5347a8 arrived during verification and is now
-merged (no code conflicts). Read its updated DESIGN.md, profile and port map.
-It ports tokens, core primitives, Inter and layout font wiring; no package changes.
-Re-running all four local gates against this revision, then refreshing screenshots
-and production exclusion checks. A prior preview displayed October 15 for date-only
-October 16 frontmatter because the existing formatter uses the host timezone;
-record this date-formatting issue for a separate site-wide fix.
-
-Loop 5: integrated-tree checks passed: lint (126 files, zero findings),
-type-check, knip, npm run build (39 generated pages), npm test (40/40).
-Build emitted the allowed Figma credential/Dribbble fallback warnings. A shell
-runner typo invoked npm build once; corrected to npm run build, which passed.
-Repeated dev browser verification after the token/font merge: all four viewports,
-themes, keyboard paths, hidden comments, 1148 rendered words, and no page errors
-passed. Refreshed both committed review screenshots to the Thorbis token revision.
-Build/preview jobs are local and hidden; none use other worktrees.
-
-Production runtime visibility, rendered tests, generated-contact scans and a
-Lighthouse budget check are in progress. Port 3000 is occupied, so do not run the
-hardcoded perf:budget script against it. Use the same build and Lighthouse budget
-on this worktree's own production server at 127.0.0.1:3212 instead. No performance
-improvement claim is being made. Next: collect actual runtime/budget results,
-write RESULT.md locally, finalize PR body with all three TODOs, push and open a
-ready PR to main; never merge.
-
-Final loop: ready/open [PR #52](https://github.com/byronwade/byronwade.com/pull/52)
-All four acceptance criteria PASS. Runtime production checks exclude the draft
-from /blog, /feed.xml, /sitemap.xml and / (all 200). Published post returns 200.
-Draft URL shows Page not found with noindex and no article content; Next streams
-this fallback with HTTP 200, so do not describe it as a literal HTTP 404.
-Production browser had no page errors. Added a production-listing screenshot.
-PR body includes all three author TODOs verbatim (programmatically compared).
-
-Supplementary Lighthouse did NOT pass: valid 12.8.2 report, LCP 7247ms, TBT 802ms,
-total 1195897 bytes, script 402666 bytes, font 188800 bytes; request counts 59 total
-and 23 scripts exceed the existing budgets. CLI exit 1 was EPERM during Chrome
-temporary-folder cleanup. Left denied folder alone. No runtime error in report.
-The installed CLI ignored budget-path (no budget config/audits); compared measured
-values directly to lighthouse-budget.json. Record homepage performance and a real
-budget-enforcement sensor for the design/performance owner, outside this post.
-
-RESULT.md contains criterion evidence, scope, limitations, and VERDICT: PASS for
-the requested draft acceptance. Keep it uncommitted as a local handoff; PR body
-contains the review evidence, performance findings and date-format caveat.
-Source gates and browser screenshots all use integrated a5347a8. All local review
-server trees stopped. Next: Byron reviews prose and the three TODOs. Never merge.
-
-## PR 52 Codacy and merge follow-up
-
-The current request authorizes fixing Codacy, pushing, and squash-merging after
-Codacy succeeds and all real checks pass. It supersedes the earlier no-merge
-handoff above. Operating mode: Implementation; this worktree only, no force push,
-admin merge, rule suppression, or changes to the post's `draft: true` flag.
-
-Loop 1: fetched origin and merged main at c48f332, including cache-secret and
-publication-date fixes. No merge conflicts. Codacy check 116821667172 reports six
-issues and zero annotations. Its public issue API identifies exactly six added
-findings: MD034 in this log, three comment-empty-line-before occurrences, one
-rule-empty-line-before, and one at-rule-empty-line-before in app/globals.css.
-Fixed the URL with a Markdown link and inserted the five required blank lines.
-Updated the canonical token generator to preserve both marker-comment fixes on
-regeneration. No CSS declaration, token value, selector, motion, or UI changed.
-
-Decision: reuse existing lint configs, CSS ownership, generator, and native Node
-tests; no new abstraction or package. Dependency cone: stylesheet whitespace,
-generator template, and handoff notes. Verify markdownlint, lint, type-check,
-knip, build, tests (including blog drafts), rendered tests, whitespace-only CSS
-equivalence, full diff, and unchanged draft. Then push and poll checks before
-the authorized squash merge. Existing design review findings remain separate
-from these six Codacy findings and will be recorded in RESULT.md.
-
-Toolkit reservation failed on a missing unrelated configured root; no toolkit
-configuration or quarantine changes. Native command exits provide evidence.
-The pre-existing local RESULT.md report is preserved and extended locally.
-
-Loop 2: lint passed (130 files), knip passed, and all 114 native tests passed,
-including blog drafts, cache-refresh, contact, and content dates. Markdownlint
-passed all six root documents with zero issues. A temporary local Stylelint 14
-config selecting the three reported spacing rules reproduced all five CSS
-findings: 22 warnings before, 17 after, with none at the five Codacy locations.
-The other 17 warnings predate this fix; this is a targeted reproduction, not a
-claim that the whole stylesheet is Stylelint-clean. No lint config was committed
-or weakened. CSS whitespace equivalence and unchanged-post assertions passed.
-Production compilation passed; independent type-check and build type validation
-are still running. Wait for actual exits before publishing.
-
-Loop 3: type-check passed; build passed (39 pages, existing Figma/Dribbble
-fallback warnings). Rendered tests passed 3/3, checking contact semantics, 39
-dates across eight pages, and 26 client chunks. Raw-contact scans found no
-matches in client output or prerendered HTML; no draft slug in prerendered HTML.
-The post remains unchanged with `draft: true`. Full source diff reviewed;
-git diff --check passed. Only this log, five CSS blank lines, and two generator
-template blank lines are staged for the fix; the prior local RESULT report is
-preserved outside the commit. Next: commit, normal push, poll Codacy and all
-real checks, then squash merge using the verified head SHA without admin.
+- Merged-tree verification: 117 native tests pass; lint/types/knip pass; production
+  build generates 47 pages. All four rendered contracts pass (38 dates/eight
+  pages, 41 client chunks). Protected content-lane diff remains empty.
+- Tailwind default transitions now point to Thorbis fast/ease tokens; browser
+  asserts these values explicitly under no-preference motion and separately
+  checks reduced motion. Removed the ignored Lighthouse budgets config field;
+  default simulated profile and all direct budget assertions are unchanged.
+- Latest enforced budget run: FCP 1001ms, LCP 3270ms, TBT 391ms, CLS zero,
+  203010 script bytes/9 requests, total 294244 bytes/14 requests, one stylesheet.
+  LCP/TBT remain BLOCKED. Final integrated browser evidence is being refreshed.
 
 
-## Loop 12: integrate main again after #52 lands
-- Main moved during remote checks to 0e9f5cd (#52 blog draft plus independently published Thorbis token port); stopped before merge and fetched it.
-- Repeated a normal merge. Resolved four files: preserve both progress logs; retain the measured light status/accent/shadow corrections and missing-role guard; retain main's CSS/generator blank-line fixes; retain matching port provenance.
-- Kept #52 blog draft, production exclusion, skipHtml rendering and fixture regressions unchanged. Kept #54 calendar ownership and all 24 Projects entries unchanged.
-- New integrated source needs a complete fresh serial gate/helper run. Prior source 94a3ff7 evidence remains historical, not acceptance for this merge. No workflow was dispatched and no main push/force push/admin/deploy was used.
+## Loop 12 — final touch targets and review handoff
 
-## Loop 13: resume #53 integration and fresh verification
+- Final target audit found small search rows, launcher theme control, social/legal
+  targets and standalone home links. Expanded these controls to 44px on mobile,
+  retained source type/color roles, and added browser geometry assertions for
+  home, open panels and invalid contact. Skip link has an opaque source surface.
+- Latest `npm run check` passes; production build generates all 47 pages. The four
+  rendered contracts pass (38 dates/eight pages and 41 client chunks).
+- Final enforced `npm run perf:budget` exits 1: LCP 3266.371ms exceeds 3000ms.
+  All other limits pass: FCP 944.186ms, TBT 228.907ms, CLS zero, Speed Index
+  1424.852ms; script 203019 bytes/nine requests, total 294457 bytes/14 requests.
+  No budget, simulated profile or metric was changed. This is a real remaining
+  acceptance blocker; targeted Next bootstrap/RSC profiling is the next step,
+  and its causal contribution to LCP still needs proof.
+- Browser refresh and final branch/evidence review are in progress. The ready PR
+  will prominently disclose the blocker and must not be merged as acceptance PASS.
 
-- Mode: Implementation / integration; merge, branch push, PR update and conditional squash authorized by the current request.
-- Fresh fetch: origin/main remains 0e9f5cd. Existing local merge 76bc359 already includes it; git merge origin/main reports already up to date, and main ancestry exits 0. Preserve this completed resolution and the pre-existing RESULT.md handoff edit.
-- Target: all 24 Projects files (9 current plus 15 earlier), #54 publication-date ownership, and #52 blog/draft files preserved; six Node 24 gates and existing browser/content helpers pass before publishing. No hobby-worktree access, force push, admin override, project deletion or deployment command.
-- Reuse existing source, canonical date formatter, content loader, test scripts and temporary verification helpers; no new application concept or dependency. Dependency cone is merge resolution and refreshed acceptance evidence.
-- Reviewed merge source diff: main's blog draft, skipHtml, draft loader/test and CSS/generator whitespace changes are retained; branch light-token corrections remain. No additional source edit is currently needed.
-- Shared toolkit skill/README read; advisory reserve failed on its missing unrelated configured directory. Configuration and quarantined resources unchanged; native exits/log receipts will be retained.
-- Fresh serial checks now run with explicit Node v24.21.0 PATH. Previous receipts remain historical.
-
-## Loop 14: static and native gates
-
-- Explicit Node v24.21.0: lint PASS (9s), type-check PASS (81s), knip PASS (56s), native tests PASS (114/114, 32s). Serial production build is running; rendered/browser checks remain pending.
-- Publication-date formatter remains canonical in ProjectsIndex. Main's draft loader, skipHtml and draft regressions are retained; no dependency or workflow changes in this branch diff.
-- Reviewed the current Projects/content/token/source-ledger diff and integration source diff. No project file deletion. Preservation assertions are still running; do not treat their pending process as success.
-
-## Loop 15: integrated release gates complete
-
-- Node v24.21.0 at application source 76bc359: lint exit 0 (9s); type-check exit 0 (81s); knip exit 0 (56s); npm test exit 0 (114/114, 32s); build exit 0 (47/47 pages, 113s); test:rendered exit 0 (3/3, 8s), 38 dates across 8 pages, 26 client chunks.
-- Fresh preservation receipt passes main ancestry, all 24 project files byte-identical to 438f6f6, and all 19 main blog/Markdown/date/test files unchanged. Earlier content is not deleted.
-- Existing content helper and bounded production browser suite are running. Review identified no new source change needed. Fresh remote state remains unverified until push and check polling.
+- Final browser command exits 0: eight themes/widths, 24 open panels, all target
+  assertions, four keyboard widths, two no-JS views and nine route smoke checks.
+  Axe serious/critical zero; text AA/field 3:1 pass. Contact draft, invalid focus,
+  reveal, reduced motion, footer shortcut, four-times-slow motion and interrupted
+  close/focus return pass. Final mobile-light and desktop-dark comparisons reviewed.
+- Final native suite: 117/117 pass. `npm run check` again exits 0, 146 files linted,
+  route types generated, strict TypeScript and knip clean. Adapter source pin and
+  clean reference verified; 20 source font hashes match; two regenerations are
+  idempotent. No contact/client-secret/raw-color/old-theme scan findings; protected
+  content lane diff is empty. Full affected source and evidence review complete.
+- Main #55 screenshot-key hardening landed after the last main integration. It
+  changes its separate screenshot/API dependency cone. Verified application base
+  remains 20d8527, recorded separately from current main 5d3b47a in sanity.json;
+  no claim that #55 was part of these test results. PR mergeability will be checked.
 
 
-## Loop 16: rendered evidence and publication preparation
+## Review handoff
 
-- All five existing helpers exit 0: content-check.cjs, verify.cjs, contact-contrast.cjs, accessibility.cjs and final-evidence.cjs. All 24 detail routes, 11 viewport/theme observations, native keyboard/focus, six disclosure cases and footer reveal pass; no page errors. Inspected fresh mobile light Projects and desktop dark Movies images.
-- Lighthouse accessibility 100/100, zero failed applicable audits. Raw-contact scans: zero matches in 47 client assets and 40 prerendered HTML files. Existing performance misses remain: LCP 4212ms, TBT 1208ms, script/font/total bytes and request counts; no budget or speed claim.
-- Reused all prior helpers. No source or configuration changes after the complete fresh six-gate run. Evidence pins application source 76bc359 and main 0e9f5cd. Formatting and final lint/diff review precede normal branch push and remote merge-gate inspection.
-
-## Loop 17: final local gate and push
-
-- Evidence formatting exit 0 (7 files, 5 formatted); final npm run lint exit 0 (137 files, no fixes). Full application/integration and refreshed evidence diff reviewed; git diff --check and branch diff --check exit 0.
-- Fresh fetch still main 0e9f5cd; main ancestry passes. Only documentation/evidence changed after verified application source 76bc359. Commit the evidence and normal-push bot/projects-refresh, then refresh PR body and poll remote checks; no squash before MERGEABLE plus acceptable checks.
+- Pushed source 9580afa and evidence 63ada08. Ready PR:
+  [PR #56](https://github.com/byronwade/byronwade.com/pull/56) — OPEN, isDraft=false,
+  base main, head bot/design-system, MERGEABLE. No merge or deployment requested.
+- PR body says PORT (no package), full source 46b6654d02fda9d8fde737395185c3141df52cd2,
+  four immutable side-by-side screenshot links, actual local results and LCP blocker.
+- GitHub default-setup CodeQL started run 38869318654 on PR creation. The sole
+  checked-in workflow remains workflow_dispatch only. Requested cancellation to
+  honor local-only verification; no Actions were manually dispatched. App checks
+  are not part of the local acceptance receipt. Vercel preview was automatic;
+  no production deploy was requested.
+- Final verdict remains BLOCKED: unchanged mobile LCP limit, 3266.371 > 3000ms.
+  Next work is targeted bootstrap/RSC profiling, then repeat the same budget.
+  Byron can review visual/system decisions now. Do not merge as acceptance PASS.

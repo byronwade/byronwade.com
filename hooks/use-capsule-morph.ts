@@ -1,19 +1,15 @@
 "use client";
 
 import { type RefObject, useEffect, useLayoutEffect } from "react";
-import { motionToken } from "@/lib/motion";
+import { motionDuration, motionToken } from "@/lib/motion";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 interface CapsuleMorphOptions {
-	/** Delay before the pill fades back in. */
-	closeDelayMs: number;
 	/** The collapsed pill, cross-faded out on open. */
 	compactRef: RefObject<HTMLElement | null>;
 	/** Extra values that should re-run the choreography (e.g. a panel mode swap). */
 	deps?: readonly unknown[];
-	/** Transition duration for width, height, and radius. */
-	durationMs: number;
 	/** The shared capsule that resizes between the two states. */
 	morphRef: RefObject<HTMLElement | null>;
 	/** Return focus after compact controls are active again. */
@@ -22,8 +18,6 @@ interface CapsuleMorphOptions {
 	onOpened?: () => void;
 	/** Whether the panel is currently open. */
 	open: boolean;
-	/** Delay before the panel fades in. */
-	openDelayMs: number;
 	/** The expanded panel, cross-faded in on open. */
 	panelRef: RefObject<HTMLElement | null>;
 }
@@ -42,9 +36,6 @@ export function useCapsuleMorph({
 	morphRef,
 	compactRef,
 	panelRef,
-	durationMs,
-	openDelayMs,
-	closeDelayMs,
 	onOpened,
 	onClosed,
 	deps = [],
@@ -53,11 +44,13 @@ export function useCapsuleMorph({
 		const morph = morphRef.current;
 		const compact = compactRef.current;
 		const panel = panelRef.current;
-		if (!(morph && compact && panel)) {
+		// A closed capsule has no choreography to measure on first hydration.
+		if (!(morph && compact && panel && (open || collapsed.has(morph)))) {
 			return;
 		}
 
 		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const durationMs = motionDuration("--motion-base");
 		const ease = motionToken("--motion-ease-drawer");
 		const transition = `width ${durationMs}ms ${ease}, height ${durationMs}ms ${ease}, border-radius ${durationMs}ms ${ease}`;
 
@@ -80,7 +73,7 @@ export function useCapsuleMorph({
 
 			compact.style.transitionDelay = "0ms";
 			compact.style.opacity = "0";
-			panel.style.transitionDelay = reduce ? "0ms" : `${openDelayMs}ms`;
+			panel.style.transitionDelay = "0ms";
 			panel.style.opacity = "1";
 
 			if (reduce) {
@@ -106,7 +99,7 @@ export function useCapsuleMorph({
 		onClosed?.();
 		panel.style.transitionDelay = "0ms";
 		panel.style.opacity = "0";
-		compact.style.transitionDelay = reduce ? "0ms" : `${closeDelayMs}ms`;
+		compact.style.transitionDelay = "0ms";
 		compact.style.opacity = "1";
 
 		if (reduce) {
@@ -127,7 +120,7 @@ export function useCapsuleMorph({
 		};
 		morph.addEventListener("transitionend", onEnd);
 		return () => morph.removeEventListener("transitionend", onEnd);
-	}, [open, durationMs, openDelayMs, closeDelayMs, ...deps]);
+	}, [open, ...deps]);
 }
 
 /** Collapsed footprint per capsule, measured once before the first expansion. */

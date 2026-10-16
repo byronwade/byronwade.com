@@ -2,6 +2,11 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: process.env.ANALYZE === "true",
 });
 
+const sharedPrimitivePackages =
+	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|next|tailwind-merge|react-compiler-runtime)[\\/]/;
+const sharedPrimitiveSources =
+	/[\\/](?:lib[\\/](?:utils|motion|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
+
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
 	{ hostname: "figma-alpha-api.s3.us-west-2.amazonaws.com", protocol: "https" },
@@ -18,9 +23,8 @@ const nextConfig = {
 	compress: true,
 
 	experimental: {
-		// Tree-shake barrel-file libraries so only the icons/helpers actually used
-		// ship to the client. lucide-react alone is imported across 40+ files.
-		optimizePackageImports: ["lucide-react", "date-fns", "framer-motion", "@radix-ui/react-icons"],
+		// Resolve pure facades to each consumer's actual server/client dependencies.
+		optimizePackageImports: ["date-fns", "@/lib/icons", "@/components/common"],
 	},
 
 	images: {
@@ -37,6 +41,59 @@ const nextConfig = {
 	reactCompiler: true,
 	reactStrictMode: true,
 	turbopack: {},
+	webpack(config, { dev, isServer }) {
+		if (dev) {
+			return config;
+		}
+		// This diagnostic is development-only. Webpack otherwise resolves its
+		// package metadata before removing the NODE_ENV-guarded dynamic import.
+		const production = {
+			...config,
+			resolve: {
+				...config.resolve,
+				alias: { ...config.resolve.alias, "react-scan": false },
+			},
+		};
+		if (isServer) {
+			return production;
+		}
+		// Next's framework/lib groups keep React and the router shared. Avoid
+		// extra tiny vendor/default groups per entry: the homepage must stay
+		// within the existing ten-script budget, including Vercel diagnostics.
+		const client = {
+			...production,
+			optimization: {
+				...config.optimization,
+				splitChunks: {
+					...config.optimization.splitChunks,
+					cacheGroups: {
+						...config.optimization.splitChunks.cacheGroups,
+						default: false,
+						defaultVendors: false,
+						sharedPrimitives: {
+							// Home also loads the root layout and not-found fallback. Share
+							// their overlap without collecting unrelated route entries.
+							test: (module) =>
+								Boolean(
+									module.resource &&
+										(sharedPrimitivePackages.test(module.resource) ||
+											sharedPrimitiveSources.test(module.resource))
+								),
+							name: "shared-primitives",
+							chunks: (chunk) =>
+								chunk.name === "app/page" ||
+								chunk.name === "app/layout" ||
+								chunk.name === "app/not-found",
+							minChunks: 2,
+							enforce: true,
+							priority: 35,
+						},
+					},
+				},
+			},
+		};
+		return client;
+	},
 
 	...(process.env.NODE_ENV === "production" && {
 		async headers() {

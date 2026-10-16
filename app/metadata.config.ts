@@ -95,10 +95,6 @@ export const metadata: Metadata = {
 		title: "Byron Wade",
 		statusBarStyle: "black-translucent",
 	},
-	other: {
-		"msapplication-TileColor": "#000000",
-		"theme-color": "#000000",
-	},
 };
 
 export const viewport: Viewport = {

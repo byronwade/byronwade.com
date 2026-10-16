@@ -15,8 +15,10 @@ const badgeVariants = cva(
 				secondary: "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
 				destructive:
 					"bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
-				success: "bg-success/10 text-success focus-visible:ring-success/20 [a]:hover:bg-success/20",
-				warning: "bg-warning/10 text-warning focus-visible:ring-warning/20 [a]:hover:bg-warning/20",
+				success:
+					"bg-success/10 text-success-contrast focus-visible:ring-success/20 [a]:hover:bg-success/20",
+				warning:
+					"bg-warning/10 text-warning-contrast focus-visible:ring-warning/20 [a]:hover:bg-warning/20",
 				muted: "bg-muted text-muted-foreground [a]:hover:bg-muted/70",
 				info: "bg-info/10 text-info focus-visible:ring-info/20 [a]:hover:bg-info/20",
 				// Taxonomy, not status. See the --type-* block in globals.css.

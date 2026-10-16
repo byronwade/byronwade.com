@@ -40,10 +40,10 @@ When the mode is unclear, prefer reading and proposing over writing.
 
 | Concern | Reality |
 | --- | --- |
-| Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack (`next.config.js`) |
+| Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack for dev, webpack for production (`next.config.js`, existing request budget) |
 | Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
-| UI | `@base-ui/react` primitives wrapped in `components/ui/` (18 of them) |
+| UI | `@base-ui/react` primitives wrapped in `components/ui/` |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
 | Lint/format | Ultracite over Biome (`biome.jsonc`), tabs, width 100, double quotes, semicolons |
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
@@ -151,9 +151,9 @@ history when intent is unclear → a narrow baseline check before risky work.
 Before creating any component, hook, utility, formatter, validator, schema,
 type, API client, or abstraction, search these first:
 
-- `components/ui/`. badge, button, card, hover-card, input, label, link,
+- `components/ui/`. badge, button, card, input, label, link,
   pill, popover, separator, sonner, status-dot, status-pill, tabs, textarea,
-  tooltip, obfuscated-contact, design-case-study. The set is deliberately small:
+  obfuscated-contact, design-case-study. The set is deliberately small:
   add a primitive with `npx shadcn add` only when a page actually needs it, and
   expect knip to delete it again if nothing imports it.
 - `components/common/`, `components/layout/`, `components/home/`,
@@ -166,8 +166,8 @@ type, API client, or abstraction, search these first:
   `lib/actions/send-email.ts`.
 - `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`
   (`use-theme-toggle.ts`).
-- Platform and existing-dependency capabilities: `Intl`, `date-fns`, `nuqs`
-  for URL state, `sonner` for toasts, `framer-motion` for motion.
+- Platform and existing-dependency capabilities: `Intl`, `date-fns`, native
+  URL/search params, `sonner` for toasts, the Web Animations API for motion.
 
 No exact name match does not mean no equivalent exists. Search by behavior and
 domain meaning, not just by identifier.
@@ -293,7 +293,7 @@ not cleanup.
 - `reactCompiler` is on. Do not add `useMemo`/`useCallback`/`memo` without a
   demonstrated identity or performance need. A hook's returned callbacks are an
   exception, consumers put them in dependency arrays.
-- Keep URL-addressable state in the URL (`nuqs`).
+- Keep URL-addressable state in the URL; add a query-state library only for a real consumer.
 - Preserve accessibility, keyboard behavior, stable identity, hydration safety,
   and deterministic rendering.
 - Use the canonical primitives: `cn()`, `components/ui/`, `lib/seo.ts`,

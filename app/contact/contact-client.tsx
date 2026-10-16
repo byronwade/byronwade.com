@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
+import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
@@ -20,6 +21,7 @@ export default function ContactClient() {
 		// Narrow, not wide. A single form has no business spanning a five-column
 		// shell; the measure is the point on a page with one task.
 		<SiteShell>
+			<Toaster />
 			<div className="flex flex-col gap-10">
 				<PageHeader
 					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two."
@@ -29,7 +31,7 @@ export default function ContactClient() {
 				<form
 					aria-busy={isSubmitting}
 					noValidate
-					className="reveal reveal-delay-1 flex flex-col gap-5"
+					className="flex flex-col gap-5"
 					onSubmit={handleSubmit}
 				>
 					<div className="grid gap-5 sm:grid-cols-2">

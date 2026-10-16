@@ -1,6 +1,6 @@
 "use client";
 
-// Thorbis Design port: src/components/ui/link.tsx @ 46b6654.
+// Thorbis Design port: src/components/site/site-shell.stylex.ts link/focusRing @ 46b6654.
 // Base UI/Next.js adapter; see docs/THORBIS-DESIGN-PORT.md.
 
 import NextLink, { type LinkProps as NextLinkProps } from "next/link";
@@ -16,6 +16,7 @@ interface LinkProps extends NextLinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorE
 
 export const Link = ({ className, children, ref, ...props }: LinkProps) => (
 	<NextLink
+		prefetch={false}
 		{...props}
 		ref={ref}
 		className={cn(

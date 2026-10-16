@@ -22,19 +22,23 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | Local owner | Thorbis source | Translation |
 | --- | --- | --- |
 | app/globals.css token block | src/styles/tokens.generated.css; scripts/generate-stylex-tokens.mjs | Color, spacing, control dimensions, type sizes/line heights, radii, shadows, motion and layers copied; color names prefixed --thorbis- to avoid Tailwind collisions |
-| app/globals.css light overrides | src/styles.css, primary html[data-resolved="light"] blocks through supported shadow refinements, before the system-theme fallback | Light status/info and accent roles, canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores generated source dark values |
+| app/globals.css theme overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
-| lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for personal launcher |
+| lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
+| app/globals.css font block; public/fonts/UcCo*, UcC53*, or3n*; app/layout.tsx | src/styles.css Inter/Geist Mono @font-face blocks; public/fonts (Inter/Geist Mono subsets and OFL licenses); src/stylex/tokens.stylex.ts | Exact font files/faces and licenses copied; Latin Inter explicitly preloaded; Mono deferred; existing signature face retained only for resume |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/ui/card.tsx | src/components/ui/card.tsx | Panel tone, source large radius and panel elevation; existing slots and size contract |
-| components/ui/badge.tsx | src/components/ui/badge.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
+| components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
 | components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
 | components/layout/nav-dock.tsx | src/components/site/site-shell.stylex.ts navLink/navLinkActive | Inter 13px, source pill, selected tone/short shadow, 44px targets; all destinations visible without JS |
-| conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One flow header, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
+| conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One sticky header in flow, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
 | components/layout/page.tsx; common/index-list.tsx | src/components/rules/page.tsx; site-shell.stylex.ts section | Source 32px title/20px section roles; stable-contrast evidence rows, shared focus |
 | components/home/home-hero.tsx, home-projects.tsx, home-blog.tsx | src/components/rules/page.tsx; src/components/ui/card.tsx; site-shell.stylex.ts | Site-specific claim/proof composition using source roles, panel and existing content loaders |
 | components/layout/footer.tsx | src/components/site/site-footer.tsx; site-shell.stylex.ts footer | Brand/author and navigation regions, source type/tone, textual social links, source attribution; existing obfuscated email |
+
+Tailwind default color/opacity transitions resolve to the source fast duration
+and easing, rather than its independent framework defaults.
 
 Every row is pinned to the full commit above. An unlisted source is not authority
 for introducing a new visual choice.
@@ -45,32 +49,53 @@ for introducing a new visual choice.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.
 - The light theme stays the default; next-themes owns persistence and dark mode.
 - No page-entry/scroll fade. Content is server-rendered and immediately visible.
-- A flow header and wrapping text navigation replace independently fixed capsules.
+- `lib/icons.tsx` remains the public Phosphor facade. Its individual glyph wrappers
+  in `lib/icons/` preserve duotone/brand-fill defaults, overrides and display names
+  while allowing route-specific code splitting. A single wrapper module had pulled
+  preview glyphs into home's shared initial chunk.
+- Launcher and toolbar public owners render their static SVGs on the server and
+  pass nodes into `app-launcher-client.tsx` / `dock-toolbar-client.tsx`. These
+  leaves retain the existing capsule, search, theme and dismissal behavior.
+- A single sticky header in flow and wrapping text navigation replace independently fixed capsules.
   This retains the header landmark and prevents tablet overlap and focus clipping.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.
-- Source status colors may need a documented contrast adjustment when used for
-  small text. Rendered contrast/axe evidence decides, not visual intuition.
-- Existing neutral status pills retain foreground text on their muted surface,
-  preserving the site's measured contrast correction through the semantic aliases.
-- The adapter includes the early light status/info overrides as well as the later
-  canvas and supported shadow blocks. Omitting the early block made small contact
-  feedback text fail contrast. All imported values come from the pinned source;
-  regeneration rejects a missing light status role. The separate upstream dark
-  accent override is not adopted: white action text on it calculates to 3.89:1.
-  The generated dark accent remains pending a separate contrast-reviewed port.
-- Personal signature is an identity asset, never a second body/heading typeface.
+- Canvas-computed contrast exposed small status text at 4.09:1 (warning) and
+  4.42:1 (success) on tinted badges. Apply the source badge warning foreground
+  recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
+  The dark blue action uses the source canvas for its label to meet AA; source
+  token values remain unchanged. Input/textarea rims use the source marker role
+  for 3:1 field-boundary contrast; invalid fields retain solid source danger
+  borders in dark mode. These are explicit accessibility adaptations.
+- The footer uses source-style text links. Its obsolete animated GitHub preview
+  and the unused Framer/hover-card paths were removed. Closed contact code loads
+  on first intentional open and remains mounted to preserve drafts. Shared/home
+  navigation starts route requests on navigation instead of speculative prefetch.
+- The unused global query-state provider is removed. Toasts load with contact
+  forms, retaining feedback after an inline close; breadcrumb popover code loads
+  only on routes with a breadcrumb. These move dependencies to their consumers.
+- Inter uses the pinned font bytes and source face descriptors. The generated
+  next/font manifest was empty in the local Windows webpack build, delaying
+  Inter until CSS discovery. Explicit source-font preload removes that dependency
+  without an experimental CSS flag. All font faces share the same CSS owner,
+  avoiding an extra blocking font stylesheet. A rendered contract checks preload.
+- The browser favicon reuses the existing 32px image instead of fetching the
+  239KB original. The original remains at public/icon-original.png; /icon.png
+  stays owned by the app route. A regression test prevents public shadowing.
+- Personal resume signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization
 
 1. Select and read an upstream commit; inspect DESIGN.md, COMPONENTS.md, source
    token and component diffs. Verify package/registry availability again.
-2. With the reference checked out by its owner, run:
+2. Update the script pin after reviewing the selected revision. With the reference
+   checked out by its owner, run:
    `node scripts/port-thorbis-tokens.mjs D:/Dev/thorbis-design`.
-   This only reads upstream and replaces the marked token block in this app.
-3. Review generated changes. Update the pin in the script, headers and this map
-   together. Keep aliases as the only bridge; do not leave old/new palettes.
+   This only reads upstream, replaces marked token/font blocks and copies source
+   Inter/Mono files and licenses into this app.
+3. Review generated changes. Update headers and this map with the script pin
+   together. Keep aliases as the only bridge; do not leave old/new palettes or displaced font assets.
 4. Port changes to the canonical existing primitives. Preserve Base UI keyboard,
    focus, dismissal and rendering APIs. Update all affected callers atomically.
 5. Run local lint, type-check, knip, build, contact tests, browser/axe/no-JS checks,
