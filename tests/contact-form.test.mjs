@@ -17,7 +17,9 @@ registerHooks({
 });
 
 const { sendEmail } = await import("@/lib/actions/send-email");
+const { CONTACT_ENCODED, decodeContact } = await import("@/lib/contact");
 const { CONTACT_TOPICS, validateContactSubmission } = await import("@/lib/contact-form");
+const ownerEmail = decodeContact(CONTACT_ENCODED.email);
 const valid = {
 	name: "Test Visitor",
 	email: "visitor@example.com",
@@ -26,6 +28,29 @@ const valid = {
 };
 
 beforeEach(() => delivery.reset());
+
+test("the submitted address is Reply-To only, never an automatic recipient", async () => {
+	assert.deepEqual(await sendEmail(valid), { success: true });
+	assert.equal(delivery.requests.length, 1);
+	const [request] = delivery.requests;
+	assert.ok(request.to === ownerEmail);
+	assert.equal(request.replyTo, valid.email);
+	assert.equal(request.cc, undefined);
+	assert.equal(request.bcc, undefined);
+});
+
+test("repeated submissions cannot relay messages to different visitor addresses", async () => {
+	const results = await Promise.all(
+		["first@example.com", "second@example.com", "third@example.com"].map((email) =>
+			sendEmail({ ...valid, email })
+		)
+	);
+	for (const result of results) {
+		assert.deepEqual(result, { success: true });
+	}
+	assert.equal(delivery.requests.length, 3);
+	assert.ok(delivery.requests.every((request) => request.to === ownerEmail));
+});
 
 test("blank messages are rejected before contacting the email service", async () => {
 	const result = await sendEmail({ ...valid, message: " \n\t " });
@@ -37,7 +62,7 @@ test("visitor HTML is delivered as literal plain text", async () => {
 	const message = '<a href="https://example.com">This is a message, not a link</a>';
 	const result = await sendEmail({ ...valid, message });
 	assert.equal(result.success, true);
-	assert.equal(delivery.requests.length, 2);
+	assert.equal(delivery.requests.length, 1);
 	for (const request of delivery.requests) {
 		assert.equal(request.html, undefined);
 		assert.ok(request.text.includes(message));
@@ -49,19 +74,11 @@ test("provider response details stay on the server", async () => {
 	assert.deepEqual(result, { success: true });
 });
 
-test("a failed owner delivery does not send a confirmation", async () => {
+test("a failed owner delivery returns a failure without another send", async () => {
 	delivery.results.push({ data: null, error: { message: "Fixture failure" } });
 	const result = await sendEmail(valid);
 	assert.equal(result.success, false);
 	assert.equal(delivery.requests.length, 1);
-});
-
-test("confirmation failure does not undo a delivered message", async () => {
-	delivery.results.push(
-		{ data: { id: "owner-fixture" }, error: null },
-		new Error("Fixture failure")
-	);
-	assert.deepEqual(await sendEmail(valid), { success: true });
 });
 
 const invalidSubmissions = [
@@ -98,6 +115,8 @@ for (const [label, input] of invalidSubmissions) {
 for (const topic of CONTACT_TOPICS) {
 	test(`delivers the canonical ${topic.value} topic`, async () => {
 		assert.deepEqual(await sendEmail({ ...valid, topic: topic.value }), { success: true });
+		assert.equal(delivery.requests.length, 1);
+		assert.ok(delivery.requests[0].to === ownerEmail);
 		assert.ok(delivery.requests[0].text.includes(`Topic: ${topic.label}`));
 	});
 }
@@ -129,11 +148,20 @@ test("ignores forged recipients, attachments and legacy project labels", async (
 	await sendEmail({
 		...valid,
 		to: "other@example.com",
+		cc: "copy@example.com",
+		bcc: "hidden@example.com",
+		from: "forged@example.com",
+		replyTo: "forged@example.com",
 		attachments: [{ name: "unexpected.html", data: "not supported" }],
 		projectType: ["untrusted topic"],
 	});
-	assert.notEqual(delivery.requests[0].to, "other@example.com");
+	assert.equal(delivery.requests.length, 1);
+	assert.ok(delivery.requests[0].to === ownerEmail);
+	assert.ok(delivery.requests[0].from.includes(ownerEmail));
+	assert.equal(delivery.requests[0].replyTo, valid.email);
 	for (const request of delivery.requests) {
+		assert.equal(request.cc, undefined);
+		assert.equal(request.bcc, undefined);
 		assert.equal(request.attachments, undefined);
 		assert.ok(!request.text.includes("untrusted topic"));
 	}
@@ -145,14 +173,6 @@ test("provider exceptions return a generic error without request details", async
 	assert.equal(result.success, false);
 	assert.ok(!result.error.includes("private provider detail"));
 	assert.equal(delivery.requests.length, 1);
-});
-
-test("confirmation rejection does not undo a delivered message", async () => {
-	delivery.results.push(
-		{ data: { id: "owner-fixture" }, error: null },
-		{ data: null, error: { message: "Fixture failure" } }
-	);
-	assert.deepEqual(await sendEmail(valid), { success: true });
 });
 
 test("an empty provider acknowledgement is a delivery failure", async () => {

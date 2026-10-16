@@ -1,10 +1,14 @@
 # Spam Protection Implementation
 
-This document outlines the comprehensive spam protection measures implemented across the website to prevent unwanted calls and emails.
+This document describes contact-address obfuscation and the contact form's
+delivery boundary. These reduce specific abuse paths; they do not prevent all
+spam or automated submissions.
 
 ## Overview
 
-The website implements multiple layers of protection to prevent spam bots and scrapers from harvesting contact information while maintaining accessibility for legitimate users.
+Click-to-reveal discourages simple address scrapers while keeping contact details
+available to visitors. Server validation and a fixed email recipient protect the
+delivery boundary separately.
 
 ## Protection Measures
 
@@ -48,10 +52,13 @@ import { ObfuscatedEmail, ObfuscatedPhone } from "@/components/ui/obfuscated-con
 ### 3. Utility Functions
 
 #### Contact helpers
-Exported from `components/ui/obfuscated-contact.tsx`:
+Canonical owners:
 
-- `getObfuscatedContactForSchema()` - Contact values for JSON-LD structured data
-- `useContactInfo()` - Decoded contact values for a client component
+- `lib/contact.ts` owns `CONTACT_ENCODED`, `decodeContact()`, and
+  `getContactForStructuredData()`.
+- `hooks/use-revealed-email.ts` keeps decoded text out of prerendered HTML for
+  existing client consumers. It reveals on mount, so use `ObfuscatedEmail` for
+  contact links that must wait for a click.
 
 ### 4. Metadata Protection
 
@@ -89,28 +96,47 @@ formatDetection: {
   accepts only the canonical contact topics in `lib/contact-form.ts`.
 - Email bodies are plain text. Visitor HTML is delivered literally, with no HTML
   interpolation, uploaded attachments, or caller-controlled recipient override.
-- Owner delivery must be accepted before a confirmation is attempted. A failed
-  confirmation does not turn an accepted message into a failure or prompt a retry.
+- Each valid submission sends one plain-text email to the owner address from
+  `lib/contact.ts`. The visitor's address is used only as Reply-To; caller-supplied
+  recipient, CC, BCC, sender, and attachment fields are ignored.
+- No automatic email receipt is sent to the submitted address. The action cannot
+  verify that the visitor owns it, so echoing their content there would let anyone
+  relay unwanted messages from this site's domain. Success is acknowledged on the
+  page only after the provider accepts the owner's message. Acknowledgement does
+  not guarantee inbox delivery.
 - Provider responses and exception details remain on the server; the caller gets
   only success or an actionable, generic error.
 - `npm test` exercises the actual server action with a fixture transport. It
   cannot send real email. There is no added test dependency.
+- Regression tests assert exactly one owner-addressed delivery, including repeated
+  submissions with different visitor addresses and forged delivery fields.
 - Rate limiting and CAPTCHA are not implemented. Input validation and address
-  obfuscation do not prevent automated submissions or confirmation abuse.
+  obfuscation do not prevent automated submissions or flooding the owner's inbox.
+
+#### Remaining abuse controls
+
+The fixed-recipient boundary removes the third-party email-relay path without
+adding an interaction or a service. It does not impose a sending quota.
+
+- A process-local counter is insufficient for a durable limit on Vercel: separate
+  instances and cold starts do not share that counter. A future limit needs a
+  shared store or a platform rule, with an explicit quota, retention policy, and
+  false-positive/recovery behavior.
+- CAPTCHA needs server-side verification and production configuration, plus an
+  accessible fallback. It is deferred until the owner authorizes that setup.
+- A honeypot can be bypassed and can catch autofill. It is not a replacement for
+  recipient confinement or a distributed sending limit.
+
+OWASP identifies [form-to-email abuse that reaches unintended recipients](https://owasp.github.io/www-project-automated-threats-to-web-applications/assets/oats/EN/OAT-017_Spamming.html)
+as an implementation flaw. Its [bot-management guidance](https://cheatsheetseries.owasp.org/cheatsheets/Bot_Management_and_Anti-Automation_Cheat_Sheet.html)
+describes layered controls and the need to account for legitimate users.
 
 ## Implementation Details
 
 ### Base64 Encoded Values
-```typescript
-// byron@byronwade.com
-const ENCODED_EMAIL = "Ynlyb25AYnlyb253YWRlLmNvbQ==";
 
-// +18312958460
-const ENCODED_PHONE = "KzE4MzEyOTU4NDYw";
-
-// +1 (831) 295-8460
-const ENCODED_PHONE_DISPLAY = "KzEgKDgzMSkgMjk1LTg0NjA=";
-```
+`lib/contact.ts` is the only owner of the encoded values. Import its constants
+and decoder rather than copying contact values into another module or example.
 
 ### Client-Side Rendering
 ```typescript
@@ -192,12 +218,12 @@ a project Markdown file printed it in prose.
 
 ### Adding New Contact Information
 1. Encode the new contact info using base64
-2. Update the encoded constants in `obfuscated-contact.tsx`
+2. Update the canonical encoded constants in `lib/contact.ts`
 3. Test the obfuscation on both client and server side
 
 ### Updating Existing Contact Information
 1. Generate new base64 encoded values
-2. Update all encoded constants
+2. Update the canonical encoded constants in `lib/contact.ts`
 3. Clear any cached values
 4. Test the new implementation
 

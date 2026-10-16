@@ -22,6 +22,8 @@ export async function sendEmail(input: unknown): Promise<SendEmailResponse> {
 		const { name, email, message, topicLabel } = submission.data;
 		// Plain text keeps visitor markup literal without maintaining an HTML sanitizer.
 		const summary = `Topic: ${topicLabel}\n\n${message}`;
+		// The visitor's address is unverified. Keep it as Reply-To only so this
+		// public action cannot relay visitor content to arbitrary recipients.
 		const ownerDelivery = await resend.emails.send({
 			from: `Contact Form <${ownerEmail}>`,
 			to: ownerEmail,
@@ -34,22 +36,6 @@ export async function sendEmail(input: unknown): Promise<SendEmailResponse> {
 			return { success: false, error: DELIVERY_ERROR };
 		}
 
-		// A confirmation can only claim receipt after the owner's delivery is accepted.
-		// Its failure must not encourage a retry of an already delivered message.
-		try {
-			const confirmation = await resend.emails.send({
-				from: `Byron Wade <${ownerEmail}>`,
-				to: email,
-				replyTo: ownerEmail,
-				subject: "Thanks for reaching out",
-				text: `Hi ${name},\n\nThanks for reaching out. I've received your message and will get back to you soon.\n\n${summary}\n\nByron Wade`,
-			});
-			if (confirmation.error || !confirmation.data) {
-				console.warn("Contact confirmation delivery failed.");
-			}
-		} catch {
-			console.warn("Contact confirmation delivery failed.");
-		}
 		return { success: true };
 	} catch {
 		// Provider errors can contain request data; keep them out of client responses and logs.
