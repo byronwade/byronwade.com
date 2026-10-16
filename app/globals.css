@@ -287,6 +287,8 @@
    Source mapping and sync: docs/THORBIS-DESIGN-PORT.md.
    ───────────────────────────────────────────────────────────── */
 @theme inline {
+  --default-transition-duration: var(--motion-fast);
+  --default-transition-timing-function: var(--motion-ease-out);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

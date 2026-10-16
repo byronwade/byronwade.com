@@ -97,6 +97,7 @@ function readContrast() {
 async function auditCase(url, width, theme) {
 	const page = await browser.newPage();
 	await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
 	await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
 	await page.goto(url, { waitUntil: "networkidle2" });
 	await page.evaluate(() => document.fonts.ready);
@@ -114,6 +115,14 @@ async function auditCase(url, width, theme) {
 	const geometry = await page.evaluate(() => {
 		const heading = document.querySelector("h1");
 		const style = getComputedStyle(heading);
+		const navStyle = getComputedStyle(document.querySelector('nav[aria-label="Primary"] a'));
+		const source = getComputedStyle(document.documentElement);
+		const milliseconds = (value) => Number.parseFloat(value) * (value.endsWith("ms") ? 1 : 1000);
+		const probe = document.createElement("span");
+		probe.style.transitionTimingFunction = "var(--motion-ease-out)";
+		document.body.append(probe);
+		const sourceEase = getComputedStyle(probe).transitionTimingFunction;
+		probe.remove();
 		return {
 			overflow: document.documentElement.scrollWidth > innerWidth,
 			headingTop: heading.getBoundingClientRect().top,
@@ -123,6 +132,12 @@ async function auditCase(url, width, theme) {
 			headerCount: document.querySelectorAll("body header").length,
 			navSize: getComputedStyle(document.querySelector('nav[aria-label="Primary"] a')).fontSize,
 			cardTitleSize: getComputedStyle(document.querySelector('[data-slot="card-title"]')).fontSize,
+			navMotion: {
+				duration: milliseconds(navStyle.transitionDuration),
+				sourceDuration: milliseconds(source.getPropertyValue("--motion-fast").trim()),
+				ease: navStyle.transitionTimingFunction,
+				sourceEase,
+			},
 		};
 	});
 	const contrast = await page.evaluate(readContrast);
@@ -135,6 +150,8 @@ async function auditCase(url, width, theme) {
 	assert.equal(geometry.headingSize, "32px", "Thorbis heading role");
 	assert.equal(geometry.navSize, "13px", "Thorbis navigation role survives class merging");
 	assert.equal(geometry.cardTitleSize, "14px", "Thorbis card title role survives class merging");
+	assert.equal(geometry.navMotion.duration, geometry.navMotion.sourceDuration);
+	assert.equal(geometry.navMotion.ease, geometry.navMotion.sourceEase);
 	assert.ok(
 		contrast.every(({ ratio, required }) => ratio >= required),
 		JSON.stringify(contrast.filter(({ ratio, required }) => ratio < required))

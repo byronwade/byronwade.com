@@ -13,11 +13,13 @@ await withProductionServer(async (url) => {
 	});
 	try {
 		const port = Number(new URL(browser.wsEndpoint()).port);
-		const result = await lighthouse(
-			url,
-			{ port, output: "json", onlyCategories: ["performance"], logLevel: "error" },
-			{ extends: "lighthouse:default", settings: { budgets } }
-		);
+		// Lighthouse 12 removed built-in budgets; assertions below own enforcement.
+		const result = await lighthouse(url, {
+			port,
+			output: "json",
+			onlyCategories: ["performance"],
+			logLevel: "error",
+		});
 		if (!result || result.lhr.runtimeError) {
 			throw new Error(result?.lhr.runtimeError?.message || "Lighthouse returned no result");
 		}

@@ -218,3 +218,14 @@ production deployment, or merge.
   explicitly restores enforcement by comparing all report values with budgets.
 - Rechecking the merged tree. Evidence before this merge remains a checkpoint;
   final screenshots, route counts, tests and performance will be refreshed.
+
+- Merged-tree verification: 117 native tests pass; lint/types/knip pass; production
+  build generates 47 pages. All four rendered contracts pass (38 dates/eight
+  pages, 41 client chunks). Protected content-lane diff remains empty.
+- Tailwind default transitions now point to Thorbis fast/ease tokens; browser
+  asserts these values explicitly under no-preference motion and separately
+  checks reduced motion. Removed the ignored Lighthouse budgets config field;
+  default simulated profile and all direct budget assertions are unchanged.
+- Latest enforced budget run: FCP 1001ms, LCP 3270ms, TBT 391ms, CLS zero,
+  203010 script bytes/9 requests, total 294244 bytes/14 requests, one stylesheet.
+  LCP/TBT remain BLOCKED. Final integrated browser evidence is being refreshed.

@@ -37,6 +37,9 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | components/home/home-hero.tsx, home-projects.tsx, home-blog.tsx | src/components/rules/page.tsx; src/components/ui/card.tsx; site-shell.stylex.ts | Site-specific claim/proof composition using source roles, panel and existing content loaders |
 | components/layout/footer.tsx | src/components/site/site-footer.tsx; site-shell.stylex.ts footer | Brand/author and navigation regions, source type/tone, textual social links, source attribution; existing obfuscated email |
 
+Tailwind default color/opacity transitions resolve to the source fast duration
+and easing, rather than its independent framework defaults.
+
 Every row is pinned to the full commit above. An unlisted source is not authority
 for introducing a new visual choice.
 
