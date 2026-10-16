@@ -16,7 +16,6 @@ export default function ShopCancelPage() {
 		<SiteShell>
 			<div className="flex flex-col items-start gap-8">
 				<PageHeader
-					className="animate-none!"
 					title="Test checkout canceled"
 					lede="You left checkout. No order has been placed. The placeholder collection is here whenever you want another look."
 				/>

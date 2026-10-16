@@ -37,7 +37,11 @@ export async function HomeHero() {
 						for the trades.
 					</p>
 					<HomeActions />
-					<Link className="link-underline text-copy-13" href="/blog/scaling-plumbing-business">
+					<Link
+						prefetch={false}
+						className="link-underline inline-flex min-h-11 items-center text-copy-13"
+						href="/blog/scaling-plumbing-business"
+					>
 						Read what went wrong, and what I learned
 					</Link>
 				</div>

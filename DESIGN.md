@@ -54,7 +54,7 @@ workflow vocabulary into unrelated personal content.
 The homepage is compact claim-and-proof: experience beside the current product,
 then documented work and writing. Content renders immediately, including with
 JavaScript disabled. No viewport-height spacer, bottom-aligned hero, opacity-zero
-entrance or scroll reveal may hide that content. The header participates in flow;
+entrance or scroll reveal may hide that content. The single sticky header participates in flow;
 at narrow widths navigation wraps into its own row, with visible text and focus.
 
 ## 3. Surface profiles
@@ -172,7 +172,7 @@ loading, and layout stability. See §12.
 Thorbis source values and light/dark overrides are ported into app/globals.css.
 Existing semantic names alias those tokens so all routes share the new system.
 Inter is the UI/body face; Geist Mono is for code and technical data. The local
-signature face remains available only to the existing personal launcher.
+signature face remains available only to the existing resume identity.
 
 Use Thorbis copy roles (12, 13, 14, 16px), heading roles (16, 20, 32px), 4px
 spacing grid, 8/10/12/14px radii, source shadows and control sizes. Font sizes,
@@ -204,7 +204,7 @@ contains no animation.
    for anything a visitor sees repeatedly.
 3. **Function.** Never move content the visitor is reading.
 4. **Tool.** Cheapest capable: CSS transition →
-   Web Animations API → `framer-motion` (already installed; `LazyMotion` only).
+   Web Animations API.
    Do not add a library for a fade.
 5. **Properties.** `transform` and `opacity`. `clip-path` deliberately (the
    theme-toggle wipe). Never animate `width`, `height`, `top`, or `left` on a
@@ -255,7 +255,7 @@ states its move, and the move does not transplant to another route:
 
 | Route | Organizing move |
 | --- | --- |
-| `/` | Claim, then immediate proof, the numbers and the shipped work sit in the first screen, not below three sections of preamble |
+| `/` | Experience beside the current product, then qualified proof, documented work and recent writing; no viewport-height preamble |
 | `/projects` | A ranked index where each row carries its own evidence: problem, outcome, status |
 | `/projects/[slug]` | The live artifact beside the story, the reader can see the thing while reading about it |
 | `/portfolio` | Raw open-source activity, pulled live, sorted by signal |
@@ -275,7 +275,8 @@ before building, change topology and sequence, not card styling.
 ### 7.3 Shareable state
 
 Filters, tabs, selected items, and search queries belong in the URL when they
-are worth sharing. `nuqs` is available.
+are worth sharing. Use native URL/search params; evaluate a query-state library
+when a real interactive surface needs one.
 
 ## 8. Component contracts
 
@@ -341,11 +342,8 @@ Recomposition, not shrinking.
 
 ## 12. Performance budgets
 
-`lighthouse-budget.json` owns the targets: LCP ≤2.5s (budget currently 3s),
-INP ≤200ms, CLS ≤0.1 at p75. Installed Lighthouse 12 ignores the removed
-`--budget-path` flag; the current command reports results without enforcing those
-targets. Compare report values manually until local enforcement is restored, as
-recorded in PROJECT_PROFILE.md and docs/PERFORMANCE.md.
+`lighthouse-budget.json` is the enforcing owner. Targets: LCP ≤2.5s (budget
+currently 3s), INP ≤200ms, CLS ≤0.1 at p75.
 
 Also budgeted: script bytes, image bytes, font requests, total requests.
 

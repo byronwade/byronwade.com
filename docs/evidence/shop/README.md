@@ -1,5 +1,10 @@
 # Shop verification evidence
 
+This is historical evidence captured before the completed Thorbis port (#56).
+Current PR #49 post-port captures and checks are recorded in `RESULT.md` and the
+local ignored `.next/pr49-post56/` directory. The performance-runner limitations
+below describe that earlier run; `docs/PERFORMANCE.md` owns the current runner.
+
 Captured locally on October 15, 2026, using a production Next.js build, installed
 headless Chrome, and axe-core 4.10.3. The browser server used Node 24.21.0; cold
 compiler traces used Node 24.14.0, both within the supported Node 24 major. No Stripe credential was

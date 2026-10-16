@@ -8,6 +8,11 @@ interface ShopProduct {
 	unitAmount: number;
 }
 
+export const shopPriceFormatter = new Intl.NumberFormat("en-US", {
+	style: "currency",
+	currency: "USD",
+});
+
 // Placeholder - pending Byron's choice. These are preview concepts, not deliverable products.
 export const shopProducts = [
 	{

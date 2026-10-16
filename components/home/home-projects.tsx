@@ -15,7 +15,7 @@ function FeaturedProject({ project }: { project: Project }) {
 
 	return (
 		<IndexRow>
-			<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
+			<Link prefetch={false} className={indexRowLinkClass} href={`/projects/${project.slug}`}>
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex min-w-0 flex-col gap-1.5">
 						<div className="flex flex-wrap items-center gap-2">
@@ -80,7 +80,8 @@ export function HomeProjects() {
 			description="Proof from products and the service business that shaped them."
 			link={
 				<Link
-					className="shrink-0 text-muted-foreground text-sm transition-colors hover:text-brand"
+					prefetch={false}
+					className="inline-flex min-h-11 shrink-0 items-center text-muted-foreground text-sm transition-colors hover:text-brand"
 					href="/projects"
 				>
 					All projects →

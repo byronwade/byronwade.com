@@ -16,7 +16,6 @@ export default function ShopSuccessPage() {
 		<SiteShell>
 			<div className="flex flex-col items-start gap-8">
 				<PageHeader
-					className="animate-none!"
 					title="Back from test checkout"
 					lede="Thanks for trying the shop preview. This checkout is for testing only, and no goods or files will be delivered."
 				/>

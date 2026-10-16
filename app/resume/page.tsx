@@ -1,31 +1,56 @@
-"use client";
-
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import type { Person, WithContext } from "schema-dts";
 import { IndexList, IndexRow } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { StatusPill } from "@/components/ui/status-pill";
-import { useRevealedEmail } from "@/hooks/use-revealed-email";
-import { analytics } from "@/lib/analytics";
-import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
+import { getContactForStructuredData } from "@/lib/contact";
+import { ArrowRight, ExternalLink, MapPin } from "@/lib/icons";
+import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
+import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
 
-// Server-side obfuscated contact info for structured data
-const obfuscatedContact = {
-	email: `contact${String.fromCharCode(64)}byronwade.com`,
-	telephone: "+1-8xx-xxx-xxxx",
-};
+// Rendered on the server so the record is in the HTML itself; only the email
+// line and the download button hydrate. Print rules live here (print:*), so
+// browser printing and /api/resume-pdf produce the same document.
+
+export const metadata: Metadata = generateSEOMetadata({
+	title: "Resume",
+	// Restates the page rather than embellishing it: one company reached $2.4M
+	// and then closed, and the summary below says so.
+	description:
+		"Byron Wade's resume: about eight years running plumbing and septic businesses and building the software they need. Founder of Thorbis, field management software for service professionals.",
+	keywords: [
+		"Resume",
+		"CV",
+		"Byron Wade",
+		"Experience",
+		"Skills",
+		"Professional Resume",
+		"Full Stack Developer",
+		"Business Manager",
+		"Plumbing Contractor",
+		"Master Plumber",
+		"Georgia Master Plumber",
+	],
+	image: generateOGImageUrl({
+		title: "Resume - Byron Wade",
+		description: "Professional resume and experience",
+		type: "website",
+	}),
+	canonical: `${siteUrl}/resume`,
+	type: "website",
+});
 
 const jsonLdData: WithContext<Person> = {
 	"@context": "https://schema.org",
 	"@type": "Person",
 	name: "Byron Wade",
-	email: obfuscatedContact.email,
-	telephone: obfuscatedContact.telephone,
-	url: "https://byronwade.com",
+	...getContactForStructuredData(),
+	url: siteUrl,
 	jobTitle: "Founder & Full Stack Developer",
 	description:
 		"Founder at Thorbis, building field management software for service professionals. About eight years running service businesses and writing the software they need.",
@@ -136,27 +161,15 @@ const certifications: { name: string; year: string; pending?: boolean }[] = [
 ];
 
 export default function ResumePage() {
-	const [emailCopied, setEmailCopied] = useState(false);
-	const email = useRevealedEmail();
-
-	const copyEmail = async () => {
-		try {
-			await navigator.clipboard.writeText(email);
-			setEmailCopied(true);
-			setTimeout(() => setEmailCopied(false), 2000);
-		} catch (err) {
-			console.error("Failed to copy email:", err);
-		}
-	};
-
 	return (
 		<>
 			<JsonLd data={jsonLdData} />
+			<PrintInLightTheme />
 
-			<SiteShell>
-				<div className="flex w-full flex-col gap-12 sm:gap-16">
-					<header className="reveal w-full">
-						<div className="flex w-full flex-col gap-6">
+			<SiteShell className="print:max-w-none print:p-0">
+				<div className="flex w-full flex-col gap-12 sm:gap-16 print:gap-6">
+					<header className="w-full">
+						<div className="flex w-full flex-col gap-6 print:gap-3">
 							<div className="flex items-start gap-5">
 								<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
 									<Image
@@ -176,21 +189,10 @@ export default function ResumePage() {
 								</div>
 							</div>
 
-							<div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-muted-foreground text-sm">
-								<button
-									type="button"
-									onClick={copyEmail}
-									className="flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand"
-								>
-									{emailCopied ? (
-										<Check className="size-4 text-brand" />
-									) : (
-										<Mail className="size-4" />
-									)}
-									<span>{emailCopied ? "Copied!" : email}</span>
-								</button>
+							<div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-muted-foreground text-sm">
+								<CopyEmailButton />
 								<span className="flex items-center gap-2">
-									<MapPin className="size-4" />
+									<MapPin className="size-4" aria-hidden="true" />
 									Jasper, GA
 								</span>
 							</div>
@@ -198,7 +200,7 @@ export default function ResumePage() {
 					</header>
 
 					{/* Summary */}
-					<section className="reveal reveal-delay-1 w-full">
+					<section className="w-full">
 						<div className="flex flex-col gap-4">
 							<p className="text-base text-foreground leading-relaxed sm:text-lg">
 								I have spent about eight years running service businesses and building the software
@@ -211,6 +213,7 @@ export default function ResumePage() {
 									className="link-underline font-medium"
 								>
 									Thorbis
+									<span className="sr-only"> (opens in a new tab)</span>
 								</a>
 								, a field management system for service professionals.
 							</p>
@@ -219,9 +222,8 @@ export default function ResumePage() {
 								looking for full time work in software development or technical leadership, or
 								anywhere that both the engineering side and the running-a-business side are useful.
 							</p>
-							<div className="flex flex-wrap items-center gap-2 pt-1">
+							<div className="flex flex-wrap items-center gap-2 pt-1 print:hidden">
 								<Button
-									size="sm"
 									render={
 										<Link href="/contact">
 											Start a conversation
@@ -229,32 +231,22 @@ export default function ResumePage() {
 										</Link>
 									}
 								/>
-								<Button
-									size="sm"
-									variant="outline"
-									render={
-										<a
-											href="/api/resume-pdf"
-											download="Byron_Wade_Resume.pdf"
-											onClick={() => analytics.resumeDownload("pdf")}
-										>
-											<Download className="size-3.5" aria-hidden="true" />
-											Download PDF
-										</a>
-									}
-								/>
+								<DownloadResumeButton />
 							</div>
 						</div>
 					</section>
 
 					{/* Experience */}
-					<section className="reveal reveal-delay-2 w-full">
-						<h2 className="mb-8 font-heading font-semibold text-foreground text-xl tracking-tight">
+					<section className="w-full">
+						<h2 className="mb-8 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-3">
 							Experience
 						</h2>
-						<div className="flex flex-col gap-10">
+						<div className="flex flex-col gap-10 print:gap-4">
 							{workExperience.map((job) => (
-								<article key={`${job.company}-${job.role}`} className="flex flex-col gap-2">
+								<article
+									key={`${job.company}-${job.role}`}
+									className="flex flex-col gap-2 print:break-inside-avoid print:gap-1"
+								>
 									<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
 										<h3 className="font-medium text-foreground">
 											{job.role}
@@ -277,7 +269,12 @@ export default function ResumePage() {
 												className="link-underline inline-flex items-center gap-1 font-medium"
 											>
 												{job.company}
-												<ExternalLink className="size-3" />
+												<ExternalLink className="size-3 print:hidden" aria-hidden="true" />
+												<span className="sr-only"> (opens in a new tab)</span>
+												{/* Paper has no links, so print where it goes. */}
+												<span className="hidden font-normal print:inline">
+													({new URL(job.companyUrl).host})
+												</span>
 											</a>
 										) : (
 											job.company
@@ -285,7 +282,7 @@ export default function ResumePage() {
 										{" · "}
 										{job.location}
 									</p>
-									<p className="mt-2 text-muted-foreground leading-relaxed">
+									<p className="mt-2 text-muted-foreground leading-relaxed print:mt-0">
 										{(() => {
 											if (!(job.highlight && job.description.includes(job.highlight))) {
 												return job.description;
@@ -306,8 +303,8 @@ export default function ResumePage() {
 					</section>
 
 					{/* Skills */}
-					<section className="reveal reveal-delay-3 w-full">
-						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+					<section className="w-full">
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-2">
 							Skills
 						</h2>
 						{/* Not pills. These are read, not pressed. §5.4 makes a pill a
@@ -323,8 +320,8 @@ export default function ResumePage() {
 					</section>
 
 					{/* Certifications */}
-					<section className="reveal reveal-delay-4 w-full">
-						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+					<section className="w-full">
+						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-2">
 							Licenses and certifications
 						</h2>
 						{/* Hairlines, not a bordered card. §13 rejects both the card wrapper
@@ -334,7 +331,7 @@ export default function ResumePage() {
 						<IndexList>
 							{certifications.map((cert) => (
 								<IndexRow key={`${cert.name}-${cert.year}`}>
-									<div className="flex items-center justify-between gap-4 py-3">
+									<div className="flex items-center justify-between gap-4 py-3 print:py-1">
 										<span className="text-foreground">{cert.name}</span>
 										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
 											{cert.year}
@@ -346,7 +343,7 @@ export default function ResumePage() {
 						</IndexList>
 					</section>
 
-					<section className="reveal reveal-delay-5 w-full border-border border-t pt-10">
+					<section className="w-full border-border border-t pt-10 print:hidden">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex flex-col gap-1">
 								<h2 className="font-heading font-semibold text-lg tracking-tight">

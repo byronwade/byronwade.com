@@ -1,16 +1,17 @@
+// Thorbis Design port: ui/badge.tsx @ 46b6654; status composes the canonical badge.
+import { Badge } from "@/components/ui/badge";
 import { StatusDot } from "@/components/ui/status-dot";
 import type { StatusTone } from "@/lib/status-tone";
 import { cn } from "@/lib/utils";
 
-const tones: Record<StatusTone, { text: string; ring: string }> = {
-	success: { text: "text-success", ring: "bg-success/10" },
-	warning: { text: "text-warning", ring: "bg-warning/10" },
-	danger: { text: "text-destructive", ring: "bg-destructive/10" },
-	info: { text: "text-brand", ring: "bg-brand/10" },
-	neutral: { text: "text-foreground", ring: "bg-muted" },
-};
+const variants = {
+	success: "success",
+	warning: "warning",
+	danger: "destructive",
+	info: "info",
+	neutral: "muted",
+} as const;
 
-/** Resend-style status pill: a colored dot + label in a soft chip. */
 export function StatusPill({
 	tone = "neutral",
 	children,
@@ -22,18 +23,10 @@ export function StatusPill({
 	pulse?: boolean;
 	className?: string;
 }) {
-	const t = tones[tone];
 	return (
-		<span
-			className={cn(
-				"inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-medium text-xs",
-				t.ring,
-				t.text,
-				className
-			)}
-		>
+		<Badge variant={variants[tone]} className={cn("gap-1.5", className)}>
 			<StatusDot tone={tone} pulse={pulse} />
 			{children}
-		</span>
+		</Badge>
 	);
 }

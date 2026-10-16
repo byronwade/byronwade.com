@@ -20,7 +20,7 @@ async function BlogList() {
 		<IndexList>
 			{recentPosts.map((post) => (
 				<IndexRow key={post.slug}>
-					<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
+					<Link prefetch={false} className={indexRowLinkClass} href={`/blog/${post.slug}`}>
 						<div className="flex items-start justify-between gap-4">
 							<span className={`font-medium text-foreground ${indexRowAccentClass}`}>
 								{post.title}
@@ -57,7 +57,8 @@ export function HomeBlog() {
 			description="Notes from building products and running a service business."
 			link={
 				<Link
-					className="shrink-0 text-muted-foreground text-sm transition-colors hover:text-brand"
+					prefetch={false}
+					className="inline-flex min-h-11 shrink-0 items-center text-muted-foreground text-sm transition-colors hover:text-brand"
 					href="/blog"
 				>
 					All posts →

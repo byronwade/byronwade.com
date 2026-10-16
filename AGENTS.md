@@ -40,10 +40,10 @@ When the mode is unclear, prefer reading and proposing over writing.
 
 | Concern | Reality |
 | --- | --- |
-| Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack (`next.config.js`) |
+| Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack for dev, webpack for production (`next.config.js`, existing request budget) |
 | Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
-| UI | `@base-ui/react` primitives wrapped in `components/ui/` (18 of them) |
+| UI | `@base-ui/react` primitives wrapped in `components/ui/` |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
 | Lint/format | Ultracite over Biome (`biome.jsonc`), tabs, width 100, double quotes, semicolons |
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, and content-date regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -151,9 +151,9 @@ history when intent is unclear → a narrow baseline check before risky work.
 Before creating any component, hook, utility, formatter, validator, schema,
 type, API client, or abstraction, search these first:
 
-- `components/ui/`. badge, button, card, hover-card, input, label, link,
+- `components/ui/`. badge, button, card, input, label, link,
   pill, popover, separator, sonner, status-dot, status-pill, tabs, textarea,
-  tooltip, obfuscated-contact, design-case-study. The set is deliberately small:
+  obfuscated-contact, design-case-study. The set is deliberately small:
   add a primitive with `npx shadcn add` only when a page actually needs it, and
   expect knip to delete it again if nothing imports it.
 - `components/common/`, `components/layout/`, `components/home/`,
@@ -166,8 +166,8 @@ type, API client, or abstraction, search these first:
   `lib/actions/send-email.ts`.
 - `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`
   (`use-theme-toggle.ts`).
-- Platform and existing-dependency capabilities: `Intl`, `date-fns`, `nuqs`
-  for URL state, `sonner` for toasts, `framer-motion` for motion.
+- Platform and existing-dependency capabilities: `Intl`, `date-fns`, native
+  URL/search params, `sonner` for toasts, the Web Animations API for motion.
 
 No exact name match does not mean no equivalent exists. Search by behavior and
 domain meaning, not just by identifier.
@@ -293,7 +293,7 @@ not cleanup.
 - `reactCompiler` is on. Do not add `useMemo`/`useCallback`/`memo` without a
   demonstrated identity or performance need. A hook's returned callbacks are an
   exception, consumers put them in dependency arrays.
-- Keep URL-addressable state in the URL (`nuqs`).
+- Keep URL-addressable state in the URL; add a query-state library only for a real consumer.
 - Preserve accessibility, keyboard behavior, stable identity, hydration safety,
   and deterministic rendering.
 - Use the canonical primitives: `cn()`, `components/ui/`, `lib/seo.ts`,
@@ -467,8 +467,9 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
 production build, `npm run test:rendered` checks native contact submit semantics
-and the portfolio client bundle boundary, plus visible writing dates against their
-machine-readable values. Content dates use the existing `safeFormatDate` /
+and the portfolio client bundle boundary, visible writing dates against their
+machine-readable values, and that `/resume` is prerendered without contact details
+and keeps its controls and the footer out of print. Content dates use the existing `safeFormatDate` /
 `safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw
 UTC-midnight strings, which can shift the calendar day and year group.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.

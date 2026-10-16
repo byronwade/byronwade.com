@@ -37,7 +37,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Primary traits:** direct, evidence-first, quietly confident, technically
   literate
 - **Traits to avoid:** salesy, playful, corporate, mysterious, hype-driven
-- **Warmth level:** warm, the canvas is the Thorbis light canvas, with a corresponding neutral dark theme
+- **Canvas:** Thorbis neutral light and dark themes
 - **Density level:** comfortable for reading, compact for indexes. Never sparse
   for its own sake.
 - **Motion personality:** crisp and near-still. Motion confirms and orients; it
@@ -57,7 +57,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
 | Workbench | No | - | No authenticated or repeat-use operational surface exists |
-| Guided | Yes | `/contact`, the inline contact sheet, `/shop` and its return routes | Single focused task, interruption- and failure-aware; shop is an unlinked test-only preview |
+| Guided | Yes | `/contact`, the inline contact sheet, `/shop`, product details and return routes | Single focused task, interruption- and failure-aware; shop is an unlinked test-only preview |
 | Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
 | Shared primitives | Yes | `components/ui/`, `app/globals.css` | One token system and one primitive set across all profiles |
@@ -75,12 +75,15 @@ from the profile and makes first-visit clarity the dominant design concern.
   `project/`, `portfolio/`, `shop/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
 - **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
-  through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
-  glyph is gone: Phosphor ships `XLogo`, so that exception no longer exists.
-- **Typography owner and loading strategy:** `lib/fonts.ts`. Inter (`--font-inter`),
-  Geist Mono (`--font-geist-mono`), and a local signature face
-  (`--font-signature`), all `display: swap`, self-hosted through `next/font`.
-  `next/font` loaders are server-only; client components use the CSS variable.
+  through the pure `lib/icons.tsx` facade; individual wrappers in `lib/icons/`
+  keep route-only glyphs out of the shared initial bundle. One family, no exceptions.
+  The hand-rolled X/Twitter glyph is gone: Phosphor ships `XLogo`, so that exception
+  no longer exists.
+- **Typography owner and loading strategy:** `app/globals.css` declares the exact
+  Thorbis Inter (`--font-inter`) and Geist Mono (`--font-geist-mono`) faces, plus
+  the existing resume signature (`--font-signature`). The root layout preloads
+  only Latin Inter. Other subsets, Mono and the signature load when used. All
+  faces use swap; the token port script copies source assets and OFL licenses.
 - **Motion token owner:** `app/globals.css` (`--motion-*`). Established as part of
   adopting this standard; before that the curve was copy-pasted in four files.
 - **Theme owner:** `next-themes`, light default, system aware, toggled from the
@@ -123,13 +126,13 @@ from the profile and makes first-visit clarity the dominant design concern.
   `lib/contact-form.ts` and delivery through `lib/actions/send-email.ts`; test-only
   shop submission through `lib/actions/create-checkout.ts` and `lib/shop/checkout.ts`,
   with catalog and pricing owned by `lib/shop/products.ts`
-- **Search and command palette:** `components/layout/dock-toolbar.tsx`, index built
-  by `lib/search-index.ts`
+- **Search and command palette:** server glyph slots in
+  `components/layout/dock-toolbar.tsx`, interaction in `dock-toolbar-client.tsx`,
+  index built by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet
 - **Tables/lists:** none, no tabular data on this site
 - **Cards/panels:** `components/ui/card.tsx`
-- **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`,
-  `hover-card.tsx`, `tooltip.tsx`. There is no dialog primitive; the one modal
+- **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`. There is no dialog primitive; the one modal
   (fullscreen preview) is a portal in `full-width-project-preview.tsx`.
 - **Inspectors:** `components/project/project-toc.tsx`
 - **Charts/data visualization:** none installed
@@ -146,13 +149,13 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Capability | Approved owner | Version/range | Why | Replacement or overlap policy |
 | --- | --- | --- | --- | --- |
 | Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive uses it | No second primitive library. Radix was removed entirely. |
-| Motion | `framer-motion` | ^11.18.2 | Needed only by `social-link-preview`; loaded through `LazyMotion` + `m` | CSS first. A library import must justify itself against `.reveal` and CSS transitions. |
+| Motion | CSS and Web Animations API | platform | Thorbis transitions and existing capsule/theme behavior | No motion package; the footer preview and its sole dependency were removed |
 | Command menu | in-house (`dock-toolbar`) | - | The morph capsule is the product; `cmdk` was removed | Do not reintroduce a command-menu dependency |
 | Toasts | `sonner` | ^2.0.5 | Already standardized | - |
 | Charts | none | - | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
 | Drag and drop | in-house hook | - | One width handle; a library would be heavier than the behavior | - |
 | Virtualization | none | - | Not needed at this scale | - |
-| State management | React + `nuqs` | ^2.8.5 | URL-shareable state; no global store needed | Do not add a store for local state |
+| State management | React and URL/search params | platform | No query-state consumer exists; unused nuqs provider removed | Use nuqs when a real URL-state surface requires it; no global store |
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
 | Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
@@ -176,7 +179,7 @@ use them correctly.
 - **Control-size scale:** owned by `button.tsx` variants. Touch targets ≥44px on
   Guided surfaces.
 - **Type roles:** `--font-sans` body/heading, `--font-geist-mono` for data and
-  code, `--font-signature` for the wordmark only.
+  code, `--font-signature` for the resume signature only.
 - **Motion curve:** Thorbis `--ease-out`, aliased by the existing motion names.
 - **Motion duration scale:** `--motion-fast` (120ms), `--motion-overlay` (180ms); other duration names alias the overlay budget.
 - **Spring defaults:** none. Nothing on this site is gesture-driven except the
@@ -192,20 +195,22 @@ use them correctly.
 - **Install:** `npm ci`
 - **Node runtime:** 24.x, declared in `package.json` and the lockfile root; this
   overrides Vercel's retired Node 20 project default without a dashboard change.
-- **Development:** `npm run dev`
-- **Affected tests:** `npm test`, contact-action, cache-refresh, and test-only
-  checkout and screenshot-route regressions with fixture operations, plus
-  content-date regressions across five timezones
+- **Development:** `npm run dev` (Turbopack); production uses Next webpack to
+  keep requests within the existing Lighthouse budget.
+- **Affected tests:** `npm test`, contact-action, cache-refresh, test-only checkout,
+  screenshot and resume PDF regressions with fixture operations, content-date
+  regressions across five timezones, and Thorbis class merging/token/favicon contracts
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
-  contact submit and shop return-link semantics, exclusion of portfolio API/cache
-  code from production client chunks, and visible writing dates matching their
-  machine dates
+  contact submit and shop return-link semantics, catalog-owned noindex product
+  details, exclusion of portfolio API/cache code from production client chunks,
+  visible writing dates matching their machine dates, homepage boundaries, resume
+  print/privacy, and inclusion of the resume PDF browser assets in file tracing
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
 - **Format check:** same command; `npm run lint:fix` writes
-- **Build:** `npm run build`
+- **Build:** `npm run build` (`next build --webpack`)
 - **End-to-end:** none
 - **Accessibility:** no automated suite. Biome's a11y rules run in lint; manual
   keyboard passes are required for critical flows.
@@ -221,14 +226,12 @@ use them correctly.
 
 ## Performance budgets
 
-Targets from `lighthouse-budget.json`, scoped to `/*`.
+From `lighthouse-budget.json`, applied to `/*`.
 
-The current `perf:budget` command builds and reports on the homepage. Installed
-Lighthouse 12.8.2 does not read `--budget-path`: built-in budgets were removed in
-[Lighthouse 12](https://github.com/GoogleChrome/lighthouse/pull/15950). Its exit code
-does not establish a budget pass. Compare report values with the file until local
-budget enforcement is restored; the projects refresh records both homepage and
-Projects measurements in `docs/evidence/projects-refresh/performance-evidence.json`.
+Lighthouse 12 removed its built-in budget flag. This design change restores
+local enforcement in scripts/perf-budget.mjs by comparing timing, byte and
+request-count values directly. A Lighthouse CLI exit code is not a budget pass.
+Earlier project-lane reports remain in docs/evidence/projects-refresh/.
 
 | Surface | Metric | Budget | Measurement method | Environment |
 | --- | --- | --- | --- | --- |
@@ -259,7 +262,6 @@ the user's instruction each time.
 | Automated tests | Contact-action, cache-refresh, content-date, screenshot-route, and test-only checkout regressions via `npm test`; other domains uncovered | Contact, cache-refresh, date, screenshot-route, and checkout changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs`, `tests/cache-revalidation.test.mjs`, `tests/content-dates.test.mjs`, `tests/screenshot.test.mjs`, `tests/shop-checkout.test.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
-| Performance budget enforcement | `perf:budget` reports Lighthouse results but its removed budget flag is ignored | No | Restore a local report-to-budget assertion with a measured baseline; do not treat CLI exit 0 as a budget pass | `docs/evidence/projects-refresh/` |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
 | React Compiler bailouts | 7, all `try`/`catch` around `await` | No | Leave unless the surrounding code is being rewritten anyway | `AGENTS.md` § Audit tooling |

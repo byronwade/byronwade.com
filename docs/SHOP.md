@@ -1,7 +1,9 @@
 # Shop preview
 
 `/shop` is deliberately unlinked from navigation, search, and the sitemap. All
-three shop routes are `noindex`. Products, prices, currency, and the exact visible
+shop routes, including `/shop/[productId]`, are `noindex`. Product detail pages
+resolve only the same three catalog IDs; unknown IDs return 404. Products,
+prices, currency, formatting, and the exact visible
 placeholder label live in `lib/shop/products.ts`. Nothing is delivered.
 
 The page and server action read `STRIPE_SECRET_KEY` only on the server. Missing,
@@ -42,8 +44,9 @@ Only a nonempty `sk_test_` credential can reach Stripe. The response must also h
 - Each rendered product form has a validated UUID idempotency token. Pending submission disables
   the native submit control, keeps its label/width, announces progress, and shows
   the canonical spinner. Failures are announced and focused inline for retry.
-- Checkout controls and focused errors use the shell's scroll clearance so native
-  keyboard navigation keeps them above the fixed mobile dock.
+- Collection and detail pages compose the shared Thorbis shell, type roles,
+  links, and large buttons. Checkout controls and focused errors retain scroll
+  clearance for native keyboard navigation.
 - Session creation is a mutation with `no-store`, a 10-second timeout, and no
   automatic retry. It must never use the external-read cache.
 - No webhook, fulfillment, order storage, live-mode path, browser Stripe SDK, or
