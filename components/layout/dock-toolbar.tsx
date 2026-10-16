@@ -28,7 +28,7 @@ const X_URL = "https://x.com/byron_c_wade";
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
 const ITEM =
-	"relative flex size-8 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring";
+	"relative flex size-11 sm:size-10 items-center justify-center rounded-full outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset";
 const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-active-foreground";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
@@ -94,6 +94,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
+	const returnFocusRef = React.useRef<HTMLElement | null>(null);
 	const panelId = React.useId();
 
 	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
@@ -121,7 +122,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	);
 
 	/*, slot sizing: keep the reserved footprint synced to the compact pill ,  */
-	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 40 });
+	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 0, h: 52 });
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
 		const morph = morphRef.current;
@@ -151,8 +152,11 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		onOpened: () => {
 			if (mode === "search") {
 				inputRef.current?.focus({ preventScroll: true });
+			} else {
+				panelRef.current?.focus({ preventScroll: true });
 			}
 		},
+		onClosed: () => returnFocusRef.current?.focus({ preventScroll: true }),
 		deps: [mode],
 	});
 
@@ -193,10 +197,18 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
+				const focused = document.activeElement;
+				if (focused instanceof HTMLElement && !panelRef.current?.contains(focused)) {
+					returnFocusRef.current = focused;
+				}
 				setMode((m) => (m === "search" ? null : "search"));
 			}
 		};
-		const onOpen = () => setMode("search");
+		const onOpen = () => {
+			const focused = document.activeElement;
+			returnFocusRef.current = focused instanceof HTMLElement ? focused : null;
+			setMode("search");
+		};
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("open-command-palette", onOpen);
 		return () => {
@@ -276,7 +288,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 
 	return (
 		<TooltipProvider delay={350}>
-			<div className="pointer-events-none fixed top-3 right-3 z-50 print:hidden">
+			<div className="pointer-events-none relative z-50 w-40 sm:w-60 print:hidden">
 				{/* SLOT, reserves the collapsed pill's footprint so nothing reflows. */}
 				<div
 					ref={rootRef}
@@ -287,15 +299,16 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 					<div
 						ref={morphRef}
 						className={cn(
-							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground shadow-float [will-change:width,height]",
-							open ? "rounded-2xl" : "rounded-3xl"
+							"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
+							open ? "rounded-xl shadow-float" : "rounded-full"
 						)}
 					>
 						{/* COMPACT, the toolbar. */}
 						<div
 							ref={compactRef}
+							inert={open}
 							className={cn(
-								"flex items-center gap-1 p-[3px] transition-opacity duration-150",
+								"flex items-center gap-0.5 p-1.5 transition-opacity duration-150",
 								open && "pointer-events-none"
 							)}
 						>
@@ -304,7 +317,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={() => setMode("search")}
+											onClick={(event) => {
+												returnFocusRef.current = event.currentTarget;
+												setMode("search");
+											}}
 											aria-label="Search (⌘K)"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -315,39 +331,41 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 								<TooltipContent sideOffset={10}>Search · ⌘K</TooltipContent>
 							</Tooltip>
 
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<a
-											href={GITHUB_URL}
-											target="_blank"
-											rel="noreferrer"
-											aria-label="GitHub"
-											className={cn(ITEM, ITEM_IDLE)}
-										>
-											<Github className="size-4 shrink-0" />
-										</a>
-									}
-								/>
-								<TooltipContent sideOffset={10}>GitHub</TooltipContent>
-							</Tooltip>
+							<span className="hidden sm:contents">
+								<Tooltip>
+									<TooltipTrigger
+										render={
+											<a
+												href={GITHUB_URL}
+												target="_blank"
+												rel="noreferrer"
+												aria-label="GitHub"
+												className={cn(ITEM, ITEM_IDLE)}
+											>
+												<Github className="size-4 shrink-0" />
+											</a>
+										}
+									/>
+									<TooltipContent sideOffset={10}>GitHub</TooltipContent>
+								</Tooltip>
 
-							<Tooltip>
-								<TooltipTrigger
-									render={
-										<a
-											href={X_URL}
-											target="_blank"
-											rel="noreferrer"
-											aria-label="X (@byron_c_wade)"
-											className={cn(ITEM, ITEM_IDLE)}
-										>
-											<Twitter className="size-3.5 shrink-0" />
-										</a>
-									}
-								/>
-								<TooltipContent sideOffset={10}>X · @byron_c_wade</TooltipContent>
-							</Tooltip>
+								<Tooltip>
+									<TooltipTrigger
+										render={
+											<a
+												href={X_URL}
+												target="_blank"
+												rel="noreferrer"
+												aria-label="X (@byron_c_wade)"
+												className={cn(ITEM, ITEM_IDLE)}
+											>
+												<Twitter className="size-3.5 shrink-0" />
+											</a>
+										}
+									/>
+									<TooltipContent sideOffset={10}>X · @byron_c_wade</TooltipContent>
+								</Tooltip>
+							</span>
 
 							<Tooltip>
 								<TooltipTrigger
@@ -371,7 +389,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={() => setMode("donate")}
+											onClick={(event) => {
+												returnFocusRef.current = event.currentTarget;
+												setMode("donate");
+											}}
 											aria-label="Support open source"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -394,6 +415,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							role="dialog"
 							aria-label={mode === "donate" ? "Support open source" : "Search"}
 							aria-hidden={!open}
+							inert={!open}
+							tabIndex={-1}
 							className={cn(
 								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-150",
 								panelWidth,
@@ -403,8 +426,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							{mode === "donate" ? (
 								<div className="flex flex-col gap-3 p-4">
 									<div className="flex items-center gap-2.5">
-										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-pink-500/15">
-											<Heart className="size-4 fill-pink-500 text-pink-500" />
+										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-brand-muted">
+											<Heart className="size-4 fill-brand text-brand" />
 										</span>
 										<div className="leading-tight">
 											<div className="font-semibold text-[13px] text-dock-active-foreground">
@@ -422,7 +445,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										href={SPONSOR_URL}
 										target="_blank"
 										rel="noreferrer"
-										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-pink-500 font-semibold text-[13px] text-white transition-colors hover:bg-pink-500/90"
+										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
 									>
 										<Heart className="size-4 fill-white" />
 										Donate via GitHub Sponsors
