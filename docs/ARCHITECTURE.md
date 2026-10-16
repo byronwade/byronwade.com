@@ -30,7 +30,7 @@ the header.
 | `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`) |
 | `/portfolio`, `/portfolio/*` | Live GitHub portfolio, static project details, and Figma viewer |
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
-| `/resume` | Resume (PDF export via `/api/resume-pdf`) |
+| `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/privacy`, `/terms` | Legal |
 
