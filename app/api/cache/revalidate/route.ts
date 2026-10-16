@@ -4,30 +4,46 @@ import { CACHE_TAGS, type CacheTag } from "@/lib/cache";
 import { siteUrl } from "@/lib/site";
 
 export async function POST(request: NextRequest) {
+	const expectedSecret = process.env.REVALIDATION_SECRET;
+	// Missing configuration must never match a missing or blank request secret.
+	if (!expectedSecret?.trim()) {
+		return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
+	}
+
+	let body: unknown;
 	try {
-		const { tag, secret } = await request.json();
+		body = await request.json();
+	} catch {
+		return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+	}
 
-		// Verify the secret to prevent unauthorized cache invalidation
-		if (secret !== process.env.REVALIDATION_SECRET) {
-			return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
-		}
+	if (!body || typeof body !== "object" || Array.isArray(body)) {
+		return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+	}
+	const secret = "secret" in body ? body.secret : undefined;
+	if (typeof secret !== "string" || secret !== expectedSecret) {
+		return NextResponse.json({ error: "Invalid secret" }, { status: 401 });
+	}
 
-		// Validate the tag
-		const validTags: readonly CacheTag[] = Object.values(CACHE_TAGS);
-		if (!validTags.includes(tag)) {
-			return NextResponse.json({ error: "Invalid tag", validTags }, { status: 400 });
-		}
+	const tag = "tag" in body ? body.tag : undefined;
+	const validTags: readonly CacheTag[] = Object.values(CACHE_TAGS);
+	const validTag = validTags.find((candidate) => candidate === tag);
+	if (!validTag) {
+		return NextResponse.json({ error: "Invalid tag", validTags }, { status: 400 });
+	}
 
-		// Revalidate the specified tag (Next.js 16 with optional cache config)
-		revalidateTag(tag, "");
+	try {
+		// Manual refresh expires immediately instead of serving stale data once more.
+		revalidateTag(validTag, { expire: 0 });
 
 		return NextResponse.json({
 			success: true,
-			message: `Cache revalidated for tag: ${tag}`,
+			message: `Cache revalidated for tag: ${validTag}`,
 			timestamp: new Date().toISOString(),
 		});
-	} catch (error) {
-		console.error("Cache revalidation error:", error);
+	} catch {
+		// Error details can contain submitted credentials; keep logs generic too.
+		console.error("Cache revalidation failed");
 		return NextResponse.json({ error: "Failed to revalidate cache" }, { status: 500 });
 	}
 }
