@@ -428,3 +428,54 @@ poll gh pr checks 49 for up to 20 minutes and update the PR with actual results.
 - Commit/push the report-only update, recheck the resulting head, and put that
   exact head plus fresh local/remote evidence into the PR body. Application
   sources remain the same as the locally verified repair head.
+
+## PR 49 main integration - 2026-10-16
+
+### Loop 1: inspect and integrate
+
+- Mode: Implementation; merge current main into bot/shop, then report only.
+  Never merge PR 49, force-push, use admin overrides, or enable live payments.
+- Started clean at `e9bdb7eea48da49478d625b753f228537a5ddafc`.
+  Fetched main `c48f33207bae3a20e9ccec92f7dd065d1539daf1`, including
+  cache-refresh protection (#51) and publication-date policy (#54).
+- Only conflict: `PROJECT_PROFILE.md` test inventory. Combined shop checkout
+  coverage with main's cache-refresh/date and rendered-date coverage.
+  All application changes from main merge unchanged; shop source is preserved.
+- Reuse: existing catalog, test-only checkout guard, route metadata, local
+  gates, checkout regressions, and rendered-contract tests. No new abstraction,
+  dependency, product, UI, motion, or live credential is needed.
+- Verification target: lint, type-check, knip, production build, native tests,
+  rendered tests, exact shop-source preservation, noindex/unlinked assertions,
+  secret/contact scans, full diff review, and Git ancestry.
+- Shared toolkit reservation failed on its pre-existing missing configured
+  root. Configuration, other worktrees, and cleanup quarantine were untouched.
+  Use native exit/output evidence if its receipt runner has the same blocker.
+- Byron must choose real products before any merge. The task stops after push,
+  remote check observation, PR description update, and the final handoff.
+
+### Loop 2: verify the integrated source
+
+- Selected installed Node `v24.21.0` / npm `11.19.0` explicitly after discovering
+  that non-login shells defaulted to Node 22. Repeated the first three checks
+  on Node 24; all acceptance results below use the supported runtime.
+- Serial gates: lint exit 0 (141 files, no fixes), type-check exit 0, knip
+  exit 0, build exit 0 (41 pages), native tests 136/136, rendered tests 5/5.
+  Rendered checks cover 39 dates across eight pages and 27 client chunks,
+  contact submit semantics, and both native shop return links.
+- Build used existing Figma/Dribbble fallbacks. Native tests emitted the
+  existing module-type warnings and expected fixture failure diagnostics.
+  No live provider/payment test was performed; no credential was supplied.
+- Exact diff assertions preserve shop routes, catalog, forms, checkout action,
+  guard, dependency manifest/lockfile, and the blank Stripe environment template.
+  Imported main application files exactly match main; no source repair needed.
+- Safety assertions: three placeholder records and three noindex routes;
+  shop absent from navigation/search/sitemap; zero live Stripe key patterns
+  in 314 tracked files, the single env template, or Stripe process variables.
+- Production scans: zero raw-contact matches in 30 client scripts and 34 HTML
+  files; zero Stripe secret symbols/keys in client scripts. Both rendered
+  return routes are noindex. Full integration diff and affected boundaries
+  reviewed; staged and unstaged diff whitespace checks pass.
+- Toolkit receipt runner has the same pre-existing missing-root blocker as
+  advisory reservation. Native command exit/output evidence is recorded here.
+- Next: create the normal merge commit, push without force, observe PR checks,
+  then publish the report-only handoff. PR 49 must remain open and unmerged.

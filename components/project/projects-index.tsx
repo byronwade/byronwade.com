@@ -2,6 +2,7 @@ import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
+import { safeFormatDate } from "@/lib/markdown-utils";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
 
@@ -20,14 +21,6 @@ import { statusTone } from "@/lib/status-tone";
  * visitor arrives with. It now sits with the page's lede rather than as a
  * header strip over the list.
  */
-
-function yearOf(date?: string): string {
-	if (!date) {
-		return "";
-	}
-	const d = new Date(date);
-	return Number.isNaN(d.getTime()) ? "" : String(d.getFullYear());
-}
 
 /**
  * The type mark: a single colour-coded word from the `--type-*` family.
@@ -70,7 +63,7 @@ function RowMarker({ project }: { project: Project }) {
 			</StatusPill>
 		);
 	}
-	const year = yearOf(project.date);
+	const year = safeFormatDate(project.date, "yyyy");
 	return year ? (
 		<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">{year}</span>
 	) : null;
@@ -89,7 +82,9 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
 							<div className="flex items-center gap-4">
 								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-									<span className={`shrink-0 font-medium text-foreground ${indexRowAccentClass}`}>
+									<span
+										className={`font-medium text-foreground sm:shrink-0 ${indexRowAccentClass}`}
+									>
 										{project.title.split(":")[0]}
 									</span>
 									{project.flagship && (

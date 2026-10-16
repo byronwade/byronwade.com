@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -7,6 +6,7 @@ import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
+import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateArticleStructuredData,
 	generateBreadcrumbStructuredData,
@@ -119,15 +119,11 @@ async function BlogPostContent({ slug }: { slug: string }) {
 						<p className="max-w-2xl text-muted-foreground leading-relaxed">{post.excerpt}</p>
 					)}
 					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-muted-foreground text-xs tabular-nums">
-						{post.date && (
-							<time dateTime={post.date}>{format(new Date(post.date), "MMMM d, yyyy")}</time>
-						)}
+						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
 						{post.updated && post.updated !== post.date && (
 							<>
 								<span aria-hidden="true">·</span>
-								<time dateTime={post.updated}>
-									Updated {format(new Date(post.updated), "MMMM d, yyyy")}
-								</time>
+								<time dateTime={post.updated}>Updated {safeFormatDate(post.updated)}</time>
 							</>
 						)}
 						<span aria-hidden="true">·</span>
