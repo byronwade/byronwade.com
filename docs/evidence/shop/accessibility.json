@@ -1,0 +1,96 @@
+{
+  "browser": "Chromium headless",
+  "scenarios": [
+    {
+      "name": "no-key-desktop",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-mobile",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-desktop-dark",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-mobile-dark",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-tablet",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-wide",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "no-key-reflow",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "/shop/success",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 39
+    },
+    {
+      "name": "/shop/cancel",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 39
+    },
+    {
+      "name": "live-key-fail-closed",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "fixture-enabled-desktop",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "fixture-enabled-mobile",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    },
+    {
+      "name": "fixture-provider-error-mobile",
+      "violations": [],
+      "incomplete": ["aria-valid-attr-value"],
+      "passes": 42
+    }
+  ],
+  "keyboard": [
+    "All products: Enter opened panel; Escape restored trigger focus",
+    "Search (\u2318K): Enter opened panel; Escape restored trigger focus",
+    "Support open source: Enter opened panel; Escape restored trigger focus",
+    "/shop/success: native return link activated with Enter",
+    "/shop/cancel: native return link activated with Enter",
+    "Skip link and shared navigation reachable; return links verified above",
+    "Footer contact reveal works; address absent before reveal; no mail client opened",
+    "Checkout reached by Tab, focus ring visible, Enter submitted; pending disabled/aria-busy; failure focused inline and retry enabled; width stable"
+  ],
+  "errors": [],
+  "headerAnimation": "none",
+  "ariaReview": "Launcher aria-controls target exists, is inert while collapsed, and becomes the named visible dialog when expanded; axe leaves this hidden-target reference for manual review."
+}

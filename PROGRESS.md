@@ -200,3 +200,34 @@
 - Freeze browser output, format evidence, clear only the generated local
   `tsconfig.tsbuildinfo`, and re-run the standard lint/type-check commands. Then
   finish the results/PR with shared performance-budget debt explicitly recorded.
+
+## Loop 11 — final upstream integration
+
+- Standard lint/type-check passed after clearing the stale generated cache;
+  native tests 57/57 and rendered tests 3/3 passed on the pre-integration tree.
+- `origin/main` advanced to `8765f9d` (PR #47, contact error correction). Merged it
+  into this branch as `eac8bc1`. Resolved only the profile ownership paragraph by
+  preserving the new contact hook and the shop boundary; no source conflict.
+- The new contact hook owns contact fields/validation/delivery, so it is not an
+  equivalent of the shop's native server-action state. Both remain domain-owned.
+- Post-merge lint, standard type-check, knip, and native tests pass (62/62 now,
+  including five upstream contact regressions). Production build and fresh browser
+  evidence are finishing. No shop change touches homepage composition or projects.
+- No `origin/bot/design-system` ref was available at the latest fetch. Document
+  the pending design-system dependency in the PR and recheck before publication.
+
+## Loop 12 — ready for publication
+
+- Current source includes main `8765f9d`. All four local release gates pass without
+  a Stripe key. Native tests 62/62; rendered tests 3/3; post-merge browser matrix
+  13/13 scenarios with zero axe violations/page errors and verified panel focus return.
+- Inspected desktop/mobile light/dark and fixture-enabled/error images; retained
+  seven screenshots. No secret/fixture credential/raw contact in client output,
+  no raw contact in prerendered HTML, and no real Stripe key pattern in source diff.
+- Final-source Lighthouse on own port 3100: score 80, LCP 3.791s, TBT 358.5ms,
+  CLS 0.0145. Budget misses are explicitly recorded, not marked passing; comparison
+  route and CLI/cleanup limitations remain in the structured evidence.
+- `RESULT.md` is a local handoff report, intentionally not committed as duplicate
+  PR noise. Commit the maintained docs/screenshots/evidence, push only `bot/shop`,
+  and open a ready PR to main. Never merge or deploy. Re-fetch the design-system
+  ref immediately before publication and note the dependency if still unavailable.

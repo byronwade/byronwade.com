@@ -1,0 +1,396 @@
+{
+  "sourceCommit": "eac8bc184f94e24c663091ce00eaccf458b7d372",
+  "node": "24.21.0",
+  "lighthouse": "12.8.2",
+  "method": "One mobile Lighthouse run per route on this worktree private production server; comparison route is an earlier shared-shell snapshot, with commit IDs recorded separately. Raw audits are compared to lighthouse-budget.json, sizes in KiB. No causal or runtime speed-improvement claim.",
+  "prescribedCommand": {
+    "command": "npm run perf:budget",
+    "status": "not run verbatim",
+    "reason": "Hardcodes occupied port 3000; that process was not used or altered. Production build run independently; same installed Lighthouse CLI pointed at own port 3100."
+  },
+  "measurementCommand": "node node_modules/lighthouse/cli/index.js http://localhost:3100/ROUTE --budget-path=./lighthouse-budget.json --chrome-flags=--headless=new --only-categories=performance --output=json",
+  "budgetAuditNote": "CLI emitted neither performance-budget nor timing-budget audits; exit 0 is not treated as budget compliance. Checks below evaluate raw reports.",
+  "routes": [
+    {
+      "route": "/shop",
+      "role": "final affected shop",
+      "sourceCommit": "eac8bc184f94e24c663091ce00eaccf458b7d372",
+      "score": 80,
+      "cliExitCode": 0,
+      "runtimeError": null,
+      "cleanupNote": null,
+      "checks": [
+        {
+          "kind": "timing",
+          "metric": "first-contentful-paint",
+          "value": 960.773,
+          "budget": 2000,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "largest-contentful-paint",
+          "value": 3791.319,
+          "budget": 3000,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "cumulative-layout-shift",
+          "value": 0.015,
+          "budget": 0.1,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "total-blocking-time",
+          "value": 358.5,
+          "budget": 300,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "speed-index",
+          "value": 1763.16,
+          "budget": 3000,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "script",
+          "value": 392.693,
+          "budget": 300,
+          "pass": false
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "total",
+          "value": 1109.564,
+          "budget": 1000,
+          "pass": false
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "stylesheet",
+          "value": 17.229,
+          "budget": 50,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "image",
+          "value": 0.0,
+          "budget": 500,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "font",
+          "value": 165.68,
+          "budget": 100,
+          "pass": false
+        },
+        {
+          "kind": "request-count",
+          "metric": "script",
+          "value": 23,
+          "budget": 10,
+          "pass": false
+        },
+        {
+          "kind": "request-count",
+          "metric": "total",
+          "value": 51,
+          "budget": 50,
+          "pass": false
+        },
+        {
+          "kind": "request-count",
+          "metric": "stylesheet",
+          "value": 1,
+          "budget": 3,
+          "pass": true
+        },
+        {
+          "kind": "request-count",
+          "metric": "image",
+          "value": 0,
+          "budget": 20,
+          "pass": true
+        },
+        {
+          "kind": "request-count",
+          "metric": "font",
+          "value": 3,
+          "budget": 5,
+          "pass": true
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 51,
+          "transferSize": 1136194
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 23,
+          "transferSize": 521540
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 23,
+          "transferSize": 402118
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 169656
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 25238
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17642
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "largestTransfers": [
+        {
+          "url": "http://localhost:3100/icon.png",
+          "totalBytes": 239576
+        },
+        {
+          "url": "http://localhost:3100/icon.png?icon.24-qm5ql480w7.png",
+          "totalBytes": 239576
+        },
+        {
+          "url": "http://localhost:3100/_next/static/media/Modelistasignature_ownAV-s.p.38jpkb3jn6uua.otf",
+          "totalBytes": 116482
+        },
+        {
+          "url": "http://localhost:3100/_next/static/chunks/1dtq_twlpiii_.js",
+          "totalBytes": 72841
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "role": "unchanged route using the same shell",
+      "score": 73,
+      "cliExitCode": 1,
+      "runtimeError": null,
+      "cleanupNote": "Report written; Chrome-launcher temporary-directory cleanup then failed with EPERM. No permissions changed or foreign processes stopped.",
+      "checks": [
+        {
+          "kind": "timing",
+          "metric": "first-contentful-paint",
+          "value": 957.061,
+          "budget": 2000,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "largest-contentful-paint",
+          "value": 4386.121,
+          "budget": 3000,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "cumulative-layout-shift",
+          "value": 0.015,
+          "budget": 0.1,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "total-blocking-time",
+          "value": 464.5,
+          "budget": 300,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "speed-index",
+          "value": 1783.032,
+          "budget": 3000,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "script",
+          "value": 388.008,
+          "budget": 300,
+          "pass": false
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "total",
+          "value": 1100.834,
+          "budget": 1000,
+          "pass": false
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "stylesheet",
+          "value": 17.188,
+          "budget": 50,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "image",
+          "value": 0.0,
+          "budget": 500,
+          "pass": true
+        },
+        {
+          "kind": "size-KiB",
+          "metric": "font",
+          "value": 165.68,
+          "budget": 100,
+          "pass": false
+        },
+        {
+          "kind": "request-count",
+          "metric": "script",
+          "value": 22,
+          "budget": 10,
+          "pass": false
+        },
+        {
+          "kind": "request-count",
+          "metric": "total",
+          "value": 50,
+          "budget": 50,
+          "pass": true
+        },
+        {
+          "kind": "request-count",
+          "metric": "stylesheet",
+          "value": 1,
+          "budget": 3,
+          "pass": true
+        },
+        {
+          "kind": "request-count",
+          "metric": "image",
+          "value": 0,
+          "budget": 20,
+          "pass": true
+        },
+        {
+          "kind": "request-count",
+          "metric": "font",
+          "value": 3,
+          "budget": 5,
+          "pass": true
+        }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 50,
+          "transferSize": 1127254
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 23,
+          "transferSize": 521598
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 22,
+          "transferSize": 397320
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 169656
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21079
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17601
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "largestTransfers": [
+        {
+          "url": "http://localhost:3100/icon.png",
+          "totalBytes": 239576
+        },
+        {
+          "url": "http://localhost:3100/icon.png?icon.24-qm5ql480w7.png",
+          "totalBytes": 239576
+        },
+        {
+          "url": "http://localhost:3100/_next/static/media/Modelistasignature_ownAV-s.p.38jpkb3jn6uua.otf",
+          "totalBytes": 116482
+        },
+        {
+          "url": "http://localhost:3100/_next/static/chunks/1dtq_twlpiii_.js",
+          "totalBytes": 72841
+        }
+      ],
+      "sourceCommit": "3bd91dc60ce073ab181eba32775e50c97ee953cf"
+    }
+  ],
+  "disposition": "Record shared shell/font/icon/prefetch budget debt for design-system owner; no broad asset, typography or navigation rewrite in the shop change."
+}
