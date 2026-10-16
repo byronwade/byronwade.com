@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, ExternalLink, Github } from "@/lib/icons";
-import { projects } from "@/lib/portfolio-data";
+import { projects } from "@/lib/portfolio-projects";
 import { cn } from "@/lib/utils";
 
 /** Staggered entrance for the gallery, matching the reveal utilities in globals.css. */

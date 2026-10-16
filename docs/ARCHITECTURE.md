@@ -28,7 +28,7 @@ in the utility toolbar.
 |-------|---------|
 | `/` | Editorial homepage |
 | `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`) |
-| `/portfolio`, `/portfolio/*` | Live GitHub portfolio + Figma viewer |
+| `/portfolio`, `/portfolio/*` | Live GitHub portfolio, static project details, and Figma viewer |
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume (PDF export via `/api/resume-pdf`) |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
@@ -51,7 +51,10 @@ components/
 
 ## Data
 
-- `lib/portfolio-data.ts`. GitHub / Dribbble / Figma APIs
+- `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
+  guarded against imports from client components
+- `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
+  client-safe, with no API, cache, or environment dependencies
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
