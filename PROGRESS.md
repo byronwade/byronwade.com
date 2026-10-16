@@ -166,3 +166,37 @@
   classifying this broader work for the design-system owner.
 - CLI exit 0 emitted no budget audits. Final evidence will explicitly compare raw
   metrics/resources to the canonical budget; no performance-pass claim is made.
+
+## Loop 9 — final ARIA review and comparison evidence
+
+- Measured unchanged `/privacy`: score 73, LCP 4.4s, font transfer identical at
+  165.68 KiB, scripts 388.01 KiB versus shop 389.76 KiB. Both exceed shared budgets.
+  Classified broader font/icon/prefetch work as record for the design-system owner.
+  Privacy report was written, then CLI cleanup failed with Windows EPERM; retained
+  that exit code and limitation in evidence. No permission changes or foreign cleanup.
+- `performance.json` compares raw metrics and request/size counts directly with
+  the canonical budget. Shop performance is explicitly not a budget pass.
+- Axe's manual-review item is the launcher `aria-controls` pointing to its inert
+  hidden dialog. Added a browser check that the ID resolves to the visible named
+  dialog when expanded. This also exposed absent focus return, so the existing
+  capsule lifecycle now accepts `onClosed`; launcher/search/support restore their
+  trigger, and support gets initial dialog focus. No animation scale or geometry change.
+- Re-running local gates and the keyboard/axe matrix for this focused lifecycle
+  correction, then commit evidence, final secret/diff review, push, and ready PR.
+
+## Loop 10 — verified compiler fix and final browser evidence
+
+- Cold compiler traces identified the apparent stalls: the icon barrels loaded
+  1,512 CSR and 1,513 SSR declarations. The package explicitly exports public
+  per-icon SSR and types entry points, so the canonical module now uses those.
+  No icon exports, weights, consumers, dependency versions, or visual system changed.
+- After trace: zero CSR and 59 SSR declarations; total source files 4,479 → 1,508.
+  Strict cold type-check, knip, production build, and three rendered tests pass.
+  Import cleanup and trace evidence committed as `3b8417c`.
+- Latest production browser matrix passes: 13 scenarios, zero axe violations,
+  zero page errors, seven screenshots. Launcher/search/support Enter/Escape focus
+  return passes. Expanded launcher resolves its exact aria-controls target;
+  the closed inert-target axe review item is documented, not suppressed.
+- Freeze browser output, format evidence, clear only the generated local
+  `tsconfig.tsbuildinfo`, and re-run the standard lint/type-check commands. Then
+  finish the results/PR with shared performance-budget debt explicitly recorded.

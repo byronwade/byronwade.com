@@ -57,7 +57,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
 | Workbench | No | - | No authenticated or repeat-use operational surface exists |
-| Guided | Yes | `/contact`, the inline contact sheet | Single focused task, interruption- and failure-aware |
+| Guided | Yes | `/contact`, the inline contact sheet, `/shop` and its return routes | Single focused task, interruption- and failure-aware; shop is an unlinked test-only preview |
 | Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
 | Shared primitives | Yes | `components/ui/`, `app/globals.css` | One token system and one primitive set across all profiles |
@@ -72,7 +72,7 @@ from the profile and makes first-visit clarity the dominant design concern.
   to Tailwind through `@theme inline`. The only place a design value is defined.
 - **Component/primitives owner:** `components/ui/`
 - **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
-  `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
+  `project/`, `portfolio/`, `shop/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
 - **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
   through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
@@ -119,7 +119,9 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **View controls/tabs:** `components/ui/tabs.tsx`
 - **Buttons:** `components/ui/button.tsx`
 - **Forms and validation:** `components/ui/input.tsx`, `textarea.tsx`, `label.tsx`;
-  submission through `lib/actions/send-email.ts`
+  contact submission through `lib/actions/send-email.ts`; test-only shop submission
+  through `lib/actions/create-checkout.ts` and `lib/shop/checkout.ts`, with catalog
+  and pricing owned by `lib/shop/products.ts`
 - **Search and command palette:** `components/layout/dock-toolbar.tsx`, index built
   by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet

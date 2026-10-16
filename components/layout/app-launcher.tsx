@@ -91,6 +91,7 @@ export function AppLauncher() {
 		openDelayMs: 30,
 		closeDelayMs: 70,
 		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+		onClosed: () => compactRef.current?.querySelector("button")?.focus({ preventScroll: true }),
 	});
 
 	// Esc + click-away close.

@@ -94,6 +94,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
+	const returnFocusRef = React.useRef<HTMLElement | null>(null);
 	const panelId = React.useId();
 
 	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
@@ -151,8 +152,11 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		onOpened: () => {
 			if (mode === "search") {
 				inputRef.current?.focus({ preventScroll: true });
+			} else {
+				panelRef.current?.focus({ preventScroll: true });
 			}
 		},
+		onClosed: () => returnFocusRef.current?.focus({ preventScroll: true }),
 		deps: [mode],
 	});
 
@@ -193,10 +197,18 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 		const onKey = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
+				const activeElement = document.activeElement;
+				if (activeElement instanceof HTMLElement && !panelRef.current?.contains(activeElement)) {
+					returnFocusRef.current = activeElement;
+				}
 				setMode((m) => (m === "search" ? null : "search"));
 			}
 		};
-		const onOpen = () => setMode("search");
+		const onOpen = () => {
+			const activeElement = document.activeElement;
+			returnFocusRef.current = activeElement instanceof HTMLElement ? activeElement : null;
+			setMode("search");
+		};
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("open-command-palette", onOpen);
 		return () => {
@@ -305,7 +317,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={() => setMode("search")}
+											onClick={(event) => {
+												returnFocusRef.current = event.currentTarget;
+												setMode("search");
+											}}
 											aria-label="Search (⌘K)"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -376,7 +391,10 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									render={
 										<button
 											type="button"
-											onClick={() => setMode("donate")}
+											onClick={(event) => {
+												returnFocusRef.current = event.currentTarget;
+												setMode("donate");
+											}}
 											aria-label="Support open source"
 											className={cn(ITEM, ITEM_IDLE)}
 										/>
@@ -400,6 +418,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							aria-label={mode === "donate" ? "Support open source" : "Search"}
 							aria-hidden={!open}
 							inert={!open}
+							tabIndex={-1}
 							className={cn(
 								"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-150",
 								panelWidth,
