@@ -75,8 +75,10 @@ from the profile and makes first-visit clarity the dominant design concern.
   `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
 - **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
-  through `lib/icons.tsx`. One family, no exceptions. The hand-rolled X/Twitter
-  glyph is gone: Phosphor ships `XLogo`, so that exception no longer exists.
+  through the pure `lib/icons.tsx` facade; individual wrappers in `lib/icons/`
+  keep route-only glyphs out of the shared initial bundle. One family, no exceptions.
+  The hand-rolled X/Twitter glyph is gone: Phosphor ships `XLogo`, so that exception
+  no longer exists.
 - **Typography owner and loading strategy:** `app/globals.css` declares the exact
   Thorbis Inter (`--font-inter`) and Geist Mono (`--font-geist-mono`) faces, plus
   the existing resume signature (`--font-signature`). The root layout preloads
@@ -122,8 +124,9 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Forms and validation:** `components/ui/input.tsx`, `textarea.tsx`, `label.tsx`;
   shared submission state in `hooks/use-contact-form.ts`, with validation in
   `lib/contact-form.ts` and delivery through `lib/actions/send-email.ts`
-- **Search and command palette:** `components/layout/dock-toolbar.tsx`, index built
-  by `lib/search-index.ts`
+- **Search and command palette:** server glyph slots in
+  `components/layout/dock-toolbar.tsx`, interaction in `dock-toolbar-client.tsx`,
+  index built by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet
 - **Tables/lists:** none, no tabular data on this site
 - **Cards/panels:** `components/ui/card.tsx`

@@ -44,7 +44,8 @@ export function useCapsuleMorph({
 		const morph = morphRef.current;
 		const compact = compactRef.current;
 		const panel = panelRef.current;
-		if (!(morph && compact && panel)) {
+		// A closed capsule has no choreography to measure on first hydration.
+		if (!(morph && compact && panel && (open || collapsed.has(morph)))) {
 			return;
 		}
 

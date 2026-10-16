@@ -3,8 +3,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 const sharedPrimitivePackages =
-	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|tailwind-merge|react-compiler-runtime)[\\/]/;
-const sharedPrimitiveSources = /[\\/]lib[\\/](?:icons|utils|motion)\.tsx?$/;
+	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|next|tailwind-merge|react-compiler-runtime)[\\/]/;
+const sharedPrimitiveSources =
+	/[\\/](?:lib[\\/](?:utils|motion|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
 
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
@@ -22,8 +23,8 @@ const nextConfig = {
 	compress: true,
 
 	experimental: {
-		// Use installed packages only; icon imports are narrowed in lib/icons.tsx.
-		optimizePackageImports: ["date-fns"],
+		// Resolve pure facades to each consumer's actual server/client dependencies.
+		optimizePackageImports: ["date-fns", "@/lib/icons", "@/components/common"],
 	},
 
 	images: {
@@ -70,8 +71,8 @@ const nextConfig = {
 						default: false,
 						defaultVendors: false,
 						sharedPrimitives: {
-							// Initial-only sharing removes measured duplicate icon/helper code
-							// without pulling deferred contact/breadcrumb modules onto home.
+							// Home also loads the root layout and not-found fallback. Share
+							// their overlap without collecting unrelated route entries.
 							test: (module) =>
 								Boolean(
 									module.resource &&
@@ -79,7 +80,10 @@ const nextConfig = {
 											sharedPrimitiveSources.test(module.resource))
 								),
 							name: "shared-primitives",
-							chunks: "initial",
+							chunks: (chunk) =>
+								chunk.name === "app/page" ||
+								chunk.name === "app/layout" ||
+								chunk.name === "app/not-found",
 							minChunks: 2,
 							enforce: true,
 							priority: 35,

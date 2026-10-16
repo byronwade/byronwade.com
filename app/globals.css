@@ -618,7 +618,7 @@
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: auto;
-    scroll-padding-block: var(--site-header-clearance, 16rem) 6rem;
+    scroll-padding-block: 16rem 6rem;
   }
   :focus-visible {
     outline: 2px solid var(--ring);

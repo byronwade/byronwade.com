@@ -44,9 +44,25 @@ as part of measurement.
   Contact addresses remain obfuscated until revealed.
 - The app favicon reuses an existing small asset. `tests/design-contract.test.mjs`
   prevents a large public asset from shadowing its route.
-- `lib/icons.tsx` narrows Phosphor imports. Next tree shaking removes unused
-  wrappers. React Compiler owns routine memoization; do not add manual memoization
-  without a measured need.
+- `lib/icons.tsx` is a pure re-export facade over individual wrappers in
+  `lib/icons/`. A monolithic factory module shipped 45 glyph definitions on home,
+  including preview-only icons. The sharing group is limited to the actual
+  homepage/layout/root-not-found overlap; sharing every route's initial modules
+  recreated the same eager payload even after splitting the facade. Independent modules and
+  Next's existing import optimizer resolve each consumer to its requested glyphs;
+  this bounded sharing keeps route dependencies deferred without changing public
+  imports or weights. The rendered home contract checks the actual initial scripts
+  for preview glyphs. React Compiler owns routine memoization; do not add manual
+  memoization without a measured need.
+- The same import optimizer keeps unused common-barrel clients out of server-only
+  homepage lists. The bounded sharing group also deduplicates Next link helpers
+  used by home and layout, preserving Next's existing framework groups.
+- Header measurement writes native root scroll padding directly. The old inherited
+  custom property recalculated styles throughout the document even though only
+  the root used it. No-JS defaults and measured focus clearance are retained.
+- Launcher/toolbar feature owners render static SVGs on the server and pass them
+  as ReactNode slots to their client interaction leaves. Their existing public
+  APIs and state logic stay intact while glyph-definition JavaScript is removed.
 - Toast notifications mount with the contact forms; the unused global query-state
   adapter is removed. Home does not load the breadcrumb popover graph.
 - Vercel Analytics and Speed Insights retain their existing root integration.
@@ -62,3 +78,9 @@ browser matrix in `docs/evidence/thorbis/`. The evidence README identifies the
 measurement environment, results, source pin and reproduction commands. They are
 local lab results, not a real-user or production latency claim. Report machine
 contention and failed runs honestly; do not relax a budget to obtain a pass.
+
+Closed shell capsules skip motion-token reads before their first opening. Header
+and launcher ResizeObservers supply their initial measurements without duplicate
+synchronous hydration reads. The launcher observer writes its slot geometry directly
+rather than scheduling a React render for measurements. Panel geometry and existing reduced-motion behavior
+remain owned by `useCapsuleMorph`.

@@ -11,6 +11,9 @@ const HIDDEN_HEADING =
 	/class="[^"]*(?:scene-enter|reveal-delay|opacity-0)[^"]*"[^>]*id="home-title"/;
 const INTER_PRELOAD =
 	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/UcCo3FwrK3iLTcviYwY\.woff2")[^>]*>/;
+const INITIAL_SCRIPT = /<script[^>]+src="\/_next\/([^"]+)"/g;
+const NON_CLIENT_GLYPHS =
+	/(?:DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
 
 test("homepage content and navigation are present before hydration", async () => {
 	const html = await readFile(
@@ -28,4 +31,28 @@ test("homepage content and navigation are present before hydration", async () =>
 		"the pinned source font must preload without a generated manifest"
 	);
 	assert.doesNotMatch(html, HIDDEN_HEADING);
+});
+
+test("homepage initial scripts exclude server-shell and project-preview glyphs", async () => {
+	const html = await readFile(
+		new URL("../../.next/server/app/index.html", import.meta.url),
+		"utf8"
+	);
+	const scripts = [...html.matchAll(INITIAL_SCRIPT)].map((match) => match[1]);
+	assert.ok(scripts.length > 0, "Run npm run build before checking initial scripts");
+	const chunks = await Promise.all(
+		scripts.map(async (file) => ({
+			file,
+			source: await readFile(new URL(`../../.next/${file}`, import.meta.url), "utf8"),
+		}))
+	);
+	assert.ok(
+		chunks.some(({ source }) => source.includes("ArrowRightIcon")),
+		"The client contact-action glyph must remain detectable for this boundary check"
+	);
+	assert.deepEqual(
+		chunks.filter(({ source }) => NON_CLIENT_GLYPHS.test(source)).map(({ file }) => file),
+		[],
+		"Server-shell and preview glyph definitions belong outside the homepage JavaScript"
+	);
 });

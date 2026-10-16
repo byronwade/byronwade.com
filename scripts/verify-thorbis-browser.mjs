@@ -58,6 +58,21 @@ function readTargets() {
 		});
 }
 
+function readElementVisibility(element) {
+	let current = element;
+	let visible = true;
+	while (current) {
+		const style = getComputedStyle(current);
+		if (style.opacity === "0" || style.visibility === "hidden" || style.display === "none") {
+			visible = false;
+			break;
+		}
+		current = current.parentElement;
+	}
+	const rect = element.getBoundingClientRect();
+	return { visible: visible && rect.height > 0, top: rect.top };
+}
+
 function assertTargets(targets, width) {
 	const minimum = width < 640 ? 44 : 24;
 	const failures = targets.filter((target) => target.width < minimum || target.height < minimum);
@@ -129,6 +144,18 @@ async function auditCase(url, width, theme) {
 	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
 	await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
 	await page.goto(url, { waitUntil: "networkidle2" });
+	// Exercise the real control in both directions, including the non-reduced path.
+	await serial([theme !== "dark", theme === "dark"], async (expected) => {
+		await page.click('button[aria-label="Toggle theme"]');
+		await page.waitForFunction(
+			(dark) => document.documentElement.classList.contains("dark") === dark,
+			{},
+			expected
+		);
+		await page.evaluate(async () => {
+			await Promise.all(document.getAnimations().map((animation) => animation.finished));
+		});
+	});
 	await page.evaluate(() => document.fonts.ready);
 	await page.addScriptTag({ content: axeSource });
 	const axe = await page.evaluate(async () => {
@@ -173,7 +200,16 @@ async function auditCase(url, width, theme) {
 	const targets = await page.evaluate(readTargets);
 	const file = `home-${width}-${theme}.png`;
 	await page.screenshot({ path: `${destination}/${file}`, fullPage: true });
-	report.cases.push({ width, theme, axe, geometry, contrast, targets, file });
+	report.cases.push({
+		width,
+		theme,
+		themeToggleRoundTrip: true,
+		axe,
+		geometry,
+		contrast,
+		targets,
+		file,
+	});
 	assertTargets(targets, width);
 	console.log(`Audited ${width}px ${theme}`);
 	assert.equal(geometry.overflow, false, `overflow at ${width} ${theme}`);
@@ -320,6 +356,11 @@ async function checkShellStates(page, width, theme) {
 				{},
 				selector
 			);
+			if (label === "Search") {
+				await page.waitForFunction(
+					() => document.activeElement.getAttribute("aria-label") === "Search"
+				);
+			}
 			const violations = await page.evaluate(async () =>
 				(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
 			);
@@ -465,20 +506,17 @@ try {
 			await page.setViewport({ width, height: 1000 });
 			await page.setJavaScriptEnabled(false);
 			await page.goto(url, { waitUntil: "networkidle2" });
-			const visible = await page.$eval("h1", (element) => {
-				let current = element;
-				while (current) {
-					const style = getComputedStyle(current);
-					if (style.opacity === "0" || style.visibility === "hidden" || style.display === "none") {
-						return false;
-					}
-					current = current.parentElement;
-				}
-				return element.getBoundingClientRect().top < 350;
-			});
+			const heading = await page.$eval("h1", readElementVisibility);
+			const visible = heading.visible && heading.top < 350;
 			assert.ok(visible, "no-JS content must be visible at first paint");
+			const navigation = await page.$eval('nav[aria-label="Primary"]', readElementVisibility);
+			const navigationVisible = navigation.visible;
+			assert.ok(
+				navigationVisible,
+				"no-JS navigation must remain visible across hydration boundaries"
+			);
 			await page.screenshot({ path: `${destination}/home-${width}-no-js.png` });
-			report.noJavaScript.push({ width, visible });
+			report.noJavaScript.push({ width, visible, navigationVisible });
 			await page.close();
 		});
 		await checkInteractions(url);

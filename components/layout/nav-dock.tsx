@@ -19,17 +19,15 @@ export function NavDock() {
 		// clear the actual wrapped header, including text resizing.
 		const measure = () => {
 			const inset = Number.parseFloat(getComputedStyle(header).top) || 0;
-			document.documentElement.style.setProperty(
-				"--site-header-clearance",
-				`${header.offsetHeight + inset * 2}px`
-			);
+			// Only the root consumes this value. An inherited custom property
+			// invalidated styles across the document whenever the header changed.
+			document.documentElement.style.scrollPaddingBlockStart = `${header.offsetHeight + inset * 2}px`;
 		};
 		const observer = new ResizeObserver(measure);
 		observer.observe(header);
-		measure();
 		return () => {
 			observer.disconnect();
-			document.documentElement.style.removeProperty("--site-header-clearance");
+			document.documentElement.style.removeProperty("scroll-padding-block-start");
 		};
 	}, []);
 	return (

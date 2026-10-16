@@ -49,6 +49,13 @@ for introducing a new visual choice.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.
 - The light theme stays the default; next-themes owns persistence and dark mode.
 - No page-entry/scroll fade. Content is server-rendered and immediately visible.
+- `lib/icons.tsx` remains the public Phosphor facade. Its individual glyph wrappers
+  in `lib/icons/` preserve duotone/brand-fill defaults, overrides and display names
+  while allowing route-specific code splitting. A single wrapper module had pulled
+  preview glyphs into home's shared initial chunk.
+- Launcher and toolbar public owners render their static SVGs on the server and
+  pass nodes into `app-launcher-client.tsx` / `dock-toolbar-client.tsx`. These
+  leaves retain the existing capsule, search, theme and dismissal behavior.
 - A single sticky header in flow and wrapping text navigation replace independently fixed capsules.
   This retains the header landmark and prevents tablet overlap and focus clipping.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
