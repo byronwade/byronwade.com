@@ -65,7 +65,7 @@ and point at the code that holds the values.
 | `npm run knip` | Unused files, exports, types, deps ,  **local release gate**, at zero |
 | `npm run build` | Production build ,  **local release gate** |
 | `npm run check` | Lint, then type-check and knip |
-| `npm test` | Contact action regressions, fixture delivery only (Node 22.18+) |
+| `npm test` | Contact and cache-refresh regressions, fixtures only (Node 22.18+) |
 | `npm run test:rendered` | Check native contact submit semantics after `npm run build` |
 | `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
@@ -103,4 +103,11 @@ Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
 | `NEXT_PUBLIC_BASE_URL` | Canonical URLs and metadata |
 
 Every external fetch degrades to a usable fallback, so the site builds and runs
-with these unset.
+with these unset. Cache refresh is disabled when `REVALIDATION_SECRET` is unset,
+empty, or whitespace-only: `POST /api/cache/revalidate` returns `401` without
+invalidating anything. With a configured secret, the JSON body must contain that
+exact secret and a tag from `CACHE_TAGS` in `lib/cache.ts`. Malformed JSON or a
+non-object body returns `400`; an invalid secret returns `401`; an authenticated
+request with an invalid tag returns `400`. Successful refreshes retain the
+`success`, `message`, and `timestamp` response. `GET` lists usage and available
+tags without exposing the configured secret or refreshing the cache.
