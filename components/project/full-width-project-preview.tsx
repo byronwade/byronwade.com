@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Button } from "@/components/ui/button";
 import { useDragResize } from "@/hooks/use-drag-resize";
 import { useFrameSize } from "@/hooks/use-frame-size";
 import { useScreenshot } from "@/hooks/use-screenshot";
@@ -70,7 +71,7 @@ function PreviewToolbar({
 	triggerRef,
 }: PreviewToolbarProps) {
 	return (
-		<div className="flex h-10 shrink-0 items-center justify-between gap-2 border-border border-b bg-secondary px-3">
+		<div className="flex min-h-12 shrink-0 items-center justify-between gap-2 border-border border-b bg-secondary px-3 sm:min-h-10">
 			{/* Window dots + address */}
 			<div className="flex min-w-0 flex-1 items-center gap-2.5">
 				<div className="hidden items-center gap-1.5 sm:flex" aria-hidden="true">
@@ -92,7 +93,9 @@ function PreviewToolbar({
 						const { icon: Icon, label, width, height } = VIEWPORT_PRESETS[key];
 						const isActive = preset === key;
 						return (
-							<button
+							<Button
+								variant="ghost"
+								size="icon-sm"
 								key={key}
 								type="button"
 								onClick={() => setPreset(key)}
@@ -107,7 +110,7 @@ function PreviewToolbar({
 								)}
 							>
 								<Icon className="size-3.5" aria-hidden="true" />
-							</button>
+							</Button>
 						);
 					})}
 				</div>
@@ -116,7 +119,9 @@ function PreviewToolbar({
 			{/* Actions */}
 			<div className="flex shrink-0 items-center gap-1">
 				{manualWidth !== null && !isFullscreen && (
-					<button
+					<Button
+						variant="ghost"
+						size="icon-sm"
 						type="button"
 						onClick={resetWidth}
 						aria-label="Reset preview width"
@@ -124,10 +129,12 @@ function PreviewToolbar({
 						className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
 					>
 						<RotateCcw className="size-3.5" aria-hidden="true" />
-					</button>
+					</Button>
 				)}
 
-				<button
+				<Button
+					variant="ghost"
+					size="icon-sm"
 					ref={triggerRef}
 					type="button"
 					onClick={toggleFullscreen}
@@ -140,7 +147,7 @@ function PreviewToolbar({
 					) : (
 						<Maximize2 className="size-3.5" aria-hidden="true" />
 					)}
-				</button>
+				</Button>
 
 				<div className="mx-1 h-4 w-px bg-border" />
 
@@ -149,7 +156,7 @@ function PreviewToolbar({
 					target="_blank"
 					rel="noopener noreferrer"
 					aria-label={`Visit ${url} (opens in a new tab)`}
-					className="flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 font-medium text-primary-foreground text-xs shadow-sm transition-colors hover:bg-primary/90"
+					className="flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-md bg-primary px-2.5 py-1 font-medium text-primary-foreground text-xs shadow-sm transition-colors hover:bg-primary/90 sm:min-h-6 sm:min-w-6"
 				>
 					<span className="hidden sm:inline">Visit</span>
 					<ExternalLink className="size-3" aria-hidden="true" />
@@ -166,7 +173,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	const wrapperRef = useRef<HTMLDivElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
-	const dialogRef = useRef<HTMLDivElement>(null);
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const capture = VIEWPORT_PRESETS[preset];
 
@@ -226,25 +233,27 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		resetWidth();
 	}, [preset, resetWidth]);
 
-	// Fullscreen: lock scroll, ESC to close, manage focus.
+	// The native modal owns focus containment, background inertness and Escape.
 	useEffect(() => {
-		if (!isFullscreen) {
+		const dialog = dialogRef.current;
+		if (!(isFullscreen && dialog)) {
 			return;
 		}
 		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
+		dialog.showModal();
+		// Pointer dismissal uses the dialog's padding; native cancel owns Escape.
+		const dismissBackdrop = (event: MouseEvent) => {
+			if (event.target === dialog) {
 				setIsFullscreen(false);
 			}
 		};
-		document.addEventListener("keydown", onKeyDown);
-		const focusTimer = window.setTimeout(() => dialogRef.current?.focus(), 0);
+		dialog.addEventListener("click", dismissBackdrop);
 
 		return () => {
+			dialog.removeEventListener("click", dismissBackdrop);
+			dialog.close();
 			document.body.style.overflow = previousOverflow;
-			document.removeEventListener("keydown", onKeyDown);
-			window.clearTimeout(focusTimer);
 			triggerRef.current?.focus();
 		};
 	}, [isFullscreen]);
@@ -299,19 +308,21 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 								</p>
 							</div>
 							<div className="flex items-center gap-2">
-								<button
+								<Button
+									variant="outline"
+									size="xs"
 									type="button"
 									onClick={retry}
 									className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 font-medium text-foreground text-xs transition-colors hover:bg-muted"
 								>
 									<RefreshCw className="size-3" aria-hidden="true" />
 									Retry
-								</button>
+								</Button>
 								<a
 									href={href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs transition-colors hover:bg-primary/90"
+									className="inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs transition-colors hover:bg-primary/90 sm:min-h-6 sm:min-w-6"
 								>
 									Open site
 									<ExternalLink className="size-3" aria-hidden="true" />
@@ -401,7 +412,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							handleResizeKey(event, frameWidth, containerWidth || MAX_NORMAL_WIDTH)
 						}
 						className={cn(
-							"group absolute top-1/2 z-40 -translate-y-1/2 cursor-ew-resize touch-none transition-opacity duration-200 focus-visible:opacity-100 focus-visible:outline-none",
+							"group absolute top-1/2 z-40 flex min-h-11 min-w-11 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center transition-opacity duration-200 focus-visible:opacity-100 focus-visible:outline-none sm:min-h-6 sm:min-w-6",
 							side === "right" ? "-right-4" : "-left-4",
 							isResizing ? "opacity-100" : "opacity-0 hover:opacity-100"
 						)}
@@ -431,27 +442,14 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		<div ref={wrapperRef} className="w-full">
 			{isFullscreen && mounted && typeof document !== "undefined"
 				? createPortal(
-						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog, role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
-						<div
+						<dialog
 							ref={dialogRef}
-							className="fixed inset-0 z-[9998] flex flex-col bg-black/95 p-6 backdrop-blur-sm"
-							onClick={(e) => {
-								if (e.target === e.currentTarget) {
-									setIsFullscreen(false);
-								}
-							}}
-							onKeyDown={(e) => {
-								if (e.key === "Escape") {
-									setIsFullscreen(false);
-								}
-							}}
-							role="dialog"
-							aria-modal="true"
+							className="fixed inset-0 m-0 flex h-dvh max-h-none w-screen max-w-none flex-col border-0 bg-background p-4 text-foreground sm:p-6"
+							onCancel={() => setIsFullscreen(false)}
 							aria-label={`${title} fullscreen preview`}
-							tabIndex={-1}
 						>
 							<div className="flex h-full w-full items-center justify-center">{previewContent}</div>
-						</div>,
+						</dialog>,
 						document.body
 					)
 				: null}

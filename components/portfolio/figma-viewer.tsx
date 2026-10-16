@@ -23,18 +23,22 @@ export function FigmaInteractiveViewer({
 			{/* View Mode Toggle */}
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h3 className="mb-2 font-bold text-white text-xl">DESIGN VIEWER</h3>
+					<h3 className="mb-2 font-bold text-foreground text-xl">Design viewer</h3>
 					<p className="text-muted-foreground text-sm">
 						{viewMode === "interactive"
 							? "Interactive Figma embed - zoom, pan, and explore the design"
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1">
+				<fieldset
+					aria-label="Design view"
+					className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1"
+				>
 					<Button
 						size="sm"
 						variant={viewMode === "interactive" ? "default" : "ghost"}
 						onClick={() => setViewMode("interactive")}
+						aria-pressed={viewMode === "interactive"}
 						className="h-8 px-3 text-xs"
 					>
 						<Monitor className="mr-1 h-3 w-3" />
@@ -44,12 +48,13 @@ export function FigmaInteractiveViewer({
 						size="sm"
 						variant={viewMode === "static" ? "default" : "ghost"}
 						onClick={() => setViewMode("static")}
+						aria-pressed={viewMode === "static"}
 						className="h-8 px-3 text-xs"
 					>
 						<ImageIcon className="mr-1 h-3 w-3" />
 						Preview
 					</Button>
-				</div>
+				</fieldset>
 			</div>
 
 			{/* Interactive Figma Embed */}
@@ -97,7 +102,7 @@ export function FigmaInteractiveViewer({
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
 						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
 						<p className="text-muted-foreground">No static preview available for this design.</p>
-						<p className="mt-2 text-muted-foreground/70 text-sm">
+						<p className="mt-2 text-muted-foreground text-sm">
 							Switch to Interactive mode to view the design.
 						</p>
 					</div>

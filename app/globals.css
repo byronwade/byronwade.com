@@ -657,13 +657,6 @@
     scroll-behavior: auto;
     scroll-padding-block: 16rem 6rem;
   }
-  :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 3px;
-  }
-  @media (forced-colors: active) {
-    :focus-visible { outline-color: Highlight; }
-  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
@@ -728,6 +721,10 @@
   .link-underline {
     @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
   }
+  /* Target defaults preserve larger sizes already set by a caller. */
+  :where(.link-underline) {
+    @apply inline-flex min-h-6 min-w-6 items-center max-sm:min-h-11 max-sm:min-w-11;
+  }
   .skip-link {
     @apply inline-flex min-h-11 items-center rounded-md bg-card px-3 shadow-card;
     position: absolute;
@@ -779,4 +776,13 @@
 }
 @media (forced-colors: active) {
   :focus-visible { outline-color: Highlight; }
+}
+
+/* Printed links are text, with no pointer target to reserve. */
+@media print {
+  .link-underline {
+    display: inline;
+    min-height: 0;
+    min-width: 0;
+  }
 }

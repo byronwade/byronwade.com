@@ -19,8 +19,8 @@ function dedupe(crumbs: Crumb[]): Crumb[] {
 }
 
 /**
- * Breadcrumb trail derived purely from the pathname so it's stable from SSR (no
- * hydration pop). A root "Home" crumb plus a crumb per path segment, with labels
+ * Breadcrumb trail derived from the resolved browser pathname. A root "Home"
+ * crumb plus a crumb per path segment, with labels
  * resolved from the supplied map (built server-side from the search index, so
  * dynamic `[slug]` leaves get real titles); unknown segments fall back to title case.
  */

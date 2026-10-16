@@ -51,7 +51,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 								href={linkHref}
 								target={isExternal ? "_blank" : undefined}
 								rel={isExternal ? "noopener noreferrer" : undefined}
-								className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] transition-colors duration-200 hover:decoration-[var(--foreground)]"
+								className="link-underline font-medium"
 								{...props}
 							>
 								{children}

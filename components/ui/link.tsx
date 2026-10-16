@@ -20,7 +20,7 @@ export const Link = ({ className, children, ref, ...props }: LinkProps) => (
 		{...props}
 		ref={ref}
 		className={cn(
-			"rounded-sm focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+			"inline-flex min-h-6 min-w-6 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 max-sm:min-h-11 max-sm:min-w-11",
 			className
 		)}
 	>

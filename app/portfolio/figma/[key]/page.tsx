@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/components/ui/link";
 import {
 	BarChart3,
 	Calendar,
@@ -100,7 +100,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		<div className="min-h-screen py-16">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
-					<div className="mb-4 flex items-center gap-2 text-muted-foreground text-sm">
+					<div className="mb-4 flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
 						<Link href="/portfolio" className="transition-colors hover:text-brand">
 							Portfolio
 						</Link>
@@ -179,7 +179,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 					<div className="space-y-8 lg:col-span-2">
 						{/* Interactive Figma Viewer */}
 						<div className="space-y-4">
-							<h3 className="font-semibold text-foreground text-xl">Design File</h3>
+							<h2 className="font-semibold text-foreground text-xl">Design File</h2>
 							<FigmaInteractiveViewer
 								fileKey={key}
 								fileName={fileData.name}
@@ -211,9 +211,9 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 																{component.name?.charAt(0)?.toUpperCase() || "C"}
 															</div>
 															<div className="min-w-0 flex-1">
-																<h4 className="truncate font-medium text-foreground">
+																<h3 className="truncate font-medium text-foreground">
 																	{component.name || "Unnamed Component"}
-																</h4>
+																</h3>
 																<p className="text-muted-foreground text-xs">
 																	{component.description || "No description"}
 																</p>

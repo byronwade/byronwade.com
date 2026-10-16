@@ -92,7 +92,7 @@ async function BlogList() {
 									<div className="flex items-baseline gap-4">
 										{post.date && (
 											<time
-												className="w-12 shrink-0 font-mono text-muted-foreground/70 text-xs tabular-nums"
+												className="w-12 shrink-0 font-mono text-muted-foreground text-xs tabular-nums"
 												dateTime={post.date}
 											>
 												{safeFormatDate(post.date, "MMM d")}
@@ -103,7 +103,7 @@ async function BlogList() {
 										>
 											{post.title}
 										</span>
-										<span className="hidden shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
+										<span className="hidden shrink-0 items-center gap-1 font-mono text-muted-foreground text-xs tabular-nums sm:flex">
 											<Clock aria-hidden="true" className="size-3" />
 											{post.readingTime}m
 										</span>

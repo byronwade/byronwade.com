@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { ArrowRight } from "@/lib/icons";
@@ -17,6 +17,12 @@ export function HomeActions() {
 	const [contactState, setContactState] = useState<"idle" | "open" | "closed">("idle");
 	const contactOpen = contactState === "open";
 	const email = useRevealedEmail();
+	const triggerRef = useRef<HTMLButtonElement>(null);
+	useEffect(() => {
+		if (contactState === "closed") {
+			triggerRef.current?.focus();
+		}
+	}, [contactState]);
 
 	return (
 		<>
@@ -27,6 +33,7 @@ export function HomeActions() {
 			{!contactOpen && (
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
 					<Button
+						ref={triggerRef}
 						className="gap-2"
 						onClick={() => setContactState("open")}
 						size="lg"

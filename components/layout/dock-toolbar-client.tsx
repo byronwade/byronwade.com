@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,11 @@ import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
 import { cn } from "@/lib/utils";
+
+const CapsulePanel = dynamic(
+	() => import("./capsule-panel").then((module) => module.CapsulePanel),
+	{ ssr: false }
+);
 
 const GITHUB_URL = "https://github.com/byronwade";
 /** Hoisted so it is compiled once rather than on every keystroke. */
@@ -95,7 +101,8 @@ export function DockToolbarClient({
 	const rootRef = React.useRef<HTMLDivElement>(null);
 	const morphRef = React.useRef<HTMLDivElement>(null);
 	const compactRef = React.useRef<HTMLDivElement>(null);
-	const panelRef = React.useRef<HTMLDivElement>(null);
+	const [panel, setPanel] = React.useState<HTMLDivElement | null>(null);
+	const expanded = open && panel !== null;
 	const inputRef = React.useRef<HTMLInputElement>(null);
 	const listRef = React.useRef<HTMLDivElement>(null);
 	const returnFocusRef = React.useRef<HTMLElement | null>(null);
@@ -129,35 +136,34 @@ export function DockToolbarClient({
 		open,
 		morphRef,
 		compactRef,
-		panelRef,
+		panel,
 		onOpened: () => {
 			if (mode === "search") {
 				inputRef.current?.focus({ preventScroll: true });
 			} else {
-				panelRef.current?.focus({ preventScroll: true });
+				panel?.focus({ preventScroll: true });
 			}
 		},
-		onClosed: () => returnFocusRef.current?.focus({ preventScroll: true }),
 		deps: [mode],
 	});
 
 	/*, follow the panel's live size while open (results filtering, mode swap) ,  */
 	useIsoLayoutEffect(() => {
 		const morph = morphRef.current;
-		const panel = panelRef.current;
-		if (!(morph && panel && open)) {
+		const currentPanel = panel;
+		if (!(morph && currentPanel && open)) {
 			return;
 		}
 		const ro = new ResizeObserver(() => {
 			if (!morph.style.width) {
 				return;
 			}
-			morph.style.height = `${panel.offsetHeight}px`;
-			morph.style.width = `${panel.offsetWidth}px`;
+			morph.style.height = `${currentPanel.offsetHeight}px`;
+			morph.style.width = `${currentPanel.offsetWidth}px`;
 		});
-		ro.observe(panel);
+		ro.observe(currentPanel);
 		return () => ro.disconnect();
-	}, [open]);
+	}, [open, panel]);
 
 	React.useEffect(() => {
 		if (active > flat.length - 1) {
@@ -179,7 +185,7 @@ export function DockToolbarClient({
 			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
 				e.preventDefault();
 				const focused = document.activeElement;
-				if (focused instanceof HTMLElement && !panelRef.current?.contains(focused)) {
+				if (focused instanceof HTMLElement && !panel?.contains(focused)) {
 					returnFocusRef.current = focused;
 				}
 				setMode((m) => (m === "search" ? null : "search"));
@@ -196,33 +202,7 @@ export function DockToolbarClient({
 			window.removeEventListener("keydown", onKey);
 			window.removeEventListener("open-command-palette", onOpen);
 		};
-	}, []);
-
-	/*. Esc + click-away close ,  */
-	React.useEffect(() => {
-		if (!open) {
-			return;
-		}
-		const onKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				e.preventDefault();
-				close();
-			}
-		};
-		const onDown = (e: PointerEvent) => {
-			const t = e.target as Element | null;
-			if (!rootRef.current || rootRef.current.contains(t)) {
-				return;
-			}
-			close();
-		};
-		document.addEventListener("keydown", onKey);
-		document.addEventListener("pointerdown", onDown);
-		return () => {
-			document.removeEventListener("keydown", onKey);
-			document.removeEventListener("pointerdown", onDown);
-		};
-	}, [open, close]);
+	}, [panel]);
 
 	const onInputKey = (e: React.KeyboardEvent) => {
 		if (e.key === "ArrowDown") {
@@ -279,20 +259,24 @@ export function DockToolbarClient({
 					ref={morphRef}
 					className={cn(
 						"pointer-events-auto absolute top-0 right-0 transform-gpu overflow-hidden border border-dock-border bg-dock text-dock-foreground [will-change:width,height]",
-						open ? "rounded-xl shadow-float" : "rounded-full"
+						expanded ? "rounded-xl shadow-float" : "rounded-full"
 					)}
 				>
 					<div
 						ref={compactRef}
-						inert={open}
+						inert={expanded}
 						className={cn(
 							"flex items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
-							open && "pointer-events-none"
+							expanded && "pointer-events-none"
 						)}
 					>
 						<button
 							type="button"
 							aria-label="Search (⌘K)"
+							aria-haspopup="dialog"
+							aria-controls={panel ? panelId : undefined}
+							aria-expanded={expanded && mode === "search"}
+							aria-busy={mode === "search" && !panel}
 							title="Search · Command K"
 							className={cn(ITEM, ITEM_IDLE)}
 							onClick={(event) => {
@@ -336,6 +320,10 @@ export function DockToolbarClient({
 						<button
 							type="button"
 							aria-label="Support open source"
+							aria-haspopup="dialog"
+							aria-controls={panel ? panelId : undefined}
+							aria-expanded={expanded && mode === "donate"}
+							aria-busy={mode === "donate" && !panel}
 							title="Support open source"
 							className={cn(ITEM, ITEM_IDLE)}
 							onClick={(event) => {
@@ -348,121 +336,130 @@ export function DockToolbarClient({
 					</div>
 
 					{/* PANEL, the morph target (search spotlight or donation ask). */}
-					<div
-						ref={panelRef}
-						id={panelId}
-						role="dialog"
-						aria-label={mode === "donate" ? "Support open source" : "Search"}
-						aria-hidden={!open}
-						inert={!open}
-						tabIndex={-1}
-						className={cn(
-							"absolute top-0 right-0 opacity-0 outline-none transition-opacity duration-(--motion-fast)",
-							panelWidth,
-							open ? "pointer-events-auto" : "pointer-events-none"
-						)}
-					>
-						{open && (
-							<button
-								type="button"
-								aria-label="Close panel"
-								onClick={close}
-								className="absolute top-1.5 right-2 z-10 grid size-11 place-items-center rounded-full text-dock-foreground hover:bg-dock-active"
-							>
-								{icons.close}
-							</button>
-						)}
-						{open &&
-							(mode === "donate" ? (
-								<div className="flex flex-col gap-3 p-4">
-									<div className="flex items-center gap-2.5 pr-12">
-										<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-brand-muted">
-											{icons.heartAccent}
-										</span>
-										<div className="leading-tight">
-											<div className="font-semibold text-[13px] text-dock-active-foreground">
-												Support my open source
-											</div>
-											<div className="text-[11px] text-dock-foreground">Pretty please 💖</div>
-										</div>
-									</div>
-									<p className="text-[13px] text-dock-foreground leading-relaxed">
-										Donations keep my open-source projects free and maintained. And every month I
-										give <span className="font-semibold text-dock-active-foreground">20%</span> of
-										what I receive to a non-profit of my choice, so a little goes a long way.
-									</p>
-									<a
-										href={SPONSOR_URL}
-										target="_blank"
-										rel="noreferrer"
-										className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
-									>
-										{icons.heartDonate}
-										Donate via GitHub Sponsors
-									</a>
-									<button
-										type="button"
-										onClick={close}
-										className="inline-flex min-h-11 items-center justify-center text-[11px] text-dock-foreground transition-colors hover:text-dock-active-foreground"
-									>
-										Maybe later
-									</button>
-								</div>
-							) : (
+					{(open || panel) && (
+						<CapsulePanel
+							morphRef={morphRef}
+							panelRef={setPanel}
+							finalFocus={returnFocusRef}
+							id={panelId}
+							label={mode === "donate" ? "Support open source" : "Search"}
+							open={open}
+							onOpenChange={(next) => {
+								if (!next) {
+									close();
+								}
+							}}
+							className={cn("right-0", panelWidth)}
+						>
+							{(Close) => (
 								<>
-									<div className="flex items-center gap-2.5 px-3.5 py-3 pr-16">
-										{icons.searchField}
-										<Input
-											ref={inputRef}
-											value={query}
-											onChange={(e) => {
-												setQuery(e.target.value);
-												setActive(0);
-											}}
-											onKeyDown={onInputKey}
-											placeholder="Search projects, writing, pages…"
-											aria-label="Search"
-											className="h-11 min-w-0 flex-1 text-dock-active-foreground"
-										/>
-										<kbd className="rounded border border-dock-border bg-dock-muted px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground">
-											esc
-										</kbd>
-									</div>
-									<div className="h-px bg-dock-border" aria-hidden="true" />
-									<div ref={listRef} className="scrollbar-thin max-h-80 overflow-y-auto p-1.5">
-										{flat.length === 0 ? (
-											<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground">
-												No results for “{query}”.
+									{open && (
+										<Close
+											type="button"
+											aria-label="Close panel"
+											className="absolute top-1.5 right-2 z-10 grid size-11 place-items-center rounded-full text-dock-foreground hover:bg-dock-active"
+										>
+											{icons.close}
+										</Close>
+									)}
+									{open &&
+										(mode === "donate" ? (
+											<div className="flex flex-col gap-3 p-4">
+												<div className="flex items-center gap-2.5 pr-12">
+													<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-brand-muted">
+														{icons.heartAccent}
+													</span>
+													<div className="leading-tight">
+														<div className="font-semibold text-[13px] text-dock-active-foreground">
+															Support my open source
+														</div>
+														<div className="text-[11px] text-dock-foreground">Pretty please 💖</div>
+													</div>
+												</div>
+												<p className="text-[13px] text-dock-foreground leading-relaxed">
+													Donations keep my open-source projects free and maintained. And every
+													month I give{" "}
+													<span className="font-semibold text-dock-active-foreground">20%</span> of
+													what I receive to a non-profit of my choice, so a little goes a long way.
+												</p>
+												<a
+													href={SPONSOR_URL}
+													target="_blank"
+													rel="noreferrer"
+													className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
+												>
+													{icons.heartDonate}
+													Donate via GitHub Sponsors
+												</a>
+												<button
+													type="button"
+													onClick={close}
+													className="inline-flex min-h-11 items-center justify-center text-[11px] text-dock-foreground transition-colors hover:text-dock-active-foreground"
+												>
+													Maybe later
+												</button>
 											</div>
 										) : (
-											groups.map((g) => (
-												<div className="mb-1 last:mb-0" key={g.kind}>
-													<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground">
-														{KIND_LABEL[g.kind]}
-													</div>
-													{g.items.map((e) => Row(e, cursor++))}
+											<>
+												<div className="flex items-center gap-2.5 px-3.5 py-3 pr-16">
+													{icons.searchField}
+													<Input
+														ref={inputRef}
+														value={query}
+														onChange={(e) => {
+															setQuery(e.target.value);
+															setActive(0);
+														}}
+														onKeyDown={onInputKey}
+														placeholder="Search projects, writing, pages…"
+														aria-label="Search"
+														className="h-11 min-w-0 flex-1 text-dock-active-foreground"
+													/>
+													<kbd className="rounded border border-dock-border bg-dock-muted px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground">
+														esc
+													</kbd>
 												</div>
-											))
-										)}
-									</div>
-									<div className="flex items-center gap-3 border-dock-border border-t bg-dock-muted px-3.5 py-2 text-[11px] text-dock-foreground">
-										<span className="flex items-center gap-1">
-											<kbd className="rounded border border-dock-border bg-dock-muted px-1 font-mono">
-												↑↓
-											</kbd>
-											navigate
-										</span>
-										<span className="flex items-center gap-1">
-											<kbd className="flex items-center rounded border border-dock-border bg-dock-muted px-1 font-mono">
-												{icons.enter}
-											</kbd>
-											open
-										</span>
-										<span className="ml-auto tabular-nums">{flat.length} results</span>
-									</div>
+												<div className="h-px bg-dock-border" aria-hidden="true" />
+												<div
+													ref={listRef}
+													className="scrollbar-thin max-h-80 overflow-y-auto p-1.5"
+												>
+													{flat.length === 0 ? (
+														<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground">
+															No results for “{query}”.
+														</div>
+													) : (
+														groups.map((g) => (
+															<div className="mb-1 last:mb-0" key={g.kind}>
+																<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground">
+																	{KIND_LABEL[g.kind]}
+																</div>
+																{g.items.map((e) => Row(e, cursor++))}
+															</div>
+														))
+													)}
+												</div>
+												<div className="flex items-center gap-3 border-dock-border border-t bg-dock-muted px-3.5 py-2 text-[11px] text-dock-foreground">
+													<span className="flex items-center gap-1">
+														<kbd className="rounded border border-dock-border bg-dock-muted px-1 font-mono">
+															↑↓
+														</kbd>
+														navigate
+													</span>
+													<span className="flex items-center gap-1">
+														<kbd className="flex items-center rounded border border-dock-border bg-dock-muted px-1 font-mono">
+															{icons.enter}
+														</kbd>
+														open
+													</span>
+													<span className="ml-auto tabular-nums">{flat.length} results</span>
+												</div>
+											</>
+										))}
 								</>
-							))}
-					</div>
+							)}
+						</CapsulePanel>
+					)}
 				</div>
 			</div>
 		</div>

@@ -22,6 +22,7 @@ const FALLBACKS = {
 } as const;
 
 type MotionToken = keyof typeof FALLBACKS;
+type DurationToken = Exclude<MotionToken, `--motion-ease-${string}`>;
 
 export function motionToken(name: MotionToken): string {
 	if (typeof window === "undefined") {
@@ -32,6 +33,9 @@ export function motionToken(name: MotionToken): string {
 }
 
 /** Same token, as a number of milliseconds, for the Web Animations API. */
-export function motionDuration(name: MotionToken): number {
-	return Number.parseFloat(motionToken(name)) || 0;
+export function motionDuration(name: DurationToken): number {
+	const value = motionToken(name);
+	// The source overlay token uses seconds; custom properties retain that unit.
+	const duration = Number.parseFloat(value) || 0;
+	return value.endsWith("ms") ? duration : duration * 1000;
 }

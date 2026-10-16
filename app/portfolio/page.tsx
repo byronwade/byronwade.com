@@ -229,7 +229,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 			>
 				<div className="flex items-baseline gap-4">
 					<span
-						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums ${indexRowAccentClass}`}
+						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground text-xs tabular-nums ${indexRowAccentClass}`}
 					>
 						<Star aria-hidden="true" className="size-3" />
 						{repo.stargazers_count}
@@ -246,7 +246,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 						)}
 					</span>
 
-					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
+					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground text-xs tabular-nums sm:flex">
 						{repo.language && (
 							<span className="inline-flex items-center gap-1.5">
 								<span className={`size-2 rounded-full ${languageTone(repo.language)}`} />

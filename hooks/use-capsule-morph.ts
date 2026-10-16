@@ -12,14 +12,12 @@ interface CapsuleMorphOptions {
 	deps?: readonly unknown[];
 	/** The shared capsule that resizes between the two states. */
 	morphRef: RefObject<HTMLElement | null>;
-	/** Return focus after compact controls are active again. */
-	onClosed?: () => void;
 	/** Runs once the open animation has been started, used to move focus. */
 	onOpened?: () => void;
 	/** Whether the panel is currently open. */
 	open: boolean;
 	/** The expanded panel, cross-faded in on open. */
-	panelRef: RefObject<HTMLElement | null>;
+	panel: HTMLElement | null;
 }
 
 /**
@@ -35,15 +33,13 @@ export function useCapsuleMorph({
 	open,
 	morphRef,
 	compactRef,
-	panelRef,
+	panel,
 	onOpened,
-	onClosed,
 	deps = [],
 }: CapsuleMorphOptions) {
 	useIsoLayoutEffect(() => {
 		const morph = morphRef.current;
 		const compact = compactRef.current;
-		const panel = panelRef.current;
 		// A closed capsule has no choreography to measure on first hydration.
 		if (!(morph && compact && panel && (open || collapsed.has(morph)))) {
 			return;
@@ -96,7 +92,6 @@ export function useCapsuleMorph({
 			return;
 		}
 
-		onClosed?.();
 		panel.style.transitionDelay = "0ms";
 		panel.style.opacity = "0";
 		compact.style.transitionDelay = "0ms";
@@ -120,7 +115,7 @@ export function useCapsuleMorph({
 		};
 		morph.addEventListener("transitionend", onEnd);
 		return () => morph.removeEventListener("transitionend", onEnd);
-	}, [open, ...deps]);
+	}, [open, panel, ...deps]);
 }
 
 /** Collapsed footprint per capsule, measured once before the first expansion. */

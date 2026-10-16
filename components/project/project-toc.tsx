@@ -72,7 +72,8 @@ export function ProjectToc({ items }: ProjectTocProps) {
 			return;
 		}
 		setActiveId(id);
-		el.scrollIntoView({ behavior: "smooth", block: "start" });
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		el.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" });
 		// Update the hash without jumping (smooth scroll handles position).
 		if (typeof history !== "undefined") {
 			history.replaceState(null, "", `#${id}`);

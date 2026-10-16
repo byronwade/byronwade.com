@@ -3,7 +3,7 @@ import { once } from "node:events";
 import { createServer } from "node:net";
 
 // Every verification owns an isolated port and a hidden child with guaranteed cleanup.
-export async function withProductionServer(verify) {
+export async function withProductionServer(verify, { env = {} } = {}) {
 	const socket = createServer();
 	socket.listen(0, "127.0.0.1");
 	await once(socket, "listening");
@@ -18,7 +18,7 @@ export async function withProductionServer(verify) {
 	const server = spawn(
 		process.execPath,
 		["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"],
-		{ windowsHide: true, stdio: ["ignore", "pipe", "pipe"] }
+		{ windowsHide: true, stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, ...env } }
 	);
 	let output = "";
 	const url = `http://127.0.0.1:${port}`;
@@ -48,8 +48,13 @@ export async function withProductionServer(verify) {
 			});
 		});
 		return await verify(url);
+	} catch (error) {
+		throw new Error(
+			`Verification failed (server exit ${server.exitCode}, signal ${server.signalCode}): ${output.slice(-8192)}`,
+			{ cause: error }
+		);
 	} finally {
-		if (server.exitCode === null) {
+		if (server.exitCode === null && server.signalCode === null) {
 			server.kill();
 			await once(server, "exit");
 		}

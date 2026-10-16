@@ -1,18 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
+import { Link } from "@/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { ChevronLeft, MoreHorizontal } from "@/lib/icons";
+import { MoreHorizontal } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
-
-/** Room reserved around the centered nav dock so the breadcrumb never crowds it. */
-const NAV_RESERVE = 420;
-const GAP = 12;
 
 /** Desktop breadcrumb within the shared header; long trails collapse to a popover. */
 export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) {
@@ -22,10 +18,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 
 	const rootRef = React.useRef<HTMLOListElement>(null);
 	const twinRef = React.useRef<HTMLOListElement>(null);
-	const [{ collapsed, maxW }, setFit] = React.useState<{ collapsed: boolean; maxW: number }>({
-		collapsed: false,
-		maxW: Number.POSITIVE_INFINITY,
-	});
+	const [collapsed, setCollapsed] = React.useState(false);
 
 	useIsoLayoutEffect(() => {
 		const root = rootRef.current;
@@ -34,20 +27,14 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 			return;
 		}
 		const compute = () => {
-			const W = window.innerWidth;
-			const left = root.getBoundingClientRect().left;
-			const budget = Math.max(0, W / 2 - NAV_RESERVE / 2 - GAP - left);
-			const full = twin.scrollWidth;
-			setFit({ collapsed: full > budget && crumbs.length >= 3, maxW: budget });
+			// The header grid owns the available space, including launcher width.
+			setCollapsed(twin.scrollWidth > root.clientWidth && crumbs.length >= 3);
 		};
 		compute();
 		const ro = new ResizeObserver(compute);
 		ro.observe(twin);
-		window.addEventListener("resize", compute);
-		return () => {
-			ro.disconnect();
-			window.removeEventListener("resize", compute);
-		};
+		ro.observe(root);
+		return () => ro.disconnect();
 	}, [trailKey, crumbs.length]);
 
 	if (crumbs.length <= 1) {
@@ -56,7 +43,6 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 
 	const first = crumbs[0];
 	const last = crumbs.at(-1);
-	const parent = crumbs.at(-2);
 	const middle = crumbs.slice(1, -1);
 
 	if (!(first && last)) {
@@ -67,14 +53,10 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 		// Only the wide header has room for the trail beside visible primary nav.
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
+			className="pointer-events-auto relative z-0 hidden h-[40px] w-full max-w-full items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
 		>
 			{/* DESKTOP, full trail, collapsing to root / … / current. */}
-			<ol
-				ref={rootRef}
-				style={maxW === Number.POSITIVE_INFINITY ? undefined : { maxWidth: maxW }}
-				className="hidden min-w-0 items-center gap-1.5 sm:flex"
-			>
+			<ol ref={rootRef} className="flex min-w-0 flex-1 items-center gap-1.5">
 				{collapsed ? (
 					<>
 						<CrumbLink crumb={first} />
@@ -122,24 +104,6 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 				)}
 			</ol>
 
-			{/* MOBILE, current only, with a back-chevron to the parent level. */}
-			<ol className="flex min-w-0 items-center gap-1 sm:hidden">
-				{parent && (
-					<li className="flex shrink-0 items-center">
-						<Link
-							href={parent.href}
-							aria-label={`Back to ${parent.label}`}
-							className="-ml-1 flex size-6 items-center justify-center rounded-md text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
-						>
-							<ChevronLeft className="size-4" />
-						</Link>
-					</li>
-				)}
-				<li className="min-w-0">
-					<span className="truncate font-semibold text-dock-active-foreground">{last.label}</span>
-				</li>
-			</ol>
-
 			{/* Hidden measuring twin, always the full desktop row. */}
 			<ol
 				ref={twinRef}
@@ -166,7 +130,7 @@ function CrumbLink({ crumb, current }: { crumb: Crumb; current?: boolean }) {
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"truncate rounded-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
+					"min-h-6 min-w-6 truncate rounded-sm leading-6 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
 					current
 						? "font-semibold text-dock-active-foreground"
 						: "text-dock-foreground hover:text-dock-active-foreground"

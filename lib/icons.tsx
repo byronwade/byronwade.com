@@ -12,7 +12,6 @@ export { Box } from "./icons/box";
 export { Calendar } from "./icons/calendar";
 export { Check } from "./icons/check";
 export { CheckCircle } from "./icons/check-circle";
-export { ChevronLeft } from "./icons/chevron-left";
 export { ChevronRight } from "./icons/chevron-right";
 export { CircleCheckIcon } from "./icons/circle-check-icon";
 export { Clock } from "./icons/clock";
