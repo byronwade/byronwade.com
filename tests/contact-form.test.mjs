@@ -17,7 +17,7 @@ registerHooks({
 });
 
 const { sendEmail } = await import("@/lib/actions/send-email");
-const { CONTACT_TOPICS } = await import("@/lib/contact-form");
+const { CONTACT_TOPICS, validateContactSubmission } = await import("@/lib/contact-form");
 const valid = {
 	name: "Test Visitor",
 	email: "visitor@example.com",
@@ -159,4 +159,22 @@ test("an empty provider acknowledgement is a delivery failure", async () => {
 	delivery.results.push({ data: null, error: null });
 	assert.equal((await sendEmail(valid)).success, false);
 	assert.equal(delivery.requests.length, 1);
+});
+
+for (const field of ["name", "email", "topic", "message"]) {
+	test(`invalid ${field} identifies the control to focus without delivering email`, async () => {
+		const result = await sendEmail({ ...valid, [field]: " " });
+		assert.equal(result.success, false);
+		assert.equal(result.field, field);
+		assert.equal(delivery.requests.length, 0);
+	});
+}
+
+test("validation reports the first invalid field in form order", () => {
+	const input = { name: "", email: "", topic: "", message: "" };
+	for (const field of ["name", "email", "topic", "message"]) {
+		assert.equal(validateContactSubmission(input).field, field);
+		input[field] = valid[field];
+	}
+	assert.equal(delivery.requests.length, 0);
 });

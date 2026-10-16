@@ -1,36 +1,27 @@
 "use client";
 
-import { type FormEvent, useId, useState } from "react";
-import { toast } from "sonner";
+import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
-import { sendEmail } from "@/lib/actions/send-email";
-import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
-import { CONTACT_TOPICS, type ContactTopicValue, DEFAULT_CONTACT_TOPIC } from "@/lib/contact-form";
-import { Check, Copy, Loader2, Mail, Send, X } from "@/lib/icons";
+import { useContactForm } from "@/hooks/use-contact-form";
+import { CONTACT_TOPICS } from "@/lib/contact-form";
+import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
+import { cn } from "@/lib/utils";
 
 interface InlineContactProps {
-	email?: string;
+	email: string;
 	onClose: () => void;
 	open: boolean;
 }
 
-export function InlineContact({
-	open,
-	onClose,
-	email = decodeContact(CONTACT_ENCODED.email),
-}: InlineContactProps) {
+export function InlineContact({ open, onClose, email }: InlineContactProps) {
 	const [copied, setCopied] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		topic: DEFAULT_CONTACT_TOPIC,
-		message: "",
-	});
+	const { formData, isSubmitting, status, fieldError, handleChange, handleSubmit } =
+		useContactForm();
 	const formId = useId();
 	const nameFieldId = `${formId}-name`;
 
@@ -45,41 +36,6 @@ export function InlineContact({
 			setTimeout(() => setCopied(false), 2000);
 		} catch (error) {
 			console.warn("Clipboard copy unavailable", error);
-		}
-	};
-
-	const handleSubmit = async (event: FormEvent) => {
-		event.preventDefault();
-		if (isSubmitting) {
-			return;
-		}
-		setIsSubmitting(true);
-
-		try {
-			const result = await sendEmail(formData);
-			if (result.success) {
-				toast.success("Message sent!", {
-					description: "Thanks for reaching out. I’ll get back to you soon.",
-				});
-				setFormData({
-					name: "",
-					email: "",
-					topic: DEFAULT_CONTACT_TOPIC,
-					message: "",
-				});
-				onClose();
-			} else {
-				toast.error("Couldn't send message", {
-					description: result.error || "Please try again, or email me directly.",
-				});
-			}
-		} catch (error) {
-			console.error("Inline contact submit failed", error);
-			toast.error("Something went wrong", {
-				description: "Please try again, or email me directly.",
-			});
-		} finally {
-			setIsSubmitting(false);
 		}
 	};
 
@@ -98,31 +54,47 @@ export function InlineContact({
 				<button
 					type="button"
 					onClick={onClose}
-					className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+					className="flex size-11 shrink-0 items-center justify-center rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 					aria-label="Close"
 				>
 					<X className="h-4 w-4" />
 				</button>
 			</div>
 
-			<form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
+			<form
+				noValidate
+				aria-busy={isSubmitting}
+				onSubmit={handleSubmit}
+				className="flex flex-col gap-4 p-4"
+			>
 				<div className="grid gap-4 sm:grid-cols-2">
 					<div className="flex flex-col gap-2">
 						<Label htmlFor={`${formId}-name`}>Name</Label>
 						<Input
+							className="h-11"
+							aria-invalid={fieldError?.field === "name"}
+							aria-describedby={fieldError?.field === "name" ? `${formId}-name-error` : undefined}
 							id={nameFieldId}
 							name="name"
 							autoComplete="name"
 							autoFocus
 							value={formData.name}
-							onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))}
+							onChange={(event) => handleChange("name", event.target.value)}
 							placeholder="Your name…"
 							required
 						/>
+						{fieldError?.field === "name" && (
+							<p id={`${formId}-name-error`} className="text-destructive text-sm">
+								{fieldError.reason}
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col gap-2">
 						<Label htmlFor={`${formId}-email`}>Email</Label>
 						<Input
+							className="h-11"
+							aria-invalid={fieldError?.field === "email"}
+							aria-describedby={fieldError?.field === "email" ? `${formId}-email-error` : undefined}
 							id={`${formId}-email`}
 							name="email"
 							type="email"
@@ -130,26 +102,28 @@ export function InlineContact({
 							autoComplete="email"
 							spellCheck={false}
 							value={formData.email}
-							onChange={(event) => setFormData((prev) => ({ ...prev, email: event.target.value }))}
+							onChange={(event) => handleChange("email", event.target.value)}
 							placeholder="you@company.com…"
 							required
 						/>
+						{fieldError?.field === "email" && (
+							<p id={`${formId}-email-error`} className="text-destructive text-sm">
+								{fieldError.reason}
+							</p>
+						)}
 					</div>
 				</div>
 
 				<div className="flex flex-col gap-2">
 					<Label htmlFor={`${formId}-topic`}>What is this about?</Label>
 					<select
+						aria-invalid={fieldError?.field === "topic"}
+						aria-describedby={fieldError?.field === "topic" ? `${formId}-topic-error` : undefined}
 						id={`${formId}-topic`}
 						name="topic"
 						value={formData.topic}
-						onChange={(event) =>
-							setFormData((prev) => ({
-								...prev,
-								topic: event.target.value as ContactTopicValue,
-							}))
-						}
-						className="h-9 rounded-full border border-border bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+						onChange={(event) => handleChange("topic", event.target.value)}
+						className="h-11 rounded-lg border border-input bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive md:text-sm"
 					>
 						{CONTACT_TOPICS.map((topic) => (
 							<option key={topic.value} value={topic.value}>
@@ -157,15 +131,24 @@ export function InlineContact({
 							</option>
 						))}
 					</select>
+					{fieldError?.field === "topic" && (
+						<p id={`${formId}-topic-error`} className="text-destructive text-sm">
+							{fieldError.reason}
+						</p>
+					)}
 				</div>
 
 				<div className="flex flex-col gap-2">
 					<Label htmlFor={`${formId}-message`}>Brief</Label>
 					<Textarea
+						aria-invalid={fieldError?.field === "message"}
+						aria-describedby={
+							fieldError?.field === "message" ? `${formId}-message-error` : undefined
+						}
 						id={`${formId}-message`}
 						name="message"
 						value={formData.message}
-						onChange={(event) => setFormData((prev) => ({ ...prev, message: event.target.value }))}
+						onChange={(event) => handleChange("message", event.target.value)}
 						placeholder="A sentence or two about what you’re working on…"
 						required
 						rows={4}
@@ -176,36 +159,45 @@ export function InlineContact({
 							}
 						}}
 					/>
+					{fieldError?.field === "message" && (
+						<p id={`${formId}-message-error`} className="text-destructive text-sm">
+							{fieldError.reason}
+						</p>
+					)}
 				</div>
 
 				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-wrap items-center gap-2">
-						<a
-							href={`mailto:${email}`}
-							className="inline-flex items-center gap-2 font-medium text-brand text-sm hover:underline"
-						>
-							<Mail className="h-4 w-4" />
-							{email}
-						</a>
-						<button type="button" onClick={copyEmail} className={pillLinkClass}>
+						<ObfuscatedEmail className="font-medium text-brand text-sm [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
+						<button type="button" onClick={copyEmail} className={cn(pillLinkClass, "min-h-11")}>
 							{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
 							{copied ? "Copied" : "Copy"}
 						</button>
 					</div>
-					<Button type="submit" disabled={isSubmitting} className="gap-2">
+					<Button type="submit" disabled={isSubmitting} className="h-11 gap-2">
 						{isSubmitting ? (
 							<>
-								<Loader2 className="h-4 w-4 animate-spin" />
-								Sending…
+								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
+								Send message
 							</>
 						) : (
 							<>
-								<Send className="h-4 w-4" />
+								<Send aria-hidden="true" className="h-4 w-4" />
 								Send message
 							</>
 						)}
 					</Button>
 				</div>
+				<p
+					aria-live="polite"
+					role="status"
+					className={status.kind === "failed" ? "text-destructive text-sm" : "text-sm text-success"}
+				>
+					{status.kind === "sent" && "Sent. I'll be in touch."}
+					{isSubmitting && "Sending your message…"}
+					{status.kind === "failed" &&
+						(fieldError ? "Check the highlighted field." : status.reason)}
+				</p>
 			</form>
 		</section>
 	);

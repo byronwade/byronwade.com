@@ -78,6 +78,12 @@ formatDetection: {
 
 #### Contact submission boundary
 - Both forms submit name, email, topic, and the original message to `sendEmail`.
+- Both forms share `hooks/use-contact-form.ts` for submission state and client
+  feedback. The canonical validator identifies the first invalid field in form
+  order; inline errors are associated with that field and focus moves there after
+  rendering. Server validation still runs for every submission.
+- Validation and delivery failures preserve the draft. The form keeps a persistent
+  delivery status, and successful delivery does not erase edits made while sending.
 - The server validates unknown input, trims fields, enforces shared length limits,
   rejects control characters in names, validates a single email address, and
   accepts only the canonical contact topics in `lib/contact-form.ts`.
