@@ -5,7 +5,8 @@ export const CONTACT_TOPICS = [
 	{ value: "conversation", label: "Just a conversation" },
 ] as const;
 
-export type ContactTopicValue = (typeof CONTACT_TOPICS)[number]["value"];
+type ContactTopicValue = (typeof CONTACT_TOPICS)[number]["value"];
+export type ContactField = "name" | "email" | "message" | "topic";
 
 export const DEFAULT_CONTACT_TOPIC: ContactTopicValue = "conversation";
 
@@ -32,23 +33,26 @@ export function validateContactSubmission(input: unknown) {
 	if (!name || name.length > CONTACT_LIMITS.name || SINGLE_LINE_BREAK_PATTERN.test(name)) {
 		return {
 			success: false,
+			field: "name",
 			error: `Enter a name of 1–${CONTACT_LIMITS.name} characters on one line.`,
 		} as const;
 	}
 	if (email.length > CONTACT_LIMITS.email || !EMAIL_PATTERN.test(email)) {
 		return {
 			success: false,
+			field: "email",
 			error: `Enter a valid email address of up to ${CONTACT_LIMITS.email} characters.`,
 		} as const;
+	}
+	if (!topic) {
+		return { success: false, field: "topic", error: "Choose one of the contact topics." } as const;
 	}
 	if (!message || message.length > CONTACT_LIMITS.message) {
 		return {
 			success: false,
+			field: "message",
 			error: `Enter a message of 1–${CONTACT_LIMITS.message.toLocaleString("en-US")} characters.`,
 		} as const;
-	}
-	if (!topic) {
-		return { success: false, error: "Choose one of the contact topics." } as const;
 	}
 	// Pick supported fields explicitly. Legacy attachment and recipient fields never reach delivery.
 	return { success: true, data: { name, email, message, topicLabel: topic.label } } as const;

@@ -2,9 +2,11 @@
 
 import { Resend } from "resend";
 import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
-import { validateContactSubmission } from "@/lib/contact-form";
+import { type ContactField, validateContactSubmission } from "@/lib/contact-form";
 
-type SendEmailResponse = { success: true } | { success: false; error: string };
+type SendEmailResponse =
+	| { success: true }
+	| { success: false; error: string; field?: ContactField };
 
 const DELIVERY_ERROR = "Couldn't send your message. Please try again, or email me directly.";
 

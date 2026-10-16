@@ -119,7 +119,8 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **View controls/tabs:** `components/ui/tabs.tsx`
 - **Buttons:** `components/ui/button.tsx`
 - **Forms and validation:** `components/ui/input.tsx`, `textarea.tsx`, `label.tsx`;
-  submission through `lib/actions/send-email.ts`
+  shared submission state in `hooks/use-contact-form.ts`, with validation in
+  `lib/contact-form.ts` and delivery through `lib/actions/send-email.ts`
 - **Search and command palette:** `components/layout/dock-toolbar.tsx`, index built
   by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet
