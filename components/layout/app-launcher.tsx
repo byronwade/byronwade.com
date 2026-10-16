@@ -57,17 +57,14 @@ export function AppLauncher() {
 	const compactRef = React.useRef<HTMLDivElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const triggerRef = React.useRef<HTMLButtonElement>(null);
+	const restoreFocusRef = React.useRef(false);
 
 	const panelId = React.useId();
 
 	// The document listener below depends on this focus-restoring action's identity.
 	const closePanel = React.useCallback(() => {
+		restoreFocusRef.current = true;
 		setOpen(false);
-		requestAnimationFrame(() => {
-			if (document.activeElement === document.body) {
-				triggerRef.current?.focus({ preventScroll: true });
-			}
-		});
 	}, []);
 
 	// The launcher is an overlay-in-a-slot: the absolutely-positioned morph blooms
@@ -102,6 +99,18 @@ export function AppLauncher() {
 		openDelayMs: 30,
 		closeDelayMs: 70,
 		onOpened: () => panelRef.current?.focus({ preventScroll: true }),
+		onClosed: () => {
+			if (!restoreFocusRef.current) {
+				return;
+			}
+			restoreFocusRef.current = false;
+			if (
+				document.activeElement === document.body ||
+				panelRef.current?.contains(document.activeElement)
+			) {
+				triggerRef.current?.focus({ preventScroll: true });
+			}
+		},
 	});
 
 	// Esc + click-away close.

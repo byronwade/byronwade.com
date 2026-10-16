@@ -51,7 +51,7 @@ production deployment, or merge.
 - Dependency cone: content/projects, projects route, ProjectsIndex, lib/projects date parsing. Homepage/search/sitemap consume this same loader; portfolio-data is a separate portfolio surface and is unchanged.
 - States/input: preserve empty/loading/error paths; native links; long titles wrap at mobile widths; inspect desktop/mobile, light/dark, keyboard and reduced motion.
 - Motion gate: no new animation; grouping is static and needs no motion. Existing reveal and hover behavior stays under global reduced-motion rules.
-- Performance: server-only grouping, no client JS or images added. Run local production build and performance budget; no speed claim.
+- Performance: grouping stays server-rendered, with no new client boundary or image assets. QA adds small focus/inert fixes inside the existing client navigation. Run local production build and performance measurements; no speed claim.
 - Plan: add content and conservative TODOs, preserve legacy bodies/frontmatter except status/featured/flagship; compose two sections; verify schema/counts/preservation and all routes, then capture evidence and publish the PR.
 - Mechanical prevention: rendered count/slug assertions and legacy-content comparison recorded as acceptance evidence. No new permanent test framework for this content change.
 - Shared toolkit: reserve/run unavailable because roots configuration references a missing legacy path; no shared state or configuration modified. Direct local checks will retain logs and exit codes.
@@ -101,3 +101,17 @@ production deployment, or merge.
 ## Loop 4 check result
 - Serial `npm run lint`, `npm run type-check`, `npm run knip`, and `npm run build`: all exit 0 after the date and disclosure/contrast fixes. Lint checked 124 files; build compiled in 29.2s, checked TypeScript in 28.2s, and generated 47/47 pages.
 - Commit these verified corrections, then rebase this unpublished branch onto origin/main at 8765f9d. Recheck the combined result, including the merged contact regressions, before final production evidence and PR publication.
+
+## Loop 5: integration and final contrast correction
+- Rebased successfully onto origin/main 8765f9d, including contact PR #47. No other worktree changed.
+- Combined branch checks: lint exit 0 (125 files), type-check exit 0, knip exit 0, npm test 39/39 pass, production build 47/47 pass, test:rendered 1/1 pass.
+- The full contrast evidence had 25 nodes: the 24 neutral status pills already corrected, plus footer copyright text at reduced opacity. Removed only that opacity suffix, retaining the existing muted-foreground token. Footer email reveal is included in the final browser checks; no contact details or submission behavior changed.
+- Running the final local gates after this one-class correction. Final production snapshots, disclosure keyboard flows, date checks, contact reveal, and a targeted accessibility/performance report follow.
+
+## Loop 6: focus lifecycle verification
+- Final footer-adjusted branch passed lint/type-check/knip, 39 contact tests, build 47/47, and rendered contact contract 1/1.
+- Automatic approval review blocked Stop-Process/restart and detached Start-Process preview launch commands (reason: blocked by policy). The old preview on port 3000 is cached and remains untouched. A tool-managed Node preview on 3117 that closes itself after 180 seconds is allowed; its automatic closure was confirmed twice.
+- Refreshed final-source screenshots and all count/date/HTTP checks passed, but the added Escape/focus-return test failed. A focused probe showed all three controls returned to BODY: event-time requestAnimationFrame ran before React's inert-state commit.
+- Replaced that race with an `onClosed` callback on the existing useCapsuleMorph lifecycle. Pending focus targets are consumed after the closing DOM state commits. Toolbar button clicks provide their invoker explicitly; shortcuts retain current focus.
+- Fresh serial gates are running after the lifecycle correction. Then rerun the focused disclosure probe and full browser evidence, followed by final Lighthouse and publication.
+- Local helper directory: C:/Users/bcw19/AppData/Local/Temp/projects-refresh-20261015. `qa-server.cjs` provides the bounded preview; `verify.cjs` captures/asserts the UI; `content-check.cjs` checks content preservation and build routes. Use Node 24.21.0 from C:/Users/bcw19/AppData/Roaming/fnm/node-versions/v24.21.0/installation/node.exe. Runtime JSON evidence is only authoritative after those assertions exit 0.
