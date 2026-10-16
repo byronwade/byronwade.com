@@ -178,7 +178,7 @@ useEffect(() => {
   so the address never reaches prerendered HTML
 - `components/ui/obfuscated-contact.tsx`. the click-to-reveal components
 - `components/layout/footer.tsx`, `app/contact/contact-client.tsx`,
-  `app/resume/page.tsx`, `components/home/`, consumers
+  `app/resume/resume-actions.tsx`, `components/home/`, consumers
 - `app/metadata.config.ts`. `format-detection` disabled so mobile browsers do
   not auto-linkify the revealed values
 

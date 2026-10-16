@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, and content-date regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -467,8 +467,9 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
 production build, `npm run test:rendered` checks native contact submit semantics
-and the portfolio client bundle boundary, plus visible writing dates against their
-machine-readable values. Content dates use the existing `safeFormatDate` /
+and the portfolio client bundle boundary, visible writing dates against their
+machine-readable values, and that `/resume` is prerendered without contact details
+and keeps its controls and the footer out of print. Content dates use the existing `safeFormatDate` /
 `safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw
 UTC-midnight strings, which can shift the calendar day and year group.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
