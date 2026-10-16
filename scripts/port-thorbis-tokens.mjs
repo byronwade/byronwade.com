@@ -10,12 +10,28 @@ const generated = readFileSync(resolve(source, "src/styles/tokens.generated.css"
 const styles = readFileSync(resolve(source, "src/styles.css"), "utf8").replaceAll("\r\n", "\n");
 const declarations = (text) => [...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)];
 const tokens = new Map(declarations(generated).map((match) => [match[1], match[2]]));
-const lightStart = styles.indexOf('html[data-resolved="light"] {\n  color-scheme: light;');
-const lightEnd = styles.indexOf("@media (prefers-color-scheme: light)", lightStart);
-if (lightStart < 0 || lightEnd < lightStart) {
+// Status roles precede the canvas block. Read the primary explicit theme blocks
+// through its shadow refinements, before the system-theme fallback. Later base
+// layer fallbacks must not override the supported, unlayered declarations.
+const canvasStart = styles.indexOf('html[data-resolved="light"] {\n  color-scheme: light;');
+const lightEnd = styles.indexOf("@media (prefers-color-scheme: light)", canvasStart);
+if (canvasStart < 0 || lightEnd < canvasStart) {
+	throw new Error("Thorbis light canvas source changed; inspect before regenerating");
+}
+const lightBlocks = [
+	...styles.slice(0, lightEnd).matchAll(/html\[data-resolved="light"\]\s*\{([^{}]*)\}/g),
+];
+const light = new Map(
+	lightBlocks.flatMap((block) => declarations(block[1]).map((m) => [m[1], m[2]]))
+);
+if (
+	!(
+		lightBlocks.some((block) => block[1].includes("color-scheme: light")) &&
+		["success", "danger", "warning", "info"].every((role) => light.has(`--color-${role}`))
+	)
+) {
 	throw new Error("Thorbis light theme source changed; inspect before regenerating");
 }
-const light = new Map(declarations(styles.slice(lightStart, lightEnd)).map((m) => [m[1], m[2]]));
 // Namespacing avoids collisions with Tailwind's --color-accent semantic contract.
 const rename = (text) =>
 	text.replaceAll("--color-", "--thorbis-").replaceAll("--text-", "--thorbis-text-");
