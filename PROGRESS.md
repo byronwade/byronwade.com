@@ -65,3 +65,55 @@
   toolkit configuration, other worktree, or ownership record was changed.
 - Next: lint/type-check/build, render states and viewports, axe and keyboard,
   performance budget, full diff review, design-system recheck, and PR evidence.
+
+## Loop 3 — full verification
+
+- Dependency install completed (653 packages, approximately 9 minutes); no lockfile
+  or dependency changes. Native Node 24 shop regressions now pass 22/22 after
+  splitting the catalog and failure cases into independently named checks.
+- Narrow Biome check of the new source/tests passes. Full lint/type-check started.
+- Checkout boundary/catalog/docs committed as `7e41915`; UI remains in progress.
+- Latest fetch still shows no `origin/bot/design-system`. Port 3100 is available
+  for this worktree's hidden local server; no other server will be used.
+- Prepared temporary browser verification outside the repository: real server-action
+  submission with a mocked Stripe failure, disabled/pending/focus/retry checks,
+  no-key/live-key states, no-JS preview, axe, light/dark and responsive screenshots.
+  The fixture is test evidence only, never a real Stripe session.
+
+## Loop 4 — rendered findings
+
+- Full lint passes (130 files), type-check passes, knip passes, and no-key
+  production build passes. Expected Figma/Dribbble credential warnings only.
+- Full native suite: 56/56 pass. Existing rendered contact check: 1/1 pass.
+- Corrected pre-existing CRLF checkout bytes to the LF already stored in Git;
+  confirmed no source/content diff outside intended changes.
+- Captured and visually inspected `/shop` desktop/mobile light screenshots; also
+  captured dark variants. Responsive preview has no horizontal overflow.
+- Browser keyboard test exposed `role="button"` on Button-rendered return anchors.
+  Changed only the two new routes to canonical Link + existing `link-underline`
+  and `focus-ring` utilities; added two rendered native-link regressions.
+- Next: rebuild/re-run checks after this fix, finish axe/keyboard/fixture states,
+  measure performance, inspect secrets/diff, and publish the branch/ready PR.
+
+## Loop 5 — verification recovery
+
+- Native-link regressions correctly failed against the old production HTML
+  (red). Rebuild is in progress to establish green against the corrected routes.
+- Full lint after the fix passes (131 files). A repeat incremental type-check
+  stalled for several minutes at about 11 seconds CPU. Verified its exact PID,
+  start time, and command path, then stopped only that worktree-local process.
+  Retrying with `npm run type-check -- --incremental false`; never weakened types.
+- Temporary resumable verification files are in
+  `%TEMP%/codex-shop-20261015/`: `verify.py` (headless installed Chrome, axe 4.10.3,
+  screenshots and real server-action fixture), `performance.py` (own local :3000
+  server, prescribed perf script plus `/shop` Lighthouse), and bounded logs.
+- Client output scans found no Stripe env name/fixture credential or raw contact
+  address; no remote credentials were requested or changed.
+- Branch source diff remains limited to the shop, its docs/tests, and evidence.
+  Re-fetch the design-system branch before publishing. No remote ref found yet.
+- Cold type-check completed successfully; rebuild after the native-link fix also
+  passed. Host scheduling made TypeScript take 2.4 minutes during that build.
+- CSS inspection found the existing `.reveal` utility overrides ordinary
+  `animate-none` by source order. The three new Guided headers now use Tailwind's
+  important animation opt-out (`animate-none!`); no shared motion/token change.
+  Browser verification now explicitly checks the normal-motion computed value.

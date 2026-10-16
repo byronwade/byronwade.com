@@ -31,6 +31,7 @@ the header.
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume (PDF export via `/api/resume-pdf`) |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
+| `/shop`, `/shop/success`, `/shop/cancel` | Unlinked placeholder shop with test-only Stripe Checkout ([boundaries and local test](SHOP.md)) |
 | `/privacy`, `/terms` | Legal |
 
 ## Components
@@ -42,6 +43,7 @@ components/
   blog/          # Blog UI
   project/       # Project preview UI
   portfolio/     # Figma viewer
+  shop/          # Test checkout form and pending/error feedback
   common/        # Theme, analytics, markdown, error boundary, empty state
   ui/            # Base UI primitives
 ```
@@ -54,3 +56,6 @@ components/
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
 - `lib/actions/send-email.ts`. contact form server action (Resend)
+- `lib/shop/products.ts`. typed placeholder catalog; the only shop price source
+- `lib/shop/checkout.ts`, `lib/actions/create-checkout.ts`. test-only Stripe
+  Checkout mutation and server-action redirect; no fulfillment or order storage
