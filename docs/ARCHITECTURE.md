@@ -80,6 +80,15 @@ components/
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
   Blog posts with `draft: true` are available only in development. The shared
   loader excludes them from production pages, search, RSS, sitemap, and slugs.
+  `parseContentDate` in `lib/markdown-utils.ts` validates dates from both loaders:
+  complete ISO calendar strings, ISO timestamps with an explicit timezone, and
+  valid YAML Date objects. Blog posts without a valid publication date are
+  excluded by the same shared boundary and logged for the author to correct.
+  Invalid optional update/project dates are omitted. No loader substitutes the
+  build date. The sitemap uses an article's update date when present and leaves
+  modification dates off undated projects.
+  Quote dates when strict calendar validation is needed: the YAML engine
+  normalizes impossible unquoted calendar dates before returning Date objects.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags

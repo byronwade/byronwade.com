@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { safeFormatDate, safeISODate } from "../lib/markdown-utils.ts";
+import { parseContentDate, safeFormatDate, safeISODate } from "../lib/markdown-utils.ts";
 
 const originalTimezone = process.env.TZ;
 after(() => {
@@ -18,6 +18,14 @@ for (const timezone of [
 	"Asia/Kathmandu",
 	"Pacific/Kiritimati",
 ]) {
+	test(`${timezone}: authored dates validate without changing their day or instant`, () => {
+		process.env.TZ = timezone;
+		assert.equal(parseContentDate(" 2024-02-29 "), "2024-02-29");
+		assert.equal(parseContentDate(new Date("2026-01-01Z")), "2026-01-01T00:00:00.000Z");
+		const timestamp = "2026-01-01T23:30:00-05:00";
+		assert.equal(parseContentDate(timestamp), timestamp);
+	});
+
 	for (const [label, value] of [
 		["quoted calendar date", "2026-01-01"],
 		["YAML Date", new Date("2026-01-01T00:00:00.000Z")],
@@ -57,4 +65,25 @@ test("real timestamps retain local-time formatting", () => {
 	process.env.TZ = "America/New_York";
 	assert.equal(safeFormatDate("2026-01-01T03:30:00Z"), "December 31, 2025");
 	assert.equal(safeFormatDate(new Date("2026-01-01T03:30:00Z")), "December 31, 2025");
+});
+
+test("authored dates reject invalid values, partial days and ambiguous local timestamps", () => {
+	for (const value of [
+		undefined,
+		null,
+		"",
+		"not a date",
+		new Date("invalid"),
+		{},
+		0,
+		Number.NaN,
+		"2026",
+		"2026-01",
+		"2026-02-30",
+		"2026-13-01",
+		"2026-01-01T12:00:00",
+		"2026-01-01T12:00:00+25:00",
+	]) {
+		assert.equal(parseContentDate(value), undefined, String(value));
+	}
 });

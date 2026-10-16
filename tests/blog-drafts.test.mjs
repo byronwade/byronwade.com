@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 
 const runNode = promisify(execFile);
 const blogModule = new URL("../lib/blog.ts", import.meta.url).href;
+const markdownModule = new URL("../lib/markdown-utils.ts", import.meta.url).href;
 
 test("drafts are local previews and published posts remain available", async (context) => {
 	const directory = await mkdtemp(join(tmpdir(), "blog-drafts-"));
@@ -35,7 +36,13 @@ test("drafts are local previews and published posts remain available", async (co
 					"--experimental-strip-types",
 					"--input-type=module",
 					"-e",
-					`const { getBlogPosts, getBlogPost, getAllBlogSlugs } = await import(${JSON.stringify(blogModule)});
+					`import { registerHooks } from "node:module";
+registerHooks({
+  resolve(specifier, context, nextResolve) {
+    return nextResolve(specifier === "@/lib/markdown-utils" ? ${JSON.stringify(markdownModule)} : specifier, context);
+  },
+});
+const { getBlogPosts, getBlogPost, getAllBlogSlugs } = await import(${JSON.stringify(blogModule)});
 const posts = await getBlogPosts();
 console.log(JSON.stringify({
   posts: posts.map(post => post.slug).sort(),

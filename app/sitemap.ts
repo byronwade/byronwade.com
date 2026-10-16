@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
-import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
-import { getAllProjectSlugs, getProject } from "@/lib/projects";
+import { getBlogPosts } from "@/lib/blog";
+import { getProjects } from "@/lib/projects";
 import { siteUrl } from "@/lib/site";
-
-type ChangeFrequency = "daily" | "weekly" | "monthly" | "yearly";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const currentDate = new Date();
@@ -54,32 +52,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		},
 	];
 
-	const [blogSlugs, projectSlugs] = await Promise.all([getAllBlogSlugs(), getAllProjectSlugs()]);
-	const [blogPages, projectPages]: [MetadataRoute.Sitemap, MetadataRoute.Sitemap] =
-		await Promise.all([
-			Promise.all(
-				blogSlugs.map(async (slug) => {
-					const post = await getBlogPost(slug);
-					return {
-						url: `${siteUrl}/blog/${slug}`,
-						lastModified: post?.date ? new Date(post.date) : currentDate,
-						changeFrequency: "monthly" as ChangeFrequency,
-						priority: 0.7,
-					};
-				})
-			),
-			Promise.all(
-				projectSlugs.map(async (slug) => {
-					const project = await getProject(slug);
-					return {
-						url: `${siteUrl}/projects/${slug}`,
-						lastModified: project?.date ? new Date(project.date) : currentDate,
-						changeFrequency: "monthly" as ChangeFrequency,
-						priority: 0.7,
-					};
-				})
-			),
-		]);
+	const [posts, projects] = await Promise.all([getBlogPosts(), getProjects()]);
+	const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
+		url: `${siteUrl}/blog/${post.slug}`,
+		lastModified: new Date(post.updated ?? post.date),
+		changeFrequency: "monthly",
+		priority: 0.7,
+	}));
+	const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
+		url: `${siteUrl}/projects/${project.slug}`,
+		...(project.date ? { lastModified: new Date(project.date) } : {}),
+		changeFrequency: "monthly",
+		priority: 0.7,
+	}));
 
 	return [...staticPages, ...blogPages, ...projectPages];
 }
