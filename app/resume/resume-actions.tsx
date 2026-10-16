@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
 import { Check, Download, Mail } from "@/lib/icons";
+import {
+	isResumePdfResponse,
+	RESUME_PDF_FILENAME,
+	shouldHandleResumeDownload,
+} from "@/lib/resume-pdf";
 
 type CopyStatus = "idle" | "copied" | "failed";
 
@@ -63,22 +68,79 @@ export function CopyEmailButton() {
 	);
 }
 
-/** Download button; a client island only because it reports the download. */
+type DownloadPhase = "idle" | "pending" | "failed";
+
+const DOWNLOAD_STATUS: Record<DownloadPhase, string> = {
+	idle: "",
+	pending: "Preparing the PDF…",
+	failed: "Couldn’t create the PDF. Try again.",
+};
+
+function saveResumePdf(blob: Blob) {
+	const url = URL.createObjectURL(blob);
+	const link = document.createElement("a");
+	link.href = url;
+	link.download = RESUME_PDF_FILENAME;
+	document.body.append(link);
+	link.click();
+	link.remove();
+	window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/** Fetch the PDF. Returns false when the response is not a PDF, including a failed create. */
+async function fetchResumePdf(): Promise<boolean> {
+	try {
+		const response = await fetch("/api/resume-pdf");
+		if (!isResumePdfResponse(response.status, response.headers.get("content-type"))) {
+			return false;
+		}
+		saveResumePdf(await response.blob());
+		analytics.resumeDownload("pdf");
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+/**
+ * Download button. A plain click saves the file here so an error is not stored
+ * as a PDF. Without JavaScript, or with a modified click, the link still opens
+ * the route and the server's Content-Disposition names a real PDF.
+ */
 export function DownloadResumeButton() {
+	const [phase, setPhase] = useState<DownloadPhase>("idle");
+	const pending = useRef(false);
+
+	const onClick = async (event: MouseEvent<HTMLAnchorElement>) => {
+		if (!shouldHandleResumeDownload(event)) {
+			return;
+		}
+		event.preventDefault();
+		if (pending.current) {
+			return;
+		}
+		pending.current = true;
+		setPhase("pending");
+		const saved = await fetchResumePdf();
+		pending.current = false;
+		setPhase(saved ? "idle" : "failed");
+	};
+
 	return (
-		<Button
-			variant="outline"
-			render={
-				<a
-					href="/api/resume-pdf"
-					download="Byron_Wade_Resume.pdf"
-					onClick={() => analytics.resumeDownload("pdf")}
-				>
-					<Download className="size-3.5" aria-hidden="true" />
-					Download PDF
-				</a>
-			}
-		/>
+		<span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+			<Button
+				variant="outline"
+				render={
+					<a aria-busy={phase === "pending"} href="/api/resume-pdf" onClick={onClick}>
+						<Download className="size-3.5" aria-hidden="true" />
+						Download PDF
+					</a>
+				}
+			/>
+			<span role="status" className="text-sm print:hidden">
+				{DOWNLOAD_STATUS[phase]}
+			</span>
+		</span>
 	);
 }
 

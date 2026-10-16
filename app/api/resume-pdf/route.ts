@@ -1,6 +1,7 @@
 import chromium from "@sparticuz/chromium";
 import { NextResponse } from "next/server";
 import puppeteer, { type Browser } from "puppeteer-core";
+import { RESUME_PDF_FILENAME } from "@/lib/resume-pdf";
 import { siteUrl } from "@/lib/site";
 
 export const runtime = "nodejs";
@@ -57,7 +58,7 @@ export async function GET() {
 		return new NextResponse(pdf as BlobPart, {
 			headers: {
 				"Content-Type": "application/pdf",
-				"Content-Disposition": 'attachment; filename="Byron_Wade_Resume.pdf"',
+				"Content-Disposition": `attachment; filename="${RESUME_PDF_FILENAME}"`,
 				"Cache-Control": "public, max-age=3600, s-maxage=3600", // Cache for 1 hour
 			},
 		});
