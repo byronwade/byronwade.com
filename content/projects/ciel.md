@@ -5,6 +5,8 @@ category: "Concept"
 tagline: "hosting you can read"
 date: 2026-06-01
 excerpt: "A deployment platform I'm designing around three things every host gets wrong: predictable cost, security as a default instead of an upsell, and deployment states you can actually understand when something breaks."
+status: "Archived"
+featured: false
 ---
 
 # Ciel: A Deployment Platform Built for Legibility

@@ -92,7 +92,8 @@ function toProject(slug: string, fileContents: string): Project {
 		url: data.url,
 		category: data.category,
 		type: resolveType(data),
-		date: data.date || new Date().toISOString(),
+		// Undated work must not acquire a fabricated publication date at build time.
+		date: data.date instanceof Date ? data.date.toISOString() : data.date,
 		excerpt: data.excerpt,
 		flagship,
 		featured: data.featured === true || (data.featured !== false && flagship),

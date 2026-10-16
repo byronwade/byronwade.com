@@ -4,6 +4,8 @@ url: "https://cms.byronwade.com/cms/build"
 category: "Hobby Project"
 date: 2023-08-01
 excerpt: "A carefully architected CMS foundation for building complex, domain-specific applications, specifically, a comprehensive Field Management System for modern agriculture."
+status: "Archived"
+featured: false
 ---
 
 # Building a Modern CMS: The Foundation for Next-Generation Field Management Systems

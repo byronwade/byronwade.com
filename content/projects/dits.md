@@ -5,6 +5,8 @@ category: "Hobby"
 type: "hobby"
 date: 2025-12-09
 excerpt: "A Git-style, content-addressed VCS engineered for large media: video, game builds, 3D scenes, RAW photo libraries, and everything else Git was never built for."
+status: "Archived"
+featured: false
 ---
 
 # Dits, Media-First Version Control
