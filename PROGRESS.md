@@ -479,3 +479,21 @@ poll gh pr checks 49 for up to 20 minutes and update the PR with actual results.
   advisory reservation. Native command exit/output evidence is recorded here.
 - Next: create the normal merge commit, push without force, observe PR checks,
   then publish the report-only handoff. PR 49 must remain open and unmerged.
+
+### Loop 3: publish the integration and observe checks
+
+- Normal merge SHA: `8626b4235df40491ba1b084a219dc14f428a072c`. Main is an
+  ancestor; the regular push to bot/shop exited 0. No history was rewritten.
+- GitHub reports OPEN, MERGEABLE, mergedAt null, and no auto-merge request.
+  The PR base remains main `c48f33207bae3a20e9ccec92f7dd065d1539daf1`.
+- `gh pr checks 49 --json name,state,bucket,link`: 10 SUCCESS and two NEUTRAL
+  Cursor checks; no failing or pending check. Codacy, CodeQL and both analysis
+  jobs, GitGuardian, both Socket checks, CodeRabbit, Vercel, and Vercel Preview
+  Comments are successful on the integration head.
+- Updated the PR description to state main/#54 integration and DO NOT MERGE:
+  Byron must choose real products first. No live products or payments enabled.
+- `RESULT.md` records the integration SHA, exact local/remote evidence, reused
+  ownership and sensors, conflict cleanup, limits, and READY_FOR_BYRON verdict.
+- Final step: commit/push these report-only changes, verify the final head's
+  checks and ancestry, and refresh the PR body with the exact final head.
+  This handoff is rebased onto main by merge; PR 49 is not merged into main.
