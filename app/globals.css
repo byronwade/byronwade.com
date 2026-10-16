@@ -417,7 +417,8 @@
 /* thorbis-tokens:start */
 :root {
   --thorbis-accent: oklch(52% 0.17 264.4);
-  --thorbis-accent-foreground: oklch(100% 0 none);
+  /* Numeric achromatic hue preserves the color and supports the audit parser. */
+  --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(50% 0.188 264.4);
   --thorbis-bg: oklch(96.8% 0.009 84.6);
   --thorbis-body: oklch(38.2% 0.018 68);
@@ -442,11 +443,11 @@
   --thorbis-success: oklch(50% 0.14 149.2);
   --thorbis-warning: oklch(54% 0.13 80.5);
   --thorbis-work-body: oklch(94% 0.013 259.8);
-  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-canvas: oklch(14.5% 0 0);
   --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
   --thorbis-work-field: oklab(11.31% 0 0);
-  --thorbis-work-marker: oklch(78% 0 none);
-  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-marker: oklch(78% 0 0);
+  --thorbis-work-panel: oklch(20.5% 0 0);
   --thorbis-work-type: oklch(96.8% 0.009 84.6);
   --control-comfortable: 2.25rem;
   --control-compact: 2rem;
@@ -530,14 +531,14 @@
 }
 .dark {
   --thorbis-accent: oklch(61% 0.17 264.4);
-  --thorbis-accent-foreground: oklch(100% 0 none);
+  --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(63.2% 0.157 265.4);
-  --thorbis-bg: oklch(14.5% 0 none);
+  --thorbis-bg: oklch(14.5% 0 0);
   --thorbis-body: oklch(94% 0.013 259.8);
   --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
   --thorbis-burnt: oklch(49.6% 0.143 34);
   --thorbis-busy: oklch(96.8% 0.009 84.6);
-  --thorbis-code-bg: oklch(20.5% 0 none);
+  --thorbis-code-bg: oklch(20.5% 0 0);
   --thorbis-code-fg: oklch(96.8% 0.009 84.6);
   --thorbis-danger: oklch(62.6% 0.193 23);
   --thorbis-fg: oklch(96.8% 0.009 84.6);
@@ -546,20 +547,20 @@
   --thorbis-forest: oklch(38% 0.052 147.2);
   --thorbis-info: oklch(62.3% 0.188 259.8);
   --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
-  --thorbis-link-decoration: oklch(60% 0 none);
-  --thorbis-marker: oklch(78% 0 none);
+  --thorbis-link-decoration: oklch(60% 0 0);
+  --thorbis-marker: oklch(78% 0 0);
   --thorbis-olive: oklch(47.9% 0.05 115.3);
   --thorbis-on-panel: color-mix(in oklab, var(--thorbis-fg) 9%, var(--thorbis-panel));
-  --thorbis-panel: oklch(20.5% 0 none);
+  --thorbis-panel: oklch(20.5% 0 0);
   --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
   --thorbis-success: oklch(62.7% 0.17 149.2);
   --thorbis-warning: oklch(82.7% 0.171 80.5);
   --thorbis-work-body: oklch(94% 0.013 259.8);
-  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-canvas: oklch(14.5% 0 0);
   --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
   --thorbis-work-field: oklab(11.31% 0 0);
-  --thorbis-work-marker: oklch(78% 0 none);
-  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-marker: oklch(78% 0 0);
+  --thorbis-work-panel: oklch(20.5% 0 0);
   --thorbis-work-type: oklch(96.8% 0.009 84.6);
   --shadow-accent-action: 0 8px 24px color-mix(in oklab, var(--thorbis-accent) 22%, transparent), inset 0 1px rgb(255 255 255 / 0.2);
   --shadow-button: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 1px 1px rgb(0 0 0 / 0.2);

@@ -266,7 +266,7 @@ export function DockToolbarClient({
 						ref={compactRef}
 						inert={expanded}
 						className={cn(
-							"flex items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
+							"ml-auto flex w-max items-center gap-0.5 p-1.5 transition-opacity duration-(--motion-fast)",
 							expanded && "pointer-events-none"
 						)}
 					>

@@ -247,6 +247,10 @@ async function readAxe() {
 	const results = await window.axe.run(document, {
 		runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
 	});
+	const errors = results.incomplete.filter((result) => result.error);
+	if (errors.length) {
+		throw new Error(`axe could not evaluate ${errors.map((result) => result.id).join(", ")}`);
+	}
 	return results.violations.map(({ id, impact, nodes }) => ({
 		id,
 		impact,
@@ -622,7 +626,18 @@ async function measureErrorPage(page) {
 	if (!result || result.lhr.runtimeError) {
 		throw new Error(result?.lhr.runtimeError?.message || "Lighthouse returned no snapshot");
 	}
-	return { mode: "snapshot", accessibility: result.lhr.categories.accessibility.score * 100 };
+	return { mode: "snapshot", accessibility: readLighthouseAccessibility(result.lhr) };
+}
+
+function readLighthouseAccessibility(lhr) {
+	const errors = Object.entries(lhr.audits)
+		.filter(([, audit]) => audit.errorMessage)
+		.map(([id, audit]) => `${id}: ${audit.errorMessage}`);
+	const score = lhr.categories.accessibility.score;
+	if (!Number.isFinite(score) || errors.length) {
+		throw new Error(`Lighthouse audit incomplete: ${errors.join("; ")}`);
+	}
+	return score * 100;
 }
 
 async function measurePage(url, route, width, page) {
@@ -662,7 +677,7 @@ async function measurePage(url, route, width, page) {
 			throttling: lhr.configSettings.throttling,
 		},
 		performance: lhr.categories.performance.score * 100,
-		accessibility: lhr.categories.accessibility.score * 100,
+		accessibility: readLighthouseAccessibility(lhr),
 		timings: Object.fromEntries(
 			[
 				"first-contentful-paint",
