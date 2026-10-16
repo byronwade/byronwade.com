@@ -100,7 +100,7 @@ function toProject(slug: string, fileContents: string): Project {
 		// Undated work must not acquire a fabricated publication date at build time.
 		date:
 			data.date instanceof Date
-				? data.date.toISOString()
+				? data.date.toISOString().slice(0, 10)
 				: typeof data.date === "string"
 					? data.date
 					: undefined,
