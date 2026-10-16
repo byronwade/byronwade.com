@@ -16,21 +16,9 @@
           "value": 3443.108,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 559,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 2634.504395043357,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 559, "budget": 300 },
+        { "metric": "speed-index", "value": 2634.504395043357, "budget": 3000 }
       ],
       "resources": [
         {
@@ -107,21 +95,9 @@
           "value": 3620.6511499999997,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 923,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 2169.898267992163,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 923, "budget": 300 },
+        { "metric": "speed-index", "value": 2169.898267992163, "budget": 3000 }
       ],
       "resources": [
         {
@@ -198,21 +174,9 @@
           "value": 3216.0462500000003,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 379,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1669.730842051727,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 379, "budget": 300 },
+        { "metric": "speed-index", "value": 1669.730842051727, "budget": 3000 }
       ],
       "resources": [
         {
@@ -289,21 +253,9 @@
           "value": 3314.5255150000003,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 416,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1377.255855734351,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 416, "budget": 300 },
+        { "metric": "speed-index", "value": 1377.255855734351, "budget": 3000 }
       ],
       "resources": [
         {
@@ -380,21 +332,9 @@
           "value": 3301.2934000000005,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 284,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1384.7582281115317,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 284, "budget": 300 },
+        { "metric": "speed-index", "value": 1384.7582281115317, "budget": 3000 }
       ],
       "resources": [
         {
@@ -468,21 +408,9 @@
           "value": 3189.3899,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 225,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1242.8500112706668,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 225, "budget": 300 },
+        { "metric": "speed-index", "value": 1242.8500112706668, "budget": 3000 }
       ],
       "resources": [
         {
@@ -556,21 +484,9 @@
           "value": 3137.8876,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 360.0281,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1301.8264027222986,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 360.0281, "budget": 300 },
+        { "metric": "speed-index", "value": 1301.8264027222986, "budget": 3000 }
       ],
       "resources": [
         {
@@ -647,21 +563,9 @@
           "value": 3061.6896,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 407,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1043.1100292601222,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 407, "budget": 300 },
+        { "metric": "speed-index", "value": 1043.1100292601222, "budget": 3000 }
       ],
       "resources": [
         {
@@ -738,21 +642,13 @@
           "value": 3035.9741000000004,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
         {
           "metric": "total-blocking-time",
           "value": 343.6753000000001,
           "budget": 300
         },
-        {
-          "metric": "speed-index",
-          "value": 1232.430037017134,
-          "budget": 3000
-        }
+        { "metric": "speed-index", "value": 1232.430037017134, "budget": 3000 }
       ],
       "resources": [
         {
@@ -829,21 +725,9 @@
           "value": 3068.0405,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 305,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1735.208987682693,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 305, "budget": 300 },
+        { "metric": "speed-index", "value": 1735.208987682693, "budget": 3000 }
       ],
       "resources": [
         {
@@ -920,21 +804,9 @@
           "value": 2960.9458,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 273.3514,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1206.90423996562,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 273.3514, "budget": 300 },
+        { "metric": "speed-index", "value": 1206.90423996562, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1008,21 +880,9 @@
           "value": 2755.5937,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 358.5,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1301.231740023365,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 358.5, "budget": 300 },
+        { "metric": "speed-index", "value": 1301.231740023365, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1096,21 +956,13 @@
           "value": 3074.2920700000004,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
         {
           "metric": "total-blocking-time",
           "value": 284.0000000000001,
           "budget": 300
         },
-        {
-          "metric": "speed-index",
-          "value": 1209.4032759883175,
-          "budget": 3000
-        }
+        { "metric": "speed-index", "value": 1209.4032759883175, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1184,21 +1036,13 @@
           "value": 3076.9172999999996,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
         {
           "metric": "total-blocking-time",
           "value": 333.9999999999999,
           "budget": 300
         },
-        {
-          "metric": "speed-index",
-          "value": 1219.8048400043392,
-          "budget": 3000
-        }
+        { "metric": "speed-index", "value": 1219.8048400043392, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1275,21 +1119,9 @@
           "value": 3117.68035,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 396,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1587.0626620303678,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 396, "budget": 300 },
+        { "metric": "speed-index", "value": 1587.0626620303678, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1371,16 +1203,8 @@
           "value": 0.0001113270455092975,
           "budget": 0.1
         },
-        {
-          "metric": "total-blocking-time",
-          "value": 246,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1479.5252772032943,
-          "budget": 3000
-        }
+        { "metric": "total-blocking-time", "value": 246, "budget": 300 },
+        { "metric": "speed-index", "value": 1479.5252772032943, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1454,21 +1278,9 @@
           "value": 2923.55035,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 230,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1063.9419228784523,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 230, "budget": 300 },
+        { "metric": "speed-index", "value": 1063.9419228784523, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1542,21 +1354,9 @@
           "value": 3029.99915,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
-        {
-          "metric": "total-blocking-time",
-          "value": 267,
-          "budget": 300
-        },
-        {
-          "metric": "speed-index",
-          "value": 1004.3052691175118,
-          "budget": 3000
-        }
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        { "metric": "total-blocking-time", "value": 267, "budget": 300 },
+        { "metric": "speed-index", "value": 1004.3052691175118, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1630,21 +1430,13 @@
           "value": 2896.8421500000004,
           "budget": 3000
         },
-        {
-          "metric": "cumulative-layout-shift",
-          "value": 0,
-          "budget": 0.1
-        },
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
         {
           "metric": "total-blocking-time",
           "value": 175.0000000000001,
           "budget": 300
         },
-        {
-          "metric": "speed-index",
-          "value": 1083.6278200026704,
-          "budget": 3000
-        }
+        { "metric": "speed-index", "value": 1083.6278200026704, "budget": 3000 }
       ],
       "resources": [
         {
@@ -1670,6 +1462,86 @@
           "label": "Document",
           "requestCount": 1,
           "transferSize": 22264
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 17963
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4100
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": []
+    },
+    {
+      "sample": "codacy-cleanup-budget",
+      "command": "npm run perf:budget",
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 940.3444999999999,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2989.5167500000002,
+          "budget": 3000
+        },
+        { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+        {
+          "metric": "total-blocking-time",
+          "value": 271.82775000000015,
+          "budget": 300
+        },
+        { "metric": "speed-index", "value": 961.4381080828593, "budget": 3000 }
+      ],
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 14,
+          "transferSize": 262432
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 9,
+          "transferSize": 168115
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22263
         },
         {
           "resourceType": "stylesheet",

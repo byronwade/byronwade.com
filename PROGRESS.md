@@ -2,12 +2,15 @@
 
 ## PR #56 LCP and merge follow-up — October 16, 2026
 
-Final application: be1b8ba410476a9abbe5dc0ce82f2bff3d808928. Full npm run perf:budget PASS: LCP
-2896.842ms, TBT 175ms, FCP 965.614ms, CLS 0, Speed Index 1083.628ms; all
-resource limits pass (168117 script bytes / 9, 262435 total bytes / 14).
+Final application: 969fe88a37616d45f082cf43c5b023ec4e27a951. Full npm run perf:budget PASS: LCP
+2989.517ms, TBT 271.828ms, FCP 940.344ms, CLS 0, Speed Index 961.438ms; all
+resource limits pass (168115 script bytes / 9, 262432 total bytes / 14).
 Native 149, check, build, rendered 8 and final production browser matrix PASS.
 Zero contact/client-secret matches; original 20 font hashes match. No budget or
-profile change. Evidence and PR update prepared; push/status/squash merge next.
+profile change. Codacy reported six minor formatting findings; all were fixed without changing
+checks. Nine initial JS/CSS assets are byte-identical; rendered tests pass again.
+The font/token adapter matches checked-in styles across two scratch runs; source
+checkout remains clean. Updated evidence and status verification precede merge.
 
 
 Current authorization supersedes the historical review-only handoff below: integrate

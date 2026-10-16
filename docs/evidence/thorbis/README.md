@@ -27,14 +27,14 @@ Full-page home images also cover 768/320 in both themes. focus-*.png records vis
 Same Lighthouse 12.8.2 default mobile simulated profile and unchanged budgets. Local Windows/Node 24/Chrome lab; workstation contention can vary CPU timings. Do not infer real-user latency from these samples.
 
 The integrated #55 baseline was LCP 3443.108ms / TBT 559ms. The follow-up's
-full `npm run perf:budget` passed: LCP 2896.842ms, TBT 175ms, FCP 965.614ms,
-CLS 0 and Speed Index 1083.628ms. All resource limits passed: 168117 JavaScript
-bytes / nine scripts, 262435 total bytes / 14 requests, one font (49991 bytes),
+full `npm run perf:budget` passed: LCP 2989.517ms, TBT 271.828ms, FCP 940.344ms,
+CLS 0 and Speed Index 961.438ms. All resource limits passed: 168115 JavaScript
+bytes / nine scripts, 262432 total bytes / 14 requests, one font (49991 bytes),
 one stylesheet (17963 bytes), no images. The 3000ms LCP limit was not changed.
 
 See performance.json for the final acceptance sample and complete diagnostics;
 lcp-runs.json retains exploratory failures and passing samples. CPU variance is
-material and the LCP margin is modest; no real-user production claim is made.
+material and the final LCP margin is only 10.483ms; no real-user production claim is made.
 
 ## Reproduce locally
 

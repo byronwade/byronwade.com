@@ -20,7 +20,7 @@ this is a port of a private application, not an installed package.
 | Browser/design | `node scripts/verify-thorbis-browser.mjs`: PASS; eight width/theme cases, 24 panels, four keyboard widths, two no-JS widths and nine routes. |
 | External status and merge | Pending push, status inspection and requested squash merge. |
 
-Application commit: `be1b8ba410476a9abbe5dc0ce82f2bff3d808928`. Fresh contact HTML/client and server-environment-name
+Application commit: `969fe88a37616d45f082cf43c5b023ec4e27a951`. Fresh contact HTML/client and server-environment-name
 scans: zero matches; 20 original font hashes match pinned evidence; protected content,
 budget/runner and font tree diff empty. `git diff --check` passes.
 
@@ -32,20 +32,20 @@ is the integrated #55 tree before this follow-up; the earlier PR LCP was 3266ms.
 
 | Metric | Integrated baseline | Passing follow-up | Limit |
 | --- | ---: | ---: | ---: |
-| LCP | 3443.108ms | 2896.842ms | 3000ms |
-| FCP | — | 965.614ms | 2000ms |
-| TBT | 559ms | 175ms | 300ms |
+| LCP | 3443.108ms | 2989.517ms | 3000ms |
+| FCP | — | 940.344ms | 2000ms |
+| TBT | 559ms | 271.828ms | 300ms |
 | CLS | — | 0 | 0.1 |
-| Speed Index | — | 1083.628ms | 3000ms |
-| JavaScript | 203017 bytes | 168117 bytes / 9 requests | 300KiB / 10 |
-| All resources | 294456 bytes | 262435 bytes / 14 requests | 1000KiB / 50 |
+| Speed Index | — | 961.438ms | 3000ms |
+| JavaScript | 203017 bytes | 168115 bytes / 9 requests | 300KiB / 10 |
+| All resources | 294456 bytes | 262432 bytes / 14 requests | 1000KiB / 50 |
 | Fonts | — | 49991 bytes / 1 request | 100KiB / 5 |
 | CSS | — | 17963 bytes / 1 request | 50KiB / 3 |
 | Images | — | 0 bytes / 0 requests | 500KiB / 20 |
 
 `docs/evidence/thorbis/performance.json` retains the final complete diagnostics;
 `lcp-runs.json` retains exploratory failures as well as passing samples. Local CPU
-variance was material and the LCP margin is modest. These are lab measurements,
+variance was material and the final LCP margin is only 10.483ms. These are lab measurements,
 not a claim about production user latency. Font instancing, inline CSS, deferred
 search and selective hydration experiments were rejected and removed.
 
@@ -75,6 +75,12 @@ control for the required client action glyph. It was observed failing before the
 fix and passing after. Existing timing/resource limits remain enforced. Browser
 checks now toggle the real theme control in every matrix case and assert no-JS
 navigation visibility. No automatic Actions workflow was enabled or dispatched.
+
+Codacy cleanup: added CSS spacing, fixed a bare URL, and named the returned client
+configuration. No check settings changed. Nine initial homepage JS/CSS assets are
+byte-identical to the final browser matrix build; rendered tests pass again. The
+updated token adapter was run twice in a scratch directory: idempotent and equal
+to checked-in styles; the pinned source checkout remains clean.
 
 ## Design evidence and limits
 
