@@ -66,7 +66,7 @@ and point at the code that holds the values.
 | `npm run build` | Production build ,  **local release gate** |
 | `npm run check` | Lint, then type-check and knip |
 | `npm test` | Contact and cache-refresh regressions, fixtures only (Node 22.18+) |
-| `npm run test:rendered` | Check native contact submit semantics after `npm run build` |
+| `npm run test:rendered` | Check contact submit semantics and portfolio client bundles after `npm run build` |
 | `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
 | `npm run audit:deploy` | `vercel build` (needs a linked project) |
