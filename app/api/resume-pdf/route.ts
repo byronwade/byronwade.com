@@ -30,7 +30,10 @@ export async function GET(request: Request) {
 
 		// The record is server-rendered; the email line is decoded after hydration
 		// (docs/SPAM_PROTECTION.md), so wait for it rather than for an arbitrary delay.
-		await page.waitForSelector("[data-resume-email]", { timeout: 10_000 });
+		// A page without it (hydration failure, or an older deployment) still prints.
+		await page.waitForSelector("[data-resume-email]", { timeout: 10_000 }).catch(() => {
+			console.warn("Resume PDF: email line did not appear; printing without it");
+		});
 
 		// page.pdf() renders print media, so the page's own print:* rules hide the
 		// site chrome and controls. Browser printing gets the same document.

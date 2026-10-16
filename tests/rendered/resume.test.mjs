@@ -3,8 +3,9 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;
-const JSON_LD = /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g;
-const PRINT_HIDDEN_SECTION = /<(section|div|footer) class="[^"]*\bprint:hidden\b[^"]*"/;
+const JSON_LD_OPEN = 'type="application/ld+json"';
+const PRINT_HIDDEN_SECTION = /<(section|div|footer) class="[^"]*\bprint:hidden\b[^"]*"/g;
+const SECTION_TAG = /<(\/?)(section|div|footer)\b/g;
 const PRINT_HIDDEN_FOOTER = /<footer class="[^"]*\bprint:hidden\b/;
 const OVERSTATED = /multi-million/i;
 const MAIN = `id="main-content"`;
@@ -18,18 +19,31 @@ async function readResume() {
 	}
 }
 
+/** Parsed JSON-LD blocks, located by attribute rather than by matching tags. */
+function jsonLdBlocks(html) {
+	const blocks = [];
+	for (let at = html.indexOf(JSON_LD_OPEN); at !== -1; at = html.indexOf(JSON_LD_OPEN, at + 1)) {
+		const start = html.indexOf(">", at) + 1;
+		blocks.push(JSON.parse(html.slice(start, html.indexOf("</script", start))));
+	}
+	return blocks;
+}
+
 /** True when some print:hidden section/div/footer is still open where `marker` appears. */
 function isInsidePrintHidden(html, marker) {
 	const at = html.indexOf(marker);
 	assert.ok(at > 0, `${marker} should be on the page`);
 	// Page content only: the site header is print-hidden as a whole.
 	const before = html.slice(html.indexOf(MAIN), at);
-	return [...before.matchAll(new RegExp(PRINT_HIDDEN_SECTION, "g"))].some((open) => {
+	return [...before.matchAll(PRINT_HIDDEN_SECTION)].some((open) => {
 		const tag = open[1];
 		const between = before.slice(open.index + open[0].length);
 		// Walk same-name tags in order; the element is closed once depth returns to zero.
 		let depth = 1;
-		for (const [, closing] of between.matchAll(new RegExp(`<(/?)${tag}\\b`, "g"))) {
+		for (const [, closing, name] of between.matchAll(SECTION_TAG)) {
+			if (name !== tag) {
+				continue;
+			}
 			depth += closing ? -1 : 1;
 			if (depth === 0) {
 				return false;
@@ -57,8 +71,7 @@ test("the resume record is in the prerendered HTML, without the real contact det
 		assert.ok(!html.includes(secret), `prerendered /resume must not contain ${secret}`);
 	}
 
-	const person = [...html.matchAll(JSON_LD)]
-		.map(([, json]) => JSON.parse(json))
+	const person = jsonLdBlocks(html)
 		// The site-wide Person block comes first; the resume adds its credentials.
 		.find((data) => data["@type"] === "Person" && data.hasCredential);
 	assert.ok(person, "/resume should carry its Person JSON-LD");
