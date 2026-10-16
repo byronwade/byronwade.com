@@ -65,8 +65,8 @@ and point at the code that holds the values.
 | `npm run knip` | Unused files, exports, types, deps ,  **local release gate**, at zero |
 | `npm run build` | Production build ,  **local release gate** |
 | `npm run check` | Lint, then type-check and knip |
-| `npm test` | Contact and cache-refresh regressions, fixtures only (Node 22.18+) |
-| `npm run test:rendered` | Check contact submit semantics and portfolio client bundles after `npm run build` |
+| `npm test` | Contact, cache-refresh, and content-date regressions; no live services (Node 22.18+) |
+| `npm run test:rendered` | Check contact semantics, portfolio client bundles, and visible content dates after `npm run build` |
 | `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
 | `npm run audit:deploy` | `vercel build` (needs a linked project) |
@@ -79,6 +79,11 @@ is manual-only; local checks or Depot are the release gate. GitHub's separate
 default CodeQL setup still creates automatic Actions runs and needs an owner
 settings change to comply with that policy. React Scan is wired into `npm run dev`
 and never reaches production.
+
+Publication dates are calendar days. Use `safeFormatDate` / `safeISODate` from
+`lib/markdown-utils.ts` for content dates and year groups, including serialized
+UTC-midnight YAML dates. Direct local formatting of those ISO strings can display
+the previous day or year. Non-midnight timestamps retain local-time formatting.
 
 ## Tech
 

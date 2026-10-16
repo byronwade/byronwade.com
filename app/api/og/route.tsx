@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import { safeFormatDate } from "@/lib/markdown-utils";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -210,9 +211,7 @@ export async function GET(request: NextRequest) {
 								}}
 							>
 								<span>📅</span>
-								<span style={{ marginLeft: "8px" }}>
-									{new Date(date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
-								</span>
+								<span style={{ marginLeft: "8px" }}>{safeFormatDate(date, "MMMM yyyy")}</span>
 							</div>
 						)}
 

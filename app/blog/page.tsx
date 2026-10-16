@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import Link from "next/link";
 import { Suspense } from "react";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
@@ -8,6 +7,7 @@ import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { getBlogPosts } from "@/lib/blog";
 import { Clock } from "@/lib/icons";
+import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateBreadcrumbStructuredData,
 	generateOGImageUrl,
@@ -67,7 +67,7 @@ async function BlogList() {
 	// Posts arrive newest-first; grouping preserves that order inside each year.
 	const byYear = new Map<string, typeof posts>();
 	for (const post of posts) {
-		const year = post.date ? String(new Date(post.date).getFullYear()) : "Undated";
+		const year = safeFormatDate(post.date, "yyyy") || "Undated";
 		const bucket = byYear.get(year);
 		if (bucket) {
 			bucket.push(post);
@@ -95,7 +95,7 @@ async function BlogList() {
 												className="w-12 shrink-0 font-mono text-muted-foreground/70 text-xs tabular-nums"
 												dateTime={post.date}
 											>
-												{format(new Date(post.date), "MMM d")}
+												{safeFormatDate(post.date, "MMM d")}
 											</time>
 										)}
 										<span
