@@ -92,7 +92,7 @@ improvement claim is being made. Next: collect actual runtime/budget results,
 write RESULT.md locally, finalize PR body with all three TODOs, push and open a
 ready PR to main; never merge.
 
-Final loop: ready/open PR #52: https://github.com/byronwade/byronwade.com/pull/52
+Final loop: ready/open [PR #52](https://github.com/byronwade/byronwade.com/pull/52)
 All four acceptance criteria PASS. Runtime production checks exclude the draft
 from /blog, /feed.xml, /sitemap.xml and / (all 200). Published post returns 200.
 Draft URL shows Page not found with noindex and no article content; Next streams
@@ -113,3 +113,52 @@ the requested draft acceptance. Keep it uncommitted as a local handoff; PR body
 contains the review evidence, performance findings and date-format caveat.
 Source gates and browser screenshots all use integrated a5347a8. All local review
 server trees stopped. Next: Byron reviews prose and the three TODOs. Never merge.
+
+## PR 52 Codacy and merge follow-up
+
+The current request authorizes fixing Codacy, pushing, and squash-merging after
+Codacy succeeds and all real checks pass. It supersedes the earlier no-merge
+handoff above. Operating mode: Implementation; this worktree only, no force push,
+admin merge, rule suppression, or changes to the post's `draft: true` flag.
+
+Loop 1: fetched origin and merged main at c48f332, including cache-secret and
+publication-date fixes. No merge conflicts. Codacy check 116821667172 reports six
+issues and zero annotations. Its public issue API identifies exactly six added
+findings: MD034 in this log, three comment-empty-line-before occurrences, one
+rule-empty-line-before, and one at-rule-empty-line-before in app/globals.css.
+Fixed the URL with a Markdown link and inserted the five required blank lines.
+Updated the canonical token generator to preserve both marker-comment fixes on
+regeneration. No CSS declaration, token value, selector, motion, or UI changed.
+
+Decision: reuse existing lint configs, CSS ownership, generator, and native Node
+tests; no new abstraction or package. Dependency cone: stylesheet whitespace,
+generator template, and handoff notes. Verify markdownlint, lint, type-check,
+knip, build, tests (including blog drafts), rendered tests, whitespace-only CSS
+equivalence, full diff, and unchanged draft. Then push and poll checks before
+the authorized squash merge. Existing design review findings remain separate
+from these six Codacy findings and will be recorded in RESULT.md.
+
+Toolkit reservation failed on a missing unrelated configured root; no toolkit
+configuration or quarantine changes. Native command exits provide evidence.
+The pre-existing local RESULT.md report is preserved and extended locally.
+
+Loop 2: lint passed (130 files), knip passed, and all 114 native tests passed,
+including blog drafts, cache-refresh, contact, and content dates. Markdownlint
+passed all six root documents with zero issues. A temporary local Stylelint 14
+config selecting the three reported spacing rules reproduced all five CSS
+findings: 22 warnings before, 17 after, with none at the five Codacy locations.
+The other 17 warnings predate this fix; this is a targeted reproduction, not a
+claim that the whole stylesheet is Stylelint-clean. No lint config was committed
+or weakened. CSS whitespace equivalence and unchanged-post assertions passed.
+Production compilation passed; independent type-check and build type validation
+are still running. Wait for actual exits before publishing.
+
+Loop 3: type-check passed; build passed (39 pages, existing Figma/Dribbble
+fallback warnings). Rendered tests passed 3/3, checking contact semantics, 39
+dates across eight pages, and 26 client chunks. Raw-contact scans found no
+matches in client output or prerendered HTML; no draft slug in prerendered HTML.
+The post remains unchanged with `draft: true`. Full source diff reviewed;
+git diff --check passed. Only this log, five CSS blank lines, and two generator
+template blank lines are staged for the fix; the prior local RESULT report is
+preserved outside the commit. Next: commit, normal push, poll Codacy and all
+real checks, then squash merge using the verified head SHA without admin.

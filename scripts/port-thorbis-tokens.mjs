@@ -31,6 +31,7 @@ const section = `/* Thorbis Design port: 46b6654d02fda9d8fde737395185c3141df52cd
  * Source: src/styles/tokens.generated.css + src/styles.css light overrides.
  * Sync: scripts/port-thorbis-tokens.mjs; mapping: docs/THORBIS-DESIGN-PORT.md.
  * Raw design values belong only in this token block. */
+
 /* thorbis-tokens:start */
 :root {
 ${emit(new Map([...tokens, ...light]))}
@@ -38,6 +39,7 @@ ${emit(new Map([...tokens, ...light]))}
 .dark {
 ${emit(dark)}
 }
+
 /* thorbis-tokens:end */`;
 const target = "app/globals.css";
 const current = readFileSync(target, "utf8");
