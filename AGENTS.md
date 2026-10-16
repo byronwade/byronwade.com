@@ -49,7 +49,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | Native Node contact-action, cache-refresh, and content-date regressions via `npm test` (Node 22.18+); no added test dependencies |
+| Tests | Native Node contact-action, cache-refresh, content-date, and screenshot-route regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
@@ -79,7 +79,7 @@ npm run perf:budget      # build + lighthouse against lighthouse-budget.json
 Run all four release gates locally before publishing. GitHub Actions must not run
 automatically; `.github/workflows/ci.yml` retains a manual reference only. Use
 local verification or Depot, per the owner's policy. Also run `npm test` for
-contact or cache-refresh changes. `type-check` runs `next typegen` first because `next-env.d.ts`
+contact, cache-refresh, content-date, or screenshot-route changes. `type-check` runs `next typegen` first because `next-env.d.ts`
 and the generated route types are gitignored, without it tsc cannot resolve
 `next/*` on a clean checkout.
 
@@ -253,6 +253,10 @@ not cleanup.
   `CACHE_TAGS`, an explicit revalidation window, a timeout, and a usable
   fallback. A failed third-party fetch must never break a page render, and a
   raw tag string is a bug, `/api/cache/revalidate` only knows `CACHE_TAGS`.
+  The one exception is project screenshots (`lib/screenshot-capture.ts`): they
+  are binary images, so `/api/screenshot/image` streams them with CDN
+  `Cache-Control` plus the provider's own cache instead of `unstable_cache`,
+  and the preview's error state is the fallback.
 - Import through path aliases (`@/components/*`, `@/lib/*`, `@/types/*`), not
   relative backdoors across folders.
 - Existing `index.ts` barrels stay curated. Do not add indiscriminate barrels or
@@ -391,7 +395,7 @@ Contact details are deliberately obfuscated to resist harvesting. See
   `components/home/inline-contact.tsx`), verify reveal still works.
 - Keep secrets out of source, logs, client bundles, and error messages. API
   tokens (`GITHUB_API_TOKEN`, `DRIBBBLE_ACCESS_TOKEN`, `FIGMA_ACCESS_TOKEN`,
-  `RESEND_API_KEY`) are server-only, never reference them in a `"use client"`
+  `RESEND_API_KEY`, `SCREENSHOTONE_ACCESS_KEY`) are server-only, never reference them in a `"use client"`
   file or a `NEXT_PUBLIC_*` variable.
 - Server actions and route handlers are public endpoints. Validate and normalize
   every input there; never trust client-side checks alone.
@@ -431,7 +435,7 @@ a representative measurement.
 
 ## Correctness and verification
 
-Contact-action, cache-refresh, and content-date regressions use the native Node runner
+Contact-action, cache-refresh, content-date, and screenshot-route regressions use the native Node runner
 (`npm test`, Node 22.18+); run it when changing those behaviors. Other surfaces rely
 on static checks and manual verification. Do not claim a change is tested when it is not.
 
@@ -442,7 +446,7 @@ npm run knip         # after deleting, moving, or renaming anything
 npm run build        # for routing, data-fetching, or boundary changes
 ```
 
-Run all four locally before publishing; run `npm test` for contact or cache-refresh changes. For UI
+Run all four locally before publishing; run `npm test` for contact, cache-refresh, content-date, or screenshot-route changes. For UI
 work, also exercise the affected route in
 `npm run dev`, including its loading, empty, and error states, and check
 keyboard, light, and dark.
@@ -514,9 +518,9 @@ Treat these reports as a queue of candidate findings and apply the same fix-now
 Known false positives in this repository, confirmed by reading the code:
 
 - `nextjs-no-side-effect-in-get-handler` on `api/screenshot`, `api/og`, and
-  `api/github/stats`, the flagged "side effects" are `URLSearchParams.set` and
-  `Map.set` on local objects, and a POST to GitHub's GraphQL *query* endpoint.
-  None mutate server state.
+  `api/github/stats`, the flagged "side effects" are building local
+  `URLSearchParams`/`Map` objects, a read-only capture request to ScreenshotOne,
+  and a POST to GitHub's GraphQL *query* endpoint. None mutate server state.
 - `deslop/unused-export` on `components/ui/obfuscated-contact.tsx`, those
   exports are intentional public API, marked `@public` and documented in
   `docs/SPAM_PROTECTION.md`.

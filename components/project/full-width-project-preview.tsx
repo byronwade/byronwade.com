@@ -20,6 +20,7 @@ import {
 	Smartphone,
 	Tablet,
 } from "@/lib/icons";
+import { SCREENSHOT_VIEWPORTS } from "@/lib/screenshot-viewports";
 import { cn } from "@/lib/utils";
 
 interface FullWidthProjectPreviewProps {
@@ -30,11 +31,12 @@ interface FullWidthProjectPreviewProps {
 
 type ViewportPreset = keyof typeof VIEWPORT_PRESETS;
 
+// Sizes come from the shared list because the screenshot routes accept only those.
 const VIEWPORT_PRESETS = {
-	desktop: { width: 1920, height: 1080, label: "Desktop", icon: Monitor },
-	laptop: { width: 1440, height: 900, label: "Laptop", icon: Laptop },
-	tablet: { width: 768, height: 1024, label: "Tablet", icon: Tablet },
-	mobile: { width: 375, height: 667, label: "Mobile", icon: Smartphone },
+	desktop: { ...SCREENSHOT_VIEWPORTS.desktop, label: "Desktop", icon: Monitor },
+	laptop: { ...SCREENSHOT_VIEWPORTS.laptop, label: "Laptop", icon: Laptop },
+	tablet: { ...SCREENSHOT_VIEWPORTS.tablet, label: "Tablet", icon: Tablet },
+	mobile: { ...SCREENSHOT_VIEWPORTS.mobile, label: "Mobile", icon: Smartphone },
 } as const;
 
 const MIN_WIDTH = 320;

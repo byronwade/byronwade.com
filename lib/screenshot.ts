@@ -1,12 +1,12 @@
-// Shared client-side screenshot fetching with a module-level cache and in-flight
-// dedup, so the projects index hover-peek and the project detail preview reuse
-// the same resolved URLs instead of hammering /api/screenshot independently.
+// Client-side screenshot resolution with a module-level cache and in-flight
+// dedup, so switching preview sizes back and forth, or remounting the preview,
+// reuses resolved URLs instead of asking /api/screenshot again.
 
 const previewCache = new Map<string, string>();
 const inflight = new Map<string, Promise<string>>();
 
 /**
- * Resolve a static screenshot URL for `href` at the given viewport size.
+ * Resolve the same-origin screenshot URL for `href` at the given viewport size.
  * Only successful, non-empty results are cached, so transient failures retry.
  */
 export async function fetchScreenshot(
@@ -27,12 +27,9 @@ export async function fetchScreenshot(
 
 	const promise = (async () => {
 		const params = new URLSearchParams({
-			mode: "static",
 			url: href,
 			width: String(width),
 			height: String(height),
-			format: "jpg",
-			quality: "90",
 		});
 		const resp = await fetch(`/api/screenshot?${params.toString()}`);
 		if (!resp.ok) {
