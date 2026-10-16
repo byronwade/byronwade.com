@@ -49,7 +49,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | Native Node contact-action regressions via `npm test` (Node 22.18+); no added test dependencies |
+| Tests | Native Node contact-action and cache-refresh regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
@@ -69,7 +69,7 @@ npm run type-check   # next typegen && tsc --noEmit     (local release gate)
 npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
-npm test             # contact-action regressions (fixture email transport)
+npm test             # contact-action and cache-refresh regressions (fixtures only)
 npm run test:rendered # contact submit semantics + portfolio client bundles, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
@@ -79,7 +79,7 @@ npm run perf:budget      # build + lighthouse against lighthouse-budget.json
 Run all four release gates locally before publishing. GitHub Actions must not run
 automatically; `.github/workflows/ci.yml` retains a manual reference only. Use
 local verification or Depot, per the owner's policy. Also run `npm test` for
-contact changes. `type-check` runs `next typegen` first because `next-env.d.ts`
+contact or cache-refresh changes. `type-check` runs `next typegen` first because `next-env.d.ts`
 and the generated route types are gitignored, without it tsc cannot resolve
 `next/*` on a clean checkout.
 
@@ -431,9 +431,9 @@ a representative measurement.
 
 ## Correctness and verification
 
-Contact action regressions use the native Node runner (`npm test`, Node 22.18+).
-Other surfaces rely on static checks and manual verification. Do not claim a
-change is tested when it is not.
+Contact-action and cache-refresh regressions use the native Node runner
+(`npm test`, Node 22.18+). Other surfaces rely on static checks and manual
+verification. Do not claim a change is tested when it is not.
 
 ```bash
 npm run lint         # always
@@ -442,7 +442,7 @@ npm run knip         # after deleting, moving, or renaming anything
 npm run build        # for routing, data-fetching, or boundary changes
 ```
 
-Run all four locally before publishing; run `npm test` for contact changes. For UI
+Run all four locally before publishing; run `npm test` for contact or cache-refresh changes. For UI
 work, also exercise the affected route in
 `npm run dev`, including its loading, empty, and error states, and check
 keyboard, light, and dark.
