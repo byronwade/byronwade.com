@@ -77,7 +77,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						if (isInline) {
 							return (
 								<code
-									className="rounded bg-[var(--muted)] px-1.5 py-0.5 font-mono text-brand text-sm"
+									className="rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm"
 									{...props}
 								>
 									{children}
