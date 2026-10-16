@@ -248,7 +248,7 @@
 ## Published handoff
 
 - Pushed only `bot/shop`; opened ready PR #49 to `main`:
-  https://github.com/byronwade/byronwade.com/pull/49.
+  [#49](https://github.com/byronwade/byronwade.com/pull/49).
 - Final local gates pass, including 62 native tests and 3 rendered contracts.
   Final secret/contact scans and `git diff --check` are clean. Seven screenshots,
   13 zero-violation axe scenarios, keyboard/ARIA evidence, and explicit shared
@@ -261,12 +261,12 @@
 
 ## Integrated PR #46 historical progress
 
-# Portfolio server boundary
+Portfolio server boundary, integrated from PR #46.
 
 Operating mode: Implementation. Writes, small commits, push, and a ready PR to
 `main` are authorized. Do not merge or run GitHub Actions.
 
-## Decision record
+### Portfolio boundary decision record
 
 - Target: static project clients must not import portfolio API clients, cache
   machinery, or GitHub/Figma environment lookups. Keep public listings and
@@ -293,7 +293,7 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
   detail, and static portfolio details. Review the full diff and run
   `git diff --check`. Record evidence in `RESULT.md`.
 
-## Plan
+### Portfolio boundary plan
 
 1. Install locked dependencies and reproduce the invalid client import with a
    server-only compiler guard before migrating the consumer.
@@ -302,7 +302,7 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
 4. Write `RESULT.md` with `VERDICT: PASS` or `BLOCKED`, commit evidence, push
    `bot/portfolio-boundary`, and open a ready PR to `main`.
 
-## Progress
+### Portfolio boundary progress
 
 - Reconnaissance and dependency installation complete (`npm ci`: 653 packages;
   `npm install --save-exact server-only@0.0.1 --no-audit --no-fund`: exit 0).
@@ -375,3 +375,42 @@ poll gh pr checks 49 for up to 20 minutes and update the PR with actual results.
   historical evidence and replace its acceptance verdict with this task's results.
 - Shared-kit README/help/snapshot read. Reservation failed because a configured
   project root is missing; no toolkit configuration or other workspace changed.
+
+### Proven cause and upstream integration
+
+- Codacy's public PR issues API identifies `markdownlint_MD034`, `PROGRESS.md:251`,
+  "Bare URL used". Replaced the bare PR URL with a descriptive Markdown link;
+  no rule, severity, exclusion, or provider setting changed.
+- Merged `origin/main` at `c69030b` as `c429f95`. Preserved both task histories
+  in this log and reconciled the profile to cover contact, shop, and portfolio
+  rendered contracts. Kept PR #46's catalog split and server-only guard intact.
+- The existing `RESULT.md` now comes from main; the earlier local shop report
+  is preserved in ignored `.next/pr49-repair/result-previous-task.md`. This task
+  will replace the root report with current PR #49 acceptance evidence.
+- Installing the merged lockfile with `npm ci --no-audit --no-fund` before
+  serial verification; the newly merged server-only dependency was not installed.
+
+### Local verification complete
+
+- `npm ci --no-audit --no-fund`: exit 0, 649 packages. Took 15 minutes on the
+  shared host. Existing Sharp install-script policy warnings were not changed.
+- Node `v24.21.0`; npm `11.19.0`.
+- `npm run lint`: exit 0, 137 files, no fixes applied.
+- `npm run type-check`: exit 0, route generation and strict TypeScript passed.
+- `npm run knip`: exit 0, no unused-code findings.
+- `npm run build`: exit 0, Next.js 16.2.7, 41 static pages generated. Existing
+  Figma/Dribbble fallbacks were used; no external credentials were configured.
+- `npm test`: exit 0, 62 tests passed, zero failures (23 checkout regressions).
+- `npm run test:rendered`: exit 0, 4 tests passed; portfolio boundary scanned
+  27 production client chunks; contact submit and shop return links passed.
+- Source diff credential-pattern scan: zero matches. Raw-contact scan over
+  30 client scripts and 34 prerendered HTML files: zero matches. Client Stripe
+  secret scan: zero matches. Both rendered return routes retain noindex.
+- Source assertions: all three shop routes are noindex; shop absent from the
+  canonical navigation, search corpus, and sitemap. Checkout source is unchanged
+  from the original PR head, including rejection before provider calls.
+- Full source diff reviewed; `git diff --check` passed. No new UI, motion, API,
+  environment, settings, or product changes. Fresh browser/performance/provider
+  testing is outside this documentation repair; prior evidence remains linked.
+- Next: commit the Markdown correction and log cleanup, push only bot/shop,
+  then poll PR #49 for up to 20 minutes. A PASS verdict requires Codacy SUCCESS.
