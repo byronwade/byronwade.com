@@ -30,6 +30,12 @@ const nextConfig = {
 		remotePatterns: imageRemotePatterns,
 		...(process.env.NODE_ENV === "development" ? { unoptimized: true } : {}),
 	},
+	// @sparticuz/chromium reads its compressed browser from bin/ at runtime by a
+	// computed path, so file tracing misses it. Without these files the deployed
+	// resume PDF route fails before it can launch a browser.
+	outputFileTracingIncludes: {
+		"/api/resume-pdf": ["./node_modules/@sparticuz/chromium/bin/**"],
+	},
 	poweredByHeader: false,
 
 	// React Compiler (stable in Next.js 16): automatically memoizes components

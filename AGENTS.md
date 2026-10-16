@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, and content-date regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
