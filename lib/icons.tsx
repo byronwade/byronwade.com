@@ -1,65 +1,63 @@
-import type { Icon, IconProps, IconWeight } from "@phosphor-icons/react";
-import {
-	ArrowClockwise,
-	ArrowElbowDownLeft,
-	ArrowSquareOut,
-	ArrowsClockwise,
-	CalendarBlank,
-	CaretLeft,
-	CaretRight,
-	ChartBar,
-	CornersIn,
-	CornersOut,
-	Cube,
-	DeviceMobile,
-	DeviceTablet,
-	DotsSixVertical,
-	DotsThree,
-	DownloadSimple,
-	Envelope,
-	Fire,
-	GithubLogo,
-	House,
-	Info,
-	Lightning,
-	LinkedinLogo,
-	MagnifyingGlass,
-	PaperPlaneTilt,
-	PencilSimpleLine,
-	ArrowLeft as PhArrowLeft,
-	ArrowRight as PhArrowRight,
-	ArrowUpRight as PhArrowUpRight,
-	Check as PhCheck,
-	CheckCircle as PhCheckCircle,
-	Clock as PhClock,
-	Copy as PhCopy,
-	FileText as PhFileText,
-	Folder as PhFolder,
-	GitBranch as PhGitBranch,
-	GitCommit as PhGitCommit,
-	GitFork as PhGitFork,
-	Globe as PhGlobe,
-	Hash as PhHash,
-	Heart as PhHeart,
-	Image as PhImage,
-	Laptop as PhLaptop,
-	MapPin as PhMapPin,
-	Monitor as PhMonitor,
-	Moon as PhMoon,
-	Palette as PhPalette,
-	Phone as PhPhone,
-	Sparkle as PhSparkle,
-	Star as PhStar,
-	Sun as PhSun,
-	X as PhX,
-	ShareNetwork,
-	SpinnerGap,
-	SquaresFour,
-	Stack,
-	Warning,
-	XCircle,
-	XLogo,
-} from "@phosphor-icons/react/dist/ssr";
+import type { Icon, IconProps, IconWeight } from "@phosphor-icons/react/dist/lib/types";
+import { ArrowClockwise } from "@phosphor-icons/react/dist/ssr/ArrowClockwise";
+import { ArrowElbowDownLeft } from "@phosphor-icons/react/dist/ssr/ArrowElbowDownLeft";
+import { ArrowLeft as PhArrowLeft } from "@phosphor-icons/react/dist/ssr/ArrowLeft";
+import { ArrowRight as PhArrowRight } from "@phosphor-icons/react/dist/ssr/ArrowRight";
+import { ArrowSquareOut } from "@phosphor-icons/react/dist/ssr/ArrowSquareOut";
+import { ArrowsClockwise } from "@phosphor-icons/react/dist/ssr/ArrowsClockwise";
+import { ArrowUpRight as PhArrowUpRight } from "@phosphor-icons/react/dist/ssr/ArrowUpRight";
+import { CalendarBlank } from "@phosphor-icons/react/dist/ssr/CalendarBlank";
+import { CaretLeft } from "@phosphor-icons/react/dist/ssr/CaretLeft";
+import { CaretRight } from "@phosphor-icons/react/dist/ssr/CaretRight";
+import { ChartBar } from "@phosphor-icons/react/dist/ssr/ChartBar";
+import { Check as PhCheck } from "@phosphor-icons/react/dist/ssr/Check";
+import { CheckCircle as PhCheckCircle } from "@phosphor-icons/react/dist/ssr/CheckCircle";
+import { Clock as PhClock } from "@phosphor-icons/react/dist/ssr/Clock";
+import { Copy as PhCopy } from "@phosphor-icons/react/dist/ssr/Copy";
+import { CornersIn } from "@phosphor-icons/react/dist/ssr/CornersIn";
+import { CornersOut } from "@phosphor-icons/react/dist/ssr/CornersOut";
+import { Cube } from "@phosphor-icons/react/dist/ssr/Cube";
+import { DeviceMobile } from "@phosphor-icons/react/dist/ssr/DeviceMobile";
+import { DeviceTablet } from "@phosphor-icons/react/dist/ssr/DeviceTablet";
+import { DotsSixVertical } from "@phosphor-icons/react/dist/ssr/DotsSixVertical";
+import { DotsThree } from "@phosphor-icons/react/dist/ssr/DotsThree";
+import { DownloadSimple } from "@phosphor-icons/react/dist/ssr/DownloadSimple";
+import { Envelope } from "@phosphor-icons/react/dist/ssr/Envelope";
+import { FileText as PhFileText } from "@phosphor-icons/react/dist/ssr/FileText";
+import { Fire } from "@phosphor-icons/react/dist/ssr/Fire";
+import { Folder as PhFolder } from "@phosphor-icons/react/dist/ssr/Folder";
+import { GitBranch as PhGitBranch } from "@phosphor-icons/react/dist/ssr/GitBranch";
+import { GitCommit as PhGitCommit } from "@phosphor-icons/react/dist/ssr/GitCommit";
+import { GitFork as PhGitFork } from "@phosphor-icons/react/dist/ssr/GitFork";
+import { GithubLogo } from "@phosphor-icons/react/dist/ssr/GithubLogo";
+import { Globe as PhGlobe } from "@phosphor-icons/react/dist/ssr/Globe";
+import { Hash as PhHash } from "@phosphor-icons/react/dist/ssr/Hash";
+import { Heart as PhHeart } from "@phosphor-icons/react/dist/ssr/Heart";
+import { House } from "@phosphor-icons/react/dist/ssr/House";
+import { Image as PhImage } from "@phosphor-icons/react/dist/ssr/Image";
+import { Info } from "@phosphor-icons/react/dist/ssr/Info";
+import { Laptop as PhLaptop } from "@phosphor-icons/react/dist/ssr/Laptop";
+import { Lightning } from "@phosphor-icons/react/dist/ssr/Lightning";
+import { LinkedinLogo } from "@phosphor-icons/react/dist/ssr/LinkedinLogo";
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
+import { MapPin as PhMapPin } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { Monitor as PhMonitor } from "@phosphor-icons/react/dist/ssr/Monitor";
+import { Moon as PhMoon } from "@phosphor-icons/react/dist/ssr/Moon";
+import { Palette as PhPalette } from "@phosphor-icons/react/dist/ssr/Palette";
+import { PaperPlaneTilt } from "@phosphor-icons/react/dist/ssr/PaperPlaneTilt";
+import { PencilSimpleLine } from "@phosphor-icons/react/dist/ssr/PencilSimpleLine";
+import { Phone as PhPhone } from "@phosphor-icons/react/dist/ssr/Phone";
+import { ShareNetwork } from "@phosphor-icons/react/dist/ssr/ShareNetwork";
+import { Sparkle as PhSparkle } from "@phosphor-icons/react/dist/ssr/Sparkle";
+import { SpinnerGap } from "@phosphor-icons/react/dist/ssr/SpinnerGap";
+import { SquaresFour } from "@phosphor-icons/react/dist/ssr/SquaresFour";
+import { Stack } from "@phosphor-icons/react/dist/ssr/Stack";
+import { Star as PhStar } from "@phosphor-icons/react/dist/ssr/Star";
+import { Sun as PhSun } from "@phosphor-icons/react/dist/ssr/Sun";
+import { Warning } from "@phosphor-icons/react/dist/ssr/Warning";
+import { X as PhX } from "@phosphor-icons/react/dist/ssr/X";
+import { XCircle } from "@phosphor-icons/react/dist/ssr/XCircle";
+import { XLogo } from "@phosphor-icons/react/dist/ssr/XLogo";
 
 /**
  * The site's icon family: Phosphor, duotone.
@@ -73,6 +71,9 @@ import {
  * tone for free, and because both layers inherit `currentColor`, tinting an
  * icon still needs exactly one class. It is warmth that costs nothing and
  * cannot drift out of step with the palette.
+ *
+ * Public per-icon entry points keep TypeScript from loading the entire icon
+ * catalog through its barrels. The public types entry also avoids the CSR catalog.
  *
  * Why the SSR entry. `@phosphor-icons/react/dist/ssr` ships components with no
  * `"use client"` boundary, so icons stay in Server Components. The default
