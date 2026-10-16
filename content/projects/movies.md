@@ -17,7 +17,7 @@ Movies is a movie discovery project. Its public source includes a discovery feed
 
 ## Implementation
 
-The repository declares React, TypeScript, TanStack Start, TanStack Router, and Vite. Those are implementation details visible in the source, rather than claims about audience size or recommendation quality.
+The public source uses React, TypeScript, TanStack Start, TanStack Router, and Vite.
 
 ## Explore the source
 

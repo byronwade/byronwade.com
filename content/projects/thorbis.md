@@ -18,7 +18,7 @@ excerpt: "My ongoing work on software for service businesses, bringing jobs, dis
 
 Thorbis is my ongoing work on software for service businesses. The focus is the work itself: customers, jobs, scheduling and dispatch, estimates, invoices, and communications.
 
-My earlier project write-up describes a job cockpit that brings job context into one view, alongside work on dispatch and time tracking. These remain development priorities rather than measured customer outcomes.
+My earlier project write-up describes a job cockpit that brings job context into one view, alongside development work on dispatch and time tracking.
 
 ## Public context
 

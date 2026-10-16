@@ -23,6 +23,8 @@ not evidence that a project does not exist. No private repositories were consult
 
 All nine current entries contain frontmatter TODO comments. Unknown dates are
 omitted rather than assigned the build date. Existing Thorbis date is retained.
+Unverified categories are omitted; unknown work has a neutral Project label instead
+of being classified as Hobby by default.
 
 The fifteen earlier write-ups and all their other frontmatter are preserved.
 Only `status`, `featured`, and existing `flagship` fields change to establish the

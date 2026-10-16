@@ -4,6 +4,7 @@ import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
+import { cn } from "@/lib/utils";
 
 /**
  * The `/projects` index: a ranked list where each row carries its own evidence
@@ -17,8 +18,7 @@ import { statusTone } from "@/lib/status-tone";
  * left column.
  *
  * The count survives, because "how much work is here" is a real question a
- * visitor arrives with. It now sits with the page's lede rather than as a
- * header strip over the list.
+ * visitor arrives with. It sits beside each group's heading on the page.
  */
 
 function yearOf(date?: string): string {
@@ -80,16 +80,19 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 	return (
 		<IndexList as="ol">
 			{projects.map((project) => {
-				const proof = project.outcome || project.tagline;
+				const proof = project.outcome || project.excerpt;
 				const leadMetric = project.metrics?.[0];
 				const carriesEvidence = Boolean(project.featured || project.flagship);
 
 				return (
 					<IndexRow key={project.slug}>
-						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
+						<Link
+							className={cn(indexRowLinkClass, "focus-ring")}
+							href={`/projects/${project.slug}`}
+						>
 							<div className="flex items-center gap-4">
 								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-									<span className={`shrink-0 font-medium text-foreground ${indexRowAccentClass}`}>
+									<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
 										{project.title.split(":")[0]}
 									</span>
 									{project.flagship && (

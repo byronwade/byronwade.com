@@ -1,6 +1,5 @@
 ---
 title: "Hollowveil"
-category: "Hobby"
 featured: true
 status: "Active"
 tagline: "write-up in progress"

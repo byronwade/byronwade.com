@@ -1,6 +1,5 @@
 ---
 title: "ODB2"
-category: "Hobby"
 featured: true
 status: "Active"
 tagline: "write-up in progress"

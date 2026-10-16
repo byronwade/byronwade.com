@@ -1,6 +1,5 @@
 ---
 title: "Subfield"
-category: "Product"
 featured: true
 status: "Active"
 tagline: "write-up in progress"
