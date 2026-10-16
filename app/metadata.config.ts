@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { siteUrl } from "@/lib/site";
+import { siteUrl, xHandle } from "@/lib/site";
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
 		title: "Byron Wade, Software for Service Businesses",
 		description:
 			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
-		creator: "@byron_c_wade",
+		creator: `@${xHandle}`,
 		images: [
 			new URL(
 				"/api/og?title=Byron Wade&description=Software for service businesses&type=website",

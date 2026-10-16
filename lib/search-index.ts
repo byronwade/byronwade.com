@@ -14,6 +14,7 @@ const PAGES: SearchEntry[] = [
 	{ kind: "Page", label: "Blog", href: "/blog", keywords: "writing articles posts notes" },
 	{ kind: "Page", label: "Resume", href: "/resume", keywords: "cv experience work history" },
 	{ kind: "Page", label: "Contact", href: "/contact", keywords: "email hire get in touch" },
+	{ kind: "Page", label: "Search", href: "/search", keywords: "find command palette" },
 ];
 
 /** Build the ⌘K search corpus from static pages + project and blog content. */
