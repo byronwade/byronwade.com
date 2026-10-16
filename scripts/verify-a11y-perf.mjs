@@ -186,7 +186,7 @@ async function auditPage(url, route, width, theme) {
 		};
 		if (
 			phase === "final" &&
-			((width === 1280 && theme === "light") || (width === 375 && theme === "dark"))
+			((width === 1280 && theme === "light") || (width === 390 && theme === "dark"))
 		) {
 			result.screenshot = `${route === "/" ? "home" : route.slice(1).replaceAll("/", "-")}-${width}-${theme}.png`;
 			await page.screenshot({ path: `${destination}/${result.screenshot}`, fullPage: true });
@@ -194,6 +194,9 @@ async function auditPage(url, route, width, theme) {
 		if (phase === "final") {
 			result.keyboard = await checkKeyboard(page);
 			result.states = await checkRouteStates(page, route, width);
+			if (width === 1280 && route !== "/") {
+				result.states.push(...(await checkBreadcrumbStates(page)));
+			}
 			result.states.push(await checkReducedStyles(page));
 		}
 		if (measure) {
@@ -239,6 +242,9 @@ async function checkRouteStates(page, route, width) {
 	if (route === "/contact") {
 		return await checkContactStates(page);
 	}
+	if (route === "/portfolio") {
+		return await checkPortfolioStates(page);
+	}
 	if (route === "/portfolio/figma/audit-fixture") {
 		await page.click('button[aria-pressed="false"]');
 		const states = [await readState(page, "Missing static preview")];
@@ -246,6 +252,114 @@ async function checkRouteStates(page, route, width) {
 		return states;
 	}
 	return [];
+}
+
+async function checkBreadcrumbStates(page) {
+	const states = [];
+	const trigger = 'button[aria-label="Show hidden breadcrumb levels"]';
+	const nav = 'nav[aria-label="Breadcrumb"]';
+	await page.waitForSelector(nav, { visible: true });
+	const truncated = await page.$$eval(`${nav} a`, (links) =>
+		links.some((link) => link.scrollWidth > link.clientWidth + 1)
+	);
+	if (truncated && !(await page.$(trigger))) {
+		throw new Error("Breadcrumb label is truncated");
+	}
+	if (await page.$(trigger)) {
+		await page.click(trigger);
+		await page.waitForSelector('[data-slot="popover-content"]', { visible: true });
+		states.push(await readState(page, "Breadcrumb overflow"));
+		await page.keyboard.press("Escape");
+		await page.waitForFunction(
+			(selector) => document.activeElement === document.querySelector(selector),
+			{},
+			trigger
+		);
+		states.push({ name: "Breadcrumb overflow returns keyboard focus", passed: true });
+	}
+	const viewport = page.viewport();
+	await page.setViewport({ ...viewport, width: 768 });
+	await page.waitForFunction((selector) => !document.querySelector(selector), {}, nav);
+	await page.setViewport(viewport);
+	await page.waitForSelector(nav, { visible: true });
+	const geometry = await page.evaluate(readGeometry);
+	if (geometry.overflow || geometry.navOverlap.length) {
+		throw new Error("Breadcrumb resize overlaps the navigation");
+	}
+	states.push({ name: "Breadcrumb follows the visible header breakpoint", passed: true });
+	return states;
+}
+
+async function checkPortfolioStates(page) {
+	const states = [];
+	let mode = "loading";
+	let pending;
+	const errors = [];
+	const intercept = (request) => {
+		if (new URL(request.url()).pathname !== "/api/portfolio") {
+			request.continue().catch((error) => errors.push(error.message));
+			return;
+		}
+		if (mode === "loading" || mode === "timeout") {
+			pending = request;
+			return;
+		}
+		request
+			.respond({
+				status: 200,
+				contentType: "application/json",
+				body: JSON.stringify({ repos: [], degraded: mode === "error" }),
+			})
+			.catch((error) => errors.push(error.message));
+	};
+	await page.setRequestInterception(true);
+	page.on("request", intercept);
+	try {
+		await page.reload({ waitUntil: "domcontentloaded" });
+		await page.addScriptTag({ content: axeSource });
+		await page.waitForFunction(() => document.body.textContent.includes("Loading repositories"));
+		states.push(await readState(page, "Portfolio loading"));
+		if (!(await page.$eval("main button", (button) => button.disabled))) {
+			throw new Error("Portfolio refresh must remain present and disabled while loading");
+		}
+		// Wait for the request as well as its rendered loading state.
+		pending ??= await page.waitForRequest(
+			(request) => new URL(request.url()).pathname === "/api/portfolio"
+		);
+		mode = "empty";
+		await pending.respond({
+			status: 200,
+			contentType: "application/json",
+			body: JSON.stringify({ repos: [], degraded: false }),
+		});
+		pending = undefined;
+		await page.waitForFunction(() => document.body.textContent.includes("No repositories yet"));
+		states.push(await readState(page, "Portfolio empty"));
+		mode = "error";
+		await page.click("main button");
+		await page.waitForFunction(() =>
+			document.body.textContent.includes("Couldn't load repositories")
+		);
+		states.push(await readState(page, "Portfolio provider error"));
+		mode = "timeout";
+		await page.click("main button");
+		await page.waitForFunction(() => document.body.textContent.includes("Refreshing…"));
+		await page.waitForFunction(
+			() =>
+				!document.body.textContent.includes("Refreshing…") &&
+				document.body.textContent.includes("Couldn't load repositories"),
+			{ timeout: 15_000 }
+		);
+		states.push(await readState(page, "Portfolio timeout releases loading controls"));
+	} finally {
+		page.off("request", intercept);
+		await pending?.abort().catch((error) => errors.push(error.message));
+		await page.setRequestInterception(false);
+	}
+	if (errors.length) {
+		throw new Error(`Portfolio interception failed: ${errors.join("; ")}`);
+	}
+	return states;
 }
 
 async function readAxe() {
@@ -757,7 +871,7 @@ try {
 				const cases = routes
 					.filter((value) => !selectedRoute || selectedRoute === value)
 					.flatMap((route) =>
-						[375, 768, 1280].flatMap((width) =>
+						[390, 768, 1280].flatMap((width) =>
 							["light", "dark"].map((theme) => ({ route, width, theme }))
 						)
 					)
@@ -811,12 +925,9 @@ const failures = report.cases.filter(
 		entry.targetFailures.length ||
 		entry.keyboard?.failures.length ||
 		entry.states?.some(
-			(state) =>
-				state.targetFailures?.length ||
-				state.activeMotion > 0 ||
-				state.violations?.some(({ impact }) => impact === "serious" || impact === "critical")
+			(state) => state.targetFailures?.length || state.activeMotion > 0 || state.violations?.length
 		) ||
-		entry.violations.some(({ impact }) => impact === "serious" || impact === "critical") ||
+		entry.violations.length ||
 		(entry.lighthouse &&
 			(entry.lighthouse.accessibility < 95 ||
 				entry.lighthouse.budget?.failures.length ||
