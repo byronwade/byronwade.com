@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import { createServer } from "node:http";
+import { after, before, test } from "node:test";
 import {
+	fetchResumePdf,
 	isResumePdfResponse,
 	RESUME_PDF_FILENAME,
 	shouldHandleResumeDownload,
@@ -31,4 +33,65 @@ test("only a successful PDF response may be saved", () => {
 	assert.equal(isResumePdfResponse(200, "application/pdf-not"), false);
 	assert.equal(isResumePdfResponse(200, null), false);
 	assert.equal(isResumePdfResponse(302, "application/pdf"), false);
+});
+
+// A real local server, so the abort signal reaches the socket and the body stream.
+const PDF_BYTES = "%PDF-1.7\nsynthetic resume fixture\n%%EOF";
+let routeHandler = (_request, response) => response.end();
+const server = createServer((request, response) => routeHandler(request, response));
+const realFetch = globalThis.fetch;
+
+before(async () => {
+	await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+	const base = `http://127.0.0.1:${server.address().port}`;
+	globalThis.fetch = (input, init) => realFetch(new URL(input, base), init);
+});
+
+after(() => {
+	globalThis.fetch = realFetch;
+	server.closeAllConnections();
+	server.close();
+});
+
+test("a successful PDF response is returned for saving", async () => {
+	routeHandler = (request, response) => {
+		assert.equal(request.url, "/api/resume-pdf");
+		response.writeHead(200, { "Content-Type": "application/pdf" });
+		response.end(PDF_BYTES);
+	};
+	const pdf = await fetchResumePdf(1000);
+	assert.ok(pdf);
+	assert.equal(await pdf.text(), PDF_BYTES);
+});
+
+test("a failed create is not returned as a PDF", async () => {
+	routeHandler = (_request, response) => {
+		response.writeHead(500, { "Content-Type": "application/json" });
+		response.end(JSON.stringify({ error: "Failed to generate PDF" }));
+	};
+	assert.equal(await fetchResumePdf(1000), null);
+});
+
+test("a dropped connection ends as a failure", async () => {
+	routeHandler = (request) => request.socket.destroy();
+	assert.equal(await fetchResumePdf(1000), null);
+});
+
+test("a route that never answers gives up after the timeout", { timeout: 5000 }, async () => {
+	routeHandler = () => undefined;
+	const started = performance.now();
+	assert.equal(await fetchResumePdf(80), null);
+	assert.ok(performance.now() - started < 2000);
+});
+
+test("a PDF body that stalls mid-stream gives up after the timeout", {
+	timeout: 5000,
+}, async () => {
+	routeHandler = (_request, response) => {
+		response.writeHead(200, { "Content-Type": "application/pdf" });
+		response.write("%PDF-1.7\n");
+	};
+	const started = performance.now();
+	assert.equal(await fetchResumePdf(80), null);
+	assert.ok(performance.now() - started < 2000);
 });

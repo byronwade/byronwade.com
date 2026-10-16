@@ -24,3 +24,23 @@ export function isResumePdfResponse(status: number, contentType: string | null):
 	const mediaType = (contentType ?? "").split(";", 1)[0]?.trim().toLowerCase();
 	return mediaType === "application/pdf";
 }
+
+// The route can take ~50s on a cold start (browser launch, a 30s page load and a
+// 10s email wait), so this must stay above those bounds, not be trimmed to "feel" faster.
+const RESUME_PDF_TIMEOUT_MS = 60_000;
+
+/**
+ * The PDF body, or null when the route fails, the network fails, or no complete
+ * PDF arrives in time. The timeout covers the body too, so a stalled stream ends.
+ */
+export async function fetchResumePdf(timeoutMs = RESUME_PDF_TIMEOUT_MS): Promise<Blob | null> {
+	try {
+		const response = await fetch("/api/resume-pdf", { signal: AbortSignal.timeout(timeoutMs) });
+		if (!isResumePdfResponse(response.status, response.headers.get("content-type"))) {
+			return null;
+		}
+		return await response.blob();
+	} catch {
+		return null;
+	}
+}
