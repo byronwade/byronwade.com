@@ -5,7 +5,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const sharedPrimitivePackages =
 	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|next|tailwind-merge|react-compiler-runtime)[\\/]/;
 const sharedPrimitiveSources =
-	/[\\/](?:lib[\\/](?:utils|motion|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
+	/[\\/](?:lib[\\/](?:utils|motion|contact|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
 
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
