@@ -31,8 +31,10 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full folder map.
 
 ## Governance
 
-This repository runs on the **Warm Precision** kit, a design standard plus an
-agent protocol, adapted to this project rather than pasted into it.
+This repository uses [Thorbis Design](https://design.thorbis.com), ported from
+[byronwade/thorbis-design](https://github.com/byronwade/thorbis-design).
+See [the source map and sync guide](docs/THORBIS-DESIGN-PORT.md) for the pinned
+revision and CSS/Tailwind adapters. Site-specific governance stays here.
 
 | File | Owns | Read it when |
 | --- | --- | --- |

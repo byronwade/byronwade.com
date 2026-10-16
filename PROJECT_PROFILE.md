@@ -37,7 +37,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Primary traits:** direct, evidence-first, quietly confident, technically
   literate
 - **Traits to avoid:** salesy, playful, corporate, mysterious, hype-driven
-- **Warmth level:** warm, the canvas is the Thorbis light canvas, with a corresponding neutral dark theme
+- **Canvas:** Thorbis neutral light and dark themes
 - **Density level:** comfortable for reading, compact for indexes. Never sparse
   for its own sake.
 - **Motion personality:** crisp and near-still. Motion confirms and orients; it

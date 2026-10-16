@@ -22,8 +22,9 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | Local owner | Thorbis source | Translation |
 | --- | --- | --- |
 | app/globals.css token block | src/styles/tokens.generated.css; scripts/generate-stylex-tokens.mjs | Color, spacing, control dimensions, type sizes/line heights, radii, shadows, motion and layers copied; color names prefixed --thorbis- to avoid Tailwind collisions |
-| app/globals.css light overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
+| app/globals.css theme overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
+| lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
 | lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for the existing resume signature |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
@@ -59,16 +60,20 @@ for introducing a new visual choice.
   and the unused Framer/hover-card paths were removed. Closed contact code loads
   on first intentional open and remains mounted to preserve drafts. Shared/home
   navigation starts route requests on navigation instead of speculative prefetch.
+- The browser favicon reuses the existing 32px image instead of fetching the
+  239KB original. The original remains at public/icon-original.png; /icon.png
+  stays owned by the app route. A regression test prevents public shadowing.
 - Personal resume signature is an identity asset, never a second body/heading typeface.
 
 ## Synchronization
 
 1. Select and read an upstream commit; inspect DESIGN.md, COMPONENTS.md, source
    token and component diffs. Verify package/registry availability again.
-2. With the reference checked out by its owner, run:
+2. Update the script pin after reviewing the selected revision. With the reference
+   checked out by its owner, run:
    `node scripts/port-thorbis-tokens.mjs D:/Dev/thorbis-design`.
    This only reads upstream and replaces the marked token block in this app.
-3. Review generated changes. Update the pin in the script, headers and this map
+3. Review generated changes. Update headers and this map with the script pin
    together. Keep aliases as the only bridge; do not leave old/new palettes.
 4. Port changes to the canonical existing primitives. Preserve Base UI keyboard,
    focus, dismissal and rendering APIs. Update all affected callers atomically.

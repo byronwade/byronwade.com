@@ -86,3 +86,38 @@ production deployment, or merge.
   native/instant. Full matrix will be rerun on the final build.
 - Main advanced with cache revalidation security PR #51; fetched and merged
   f84a344. PR #49 remains open; its shell accessibility intents are retained.
+
+## Loop 5 — performance convergence
+
+- ad06c2b pushed with deferred UI, plain footer links, dependency cleanup, and
+  production webpack/shared UI configuration. Both source and release checks
+  remain local; development stays on Turbopack.
+- Intermediate webpack run: 252721 script bytes (down from 403339), 25 requests
+  (down from 54), CLS .0115; LCP 5876ms/TBT 460ms/script count 17 still failed.
+- Closed search and launcher bodies now render only while open. Removed repeated
+  tooltip providers in favor of source-style native title/aria labels, and
+  derive toolbar footprint from source control/spacing tokens rather than
+  synchronized measurement state. Sticky header clearance follows its real
+  wrapped height; global search stays visible from the bottom of a page.
+- Two 239KB favicon requests dominated remaining bytes. Original app/public
+  512px assets decode to identical pixels (SHA256 raw pixel proof recorded in
+  session). Reused the existing 32px favicon for app/icon.png and existing 192px
+  manifest icon. Original full-size images and every image URL remain available.
+- Explicit panel closes and email reveal hit areas are 44px; panel bounds fit
+  320px. Final source remains under verification; no PASS claim yet.
+
+## Loop 6 — complete browser coverage and type correction
+
+- Final candidate browser run completed all eight width/theme cases with zero
+  serious/critical axe findings, AA text contrast, focus paths and no overflow.
+  No-JS 1440/390, nine existing routes, contact draft/validation/reveal and reduced
+  motion theme interactions passed. Screenshot review then exposed a type defect:
+  cn() treated named Thorbis text sizes as colors and dropped them. Extended its
+  existing theme and added native plus computed browser assertions; rerunning.
+- The small favicon now has a single app-route owner; the exact full-size asset
+  is archived, and a native sensor prevents route shadowing and asset bloat.
+- Latest measured candidate: 341372 total bytes / 19 requests, 249576 script
+  bytes / 13 requests, LCP 3648ms, TBT 392ms, CLS zero. Still fails LCP/TBT/script
+  count. Testing default small-chunk suppression while keeping Next framework
+  groups; no budget relaxation.
+- Corrected README's obsolete design ownership and the source sync guard/order.

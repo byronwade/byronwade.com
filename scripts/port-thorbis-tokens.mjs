@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
@@ -5,6 +6,14 @@ import { resolve } from "node:path";
 const source = process.argv[2];
 if (!source) {
 	throw new Error("Usage: node scripts/port-thorbis-tokens.mjs <Thorbis checkout>");
+}
+const sourceCommit = "46b6654d02fda9d8fde737395185c3141df52cd2";
+const actualCommit = execFileSync("git", ["-C", resolve(source), "rev-parse", "HEAD"], {
+	encoding: "utf8",
+	windowsHide: true,
+}).trim();
+if (actualCommit !== sourceCommit) {
+	throw new Error("Inspect the upstream diff and update the port pin before regenerating tokens");
 }
 const generated = readFileSync(resolve(source, "src/styles/tokens.generated.css"), "utf8");
 const styles = readFileSync(resolve(source, "src/styles.css"), "utf8").replaceAll("\r\n", "\n");
@@ -39,8 +48,8 @@ const dark = new Map(
 		([name]) => name.startsWith("--color-") || name.startsWith("--shadow-")
 	)
 );
-const section = `/* Thorbis Design port: 46b6654d02fda9d8fde737395185c3141df52cd2.
- * Source: src/styles/tokens.generated.css + src/styles.css light overrides.
+const section = `/* Thorbis Design port: ${sourceCommit}.
+ * Source: src/styles/tokens.generated.css + src/styles.css theme overrides.
  * Sync: scripts/port-thorbis-tokens.mjs; mapping: docs/THORBIS-DESIGN-PORT.md.
  * Raw design values belong only in this token block. */
 /* thorbis-tokens:start */

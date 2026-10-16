@@ -255,7 +255,7 @@ states its move, and the move does not transplant to another route:
 
 | Route | Organizing move |
 | --- | --- |
-| `/` | Claim, then immediate proof, the numbers and the shipped work sit in the first screen, not below three sections of preamble |
+| `/` | Experience beside the current product, then qualified proof, documented work and recent writing; no viewport-height preamble |
 | `/projects` | A ranked index where each row carries its own evidence: problem, outcome, status |
 | `/projects/[slug]` | The live artifact beside the story, the reader can see the thing while reading about it |
 | `/portfolio` | Raw open-source activity, pulled live, sorted by signal |

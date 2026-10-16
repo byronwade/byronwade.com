@@ -58,6 +58,8 @@ async function auditCase(url, width, theme) {
 			font: style.fontFamily,
 			h1Count: document.querySelectorAll("h1").length,
 			headerCount: document.querySelectorAll("body header").length,
+			navSize: getComputedStyle(document.querySelector('nav[aria-label="Primary"] a')).fontSize,
+			cardTitleSize: getComputedStyle(document.querySelector('[data-slot="card-title"]')).fontSize,
 		};
 	});
 	const contrast = await page.evaluate(() => {
@@ -118,6 +120,9 @@ async function auditCase(url, width, theme) {
 	console.log(`Audited ${width}px ${theme}`);
 	assert.equal(geometry.overflow, false, `overflow at ${width} ${theme}`);
 	assert.equal(geometry.h1Count, 1);
+	assert.equal(geometry.headingSize, "32px", "Thorbis heading role");
+	assert.equal(geometry.navSize, "13px", "Thorbis navigation role survives class merging");
+	assert.equal(geometry.cardTitleSize, "14px", "Thorbis card title role survives class merging");
 	assert.ok(
 		contrast.every(({ ratio, required }) => ratio >= required),
 		JSON.stringify(contrast.filter(({ ratio, required }) => ratio < required))

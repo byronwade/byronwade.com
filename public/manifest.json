@@ -1,16 +1,14 @@
 {
-  "name": "Byron Wade - Full Stack Developer",
+  "name": "Byron Wade — Software for Service Businesses",
   "short_name": "Byron Wade",
-  "description": "Expert full-stack developer specializing in high-performance web applications and modern solutions.",
+  "description": "Byron Wade builds software for service businesses. Projects, writing, and Thorbis.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icon.png",
-      "sizes": "any",
+      "src": "/icon-192x192.png",
+      "sizes": "192x171",
       "type": "image/png",
       "purpose": "any"
     }

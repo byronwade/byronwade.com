@@ -17,7 +17,7 @@ const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 		name: "Thorbis Design",
 		desc: "Interface guidelines & components",
 		href: "https://design.thorbis.com",
-		mark: "U",
+		mark: "T",
 	},
 	{ name: "GoodMarks", desc: "Reviews & reputation", href: "https://goodmarks.io", mark: "G" },
 	{
