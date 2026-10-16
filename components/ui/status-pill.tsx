@@ -7,7 +7,7 @@ const tones: Record<StatusTone, { text: string; ring: string }> = {
 	warning: { text: "text-warning", ring: "bg-warning/10" },
 	danger: { text: "text-destructive", ring: "bg-destructive/10" },
 	info: { text: "text-brand", ring: "bg-brand/10" },
-	neutral: { text: "text-muted-foreground", ring: "bg-muted" },
+	neutral: { text: "text-foreground", ring: "bg-muted" },
 };
 
 /** Resend-style status pill: a colored dot + label in a soft chip. */

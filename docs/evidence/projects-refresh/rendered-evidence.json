@@ -1,0 +1,557 @@
+{
+  "revision": "76bc359b1e7c3592b3979fa852ec26b95e751582",
+  "base": "http://127.0.0.1:3117",
+  "current": [
+    "thorbis",
+    "thorbis-design",
+    "subfield",
+    "hollowveil",
+    "movies",
+    "realistic-face",
+    "drone-pi",
+    "odb2",
+    "plumbing-code-playbook"
+  ],
+  "earlier": [
+    "byronwade-ui",
+    "ciel",
+    "content-management-system",
+    "dits",
+    "fakebase",
+    "goodmarks",
+    "impact-marine-group",
+    "memoria",
+    "mushroom-cultivation-supplier",
+    "reactpress",
+    "rebuzzle",
+    "signalroute",
+    "stream",
+    "wades-plumbing-and-septic",
+    "wormhole"
+  ],
+  "views": [
+    {
+      "route": "/projects",
+      "name": "desktop",
+      "theme": "h-full light",
+      "filename": "projects-desktop-light.png",
+      "h1": ["Projects"],
+      "width": 1440,
+      "scrollWidth": 1440,
+      "groups": [
+        {
+          "heading": "Current work",
+          "links": [
+            "thorbis",
+            "thorbis-design",
+            "subfield",
+            "hollowveil",
+            "movies",
+            "realistic-face",
+            "drone-pi",
+            "odb2",
+            "plumbing-code-playbook"
+          ],
+          "statuses": [
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active"
+          ]
+        },
+        {
+          "heading": "Earlier work",
+          "links": [
+            "byronwade-ui",
+            "ciel",
+            "signalroute",
+            "stream",
+            "fakebase",
+            "goodmarks",
+            "dits",
+            "wormhole",
+            "memoria",
+            "rebuzzle",
+            "reactpress",
+            "impact-marine-group",
+            "wades-plumbing-and-septic",
+            "mushroom-cultivation-supplier",
+            "content-management-system"
+          ],
+          "statuses": [
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/projects/movies",
+      "name": "desktop",
+      "theme": "h-full light",
+      "filename": "movies-desktop-light.png",
+      "h1": ["Movies"],
+      "width": 1440,
+      "scrollWidth": 1440,
+      "groups": []
+    },
+    {
+      "route": "/projects",
+      "name": "mobile",
+      "theme": "h-full light",
+      "filename": "projects-mobile-light.png",
+      "h1": ["Projects"],
+      "width": 390,
+      "scrollWidth": 390,
+      "groups": [
+        {
+          "heading": "Current work",
+          "links": [
+            "thorbis",
+            "thorbis-design",
+            "subfield",
+            "hollowveil",
+            "movies",
+            "realistic-face",
+            "drone-pi",
+            "odb2",
+            "plumbing-code-playbook"
+          ],
+          "statuses": [
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active"
+          ]
+        },
+        {
+          "heading": "Earlier work",
+          "links": [
+            "byronwade-ui",
+            "ciel",
+            "signalroute",
+            "stream",
+            "fakebase",
+            "goodmarks",
+            "dits",
+            "wormhole",
+            "memoria",
+            "rebuzzle",
+            "reactpress",
+            "impact-marine-group",
+            "wades-plumbing-and-septic",
+            "mushroom-cultivation-supplier",
+            "content-management-system"
+          ],
+          "statuses": [
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/projects/movies",
+      "name": "mobile",
+      "theme": "h-full light",
+      "filename": "movies-mobile-light.png",
+      "h1": ["Movies"],
+      "width": 390,
+      "scrollWidth": 390,
+      "groups": []
+    },
+    {
+      "route": "/projects",
+      "name": "desktop",
+      "theme": "h-full dark",
+      "filename": "projects-desktop-dark.png",
+      "h1": ["Projects"],
+      "width": 1440,
+      "scrollWidth": 1440,
+      "groups": [
+        {
+          "heading": "Current work",
+          "links": [
+            "thorbis",
+            "thorbis-design",
+            "subfield",
+            "hollowveil",
+            "movies",
+            "realistic-face",
+            "drone-pi",
+            "odb2",
+            "plumbing-code-playbook"
+          ],
+          "statuses": [
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active"
+          ]
+        },
+        {
+          "heading": "Earlier work",
+          "links": [
+            "byronwade-ui",
+            "ciel",
+            "signalroute",
+            "stream",
+            "fakebase",
+            "goodmarks",
+            "dits",
+            "wormhole",
+            "memoria",
+            "rebuzzle",
+            "reactpress",
+            "impact-marine-group",
+            "wades-plumbing-and-septic",
+            "mushroom-cultivation-supplier",
+            "content-management-system"
+          ],
+          "statuses": [
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/projects/movies",
+      "name": "desktop",
+      "theme": "h-full dark",
+      "filename": "movies-desktop-dark.png",
+      "h1": ["Movies"],
+      "width": 1440,
+      "scrollWidth": 1440,
+      "groups": []
+    },
+    {
+      "route": "/projects",
+      "name": "mobile",
+      "theme": "h-full dark",
+      "filename": "projects-mobile-dark.png",
+      "h1": ["Projects"],
+      "width": 390,
+      "scrollWidth": 390,
+      "groups": [
+        {
+          "heading": "Current work",
+          "links": [
+            "thorbis",
+            "thorbis-design",
+            "subfield",
+            "hollowveil",
+            "movies",
+            "realistic-face",
+            "drone-pi",
+            "odb2",
+            "plumbing-code-playbook"
+          ],
+          "statuses": [
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active",
+            "Active"
+          ]
+        },
+        {
+          "heading": "Earlier work",
+          "links": [
+            "byronwade-ui",
+            "ciel",
+            "signalroute",
+            "stream",
+            "fakebase",
+            "goodmarks",
+            "dits",
+            "wormhole",
+            "memoria",
+            "rebuzzle",
+            "reactpress",
+            "impact-marine-group",
+            "wades-plumbing-and-septic",
+            "mushroom-cultivation-supplier",
+            "content-management-system"
+          ],
+          "statuses": [
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived",
+            "Archived"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/projects/movies",
+      "name": "mobile",
+      "theme": "h-full dark",
+      "filename": "movies-mobile-dark.png",
+      "h1": ["Movies"],
+      "width": 390,
+      "scrollWidth": 390,
+      "groups": []
+    },
+    {
+      "route": "/projects",
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "route": "/projects",
+      "width": 768,
+      "overflow": false
+    },
+    {
+      "route": "/projects",
+      "width": 2560,
+      "overflow": false
+    }
+  ],
+  "routes": [
+    {
+      "slug": "thorbis",
+      "status": 200,
+      "serverRenderedHeading": "Thorbis Network / FMS"
+    },
+    {
+      "slug": "thorbis-design",
+      "status": 200,
+      "serverRenderedHeading": "Thorbis Design"
+    },
+    {
+      "slug": "subfield",
+      "status": 200,
+      "serverRenderedHeading": "Subfield"
+    },
+    {
+      "slug": "hollowveil",
+      "status": 200,
+      "serverRenderedHeading": "Hollowveil"
+    },
+    {
+      "slug": "movies",
+      "status": 200,
+      "serverRenderedHeading": "Movies"
+    },
+    {
+      "slug": "realistic-face",
+      "status": 200,
+      "serverRenderedHeading": "Realistic Face"
+    },
+    {
+      "slug": "drone-pi",
+      "status": 200,
+      "serverRenderedHeading": "Drone PI"
+    },
+    {
+      "slug": "odb2",
+      "status": 200,
+      "serverRenderedHeading": "ODB2"
+    },
+    {
+      "slug": "plumbing-code-playbook",
+      "status": 200,
+      "serverRenderedHeading": "Plumbing Code Playbook / The Trust Sale"
+    },
+    {
+      "slug": "byronwade-ui",
+      "status": 200,
+      "serverRenderedHeading": "byronwade/ui: The Design System Behind Everything"
+    },
+    {
+      "slug": "ciel",
+      "status": 200,
+      "serverRenderedHeading": "Ciel: Hosting You Can Actually Read"
+    },
+    {
+      "slug": "content-management-system",
+      "status": 200,
+      "serverRenderedHeading": "Content Management System"
+    },
+    {
+      "slug": "dits",
+      "status": 200,
+      "serverRenderedHeading": "Dits, Media-First Version Control"
+    },
+    {
+      "slug": "fakebase",
+      "status": 200,
+      "serverRenderedHeading": "Fakebase: A Supabase You Can Throw Away"
+    },
+    {
+      "slug": "goodmarks",
+      "status": 200,
+      "serverRenderedHeading": "Goodmarks: Reputation Protection for Local Business"
+    },
+    {
+      "slug": "impact-marine-group",
+      "status": 200,
+      "serverRenderedHeading": "Impact Marine Group"
+    },
+    {
+      "slug": "memoria",
+      "status": 200,
+      "serverRenderedHeading": "Memoria: The Memory Your AI Lacks"
+    },
+    {
+      "slug": "mushroom-cultivation-supplier",
+      "status": 200,
+      "serverRenderedHeading": "Mushroom Cultivation Supplier"
+    },
+    {
+      "slug": "reactpress",
+      "status": 200,
+      "serverRenderedHeading": "ReactPress"
+    },
+    {
+      "slug": "rebuzzle",
+      "status": 200,
+      "serverRenderedHeading": "Rebuzzle: Hard Puzzles Everyday Built by AI"
+    },
+    {
+      "slug": "signalroute",
+      "status": 200,
+      "serverRenderedHeading": "SignalRoute: The Phone System That Runs Itself"
+    },
+    {
+      "slug": "stream",
+      "status": 200,
+      "serverRenderedHeading": "Stream: Live Built for Belonging, Not Virality"
+    },
+    {
+      "slug": "wades-plumbing-and-septic",
+      "status": 200,
+      "serverRenderedHeading": "Wade's Plumbing and Septic"
+    },
+    {
+      "slug": "wormhole",
+      "status": 200,
+      "serverRenderedHeading": "Wormhole, Mount Any Folder. Any Computer. No Setup."
+    }
+  ],
+  "keyboard": {
+    "href": "/projects/movies",
+    "focusVisible": true,
+    "hiddenAncestor": false,
+    "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklch(0.145 0 none) 0px 0px 0px 2px, oklch(0.558 0.188 264.4) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+    "outlineWidth": "2px",
+    "outlineStyle": "none",
+    "outlineColor": "oklch(0.558 0.188 264.4)",
+    "tabSteps": 20,
+    "enterNavigated": true
+  },
+  "errors": [],
+  "disclosures": [
+    {
+      "label": "All products",
+      "motion": "reduce",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    },
+    {
+      "label": "Search",
+      "motion": "reduce",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    },
+    {
+      "label": "Support open source",
+      "motion": "reduce",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    },
+    {
+      "label": "All products",
+      "motion": "no-preference",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    },
+    {
+      "label": "Search",
+      "motion": "no-preference",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    },
+    {
+      "label": "Support open source",
+      "motion": "no-preference",
+      "openedAndEscaped": true,
+      "focusReturned": true
+    }
+  ],
+  "contactReveal": {
+    "works": true,
+    "visibleInScreenshots": false
+  }
+}

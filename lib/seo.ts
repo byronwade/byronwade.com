@@ -4,7 +4,7 @@ import { siteUrl } from "@/lib/site";
 
 const siteName = "Byron Wade";
 const defaultDescription =
-	"Expert full-stack developer specializing in high-performance web applications, modern JavaScript frameworks, and scalable solutions.";
+	"Byron Wade builds software for service businesses, drawing on his experience running a plumbing company. Explore Thorbis, shipped projects, and lessons from the trades.";
 const defaultAuthor = "Byron Wade";
 
 interface SEOConfig {
@@ -149,8 +149,6 @@ export function generateMetadata(config: SEOConfig): Metadata {
 						"article:tag": tags.join(", "),
 					}
 				: {}),
-			"theme-color": "#000000",
-			"msapplication-TileColor": "#000000",
 		},
 	};
 
@@ -321,10 +319,10 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 			"https://linkedin.com/in/byronwade",
 			"https://twitter.com/byron_c_wade",
 		],
-		jobTitle: "Full Stack Developer",
+		jobTitle: "Product engineer and Thorbis founder",
 		worksFor: {
 			"@type": "Organization",
-			name: "Byron Wade Development",
+			name: "Thorbis",
 		},
 		knowsAbout: [
 			"Web Development",
@@ -347,7 +345,7 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		email: getContactForStructuredData().email,
 		hasOccupation: {
 			"@type": "Occupation",
-			name: "Full Stack Developer",
+			name: "Product engineer",
 			occupationLocation: {
 				"@type": "City",
 				name: "Jasper, GA",

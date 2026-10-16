@@ -1,29 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/**
- * The site's index row. This is the one structure that genuinely repeats.
- *
- * Five files had independently written the same class string:
- *
- *   group/row hover-motion … hover:opacity-100! focus-visible:opacity-100!
- *   group-hover/list:opacity-40
- *
- * once each in the projects index, the portfolio index, the blog index, and
- * both homepage sections. That is a shared component wearing five costumes, and
- * it is exactly the drift §5.2 ("peers share a role") and §13 ("page-local
- * copies of shared components") exist to stop. It lives here now.
- *
- * The behaviour it encodes: hairline-separated rows, no card wrapper, and a
- * spotlight: hovering one row dims its peers so the row under the cursor is
- * the only thing at full strength. §13 rejects both the card grid and the
- * border-around-every-row reflex; an open row separated by a single rule is
- * what is left, and the spotlight is what gives it depth without a box.
- *
- * `IndexList` owns the rules and the group; rows never add their own margins
- * (§5.3, one owner per gap).
- */
-
+// Thorbis list adaptation: quiet rows, stable contrast, explicit keyboard focus.
 export function IndexList({
 	children,
 	className,
@@ -67,7 +45,7 @@ export function IndexRow({
  * variant would put a div between the rule and the target.
  */
 export const indexRowLinkClass =
-	"group/row hover-motion flex flex-col gap-2 py-5 outline-none hover:opacity-100! focus-visible:opacity-100! group-hover/list:opacity-40";
+	"group/row flex flex-col gap-2 rounded-sm py-5 outline-none transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4";
 
 /**
  * The colour transition a row's title and affordances share, so the whole row

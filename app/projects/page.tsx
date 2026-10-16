@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { JsonLd } from "@/components/common/json-ld";
-import { PageHeader } from "@/components/layout/page";
+import { PageHeader, Section } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project";
 import { getProjects, type Project } from "@/lib/projects";
@@ -73,7 +73,29 @@ async function ProjectsList() {
 		);
 	}
 
-	return <ProjectsIndex projects={sorted} />;
+	const current = sorted.filter((project) => project.status?.toLowerCase() !== "archived");
+	const earlier = sorted.filter((project) => project.status?.toLowerCase() === "archived");
+
+	return (
+		<div className="flex flex-col gap-12">
+			{current.length > 0 && (
+				<Section
+					title="Current work"
+					description={`${current.length} projects · What I’m working on now. Write-ups grow as the work develops.`}
+				>
+					<ProjectsIndex projects={current} />
+				</Section>
+			)}
+			{earlier.length > 0 && (
+				<Section
+					title="Earlier work"
+					description={`${earlier.length} projects · Older portfolio entries, kept here with their original write-ups. Archived here does not imply the repository or site is offline.`}
+				>
+					<ProjectsIndex projects={earlier} />
+				</Section>
+			)}
+		</div>
+	);
 }
 
 /** Mirrors the real row's height and rules so the swap does not shift layout. */
@@ -111,7 +133,7 @@ export default async function ProjectsPage() {
 			<SiteShell>
 				<div className="flex flex-col gap-8 sm:gap-12">
 					<PageHeader
-						lede="Selected products, client work, and experiments. Case studies carry the outcome where there is one to report."
+						lede="What I’m building now, followed by earlier products, client work, and experiments. Every project stays listed."
 						title="Projects"
 					/>
 

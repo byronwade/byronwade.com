@@ -1,104 +1,74 @@
-# Portfolio client boundary result
+# Projects PR #53 integration result
 
-VERDICT: PASS
+**Mode:** Implementation / integration. Authorized merge, evidence writes, branch
+push, PR refresh and conditional squash merge. Stayed in this worktree; no hobby
+worktree access, force push, admin override, older-project deletion or deployment command.
 
-- **Mode:** Implementation. Scoped source, dependency, test, and documentation
-  writes; commits and publication to `bot/portfolio-boundary` authorized. No
-  merge, force push, deployment command, environment/dashboard change, or
-  credential-value inspection.
-- **Decision:** Extract the existing static catalog into
-  `lib/portfolio-projects.ts`; keep API/cache functions in
-  `lib/portfolio-data.ts` behind `import "server-only"`. The client catch-all
-  page imports only the static catalog.
-- **Reused:** Existing project records, their private type, API implementations,
-  cache tags, server API/Figma callers, and native rendered-test infrastructure.
-  The Markdown project loader remains a separate content contract.
-- **Created or extended:** One client-safe catalog module, the conventional
-  `server-only@0.0.1` marker dependency, and a production client-chunk regression
-  in `tests/rendered/portfolio-boundary.test.mjs`. No UI code was copied.
-- **Recursive cleanup:** Removed the static export/type from the API module and
-  migrated its sole consumer without a compatibility re-export. Import searches
-  confirm only server callers remain. Catalog ownership and test command
-  documentation now describe the split. Knip reports no unused surface.
-- **Mechanical prevention:** Next.js rejects future client imports of the API
-  module. `npm run test:rendered` independently scans every emitted client
-  JavaScript chunk for portfolio environment symbols, API/cache helpers, the
-  Figma SDK, and `next/cache`.
+**Decision:** Reused completed normal merge `76bc359b1e7c3592b3979fa852ec26b95e751582`
+of main `0e9f5cd9d04d67a3d49aa3e505cd138aabef5547` (#52), after #54. Fresh
+`git fetch origin` followed by `git merge --no-edit origin/main` returned already
+up to date; main ancestry exits 0. No additional application edit was needed.
+The merged resolution retains main's blog draft/draft exclusion, skipHtml,
+calendar-date owner/regressions and CSS/generator whitespace fixes, alongside
+the branch's measured light-token corrections and generator guard.
 
-## Verification
+**Preservation:** All 24 Projects files are byte-identical to pre-integration
+`438f6f6`. Original content helper passes 9 current plus 15 earlier, all 15 older
+bodies/non-grouping frontmatter unchanged against `38261e9`, 16 known dates
+preserved, 8 unknown dates absent, 9 author TODOs, and all 24 detail routes built.
+All 19 selected main blog/Markdown/date/test files are byte-identical to main.
+See [preservation evidence](docs/evidence/projects-refresh/integration-preservation.json).
 
-All release checks ran locally on Node 24.21.0 / Next.js 16.2.7.
+**Reused / created or extended:** Reused canonical formatter, project loader,
+shared list/primitives/tokens, native tests and existing temporary browser helpers.
+Extended acceptance evidence and reports only in this turn; no application
+abstraction, dependency, primitive, token or animation was created.
 
-| Command / check | Result |
+**Recursive cleanup / mechanical prevention:** No new source defect or duplicate
+path was exposed by integration; canonical date and draft owners remain single.
+Existing date/draft regressions and rendered sensors are preserved. Restoring
+actual performance-budget enforcement remains the highest-value next sensor;
+no unrelated migration was added.
+
+**Local verification:** Node v24.21.0, integrated application source
+`76bc359b1e7c3592b3979fa852ec26b95e751582`. Exact receipts retain historical runs separately.
+
+| Command | Result |
 | --- | --- |
-| `npm run lint` | PASS; 123 files, no fixes, exit 0 |
-| `npm run type-check` | PASS; route type generation and strict TypeScript, exit 0 |
-| `npm run knip` | PASS; no unused files/exports/dependencies, exit 0 |
-| `npm run build` | PASS; 39 prerendered pages, exit 0 |
-| `npm run test:rendered` | PASS; 2 tests, 0 failures; scanned 26 client chunks |
-| Exact-symbol `rg -l` over `.next/static/chunks/**/*.js` | PASS; 0 matching client files |
-| `rg -l` for API/cache symbols in `.next/server/chunks` | 6 matching server chunks; server implementation retained |
-| Raw-contact probe over client scripts and prerendered HTML | PASS; 0 matching files |
-| Catalog/API comparison with `38261e9` | PASS; catalog unchanged; API differs only by extraction and guard |
-| `git diff --check` and full branch diff review | PASS |
+| `npm run lint` | PASS, exit 0, 9s |
+| `npm run type-check` | PASS, exit 0, 81s |
+| `npm run knip` | PASS, exit 0, 56s |
+| `npm test` | PASS, exit 0, 32s |
+| `npm run build` | PASS, exit 0, 113s |
+| `npm run test:rendered` | PASS, exit 0, 8s |
 
-The independent client grep used:
+Build generated 47/47 pages. Native tests: 114/114; rendered tests: 3/3,
+38 dates across 8 pages and 26 production client chunks.
+[Command receipts](docs/evidence/projects-refresh/verification-evidence.json).
 
-```text
-\b(GITHUB_(API_TOKEN|TOKEN)|FIGMA_(ACCESS_TOKEN|TEAM_ID)|DRIBBBLE_TOKEN|unstable_cache|CACHE_TAGS|githubHeaders|getFigmaFiles?|getGitHub(Stats|Repositories)|getDribbbleShots)\b|figma-js|next/cache
-```
+**Design evidence:** Existing Showcase current-first project index and Evidence
+case-study detail composition retained. Browser helper passes 11 observations,
+24 detail HTTP/SSR heading/date checks, exact 9 plus 15 index links, eight
+screenshots, no overflow at 320/390/768/1440/2560 widths, light/dark, native
+Tab/Enter and visible focus, six normal/reduced-motion disclosure Escape/focus
+return cases, footer reveal, and zero page errors. Inspected refreshed mobile
+light Projects and desktop dark Movies captures. Contact feedback contrast
+passes both forms/themes (4.58:1–6.01:1), invalid-field focus returns, zero POSTs.
+No new motion; existing reduced-motion path exercised. Lighthouse 12.8.2 accessibility passes 100/100 with zero failed applicable
+audits. Raw-contact scans pass: zero matches in 47 client assets and 40 HTML files.
+Fresh performance is 62, best-practices 96, SEO 100. Manual budget pass is false:
+LCP 4212ms > 3000ms, TBT 1208ms > 300ms, plus script/font/total bytes and requests.
+These remain diagnostics on a shared host; no causal performance claim.
 
-Exact symbol boundaries distinguish this repository's `CACHE_TAGS` from Next's
-unrelated `NEXT_CACHE_TAGS_HEADER` constant. The regression contains the same
-boundary; no chunk or module exemptions were added.
+**Remaining findings / unrun checks:** Existing performance-budget misses and
+Lighthouse 12's ignored budget flag remain follow-up; no speed or budget-pass
+claim. No new dev-mode run, fault-injected loading/empty/error test, screen-reader,
+Safari, real-device, frame-by-frame motion or live email delivery test for this
+merge-only work. Production harness rerun instead. Toolkit advisory reservation
+failed on a missing unrelated configured path; configuration untouched, native
+command exits provide evidence. No GitHub Actions workflow was dispatched.
 
-Before migration, adding the guard while retaining the original client import
-made `npm run build` exit 1 as expected. Turbopack traced the forbidden import
-through both browser and SSR client paths in
-`app/portfolio/[...slug]/page.tsx`. The final build passes with the guard intact.
+**Publication:** Pending fresh evidence completion, normal branch push, PR body
+refresh, MERGEABLE status and acceptable remote checks. Conditional squash only.
 
-Catalog SHA-256:
-`9867999e766ab94ed9d17676cdd76c3b187ff2555ef3a0a2405a76ac46dacb06`.
-
-## Rendered smoke and design evidence
-
-Headless Chrome via existing `puppeteer-core`, against an owned local production
-server on `127.0.0.1:3317`, with browser cache disabled:
-
-| Route | Desktop 1440 × 1000 | Phone 390 × 844 |
-| --- | --- | --- |
-| `/projects` | 200; Projects heading and Thorbis link | 200; same |
-| `/projects/thorbis` | 200; Thorbis case-study heading | 200; same |
-| `/portfolio/thorbis` | 200; Thorbis.com heading and key features | 200; same |
-| `/portfolio/thorbis-ai` | 200; AI Platform heading and key features | 200; same |
-| `/portfolio/thorbis-mobile` | 200; Mobile Platform heading and key features | 200; same |
-
-All ten navigations passed. Zero browser runtime exceptions; zero requests to
-`/api/portfolio`; keyboard Tab reached a focusable control on every page.
-Light and dark media preferences were exercised; visual theme fidelity was not
-audited. The local smoke transcript is `.next/portfolio-boundary-smoke.json`.
-The isolated browser and owned server were closed after the run.
-
-No composition, styles, interactions, content, or motion changed. Existing
-Showcase/Evidence profiles and organizing moves are preserved. A design/motion
-redesign gate and performance comparison are not applicable; no speed claim is
-made. Full accessibility/state/visual regression and `npm run dev` checks were
-not run for this import-only page change. Contact action `npm test` was not run
-because contact behavior is outside scope; its existing rendered check passed.
-
-## Remaining findings and publication
-
-- Build used existing fallbacks when Figma credentials were unavailable and the
-  Dribbble request failed. Live third-party data freshness was not validated.
-- Smoke observed local resource failures: 404 for Vercel telemetry scripts,
-  500 from `/api/screenshot`, and 400 from `/_next/image`. Main documents,
-  project data, and keyboard focus rendered successfully. These resources and
-  their implementations were not changed in this boundary fix.
-- Shared toolkit advisory reservation failed because its configuration names a
-  missing unrelated workspace. Native command exit/output evidence was used;
-  toolkit configuration and cleanup quarantine were untouched.
-- No GitHub Actions workflow was dispatched. The existing repository-managed
-  CodeQL limitation documented in `PROJECT_PROFILE.md` remains outside scope.
-- Pushed `bot/portfolio-boundary` and opened ready PR
-  [#46](https://github.com/byronwade/byronwade.com/pull/46) to `main`. Verified
-  `isDraft: false` and `state: OPEN`. Not merged; next step is owner review.
+VERDICT: IN PROGRESS

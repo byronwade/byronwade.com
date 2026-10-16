@@ -1,0 +1,15 @@
+{
+  "revision": "76bc359b1e7c3592b3979fa852ec26b95e751582",
+  "scans": [
+    {
+      "surface": "client chunks",
+      "files": 47,
+      "matches": 0
+    },
+    {
+      "surface": "prerendered HTML",
+      "files": 40,
+      "matches": 0
+    }
+  ]
+}
