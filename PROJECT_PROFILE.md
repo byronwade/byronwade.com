@@ -149,7 +149,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Charts | none | - | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
 | Drag and drop | in-house hook | - | One width handle; a library would be heavier than the behavior | - |
 | Virtualization | none | - | Not needed at this scale | - |
-| State management | React + `nuqs` | ^2.8.5 | URL-shareable state; no global store needed | Do not add a store for local state |
+| State management | React and URL/search params | platform | No query-state consumer exists; unused nuqs provider removed | Use nuqs when a real URL-state surface requires it; no global store |
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
 | Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |

@@ -43,11 +43,8 @@ const PRODUCTS: { name: string; desc: string; href: string; mark: string }[] = [
 ];
 
 /**
- * Top-left launcher: a slim, horizontal identity pill (the inverse-material twin
- * of the floating dock), ported from the byronwade-ui design-system chrome.
- * Collapsed it's a dark `--dock`-toned pill (the byronwade mark + an app-switcher
- * grid). The pill morphs in place into a browse panel: every product under the
- * byronwade umbrella, with the theme toggle + GitHub link in the footer.
+ * Thorbis panel/neutral surfaces adapt the existing product launcher. It opens
+ * from its trigger and preserves the site product links, theme and GitHub tools.
  */
 export function AppLauncher() {
 	const [open, setOpen] = React.useState(false);
@@ -63,7 +60,7 @@ export function AppLauncher() {
 	// The launcher is an overlay-in-a-slot: the absolutely-positioned morph blooms
 	// right + down. The slot reserves the collapsed pill's footprint (seeded with
 	// the exact collapsed box) so nothing jumps on first paint.
-	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 76, h: 40 });
+	const [slot, setSlot] = React.useState<{ w: number; h: number }>({ w: 76, h: 58 });
 
 	useIsoLayoutEffect(() => {
 		const compact = compactRef.current;
@@ -141,7 +138,7 @@ export function AppLauncher() {
 					ref={compactRef}
 					inert={open}
 					className={cn(
-						"flex flex-row items-center gap-1 p-[3px] transition-opacity duration-(--motion-fast)",
+						"flex flex-row items-center gap-1 p-1.5 transition-opacity duration-(--motion-fast)",
 						open && "pointer-events-none"
 					)}
 				>
@@ -187,7 +184,7 @@ export function AppLauncher() {
 					{open && (
 						<>
 							<div className="flex items-center justify-between p-3.5 pb-2">
-								<span className="text-[11px] text-dock-foreground/70">Switch product</span>
+								<span className="text-[11px] text-dock-foreground">Switch product</span>
 								<button
 									type="button"
 									onClick={() => setOpen(false)}
@@ -217,7 +214,7 @@ export function AppLauncher() {
 											Portfolio & developer
 										</div>
 									</div>
-									<span className="ml-auto shrink-0 rounded-full bg-brand/15 px-2 py-0.5 font-medium text-[10px] text-brand">
+									<span className="ml-auto shrink-0 rounded-full bg-dock-active px-2 py-0.5 font-medium text-[10px] text-dock-active-foreground">
 										Current
 									</span>
 								</Link>
@@ -239,7 +236,7 @@ export function AppLauncher() {
 											</div>
 											<div className="truncate text-[11px] text-dock-foreground">{p.desc}</div>
 										</div>
-										<ArrowUpRight className="ml-auto size-4 shrink-0 text-dock-foreground/40 transition-colors group-hover:text-dock-foreground" />
+										<ArrowUpRight className="ml-auto size-4 shrink-0 text-dock-foreground transition-colors group-hover:text-dock-foreground" />
 									</a>
 								))}
 							</div>
@@ -249,7 +246,7 @@ export function AppLauncher() {
 									href={GITHUB_URL}
 									target="_blank"
 									rel="noreferrer"
-									className="flex h-9 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
+									className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-dock-active font-semibold text-[13px] text-dock-active-foreground transition-colors hover:bg-dock-muted"
 								>
 									<GitFork className="size-4" /> GitHub
 								</a>

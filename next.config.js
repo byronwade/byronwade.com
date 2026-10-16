@@ -2,9 +2,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: process.env.ANALYZE === "true",
 });
 
-const sharedUiPackages =
-	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|sonner|nuqs|next-themes|class-variance-authority|clsx|tailwind-merge|react-compiler-runtime)[\\/]/;
-
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
 	{ hostname: "figma-alpha-api.s3.us-west-2.amazonaws.com", protocol: "https" },
@@ -55,8 +52,9 @@ const nextConfig = {
 		if (isServer) {
 			return production;
 		}
-		// Repeated UI infrastructure is one shared request. Feature-only modules
-		// stay deferred; the 10-script Lighthouse gate checks this split locally.
+		// Next's framework/lib groups keep React and the router shared. Avoid
+		// extra tiny vendor/default groups per entry: the homepage must stay
+		// within the existing ten-script budget, including Vercel diagnostics.
 		return {
 			...production,
 			optimization: {
@@ -65,14 +63,8 @@ const nextConfig = {
 					...config.optimization.splitChunks,
 					cacheGroups: {
 						...config.optimization.splitChunks.cacheGroups,
-						sharedUi: {
-							test: sharedUiPackages,
-							name: "shared-ui",
-							chunks: "all",
-							minChunks: 2,
-							enforce: true,
-							priority: 35,
-						},
+						default: false,
+						defaultVendors: false,
 					},
 				},
 			},

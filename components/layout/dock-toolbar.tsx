@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import { Input } from "@/components/ui/input";
 import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { IconComponent } from "@/lib/icons";
@@ -76,7 +77,7 @@ function go(href: string, router: ReturnType<typeof useRouter>) {
  * Far-right utility toolbar: search · GitHub · theme · donate. Shares the
  * `--dock` capsule material with the nav dock and launcher. The capsule **morphs
  * in place** into one of two panels: the ⌘K search spotlight, or a donation ask
- * (the pink heart). Ported from the byronwade-ui dock morph; right-anchored so the
+ * (the source-blue heart). The retained morph is right-anchored so the
  * panels bloom down-and-left and never leave the viewport.
  */
 export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
@@ -253,7 +254,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 				<Icon className="size-4 shrink-0 opacity-70" />
 				<span className="flex-1 truncate">{entry.label}</span>
 				{entry.meta && (
-					<span className="shrink-0 text-[11px] text-dock-foreground/60">{entry.meta}</span>
+					<span className="shrink-0 text-[11px] text-dock-foreground">{entry.meta}</span>
 				)}
 			</button>
 		);
@@ -392,7 +393,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 										href={SPONSOR_URL}
 										target="_blank"
 										rel="noreferrer"
-										className="flex h-9 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
+										className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand font-semibold text-[13px] text-brand-foreground transition-colors hover:bg-brand/90"
 									>
 										<Heart className="size-4 fill-current" />
 										Donate via GitHub Sponsors
@@ -400,7 +401,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 									<button
 										type="button"
 										onClick={close}
-										className="text-[11px] text-dock-foreground transition-colors hover:text-dock-active-foreground"
+										className="inline-flex min-h-11 items-center justify-center text-[11px] text-dock-foreground transition-colors hover:text-dock-active-foreground"
 									>
 										Maybe later
 									</button>
@@ -408,8 +409,8 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 							) : (
 								<>
 									<div className="flex items-center gap-2.5 px-3.5 py-3 pr-16">
-										<Search className="size-4 shrink-0 text-dock-foreground/70" />
-										<input
+										<Search className="size-4 shrink-0 text-dock-foreground" />
+										<Input
 											ref={inputRef}
 											value={query}
 											onChange={(e) => {
@@ -419,22 +420,22 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											onKeyDown={onInputKey}
 											placeholder="Search projects, writing, pages…"
 											aria-label="Search"
-											className="h-6 flex-1 bg-transparent text-dock-active-foreground text-sm outline-none placeholder:text-dock-foreground/60"
+											className="h-11 min-w-0 flex-1 text-dock-active-foreground"
 										/>
-										<kbd className="rounded border border-dock-border bg-dock-muted px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground/70">
+										<kbd className="rounded border border-dock-border bg-dock-muted px-1.5 py-0.5 font-mono text-[10px] text-dock-foreground">
 											esc
 										</kbd>
 									</div>
 									<div className="h-px bg-dock-border" aria-hidden="true" />
 									<div ref={listRef} className="scrollbar-thin max-h-80 overflow-y-auto p-1.5">
 										{flat.length === 0 ? (
-											<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground/70">
+											<div className="px-2.5 py-8 text-center text-[13px] text-dock-foreground">
 												No results for “{query}”.
 											</div>
 										) : (
 											groups.map((g) => (
 												<div className="mb-1 last:mb-0" key={g.kind}>
-													<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground/60">
+													<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground">
 														{KIND_LABEL[g.kind]}
 													</div>
 													{g.items.map((e) => Row(e, cursor++))}
@@ -442,7 +443,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 											))
 										)}
 									</div>
-									<div className="flex items-center gap-3 border-dock-border border-t bg-dock-muted px-3.5 py-2 text-[11px] text-dock-foreground/70">
+									<div className="flex items-center gap-3 border-dock-border border-t bg-dock-muted px-3.5 py-2 text-[11px] text-dock-foreground">
 										<span className="flex items-center gap-1">
 											<kbd className="rounded border border-dock-border bg-dock-muted px-1 font-mono">
 												↑↓

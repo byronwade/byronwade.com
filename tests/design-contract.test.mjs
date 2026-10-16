@@ -25,6 +25,7 @@ test("Thorbis tokens remain the only color values in the migrated surface", asyn
 	assert.doesNotMatch(css, OLD_DESIGN);
 	const paths = [
 		"app/page.tsx",
+		"app/metadata.config.ts",
 		"components/home/home-hero.tsx",
 		"components/layout/footer.tsx",
 		"components/layout/nav-dock.tsx",

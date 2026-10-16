@@ -60,6 +60,9 @@ for introducing a new visual choice.
   and the unused Framer/hover-card paths were removed. Closed contact code loads
   on first intentional open and remains mounted to preserve drafts. Shared/home
   navigation starts route requests on navigation instead of speculative prefetch.
+- The unused global query-state provider is removed. Toasts load with contact
+  forms, retaining feedback after an inline close; breadcrumb popover code loads
+  only on routes with a breadcrumb. These move dependencies to their consumers.
 - The browser favicon reuses the existing 32px image instead of fetching the
   239KB original. The original remains at public/icon-original.png; /icon.png
   stays owned by the app route. A regression test prevents public shadowing.

@@ -1,6 +1,7 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
 import puppeteer from "puppeteer-core";
+import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
@@ -43,29 +44,22 @@ await withProductionServer(async (url) => {
 			}
 		}
 		mkdirSync("docs/evidence/thorbis", { recursive: true });
-		writeFileSync(
-			"docs/evidence/thorbis/performance.json",
-			`${JSON.stringify(
-				{
-					score: lhr.categories.performance.score,
-					lighthouseVersion: lhr.lighthouseVersion,
-					diagnostics: Object.fromEntries(
-						[
-							"network-requests",
-							"bootup-time",
-							"mainthread-work-breakdown",
-							"largest-contentful-paint-element",
-							"lcp-breakdown-insight",
-						].map((name) => [name, lhr.audits[name]?.details])
-					),
-					timings,
-					resources,
-					failures,
-				},
-				null,
-				2
-			)}\n`
-		);
+		writeEvidenceJson("docs/evidence/thorbis/performance.json", {
+			score: lhr.categories.performance.score,
+			lighthouseVersion: lhr.lighthouseVersion,
+			diagnostics: Object.fromEntries(
+				[
+					"network-requests",
+					"bootup-time",
+					"mainthread-work-breakdown",
+					"largest-contentful-paint-element",
+					"lcp-breakdown-insight",
+				].map((name) => [name, lhr.audits[name]?.details])
+			),
+			timings,
+			resources,
+			failures,
+		});
 		console.log(JSON.stringify({ timings, resources, failures }, null, 2));
 		if (failures.length) {
 			throw new Error("Performance budget exceeded");

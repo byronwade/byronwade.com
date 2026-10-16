@@ -1,241 +1,58 @@
-# Performance Optimizations
+# Performance verification
 
-This document outlines the comprehensive performance optimizations implemented in the Byron Wade portfolio website.
+Performance is measured locally against `lighthouse-budget.json`. Do not claim
+improvement from source size, framework choice or library age alone. Establish
+and repeat the same measurement, then preserve its output with the change.
 
-## 🚀 Performance Improvements Implemented
+## Local budget
 
-### 1. Next.js Configuration Optimizations
+`npm run perf:budget` builds once, starts an isolated production server on an
+allocated loopback port, launches headless Chrome and runs Lighthouse's default
+mobile simulated profile. `scripts/perf-budget.mjs` checks every timing, byte
+and request-count limit and exits nonzero for any exceeded budget. Its server
+and browser are closed when the run finishes or fails. Set `CHROME_PATH` if
+Chrome is installed outside the Windows default location.
 
-#### Bundle Splitting & Tree Shaking
-- **Advanced webpack configuration** with optimized chunk splitting
-- **Vendor chunk separation** for better caching
-- **Radix UI component optimization** with dedicated chunks
-- **React and Three.js separate bundles** for optimal loading
-- **Tree shaking enabled** to eliminate unused code
+The authoritative limits remain in the JSON file: FCP 2000ms, LCP 3000ms, TBT
+300ms, CLS 0.1 and Speed Index 3000ms; scripts 300KiB/10 requests, total
+1000KiB/50 requests, CSS 50KiB/3 requests, images 500KiB/20 requests and fonts
+100KiB/5 requests. The report is `docs/evidence/thorbis/performance.json`.
+A Lighthouse score alone cannot pass a failed resource or timing limit.
 
-#### Image Optimization
-- **WebP and AVIF format support** for modern browsers
-- **Responsive image sizes** with device-specific optimization
-- **Lazy loading** for non-critical images
-- **Blur placeholders** for better perceived performance
+`npm run build:analyze` enables the existing Next bundle analyzer. Development
+uses Turbopack; production uses Next webpack. Any splitting changes must satisfy
+the same request and byte limits without pulling unused route code onto home.
+There are no automatic GitHub Actions performance runs. Do not publish or deploy
+as part of measurement.
 
-#### Caching Strategy
-- **Static asset caching** with 1-year cache headers
-- **Image caching** with immutable cache strategy
-- **API response caching** with Next.js unstable_cache
-- **Service worker caching** for offline support
+## Current ownership
 
-### 2. Component Architecture
+- Server Components own content loading and static homepage composition. External
+  data/cache rules remain in `lib/cache.ts` and their server-side callers.
+- Next's font loader self-hosts Inter and Geist Mono. Inter preloads for body and
+  headings; code and the resume signature load only where used. Fonts use swap.
+- Home/shared navigation requests routes on navigation rather than speculative
+  viewport prefetch. The contact form loads on the first intentional open and
+  remains mounted afterward to preserve drafts.
+- Closed launcher/search/support panel bodies do not render an inactive UI tree.
+  Contact addresses remain obfuscated until revealed.
+- The app favicon reuses an existing small asset. `tests/design-contract.test.mjs`
+  prevents a large public asset from shadowing its route.
+- `lib/icons.tsx` narrows Phosphor imports. Next tree shaking removes unused
+  wrappers. React Compiler owns routine memoization; do not add manual memoization
+  without a measured need.
+- Toast notifications mount with the contact forms; the unused global query-state
+  adapter is removed. Home does not load the breadcrumb popover graph.
+- Vercel Analytics and Speed Insights retain their existing root integration.
+  React Scan is a development diagnostic and is excluded from production.
+- Images use the existing Next image configuration (WebP/AVIF and responsive
+  sizes). No new service worker, third-party runtime origin or performance
+  utility layer is introduced by the design port.
 
-#### Modular Component Structure
-- **Lazy loading** for non-critical sections
-- **Code splitting** with React.lazy and Suspense
-- **Component-level optimization** with memo and useMemo
-- **Bundle size reduction** through modular imports
+## Evidence and limits
 
-#### Performance Monitoring
-- **Web Vitals tracking** with real-time monitoring
-- **Custom performance metrics** for business KPIs
-- **Error boundary implementation** for graceful degradation
-- **Performance budget enforcement** with Lighthouse
-
-### 3. Resource Optimization
-
-#### Font Optimization
-- **Font preloading** for critical fonts
-- **Font display swap** for better perceived performance
-- **Subset optimization** for reduced file sizes
-- **Fallback font strategy** for better UX
-
-#### CSS Optimization
-- **PurgeCSS integration** for unused styles removal
-- **Critical CSS inlining** for above-the-fold content
-- **CSS optimization** with Next.js experimental features
-- **Tailwind optimization** with JIT compilation
-
-### 4. Network Optimization
-
-#### Resource Hints
-- **DNS prefetching** for external domains
-- **Preconnect** for critical origins
-- **Preload** for critical resources
-- **Prefetch** for likely navigation paths
-
-#### CDN & Compression
-- **Gzip compression** enabled
-- **Brotli compression** for modern browsers
-- **Static asset optimization** with proper headers
-- **Edge caching** configuration
-
-## 📊 Performance Metrics
-
-### Core Web Vitals Targets
-- **First Contentful Paint (FCP)**: < 2.0s
-- **Largest Contentful Paint (LCP)**: < 3.0s
-- **Cumulative Layout Shift (CLS)**: < 0.1
-- **Total Blocking Time (TBT)**: < 300ms
-- **Speed Index**: < 3.0s
-
-### Bundle Size Targets
-- **Total JavaScript**: < 300KB
-- **Total CSS**: < 50KB
-- **Total Images**: < 500KB
-- **Total Fonts**: < 100KB
-
-## 🛠️ Performance Monitoring
-
-### Available Scripts
-
-```bash
-# Build with bundle analysis
-npm run build:analyze
-
-# Performance testing with Lighthouse
-npm run perf:lighthouse
-
-# Performance budget checking
-npm run perf:budget
-
-# Production build
-npm run build:production
-```
-
-### Performance Budget
-
-The project includes a Lighthouse performance budget (`lighthouse-budget.json`) that enforces:
-- Core Web Vitals thresholds
-- Resource size limits
-- Resource count limits
-
-### Monitoring Tools
-
-1. **Web Vitals Dashboard**: Real-time performance monitoring
-2. **Bundle Analyzer**: Visual bundle size analysis
-3. **Lighthouse CI**: Automated performance testing
-4. **Custom Metrics**: Business-specific performance tracking
-
-## 🔧 Performance Utilities
-
-### Caching Utilities (`lib/performance-utils.ts`)
-
-```typescript
-// Cached data fetching
-const data = await cachedFetch('portfolio-data', fetchPortfolioData, {
-  tags: ['portfolio'],
-  revalidate: 3600
-});
-
-// Performance tracking
-const tracker = PerformanceTracker.getInstance();
-tracker.trackMetric('page-load', loadTime);
-```
-
-### Image Optimization (`components/optimized-image.tsx`)
-
-```typescript
-<OptimizedImage
-  src="/image.jpg"
-  alt="Description"
-  width={400}
-  height={300}
-  priority={true}
-  quality={85}
-  placeholder="blur"
-/>
-```
-
-## 📈 Performance Improvements
-
-### Before Optimization
-- **Bundle Size**: ~2.5MB
-- **LCP**: ~8.3s
-- **FCP**: ~3.8s
-- **CLS**: ~0.15
-
-### After Optimization
-- **Bundle Size**: ~800KB (68% reduction)
-- **LCP**: ~2.1s (75% improvement)
-- **FCP**: ~1.2s (68% improvement)
-- **CLS**: ~0.05 (67% improvement)
-
-## 🎯 Best Practices Implemented
-
-### Code Splitting
-- Route-based code splitting
-- Component-level lazy loading
-- Dynamic imports for heavy libraries
-- Vendor chunk separation
-
-### Caching Strategy
-- Static asset caching (1 year)
-- API response caching (configurable)
-- Service worker caching
-- Browser cache optimization
-
-### Image Optimization
-- Next.js Image component usage
-- WebP/AVIF format support
-- Responsive images
-- Lazy loading
-- Blur placeholders
-
-### Font Optimization
-- Font preloading
-- Font display swap
-- Subset optimization
-- Fallback strategy
-
-### Bundle Optimization
-- Tree shaking
-- Dead code elimination
-- Module concatenation
-- Minification
-
-## 🔍 Performance Monitoring
-
-### Real-time Monitoring
-- Web Vitals tracking
-- Custom performance metrics
-- Error tracking
-- User experience monitoring
-
-### Automated Testing
-- Lighthouse CI integration
-- Performance budget enforcement
-- Bundle size monitoring
-- Core Web Vitals testing
-
-## 🚀 Deployment Optimizations
-
-### Production Build
-- Optimized bundle generation
-- Static asset optimization
-- Service worker generation
-- Performance monitoring setup
-
-### CDN Configuration
-- Edge caching setup
-- Compression configuration
-- Cache headers optimization
-- Geographic distribution
-
-## 📚 Additional Resources
-
-- [Next.js Performance Documentation](https://nextjs.org/docs/advanced-features/measuring-performance)
-- [Web Vitals](https://web.dev/vitals/)
-- [Lighthouse Performance](https://developers.google.com/web/tools/lighthouse)
-- [Core Web Vitals](https://web.dev/core-web-vitals/)
-
-## 🔄 Continuous Optimization
-
-The performance optimizations are continuously monitored and improved:
-
-1. **Weekly performance audits** with Lighthouse
-2. **Bundle size monitoring** with automated alerts
-3. **Real user monitoring** with Web Vitals
-4. **Performance budget enforcement** in CI/CD
-5. **Regular optimization reviews** and updates
-
----
-
-*Last updated: December 2024*
+The Thorbis migration's baseline and final measurements are stored alongside the
+browser matrix in `docs/evidence/thorbis/`. The evidence README identifies the
+measurement environment, results, source pin and reproduction commands. They are
+local lab results, not a real-user or production latency claim. Report machine
+contention and failed runs honestly; do not relax a budget to obtain a pass.

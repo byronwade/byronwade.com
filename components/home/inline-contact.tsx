@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { pillLinkClass } from "@/components/ui/pill";
+import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
@@ -26,7 +27,8 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 	const nameFieldId = `${formId}-name`;
 
 	if (!open) {
-		return null;
+		// Keep delivery feedback available after closing a previously opened form.
+		return <Toaster />;
 	}
 
 	const copyEmail = async () => {
@@ -41,9 +43,10 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 	return (
 		<section
-			className="reveal w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
+			className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
+			<Toaster />
 			<div className="flex items-center justify-between border-border border-b px-4 py-3">
 				<div className="flex flex-col">
 					<span className="font-medium text-sm">Start a conversation</span>

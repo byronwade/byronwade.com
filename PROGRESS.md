@@ -121,3 +121,25 @@ production deployment, or merge.
   count. Testing default small-chunk suppression while keeping Next framework
   groups; no budget relaxation.
 - Corrected README's obsolete design ownership and the source sync guard/order.
+
+## Loop 7 — dependency ownership and menu states
+
+- Merged main publication-date PR #54 (c48f332); retained both date contracts and
+  Thorbis profile rules in the one documentation conflict. Content files untouched.
+- With default tiny chunk groups suppressed, the production run passed all byte
+  and request limits: 8 scripts / 288590 bytes, total 14 requests / 380255 bytes.
+  LCP 3668ms and TBT 456ms still fail; no PASS claim or budget change.
+- Inspection found zero query-state consumers beyond the root adapter. Removed
+  the unused provider/package, moved notifications to the actual contact forms,
+  and deferred breadcrumb popover code on home (where no breadcrumb exists).
+- Extended browser evidence to all three open shell panels. Manual OKLCH contrast
+  caught launcher labels at 3.2/3.9:1; removed diminished text opacity and used
+  neutral Thorbis selected roles. Search now uses canonical Input with a 44px
+  target and mobile 16px text. Initial launcher slot matches its true height.
+- Evidence writers now pass generated JSON through existing Biome formatting,
+  preventing a successful measurement from leaving a failing release lint gate.
+- Read-only toolkit snapshot: 18GB RAM available, 30GB commit headroom; concurrent
+  workstation activity exists. Local lab timings will be reported with that limit.
+
+- Local `npm run check` passed (lint, type-check and knip) for the dependency
+  ownership checkpoint. Final production/browser/performance run remains pending.

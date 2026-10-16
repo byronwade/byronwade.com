@@ -166,8 +166,8 @@ type, API client, or abstraction, search these first:
   `lib/actions/send-email.ts`.
 - `types/` (`github.ts`, `dribbble.ts`, `figma.ts`) and `hooks/`
   (`use-theme-toggle.ts`).
-- Platform and existing-dependency capabilities: `Intl`, `date-fns`, `nuqs`
-  for URL state, `sonner` for toasts, the Web Animations API for motion.
+- Platform and existing-dependency capabilities: `Intl`, `date-fns`, native
+  URL/search params, `sonner` for toasts, the Web Animations API for motion.
 
 No exact name match does not mean no equivalent exists. Search by behavior and
 domain meaning, not just by identifier.
@@ -289,7 +289,7 @@ not cleanup.
 - `reactCompiler` is on. Do not add `useMemo`/`useCallback`/`memo` without a
   demonstrated identity or performance need. A hook's returned callbacks are an
   exception, consumers put them in dependency arrays.
-- Keep URL-addressable state in the URL (`nuqs`).
+- Keep URL-addressable state in the URL; add a query-state library only for a real consumer.
 - Preserve accessibility, keyboard behavior, stable identity, hydration safety,
   and deterministic rendering.
 - Use the canonical primitives: `cn()`, `components/ui/`, `lib/seo.ts`,

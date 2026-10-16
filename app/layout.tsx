@@ -1,6 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import {
 	generateOrganizationStructuredData,
 	generatePersonStructuredData,
@@ -10,7 +9,6 @@ import "./globals.css";
 import { ErrorBoundary, ReactScan, ThemeProvider } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
-import { Toaster } from "@/components/ui/sonner";
 import { customFont, geistMono, interSans } from "@/lib/fonts";
 
 export { metadata, viewport } from "./metadata.config";
@@ -43,10 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					disableTransitionOnChange
 				>
 					<ErrorBoundary>
-						<NuqsAdapter>
-							<SiteLayout>{children}</SiteLayout>
-						</NuqsAdapter>
-						<Toaster />
+						<SiteLayout>{children}</SiteLayout>
 					</ErrorBoundary>
 				</ThemeProvider>
 				<Analytics />

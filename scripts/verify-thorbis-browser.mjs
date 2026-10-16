@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import sharp from "sharp";
+import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
 const destination = "docs/evidence/thorbis";
@@ -17,18 +18,74 @@ const browser = await puppeteer.launch({
 	headless: true,
 });
 const report = {
+	checkedAt: new Date().toISOString(),
+	chrome: await browser.version(),
 	source: "46b6654d02fda9d8fde737395185c3141df52cd2",
 	axe: "4.10.3",
 	cases: [],
 	keyboard: [],
 	noJavaScript: [],
 	routes: [],
+	panels: [],
 	interactions: {},
 };
 
 // Browser cases stay serial so viewport/focus state and machine load stay isolated.
 function serial(items, visit) {
 	return items.reduce((previous, item) => previous.then(() => visit(item)), Promise.resolve());
+}
+
+function readTextContrast() {
+	const canvas = document.createElement("canvas");
+	canvas.width = 1;
+	canvas.height = 1;
+	const context = canvas.getContext("2d", { willReadFrequently: true });
+	const luminance = (rgb) => {
+		const values = rgb.slice(0, 3).map((value) => {
+			const c = value / 255;
+			return c <= 0.040_45 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+		});
+		return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
+	};
+	const results = [];
+	for (const element of document.querySelectorAll("header *, main *, footer *")) {
+		if (
+			!element.getClientRects().length ||
+			element.closest("[inert], .sr-only") ||
+			![...element.childNodes].some(
+				(node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+			)
+		) {
+			continue;
+		}
+		const parents = [];
+		let parent = element;
+		while (parent) {
+			parents.unshift(parent);
+			parent = parent.parentElement;
+		}
+		context.clearRect(0, 0, 1, 1);
+		for (const ancestor of parents) {
+			context.fillStyle = getComputedStyle(ancestor).backgroundColor;
+			context.fillRect(0, 0, 1, 1);
+		}
+		const background = luminance([...context.getImageData(0, 0, 1, 1).data]);
+		const style = getComputedStyle(element);
+		context.fillStyle = style.color;
+		context.fillRect(0, 0, 1, 1);
+		const foreground = luminance([...context.getImageData(0, 0, 1, 1).data]);
+		const ratio =
+			(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
+		const large =
+			Number.parseFloat(style.fontSize) >= 24 ||
+			(Number.parseFloat(style.fontSize) >= 18.66 && Number(style.fontWeight) >= 700);
+		results.push({
+			text: element.textContent.trim().slice(0, 55),
+			ratio: Math.round(ratio * 100) / 100,
+			required: large ? 3 : 4.5,
+		});
+	}
+	return results;
 }
 
 async function auditCase(url, width, theme) {
@@ -62,58 +119,7 @@ async function auditCase(url, width, theme) {
 			cardTitleSize: getComputedStyle(document.querySelector('[data-slot="card-title"]')).fontSize,
 		};
 	});
-	const contrast = await page.evaluate(() => {
-		const canvas = document.createElement("canvas");
-		canvas.width = 1;
-		canvas.height = 1;
-		const context = canvas.getContext("2d", { willReadFrequently: true });
-		const luminance = (rgb) => {
-			const values = rgb.slice(0, 3).map((value) => {
-				const c = value / 255;
-				return c <= 0.040_45 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-			});
-			return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
-		};
-		const results = [];
-		for (const element of document.querySelectorAll("main *, footer *")) {
-			if (
-				!element.getClientRects().length ||
-				element.closest("[inert], .sr-only") ||
-				![...element.childNodes].some(
-					(node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
-				)
-			) {
-				continue;
-			}
-			const parents = [];
-			let parent = element;
-			while (parent) {
-				parents.unshift(parent);
-				parent = parent.parentElement;
-			}
-			context.clearRect(0, 0, 1, 1);
-			for (const ancestor of parents) {
-				context.fillStyle = getComputedStyle(ancestor).backgroundColor;
-				context.fillRect(0, 0, 1, 1);
-			}
-			const background = luminance([...context.getImageData(0, 0, 1, 1).data]);
-			const style = getComputedStyle(element);
-			context.fillStyle = style.color;
-			context.fillRect(0, 0, 1, 1);
-			const foreground = luminance([...context.getImageData(0, 0, 1, 1).data]);
-			const ratio =
-				(Math.max(background, foreground) + 0.05) / (Math.min(background, foreground) + 0.05);
-			const large =
-				Number.parseFloat(style.fontSize) >= 24 ||
-				(Number.parseFloat(style.fontSize) >= 18.66 && Number(style.fontWeight) >= 700);
-			results.push({
-				text: element.textContent.trim().slice(0, 55),
-				ratio: Math.round(ratio * 100) / 100,
-				required: large ? 3 : 4.5,
-			});
-		}
-		return results;
-	});
+	const contrast = await page.evaluate(readTextContrast);
 	const file = `home-${width}-${theme}.png`;
 	await page.screenshot({ path: `${destination}/${file}`, fullPage: true });
 	report.cases.push({ width, theme, axe, geometry, contrast, file });
@@ -206,6 +212,7 @@ async function checkKeyboard(page, width) {
 				const element = document.activeElement;
 				const style = getComputedStyle(element);
 				const rect = element.getBoundingClientRect();
+				const header = document.querySelector("body header");
 				return {
 					label:
 						element.getAttribute("aria-label") ||
@@ -216,6 +223,9 @@ async function checkKeyboard(page, width) {
 					shadow: style.boxShadow,
 					inViewport: rect.top >= 0 && rect.bottom <= innerHeight,
 					inert: Boolean(element.closest("[inert]")),
+					obscuredByHeader:
+						!(header.contains(element) || element.classList.contains("skip-link")) &&
+						rect.top < header.getBoundingClientRect().bottom,
 				};
 			})
 		);
@@ -223,7 +233,7 @@ async function checkKeyboard(page, width) {
 	assert.ok(
 		steps.every(
 			(step) =>
-				!step.inert &&
+				!(step.inert || step.obscuredByHeader) &&
 				step.inViewport &&
 				((step.outline !== "none" && step.outlineWidth !== "0px") || step.shadow !== "none")
 		),
@@ -236,6 +246,58 @@ async function checkKeyboard(page, width) {
 		"Search (⌘K)"
 	);
 	report.keyboard.push({ width, steps, searchFocusReturn: true });
+}
+
+async function checkShellStates(page, width, theme) {
+	await page.addScriptTag({ content: axeSource });
+	await serial(
+		[
+			{ trigger: 'button[title="All products"]', label: "All products" },
+			{ trigger: 'button[aria-label="Search (⌘K)"]', label: "Search" },
+			{ trigger: 'button[aria-label="Support open source"]', label: "Support open source" },
+		],
+		async ({ trigger, label }) => {
+			await page.click(trigger);
+			const selector = `[role="dialog"][aria-label="${label}"]`;
+			await page.waitForFunction(
+				(value) => getComputedStyle(document.querySelector(value)).opacity === "1",
+				{},
+				selector
+			);
+			const violations = await page.evaluate(async () =>
+				(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
+			);
+			const contrast = await page.evaluate(readTextContrast);
+			const bounds = await page.$eval(selector, (element) => {
+				const rect = element.getBoundingClientRect();
+				return { left: rect.left, right: rect.right, viewport: innerWidth };
+			});
+			report.panels.push({ width, theme, label, bounds, violations, contrast });
+			assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport, `${label} fits ${width}`);
+			assert.equal(
+				violations.filter(({ impact }) => impact === "serious" || impact === "critical").length,
+				0,
+				JSON.stringify(violations)
+			);
+			assert.ok(
+				contrast.every(({ ratio, required }) => ratio >= required),
+				JSON.stringify(contrast.filter(({ ratio, required }) => ratio < required))
+			);
+			if (width === 768 && theme === "light") {
+				await page.screenshot({
+					path: `${destination}/panel-${label.replaceAll(" ", "-").toLowerCase()}-768.png`,
+				});
+			}
+			if (label === "Search") {
+				await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
+				await page.waitForSelector('[role="dialog"]');
+				assert.ok(
+					await page.$eval(selector, (element) => element.textContent.includes("No results"))
+				);
+			}
+			await page.keyboard.press("Escape");
+		}
+	);
 }
 
 async function checkInteractions(url) {
@@ -255,6 +317,21 @@ async function checkInteractions(url) {
 	await page.screenshot({ path: `${destination}/contact-error-390.png`, fullPage: true });
 	await page.click("footer button");
 	assert.ok(await page.$('footer a[href^="mailto:"]'));
+	await page.focus('footer a[href="/privacy"]');
+	await page.keyboard.press("Control+k");
+	await page.waitForFunction(() => document.activeElement.getAttribute("aria-label") === "Search");
+	const shortcut = await page.$eval('input[aria-label="Search"]', (element) => {
+		const rect = element.getBoundingClientRect();
+		return {
+			visible: rect.top >= 0 && rect.bottom <= innerHeight,
+			reducedTransition: getComputedStyle(element.closest('[role="dialog"]').parentElement)
+				.transitionDuration,
+		};
+	});
+	assert.ok(shortcut.visible, "global search stays visible from the footer");
+	assert.equal(shortcut.reducedTransition, "0s");
+	await page.keyboard.press("Escape");
+	assert.equal(await page.evaluate(() => document.activeElement.getAttribute("href")), "/privacy");
 	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
 	await page.click('button[aria-label="Toggle theme"]');
 	await page.waitForFunction(
@@ -267,8 +344,31 @@ async function checkInteractions(url) {
 		invalidEmailFocused: true,
 		footerReveal: true,
 		reducedMotionThemeToggle: true,
+		globalShortcutFromFooter: shortcut,
 	};
 	await page.close();
+}
+
+async function checkSlowMotion(page) {
+	const duration = await page.evaluate(() => {
+		const root = document.documentElement;
+		const value = Number.parseFloat(getComputedStyle(root).getPropertyValue("--motion-base")) * 4;
+		root.style.setProperty("--motion-base", `${value}ms`);
+		return value;
+	});
+	await page.click('button[title="All products"]');
+	await page.screenshot({ path: `${destination}/motion-open-start-768.png` });
+	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms / 2)), duration);
+	await page.screenshot({ path: `${destination}/motion-open-middle-768.png` });
+	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms)), duration);
+	await page.screenshot({ path: `${destination}/motion-open-end-768.png` });
+	await page.keyboard.press("Escape");
+	assert.equal(await page.evaluate(() => document.activeElement.title), "All products");
+	await page.click('button[title="All products"]');
+	await page.keyboard.press("Escape");
+	assert.equal(await page.evaluate(() => document.activeElement.title), "All products");
+	await page.evaluate(() => document.documentElement.style.removeProperty("--motion-base"));
+	report.motion = { slowFactor: 4, duration, interruptedOpenClose: true, focusReturned: true };
 }
 
 try {
@@ -284,6 +384,10 @@ try {
 				}
 				if (theme === "light") {
 					await checkKeyboard(page, width);
+				}
+				await checkShellStates(page, width, theme);
+				if (width === 768 && theme === "light") {
+					await checkSlowMotion(page);
 				}
 				await page.close();
 			}
@@ -336,6 +440,6 @@ try {
 		);
 	});
 } finally {
-	writeFileSync(`${destination}/browser.json`, `${JSON.stringify(report, null, 2)}\n`);
+	writeEvidenceJson(`${destination}/browser.json`, report);
 	await browser.close();
 }

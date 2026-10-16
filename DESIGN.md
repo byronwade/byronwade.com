@@ -275,7 +275,8 @@ before building, change topology and sequence, not card styling.
 ### 7.3 Shareable state
 
 Filters, tabs, selected items, and search queries belong in the URL when they
-are worth sharing. `nuqs` is available.
+are worth sharing. Use native URL/search params; evaluate a query-state library
+when a real interactive surface needs one.
 
 ## 8. Component contracts
 
