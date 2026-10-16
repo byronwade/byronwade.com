@@ -9,6 +9,8 @@ const NAVIGATION = /<nav[^>]*aria-label="Primary"/;
 const NO_JS_CONTACT = /<noscript>.*?Contact Byron/s;
 const HIDDEN_HEADING =
 	/class="[^"]*(?:scene-enter|reveal-delay|opacity-0)[^"]*"[^>]*id="home-title"/;
+const INTER_PRELOAD =
+	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/UcCo3FwrK3iLTcviYwY\.woff2")[^>]*>/;
 
 test("homepage content and navigation are present before hydration", async () => {
 	const html = await readFile(
@@ -20,5 +22,10 @@ test("homepage content and navigation are present before hydration", async () =>
 	assert.match(html, WRITING);
 	assert.match(html, NAVIGATION);
 	assert.match(html, NO_JS_CONTACT);
+	assert.match(
+		html,
+		INTER_PRELOAD,
+		"the pinned source font must preload without a generated manifest"
+	);
 	assert.doesNotMatch(html, HIDDEN_HEADING);
 });

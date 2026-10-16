@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 // Read-only source adapter. Run with an explicitly selected Thorbis checkout.
@@ -17,6 +17,20 @@ if (actualCommit !== sourceCommit) {
 }
 const generated = readFileSync(resolve(source, "src/styles/tokens.generated.css"), "utf8");
 const styles = readFileSync(resolve(source, "src/styles.css"), "utf8").replaceAll("\r\n", "\n");
+const fontFaces = [...styles.matchAll(/@font-face\s*\{[^}]+\}/g)]
+	.map(([face]) => face)
+	.filter((face) => face.includes("font-family: 'Inter'"));
+if (!fontFaces.length) {
+	throw new Error("Missing upstream Inter font faces");
+}
+const fontFiles = new Set(
+	fontFaces.flatMap((face) =>
+		[...face.matchAll(/\/fonts\/([\w.-]+\.woff2)/g)].map((match) => match[1])
+	)
+);
+for (const file of [...fontFiles, "inter-OFL.txt"]) {
+	copyFileSync(resolve(source, "public/fonts", file), resolve("public/fonts", file));
+}
 const declarations = (text) => [...text.matchAll(/(--[\w-]+):\s*([^;]+);/g)];
 const tokens = new Map(declarations(generated).map((match) => [match[1], match[2]]));
 const themeEntries = (theme) => {
@@ -40,7 +54,7 @@ const rename = (text) =>
 	text.replaceAll("--color-", "--thorbis-").replaceAll("--text-", "--thorbis-text-");
 const emit = (entries) =>
 	[...entries].map(([name, value]) => `  ${rename(name)}: ${rename(value)};`).join("\n");
-// Fonts are loaded by next/font; radius and motion names remain source-compatible.
+// Inter faces are copied above; next/font owns deferred Mono/signature faces.
 tokens.delete("--font-sans");
 tokens.delete("--font-mono");
 const dark = new Map(
@@ -61,15 +75,19 @@ ${emit(dark)}
 }
 /* thorbis-tokens:end */`;
 const target = "app/globals.css";
-const current = readFileSync(target, "utf8");
+const fontStart = "/* thorbis-fonts:start */";
+const fontEnd = "/* thorbis-fonts:end */";
+const current = readFileSync(target, "utf8").replace(
+	/\/\* thorbis-fonts:start \*\/[\s\S]*?\/\* thorbis-fonts:end \*\//,
+	`${fontStart}\n/* Thorbis src/styles.css font faces @ ${sourceCommit}; OFL: public/fonts/inter-OFL.txt. */\n${fontFaces.join("\n")}\n${fontEnd}`
+);
+if (!current.includes(fontStart)) {
+	throw new Error("Missing Thorbis font destination marker");
+}
 const start = current.indexOf("/* Thorbis Design port:");
 const endMarker = "/* thorbis-tokens:end */";
-if (start < 0) {
+const end = current.indexOf(endMarker, start);
+if (start < 0 || end < 0) {
 	throw new Error("Missing Thorbis token destination marker");
 }
-writeFileSync(
-	target,
-	current.slice(0, start) +
-		section +
-		current.slice(current.indexOf(endMarker, start) + endMarker.length)
-);
+writeFileSync(target, current.slice(0, start) + section + current.slice(end + endMarker.length));

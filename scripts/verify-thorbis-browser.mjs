@@ -318,7 +318,9 @@ async function checkInteractions(url) {
 	await page.click("footer button");
 	assert.ok(await page.$('footer a[href^="mailto:"]'));
 	await page.focus('footer a[href="/privacy"]');
-	await page.keyboard.press("Control+k");
+	await page.keyboard.down("Control");
+	await page.keyboard.press("k");
+	await page.keyboard.up("Control");
 	await page.waitForFunction(() => document.activeElement.getAttribute("aria-label") === "Search");
 	const shortcut = await page.$eval('input[aria-label="Search"]', (element) => {
 		const rect = element.getBoundingClientRect();
@@ -352,7 +354,8 @@ async function checkInteractions(url) {
 async function checkSlowMotion(page) {
 	const duration = await page.evaluate(() => {
 		const root = document.documentElement;
-		const value = Number.parseFloat(getComputedStyle(root).getPropertyValue("--motion-base")) * 4;
+		const token = getComputedStyle(root).getPropertyValue("--motion-base").trim();
+		const value = Number.parseFloat(token) * (token.endsWith("ms") ? 1 : 1000) * 4;
 		root.style.setProperty("--motion-base", `${value}ms`);
 		return value;
 	});
@@ -440,6 +443,9 @@ try {
 		);
 	});
 } finally {
-	writeEvidenceJson(`${destination}/browser.json`, report);
-	await browser.close();
+	try {
+		writeEvidenceJson(`${destination}/browser.json`, report);
+	} finally {
+		await browser.close();
+	}
 }

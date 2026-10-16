@@ -143,3 +143,21 @@ production deployment, or merge.
 
 - Local `npm run check` passed (lint, type-check and knip) for the dependency
   ownership checkpoint. Final production/browser/performance run remains pending.
+
+## Loop 8 — font discovery and final state checks
+
+- Latest production measurement passes all gates except LCP: FCP 1554ms, LCP
+  3353ms, TBT 280ms, CLS zero, 8 scripts / 245561 bytes, 336944 total bytes.
+- Read the emitted HTML and Next font manifest: no font preload, empty manifest.
+  Chrome confirms Inter discovery waits until after CSS. Porting the exact
+  upstream Inter files/faces and OFL with explicit root preload; this also makes
+  source font identity exact. Retaining next/font for deferred Mono/signature.
+- All eight width/theme cases and all 24 open launcher/search/support states
+  passed axe, AA text contrast and bounds. Keyboard focus clears the sticky
+  header; No-JS 1440/390 passed. Slow-motion capture is being repeated with
+  unit-aware duration parsing (the CSS value was seconds, not milliseconds).
+- Final interaction harness used an unsupported combined Control+k key name.
+  Corrected to down/press/up; production UI was not the failure. Full run pending
+  on final font build, including source comparison screenshots.
+- Search anchor navigation now uses native auto scrolling, including reduced
+  motion. Browser evidence always closes Chrome even if evidence formatting fails.

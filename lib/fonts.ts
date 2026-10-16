@@ -1,12 +1,8 @@
-import { Geist_Mono, Inter } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
-// Thorbis Design: Inter UI/body and Geist Mono. Source: src/styles.css @ 46b6654.
-export const interSans = Inter({
-	subsets: ["latin"],
-	display: "swap",
-	variable: "--font-inter",
-});
+// Thorbis Inter is copied byte-for-byte, declared in globals.css and explicitly
+// preloaded in the root layout; this avoids a missing generated font manifest.
 
 // Monospace, code, metrics, technical labels
 export const geistMono = Geist_Mono({

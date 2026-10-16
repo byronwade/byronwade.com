@@ -25,7 +25,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | app/globals.css theme overrides | src/styles.css, all explicit light/dark semantic corrections and modern shadow overrides | Explicit light canvas, text, marker, panel, field, on-panel and elevation retune; .dark restores source dark values |
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
 | lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
-| lib/fonts.ts | src/styles.css @font-face, src/stylex/tokens.stylex.ts typography | Inter and Geist Mono self-hosted with next/font; signature retained only for the existing resume signature |
+| app/globals.css font block; public/fonts/UcCo* and UcC53*; app/layout.tsx; lib/fonts.ts | src/styles.css Inter @font-face blocks; public/fonts (14 Inter subsets and inter-OFL.txt); src/stylex/tokens.stylex.ts | Exact Inter font files/faces and license copied, Latin explicitly preloaded; Geist Mono self-hosted with next/font; signature retained only for resume |
 | components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/ui/card.tsx | src/components/ui/card.tsx | Panel tone, source large radius and panel elevation; existing slots and size contract |
@@ -63,6 +63,10 @@ for introducing a new visual choice.
 - The unused global query-state provider is removed. Toasts load with contact
   forms, retaining feedback after an inline close; breadcrumb popover code loads
   only on routes with a breadcrumb. These move dependencies to their consumers.
+- Inter uses the pinned font bytes and source face descriptors. The generated
+  next/font manifest was empty in the local Windows webpack build, delaying
+  Inter until CSS discovery. Explicit source-font preload removes that dependency
+  without an experimental CSS flag. A rendered contract checks the preload.
 - The browser favicon reuses the existing 32px image instead of fetching the
   239KB original. The original remains at public/icon-original.png; /icon.png
   stays owned by the app route. A regression test prevents public shadowing.
@@ -75,9 +79,10 @@ for introducing a new visual choice.
 2. Update the script pin after reviewing the selected revision. With the reference
    checked out by its owner, run:
    `node scripts/port-thorbis-tokens.mjs D:/Dev/thorbis-design`.
-   This only reads upstream and replaces the marked token block in this app.
+   This only reads upstream, replaces marked token/font blocks and copies source
+   Inter files/license into this app.
 3. Review generated changes. Update headers and this map with the script pin
-   together. Keep aliases as the only bridge; do not leave old/new palettes.
+   together. Keep aliases as the only bridge; do not leave old/new palettes or displaced font assets.
 4. Port changes to the canonical existing primitives. Preserve Base UI keyboard,
    focus, dismissal and rendering APIs. Update all affected callers atomically.
 5. Run local lint, type-check, knip, build, contact tests, browser/axe/no-JS checks,

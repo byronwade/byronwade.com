@@ -66,7 +66,7 @@ function go(href: string, router: ReturnType<typeof useRouter>) {
 	const here = typeof window === "undefined" ? "" : window.location.pathname;
 	const el = here === path && typeof document !== "undefined" ? document.getElementById(id) : null;
 	if (el) {
-		el.scrollIntoView({ behavior: "smooth" });
+		el.scrollIntoView({ behavior: "auto" });
 		history.replaceState(null, "", href);
 	} else {
 		router.push(href);

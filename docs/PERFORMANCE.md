@@ -29,8 +29,10 @@ as part of measurement.
 
 - Server Components own content loading and static homepage composition. External
   data/cache rules remain in `lib/cache.ts` and their server-side callers.
-- Next's font loader self-hosts Inter and Geist Mono. Inter preloads for body and
-  headings; code and the resume signature load only where used. Fonts use swap.
+- The exact Thorbis Inter files and face descriptors are copied with their OFL
+  license. The root layout explicitly preloads Latin, avoiding a missing generated
+  next/font manifest on the local Windows webpack build. Geist Mono and the
+  resume signature use next/font without global preloads. All fonts use swap.
 - Home/shared navigation requests routes on navigation rather than speculative
   viewport prefetch. The contact form loads on the first intentional open and
   remains mounted afterward to preserve drafts.
