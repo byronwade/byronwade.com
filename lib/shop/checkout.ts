@@ -3,6 +3,7 @@ import { shopProducts } from "@/lib/shop/products";
 const UNAVAILABLE =
 	"Shop coming soon. Test checkout is unavailable right now. Please check back later.";
 const RETRY = "Couldn't open test checkout. Please try again. No payment was taken on this site.";
+const REQUEST_ID = /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i;
 
 // Server consumers only. Never pass credentials to a component or return provider errors.
 function getTestKey(): string | undefined {
@@ -19,7 +20,7 @@ type CheckoutResult = { ok: true; url: string } | { ok: false; error: string };
 export async function createTestCheckout(
 	productId: unknown,
 	origin: string,
-	requestId: string
+	requestId: unknown
 ): Promise<CheckoutResult> {
 	// Fail closed before validation, request construction, or any Stripe network activity.
 	const key = getTestKey();
@@ -29,6 +30,9 @@ export async function createTestCheckout(
 	const product = shopProducts.find((candidate) => candidate.id === productId);
 	if (!product) {
 		return { ok: false, error: "Choose one of the placeholder products and try again." };
+	}
+	if (typeof requestId !== "string" || !REQUEST_ID.test(requestId)) {
+		return { ok: false, error: "Refresh the shop page and try test checkout again." };
 	}
 
 	try {

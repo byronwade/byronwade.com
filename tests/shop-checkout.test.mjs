@@ -13,6 +13,7 @@ registerHooks({
 
 const { createTestCheckout, isTestCheckoutEnabled } = await import("@/lib/shop/checkout");
 const { shopProducts } = await import("@/lib/shop/products");
+const REQUEST_ID = "1f83f8b0-129c-4b5b-8cdf-0d3fba56d991";
 const originalKey = process.env.STRIPE_SECRET_KEY;
 const session = {
 	id: "cs_test_fixture",
@@ -51,7 +52,7 @@ for (const key of [
 			process.env.STRIPE_SECRET_KEY = key;
 		}
 		assert.equal(isTestCheckoutEnabled(), false);
-		const result = await createTestCheckout("field-notes", "http://localhost:3000", "fixture");
+		const result = await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID);
 		assert.equal(result.ok, false);
 		assert.ok(result.error.includes("Shop coming soon"));
 		assert.equal(transport.mock.callCount(), 0);
@@ -61,7 +62,7 @@ for (const key of [
 test("only known product IDs reach Stripe", async () => {
 	const results = await Promise.all(
 		[null, {}, ["field-notes"], "unknown", "__proto__", 1200].map((input) =>
-			createTestCheckout(input, "http://localhost:3000", "fixture")
+			createTestCheckout(input, "http://localhost:3000", REQUEST_ID)
 		)
 	);
 	assert.ok(results.every((result) => !result.ok));
@@ -72,14 +73,14 @@ for (const product of shopProducts) {
 	test(`${product.id} uses server-owned price_data, test labels and same-origin return routes`, async () => {
 		assert.equal(shopProducts.length, 3);
 		assert.equal(isTestCheckoutEnabled(), true);
-		const result = await createTestCheckout(product.id, "http://localhost:3000", "fixture");
+		const result = await createTestCheckout(product.id, "http://localhost:3000", REQUEST_ID);
 		assert.deepEqual(result, { ok: true, url: session.url });
 		const [url, options] = transport.mock.calls.at(-1).arguments;
 		assert.equal(url, "https://api.stripe.com/v1/checkout/sessions");
 		assert.equal(options.method, "POST");
 		assert.equal(options.cache, "no-store");
 		assert.ok(options.signal instanceof AbortSignal);
-		assert.equal(options.headers["Idempotency-Key"], `shop-${product.id}-fixture`);
+		assert.equal(options.headers["Idempotency-Key"], `shop-${product.id}-${REQUEST_ID}`);
 		const body = options.body;
 		assert.equal(body.get("mode"), "payment");
 		assert.equal(body.get("line_items[0][quantity]"), "1");
@@ -95,8 +96,8 @@ for (const product of shopProducts) {
 }
 
 test("repeat submission preserves the idempotency key", async () => {
-	await createTestCheckout("field-notes", "http://localhost:3000", "same-request");
-	await createTestCheckout("field-notes", "http://localhost:3000", "same-request");
+	await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID);
+	await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID);
 	assert.equal(
 		transport.mock.calls[0].arguments[1].headers["Idempotency-Key"],
 		transport.mock.calls[1].arguments[1].headers["Idempotency-Key"]
@@ -116,7 +117,7 @@ for (const invalid of [
 	test(`rejects untrusted checkout response ${JSON.stringify(invalid)}`, async () => {
 		transport.mock.mockImplementation(() => Promise.resolve(Response.json(invalid)));
 		assert.equal(
-			(await createTestCheckout("field-notes", "http://localhost:3000", "fixture")).ok,
+			(await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID)).ok,
 			false
 		);
 	});
@@ -126,7 +127,7 @@ test("provider failures never expose credentials or provider details", async () 
 	transport.mock.mockImplementation(() =>
 		Promise.resolve(new Response("private provider detail", { status: 401 }))
 	);
-	const result = await createTestCheckout("field-notes", "http://localhost:3000", "fixture");
+	const result = await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID);
 	assert.equal(result.ok, false);
 	assert.equal(result.error.includes("sk_test_"), false);
 	assert.equal(result.error.includes("private provider detail"), false);
@@ -138,8 +139,18 @@ for (const [label, response] of [
 ]) {
 	test(`${label} produces a recoverable message`, async () => {
 		transport.mock.mockImplementation(response);
-		const result = await createTestCheckout("field-notes", "http://localhost:3000", "fixture");
+		const result = await createTestCheckout("field-notes", "http://localhost:3000", REQUEST_ID);
 		assert.equal(result.ok, false);
 		assert.ok(result.error.includes("try again"));
 	});
 }
+
+test("malformed submission identities are rejected before Stripe", async () => {
+	const results = await Promise.all(
+		[null, {}, 12, "invalid", "x".repeat(500)].map((id) =>
+			createTestCheckout("field-notes", "http://localhost:3000", id)
+		)
+	);
+	assert.ok(results.every((result) => !result.ok));
+	assert.equal(transport.mock.callCount(), 0);
+});
