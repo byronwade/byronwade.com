@@ -1,0 +1,14 @@
+{
+  "scope": "Canonical lib/icons.tsx; same public exports, icon family and weights. Package 2.1.10 explicitly exports per-icon SSR and lib/types subpaths.",
+  "method": "Node 24.14.0; TypeScript --noEmit --incremental false --generateTrace before/after. Counts use createSourceFile begin events. No elapsed-time or runtime speed claim.",
+  "before": {
+    "totalSourceFiles": 4479,
+    "phosphorCSR": 1512,
+    "phosphorSSR": 1513
+  },
+  "after": {
+    "totalSourceFiles": 1508,
+    "phosphorCSR": 0,
+    "phosphorSSR": 59
+  }
+}

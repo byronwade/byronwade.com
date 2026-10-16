@@ -57,7 +57,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
 | Workbench | No | - | No authenticated or repeat-use operational surface exists |
-| Guided | Yes | `/contact`, the inline contact sheet | Single focused task, interruption- and failure-aware |
+| Guided | Yes | `/contact`, the inline contact sheet, `/shop`, product details and return routes | Single focused task, interruption- and failure-aware; shop is an unlinked test-only preview |
 | Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
 | Shared primitives | Yes | `components/ui/`, `app/globals.css` | One token system and one primitive set across all profiles |
@@ -72,7 +72,7 @@ from the profile and makes first-visit clarity the dominant design concern.
   to Tailwind through `@theme inline`. The only place a design value is defined.
 - **Component/primitives owner:** `components/ui/`
 - **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
-  `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
+  `project/`, `portfolio/`, `shop/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
 - **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
   through the pure `lib/icons.tsx` facade; individual wrappers in `lib/icons/`
@@ -122,8 +122,10 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **View controls/tabs:** `components/ui/tabs.tsx`
 - **Buttons:** `components/ui/button.tsx`
 - **Forms and validation:** `components/ui/input.tsx`, `textarea.tsx`, `label.tsx`;
-  shared submission state in `hooks/use-contact-form.ts`, with validation in
-  `lib/contact-form.ts` and delivery through `lib/actions/send-email.ts`
+  contact submission state in `hooks/use-contact-form.ts`, with validation in
+  `lib/contact-form.ts` and delivery through `lib/actions/send-email.ts`; test-only
+  shop submission through `lib/actions/create-checkout.ts` and `lib/shop/checkout.ts`,
+  with catalog and pricing owned by `lib/shop/products.ts`
 - **Search and command palette:** server glyph slots in
   `components/layout/dock-toolbar.tsx`, interaction in `dock-toolbar-client.tsx`,
   index built by `lib/search-index.ts`
@@ -195,12 +197,14 @@ use them correctly.
   overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev` (Turbopack); production uses Next webpack to
   keep requests within the existing Lighthouse budget.
-- **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
-  fixture operations, content-date regressions across five timezones, and Thorbis
-  class merging/token/favicon contracts
+- **Affected tests:** `npm test`, contact-action, cache-refresh, test-only checkout,
+  screenshot and resume PDF regressions with fixture operations, content-date
+  regressions across five timezones, and Thorbis class merging/token/favicon contracts
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
-  submit semantics on `/contact` and exclusion of portfolio API/cache code from
-  production client chunks, plus visible writing dates matching their machine dates
+  contact submit and shop return-link semantics, catalog-owned noindex product
+  details, exclusion of portfolio API/cache code from production client chunks,
+  visible writing dates matching their machine dates, homepage boundaries, resume
+  print/privacy, and inclusion of the resume PDF browser assets in file tracing
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
@@ -255,7 +259,7 @@ the user's instruction each time.
 
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
-| Automated tests | Contact-action, cache-refresh, and content-date regressions via `npm test`; other domains uncovered | Contact, cache-refresh, and date changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs`, `tests/cache-revalidation.test.mjs`, `tests/content-dates.test.mjs` |
+| Automated tests | Contact-action, cache-refresh, content-date, screenshot-route, and test-only checkout regressions via `npm test`; other domains uncovered | Contact, cache-refresh, date, screenshot-route, and checkout changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs`, `tests/cache-revalidation.test.mjs`, `tests/content-dates.test.mjs`, `tests/screenshot.test.mjs`, `tests/shop-checkout.test.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |

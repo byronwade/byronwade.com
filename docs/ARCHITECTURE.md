@@ -32,6 +32,7 @@ the header.
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
+| `/shop`, `/shop/[productId]`, `/shop/success`, `/shop/cancel` | Unlinked placeholder shop with test-only Stripe Checkout ([boundaries and local test](SHOP.md)) |
 | `/privacy`, `/terms` | Legal |
 
 ### Resume PDF export
@@ -67,6 +68,7 @@ components/
   blog/          # Blog UI
   project/       # Project preview UI
   portfolio/     # Figma viewer
+  shop/          # Test checkout form and pending/error feedback
   common/        # Theme, analytics, markdown, error boundary, empty state
   ui/            # Base UI primitives
 ```
@@ -88,3 +90,6 @@ components/
   with the provider key, only for published project URLs at the sizes in
   `lib/screenshot-viewports.ts`
 - `lib/actions/send-email.ts`. contact form server action (Resend)
+- `lib/shop/products.ts`. typed placeholder catalog; the only shop price source
+- `lib/shop/checkout.ts`, `lib/actions/create-checkout.ts`. test-only Stripe
+  Checkout mutation and server-action redirect; no fulfillment or order storage
