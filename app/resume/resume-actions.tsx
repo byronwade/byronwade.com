@@ -90,7 +90,11 @@ function saveResumePdf(blob: Blob) {
  */
 export function DownloadResumeButton() {
 	const [phase, setPhase] = useState<DownloadPhase>("idle");
-	const pending = useRef(false);
+	const pending = useRef<AbortController | null>(null);
+
+	// Leaving the page cancels a pending download, so a late PDF is never saved
+	// while the visitor is reading something else.
+	useEffect(() => () => pending.current?.abort(), []);
 
 	const onClick = async (event: MouseEvent<HTMLAnchorElement>) => {
 		if (!shouldHandleResumeDownload(event)) {
@@ -100,14 +104,19 @@ export function DownloadResumeButton() {
 		if (pending.current) {
 			return;
 		}
-		pending.current = true;
+		const controller = new AbortController();
+		pending.current = controller;
 		setPhase("pending");
-		const pdf = await fetchResumePdf();
+		const pdf = await fetchResumePdf({ signal: controller.signal });
+		pending.current = null;
+		if (controller.signal.aborted) {
+			setPhase("idle");
+			return;
+		}
 		if (pdf) {
 			saveResumePdf(pdf);
 			analytics.resumeDownload("pdf");
 		}
-		pending.current = false;
 		setPhase(pdf ? "idle" : "failed");
 	};
 

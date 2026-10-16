@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import matter from "gray-matter";
+import { readContentMatter } from "@/lib/content-matter";
+import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so each compiles once rather than per file/post. */
 const WHITESPACE = /\s+/;
@@ -29,19 +30,6 @@ function parseTags(raw: unknown): string[] | undefined {
 		return acc;
 	}, []);
 	return tags.length > 0 ? tags : undefined;
-}
-
-function parseDate(raw: unknown): string | undefined {
-	if (raw instanceof Date && !Number.isNaN(raw.getTime())) {
-		return raw.toISOString();
-	}
-
-	if (typeof raw !== "string") {
-		return;
-	}
-
-	const date = raw.trim();
-	return date && !Number.isNaN(Date.parse(date)) ? date : undefined;
 }
 
 function calculateReadingTime(content: string): number {
@@ -75,18 +63,23 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 	try {
 		const fullPath = join(blogDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
-		const { data, content } = matter(fileContents);
+		const { data, content } = readContentMatter(fileContents);
 
 		// Local previews only. All readers, including direct URLs, share this boundary.
 		if (data.draft === true && process.env.NODE_ENV !== "development") {
+			return null;
+		}
+		const date = parseContentDate(data.date);
+		if (!date) {
+			console.error(`Skipping blog post ${slug}: missing or invalid publication date`);
 			return null;
 		}
 
 		return {
 			slug,
 			title: data.title || slug,
-			date: parseDate(data.date) ?? new Date().toISOString(),
-			updated: parseDate(data.updated),
+			date,
+			updated: parseContentDate(data.updated),
 			excerpt: data.excerpt,
 			tags: parseTags(data.tags),
 			content,

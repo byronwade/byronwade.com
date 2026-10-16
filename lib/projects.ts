@@ -1,6 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import matter from "gray-matter";
+import type matter from "gray-matter";
+import { readContentMatter } from "@/lib/content-matter";
+import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so it compiles once rather than per file. */
 const MD_EXTENSION = /\.md$/;
@@ -89,7 +91,7 @@ function parseMetrics(raw: unknown): ProjectMetric[] | undefined {
 }
 
 function toProject(slug: string, fileContents: string): Project {
-	const { data, content } = matter(fileContents);
+	const { data, content } = readContentMatter(fileContents);
 	const flagship = data.flagship === true;
 	return {
 		slug,
@@ -98,12 +100,7 @@ function toProject(slug: string, fileContents: string): Project {
 		category: data.category,
 		type: resolveType(data),
 		// Undated work must not acquire a fabricated publication date at build time.
-		date:
-			data.date instanceof Date
-				? data.date.toISOString().slice(0, 10)
-				: typeof data.date === "string"
-					? data.date
-					: undefined,
+		date: parseContentDate(data.date),
 		excerpt: data.excerpt,
 		flagship,
 		featured: data.featured === true || (data.featured !== false && flagship),

@@ -54,8 +54,9 @@ successful `application/pdf` body (`fetchResumePdf` in `lib/resume-pdf.ts`).
 An error response, a dropped connection, or no complete PDF within 60 seconds
 (headers and body) shows "Couldn’t create the PDF. Try again." The 60 seconds
 must stay above the route's own bounds (browser launch, 30s page load, 10s email
-wait). `tests/resume-download.test.mjs` checks these cases against a local
-server.
+wait). Leaving the page while a PDF is pending cancels the request, so a late
+PDF is never saved on another page. `tests/resume-download.test.mjs` checks
+these cases against a local server.
 
 ## Components
 
@@ -79,6 +80,17 @@ components/
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
   Blog posts with `draft: true` are available only in development. The shared
   loader excludes them from production pages, search, RSS, sitemap, and slugs.
+  `parseContentDate` in `lib/markdown-utils.ts` validates dates from both loaders:
+  complete ISO calendar strings, ISO timestamps with an explicit timezone, and
+  valid YAML Date objects. Blog posts without a valid publication date are
+  excluded by the same shared boundary and logged for the author to correct.
+  Invalid optional update/project dates are omitted. No loader substitutes the
+  build date. The sitemap uses an article's update date when present and leaves
+  modification dates off undated projects.
+  `readContentMatter` in `lib/content-matter.ts` keeps js-yaml's timestamp
+  constructor, but only for real calendar days. Impossible unquoted dates such
+  as `2026-02-30` stay the original text and fail the same validation as quoted
+  dates, instead of shifting onto another day. Other front-matter keys are unchanged.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
