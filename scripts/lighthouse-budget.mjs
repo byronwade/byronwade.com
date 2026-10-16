@@ -1,7 +1,7 @@
 // Both the home release gate and the route matrix enforce the same JSON budget.
 export function assessBudget(lhr, budget) {
 	const resources = lhr.audits["resource-summary"]?.details?.items;
-	if (!Array.isArray(resources)) {
+	if (!(Array.isArray(resources) && resources.some((item) => item.resourceType === "total"))) {
 		throw new Error("Lighthouse returned no resource summary");
 	}
 	const failures = [];

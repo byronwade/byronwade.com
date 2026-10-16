@@ -14,7 +14,10 @@ function report({ lcp = 3000, bytes = 1024, requests = 2 } = {}) {
 			"largest-contentful-paint": { numericValue: lcp },
 			"resource-summary": {
 				details: {
-					items: [{ resourceType: "script", transferSize: bytes, requestCount: requests }],
+					items: [
+						{ resourceType: "total", transferSize: bytes + 64, requestCount: requests + 1 },
+						{ resourceType: "script", transferSize: bytes, requestCount: requests },
+					],
 				},
 			},
 		},
@@ -35,6 +38,9 @@ test("a missing or invalid measurement cannot silently pass", () => {
 	assert.equal(assessBudget(missing, budget).failures.length, 1);
 	assert.equal(assessBudget(report({ lcp: Number.NaN }), budget).failures.length, 1);
 	assert.throws(() => assessBudget({ audits: {} }, budget), MISSING_SUMMARY);
+	const empty = report();
+	empty.audits["resource-summary"].details.items = [];
+	assert.throws(() => assessBudget(empty, budget), MISSING_SUMMARY);
 	assert.equal(assessBudget(report({ bytes: Number.NaN }), budget).failures.length, 1);
 	assert.equal(assessBudget(report({ requests: -1 }), budget).failures.length, 1);
 });
