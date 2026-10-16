@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact-action regressions (fixture email transport)
-npm run test:rendered # native contact submit semantics, after build
+npm run test:rendered # contact submit semantics + portfolio client bundles, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -462,7 +462,8 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 `tsc --noEmit` under `strict` **and** `noUncheckedIndexedAccess`, knip at zero
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
-production build, `npm run test:rendered` checks native contact submit semantics.
+production build, `npm run test:rendered` checks native contact submit semantics
+and the portfolio client bundle boundary.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
 
 High-value sensors not yet built, in rough priority order: raw-color and
