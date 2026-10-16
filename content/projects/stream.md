@@ -5,6 +5,8 @@ category: "Concept"
 tagline: "live, built for belonging"
 date: 2026-06-01
 excerpt: "A live-streaming platform I'm prototyping around a contrarian thesis: rank streams by discovery fit and community health instead of raw viewer counts, with features like Catch Me Up and mood-based discovery that the incumbents have no reason to build."
+status: "Archived"
+featured: false
 ---
 
 # Stream: What If Live Optimized for Belonging Instead of Virality?

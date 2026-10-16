@@ -1,0 +1,379 @@
+{
+  "note": "Diagnostic measurements on a busy shared Windows host; no baseline or regression claim. CLI exit 0 is not a budget pass. Lighthouse 12 removed built-in budgets; values compared here against lighthouse-budget.json.",
+  "upstream": "https://github.com/GoogleChrome/lighthouse/pull/15950",
+  "sizeUnits": "KiB (1024 bytes)",
+  "reports": [
+    {
+      "route": "/",
+      "lighthouseVersion": "12.8.2",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "scores": {
+        "performance": 0.54,
+        "accessibility": 0.93,
+        "best-practices": 0.96,
+        "seo": 1
+      },
+      "budgetPass": false,
+      "comparisons": [
+        {
+          "kind": "timing",
+          "metric": "first-contentful-paint",
+          "budget": 2000,
+          "actual": 1665.7718,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "largest-contentful-paint",
+          "budget": 3000,
+          "actual": 7081.1577,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "cumulative-layout-shift",
+          "budget": 0.1,
+          "actual": 0.0337,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "total-blocking-time",
+          "budget": 300,
+          "actual": 911,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "speed-index",
+          "budget": 3000,
+          "actual": 3163.0037,
+          "pass": false
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "script",
+          "budget": 300,
+          "actual": 390.51,
+          "pass": false
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "total",
+          "budget": 1000,
+          "actual": 1138.658,
+          "pass": false
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "stylesheet",
+          "budget": 50,
+          "actual": 16.994,
+          "pass": true
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "image",
+          "budget": 500,
+          "actual": 0,
+          "pass": true
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "font",
+          "budget": 100,
+          "actual": 165.68,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "script",
+          "budget": 10,
+          "actual": 23,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "total",
+          "budget": 50,
+          "actual": 58,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "stylesheet",
+          "budget": 3,
+          "actual": 1,
+          "pass": true
+        },
+        {
+          "kind": "requestCount",
+          "metric": "image",
+          "budget": 20,
+          "actual": 0,
+          "pass": true
+        },
+        {
+          "kind": "requestCount",
+          "metric": "font",
+          "budget": 5,
+          "actual": 3,
+          "pass": true
+        }
+      ],
+      "stage": "Initial diagnostics before shared contrast/inert corrections and main portfolio-boundary integration; not a final combined-bundle measurement"
+    },
+    {
+      "route": "/projects",
+      "lighthouseVersion": "12.8.2",
+      "formFactor": "mobile",
+      "throttlingMethod": "simulate",
+      "scores": {
+        "performance": 0.54,
+        "accessibility": 0.92,
+        "best-practices": 0.96,
+        "seo": 1
+      },
+      "budgetPass": false,
+      "comparisons": [
+        {
+          "kind": "timing",
+          "metric": "first-contentful-paint",
+          "budget": 2000,
+          "actual": 1100.4757,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "largest-contentful-paint",
+          "budget": 3000,
+          "actual": 7066.4273,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "cumulative-layout-shift",
+          "budget": 0.1,
+          "actual": 0.0002,
+          "pass": true
+        },
+        {
+          "kind": "timing",
+          "metric": "total-blocking-time",
+          "budget": 300,
+          "actual": 1036,
+          "pass": false
+        },
+        {
+          "kind": "timing",
+          "metric": "speed-index",
+          "budget": 3000,
+          "actual": 1987.3265,
+          "pass": true
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "script",
+          "budget": 300,
+          "actual": 387.942,
+          "pass": false
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "total",
+          "budget": 1000,
+          "actual": 1149.764,
+          "pass": false
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "stylesheet",
+          "budget": 50,
+          "actual": 16.994,
+          "pass": true
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "image",
+          "budget": 500,
+          "actual": 0,
+          "pass": true
+        },
+        {
+          "kind": "sizeKiB",
+          "metric": "font",
+          "budget": 100,
+          "actual": 165.68,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "script",
+          "budget": 10,
+          "actual": 22,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "total",
+          "budget": 50,
+          "actual": 73,
+          "pass": false
+        },
+        {
+          "kind": "requestCount",
+          "metric": "stylesheet",
+          "budget": 3,
+          "actual": 1,
+          "pass": true
+        },
+        {
+          "kind": "requestCount",
+          "metric": "image",
+          "budget": 20,
+          "actual": 0,
+          "pass": true
+        },
+        {
+          "kind": "requestCount",
+          "metric": "font",
+          "budget": 5,
+          "actual": 3,
+          "pass": true
+        }
+      ],
+      "stage": "Initial diagnostics before shared contrast/inert corrections and main portfolio-boundary integration; not a final combined-bundle measurement"
+    }
+  ],
+  "finalAccessibility": {
+    "route": "/projects",
+    "lighthouseVersion": "12.8.2",
+    "auditedAt": "2026-10-16T06:46:45.341Z",
+    "method": "Programmatic Lighthouse with an explicitly owned headless browser; browser.close completed",
+    "score": 1,
+    "failures": []
+  },
+  "finalPerformance": {
+    "route": "/projects",
+    "stage": "Integrated Projects source 76bc359 with main 0e9f5cd (#52) and c48f332 (#54)",
+    "auditedAt": "2026-10-16T06:46:45.341Z",
+    "lighthouseVersion": "12.8.2",
+    "formFactor": "mobile",
+    "scores": {
+      "performance": 0.62,
+      "accessibility": 1,
+      "best-practices": 0.96,
+      "seo": 1
+    },
+    "budgetPass": false,
+    "comparisons": [
+      {
+        "kind": "timing",
+        "metric": "first-contentful-paint",
+        "budget": 2000,
+        "actual": 1061.831,
+        "pass": true
+      },
+      {
+        "kind": "timing",
+        "metric": "largest-contentful-paint",
+        "budget": 3000,
+        "actual": 4211.831,
+        "pass": false
+      },
+      {
+        "kind": "timing",
+        "metric": "cumulative-layout-shift",
+        "budget": 0.1,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "timing",
+        "metric": "total-blocking-time",
+        "budget": 300,
+        "actual": 1207.9999999999998,
+        "pass": false
+      },
+      {
+        "kind": "timing",
+        "metric": "speed-index",
+        "budget": 3000,
+        "actual": 1717.9016530407678,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "script",
+        "budget": 300,
+        "actual": 390.763671875,
+        "pass": false
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "total",
+        "budget": 1000,
+        "actual": 1165.3271484375,
+        "pass": false
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "stylesheet",
+        "budget": 50,
+        "actual": 18.654296875,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "image",
+        "budget": 500,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "sizeKiB",
+        "metric": "font",
+        "budget": 100,
+        "actual": 184.375,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "script",
+        "budget": 10,
+        "actual": 22,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "total",
+        "budget": 50,
+        "actual": 70,
+        "pass": false
+      },
+      {
+        "kind": "requestCount",
+        "metric": "stylesheet",
+        "budget": 3,
+        "actual": 2,
+        "pass": true
+      },
+      {
+        "kind": "requestCount",
+        "metric": "image",
+        "budget": 20,
+        "actual": 0,
+        "pass": true
+      },
+      {
+        "kind": "requestCount",
+        "metric": "font",
+        "budget": 5,
+        "actual": 3,
+        "pass": true
+      }
+    ]
+  },
+  "revision": "76bc359b1e7c3592b3979fa852ec26b95e751582"
+}

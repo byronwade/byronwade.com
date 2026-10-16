@@ -202,3 +202,19 @@ production deployment, or merge.
 - After this candidate, any remaining budget miss will be recorded explicitly;
   no budget changes, metric substitutions, CSS experiments or broad runtime
   migration will be used to manufacture acceptance.
+
+## Loop 11 — latest main integration
+
+- Fetched main 20d8527: #52 draft filtering and #53 project refresh, which also
+  carried an early Thorbis port snapshot from this lane. #49 remains open.
+- Preserved all incoming blog/project content, draft filtering, current/earlier
+  grouping, Markdown skipHtml, source ledger and project-lane evidence. No direct
+  edits to content/blog, content/projects or shop.
+- Resolved overlapping design owners in favor of the later source-token, font,
+  AA/focus, sticky-header and loading fixes already verified here. This prevents
+  old font loaders, unused nav icons and removed Framer preview paths returning.
+- The project lane independently recorded ignored Lighthouse budget flags and
+  preexisting misses. Preserved that fact and its evidence links; our runner
+  explicitly restores enforcement by comparing all report values with budgets.
+- Rechecking the merged tree. Evidence before this merge remains a checkpoint;
+  final screenshots, route counts, tests and performance will be refreshed.

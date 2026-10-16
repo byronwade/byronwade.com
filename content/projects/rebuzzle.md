@@ -4,6 +4,8 @@ url: "https://rebuzzle.byronwade.com"
 category: "Product"
 date: 2024-12-01
 excerpt: "Building Rebuzzle: Engineering an AI system that actually understands humor and logic through multi-agent orchestration and continuous learning."
+status: "Archived"
+featured: false
 ---
 
 Large Language Models (LLMs) are excellent at generating text, but asking them to be witty, logical, or visually creative in a structured format is a different challenge entirely.

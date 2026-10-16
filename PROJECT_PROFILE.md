@@ -221,6 +221,11 @@ use them correctly.
 
 From `lighthouse-budget.json`, applied to `/*`.
 
+Lighthouse 12 removed its built-in budget flag. This design change restores
+local enforcement in scripts/perf-budget.mjs by comparing timing, byte and
+request-count values directly. A Lighthouse CLI exit code is not a budget pass.
+Earlier project-lane reports remain in docs/evidence/projects-refresh/.
+
 | Surface | Metric | Budget | Measurement method | Environment |
 | --- | --- | --- | --- | --- |
 | All routes | LCP | 3000ms (tighten toward the 2500ms CWV target) | Lighthouse | Local production build |

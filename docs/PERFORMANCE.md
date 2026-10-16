@@ -18,6 +18,9 @@ The authoritative limits remain in the JSON file: FCP 2000ms, LCP 3000ms, TBT
 1000KiB/50 requests, CSS 50KiB/3 requests, images 500KiB/20 requests and fonts
 100KiB/5 requests. The report is `docs/evidence/thorbis/performance.json`.
 A Lighthouse score alone cannot pass a failed resource or timing limit.
+Lighthouse 12 removed built-in budget enforcement; this runner checks the JSON
+limits itself instead of relying on an ignored CLI/config flag. Earlier project
+lane reports remain at docs/evidence/projects-refresh/.
 
 `npm run build:analyze` enables the existing Next bundle analyzer. Development
 uses Turbopack; production uses Next webpack. Any splitting changes must satisfy
