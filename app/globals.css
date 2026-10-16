@@ -434,7 +434,7 @@
 /* thorbis-tokens:end */
 
 :root {
-  --font-inter: "Inter";
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --background: var(--thorbis-bg);
   --foreground: var(--thorbis-fg);
   --card: var(--thorbis-panel);

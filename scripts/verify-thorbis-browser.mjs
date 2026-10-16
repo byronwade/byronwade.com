@@ -35,7 +35,7 @@ function serial(items, visit) {
 	return items.reduce((previous, item) => previous.then(() => visit(item)), Promise.resolve());
 }
 
-function readTextContrast() {
+function readContrast() {
 	const canvas = document.createElement("canvas");
 	canvas.width = 1;
 	canvas.height = 1;
@@ -49,11 +49,15 @@ function readTextContrast() {
 	};
 	const results = [];
 	for (const element of document.querySelectorAll("header *, main *, footer *")) {
+		const field = element.matches("input:not(:disabled), textarea:not(:disabled)");
 		if (
 			!element.getClientRects().length ||
 			element.closest("[inert], .sr-only") ||
-			![...element.childNodes].some(
-				(node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+			!(
+				field ||
+				[...element.childNodes].some(
+					(node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
+				)
 			)
 		) {
 			continue;
@@ -71,7 +75,7 @@ function readTextContrast() {
 		}
 		const background = luminance([...context.getImageData(0, 0, 1, 1).data]);
 		const style = getComputedStyle(element);
-		context.fillStyle = style.color;
+		context.fillStyle = field ? style.borderTopColor : style.color;
 		context.fillRect(0, 0, 1, 1);
 		const foreground = luminance([...context.getImageData(0, 0, 1, 1).data]);
 		const ratio =
@@ -80,9 +84,11 @@ function readTextContrast() {
 			Number.parseFloat(style.fontSize) >= 24 ||
 			(Number.parseFloat(style.fontSize) >= 18.66 && Number(style.fontWeight) >= 700);
 		results.push({
-			text: element.textContent.trim().slice(0, 55),
+			text: field
+				? `Field: ${element.getAttribute("name") || element.getAttribute("aria-label")}`
+				: element.textContent.trim().slice(0, 55),
 			ratio: Math.round(ratio * 100) / 100,
-			required: large ? 3 : 4.5,
+			required: field || large ? 3 : 4.5,
 		});
 	}
 	return results;
@@ -119,7 +125,7 @@ async function auditCase(url, width, theme) {
 			cardTitleSize: getComputedStyle(document.querySelector('[data-slot="card-title"]')).fontSize,
 		};
 	});
-	const contrast = await page.evaluate(readTextContrast);
+	const contrast = await page.evaluate(readContrast);
 	const file = `home-${width}-${theme}.png`;
 	await page.screenshot({ path: `${destination}/${file}`, fullPage: true });
 	report.cases.push({ width, theme, axe, geometry, contrast, file });
@@ -267,7 +273,7 @@ async function checkShellStates(page, width, theme) {
 			const violations = await page.evaluate(async () =>
 				(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
 			);
-			const contrast = await page.evaluate(readTextContrast);
+			const contrast = await page.evaluate(readContrast);
 			const bounds = await page.$eval(selector, (element) => {
 				const rect = element.getBoundingClientRect();
 				return { left: rect.left, right: rect.right, viewport: innerWidth };
@@ -314,6 +320,11 @@ async function checkInteractions(url) {
 	assert.equal(await page.$eval(name, (element) => element.value), "Browser verification draft");
 	await page.click('section[aria-label="Contact"] button[type="submit"]');
 	await page.waitForFunction(() => document.activeElement.getAttribute("name") === "email");
+	const contactContrast = await page.evaluate(readContrast);
+	assert.ok(
+		contactContrast.every(({ ratio, required }) => ratio >= required),
+		JSON.stringify(contactContrast.filter(({ ratio, required }) => ratio < required))
+	);
 	await page.screenshot({ path: `${destination}/contact-error-390.png`, fullPage: true });
 	await page.click("footer button");
 	assert.ok(await page.$('footer a[href^="mailto:"]'));
@@ -331,7 +342,7 @@ async function checkInteractions(url) {
 		};
 	});
 	assert.ok(shortcut.visible, "global search stays visible from the footer");
-	assert.equal(shortcut.reducedTransition, "0s");
+	assert.ok(Number.parseFloat(shortcut.reducedTransition) <= 0.000_01, "reduced motion snaps");
 	await page.keyboard.press("Escape");
 	assert.equal(await page.evaluate(() => document.activeElement.getAttribute("href")), "/privacy");
 	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));

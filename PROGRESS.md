@@ -161,3 +161,25 @@ production deployment, or merge.
   on final font build, including source comparison screenshots.
 - Search anchor navigation now uses native auto scrolling, including reduced
   motion. Browser evidence always closes Chrome even if evidence formatting fails.
+
+## Loop 9 — measured shared primitives and release gates
+
+- Explicit source-font preload improved FCP to 1107ms. LCP 3636ms / TBT 476ms
+  still failed on that run; retained exact source fonts, did not relax budgets.
+- Bundle inspection confirms 43 duplicate modules between homepage and layout:
+  175341 uncompressed bytes / 47692 gzip bytes, dominated by icon and class
+  helpers. Added one initial-only, min-two-consumer primitive chunk; async
+  contact/breadcrumb code stays outside that sharing group. Measurement pending.
+- All 116 native tests pass. Latest `npm run check` passes lint, type-check, knip.
+  The preceding lint failure was CRLF in the generator after a comment edit;
+  formatted it with existing Biome, without suppressions.
+- Development smoke passed via hidden `npm run dev` at 768px in light/dark:
+  HTTP 200, Inter 32px heading, no overflow or runtime errors. Captured process
+  tree was stopped by PID plus creation identity; port 3197 no longer listens.
+  React Scan reports an outdated optional react-grab diagnostic, outside scope.
+- Input/textarea rims now use the source marker for >=3:1 non-text boundary
+  contrast, an explicit AA adaptation. Browser sensor checks enabled fields as
+  well as text. Contact invalid state contrast is included.
+- Source fallback font chain is copied exactly. Regenerated slow-motion evidence
+  uses 720ms (four times 180ms); reduced-motion assertion accepts the CSS global
+  0.01ms snap. Full final production matrix remains pending.

@@ -2,6 +2,10 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 	enabled: process.env.ANALYZE === "true",
 });
 
+const sharedPrimitivePackages =
+	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|tailwind-merge|react-compiler-runtime)[\\/]/;
+const sharedPrimitiveSources = /[\\/]lib[\\/](?:icons|utils|motion)\.tsx?$/;
+
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
 	{ hostname: "figma-alpha-api.s3.us-west-2.amazonaws.com", protocol: "https" },
@@ -65,6 +69,21 @@ const nextConfig = {
 						...config.optimization.splitChunks.cacheGroups,
 						default: false,
 						defaultVendors: false,
+						sharedPrimitives: {
+							// Initial-only sharing removes measured duplicate icon/helper code
+							// without pulling deferred contact/breadcrumb modules onto home.
+							test: (module) =>
+								Boolean(
+									module.resource &&
+										(sharedPrimitivePackages.test(module.resource) ||
+											sharedPrimitiveSources.test(module.resource))
+								),
+							name: "shared-primitives",
+							chunks: "initial",
+							minChunks: 2,
+							enforce: true,
+							priority: 35,
+						},
 					},
 				},
 			},

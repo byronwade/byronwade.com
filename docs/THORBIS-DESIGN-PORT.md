@@ -55,7 +55,8 @@ for introducing a new visual choice.
   4.42:1 (success) on tinted badges. Apply the source badge warning foreground
   recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
   The dark blue action uses the source canvas for its label to meet AA; source
-  token values remain unchanged. These are explicit accessibility adaptations.
+  token values remain unchanged. Input/textarea rims use the source marker role
+  for 3:1 field-boundary contrast. These are explicit accessibility adaptations.
 - The footer uses source-style text links. Its obsolete animated GitHub preview
   and the unused Framer/hover-card paths were removed. Closed contact code loads
   on first intentional open and remains mounted to preserve drafts. Shared/home
