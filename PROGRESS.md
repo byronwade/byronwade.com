@@ -16,6 +16,17 @@
   error/retry, exclusions and production boundaries, then normal-push and inspect
   remote checks. Final evidence is in RESULT.md and .next/pr49-post56/.
 - DO NOT MERGE. Byron must choose real products; no credentials read or production deploy.
+- Main advanced during verification to a8374ee (#62 resume cancellation).
+  Recorded the verified dd738fc integration as d6c1f5f, then merged the newer
+  main normally and repeated every gate: lint 235 files, strict type-check,
+  knip zero findings, build 49 pages, native tests 189/189, rendered tests 13/13.
+- Refreshed final-build browser evidence passes 15 scenario groups, including
+  all eight requested captures, keyboard, exclusions, fail-closed fixtures and
+  focused checkout error/retry. Four owned servers stop with their ports closed.
+  Local Vercel diagnostic endpoints are explicitly stubbed; application console
+  errors remain checked. All eight production images were visually inspected.
+- Final merge SHA and exact-head GitHub status are recorded in the PR body and
+  the local final RESULT.md receipt. No PR merge or production deploy is authorized.
 
 
 ### Historical shop integration record

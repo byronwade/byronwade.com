@@ -2,12 +2,17 @@
 
 **DO NOT MERGE. Byron must choose real products.**
 
+All six gates and browser evidence were repeated after main advanced to #62.
+
 ## Mode and decision
 
 - **Mode:** Implementation. Authorized writes, normal merge commit, branch push
   and PR-body update only. PR #49 stays open and unmerged.
-- Merge main `dd738fc407c7047e62a9a42f4cf1db8106cf8639` into previous shop head
-  `13e92412a9fdddd1c485564b2abf739d813102be`, preserving both parents.
+- Normal merge `d6c1f5f` integrates main
+  `dd738fc407c7047e62a9a42f4cf1db8106cf8639` into previous shop head
+  `13e92412a9fdddd1c485564b2abf739d813102be`. Main then advanced to
+  `a8374ee0a96fa5fa94e612b4c9d04c2ebeeec669` (#62); a second normal merge
+  includes its resume cancellation behavior, tests and architecture notes.
 - **Merge SHA:** Pending creation of the verified merge commit.
 - Main owns the complete Thorbis foundation, shared shell, split icon facade,
   webpack configuration, resume PDF fixes and `outputFileTracingIncludes`.
@@ -45,7 +50,7 @@ Node 24.21.0, npm 11.19.0, Next.js 16.2.7. Final serial runs all exit 0:
 | `npm run type-check` | Generated routes and strict TypeScript pass |
 | `npm run knip` | No findings |
 | `npm run build` | Webpack production build; 49/49 static pages |
-| `npm test` | 186 passed; zero failed, skipped or cancelled |
+| `npm test` | 189 passed; zero failed, skipped or cancelled |
 | `npm run test:rendered` | 13 passed; zero failed, skipped or cancelled |
 | `python node_modules/.cache/pr49/assertions.py` | Main preservation, exclusions and production scans pass |
 | `python -u node_modules/.cache/pr49/browser.py` | 15 scenario groups pass; four owned servers stopped, ports closed |

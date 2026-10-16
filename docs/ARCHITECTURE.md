@@ -55,8 +55,9 @@ successful `application/pdf` body (`fetchResumePdf` in `lib/resume-pdf.ts`).
 An error response, a dropped connection, or no complete PDF within 60 seconds
 (headers and body) shows "Couldn’t create the PDF. Try again." The 60 seconds
 must stay above the route's own bounds (browser launch, 30s page load, 10s email
-wait). `tests/resume-download.test.mjs` checks these cases against a local
-server.
+wait). Leaving the page while a PDF is pending cancels the request, so a late
+PDF is never saved on another page. `tests/resume-download.test.mjs` checks
+these cases against a local server.
 
 ## Components
 

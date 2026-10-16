@@ -59,7 +59,7 @@ test("a successful PDF response is returned for saving", async () => {
 		response.writeHead(200, { "Content-Type": "application/pdf" });
 		response.end(PDF_BYTES);
 	};
-	const pdf = await fetchResumePdf(1000);
+	const pdf = await fetchResumePdf({ timeoutMs: 1000 });
 	assert.ok(pdf);
 	assert.equal(await pdf.text(), PDF_BYTES);
 });
@@ -69,18 +69,18 @@ test("a failed create is not returned as a PDF", async () => {
 		response.writeHead(500, { "Content-Type": "application/json" });
 		response.end(JSON.stringify({ error: "Failed to generate PDF" }));
 	};
-	assert.equal(await fetchResumePdf(1000), null);
+	assert.equal(await fetchResumePdf({ timeoutMs: 1000 }), null);
 });
 
 test("a dropped connection ends as a failure", async () => {
 	routeHandler = (request) => request.socket.destroy();
-	assert.equal(await fetchResumePdf(1000), null);
+	assert.equal(await fetchResumePdf({ timeoutMs: 1000 }), null);
 });
 
 test("a route that never answers gives up after the timeout", { timeout: 5000 }, async () => {
 	routeHandler = () => undefined;
 	const started = performance.now();
-	assert.equal(await fetchResumePdf(80), null);
+	assert.equal(await fetchResumePdf({ timeoutMs: 80 }), null);
 	assert.ok(performance.now() - started < 2000);
 });
 
@@ -92,6 +92,42 @@ test("a PDF body that stalls mid-stream gives up after the timeout", {
 		response.write("%PDF-1.7\n");
 	};
 	const started = performance.now();
-	assert.equal(await fetchResumePdf(80), null);
+	assert.equal(await fetchResumePdf({ timeoutMs: 80 }), null);
 	assert.ok(performance.now() - started < 2000);
+});
+
+// The caller's signal (the page unmounting) must end the request on its own,
+// long before the 10s timeout used here could.
+test("leaving the page cancels a request that has not answered", { timeout: 5000 }, async () => {
+	routeHandler = () => undefined;
+	const controller = new AbortController();
+	setTimeout(() => controller.abort(), 50);
+	const started = performance.now();
+	assert.equal(await fetchResumePdf({ timeoutMs: 10_000, signal: controller.signal }), null);
+	assert.ok(performance.now() - started < 2000);
+});
+
+test("leaving the page cancels a PDF body that is still arriving", { timeout: 5000 }, async () => {
+	routeHandler = (_request, response) => {
+		response.writeHead(200, { "Content-Type": "application/pdf" });
+		response.write("%PDF-1.7\n");
+	};
+	const controller = new AbortController();
+	setTimeout(() => controller.abort(), 50);
+	const started = performance.now();
+	assert.equal(await fetchResumePdf({ timeoutMs: 10_000, signal: controller.signal }), null);
+	assert.ok(performance.now() - started < 2000);
+});
+
+test("an already cancelled download never reaches the route", async () => {
+	let requests = 0;
+	routeHandler = (_request, response) => {
+		requests += 1;
+		response.writeHead(200, { "Content-Type": "application/pdf" });
+		response.end(PDF_BYTES);
+	};
+	const controller = new AbortController();
+	controller.abort();
+	assert.equal(await fetchResumePdf({ timeoutMs: 1000, signal: controller.signal }), null);
+	assert.equal(requests, 0);
 });
