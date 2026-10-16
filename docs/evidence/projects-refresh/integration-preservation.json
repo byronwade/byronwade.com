@@ -1,0 +1,9 @@
+{
+  "sourceRevision": "94a3ff7e2f20b57a1d79aed8ab61f45b2102571c",
+  "integratedMain": "c48f33207bae3a20e9ccec92f7dd065d1539daf1",
+  "preMergeHead": "438f6f6fece515f31ee54f7b9c2341e322d85963",
+  "mainIsAncestor": true,
+  "all24ProjectFilesByteIdentical": true,
+  "mainDateOwnerAndRegressionsUnchanged": true,
+  "conflictResolution": "Preserve min-w-0 title wrapping; retain safeFormatDate year from main"
+}
