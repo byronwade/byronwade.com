@@ -76,6 +76,7 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 }
 
 const REQUEST_TIMEOUT_MS = 8000;
+const REPO_PAGE_SIZE = 8;
 
 interface PortfolioReposState {
 	degraded: boolean;
@@ -99,6 +100,7 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
+		let disposed = false;
 		const controller = new AbortController();
 		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -112,7 +114,7 @@ function usePortfolioRepos(): PortfolioReposState {
 		void (async () => {
 			try {
 				const result = await fetchPortfolioRepos(controller.signal);
-				if (controller.signal.aborted) {
+				if (disposed) {
 					return;
 				}
 				setRepos(result.repos);
@@ -121,13 +123,13 @@ function usePortfolioRepos(): PortfolioReposState {
 				setDegraded(result.degraded && result.repos.length === 0);
 				setError(result.degraded && result.repos.length === 0);
 			} catch (err) {
-				if (controller.signal.aborted) {
+				if (disposed) {
 					return;
 				}
 				console.error("Error loading portfolio data:", err);
 				setError(true);
 			} finally {
-				if (!controller.signal.aborted) {
+				if (!disposed) {
 					setLoading(false);
 					setRefreshing(false);
 				}
@@ -135,6 +137,8 @@ function usePortfolioRepos(): PortfolioReposState {
 		})();
 
 		return () => {
+			// Unmount/reload cancellation is silent; a request timeout reaches the error state.
+			disposed = true;
 			clearTimeout(timeoutId);
 			controller.abort();
 		};
@@ -186,25 +190,28 @@ function PortfolioEmptyState({
 	);
 }
 
-/** Mirrors RepoRow's shape so the swap to real data does not shift layout. */
+/** Reserve the initial page's row count and representative text line boxes. */
 function RepoSkeletonList() {
 	return (
 		<div aria-busy="true" className="flex flex-col">
 			<p className="sr-only" role="status">
 				Loading repositories…
 			</p>
-			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div
-					className="flex animate-pulse flex-col gap-2 border-border border-b py-5 last:border-b-0"
-					key={`skeleton-${id}`}
-				>
-					<div className="flex items-baseline gap-4">
-						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
-						<div className="h-4 w-1/3 rounded bg-muted" />
-					</div>
-					<div className="h-3 w-2/3 rounded bg-muted/70 sm:ml-16" />
-				</div>
-			))}
+			<IndexList as="div">
+				{Array.from({ length: REPO_PAGE_SIZE }, (_, index) => `repo-skeleton-${index}`).map(
+					(id) => (
+						<IndexRow as="div" key={id}>
+							<div className="flex animate-pulse flex-col gap-2 py-5">
+								<div className="flex h-6 items-center gap-4">
+									<div className="h-3 w-12 shrink-0 rounded bg-muted" />
+									<div className="h-4 w-1/3 rounded bg-muted" />
+								</div>
+								<div className="h-10 w-2/3 rounded bg-muted/70 sm:ml-16 sm:h-6" />
+							</div>
+						</IndexRow>
+					)
+				)}
+			</IndexList>
 		</div>
 	);
 }
@@ -282,26 +289,24 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 
 export default function PortfolioPage() {
 	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
-	const [visibleRepos, setVisibleRepos] = useState(8);
+	const [visibleRepos, setVisibleRepos] = useState(REPO_PAGE_SIZE);
 
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={
-						loading ? null : (
-							<Button
-								className="gap-2"
-								disabled={refreshing}
-								onClick={reload}
-								size="sm"
-								type="button"
-								variant="outline"
-							>
-								<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-								{refreshing ? "Refreshing…" : "Refresh"}
-							</Button>
-						)
+						<Button
+							className="gap-2"
+							disabled={loading || refreshing}
+							onClick={reload}
+							size="sm"
+							type="button"
+							variant="outline"
+						>
+							<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
+							{refreshing ? "Refreshing…" : "Refresh"}
+						</Button>
 					}
 					lede={
 						<>
@@ -354,7 +359,7 @@ export default function PortfolioPage() {
 								<Button
 									type="button"
 									variant="outline"
-									onClick={() => setVisibleRepos((prev) => prev + 8)}
+									onClick={() => setVisibleRepos((prev) => prev + REPO_PAGE_SIZE)}
 								>
 									Load more
 								</Button>
