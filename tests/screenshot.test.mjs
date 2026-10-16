@@ -51,7 +51,8 @@ function stubProvider(
 	const calls = [];
 	t.mock.method(globalThis, "fetch", (input, init) => {
 		calls.push({ url: new URL(String(input)), headers: new Headers(init?.headers) });
-		return Promise.try(respond);
+		// The constructor turns a synchronous throw into a rejection, like a failed fetch.
+		return new Promise((resolve) => resolve(respond()));
 	});
 	const logs = [];
 	for (const level of ["error", "warn", "log", "info"]) {

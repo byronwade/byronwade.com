@@ -49,7 +49,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | Native Node contact-action, cache-refresh, and content-date regressions via `npm test` (Node 22.18+); no added test dependencies |
+| Tests | Native Node contact-action, cache-refresh, content-date, and screenshot-route regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
