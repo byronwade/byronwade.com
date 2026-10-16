@@ -247,7 +247,7 @@ export function DockToolbar({ entries }: { entries: SearchEntry[] }) {
 				onMouseMove={() => setActive(idx)}
 				onClick={() => run(entry.href)}
 				className={cn(
-					"flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] outline-none transition-colors",
+					"flex min-h-11 w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-[13px] outline-none transition-colors",
 					idx === active ? "bg-dock-active text-dock-active-foreground" : "text-dock-foreground"
 				)}
 			>

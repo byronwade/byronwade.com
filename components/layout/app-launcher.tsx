@@ -254,7 +254,7 @@ export function AppLauncher() {
 									type="button"
 									onClick={toggleTheme}
 									aria-label="Toggle theme"
-									className="flex size-9 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
+									className="flex size-11 items-center justify-center rounded-xl text-dock-foreground transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
 								>
 									<Moon className="size-4 dark:hidden" />
 									<Sun className="hidden size-4 dark:block" />

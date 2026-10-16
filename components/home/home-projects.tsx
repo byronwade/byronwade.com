@@ -81,7 +81,7 @@ export function HomeProjects() {
 			link={
 				<Link
 					prefetch={false}
-					className="shrink-0 text-muted-foreground text-sm transition-colors hover:text-brand"
+					className="inline-flex min-h-11 shrink-0 items-center text-muted-foreground text-sm transition-colors hover:text-brand"
 					href="/projects"
 				>
 					All projects →

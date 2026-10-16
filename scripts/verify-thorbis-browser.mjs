@@ -35,6 +35,35 @@ function serial(items, visit) {
 	return items.reduce((previous, item) => previous.then(() => visit(item)), Promise.resolve());
 }
 
+function readTargets() {
+	return [...document.querySelectorAll("a[href], button, input, select, textarea")]
+		.filter(
+			(element) =>
+				element.getClientRects().length &&
+				!element.closest('[inert], [aria-hidden="true"], .sr-only') &&
+				!element.matches(":disabled, .skip-link") &&
+				getComputedStyle(element).visibility === "visible"
+		)
+		.map((element) => {
+			const rect = element.getBoundingClientRect();
+			return {
+				label:
+					element.getAttribute("aria-label") ||
+					element.getAttribute("title") ||
+					element.getAttribute("name") ||
+					element.textContent.trim().slice(0, 50),
+				width: rect.width,
+				height: rect.height,
+			};
+		});
+}
+
+function assertTargets(targets, width) {
+	const minimum = width < 640 ? 44 : 24;
+	const failures = targets.filter((target) => target.width < minimum || target.height < minimum);
+	assert.deepEqual(failures, [], `interactive targets at ${width}px`);
+}
+
 function readContrast() {
 	const canvas = document.createElement("canvas");
 	canvas.width = 1;
@@ -141,9 +170,11 @@ async function auditCase(url, width, theme) {
 		};
 	});
 	const contrast = await page.evaluate(readContrast);
+	const targets = await page.evaluate(readTargets);
 	const file = `home-${width}-${theme}.png`;
 	await page.screenshot({ path: `${destination}/${file}`, fullPage: true });
-	report.cases.push({ width, theme, axe, geometry, contrast, file });
+	report.cases.push({ width, theme, axe, geometry, contrast, targets, file });
+	assertTargets(targets, width);
 	console.log(`Audited ${width}px ${theme}`);
 	assert.equal(geometry.overflow, false, `overflow at ${width} ${theme}`);
 	assert.equal(geometry.h1Count, 1);
@@ -293,11 +324,13 @@ async function checkShellStates(page, width, theme) {
 				(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
 			);
 			const contrast = await page.evaluate(readContrast);
+			const targets = await page.evaluate(readTargets);
+			assertTargets(targets, width);
 			const bounds = await page.$eval(selector, (element) => {
 				const rect = element.getBoundingClientRect();
 				return { left: rect.left, right: rect.right, viewport: innerWidth };
 			});
-			report.panels.push({ width, theme, label, bounds, violations, contrast });
+			report.panels.push({ width, theme, label, bounds, violations, contrast, targets });
 			assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport, `${label} fits ${width}`);
 			assert.equal(
 				violations.filter(({ impact }) => impact === "serious" || impact === "critical").length,
@@ -340,6 +373,8 @@ async function checkInteractions(url) {
 	await page.click('section[aria-label="Contact"] button[type="submit"]');
 	await page.waitForFunction(() => document.activeElement.getAttribute("name") === "email");
 	const contactContrast = await page.evaluate(readContrast);
+	const contactTargets = await page.evaluate(readTargets);
+	assertTargets(contactTargets, 390);
 	assert.ok(
 		contactContrast.every(({ ratio, required }) => ratio >= required),
 		JSON.stringify(contactContrast.filter(({ ratio, required }) => ratio < required))

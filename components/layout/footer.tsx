@@ -57,7 +57,7 @@ export default function Footer() {
 					{SOCIAL.map((item) => (
 						<a
 							key={item.href}
-							className="inline-flex min-h-11 items-center hover:text-foreground"
+							className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
 							href={item.href}
 							rel="noopener noreferrer"
 							target="_blank"
@@ -66,10 +66,16 @@ export default function Footer() {
 							<span className="sr-only"> (opens in a new tab)</span>
 						</a>
 					))}
-					<Link className="inline-flex min-h-11 items-center hover:text-foreground" href="/privacy">
+					<Link
+						className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
+						href="/privacy"
+					>
 						Privacy
 					</Link>
-					<Link className="inline-flex min-h-11 items-center hover:text-foreground" href="/terms">
+					<Link
+						className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
+						href="/terms"
+					>
 						Terms
 					</Link>
 				</div>

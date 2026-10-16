@@ -684,7 +684,7 @@
   .shadow-card { box-shadow: var(--shadow-panel); }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: var(--muted-foreground) transparent;
   }
 
   /* ── Site utilities ── */
@@ -692,6 +692,7 @@
     @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
   }
   .skip-link {
+    @apply inline-flex min-h-11 items-center rounded-md bg-card px-3 shadow-card;
     position: absolute;
     left: -9999px;
     top: 0;
