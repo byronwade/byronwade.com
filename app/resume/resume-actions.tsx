@@ -5,11 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
 import { Check, Download, Mail } from "@/lib/icons";
-import {
-	isResumePdfResponse,
-	RESUME_PDF_FILENAME,
-	shouldHandleResumeDownload,
-} from "@/lib/resume-pdf";
+import { fetchResumePdf, RESUME_PDF_FILENAME, shouldHandleResumeDownload } from "@/lib/resume-pdf";
 
 type CopyStatus = "idle" | "copied" | "failed";
 
@@ -87,21 +83,6 @@ function saveResumePdf(blob: Blob) {
 	window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/** Fetch the PDF. Returns false when the response is not a PDF, including a failed create. */
-async function fetchResumePdf(): Promise<boolean> {
-	try {
-		const response = await fetch("/api/resume-pdf");
-		if (!isResumePdfResponse(response.status, response.headers.get("content-type"))) {
-			return false;
-		}
-		saveResumePdf(await response.blob());
-		analytics.resumeDownload("pdf");
-		return true;
-	} catch {
-		return false;
-	}
-}
-
 /**
  * Download button. A plain click saves the file here so an error is not stored
  * as a PDF. Without JavaScript, or with a modified click, the link still opens
@@ -121,9 +102,13 @@ export function DownloadResumeButton() {
 		}
 		pending.current = true;
 		setPhase("pending");
-		const saved = await fetchResumePdf();
+		const pdf = await fetchResumePdf();
+		if (pdf) {
+			saveResumePdf(pdf);
+			analytics.resumeDownload("pdf");
+		}
 		pending.current = false;
-		setPhase(saved ? "idle" : "failed");
+		setPhase(pdf ? "idle" : "failed");
 	};
 
 	return (
