@@ -12,7 +12,7 @@ const SOCIAL = [
 
 export default function Footer() {
 	return (
-		<footer className="mx-auto w-full max-w-5xl border-border border-t px-4 py-10 sm:px-6">
+		<footer className="mx-auto w-full max-w-5xl border-border border-t px-4 py-10 sm:px-6 print:hidden">
 			<div className="grid gap-8 sm:grid-cols-[1.5fr_1fr]">
 				<div className="flex max-w-sm flex-col items-start gap-3">
 					<p className="font-medium text-heading-16">Byron Wade</p>
