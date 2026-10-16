@@ -305,14 +305,17 @@
 
 /* thorbis-fonts:end */
 
-/* Existing resume signature, retained as a personal identity asset. */
+/* Resume signature. The page renders only "Byron Wade", so the stylesheet
+   loads a woff2 subset of those glyphs. The full OTF stays on disk for the
+   OG image route and is not part of the page font budget. */
 
 @font-face {
   font-family: "Byron Signature";
-  src: url("/fonts/Modelistasignature-ownAV.otf") format("opentype");
+  src: url("/fonts/byron-signature.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0020, U+0042, U+0057, U+0061, U+0064, U+0065, U+006E, U+006F, U+0072, U+0079;
 }
 
 
