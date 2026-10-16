@@ -192,7 +192,9 @@ use them correctly.
   overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev`
 - **Affected tests:** `npm test`, contact-action regression tests with a fixture email transport
-- **Rendered contract:** `npm run test:rendered` after `npm run build`, native submit semantics on `/contact`
+- **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
+  submit semantics on `/contact` and exclusion of portfolio API/cache code from
+  production client chunks
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)

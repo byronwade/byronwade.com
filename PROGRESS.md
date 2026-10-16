@@ -61,6 +61,22 @@ Operating mode: Implementation. Writes, small commits, push, and a ready PR to
 - `npm run lint`: PASS, 123 files, no fixes. Initial test-loop and formatting
   findings were corrected. Type generation passed; TypeScript is running.
   Remaining checks and production smoke must pass before publishing.
+- Release verification complete: lint, type-check, knip, build, and
+  `test:rendered` all exited 0. Build generated 39 pages; both rendered tests
+  passed and the bundle regression scanned 26 client chunks.
+- Exact-symbol client grep: zero matching chunks. Six server chunks retain API
+  symbols; raw-contact probe found no matching client scripts/prerendered HTML.
+  A broader substring probe matched Next's `NEXT_CACHE_TAGS_HEADER`; exact
+  symbol boundaries correctly distinguish it from the repository helper.
+- Headless production smoke passed all five routes at desktop and phone sizes:
+  ten HTTP 200 responses, expected headings/content, keyboard focus, zero
+  browser runtime exceptions, and no portfolio API requests. Disabled browser
+  cache for fresh responses after a repeat visit initially returned HTTP 304.
+- Recorded local telemetry/screenshot/image resource failures and third-party
+  fallback diagnostics in `RESULT.md`; they do not block the scoped boundary
+  acceptance criteria. No UI or external-service changes made.
+- Implementation commit: `82935f2`. Final evidence/documentation commit and
+  publication are next; open a ready PR and do not merge.
 - Shared toolkit advisory reservation could not initialize: its configured
   roots include a missing unrelated septic workspace. No configuration or
   quarantine changes made. Use native command exit/output evidence instead.
