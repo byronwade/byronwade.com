@@ -154,20 +154,24 @@ async function measureLoad(page, url, route, width, theme, status) {
 	// were inflating the next trace on a busy machine.
 	const result =
 		status === 200 ? await measurePage(url, route, width, page) : await measureErrorPage(page);
-	if (status !== 200) {
-		return result;
-	}
+	// Snapshot mode still applies Lighthouse's mobile viewport. Put the
+	// requested width back so the desktop breadcrumb can mount on 404s too.
+	await restoreAuditedPage(page, url, route, width, theme, status);
+	return result;
+}
+
+async function restoreAuditedPage(page, url, route, width, theme, status) {
 	await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
 	await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
 	const restored = await page.goto(`${url}${route}`, {
 		waitUntil: "networkidle2",
 		timeout: 60_000,
 	});
-	if (restored.status() !== 200 && restored.status() !== 304) {
+	const acceptable = status === 200 ? [200, 304] : [status];
+	if (!acceptable.includes(restored.status())) {
 		throw new Error(`${route} returned HTTP ${restored.status()} after measurement`);
 	}
 	await page.evaluate(() => document.fonts.ready);
-	return result;
 }
 
 async function auditPage(url, route, width, theme) {
@@ -779,10 +783,52 @@ function readLighthouseAccessibility(lhr) {
 	return score * 100;
 }
 
+// A fixed pause was not enough once the chip stayed warm: simulated throttling
+// multiplies host time, so a cool page can miss the same budget it passed alone.
+const CPU_PROBE_ITERATIONS = 4_000_000;
+const COOL_RATIO = 1.15;
+let fastestProbe = Number.POSITIVE_INFINITY;
+let probeSink = 0;
+
+function delay(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function cpuProbeMs() {
+	const start = performance.now();
+	let value = probeSink;
+	for (let index = 0; index < CPU_PROBE_ITERATIONS; index++) {
+		value = Math.imul(value + index, 1_664_525);
+	}
+	probeSink = value;
+	return performance.now() - start;
+}
+
+async function waitForCoolCpu(deadline = Date.now() + 50_000, started = Date.now()) {
+	const sample = cpuProbeMs();
+	const recovering = sample < fastestProbe * 0.9;
+	if (sample < fastestProbe) {
+		fastestProbe = sample;
+	}
+	const cool = sample <= fastestProbe * COOL_RATIO;
+	const waited = Date.now() - started;
+	if (cool && waited >= 8000 && !recovering) {
+		return;
+	}
+	if (Date.now() >= deadline) {
+		return;
+	}
+	await delay(waited < 8000 ? 8000 - waited : 4000);
+	await waitForCoolCpu(deadline, started);
+}
+
 async function measurePage(url, route, width, page) {
-	// Simulated throttling multiplies whatever the host was doing. Let the
-	// previous sample's trace finish so this one measures the page.
-	await new Promise((resolve) => setTimeout(resolve, 12_000));
+	const settledAt = Date.now();
+	await waitForCoolCpu();
+	const cpuSettleMs = Date.now() - settledAt;
+	if (cpuSettleMs > 15_000) {
+		console.log(JSON.stringify({ cpuSettleMs, fastestProbeMs: Math.round(fastestProbe) }));
+	}
 	const port = Number(new URL(browser.wsEndpoint()).port);
 	const result = await lighthouse(
 		`${url}${route}`,
