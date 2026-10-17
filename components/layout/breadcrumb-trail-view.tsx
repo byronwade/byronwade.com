@@ -1,12 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Link } from "@/components/ui/link";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MoreHorizontal } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
+
+const BreadcrumbOverflow = dynamic(
+	() => import("./breadcrumb-overflow").then((module) => module.BreadcrumbOverflow),
+	{ ssr: false }
+);
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
@@ -62,34 +66,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
-							<Popover>
-								<PopoverTrigger
-									render={
-										<button
-											type="button"
-											aria-label="Show hidden breadcrumb levels"
-											className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-ring"
-										>
-											<MoreHorizontal className="size-4" />
-										</button>
-									}
-								/>
-								<PopoverContent
-									align="start"
-									sideOffset={8}
-									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-dock-border bg-dock p-1.5 text-dock-foreground ring-0"
-								>
-									{middle.map((c) => (
-										<Link
-											key={c.href}
-											href={c.href}
-											className="truncate rounded-lg px-2.5 py-1.5 text-[13px] text-dock-active-foreground/85 transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
-										>
-											{c.label}
-										</Link>
-									))}
-								</PopoverContent>
-							</Popover>
+							<BreadcrumbOverflow crumbs={middle} />
 						</li>
 						<Sep />
 						<CrumbLink crumb={last} current truncate />
