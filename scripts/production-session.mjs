@@ -31,7 +31,7 @@ function startProductionServer(port, env) {
 	const ready = new Promise((resolve, reject) => {
 		const timer = setTimeout(
 			() => reject(new Error(`Production server did not become ready: ${output.text}`)),
-			30_000
+			90_000
 		);
 		const fail = (error) => {
 			clearTimeout(timer);

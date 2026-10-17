@@ -780,6 +780,9 @@ function readLighthouseAccessibility(lhr) {
 }
 
 async function measurePage(url, route, width, page) {
+	// Simulated throttling multiplies whatever the host was doing. Let the
+	// previous sample's trace finish so this one measures the page.
+	await new Promise((resolve) => setTimeout(resolve, 12_000));
 	const port = Number(new URL(browser.wsEndpoint()).port);
 	const result = await lighthouse(
 		`${url}${route}`,
