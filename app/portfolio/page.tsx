@@ -1,28 +1,24 @@
-"use client";
-
-import { useCallback, useEffect, useState } from "react";
+import { EmptyState } from "@/components/common/empty-state";
 import {
-	EmptyState,
 	IndexList,
 	IndexRow,
 	indexRowAccentClass,
 	indexRowLinkClass,
-} from "@/components/common";
+} from "@/components/common/index-list";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "@/lib/icons";
+import { getGitHubRepositories } from "@/lib/portfolio-data";
+import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import type { GitHubRepo } from "@/types/github";
 
 /**
  * Language dots, drawn from the taxonomy family rather than raw Tailwind hues.
  *
- * This was ten hardcoded palette colours (`bg-blue-500`, `bg-rose-600`, and so
- * on), which is exactly the page-local palette §5.1 forbids: none of them were
- * tokens, none had a dark-mode counterpart, and they were the most saturated
- * thing on the page. Language is a classification, so it reuses the same four
- * `--type-*` hues the project types use, assigned stably by name.
+ * Language is a classification, so it reuses the same four `--type-*` hues the
+ * project types use, assigned stably by name.
  */
 const LANGUAGE_TONES = [
 	"bg-type-product",
@@ -51,182 +47,82 @@ const titleize = (name: string) =>
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ");
 
-async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
-	repos: GitHubRepo[];
-	degraded: boolean;
-}> {
-	const response = await fetch("/api/portfolio", {
-		signal,
-		headers: { Accept: "application/json" },
-	});
-	if (!response.ok) {
-		throw new Error("Failed to fetch portfolio data");
-	}
-	const data = await response.json();
-	const filtered: GitHubRepo[] = (data.repos ?? []).filter(
-		(repo: GitHubRepo) => !repo.fork && repo.name !== "byronwade.com"
-	);
-	filtered.sort((a, b) => {
-		if (b.stargazers_count !== a.stargazers_count) {
-			return b.stargazers_count - a.stargazers_count;
-		}
-		return new Date(b.pushed_at ?? 0).getTime() - new Date(a.pushed_at ?? 0).getTime();
-	});
-	return {
-		repos: filtered,
-		degraded: Boolean(data.degraded || data.githubFailed),
-	};
-}
+export const revalidate = 3600;
 
-const REQUEST_TIMEOUT_MS = 8000;
-const REPO_PAGE_SIZE = 8;
+const portfolioDescription =
+	"Open-source work and experiments, pulled live from GitHub and sorted by stars.";
 
-interface PortfolioReposState {
-	degraded: boolean;
-	error: boolean;
-	loading: boolean;
-	refreshing: boolean;
-	reload: () => void;
-	repos: GitHubRepo[];
-}
+export const metadata = generateSEOMetadata({
+	title: "Portfolio",
+	description: portfolioDescription,
+	keywords: ["Portfolio", "Open Source", "GitHub", "Byron Wade"],
+	image: generateOGImageUrl({
+		title: "Portfolio",
+		description: portfolioDescription,
+		type: "website",
+	}),
+	type: "website",
+	canonical: `${siteUrl}/portfolio`,
+});
 
-/**
- * Loads the repository list, keeping the request lifecycle, abort on unmount,
- * timeout, refresh-vs-initial-load, out of the rendering component.
- */
-function usePortfolioRepos(): PortfolioReposState {
-	const [repos, setRepos] = useState<GitHubRepo[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [refreshing, setRefreshing] = useState(false);
-	const [error, setError] = useState(false);
-	const [degraded, setDegraded] = useState(false);
-	const [reloadKey, setReloadKey] = useState(0);
-
-	useEffect(() => {
-		let disposed = false;
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
-		if (reloadKey > 0) {
-			setRefreshing(true);
-		} else {
-			setLoading(true);
-		}
-		setError(false);
-
-		void (async () => {
-			try {
-				const result = await fetchPortfolioRepos(controller.signal);
-				if (disposed) {
-					return;
-				}
-				setRepos(result.repos);
-				// An empty list is only an error when the upstream call degraded; a
-				// genuinely empty profile is a valid, non-error state.
-				setDegraded(result.degraded && result.repos.length === 0);
-				setError(result.degraded && result.repos.length === 0);
-			} catch (err) {
-				if (disposed) {
-					return;
-				}
-				console.error("Error loading portfolio data:", err);
-				setError(true);
-			} finally {
-				if (!disposed) {
-					setLoading(false);
-					setRefreshing(false);
-				}
+/** The page's own sort: stars, then last push. The site repository is not a project. */
+function selectRepos(repos: GitHubRepo[]): GitHubRepo[] {
+	return repos
+		.filter((repo) => !(repo.fork || repo.name === "byronwade.com"))
+		.sort((a, b) => {
+			if (b.stargazers_count !== a.stargazers_count) {
+				return b.stargazers_count - a.stargazers_count;
 			}
-		})();
-
-		return () => {
-			// Unmount/reload cancellation is silent; a request timeout reaches the error state.
-			disposed = true;
-			clearTimeout(timeoutId);
-			controller.abort();
-		};
-	}, [reloadKey]);
-
-	const reload = useCallback(() => setReloadKey((key) => key + 1), []);
-
-	return { repos, loading, refreshing, error, degraded, reload };
+			return new Date(b.pushed_at ?? 0).getTime() - new Date(a.pushed_at ?? 0).getTime();
+		});
 }
 
-function PortfolioEmptyState({
-	degraded,
-	error,
-	refreshing,
-	reload,
-}: {
-	degraded: boolean;
-	error: boolean;
-	refreshing: boolean;
-	reload: () => void;
-}) {
+function RefreshLink({ label }: { label: string }) {
 	return (
-		<EmptyState
-			icon={Github}
-			title={degraded || error ? "Couldn't load repositories" : "No repositories yet"}
-			description={
-				degraded || error
-					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
-					: "Public repositories will show up here once they’re available."
+		<Button
+			className="gap-2"
+			render={
+				<a href="/portfolio">
+					<RefreshCw aria-hidden="true" className="size-3.5" />
+					{label}
+				</a>
 			}
-			action={
-				<div className="flex flex-wrap items-center justify-center gap-2">
-					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
-						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-						{refreshing ? "Retrying…" : "Try again"}
-					</Button>
-					<Button
-						variant="outline"
-						render={
-							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
-								Open GitHub
-								<ExternalLink className="size-3.5" aria-hidden="true" />
-							</a>
-						}
-					/>
-				</div>
-			}
+			size={label === "Refresh" ? "sm" : "default"}
+			variant="outline"
 		/>
 	);
 }
 
-/** Reserve the initial page's row count and representative text line boxes. */
-function RepoSkeletonList() {
+function PortfolioUnavailable({ failed }: { failed: boolean }) {
 	return (
-		<div aria-busy="true" className="flex flex-col">
-			<p className="sr-only" role="status">
-				Loading repositories…
-			</p>
-			<IndexList as="div">
-				{Array.from({ length: REPO_PAGE_SIZE }, (_, index) => `repo-skeleton-${index}`).map(
-					(id) => (
-						<IndexRow as="div" key={id}>
-							<div className="flex animate-pulse flex-col gap-2 py-5">
-								<div className="flex h-6 items-center gap-4">
-									<div className="h-3 w-12 shrink-0 rounded bg-muted" />
-									<div className="h-4 w-1/3 rounded bg-muted" />
-								</div>
-								<div className="h-10 w-2/3 rounded bg-muted/70 sm:ml-16 sm:h-6" />
-							</div>
-						</IndexRow>
-					)
-				)}
-			</IndexList>
-		</div>
+		<EmptyState
+			action={
+				<div className="flex flex-wrap items-center justify-center gap-2">
+					<RefreshLink label="Try again" />
+					<Button
+						render={
+							<a href="https://github.com/byronwade" rel="noopener noreferrer" target="_blank">
+								Open GitHub
+								<ExternalLink aria-hidden="true" className="size-3.5" />
+							</a>
+						}
+						variant="outline"
+					/>
+				</div>
+			}
+			description={
+				failed
+					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
+					: "Public repositories will show up here once they’re available."
+			}
+			icon={Github}
+			title={failed ? "Couldn't load repositories" : "No repositories yet"}
+		/>
 	);
 }
 
 /**
- * One repository row: Showcase profile.
- *
- * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
- * activity sorted by signal. A card grid worked against that: cards give every
- * repository the same visual weight regardless of how much traction it has, and
- * §13 rejects the card-grid reflex outright. Star count now leads the row, so
- * the sort order is visible as structure rather than buried in a metadata strip.
+ * One repository row. Star count leads so the sort order is visible as structure.
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
@@ -292,27 +188,21 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 	);
 }
 
-export default function PortfolioPage() {
-	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
-	const [visibleRepos, setVisibleRepos] = useState(REPO_PAGE_SIZE);
+export default async function PortfolioPage() {
+	let repos: GitHubRepo[] = [];
+	let failed = false;
+	try {
+		repos = selectRepos(await getGitHubRepositories());
+	} catch (error) {
+		console.error("Error loading portfolio data:", error);
+		failed = true;
+	}
 
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
-					aside={
-						<Button
-							className="gap-2"
-							disabled={loading || refreshing}
-							onClick={reload}
-							size="sm"
-							type="button"
-							variant="outline"
-						>
-							<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-							{refreshing ? "Refreshing…" : "Refresh"}
-						</Button>
-					}
+					aside={<RefreshLink label="Refresh" />}
 					lede={
 						<>
 							Open-source work and experiments. Pulled live from{" "}
@@ -325,55 +215,23 @@ export default function PortfolioPage() {
 								GitHub
 							</a>
 							. For in-depth case studies, see{" "}
-							<Link className="link-underline font-medium" href="/projects">
+							<a className="link-underline font-medium" href="/projects">
 								projects
-							</Link>
+							</a>
 							.
 						</>
 					}
 					title="Portfolio"
 				/>
 
-				{loading ? (
-					<RepoSkeletonList />
-				) : error || repos.length === 0 ? (
-					<PortfolioEmptyState
-						degraded={degraded}
-						error={error}
-						refreshing={refreshing}
-						reload={reload}
-					/>
+				{failed || repos.length === 0 ? (
+					<PortfolioUnavailable failed={failed} />
 				) : (
-					<>
-						{degraded && (
-							<p
-								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-muted-foreground text-sm"
-								role="status"
-							>
-								This is a partial response, so some GitHub data may be stale. Refresh to try again.
-							</p>
-						)}
-						<IndexList as="ol">
-							{repos.slice(0, visibleRepos).map((repo) => (
-								<RepoRow key={repo.id} repo={repo} />
-							))}
-						</IndexList>
-
-						{visibleRepos < repos.length && (
-							<div className="text-center">
-								<Button
-									type="button"
-									variant="outline"
-									onClick={() => setVisibleRepos((prev) => prev + REPO_PAGE_SIZE)}
-								>
-									Load more
-								</Button>
-								<p className="mt-3 text-muted-foreground text-sm">
-									Showing {Math.min(visibleRepos, repos.length)} of {repos.length}
-								</p>
-							</div>
-						)}
-					</>
+					<IndexList as="ol">
+						{repos.map((repo) => (
+							<RepoRow key={repo.id} repo={repo} />
+						))}
+					</IndexList>
 				)}
 			</div>
 		</SiteShell>

@@ -307,7 +307,8 @@ export const getGitHubRepositories = unstable_cache(
 				});
 		} catch (error) {
 			console.error("Error fetching GitHub repositories:", error);
-			return [];
+			// Throw so a failed fetch is not cached as an empty profile for the hour.
+			throw error;
 		}
 	},
 	["github-repos"],

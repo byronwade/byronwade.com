@@ -311,75 +311,26 @@ async function checkBreadcrumbStates(page) {
 }
 
 async function checkPortfolioStates(page) {
-	const states = [];
-	let mode = "loading";
-	let pending;
-	const errors = [];
-	const intercept = (request) => {
-		if (new URL(request.url()).pathname !== "/api/portfolio") {
-			request.continue().catch((error) => errors.push(error.message));
-			return;
-		}
-		if (mode === "loading" || mode === "timeout") {
-			pending = request;
-			return;
-		}
-		request
-			.respond({
-				status: 200,
-				contentType: "application/json",
-				body: JSON.stringify({ repos: [], degraded: mode === "error" }),
-			})
-			.catch((error) => errors.push(error.message));
-	};
-	await page.setRequestInterception(true);
-	page.on("request", intercept);
-	try {
-		await page.reload({ waitUntil: "domcontentloaded" });
-		await page.addScriptTag({ content: axeSource });
-		await page.waitForFunction(() => document.body.textContent.includes("Loading repositories"));
-		states.push(await readState(page, "Portfolio loading"));
-		if (!(await page.$eval("main button", (button) => button.disabled))) {
-			throw new Error("Portfolio refresh must remain present and disabled while loading");
-		}
-		// Wait for the request as well as its rendered loading state.
-		pending ??= await page.waitForRequest(
-			(request) => new URL(request.url()).pathname === "/api/portfolio"
-		);
-		mode = "empty";
-		await pending.respond({
-			status: 200,
-			contentType: "application/json",
-			body: JSON.stringify({ repos: [], degraded: false }),
-		});
-		pending = undefined;
-		await page.waitForFunction(() => document.body.textContent.includes("No repositories yet"));
-		states.push(await readState(page, "Portfolio empty"));
-		mode = "error";
-		await page.click("main button");
-		await page.waitForFunction(() =>
-			document.body.textContent.includes("Couldn't load repositories")
-		);
-		states.push(await readState(page, "Portfolio provider error"));
-		mode = "timeout";
-		await page.click("main button");
-		await page.waitForFunction(() => document.body.textContent.includes("Refreshing…"));
-		await page.waitForFunction(
-			() =>
-				!document.body.textContent.includes("Refreshing…") &&
-				document.body.textContent.includes("Couldn't load repositories"),
-			{ timeout: 15_000 }
-		);
-		states.push(await readState(page, "Portfolio timeout releases loading controls"));
-	} finally {
-		page.off("request", intercept);
-		await pending?.abort().catch((error) => errors.push(error.message));
-		await page.setRequestInterception(false);
+	const text = await page.evaluate(() => document.body.textContent ?? "");
+	if (text.includes("Loading repositories") || text.includes("Refreshing…")) {
+		throw new Error("Portfolio must not stay in a loading state");
 	}
-	if (errors.length) {
-		throw new Error(`Portfolio interception failed: ${errors.join("; ")}`);
+	const hasRepositories = await page.$("main a[href*='github.com']");
+	const settled =
+		hasRepositories ||
+		text.includes("No repositories yet") ||
+		text.includes("Couldn't load repositories");
+	if (!settled) {
+		throw new Error("Portfolio must show repositories, an empty profile, or a load error");
 	}
-	return states;
+	const refresh = await page.$("main a[href='/portfolio']");
+	const refreshLabel = refresh
+		? await page.evaluate((node) => node.textContent ?? "", refresh)
+		: "";
+	if (!(refreshLabel.includes("Refresh") || refreshLabel.includes("Try again"))) {
+		throw new Error("Portfolio refresh must remain present");
+	}
+	return [await readState(page, "Portfolio settled")];
 }
 
 async function readAxe() {
