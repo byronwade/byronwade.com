@@ -119,21 +119,20 @@ export async function getProjects(): Promise<Project[]> {
 		const files = await readdir(projectsDirectory);
 		const markdownFiles = files.filter((file) => file.endsWith(".md"));
 
+		// Use the same per-file boundary as detail pages: one read or YAML failure
+		// must not remove healthy siblings from indexes, search or previews.
 		const projects = await Promise.all(
-			markdownFiles.map(async (file) => {
-				const slug = file.replace(MD_EXTENSION, "");
-				const fullPath = join(projectsDirectory, file);
-				const fileContents = await readFile(fullPath, "utf8");
-				return toProject(slug, fileContents);
-			})
+			markdownFiles.map((file) => getProject(file.replace(MD_EXTENSION, "")))
 		);
 
 		// Sort by date, newest first
-		return projects.sort((a, b) => {
-			const dateA = a.date ? new Date(a.date).getTime() : 0;
-			const dateB = b.date ? new Date(b.date).getTime() : 0;
-			return dateB - dateA;
-		});
+		return projects
+			.filter((project) => project !== null)
+			.sort((a, b) => {
+				const dateA = a.date ? new Date(a.date).getTime() : 0;
+				const dateB = b.date ? new Date(b.date).getTime() : 0;
+				return dateB - dateA;
+			});
 	} catch (error) {
 		console.error("Error reading projects:", error);
 		return [];
@@ -152,15 +151,8 @@ export async function getProject(slug: string): Promise<Project | null> {
 }
 
 export async function getAllProjectSlugs(): Promise<string[]> {
-	try {
-		const files = await readdir(projectsDirectory);
-		return files
-			.filter((file) => file.endsWith(".md"))
-			.map((file) => file.replace(MD_EXTENSION, ""));
-	} catch (error) {
-		console.error("Error reading project slugs:", error);
-		return [];
-	}
+	const projects = await getProjects();
+	return projects.map((project) => project.slug);
 }
 
 /** Featured projects for the homepage, ordered by `order`, then date. */

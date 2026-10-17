@@ -92,6 +92,11 @@ components/
   constructor, but only for real calendar days. Impossible unquoted dates such
   as `2026-02-30` stay the original text and fail the same validation as quoted
   dates, instead of shifting onto another day. Other front-matter keys are unchanged.
+  Project collections reuse the detail loader's per-file read/parse boundary:
+  an unreadable file or malformed YAML is logged by slug and excluded without
+  hiding healthy projects. Static project slugs come from that same collection,
+  so failed files are not advertised for prerendering. Homepage selections,
+  search, sitemap and screenshot targets all retain the healthy work.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
