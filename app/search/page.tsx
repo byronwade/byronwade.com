@@ -5,14 +5,15 @@ import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { buildSearchIndex } from "@/lib/search-index";
+import { buildPageSearchIndex } from "@/lib/search-index";
 import { groupSearchResults, normalizeSearchQuery, SEARCH_QUERY_MAX } from "@/lib/search-match";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Search",
-	description: "Search the projects, writing, and pages on Byron Wade's site.",
+	description:
+		"Search pages, projects, and writing on Byron Wade's site, including the text of each article.",
 	canonical: `${siteUrl}/search`,
 	noindex: true,
 	type: "website",
@@ -29,13 +30,16 @@ export default async function SearchPage({
 }) {
 	const params = await searchParams;
 	const query = normalizeSearchQuery(firstQuery(params.q));
-	const groups = query ? groupSearchResults(await buildSearchIndex(), query) : [];
+	const groups = query ? groupSearchResults(await buildPageSearchIndex(), query) : [];
 	const count = groups.reduce((total, group) => total + group.items.length, 0);
 
 	return (
 		<SiteShell width="wide">
 			<div className="flex flex-col gap-10">
-				<PageHeader lede="Projects, writing, and the other pages on this site." title="Search" />
+				<PageHeader
+					lede="Pages, plus the titles, summaries, tags, and text of the projects and writing."
+					title="Search"
+				/>
 				<search>
 					<form
 						action="/search"
@@ -122,7 +126,7 @@ export default async function SearchPage({
 function NoMatches() {
 	return (
 		<p className="text-copy-14 text-muted-foreground">
-			Nothing on the site uses those words. Try a shorter name, or{" "}
+			No matches. Try a shorter name, or{" "}
 			<Link className="link-underline" href="/projects" prefetch={false}>
 				browse projects
 			</Link>

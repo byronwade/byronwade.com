@@ -32,7 +32,7 @@ the header.
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
-| `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page is `noindex`. The WebSite JSON-LD search box points here. |
+| `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
 | `/privacy`, `/terms` | Legal |
 
 ### Resume PDF export
@@ -92,6 +92,11 @@ components/
   constructor, but only for real calendar days. Impossible unquoted dates such
   as `2026-02-30` stay the original text and fail the same validation as quoted
   dates, instead of shifting onto another day. Other front-matter keys are unchanged.
+  Project collections reuse the detail loader's per-file read/parse boundary:
+  an unreadable file or malformed YAML is logged by slug and excluded without
+  hiding healthy projects. Static project slugs come from that same collection,
+  so failed files are not advertised for prerendering. Homepage selections,
+  search, sitemap and screenshot targets all retain the healthy work.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
