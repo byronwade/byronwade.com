@@ -1,6 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import {
 	EmptyState,
@@ -41,6 +40,10 @@ function languageTone(language: string): string {
 }
 
 const WORD_SEPARATORS = /[-_]/;
+const pushedAtFormat = new Intl.DateTimeFormat("en-US", {
+	month: "short",
+	year: "numeric",
+});
 
 const titleize = (name: string) =>
 	name
@@ -267,7 +270,9 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 							</span>
 						)}
 						{repo.pushed_at && (
-							<time dateTime={repo.pushed_at}>{format(new Date(repo.pushed_at), "MMM yyyy")}</time>
+							<time dateTime={repo.pushed_at}>
+								{pushedAtFormat.format(new Date(repo.pushed_at))}
+							</time>
 						)}
 					</span>
 
