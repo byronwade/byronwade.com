@@ -91,12 +91,18 @@ components/
   `readContentMatter` in `lib/content-matter.ts` keeps js-yaml's timestamp
   constructor, but only for real calendar days. Impossible unquoted dates such
   as `2026-02-30` stay the original text and fail the same validation as quoted
-  dates, instead of shifting onto another day. Other front-matter keys are unchanged.
+  dates, instead of shifting onto another day.
   Project collections reuse the detail loader's per-file read/parse boundary:
   an unreadable file or malformed YAML is logged by slug and excluded without
   hiding healthy projects. Static project slugs come from that same collection,
   so failed files are not advertised for prerendering. Homepage selections,
   search, sitemap and screenshot targets all retain the healthy work.
+  `readContentMatter` types every front-matter value as `unknown`, so both
+  loaders read fields through `frontMatterFields`: text, true/false, finite
+  numbers and lists. A wrongly typed value is logged with the file and field and
+  read as absent, so one typo drops one field rather than crashing a page or
+  hiding the file. A project `url` must be an absolute http(s) address, metric
+  figures may be numbers, and a malformed `draft` value keeps the post a draft.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags

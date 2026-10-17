@@ -80,13 +80,53 @@ function parseFrontMatter(source: string): object {
 	return parsed;
 }
 
+/** gray-matter types every value as `any`; this keeps each field `unknown` until it is read. */
+type FrontMatter = Readonly<Record<string, unknown>>;
+
 /** Read Markdown front matter with strict calendar dates. */
-export function readContentMatter(source: string): matter.GrayMatterFile<string> {
-	return matter(source, {
+export function readContentMatter(source: string): { data: FrontMatter; content: string } {
+	const { data, content } = matter(source, {
 		engines: {
 			yaml: {
 				parse: parseFrontMatter,
 			},
 		},
 	});
+	return { data, content };
+}
+
+/**
+ * Typed access to one file's front matter. A wrongly typed value is reported
+ * with the file and field, then read as absent, so one typo drops one field
+ * instead of crashing the page or hiding the whole file. Absent and `null`
+ * values are simply absent.
+ */
+export function frontMatterFields(data: FrontMatter, file: string) {
+	function report(key: string, expected: string): undefined {
+		console.error(`Ignoring front matter "${key}" in ${file}: expected ${expected}`);
+	}
+
+	function read<T>(key: string, expected: string, accept: (value: unknown) => value is T) {
+		const value = data[key];
+		if (value === undefined || value === null) {
+			return;
+		}
+		return accept(value) ? value : report(key, expected);
+	}
+
+	return {
+		report,
+		text: (key: string) => read(key, "text", isText),
+		flag: (key: string) =>
+			read(key, "true or false", (value): value is boolean => typeof value === "boolean"),
+		number: (key: string) =>
+			read(key, "a number", (value): value is number => Number.isFinite(value)),
+		list: (key: string) => read(key, "a list", (value): value is unknown[] => Array.isArray(value)),
+	};
+}
+
+export type FrontMatterFields = ReturnType<typeof frontMatterFields>;
+
+export function isText(value: unknown): value is string {
+	return typeof value === "string";
 }

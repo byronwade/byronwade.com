@@ -1,7 +1,11 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import type matter from "gray-matter";
-import { readContentMatter } from "@/lib/content-matter";
+import {
+	type FrontMatterFields,
+	frontMatterFields,
+	isText,
+	readContentMatter,
+} from "@/lib/content-matter";
 import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so it compiles once rather than per file. */
@@ -43,73 +47,84 @@ export interface Project {
 
 const projectsDirectory = join(process.cwd(), "content/projects");
 
-function resolveType(data: matter.GrayMatterFile<string>["data"]): ProjectType | undefined {
-	const explicitType: unknown = data.type;
-	if (
-		explicitType === "client" ||
-		explicitType === "product" ||
-		explicitType === "concept" ||
-		explicitType === "hobby"
-	) {
-		return explicitType;
+/** Also the order a category is matched in when `type` is absent. */
+const PROJECT_TYPES: readonly ProjectType[] = ["client", "concept", "product", "hobby"];
+const WEB_PROTOCOLS = new Set(["https:", "http:"]);
+
+function resolveType(fields: FrontMatterFields, category?: string): ProjectType | undefined {
+	const explicitType = fields.text("type");
+	if (explicitType !== undefined) {
+		const known = PROJECT_TYPES.find((type) => type === explicitType);
+		if (known) {
+			return known;
+		}
+		fields.report("type", PROJECT_TYPES.join(", "));
 	}
-	if (data.category) {
-		const cat = String(data.category).toLowerCase();
-		if (cat.includes("client")) {
-			return "client";
-		}
-		if (cat.includes("concept")) {
-			return "concept";
-		}
-		if (cat.includes("product")) {
-			return "product";
-		}
-		if (cat.includes("hobby")) {
-			return "hobby";
-		}
-	}
+	const cat = category?.toLowerCase();
+	return cat ? PROJECT_TYPES.find((type) => cat.includes(type)) : undefined;
 }
 
-function parseMetrics(raw: unknown): ProjectMetric[] | undefined {
-	if (!Array.isArray(raw)) {
+/** The link and the preview allowlist both need an absolute web address. */
+function readUrl(fields: FrontMatterFields): string | undefined {
+	const url = fields.text("url");
+	if (url === undefined || (URL.canParse(url) && WEB_PROTOCOLS.has(new URL(url).protocol))) {
+		return url;
+	}
+	return fields.report("url", "an absolute http(s) address");
+}
+
+/** Metrics are often figures, so a number reads as its text. */
+function metricText(value: unknown): string {
+	if (isText(value)) {
+		return value.trim();
+	}
+	return Number.isFinite(value) ? String(value) : "";
+}
+
+function metricEntry(item: unknown): ProjectMetric | undefined {
+	if (typeof item !== "object" || item === null || !("label" in item && "value" in item)) {
 		return;
 	}
-	const metrics = raw
-		.map((item) => {
-			if (!item || typeof item !== "object") {
-				return null;
-			}
-			const label = "label" in item ? String(item.label ?? "").trim() : "";
-			const value = "value" in item ? String(item.value ?? "").trim() : "";
-			if (!(label && value)) {
-				return null;
-			}
-			return { label, value };
-		})
-		.filter((item): item is ProjectMetric => item !== null);
+	const label = metricText(item.label);
+	const value = metricText(item.value);
+	return label && value ? { label, value } : undefined;
+}
+
+function parseMetrics(fields: FrontMatterFields): ProjectMetric[] | undefined {
+	const metrics: ProjectMetric[] = [];
+	for (const item of fields.list("metrics") ?? []) {
+		const metric = metricEntry(item);
+		if (metric) {
+			metrics.push(metric);
+		} else {
+			fields.report("metrics", "entries with a text label and value");
+		}
+	}
 	return metrics.length > 0 ? metrics : undefined;
 }
 
 function toProject(slug: string, fileContents: string): Project {
 	const { data, content } = readContentMatter(fileContents);
-	const flagship = data.flagship === true;
+	const fields = frontMatterFields(data, `project ${slug}`);
+	const category = fields.text("category");
+	const flagship = fields.flag("flagship") === true;
 	return {
 		slug,
-		title: data.title || slug,
-		url: data.url,
-		category: data.category,
-		type: resolveType(data),
+		title: fields.text("title") || slug,
+		url: readUrl(fields),
+		category,
+		type: resolveType(fields, category),
 		// Undated work must not acquire a fabricated publication date at build time.
 		date: parseContentDate(data.date),
-		excerpt: data.excerpt,
+		excerpt: fields.text("excerpt"),
 		flagship,
-		featured: data.featured === true || (data.featured !== false && flagship),
-		status: data.status,
-		tagline: data.tagline,
-		problem: typeof data.problem === "string" ? data.problem : undefined,
-		outcome: typeof data.outcome === "string" ? data.outcome : undefined,
-		metrics: parseMetrics(data.metrics),
-		order: typeof data.order === "number" ? data.order : undefined,
+		featured: fields.flag("featured") ?? flagship,
+		status: fields.text("status"),
+		tagline: fields.text("tagline"),
+		problem: fields.text("problem"),
+		outcome: fields.text("outcome"),
+		metrics: parseMetrics(fields),
+		order: fields.number("order"),
 		content,
 	};
 }

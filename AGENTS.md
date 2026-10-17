@@ -49,7 +49,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
 | Content | Markdown in `content/blog/`, `content/projects/` via `gray-matter` |
 | Email | Resend through the `lib/actions/send-email.ts` server action |
-| Tests | Native Node contact-action, cache-refresh, content-date, and screenshot-route regressions via `npm test` (Node 22.18+); no added test dependencies |
+| Tests | Native Node contact-action, cache-refresh, content-date, front-matter field, and screenshot-route regressions via `npm test` (Node 22.18+); no added test dependencies |
 
 `.eslintrc.cjs` exists only to neutralize Codacy's ESLint 8 engine. It is not
 this project's linter. Ultracite is, and it drives Biome underneath.
@@ -69,7 +69,7 @@ npm run type-check   # next typegen && tsc --noEmit     (local release gate)
 npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
-npm test             # contact, cache-refresh, and content-date regressions (no live services)
+npm test             # contact, cache-refresh, content-date, and front-matter regressions (no live services)
 npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
@@ -472,6 +472,8 @@ machine-readable values, and that `/resume` is prerendered without contact detai
 and keeps its controls and the footer out of print. Content dates use the existing `safeFormatDate` /
 `safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw
 UTC-midnight strings, which can shift the calendar day and year group.
+`readContentMatter` returns front matter as `unknown` values, so a loader that
+passes a field through without `frontMatterFields` fails `type-check`.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
 
 High-value sensors not yet built, in rough priority order: raw-color and
