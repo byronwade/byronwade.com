@@ -6,3 +6,7 @@
  * the production fallback is defined in exactly one place.
  */
 export const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://byronwade.com";
+
+/** Byron's public X account. Cards, share links, and the footer all use this. */
+export const xHandle = "byron_c_wade";
+export const xUrl = "https://x.com/byron_c_wade";
