@@ -62,6 +62,55 @@ test("results stay in page, project, then writing order and drop empty groups", 
 	assert.equal(groupSearchResults(entries, "not-a-real-page").length, 0);
 });
 
+const { searchPlainText } = await import("../lib/search-text.ts");
+const { buildPageSearchIndex, buildSearchIndex } = await import("../lib/search-index.ts");
+
+test("search text keeps readable words and drops samples, links, and notes", () => {
+	const text = searchPlainText(`
+# Hosting
+
+See [Ciel](https://ciel.example/docs) for the idea.
+
+\`\`\`
+uniqueFenceToken
+\`\`\`
+
+A readable sentence about legibility.
+
+<!-- hiddenAuthorNote -->
+`);
+	assert.equal(text.includes("Hosting"), true);
+	assert.equal(text.includes("Ciel"), true);
+	assert.equal(text.includes("legibility"), true);
+	assert.equal(text.includes("uniqueFenceToken"), false);
+	assert.equal(text.includes("ciel.example"), false);
+	assert.equal(text.includes("hiddenAuthorNote"), false);
+});
+
+test("the header finds tags and legal pages, and the search page also finds article text", async () => {
+	const header = await buildSearchIndex();
+	const page = await buildPageSearchIndex();
+	const scaling = header.find((entry) => entry.href === "/blog/scaling-plumbing-business");
+	const cielHeader = header.find((entry) => entry.href === "/projects/ciel");
+	const cielPage = page.find((entry) => entry.href === "/projects/ciel");
+	assert.ok(scaling);
+	assert.ok(cielHeader);
+	assert.ok(cielPage);
+	assert.equal(entryMatchesQuery(scaling, "entrepreneurship"), true);
+	assert.equal(entryMatchesQuery(cielHeader, "actually"), true);
+	assert.equal(cielHeader.label.startsWith("Ciel"), true);
+	assert.equal(entryMatchesQuery(cielHeader, "netlify"), false);
+	assert.equal(entryMatchesQuery(cielPage, "netlify"), true);
+	assert.equal(
+		header.some((entry) => entry.href === "/privacy"),
+		true
+	);
+	assert.equal(
+		header.some((entry) => entry.href === "/terms"),
+		true
+	);
+});
+
 test("the site search box and shared cards point at real destinations", () => {
 	const website = generateWebSiteStructuredData();
 	const action = website.potentialAction;
