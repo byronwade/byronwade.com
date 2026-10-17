@@ -146,6 +146,30 @@ function readGeometry() {
 	};
 }
 
+async function measureLoad(page, url, route, width, theme, status) {
+	if (!measure) {
+		return;
+	}
+	// Measure before axe and interaction checks. Those stay on the page and
+	// were inflating the next trace on a busy machine.
+	const result =
+		status === 200 ? await measurePage(url, route, width, page) : await measureErrorPage(page);
+	if (status !== 200) {
+		return result;
+	}
+	await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+	await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
+	const restored = await page.goto(`${url}${route}`, {
+		waitUntil: "networkidle2",
+		timeout: 60_000,
+	});
+	if (restored.status() !== 200 && restored.status() !== 304) {
+		throw new Error(`${route} returned HTTP ${restored.status()} after measurement`);
+	}
+	await page.evaluate(() => document.fonts.ready);
+	return result;
+}
+
 async function auditPage(url, route, width, theme) {
 	const context = await browser.createBrowserContext();
 	const page = await context.newPage();
@@ -171,6 +195,7 @@ async function auditPage(url, route, width, theme) {
 			throw new Error(`${route} returned HTTP ${navigation.status()}, expected ${expectedStatus}`);
 		}
 		await page.evaluate(() => document.fonts.ready);
+		const lighthouseResult = await measureLoad(page, url, route, width, theme, navigation.status());
 		await page.addScriptTag({ content: axeSource });
 		const violations = await page.evaluate(readAxe);
 		const geometry = await page.evaluate(readGeometry);
@@ -183,6 +208,7 @@ async function auditPage(url, route, width, theme) {
 			runtimeErrors,
 			violations,
 			...geometry,
+			...(lighthouseResult ? { lighthouse: lighthouseResult } : {}),
 		};
 		if (
 			phase === "final" &&
@@ -198,12 +224,6 @@ async function auditPage(url, route, width, theme) {
 				result.states.push(...(await checkBreadcrumbStates(page)));
 			}
 			result.states.push(await checkReducedStyles(page));
-		}
-		if (measure) {
-			result.lighthouse =
-				navigation.status() === 200
-					? await measurePage(url, route, width, page)
-					: await measureErrorPage(page);
 		}
 		return result;
 	} finally {
