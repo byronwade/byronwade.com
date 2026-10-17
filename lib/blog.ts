@@ -1,6 +1,11 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { readContentMatter } from "@/lib/content-matter";
+import {
+	type FrontMatterFields,
+	frontMatterFields,
+	isText,
+	readContentMatter,
+} from "@/lib/content-matter";
 import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so each compiles once rather than per file/post. */
@@ -18,17 +23,18 @@ export interface BlogPost {
 	updated?: string;
 }
 
-function parseTags(raw: unknown): string[] | undefined {
-	if (!Array.isArray(raw)) {
-		return;
-	}
-	const tags = raw.reduce<string[]>((acc, tag) => {
-		const trimmed = String(tag).trim();
-		if (trimmed) {
-			acc.push(trimmed);
+function parseTags(fields: FrontMatterFields): string[] | undefined {
+	const tags: string[] = [];
+	for (const tag of fields.list("tags") ?? []) {
+		if (!isText(tag)) {
+			fields.report("tags", "a list of text");
+			continue;
 		}
-		return acc;
-	}, []);
+		const trimmed = tag.trim();
+		if (trimmed) {
+			tags.push(trimmed);
+		}
+	}
 	return tags.length > 0 ? tags : undefined;
 }
 
@@ -64,9 +70,13 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 		const fullPath = join(blogDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
 		const { data, content } = readContentMatter(fileContents);
+		const fields = frontMatterFields(data, `post ${slug}`);
 
 		// Local previews only. All readers, including direct URLs, share this boundary.
-		if (data.draft === true && process.env.NODE_ENV !== "development") {
+		// A malformed value stays a draft: YAML reads `draft: yes` as text, not true.
+		const isDraft =
+			data.draft !== undefined && data.draft !== null && fields.flag("draft") !== false;
+		if (isDraft && process.env.NODE_ENV !== "development") {
 			return null;
 		}
 		const date = parseContentDate(data.date);
@@ -77,11 +87,11 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 		return {
 			slug,
-			title: data.title || slug,
+			title: fields.text("title") || slug,
 			date,
 			updated: parseContentDate(data.updated),
-			excerpt: data.excerpt,
-			tags: parseTags(data.tags),
+			excerpt: fields.text("excerpt"),
+			tags: parseTags(fields),
 			content,
 			readingTime: calculateReadingTime(content),
 		};
