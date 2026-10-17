@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Check, Copy, Linkedin, Share2, Twitter } from "@/lib/icons";
+import { xHandle } from "@/lib/site";
 
 interface SocialShareProps {
 	className?: string;
@@ -20,7 +21,6 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	const [canShare, setCanShare] = useState(false);
 	const encodedUrl = encodeURIComponent(url);
 	const encodedTitle = encodeURIComponent(title);
-	const encodedDescription = encodeURIComponent(description || "");
 
 	useEffect(() => {
 		// Check for native share support on mount
@@ -28,7 +28,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	}, []);
 
 	const shareLinks = {
-		twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}${encodedDescription ? "&via=byronwade" : ""}`,
+		twitter: `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=${xHandle}`,
 		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
 		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 	};

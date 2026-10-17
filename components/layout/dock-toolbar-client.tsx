@@ -6,7 +6,9 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { useCapsuleMorph } from "@/hooks/use-capsule-morph";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
+import { groupSearchResults, SEARCH_QUERY_MAX } from "@/lib/search-match";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
+import { xUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const CapsulePanel = dynamic(
@@ -15,9 +17,7 @@ const CapsulePanel = dynamic(
 );
 
 const GITHUB_URL = "https://github.com/byronwade";
-/** Hoisted so it is compiled once rather than on every keystroke. */
-const WHITESPACE = /\s+/;
-const X_URL = "https://x.com/byron_c_wade";
+const X_URL = xUrl;
 const SPONSOR_URL = "https://github.com/sponsors/byronwade";
 
 const ITEM =
@@ -26,26 +26,7 @@ const ITEM_IDLE = "text-dock-foreground hover:bg-dock-active hover:text-dock-act
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
-const KIND_ORDER: SearchKind[] = ["Page", "Project", "Writing"];
-const KIND_LABEL: Record<SearchKind, string> = {
-	Page: "Pages",
-	Project: "Projects",
-	Writing: "Writing",
-};
-
 type Mode = "search" | "donate" | null;
-
-function score(entry: SearchEntry, q: string): boolean {
-	if (!q) {
-		return true;
-	}
-	const hay = `${entry.label} ${entry.meta ?? ""} ${entry.keywords ?? ""}`.toLowerCase();
-	return q
-		.toLowerCase()
-		.split(WHITESPACE)
-		.filter(Boolean)
-		.every((tok) => hay.includes(tok));
-}
 
 function go(href: string, router: ReturnType<typeof useRouter>) {
 	const hash = href.indexOf("#");
@@ -108,14 +89,7 @@ export function DockToolbarClient({
 	const returnFocusRef = React.useRef<HTMLElement | null>(null);
 	const panelId = React.useId();
 
-	const results = React.useMemo(() => entries.filter((e) => score(e, query)), [entries, query]);
-	const groups = React.useMemo(
-		() =>
-			KIND_ORDER.map((kind) => ({ kind, items: results.filter((e) => e.kind === kind) })).filter(
-				(g) => g.items.length > 0
-			),
-		[results]
-	);
+	const groups = React.useMemo(() => groupSearchResults(entries, query), [entries, query]);
 	const flat = React.useMemo(() => groups.flatMap((g) => g.items), [groups]);
 
 	const close = React.useCallback(() => {
@@ -421,6 +395,7 @@ export function DockToolbarClient({
 													<Input
 														ref={inputRef}
 														value={query}
+														maxLength={SEARCH_QUERY_MAX}
 														onChange={(e) => {
 															setQuery(e.target.value);
 															setActive(0);
@@ -447,7 +422,7 @@ export function DockToolbarClient({
 														groups.map((g) => (
 															<div className="mb-1 last:mb-0" key={g.kind}>
 																<div className="px-2.5 pt-1.5 pb-1 text-[11px] text-dock-foreground">
-																	{KIND_LABEL[g.kind]}
+																	{g.label}
 																</div>
 																{g.items.map((e) => Row(e, cursor++))}
 															</div>

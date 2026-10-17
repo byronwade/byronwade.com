@@ -1,12 +1,13 @@
 // Thorbis Design port: site/site-footer + site-shell.stylex @ 46b6654.
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
+import { xUrl } from "@/lib/site";
 import { navItems } from "./nav-config";
 
 const SOCIAL = [
 	{ name: "GitHub", href: "https://github.com/byronwade" },
 	{ name: "LinkedIn", href: "https://linkedin.com/in/byronwade" },
-	{ name: "X", href: "https://x.com/byron_c_wade" },
+	{ name: "X", href: xUrl },
 ];
 
 export default function Footer() {
