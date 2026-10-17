@@ -4,6 +4,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 const sharedPrimitivePackages =
 	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|next|tailwind-merge|react-compiler-runtime)[\\/]/;
+const sharedClassnamePackages =
+	/[\\/]node_modules[\\/](?:tailwind-merge|clsx|class-variance-authority)[\\/]/;
 const sharedPrimitiveSources =
 	/[\\/](?:lib[\\/](?:utils|motion|contact|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
 
@@ -31,7 +33,12 @@ const nextConfig = {
 
 	experimental: {
 		// Resolve pure facades to each consumer's actual server/client dependencies.
-		optimizePackageImports: ["date-fns", "@/lib/icons", "@/components/common"],
+		optimizePackageImports: [
+			"date-fns",
+			"@/lib/icons",
+			"@/components/common",
+			"@/components/project",
+		],
 	},
 
 	images: {
@@ -95,6 +102,18 @@ const nextConfig = {
 							minChunks: 2,
 							enforce: true,
 							priority: 35,
+						},
+						// tailwind-merge already lives in shared-primitives via the layout.
+						// Other routes are outside that group, so each page chunk compiled
+						// and ran a second copy during hydration. Keep one copy in the
+						// chunk every route already requests.
+						sharedClassnames: {
+							test: sharedClassnamePackages,
+							name: "shared-primitives",
+							chunks: "all",
+							enforce: true,
+							priority: 40,
+							reuseExistingChunk: true,
 						},
 					},
 				},
