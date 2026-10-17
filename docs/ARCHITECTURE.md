@@ -32,7 +32,7 @@ the header.
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
-| `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page is `noindex`. The WebSite JSON-LD search box points here. |
+| `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
 | `/privacy`, `/terms` | Legal |
 
 ### Resume PDF export
