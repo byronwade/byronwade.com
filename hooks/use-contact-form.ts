@@ -1,7 +1,6 @@
 "use client";
 
 import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 import { sendEmail } from "@/lib/actions/send-email";
 import {
 	type ContactField,
@@ -79,9 +78,6 @@ export function useContactForm() {
 				setStatus({ kind: "sent" });
 				// Preserve edits made while the submitted snapshot was being delivered.
 				setFormData((current) => (current === formData ? EMPTY_FORM : current));
-				toast.success("Message sent", {
-					description: "Thanks for reaching out. I'll get back to you soon.",
-				});
 				return true;
 			} catch {
 				showFailure("Couldn't send your message. Your draft is still here. Please try again.");

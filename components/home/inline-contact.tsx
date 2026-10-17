@@ -1,17 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { pillLinkClass } from "@/components/ui/pill";
-import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
+
+const SentToast = dynamic(
+	() => import("@/components/ui/sent-toast").then((module) => module.SentToast),
+	{ ssr: false }
+);
 
 interface InlineContactProps {
 	email: string;
@@ -28,7 +33,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 	if (!open) {
 		// Keep delivery feedback available after closing a previously opened form.
-		return <Toaster />;
+		return status.kind === "sent" ? <SentToast /> : null;
 	}
 
 	const copyEmail = async () => {
@@ -46,7 +51,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 			className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
-			<Toaster />
+			{status.kind === "sent" ? <SentToast /> : null}
 			<div className="flex items-center justify-between border-border border-b px-4 py-3">
 				<div className="flex flex-col">
 					<span className="font-medium text-sm">Start a conversation</span>
