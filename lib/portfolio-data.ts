@@ -7,6 +7,9 @@ import type { DribbbleShot } from "@/types/dribbble";
 import type { FigmaFile } from "@/types/figma";
 import type { GitHubRepo } from "@/types/github";
 
+/** Keep the deadline active through JSON body consumption, not only headers. */
+const REST_TIMEOUT_MS = 5000;
+
 /**
  * Headers for GitHub's REST API.
  *
@@ -31,31 +34,12 @@ function githubHeaders(): Record<string, string> {
 	return headers;
 }
 
-// Utility function to add timeout to fetch requests
-const fetchWithTimeout = async (url: string, options: RequestInit & { timeout?: number } = {}) => {
-	const { timeout = 3000, ...fetchOptions } = options; // Reduced to 3s for speed
-
-	const controller = new AbortController();
-	const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-	try {
-		const response = await fetch(url, {
-			...fetchOptions,
-			signal: controller.signal,
-		});
-		clearTimeout(timeoutId);
-		return response;
-	} catch (error) {
-		clearTimeout(timeoutId);
-		throw error;
-	}
-};
-
 // Aggressive caching for Dribbble shots
 export const getDribbbleShots = unstable_cache(
 	async (): Promise<DribbbleShot[]> => {
 		try {
 			const response = await fetch("https://api.dribbble.com/v2/user/shots?per_page=20", {
+				signal: AbortSignal.timeout(REST_TIMEOUT_MS),
 				headers: {
 					Authorization: `Bearer ${process.env.DRIBBBLE_TOKEN}`,
 				},
@@ -216,6 +200,7 @@ export const getGitHubStats = unstable_cache(
 		try {
 			const response = await fetch("https://api.github.com/users/byronwade", {
 				headers: githubHeaders(),
+				signal: AbortSignal.timeout(REST_TIMEOUT_MS),
 			});
 
 			if (!response.ok) {
@@ -264,11 +249,11 @@ const PRIORITY_PROJECTS = [
 export const getGitHubRepositories = unstable_cache(
 	async (): Promise<GitHubRepo[]> => {
 		try {
-			const response = await fetchWithTimeout(
+			const response = await fetch(
 				"https://api.github.com/users/byronwade/repos?sort=updated&per_page=100",
 				{
 					headers: githubHeaders(),
-					timeout: 5000,
+					signal: AbortSignal.timeout(REST_TIMEOUT_MS),
 				}
 			);
 
