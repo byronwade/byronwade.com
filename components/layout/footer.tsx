@@ -1,13 +1,8 @@
 // Thorbis Design port: site/site-footer + site-shell.stylex @ 46b6654.
 import { Link } from "@/components/ui/link";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
+import { publicProfiles } from "@/lib/site";
 import { navItems } from "./nav-config";
-
-const SOCIAL = [
-	{ name: "GitHub", href: "https://github.com/byronwade" },
-	{ name: "LinkedIn", href: "https://linkedin.com/in/byronwade" },
-	{ name: "X", href: "https://x.com/byron_c_wade" },
-];
 
 export default function Footer() {
 	return (
@@ -54,7 +49,7 @@ export default function Footer() {
 			<div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-border border-t pt-5 text-copy-12 text-muted-foreground">
 				<p>© {new Date().getFullYear()} Byron Wade</p>
 				<div className="flex flex-wrap items-center gap-x-5">
-					{SOCIAL.map((item) => (
+					{publicProfiles.map((item) => (
 						<a
 							key={item.href}
 							className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"

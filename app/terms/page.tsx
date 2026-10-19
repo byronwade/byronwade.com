@@ -5,7 +5,7 @@ import { Link } from "@/components/ui/link";
 import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-	title: "Terms of Service | Byron Wade",
+	title: "Terms of Service",
 	description:
 		"The terms that govern your use of byronwade.com and services provided by Byron Wade and Wade's Plumbing & Septic.",
 	alternates: {
