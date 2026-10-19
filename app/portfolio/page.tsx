@@ -111,7 +111,9 @@ function usePortfolioRepos(): PortfolioReposState {
 				if (!active) {
 					return;
 				}
-				setRepos(result.repos);
+				if (!(result.degraded && result.repos.length === 0)) {
+					setRepos(result.repos);
+				}
 				// An empty list is only an error when the upstream call degraded; a
 				// genuinely empty profile is a valid, non-error state.
 				setDegraded(result.degraded);
