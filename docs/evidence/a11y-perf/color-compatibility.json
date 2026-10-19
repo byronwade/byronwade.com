@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-16T14:47:26.975Z",
+  "baselineCommit": "a4c0dea4c95ad14fcbd24c2652617797e3405126",
+  "chrome": "Chrome/155.0.8059.80",
+  "method": "Compare browser canvas sRGB pixels for each unique achromatic token before and after numeric hue replacement",
+  "results": [
+    {
+      "before": "oklch(100% 0 none)",
+      "after": "oklch(100% 0 0)",
+      "oldPixel": [255, 255, 255, 255],
+      "newPixel": [255, 255, 255, 255],
+      "equal": true
+    },
+    {
+      "before": "oklch(14.5% 0 none)",
+      "after": "oklch(14.5% 0 0)",
+      "oldPixel": [10, 10, 10, 255],
+      "newPixel": [10, 10, 10, 255],
+      "equal": true
+    },
+    {
+      "before": "oklch(78% 0 none)",
+      "after": "oklch(78% 0 0)",
+      "oldPixel": [183, 183, 183, 255],
+      "newPixel": [183, 183, 183, 255],
+      "equal": true
+    },
+    {
+      "before": "oklch(20.5% 0 none)",
+      "after": "oklch(20.5% 0 0)",
+      "oldPixel": [23, 23, 23, 255],
+      "newPixel": [23, 23, 23, 255],
+      "equal": true
+    },
+    {
+      "before": "oklch(60% 0 none)",
+      "after": "oklch(60% 0 0)",
+      "oldPixel": [128, 128, 128, 255],
+      "newPixel": [128, 128, 128, 255],
+      "equal": true
+    }
+  ]
+}
