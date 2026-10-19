@@ -12,8 +12,8 @@ import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Loader2, Send } from "@/lib/icons";
 
-const SentToast = dynamic(
-	() => import("@/components/ui/sent-toast").then((module) => module.SentToast),
+const ContactSentToast = dynamic(
+	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
 	{ ssr: false }
 );
 
@@ -26,7 +26,7 @@ export default function ContactClient() {
 		// Narrow, not wide. A single form has no business spanning a five-column
 		// shell; the measure is the point on a page with one task.
 		<SiteShell>
-			{status.kind === "sent" ? <SentToast /> : null}
+			{status.kind === "sent" ? <ContactSentToast /> : null}
 			<div className="flex flex-col gap-10">
 				<PageHeader
 					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two."

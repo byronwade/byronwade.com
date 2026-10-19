@@ -13,8 +13,8 @@ import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
-const SentToast = dynamic(
-	() => import("@/components/ui/sent-toast").then((module) => module.SentToast),
+const ContactSentToast = dynamic(
+	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
 	{ ssr: false }
 );
 
@@ -33,7 +33,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 	if (!open) {
 		// Keep delivery feedback available after closing a previously opened form.
-		return status.kind === "sent" ? <SentToast /> : null;
+		return status.kind === "sent" ? <ContactSentToast /> : null;
 	}
 
 	const copyEmail = async () => {
@@ -51,7 +51,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 			className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
-			{status.kind === "sent" ? <SentToast /> : null}
+			{status.kind === "sent" ? <ContactSentToast /> : null}
 			<div className="flex items-center justify-between border-border border-b px-4 py-3">
 				<div className="flex flex-col">
 					<span className="font-medium text-sm">Start a conversation</span>
