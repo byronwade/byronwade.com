@@ -85,11 +85,36 @@ if (process.argv.includes("--resume")) {
 	report.resumedAt = report.checkedAt;
 	report.checkedAt = previous.checkedAt;
 }
-const browser = await puppeteer.launch({
-	executablePath:
-		process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-	headless: true,
-});
+let browser = null;
+
+// Quiet flags shared with Lighthouse's Chrome launcher. Timer-forcing flags are
+// left out so background work is not promoted onto the measured thread.
+const QUIET_CHROME_FLAGS = [
+	"--disable-background-networking",
+	"--disable-component-extensions-with-background-pages",
+	"--disable-component-update",
+	"--disable-client-side-phishing-detection",
+	"--disable-default-apps",
+	"--disable-domain-reliability",
+	"--disable-extensions",
+	"--disable-hang-monitor",
+	"--disable-prompt-on-repost",
+	"--disable-sync",
+	"--metrics-recording-only",
+	"--mute-audio",
+	"--no-default-browser-check",
+	"--no-first-run",
+	"--password-store=basic",
+];
+
+function launchBrowser() {
+	return puppeteer.launch({
+		executablePath:
+			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+		headless: true,
+		args: QUIET_CHROME_FLAGS,
+	});
+}
 
 function readGeometry() {
 	const visible = (element) =>
@@ -146,18 +171,32 @@ function readGeometry() {
 	};
 }
 
-async function measureLoad(page, url, route, width, theme, status) {
-	if (!measure) {
-		return;
+async function loadAuditedPage(page, url, route, width, theme, expectedStatus) {
+	// A prior hydration leaves the chip warm, and simulated throttling then
+	// scores that heat as page work. Let Lighthouse perform the only navigation
+	// for a page whose timing budget is checked. Error pages have no timing
+	// budget; load them first so the accessibility snapshot can see the response.
+	if (measure && expectedStatus === 200) {
+		const lighthouseResult = await measurePage(url, route, width, page);
+		const status = await restoreAuditedPage(page, url, route, width, theme, expectedStatus);
+		return { status, lighthouseResult };
 	}
-	// Measure before axe and interaction checks. Those stay on the page and
-	// were inflating the next trace on a busy machine.
-	const result =
-		status === 200 ? await measurePage(url, route, width, page) : await measureErrorPage(page);
+	const navigation = await page.goto(`${url}${route}`, {
+		waitUntil: "networkidle2",
+		timeout: 60_000,
+	});
+	if (navigation.status() !== expectedStatus) {
+		throw new Error(`${route} returned HTTP ${navigation.status()}, expected ${expectedStatus}`);
+	}
+	await page.evaluate(() => document.fonts.ready);
+	if (!measure) {
+		return { status: navigation.status(), lighthouseResult: undefined };
+	}
+	const lighthouseResult = await measureErrorPage(page);
 	// Snapshot mode still applies Lighthouse's mobile viewport. Put the
 	// requested width back so the desktop breadcrumb can mount on 404s too.
-	await restoreAuditedPage(page, url, route, width, theme, status);
-	return result;
+	const status = await restoreAuditedPage(page, url, route, width, theme, expectedStatus);
+	return { status, lighthouseResult };
 }
 
 async function restoreAuditedPage(page, url, route, width, theme, status) {
@@ -172,9 +211,37 @@ async function restoreAuditedPage(page, url, route, width, theme, status) {
 		throw new Error(`${route} returned HTTP ${restored.status()} after measurement`);
 	}
 	await page.evaluate(() => document.fonts.ready);
+	return restored.status();
+}
+
+async function openBrowser() {
+	if (browser) {
+		return;
+	}
+	// Simulated throttling multiplies host time. Let the chip recover with
+	// Chrome closed; a warm sample scores that heat as page work.
+	if (measure) {
+		await delay(45_000);
+	}
+	browser = await launchBrowser();
+	report.chrome = report.chrome || (await browser.version());
+	// Launching Chrome is its own burst. Settle on about:blank before the trace.
+	if (measure) {
+		await delay(5000);
+	}
+}
+
+async function closeBrowser() {
+	if (!browser) {
+		return;
+	}
+	const closing = browser;
+	browser = null;
+	await closing.close();
 }
 
 async function auditPage(url, route, width, theme) {
+	await openBrowser();
 	const context = await browser.createBrowserContext();
 	const page = await context.newPage();
 	const runtimeErrors = [];
@@ -189,17 +256,10 @@ async function auditPage(url, route, width, theme) {
 	}, theme);
 	await prepareFigmaFrame(page, route, runtimeErrors);
 	try {
-		const navigation = await page.goto(`${url}${route}`, {
-			waitUntil: "networkidle2",
-			timeout: 60_000,
-		});
 		const expectedStatus =
 			route === "/audit-not-found" || route === "/portfolio/figma/audit-unavailable" ? 404 : 200;
-		if (navigation.status() !== expectedStatus) {
-			throw new Error(`${route} returned HTTP ${navigation.status()}, expected ${expectedStatus}`);
-		}
-		await page.evaluate(() => document.fonts.ready);
-		const lighthouseResult = await measureLoad(page, url, route, width, theme, navigation.status());
+		const loaded = await loadAuditedPage(page, url, route, width, theme, expectedStatus);
+		const lighthouseResult = loaded.lighthouseResult;
 		await page.addScriptTag({ content: axeSource });
 		const violations = await page.evaluate(readAxe);
 		const geometry = await page.evaluate(readGeometry);
@@ -207,7 +267,7 @@ async function auditPage(url, route, width, theme) {
 			route,
 			width,
 			theme,
-			status: navigation.status(),
+			status: loaded.status,
 			expectedStatus,
 			runtimeErrors,
 			violations,
@@ -232,6 +292,10 @@ async function auditPage(url, route, width, theme) {
 		return result;
 	} finally {
 		await context.close();
+		// Chrome keeps the chip warm between samples. Close it before the next wait.
+		if (measure) {
+			await closeBrowser();
+		}
 	}
 }
 
@@ -494,7 +558,14 @@ async function checkShellStates(page) {
 			document.activeElement === document.querySelector('button[aria-label="Support open source"]')
 	);
 	states.push({ name: "Support to search keeps the original invoking control", passed: true });
+	// Capsule closes are still in their 180ms transition here. Counting every
+	// animation with a long activeDuration treats that leftover motion as a
+	// theme-toggle failure. Let it finish, then record only motion the toggle starts.
+	await waitForMotion(page);
 	await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+	await page.evaluate(
+		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+	);
 	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
 	await page.click('button[aria-label="Toggle theme"]');
 	await page.waitForFunction(
@@ -504,9 +575,11 @@ async function checkShellStates(page) {
 	);
 	const activeMotion = await page.evaluate(
 		() =>
-			document
-				.getAnimations()
-				.filter((animation) => animation.effect.getComputedTiming().activeDuration > 1).length
+			document.getAnimations().filter((animation) => {
+				const timing = animation.effect?.getComputedTiming();
+				const running = animation.playState === "running" || animation.playState === "pending";
+				return running && timing?.activeDuration > 1;
+			}).length
 	);
 	states.push({ name: "Reduced motion theme", activeMotion });
 	// Restore the audited theme before Lighthouse's separate navigation.
@@ -783,52 +856,11 @@ function readLighthouseAccessibility(lhr) {
 	return score * 100;
 }
 
-// A fixed pause was not enough once the chip stayed warm: simulated throttling
-// multiplies host time, so a cool page can miss the same budget it passed alone.
-const CPU_PROBE_ITERATIONS = 4_000_000;
-const COOL_RATIO = 1.15;
-let fastestProbe = Number.POSITIVE_INFINITY;
-let probeSink = 0;
-
 function delay(ms) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function cpuProbeMs() {
-	const start = performance.now();
-	let value = probeSink;
-	for (let index = 0; index < CPU_PROBE_ITERATIONS; index++) {
-		value = Math.imul(value + index, 1_664_525);
-	}
-	probeSink = value;
-	return performance.now() - start;
-}
-
-async function waitForCoolCpu(deadline = Date.now() + 50_000, started = Date.now()) {
-	const sample = cpuProbeMs();
-	const recovering = sample < fastestProbe * 0.9;
-	if (sample < fastestProbe) {
-		fastestProbe = sample;
-	}
-	const cool = sample <= fastestProbe * COOL_RATIO;
-	const waited = Date.now() - started;
-	if (cool && waited >= 8000 && !recovering) {
-		return;
-	}
-	if (Date.now() >= deadline) {
-		return;
-	}
-	await delay(waited < 8000 ? 8000 - waited : 4000);
-	await waitForCoolCpu(deadline, started);
-}
-
 async function measurePage(url, route, width, page) {
-	const settledAt = Date.now();
-	await waitForCoolCpu();
-	const cpuSettleMs = Date.now() - settledAt;
-	if (cpuSettleMs > 15_000) {
-		console.log(JSON.stringify({ cpuSettleMs, fastestProbeMs: Math.round(fastestProbe) }));
-	}
 	const port = Number(new URL(browser.wsEndpoint()).port);
 	const result = await lighthouse(
 		`${url}${route}`,
@@ -884,7 +916,6 @@ async function measurePage(url, route, width, page) {
 }
 
 try {
-	report.chrome = await browser.version();
 	await withFigmaFixture((env) =>
 		withProductionServer(
 			async (url) => {
@@ -918,6 +949,8 @@ try {
 									navOverlap: result.navOverlap,
 									keyboardFailures: result.keyboard?.failures.length,
 									lighthouseAccessibility: result.lighthouse?.accessibility,
+									tbt: result.lighthouse?.timings?.["total-blocking-time"],
+									lcp: result.lighthouse?.timings?.["largest-contentful-paint"],
 									budgetFailures: result.lighthouse?.budget?.failures,
 								})
 							);
@@ -932,7 +965,7 @@ try {
 	try {
 		writeEvidenceJson(reportFile, report);
 	} finally {
-		await browser.close();
+		await closeBrowser();
 	}
 }
 const failures = report.cases.filter(
