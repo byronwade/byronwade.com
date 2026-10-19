@@ -45,7 +45,7 @@ export default function ContactClient() {
 								id="name"
 								name="name"
 								onChange={(e) => handleChange("name", e.target.value)}
-								placeholder="Your name…"
+								placeholder="Alex Rivera…"
 								required
 								value={formData.name}
 							/>
@@ -123,7 +123,7 @@ export default function ContactClient() {
 									e.currentTarget.form?.requestSubmit();
 								}
 							}}
-							placeholder="Tell me a little about what you're working on…"
+							placeholder="I’d like to talk about a project…"
 							required
 							rows={8}
 							value={formData.message}

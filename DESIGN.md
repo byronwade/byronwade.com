@@ -153,8 +153,9 @@ critical action has a visible or keyboard-discoverable route.
 ### 4.5 Depth communicates behavior
 
 Persistent structure is planar; spacing and tone separate regions. Borders
-identify fields, controls and media, never rows or page sections. Elevation is
-reserved for commits and transient layers. Shadow is not decoration.
+identify fields, controls and media, never rows or page sections. Fields sink;
+controls and media may use the short lift; transient layers use overlay
+elevation. Shadow is not decoration.
 
 ### 4.6 Familiarity before novelty
 

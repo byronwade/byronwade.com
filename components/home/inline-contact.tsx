@@ -83,7 +83,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							autoFocus
 							value={formData.name}
 							onChange={(event) => handleChange("name", event.target.value)}
-							placeholder="Your name…"
+							placeholder="Alex Rivera…"
 							required
 						/>
 						{fieldError?.field === "name" && (
@@ -152,7 +152,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						name="message"
 						value={formData.message}
 						onChange={(event) => handleChange("message", event.target.value)}
-						placeholder="A sentence or two about what you’re working on…"
+						placeholder="I’d like to talk about a project…"
 						required
 						rows={4}
 						className="min-h-28 resize-y"

@@ -57,7 +57,7 @@ export default async function SearchPage({
 								id="site-search"
 								maxLength={SEARCH_QUERY_MAX}
 								name="q"
-								placeholder="Projects, writing, pages"
+								placeholder="Projects, writing, pages…"
 								type="search"
 							/>
 						</div>
