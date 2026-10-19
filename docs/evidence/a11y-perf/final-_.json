@@ -1,10 +1,11 @@
 {
-  "checkedAt": "2026-10-16T15:05:44.651Z",
-  "commit": "b80f8d6568a35893f3db289b2434546f557a7d9b",
+  "checkedAt": "2026-10-19T23:45:09.313Z",
+  "commit": "c89bb503b281517b43ad497c73eb37d65e70c63e",
   "phase": "final",
-  "harnessHash": "901f2d28a415cc2773c92c232c113c2a45102b68fa63cb6b844ce218ca3fd5cf",
+  "harnessHash": "f6640aa5af0248009ddfe45f942ba45f75d812783c304d9fd9b06e6d59a5db5c",
   "figma": "Local API and embed fixtures; live provider integration is outside this audit",
-  "buildId": "uZom1UtveNJUfKT8wGY4x",
+  "email": "Local Resend HTTP fixture; no message is delivered",
+  "buildId": "egDoeIhtSPU37F2tqeVeE",
   "chrome": "Chrome/155.0.8059.80",
   "axe": "4.10.3",
   "routeCoverage": [
@@ -15,6 +16,7 @@
     { "template": "/privacy", "routes": ["/privacy"] },
     { "template": "/projects", "routes": ["/projects"] },
     { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
     { "template": "/terms", "routes": ["/terms"] },
     { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
     {
@@ -35,5 +37,476 @@
     }
   ],
   "expectedCases": 6,
-  "cases": []
+  "cases": [
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 35, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "home-390-dark.png",
+      "keyboard": { "checked": 35, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 37, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 37, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "home-1280-light.png",
+      "keyboard": { "checked": 37, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 37, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    }
+  ]
 }

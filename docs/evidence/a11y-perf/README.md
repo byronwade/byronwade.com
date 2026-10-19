@@ -26,6 +26,8 @@ Files containing `precheck` retain unsuccessful or intermediate probes. `matrix-
 
 `home-budget-dialog-precheck.json` measured the eager dialog dependency graph. Its extra script transfer motivated loading that behavior only when a panel opens. `home-budget-deferred-precheck.json` overlapped build tracing and is unsuitable for a performance comparison. Timing variation and host contention prevent a causal speedup claim from these probes.
 
+`home-budget-post-build-precheck.json` recorded LCP 3256ms and TBT 407ms. The same application/build in `home-budget-cold-precheck.json`, after a 45-second closed-browser interval, passed at LCP 2936ms and TBT 298ms. These observations show timing variation, not a causal attribution to a particular competing process. That narrow margin is not comfortable regression headroom. Both release runners now share the matrix's 45-second interval and five-second blank-page settle; these two probes remain separate from release acceptance.
+
 `a11y-precheck.json`, `final-_.json` and `final-_projects_byronwade-ui.json` are earlier interaction probes, not final acceptance results. `matrix-shortcut-precheck.json` is a partial run before the final breadcrumb and independent-scenario timing corrections. Source/build metadata distinguishes each probe.
 
 `matrix-toast-remount-precheck.json` and `toast-remount-before.txt` record the notification regression probe against application source `b722522`. Two mobile cases completed before the 768px light case stopped on two repeated success notifications. Its loopback transport never contacted Resend. The release matrix reruns this assertion after preserving the notification's keyed position across form closes.

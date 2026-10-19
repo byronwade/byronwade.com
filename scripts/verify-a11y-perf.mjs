@@ -1,10 +1,11 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { setTimeout as delay } from "node:timers/promises";
 import lighthouse, { snapshot } from "lighthouse";
-import puppeteer from "puppeteer-core";
 import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
 import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
+import { launchAuditBrowser } from "./audit-browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -60,6 +61,7 @@ const report = {
 	harnessHash: createHash("sha256")
 		.update(readFileSync(import.meta.filename))
 		.update(readFileSync("scripts/lighthouse-budget.mjs"))
+		.update(readFileSync("scripts/audit-browser.mjs"))
 		.update(readFileSync("scripts/production-session.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser-preload.mjs"))
@@ -89,35 +91,6 @@ if (process.argv.includes("--resume")) {
 	report.checkedAt = previous.checkedAt;
 }
 let browser = null;
-
-// Quiet flags shared with Lighthouse's Chrome launcher. Timer-forcing flags are
-// left out so background work is not promoted onto the measured thread.
-const QUIET_CHROME_FLAGS = [
-	"--disable-background-networking",
-	"--disable-component-extensions-with-background-pages",
-	"--disable-component-update",
-	"--disable-client-side-phishing-detection",
-	"--disable-default-apps",
-	"--disable-domain-reliability",
-	"--disable-extensions",
-	"--disable-hang-monitor",
-	"--disable-prompt-on-repost",
-	"--disable-sync",
-	"--metrics-recording-only",
-	"--mute-audio",
-	"--no-default-browser-check",
-	"--no-first-run",
-	"--password-store=basic",
-];
-
-function launchBrowser() {
-	return puppeteer.launch({
-		executablePath:
-			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-		headless: true,
-		args: QUIET_CHROME_FLAGS,
-	});
-}
 
 function readGeometry() {
 	const visible = (element) =>
@@ -221,17 +194,8 @@ async function openBrowser() {
 	if (browser) {
 		return;
 	}
-	// Simulated throttling multiplies host time. Let the chip recover with
-	// Chrome closed; a warm sample scores that heat as page work.
-	if (measure) {
-		await delay(45_000);
-	}
-	browser = await launchBrowser();
+	browser = await launchAuditBrowser({ lighthouse: measure });
 	report.chrome = report.chrome || (await browser.version());
-	// Launching Chrome is its own burst. Settle on about:blank before the trace.
-	if (measure) {
-		await delay(5000);
-	}
 }
 
 async function closeBrowser() {
@@ -913,10 +877,6 @@ function readLighthouseAccessibility(lhr) {
 		throw new Error(`Lighthouse audit incomplete: ${errors.join("; ")}`);
 	}
 	return score * 100;
-}
-
-function delay(ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function measurePage(url, route, width, page) {

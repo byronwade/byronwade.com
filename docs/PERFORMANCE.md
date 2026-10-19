@@ -13,6 +13,11 @@ mobile simulated profile. `scripts/perf-budget.mjs` checks every timing, byte
 and request-count limit and exits nonzero for any exceeded budget. Its server
 and browser are closed when the run finishes or fails. Set `CHROME_PATH` if
 Chrome is installed outside the Windows default location.
+Both performance runners share `scripts/audit-browser.mjs`: a 45-second interval
+with their previous Chrome closed, followed by a five-second blank-page settle
+after launch. Background-network suppression augments Puppeteer's default flags;
+Lighthouse's profiles and the JSON budgets remain unchanged. Other workloads can
+still contaminate a sample, so inspect host contention before resampling.
 
 The authoritative limits remain in the JSON file: FCP 2000ms, LCP 3000ms, TBT
 300ms, CLS 0.1 and Speed Index 3000ms; scripts 300KiB/10 requests, total

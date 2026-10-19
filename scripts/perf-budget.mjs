@@ -1,18 +1,14 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
-import puppeteer from "puppeteer-core";
+import { launchAuditBrowser } from "./audit-browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
 await withProductionServer(async (url) => {
-	const browser = await puppeteer.launch({
-		executablePath:
-			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-		headless: true,
-	});
+	const browser = await launchAuditBrowser({ lighthouse: true });
 	try {
 		const port = Number(new URL(browser.wsEndpoint()).port);
 		// Lighthouse 12 removed built-in budgets; assertions below own enforcement.
