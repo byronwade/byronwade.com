@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { getContactForStructuredData } from "@/lib/contact";
-import { siteUrl, xHandle, xUrl } from "@/lib/site";
+import { publicProfiles, siteUrl, xHandle } from "@/lib/site";
 
 const siteName = "Byron Wade";
+const profileLinks = publicProfiles.map((profile) => profile.href);
 const defaultDescription =
 	"Byron Wade builds software for service businesses, drawing on his experience running a plumbing company. Explore Thorbis, shipped projects, and lessons from the trades.";
 const defaultAuthor = "Byron Wade";
@@ -290,7 +291,7 @@ export function generateOrganizationStructuredData(): Record<string, unknown> {
 		name: siteName,
 		url: siteUrl,
 		logo: `${siteUrl}/logo.avif`,
-		sameAs: ["https://github.com/byronwade", "https://linkedin.com/in/byronwade", xUrl],
+		sameAs: [...profileLinks],
 		contactPoint: {
 			"@type": "ContactPoint",
 			contactType: "Professional",
@@ -311,7 +312,7 @@ export function generatePersonStructuredData(): Record<string, unknown> {
 		name: defaultAuthor,
 		url: siteUrl,
 		image: `${siteUrl}/avatar.avif`,
-		sameAs: ["https://github.com/byronwade", "https://linkedin.com/in/byronwade", xUrl],
+		sameAs: [...profileLinks],
 		jobTitle: "Product engineer and Thorbis founder",
 		worksFor: {
 			"@type": "Organization",
