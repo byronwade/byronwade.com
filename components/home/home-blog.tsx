@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { TagList } from "@/components/common/tag-list";
 import { Section } from "@/components/layout/page";
 import { Badge } from "@/components/ui/badge";
@@ -19,9 +19,9 @@ async function BlogList() {
 	return (
 		<IndexList>
 			{recentPosts.map((post) => (
-				<IndexRow key={post.slug}>
+				<li key={post.slug}>
 					<Link prefetch={false} className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-						<div className="flex items-start justify-between gap-4">
+						<div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
 							<span className={`font-medium text-foreground ${indexRowAccentClass}`}>
 								{post.title}
 							</span>
@@ -38,13 +38,11 @@ async function BlogList() {
 							</div>
 						</div>
 						{post.excerpt && (
-							<p className="line-clamp-2 max-w-2xl text-muted-foreground text-sm leading-relaxed">
-								{post.excerpt}
-							</p>
+							<p className="max-w-2xl text-body text-sm leading-relaxed">{post.excerpt}</p>
 						)}
 						{post.tags && post.tags.length > 0 && <TagList limit={3} tags={post.tags} />}
 					</Link>
-				</IndexRow>
+				</li>
 			))}
 		</IndexList>
 	);

@@ -70,7 +70,7 @@ export async function HomeHero() {
 					</CardContent>
 				</Card>
 			</div>
-			<dl className="grid grid-cols-3 gap-4 border-border border-t pt-6">
+			<dl className="grid grid-cols-3 gap-4 pt-6">
 				<Fact label="Year-two revenue, before closing" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
 				<Fact label="Projects documented here" value={String(projects.length)} />

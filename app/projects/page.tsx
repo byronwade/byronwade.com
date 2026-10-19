@@ -98,15 +98,15 @@ async function ProjectsList() {
 	);
 }
 
-/** Mirrors the real row's height and rules so the swap does not shift layout. */
+/** Uses the same open-row treatment as the resolved list. */
 function IndexFallback() {
 	return (
-		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
+		<div aria-busy="true" className="flex animate-pulse flex-col">
 			<p className="sr-only" role="status">
 				Loading projects…
 			</p>
 			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div className="flex items-center gap-4 border-border border-b py-5" key={`skeleton-${id}`}>
+				<div className="flex items-center gap-4 py-5" key={`skeleton-${id}`}>
 					<div className="h-4 w-40 rounded bg-muted" />
 					<div className="h-3 w-56 rounded bg-muted/70" />
 					<div className="ml-auto h-3 w-10 rounded bg-muted" />

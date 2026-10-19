@@ -2,13 +2,7 @@
 
 import { format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import {
-	EmptyState,
-	IndexList,
-	IndexRow,
-	indexRowAccentClass,
-	indexRowLinkClass,
-} from "@/components/common";
+import { EmptyState, IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -99,6 +93,8 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
+		// A deadline still needs recovery UI; only unmount suppresses state updates.
+		let active = true;
 		const controller = new AbortController();
 		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -112,22 +108,23 @@ function usePortfolioRepos(): PortfolioReposState {
 		void (async () => {
 			try {
 				const result = await fetchPortfolioRepos(controller.signal);
-				if (controller.signal.aborted) {
+				if (!active) {
 					return;
 				}
 				setRepos(result.repos);
 				// An empty list is only an error when the upstream call degraded; a
 				// genuinely empty profile is a valid, non-error state.
-				setDegraded(result.degraded && result.repos.length === 0);
+				setDegraded(result.degraded);
 				setError(result.degraded && result.repos.length === 0);
 			} catch (err) {
-				if (controller.signal.aborted) {
+				if (!active) {
 					return;
 				}
 				console.error("Error loading portfolio data:", err);
 				setError(true);
 			} finally {
-				if (!controller.signal.aborted) {
+				clearTimeout(timeoutId);
+				if (active) {
 					setLoading(false);
 					setRefreshing(false);
 				}
@@ -135,6 +132,7 @@ function usePortfolioRepos(): PortfolioReposState {
 		})();
 
 		return () => {
+			active = false;
 			clearTimeout(timeoutId);
 			controller.abort();
 		};
@@ -166,12 +164,13 @@ function PortfolioEmptyState({
 					: "Public repositories will show up here once they’re available."
 			}
 			action={
-				<div className="flex flex-wrap items-center justify-center gap-2">
-					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
+				<div className="flex flex-wrap items-center justify-center gap-3">
+					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2" size="lg">
 						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-						{refreshing ? "Retrying…" : "Try again"}
+						Try again
 					</Button>
 					<Button
+						size="lg"
 						variant="outline"
 						render={
 							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
@@ -194,10 +193,7 @@ function RepoSkeletonList() {
 				Loading repositories…
 			</p>
 			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div
-					className="flex animate-pulse flex-col gap-2 border-border border-b py-5 last:border-b-0"
-					key={`skeleton-${id}`}
-				>
+				<div className="flex animate-pulse flex-col gap-2 py-5" key={`skeleton-${id}`}>
 					<div className="flex items-baseline gap-4">
 						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
 						<div className="h-4 w-1/3 rounded bg-muted" />
@@ -220,7 +216,7 @@ function RepoSkeletonList() {
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
-		<IndexRow>
+		<li>
 			<a
 				className={indexRowLinkClass}
 				href={repo.html_url}
@@ -229,24 +225,24 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 			>
 				<div className="flex items-baseline gap-4">
 					<span
-						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums ${indexRowAccentClass}`}
+						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground text-xs tabular-nums ${indexRowAccentClass}`}
 					>
 						<Star aria-hidden="true" className="size-3" />
 						{repo.stargazers_count}
 					</span>
 
-					<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-						<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
+					<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
+						<span
+							className={`wrap-anywhere min-w-0 font-medium text-foreground ${indexRowAccentClass}`}
+						>
 							{titleize(repo.name)}
 						</span>
 						{repo.archived && (
-							<span className="shrink-0 font-mono text-[10px] text-muted-foreground uppercase tracking-wide">
-								Archived
-							</span>
+							<span className="shrink-0 text-copy-12 text-muted-foreground">Archived</span>
 						)}
 					</span>
 
-					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
+					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground text-xs tabular-nums sm:flex">
 						{repo.language && (
 							<span className="inline-flex items-center gap-1.5">
 								<span className={`size-2 rounded-full ${languageTone(repo.language)}`} />
@@ -266,17 +262,15 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 
 					<ExternalLink
 						aria-hidden="true"
-						className="size-3.5 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-150 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
+						className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
 					/>
 				</div>
 
 				{repo.description && (
-					<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
-						{repo.description}
-					</p>
+					<p className="max-w-2xl text-body text-sm leading-relaxed sm:pl-16">{repo.description}</p>
 				)}
 			</a>
-		</IndexRow>
+		</li>
 	);
 }
 
@@ -289,19 +283,17 @@ export default function PortfolioPage() {
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={
-						loading ? null : (
-							<Button
-								className="gap-2"
-								disabled={refreshing}
-								onClick={reload}
-								size="sm"
-								type="button"
-								variant="outline"
-							>
-								<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-								{refreshing ? "Refreshing…" : "Refresh"}
-							</Button>
-						)
+						<Button
+							className="gap-2"
+							disabled={loading || refreshing}
+							onClick={reload}
+							size="lg"
+							type="button"
+							variant="outline"
+						>
+							<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
+							Refresh
+						</Button>
 					}
 					lede={
 						<>
@@ -323,10 +315,13 @@ export default function PortfolioPage() {
 					}
 					title="Portfolio"
 				/>
+				<p className="sr-only" role="status">
+					{loading ? "Loading repositories…" : refreshing ? "Refreshing repositories…" : ""}
+				</p>
 
 				{loading ? (
 					<RepoSkeletonList />
-				) : error || repos.length === 0 ? (
+				) : repos.length === 0 ? (
 					<PortfolioEmptyState
 						degraded={degraded}
 						error={error}
@@ -335,12 +330,11 @@ export default function PortfolioPage() {
 					/>
 				) : (
 					<>
-						{degraded && (
-							<p
-								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-muted-foreground text-sm"
-								role="status"
-							>
-								This is a partial response, so some GitHub data may be stale. Refresh to try again.
+						{(degraded || error) && (
+							<p className="text-body text-sm leading-relaxed" role="status">
+								{error
+									? "Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub."
+									: "Some GitHub data may be unavailable or stale. Refresh to try again."}
 							</p>
 						)}
 						<IndexList as="ol">
@@ -352,6 +346,7 @@ export default function PortfolioPage() {
 						{visibleRepos < repos.length && (
 							<div className="text-center">
 								<Button
+									size="lg"
 									type="button"
 									variant="outline"
 									onClick={() => setVisibleRepos((prev) => prev + 8)}
