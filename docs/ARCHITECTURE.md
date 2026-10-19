@@ -75,7 +75,13 @@ components/
 ## Data
 
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
-  guarded against imports from client components
+  guarded against imports from client components. GitHub repository/profile and
+  Dribbble REST fetches have a five-second abort deadline that remains active
+  while reading the JSON body. A timeout uses the existing empty-list or profile
+  fallback, with the same cache keys, tags and one-hour revalidation policy.
+  `tests/portfolio-rest.test.mjs` exercises stalled headers and streamed bodies
+  against a local HTTP server without calling the providers. Figma's SDK uses
+  separate timeout races; these REST deadlines do not change that behavior.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
   client-safe, with no API, cache, or environment dependencies
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
