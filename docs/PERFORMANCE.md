@@ -78,8 +78,9 @@ snapshot because navigation-mode Lighthouse rejects them.
 - Launcher/toolbar feature owners render static SVGs on the server and pass them
   as ReactNode slots to their client interaction leaves. Their existing public
   APIs and state logic stay intact while glyph-definition JavaScript is removed.
-- Toast notifications mount with the contact forms; the unused global query-state
-  adapter is removed. Home does not load the breadcrumb popover graph.
+- The success toast loads only after a contact submission succeeds; the unused
+  global query-state adapter is removed. Home does not load the breadcrumb
+  popover graph.
 - Vercel Analytics and Speed Insights retain their existing root integration.
   React Scan is a development diagnostic and is excluded from production.
 - Images use the existing Next image configuration (WebP/AVIF and responsive

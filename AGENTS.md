@@ -539,11 +539,10 @@ Known false positives in this repository, confirmed by reading the code:
 
 Accepted, and not worth changing:
 
-- `prefer-html-dialog` on the launcher and dock panels. A native `<dialog>`
-  would give focus trapping for free, but those panels *are* the morph capsule;
-  replacing the element would break the animation the component exists for. The
-  fullscreen preview already implements `role="dialog"`, `aria-modal`, Escape,
-  and focus return by hand.
+- `prefer-html-dialog` on the launcher and dock panels. Those panels retain
+  their measurable morph capsule while `CapsulePanel` delegates focus trapping,
+  dismissal and focus return to Base UI's Dialog. The fullscreen preview uses
+  a native `<dialog>` for modal focus containment, background inertness and Escape.
 - `react-compiler-no-manual-memoization` inside `hooks/`. A hook's returned
   callbacks are part of its public contract, consumers put them in dependency
   arrays, so stable identity is deliberate there even though the compiler

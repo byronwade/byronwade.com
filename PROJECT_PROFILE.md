@@ -209,8 +209,10 @@ use them correctly.
 - **Format check:** same command; `npm run lint:fix` writes
 - **Build:** `npm run build` (`next build --webpack`)
 - **End-to-end:** none
-- **Accessibility:** no automated suite. Biome's a11y rules run in lint; manual
-  keyboard passes are required for critical flows.
+- **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` checks every
+  visual route template at 390/768/1280 in both themes with axe, Lighthouse,
+  keyboard, target, overflow and reduced-motion checks. Fixtures cover Figma;
+  live third-party embeds and assistive-technology checks remain outside it.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
