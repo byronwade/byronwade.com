@@ -4,6 +4,7 @@ import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import lighthouse, { snapshot } from "lighthouse";
 import puppeteer from "puppeteer-core";
 import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
+import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -62,9 +63,11 @@ const report = {
 		.update(readFileSync("scripts/production-session.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser-preload.mjs"))
+		.update(readFileSync("tests/fixtures/resend-browser.mjs"))
 		.update(readFileSync("lighthouse-budget.json"))
 		.digest("hex"),
 	figma: "Local API and embed fixtures; live provider integration is outside this audit",
+	email: "Local Resend HTTP fixture; no message is delivered",
 	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
 	chrome: "",
 	axe: "4.10.3",
@@ -658,7 +661,59 @@ async function checkInlineContact(page) {
 		throw new Error("Inline contact lost the visitor's draft after reopening");
 	}
 	await page.click('main button[aria-label="Close"]');
-	return [state, { name: "Inline contact focus return and draft", focusReturned, draftPreserved }];
+	await page.click("main button");
+	await page.waitForSelector('main input[name="email"]');
+	const sent = await checkContactSuccess(page);
+	await page.evaluate(() => {
+		window.auditToastAdditions = 0;
+		window.auditToastObserver = new MutationObserver((records) => {
+			for (const record of records) {
+				for (const node of record.addedNodes) {
+					if (node instanceof Element) {
+						window.auditToastAdditions +=
+							Number(node.matches("[data-sonner-toast]")) +
+							node.querySelectorAll("[data-sonner-toast]").length;
+					}
+				}
+			}
+		});
+		window.auditToastObserver.observe(document.body, { childList: true, subtree: true });
+	});
+	await page.click('main button[aria-label="Close"]');
+	await page.click("main button");
+	await page.waitForSelector('main input[name="name"]');
+	await delay(750);
+	const repeatedToasts = await page.evaluate(() => {
+		window.auditToastObserver.disconnect();
+		return window.auditToastAdditions;
+	});
+	if (repeatedToasts) {
+		throw new Error(
+			`Reopening inline contact repeated the success notification ${repeatedToasts} times`
+		);
+	}
+	await page.click('main button[aria-label="Close"]');
+	return [
+		state,
+		{ name: "Inline contact focus return and draft", focusReturned, draftPreserved },
+		sent,
+		{ name: "Inline contact keeps one notification per send", repeatedToasts },
+	];
+}
+
+async function checkContactSuccess(page) {
+	const name = await page.$eval('main input[name="name"]', (element) => element.value);
+	if (!name) {
+		await page.type('main input[name="name"]', "Accessibility audit visitor");
+	}
+	await page.type('main input[name="email"]', "visitor@example.invalid");
+	await page.type('main textarea[name="message"]', "Local browser fixture; no email is delivered.");
+	await page.click('main button[type="submit"]');
+	await page.waitForFunction(() =>
+		document.querySelector('main [role="status"]')?.textContent.includes("Sent.")
+	);
+	await page.waitForSelector("[data-sonner-toast]");
+	return await readState(page, "Contact success with local transport");
 }
 
 async function checkCapsuleKeyboard(page, label) {
@@ -780,7 +835,11 @@ async function checkContactStates(page) {
 	await page.waitForSelector('main a[href^="mailto:"]');
 	await page.click("footer button");
 	await page.waitForSelector('footer a[href^="mailto:"]');
-	return [validation, { name: "Main and footer email reveal", passed: true }];
+	return [
+		validation,
+		{ name: "Main and footer email reveal", passed: true },
+		await checkContactSuccess(page),
+	];
 }
 
 async function checkKeyboard(page) {
@@ -916,49 +975,51 @@ async function measurePage(url, route, width, page) {
 }
 
 try {
-	await withFigmaFixture((env) =>
-		withProductionServer(
-			async (url) => {
-				const cases = routes
-					.filter((value) => !selectedRoute || selectedRoute === value)
-					.flatMap((route) =>
-						[390, 768, 1280].flatMap((width) =>
-							["light", "dark"].map((theme) => ({ route, width, theme }))
-						)
-					)
-					.filter(
-						({ route, width, theme }) =>
-							!report.cases.some(
-								(entry) => entry.route === route && entry.width === width && entry.theme === theme
+	await withResendFixture((emailEnv) =>
+		withFigmaFixture((env) =>
+			withProductionServer(
+				async (url) => {
+					const cases = routes
+						.filter((value) => !selectedRoute || selectedRoute === value)
+						.flatMap((route) =>
+							[390, 768, 1280].flatMap((width) =>
+								["light", "dark"].map((theme) => ({ route, width, theme }))
 							)
+						)
+						.filter(
+							({ route, width, theme }) =>
+								!report.cases.some(
+									(entry) => entry.route === route && entry.width === width && entry.theme === theme
+								)
+						);
+					await cases.reduce(
+						(previous, { route, width, theme }) =>
+							previous.then(async () => {
+								const result = await auditPage(url, route, width, theme);
+								report.cases.push(result);
+								writeFileSync(reportFile, JSON.stringify(report));
+								console.log(
+									JSON.stringify({
+										route,
+										width,
+										theme,
+										violations: result.violations.length,
+										targets: result.targetFailures.length,
+										overflow: result.overflow,
+										navOverlap: result.navOverlap,
+										keyboardFailures: result.keyboard?.failures.length,
+										lighthouseAccessibility: result.lighthouse?.accessibility,
+										tbt: result.lighthouse?.timings?.["total-blocking-time"],
+										lcp: result.lighthouse?.timings?.["largest-contentful-paint"],
+										budgetFailures: result.lighthouse?.budget?.failures,
+									})
+								);
+							}),
+						Promise.resolve()
 					);
-				await cases.reduce(
-					(previous, { route, width, theme }) =>
-						previous.then(async () => {
-							const result = await auditPage(url, route, width, theme);
-							report.cases.push(result);
-							writeFileSync(reportFile, JSON.stringify(report));
-							console.log(
-								JSON.stringify({
-									route,
-									width,
-									theme,
-									violations: result.violations.length,
-									targets: result.targetFailures.length,
-									overflow: result.overflow,
-									navOverlap: result.navOverlap,
-									keyboardFailures: result.keyboard?.failures.length,
-									lighthouseAccessibility: result.lighthouse?.accessibility,
-									tbt: result.lighthouse?.timings?.["total-blocking-time"],
-									lcp: result.lighthouse?.timings?.["largest-contentful-paint"],
-									budgetFailures: result.lighthouse?.budget?.failures,
-								})
-							);
-						}),
-					Promise.resolve()
-				);
-			},
-			{ env }
+				},
+				{ env: { ...env, ...emailEnv } }
+			)
 		)
 	);
 } finally {

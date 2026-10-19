@@ -35,6 +35,8 @@ template after a production build. It requires a representative for each dynamic
 template and covers 390, 768 and 1280 CSS pixels in light and dark. The same
 budget assessor checks each route. Intentional HTTP errors use an accessibility
 snapshot because navigation-mode Lighthouse rejects them.
+Figma and email delivery use local fixtures. Browser submissions exercise success
+feedback without delivering a message or certifying a live provider.
 
 ## Current ownership
 

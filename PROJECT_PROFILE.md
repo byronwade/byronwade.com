@@ -211,7 +211,7 @@ use them correctly.
 - **End-to-end:** none
 - **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` checks every
   visual route template at 390/768/1280 in both themes with axe, Lighthouse,
-  keyboard, target, overflow and reduced-motion checks. Fixtures cover Figma;
+  keyboard, target, overflow and reduced-motion checks. Fixtures cover Figma and email transport;
   live third-party embeds and assistive-technology checks remain outside it.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`

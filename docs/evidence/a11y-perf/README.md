@@ -8,9 +8,11 @@ Run `node scripts/verify-a11y-perf.mjs --lighthouse` after a production build. T
 
 The screenshots named `<route>-1280-light.png` and `<route>-390-dark.png` show the route before interaction. Earlier captures at 375px are prior probes. Full-page captures include below-fold content. Additional `dev-*` captures exercise a hidden development server; `motion-*` captures inspect the retained capsule at quarter-speed. Every server uses a free loopback port and closes after its verification.
 
-Keyboard checks cover visible focus, viewport visibility, header obstruction, capsule containment and dismissal, focus return, immediate exit Tab, rapid reopening, global shortcut ownership, contact validation and reveal, and native fullscreen preview containment. Contact fixtures never submit a message. Reduced-motion checks inspect computed transitions/animations, theme changes and project contents navigation.
+Keyboard checks cover visible focus, viewport visibility, header obstruction, capsule containment and dismissal, focus return, immediate exit Tab, rapid reopening, global shortcut ownership, contact validation and reveal, and native fullscreen preview containment. Contact success and notification lifecycle checks submit only to a loopback Resend fixture. Reduced-motion checks inspect computed transitions/animations, theme changes and project contents navigation.
 
 ## Fixture boundaries
+
+The production email SDK uses its supported base URL override and a synthetic credential to send browser submissions to an owned loopback HTTP fixture. This verifies successful form feedback and that closing/reopening inline contact does not repeat the success notification. No email is delivered; live provider and inbox behavior are not verified.
 
 Figma success and unavailable cases use local API fixtures. The embedded frame is explicitly replaced with a local fixture document. This covers application layout, headings, controls, switching and error handling; it does not certify the live third-party iframe or account data. The fixture has no static thumbnail, so the unavailable-preview branch is covered and the real thumbnail branch is not.
 
@@ -25,6 +27,8 @@ Files containing `precheck` retain unsuccessful or intermediate probes. `matrix-
 `home-budget-dialog-precheck.json` measured the eager dialog dependency graph. Its extra script transfer motivated loading that behavior only when a panel opens. `home-budget-deferred-precheck.json` overlapped build tracing and is unsuitable for a performance comparison. Timing variation and host contention prevent a causal speedup claim from these probes.
 
 `a11y-precheck.json`, `final-_.json` and `final-_projects_byronwade-ui.json` are earlier interaction probes, not final acceptance results. `matrix-shortcut-precheck.json` is a partial run before the final breadcrumb and independent-scenario timing corrections. Source/build metadata distinguishes each probe.
+
+`matrix-toast-remount-precheck.json` and `toast-remount-before.txt` record the notification regression probe against application source `b722522`. Two mobile cases completed before the 768px light case stopped on two repeated success notifications. Its loopback transport never contacted Resend. The release matrix reruns this assertion after preserving the notification's keyed position across form closes.
 
 ## Release results
 

@@ -1,0 +1,36 @@
+Opening All products
+Opening Search
+Opening Support open source
+{"route":"/","width":390,"theme":"light","violations":0,"targets":0,"overflow":false,"navOverlap":[],"keyboardFailures":0}
+Opening All products
+Opening Search
+Opening Support open source
+{"route":"/","width":390,"theme":"dark","violations":0,"targets":0,"overflow":false,"navOverlap":[],"keyboardFailures":0}
+file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/production-session.mjs:76
+		const wrapped = new Error(
+		                ^
+
+Error: Verification failed (server exit null, signal null): ▲ Next.js 16.2.7
+- Local:         http://127.0.0.1:55904
+- Network:       http://127.0.0.1:55904
+✓ Ready in 1394ms
+⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+    at runProductionAttempt (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/production-session.mjs:76:19)
+    at async withFigmaFixture (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/fixtures/figma-browser.mjs:44:10)
+    at async withResendFixture (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/fixtures/resend-browser.mjs:22:10)
+    at async file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:978:2 {
+  [cause]: Error: Reopening inline contact repeated the success notification 2 times
+      at checkInlineContact (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:691:9)
+      at async checkShellStates (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:445:18)
+      at async checkRouteStates (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:328:10)
+      at async auditPage (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:289:20)
+      at async file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:998:24
+      at async withProductionServer.env (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:995:6)
+      at async runProductionAttempt (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/production-session.mjs:74:10)
+      at async withFigmaFixture (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/fixtures/figma-browser.mjs:44:10)
+      at async withResendFixture (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/fixtures/resend-browser.mjs:22:10)
+      at async file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/verify-a11y-perf.mjs:978:2
+}
+
+Node.js v24.21.0
