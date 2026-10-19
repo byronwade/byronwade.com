@@ -10,7 +10,7 @@
 /**
  * Interactive outline pill: social links, tags, share buttons, skill chips.
  * Muted by default; borrows the brand accent on hover so interaction reads
- * consistently everywhere (gold hover, never a loud fill).
+ * consistently everywhere.
  */
 export const pillLinkClass =
-	"inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring";
+	"inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-muted hover:text-foreground focus-ring";

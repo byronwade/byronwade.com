@@ -30,7 +30,6 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	const shareLinks = {
 		twitter: `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=${xHandle}`,
 		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 	};
 
 	const handleCopy = async () => {
@@ -53,7 +52,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				});
 			} catch (err) {
 				// User cancelled or error
-				if ((err as Error).name !== "AbortError") {
+				if (!(err instanceof Error && err.name === "AbortError")) {
 					console.error("Share failed:", err);
 				}
 			}
@@ -61,7 +60,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	};
 
 	return (
-		<div className={`flex flex-wrap items-center gap-2 ${className || ""}`}>
+		<div className={`flex flex-wrap items-center gap-3 ${className || ""}`}>
 			{/* Native Share (mobile) */}
 			{canShare && (
 				<button
@@ -101,18 +100,12 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 
 			{/* Copy Link */}
 			<button type="button" onClick={handleCopy} className={pillLinkClass} aria-label="Copy link">
-				{copied ? (
-					<>
-						<Check className="size-4" />
-						<span>Copied!</span>
-					</>
-				) : (
-					<>
-						<Copy className="size-4" />
-						<span>Copy Link</span>
-					</>
-				)}
+				{copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+				<span>Copy link</span>
 			</button>
+			<span className="sr-only" role="status">
+				{copied ? "Link copied" : ""}
+			</span>
 		</div>
 	);
 }
