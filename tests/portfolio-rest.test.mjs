@@ -60,6 +60,7 @@ const integrations = [
 		payload: [repository],
 		expected: [repository],
 		fallback: [],
+		rejects: true,
 		key: "github-repos",
 		tag: "github",
 	},
@@ -118,6 +119,23 @@ async function fixture(context, integration, mode) {
 	return { requests, errors, server, received };
 }
 
+// Capture both outcomes immediately so a rejected request never goes unhandled.
+async function loadOutcome(integration) {
+	try {
+		return { value: await integration.load() };
+	} catch (error) {
+		return { error };
+	}
+}
+
+function assertFailure(integration, result) {
+	if (integration.rejects) {
+		assert.ok(result.error instanceof Error, "the API must receive the repository failure");
+	} else {
+		assert.deepEqual(result, { value: integration.fallback });
+	}
+}
+
 for (const integration of integrations) {
 	test(`${integration.name} retains its successful output and cache policy`, {
 		timeout: 5000,
@@ -134,11 +152,11 @@ for (const integration of integrations) {
 	});
 
 	for (const mode of ["headers", "body"]) {
-		test(`${integration.name} aborts stalled ${mode} and returns its fallback`, {
+		test(`${integration.name} aborts stalled ${mode} and preserves its failure outcome`, {
 			timeout: 10_000,
 		}, async (context) => {
 			const { requests, errors, server, received } = await fixture(context, integration, mode);
-			const loading = integration.load();
+			const loading = loadOutcome(integration);
 			const guard = new AbortController();
 			let result;
 			try {
@@ -152,12 +170,8 @@ for (const integration of integrations) {
 				server.closeAllConnections();
 				await loading;
 			}
-			assert.notEqual(
-				result,
-				"still waiting",
-				"the loader must fall back when its deadline expires"
-			);
-			assert.deepEqual(result, integration.fallback);
+			assert.notEqual(result, "still waiting", "the loader must settle when its deadline expires");
+			assertFailure(integration, result);
 			assert.equal(requests[0].options.signal.aborted, true);
 			assert.deepEqual(received, [mode], "the local server reached the stalled phase");
 			assert.equal(errors.length, 1);
@@ -165,11 +179,11 @@ for (const integration of integrations) {
 	}
 
 	for (const mode of ["http-error", "invalid-json"]) {
-		test(`${integration.name} preserves its ${mode} fallback`, {
+		test(`${integration.name} preserves its ${mode} failure outcome`, {
 			timeout: 5000,
 		}, async (context) => {
 			const { errors } = await fixture(context, integration, mode);
-			assert.deepEqual(await integration.load(), integration.fallback);
+			assertFailure(integration, await loadOutcome(integration));
 			assert.equal(errors.length, 1);
 		});
 	}
