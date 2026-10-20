@@ -33,6 +33,9 @@ small targets and uncaught errors. Small inline prose links are listed as
 measurements, not silently excluded from the evidence.
 The after runner rejects main-content standalone targets below 44px; only native inline
 anchors within prose/list text use the documented inline-text exception.
+It also fails on any uncaught page error or route that never leaves loading.
+The one exemption is React's #418 text mismatch on the 404 route, the
+breadcrumb hydration warning reserved for the other lane (FINDINGS.md R01).
 
 There is no `/about` route. `/` and `/resume` contain that material. The 14
 baseline destinations include the 12 requested present routes plus populated
