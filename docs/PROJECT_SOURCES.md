@@ -124,3 +124,36 @@ hypothetical revenue comparisons, not forecasts or profit figures.
 Byron's opinion, personal experience and reported 46% repeat-revenue share are
 preserved as his account, not independently audited findings. No source here
 establishes that Nexstar training causes plumbing customers to leave.
+
+## Goodmarks availability and feature claims, October 20, 2026
+
+Reviewed `content/projects/goodmarks.md` against Goodmarks' public product pages.
+The previous write-up described a finished native app released to both stores,
+store subscriptions, customer adoption, and revenue without supporting release
+or business records. The following first-party sources support a narrower account:
+
+| Source | Evidence | Limits / correction |
+| --- | --- | --- |
+| [Public homepage](https://goodmarks.io/) | Web signup is offered; the iOS/Android section invites notification when the native app ships. | Replace the blanket Live metric with Web signup and remove assertions of a finished native release. A reachable marketing page does not prove successful signup, active users, revenue, or service reliability. |
+| [Routing explanation](https://goodmarks.io/no-review-gating) | Low ratings get private feedback alongside the same public review destinations available to other ratings. | Correct the claim that unhappy customers go privately instead of publicly. This is documented intended behavior, not an exercised flow or a legal/compliance finding. |
+| [Roadmap](https://goodmarks.io/roadmap) | SMS requests are upcoming; Smart Links and QR codes are beta; NFC tags are listed as placements. | Remove shipped SMS and native NFC-writing assertions. Link placement does not establish device-writing support. No delivery or hardware test was performed. |
+| [Delight feature page](https://goodmarks.io/features/delight) | Gifting is beta, with caps and an owner approval queue for campaigns. The page distinguishes a private rating signal from a public review. | Remove the unqualified automatic five-star-reviewer reward and referral-cost claims. Gifting pages and older release notes vary on trigger/approval details, so this case study does not claim one verified end-to-end implementation. |
+| [Stack credits](https://goodmarks.io/humans.txt), last updated May 7, 2026 | Next.js 15, React, TypeScript, Vercel, Supabase, and Stripe are named. | Attribute the web stack to these dated credits; do not infer a current version or validate the former Expo/React Native, biometric, push, local-security, or offline claims. |
+| [Changelog](https://goodmarks.io/changelog), May 2026 entries | Web dashboard billing and a Stripe customer portal are described; several integrations and features carry beta labels. | Does not establish store subscriptions, production hardening, adoption, or measured outcomes. Release notes are first-party reports, not independent runtime verification. |
+
+The public homepage also makes aggregate adoption/outcome claims, but no
+underlying records or measurement method were reviewed. They are not copied into
+this portfolio. No identifiable Goodmarks listing was found in bounded public
+Apple/Google store searches, and no matching implementation repository was found
+in Byron's public GitHub inventory. Those absences do not prove no listing or
+private implementation exists; the native waitlist is the direct basis for the
+availability correction. No private repository, account, purchase, signup, or
+production setting was accessed.
+
+Byron's service-business motivation is retained. The original publication date,
+route, front-matter shape, heading anchors, and earlier-work grouping are
+preserved. Archived is this portfolio's editorial group, not proof that Goodmarks
+has shut down. Reinstating native-release, adoption, or revenue claims requires
+identifiable release records or owner-supplied business evidence with a period
+and source. The separate Wade's Plumbing front-matter claim remains an owner
+follow-up; it is outside this correction.

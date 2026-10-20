@@ -8,77 +8,77 @@ status: "Archived"
 tagline: "reputation, protected"
 order: 1
 date: 2026-05-17
-excerpt: "My flagship product. A mobile-first review platform that sends happy customers to public reviews and unhappy ones to a private inbox, so a business gets a chance to fix the problem before it turns into a one-star rating."
-problem: "Angry customers post publicly and happy ones usually do not, so local businesses end up with a review profile worse than the service they give."
-outcome: "Happy customers go to public reviews and unhappy ones land in a private inbox first, so the reputation gets protected before it breaks."
+excerpt: "A review-routing product for local businesses, with a public web signup and a native-app waitlist. It combines public review links with a private feedback option for service recovery."
+problem: "Local businesses need a way to ask for feedback and respond when a customer has a problem."
+outcome: "A shared review link with public platform choices and a private feedback channel; customer and revenue outcomes are not measured here."
 metrics:
   - label: Status
-    value: "Live"
+    value: "Web signup"
   - label: Focus
     value: "Reviews"
   - label: Surface
-    value: "Mobile-first"
+    value: "Web"
 ---
 
 # Goodmarks: Turning Customer Feedback Into Reputation, Not Risk
 
-**Goodmarks** is the product I'm proudest of shipping. It's a live, mobile-first reputation platform that helps local and small businesses collect more reviews, catch problems before they go public, and turn their best customers into a growth engine. It's complete, it's in people's hands, and it's the flagship of everything I build.
+**Goodmarks** grew out of my experience running a plumbing company: I wanted a way to hear about a customer's problem while I could still respond to it.
+
+As checked on October 20, 2026, [goodmarks.io](https://goodmarks.io) offers web signup and lists the native iOS and Android app as a notification waitlist. This case study does not establish an app-store release, customer adoption, or revenue.
 
 ---
 
 ## The Problem
 
-For a local business, online reviews are oxygen. A handful of one-star ratings can quietly choke off new customers for months, and most owners never see the complaint until it's already public and permanent. Meanwhile the customers who *loved* the service, the ones who would happily leave a glowing review, almost never do. Nobody asked them at the right moment in the right way.
+Running a service business made the gap between doing the work and hearing about the experience hard to ignore. A customer might have a complaint I could resolve, but I needed a way to hear it. Asking for feedback also needed to fit into the workday.
 
-The result is a brutal asymmetry: angry customers are motivated to post publicly, delighted customers aren't, and the average business ends up with a review profile that's far worse than the experience it actually delivers.
-
-Goodmarks exists to close that gap.
+That is the problem I set out to address. A feedback channel gives an owner somewhere to start a conversation; it does not guarantee a better rating or prevent a public complaint.
 
 ---
 
 ## What Goodmarks Does
 
-At its core, Goodmarks is a **smart review-routing engine**. When a business asks a customer for feedback, the customer first rates their experience privately. From there, the flow splits:
+The [published routing explanation](https://goodmarks.io/no-review-gating) describes a rating-led flow with two options:
 
-- **Happy customers** go straight to the public platforms that matter. Google, and wherever else the business is competing to be seen.
-- **Unhappy customers** are routed into a **private inbox** instead, giving the owner a chance to make it right before frustration becomes a permanent one-star review.
+- **Public reviews:** every rating retains access to the business's configured review platforms.
+- **Private feedback:** lower ratings also get a channel to contact the owner. It is an additional option, not a replacement for posting publicly.
 
-This is not about hiding bad feedback. It is about giving a small business the same shot at fixing things that the big brands get, so the public reviews reflect a relationship that got sorted out instead of somebody typing while they are still angry.
+This account comes from the public documentation; the signed-in flow was not exercised for this review.
 
 ### Beyond routing
 
-Goodmarks grew into a full reputation toolkit:
+The public product pages distinguish available web features from upcoming work:
 
-**Multi-channel collection.** Requests go out over SMS and email, and customers can also leave feedback through QR codes placed on receipts, tables, counters, and vehicles. Every channel funnels into the same routing logic.
+**Links and collection.** The [roadmap](https://goodmarks.io/roadmap) describes email requests and marks Smart Links and QR codes as beta. SMS requests remain upcoming, rather than a shipped channel.
 
-**Tap-to-review with NFC.** Goodmarks writes review links directly to NFC tags, so a customer can tap their phone on a card or sticker and land straight in the review flow. It's the lowest-friction collection method there is, and it works in the physical world where service actually happens.
+**Physical entry points.** The roadmap includes NFC tags among the placements for review links, alongside receipts, vehicles, and counter cards.
 
-**Referral gifting.** Five-star reviewers can be automatically thanked with a gift, with budget controls so the program never runs away from the owner. It closes the loop: your happiest customers become your cheapest, most credible marketing channel.
+**Customer appreciation.** The [Delight feature page](https://goodmarks.io/features/delight) describes beta gifting, budget caps, and an owner approval queue for campaigns.
 
-**A reputation dashboard.** Route views, ratings over time, public click-through, and an at-a-glance "review protection score" let an owner see, in seconds, whether their reputation is trending up or down.
+**A feedback dashboard.** The public site describes rating and link-activity analytics to help an owner follow incoming feedback.
 
-**Customization and rules.** Branding, email templates, and routing rules are all configurable so the experience feels like the business's own, not a generic third-party form.
+**Customization.** The public site describes business branding and configurable review destinations.
 
 ---
 
 ## How It's Built
 
-Goodmarks is a cross-platform mobile app built with **Expo** and **React Native** (React 19), shipping to both iOS and Android from a single TypeScript codebase. The backend runs on **Supabase** (Postgres + auth), with **TanStack React Query** managing data fetching, caching, and the offline-tolerant behavior a field-used app demands.
+The public [stack credits](https://goodmarks.io/humans.txt), dated May 7, 2026, describe a **Next.js**, **React**, and **TypeScript** web application using **Supabase**, hosted on **Vercel**, with **Stripe** billing. These are published credits, not an inspection of the current application source.
 
-A few decisions that mattered:
+The distinction between the web product and the native plan matters:
 
-**Native hardware, not just screens.** Goodmarks leans into what a phone can actually do. NFC tag writing, device contact import for building campaigns, push notifications for new feedback, and biometric unlock with Face ID or a fingerprint to protect a business's reputation data. These are not web features bolted onto a mobile shell. They are the reason the product feels native.
+**Native availability.** The public site lists iOS and Android on a native-app waitlist. The documented web product is the available surface described here.
 
-**Subscriptions through the stores.** Billing runs through native App Store and Google Play subscriptions rather than a separate payment processor, with an annual plan that rewards commitment. It keeps signup friction near zero and purchases inside the platform customers already trust.
+**Web subscriptions.** The [May release notes](https://goodmarks.io/changelog) describe a dashboard billing page and Stripe customer portal. They do not establish App Store or Google Play subscription availability.
 
-**Resilience as a feature.** Background tasks handle review notifications, API keys live in secure local storage, and the app is built to behave gracefully when connectivity drops, because the counter of a busy shop is exactly where signal goes to die. Recent work has gone into hardening exactly these edges (offline-state handling, keyboard-avoidance, accessibility passes).
+**Ongoing work.** The release notes describe integration hardening and label several newer features beta. Their release stages matter when deciding which parts of the product to try.
 
 ---
 
 ## Why It's the Flagship
 
-Goodmarks is the product where everything I care about as a developer shows up at once: a real problem with real stakes for real businesses, a thesis that's a little contrarian (protect the relationship, don't just farm stars), and an execution bar high enough to ship to two app stores and keep iterating. It is not a prototype or a tech demo. It is a finished product that I still maintain and it earns its keep.
+I originally described Goodmarks as my flagship because it connected my service-business experience with product development. That motivation still explains the project. This site's earlier-work grouping is editorial; the public web product has its own release history.
 
-If you run a business that lives and dies by its reputation, Goodmarks makes sure the version of you that the internet sees is the version your best customers already know.
+The goal is to make feedback easier to collect and act on. Establishing whether it improves retention, referrals, or ratings requires measured results.
 
 Visit [goodmarks.io](https://goodmarks.io) to learn more.
