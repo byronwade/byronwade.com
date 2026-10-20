@@ -2,7 +2,7 @@
 
 // Thorbis site-header + site-shell.stylex: headerBase, navLink, menu and menuLink.
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { HeaderPopover } from "@/components/layout/header-popover";
 import { isActive, navItems } from "@/components/layout/nav-config";
@@ -19,6 +19,13 @@ export function NavDock({
 	icons: Record<(typeof navItems)[number]["href"], ReactNode>;
 }) {
 	const pathname = usePathname();
+	// The static 404 is prerendered at /_not-found but hydrates at the visitor's URL,
+	// e.g. /blog/missing. Its segment is the same on both sides, so no section is
+	// current there and the server and browser markup agree.
+	const current =
+		useSelectedLayoutSegment() === "_not-found"
+			? undefined
+			: navItems.find((item) => isActive(item, pathname));
 	const previousPath = useRef(pathname);
 	const [open, setOpen] = useState(false);
 	const headerRef = useRef<HTMLElement>(null);
@@ -83,10 +90,10 @@ export function NavDock({
 								key={item.href}
 								href={item.href}
 								prefetch={false}
-								aria-current={isActive(item, pathname) ? "page" : undefined}
+								aria-current={item === current ? "page" : undefined}
 								className={cn(
 									"relative isolate inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2.5 font-medium text-copy-13 tracking-[-0.015em] outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-									isActive(item, pathname)
+									item === current
 										? "text-foreground before:pointer-events-none before:absolute before:inset-x-0 before:top-1/2 before:-z-10 before:h-7 before:-translate-y-1/2 before:rounded-full before:border before:border-border before:bg-muted"
 										: "text-muted-foreground"
 								)}
@@ -129,7 +136,7 @@ export function NavDock({
 						>
 							<div className="flex flex-wrap items-center justify-between gap-2 px-2 py-1.5 font-medium font-mono text-copy-12 text-muted-foreground">
 								<span>Navigate</span>
-								<span>{navItems.find((item) => isActive(item, pathname))?.label ?? "Explore"}</span>
+								<span>{current?.label ?? "Explore"}</span>
 							</div>
 							<nav aria-label="Mobile site navigation" className="grid gap-0.5">
 								{navItems.map((item, index) => (
@@ -139,10 +146,10 @@ export function NavDock({
 										href={item.href}
 										prefetch={false}
 										onClick={() => setOpen(false)}
-										aria-current={isActive(item, pathname) ? "page" : undefined}
+										aria-current={item === current ? "page" : undefined}
 										className={cn(
 											"grid min-h-12 grid-cols-[1.9rem_minmax(0,1fr)_auto] items-center gap-[0.65rem] rounded-lg px-2.5 py-1.5 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2",
-											isActive(item, pathname) && "bg-muted shadow-(--shadow-short)"
+											item === current && "bg-muted shadow-(--shadow-short)"
 										)}
 									>
 										<span className="text-muted-foreground">{icons[item.href]}</span>
@@ -158,7 +165,7 @@ export function NavDock({
 											aria-hidden="true"
 											className={cn(
 												"size-1.5 rounded-full",
-												isActive(item, pathname) && "bg-brand ring-3 ring-brand/12"
+												item === current && "bg-brand ring-3 ring-brand/12"
 											)}
 										/>
 									</Link>
