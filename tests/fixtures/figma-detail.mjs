@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import { registerHooks } from "node:module";
+import { createElement, Fragment } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 
@@ -58,6 +59,10 @@ export const getFigmaFile = () => async () => fixture.file;`,
 });
 
 const { default: FigmaDetailPage } = await import("../../app/portfolio/figma/[key]/page.tsx");
+const { BreadcrumbTrail } = await import("../../components/layout/breadcrumb-trail-view.tsx");
+const { PathnameContext } = await import(
+	"next/dist/shared/lib/hooks-client-context.shared-runtime.js"
+);
 const { fixture } = await import("@/lib/portfolio-data");
 function file(overrides = {}) {
 	return {
@@ -72,10 +77,26 @@ function file(overrides = {}) {
 	};
 }
 
-export async function renderFigmaDetail(overrides = {}) {
+export async function renderFigmaDetail(overrides = {}, { includeSiteBreadcrumb = false } = {}) {
 	fixture.file = file(overrides);
+	const page = await FigmaDetailPage({ params: Promise.resolve({ key: "ExampleKey" }) });
 	return renderToStaticMarkup(
-		await FigmaDetailPage({ params: Promise.resolve({ key: "ExampleKey" }) })
+		includeSiteBreadcrumb
+			? createElement(
+					Fragment,
+					null,
+					createElement(
+						"div",
+						{ className: "hidden xl:block" },
+						createElement(
+							PathnameContext.Provider,
+							{ value: "/portfolio/figma/ExampleKey" },
+							createElement(BreadcrumbTrail, { labels: { "/": "Home", "/portfolio": "Portfolio" } })
+						)
+					),
+					createElement("main", null, page)
+				)
+			: page
 	);
 }
 
