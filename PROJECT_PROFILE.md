@@ -202,18 +202,27 @@ use them correctly.
   class merging/token/favicon contracts
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
-  production client chunks, plus visible writing dates matching their machine dates
+  production client chunks, plus visible writing dates matching their machine dates,
+  resume print/PDF contracts, and header browser checks
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
 - **Format check:** same command; `npm run lint:fix` writes
 - **Build:** `npm run build` (`next build --webpack`)
-- **End-to-end:** none
-- **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` checks every
-  visual route template at 390/768/1280 in both themes with axe, Lighthouse,
-  keyboard, target, overflow and reduced-motion checks. Fixtures cover Figma and email transport;
-  live third-party embeds and assistive-technology checks remain outside it.
+- **End-to-end:** header navigation, search, focus return, lazy-panel cancellation,
+  and responsive geometry run in headless Chrome through `npm run test:rendered`.
+  Set `CHROME_PATH` when Chrome is not at the test's default Windows installation path.
+  The 32-case geometry matrix uses the production shell with short main content to
+  isolate the header; real-route interaction checks remain separate.
+- **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` is the
+  full-route audit: every visual route template at 390/768/1280 in both themes with
+  axe, Lighthouse, keyboard, target, overflow and reduced-motion checks. Fixtures
+  cover Figma and email transport. Header browser regressions in `test:rendered`
+  cover keyboard operation, focus, touch targets and layout at 100%/200% text.
+  Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
+  checks remain outside these, so manual keyboard passes are still required for
+  critical flows.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
@@ -259,7 +268,7 @@ the user's instruction each time.
 
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
-| Automated tests | Contact-action, cache-refresh, and content-date regressions via `npm test`; other domains uncovered | Contact, cache-refresh, and date changes require `npm test` locally | Add focused regressions when changing behavior | `tests/contact-form.test.mjs`, `tests/cache-revalidation.test.mjs`, `tests/content-dates.test.mjs` |
+| Automated tests | Native regressions and rendered contracts, including header interaction and responsive geometry; no full-route accessibility suite | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |

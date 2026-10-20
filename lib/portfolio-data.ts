@@ -21,6 +21,10 @@ function createFigmaClient(accessToken: string, timeoutMs: number) {
 		config.signal = AbortSignal.timeout(timeoutMs);
 		return config;
 	});
+	client.client.interceptors.response.use(undefined, () => {
+		// Next logs cache revalidation errors; Axios failures carry authentication headers.
+		throw new Error("Figma request failed");
+	});
 	return client;
 }
 
@@ -311,40 +315,41 @@ export const getFigmaFile = (key: string): (() => Promise<FigmaFileDetail | null
 	if (!FIGMA_FILE_KEY.test(key)) {
 		return () => Promise.resolve(null);
 	}
-	return unstable_cache(
-		async () => {
-			const accessToken = process.env.FIGMA_ACCESS_TOKEN;
-
-			if (!accessToken) {
-				console.warn("Figma access token not found - skipping Figma file");
-				return null;
-			}
-
-			const client = createFigmaClient(accessToken, 2000);
-
-			try {
-				const { data }: { data: unknown } = await client.file(key);
-				const file = parseFigmaFileDetail(data);
-				if (!file) {
-					throw new Error("Invalid Figma file response");
-				}
-
-				// Keep the existing source: the cached list's validated thumbnail, or null.
-				return { ...file, thumbnailUrl: await getFigmaThumbnail(key) };
-			} catch (error) {
-				console.error(
-					`Failed to fetch Figma file with key ${key}:`,
-					error instanceof Error ? error.message : "Unknown error"
-				);
-				return null;
-			}
-		},
-		["figma-file", key],
-		{
-			revalidate: 7200, // 2 hours
-			tags: [CACHE_TAGS.FIGMA],
+	return async () => {
+		const accessToken = process.env.FIGMA_ACCESS_TOKEN?.trim();
+		if (!accessToken) {
+			console.warn("Figma access token not found - skipping Figma file");
+			return null;
 		}
-	);
+
+		try {
+			return await unstable_cache(
+				async () => {
+					const client = createFigmaClient(accessToken, 2000);
+					const { data }: { data: unknown } = await client.file(key);
+					const file = parseFigmaFileDetail(data);
+					if (!file) {
+						throw new Error("Invalid Figma file response");
+					}
+
+					// Keep the existing source: the cached list's validated thumbnail, or null.
+					return { ...file, thumbnailUrl: await getFigmaThumbnail(key) };
+				},
+				["figma-file", key],
+				{
+					revalidate: 7200, // 2 hours
+					tags: [CACHE_TAGS.FIGMA],
+				}
+			)();
+		} catch (error) {
+			console.error(
+				`Failed to fetch Figma file with key ${key}:`,
+				error instanceof Error ? error.message : "Unknown error"
+			);
+			// Keep the page's null fallback outside the cache, so the next request can retry.
+			return null;
+		}
+	};
 };
 
 // Validate profile statistics before caching, using the same GitHub field rules as repositories.

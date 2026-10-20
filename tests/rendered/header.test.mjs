@@ -5,7 +5,124 @@ import { withProductionServer } from "../../scripts/production-session.mjs";
 
 const MENU = "[data-site-menu]";
 const PANEL = "[data-header-menu]";
+const SEARCH = "[data-header-search]";
+const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
 const HYDRATION_ERROR = /hydration|hydrating|did not match|Minified React error/i;
+
+async function assertHeaderFits(page, width) {
+	const layout = await page.$eval("[data-site-header]", (header) => ({
+		viewport: innerWidth,
+		client: document.documentElement.clientWidth,
+		scroll: document.documentElement.scrollWidth,
+		header: header.getBoundingClientRect().toJSON(),
+		mainTop: document.querySelector("main").getBoundingClientRect().top,
+		controls: [...header.querySelectorAll("a,button")]
+			.filter((element) => element.getClientRects().length)
+			.map((element) => {
+				const box = element.getBoundingClientRect();
+				return {
+					label: element.getAttribute("aria-label") || element.textContent.trim(),
+					box: box.toJSON(),
+					reachable: element.contains(
+						document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+					),
+				};
+			}),
+	}));
+	assert.equal(layout.viewport, width, "mobile emulation must preserve the requested viewport");
+	assert.equal(layout.client, width);
+	assert.ok(layout.scroll <= width, `horizontal document overflow: ${JSON.stringify(layout)}`);
+	assert.ok(layout.header.left >= 0 && layout.header.right <= width);
+	assert.ok(layout.mainTop >= layout.header.bottom, "the header must reserve content clearance");
+	assert.ok(layout.controls.length >= 4, "identity, search, theme and navigation must be present");
+	const overlaps = layout.controls.flatMap((control, index) =>
+		layout.controls
+			.slice(index + 1)
+			.filter(
+				(other) =>
+					Math.min(control.box.right, other.box.right) -
+						Math.max(control.box.left, other.box.left) >
+						0.5 &&
+					Math.min(control.box.bottom, other.box.bottom) -
+						Math.max(control.box.top, other.box.top) >
+						0.5
+			)
+			.map((other) => [control.label, other.label])
+	);
+	assert.deepEqual(overlaps, [], "header controls must not overlap");
+	for (const { label, box, reachable } of layout.controls) {
+		assert.ok(box.width >= 44 && box.height >= 44, `${label}: touch target is too small`);
+		assert.ok(
+			box.left >= layout.header.left &&
+				box.right <= layout.header.right &&
+				box.top >= layout.header.top &&
+				box.bottom <= layout.header.bottom,
+			`${label}: control is clipped by the header: ${JSON.stringify(layout)}`
+		);
+		assert.ok(reachable, `${label}: another element covers the control's center`);
+	}
+}
+
+async function assertPanelFits(page, selector, width) {
+	const panel = await page.$eval(selector, (element) => ({
+		box: element.getBoundingClientRect().toJSON(),
+		client: element.clientWidth,
+		scroll: element.scrollWidth,
+		containsFocus: element.contains(document.activeElement),
+	}));
+	assert.ok(panel.box.left >= 0 && panel.box.right <= width, JSON.stringify(panel));
+	assert.ok(panel.scroll <= panel.client, `horizontal panel overflow: ${JSON.stringify(panel)}`);
+	assert.ok(panel.containsFocus, "opening the panel must move focus inside it");
+}
+
+async function exerciseHeaderPanel(page, trigger, panel, width) {
+	await page.tap(trigger);
+	try {
+		await page.waitForSelector(panel);
+		await page.waitForFunction(
+			(selector) => document.querySelector(selector)?.contains(document.activeElement),
+			{},
+			panel
+		);
+		await assertPanelFits(page, panel, width);
+	} finally {
+		await page.keyboard.press("Escape");
+		await page.waitForSelector(panel, { hidden: true });
+		await page.waitForFunction(
+			(selector) => document.querySelector(selector) === document.activeElement,
+			{},
+			trigger
+		);
+	}
+	await assertHeaderFits(page, width);
+}
+
+async function checkResponsiveHeader(page, { width, theme, textSize }) {
+	await page.setViewport({ width, height: 844, isMobile: true, hasTouch: true });
+	if (
+		(await page.evaluate(() => document.documentElement.classList.contains("dark"))) !==
+		(theme === "dark")
+	) {
+		await page.tap('button[aria-label="Toggle theme"]');
+		await page.waitForFunction(
+			(dark) => document.documentElement.classList.contains("dark") === dark,
+			{},
+			theme === "dark"
+		);
+	}
+	await page.evaluate((size) => {
+		document.documentElement.style.fontSize = size;
+	}, textSize);
+	await page.evaluate(
+		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+	);
+	await assertHeaderFits(page, width);
+	const hasMenu = await page.$eval(MENU, (button) => getComputedStyle(button).display !== "none");
+	if (hasMenu) {
+		await exerciseHeaderPanel(page, MENU, PANEL, width);
+	}
+	await exerciseHeaderPanel(page, SEARCH_TRIGGER, SEARCH, width);
+}
 
 test("site header preserves layout and accessible navigation", { timeout: 180_000 }, async (t) => {
 	await withProductionServer(async (url) => {
@@ -224,7 +341,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"search retains keyboard navigation, empty results and a 16px input",
 				async () => {
-					await page.click('button[aria-label="Search (⌘K)"]');
+					await page.click(SEARCH_TRIGGER);
 					await page.waitForSelector('input[role="combobox"]');
 					assert.ok(
 						await page.$eval(
@@ -282,6 +399,54 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					);
 				}
 			);
+		} finally {
+			await browser.close();
+		}
+	});
+});
+
+test("header controls and panels fit real responsive viewports", {
+	timeout: 180_000,
+}, async (t) => {
+	await withProductionServer(async (url) => {
+		const browser = await puppeteer.launch({
+			executablePath:
+				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+			headless: true,
+		});
+		try {
+			const page = await browser.newPage();
+			page.setDefaultTimeout(10_000);
+			page.setDefaultNavigationTimeout(30_000);
+			const runtimeErrors = [];
+			page.on("pageerror", (error) => runtimeErrors.push(error.message));
+			await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
+			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			await page.goto(url, { waitUntil: "networkidle0" });
+			await page.waitForFunction(
+				() => document.querySelector("[data-site-menu]")?.getAttribute("aria-expanded") === "false"
+			);
+			// Isolate shared chrome from page-specific reflow while retaining its real CSS and shell.
+			await page.$eval("main", (main) => {
+				main.textContent = "Header geometry fixture.";
+			});
+			// Include both sides of viewport and header-container breakpoints.
+			const cases = ["light", "dark"].flatMap((theme) =>
+				["100%", "200%"].flatMap((textSize) =>
+					[320, 390, 639, 640, 679, 680, 768, 1440].map((width) => ({ width, theme, textSize }))
+				)
+			);
+			// Viewports and modal states share one page and must run sequentially.
+			await cases.reduce(
+				(steps, scenario) =>
+					steps.then(() =>
+						t.test(`${scenario.width}px, ${scenario.theme}, ${scenario.textSize} text`, () =>
+							checkResponsiveHeader(page, scenario)
+						)
+					),
+				Promise.resolve()
+			);
+			assert.deepEqual(runtimeErrors, []);
 		} finally {
 			await browser.close();
 		}

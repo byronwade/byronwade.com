@@ -26,6 +26,12 @@ const routeFileTracingIncludes = Object.fromEntries([
 	["/api/resume-pdf", ["./node_modules/@sparticuz/chromium/bin/**"]],
 ]);
 
+const retiredPortfolioPages = [
+	"/portfolio/thorbis",
+	"/portfolio/thorbis-ai",
+	"/portfolio/thorbis-mobile",
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	cacheComponents: false,
@@ -50,6 +56,16 @@ const nextConfig = {
 	},
 	outputFileTracingIncludes: routeFileTracingIncludes,
 	poweredByHeader: false,
+
+	// The 2024 Thorbis pitch pages were retired; their links land on the current case study.
+	// Exact sources only: a /portfolio pattern would shadow /portfolio/figma/[key].
+	async redirects() {
+		return retiredPortfolioPages.map((source) => ({
+			destination: "/projects/thorbis",
+			permanent: true,
+			source,
+		}));
+	},
 
 	// React Compiler (stable in Next.js 16): automatically memoizes components
 	// so unnecessary re-renders are eliminated without manual useMemo/useCallback.
