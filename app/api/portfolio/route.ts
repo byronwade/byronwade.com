@@ -69,8 +69,8 @@ export async function GET() {
 			{
 				status: 200,
 				headers: {
-					// Never cache a transient failure as an empty account, so Retry can recover.
-					"Cache-Control": githubFailed
+					// Let the next request recover any failed provider instead of caching missing data.
+					"Cache-Control": degraded
 						? "no-store"
 						: "public, s-maxage=3600, stale-while-revalidate=86400",
 				},

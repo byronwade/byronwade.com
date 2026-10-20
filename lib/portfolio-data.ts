@@ -10,6 +10,7 @@ import type { GitHubRepo } from "@/types/github";
 
 /** Keep the deadline active through JSON body consumption, not only headers. */
 const REST_TIMEOUT_MS = 5000;
+const FIGMA_PROJECT_ID = /^[1-9]\d*$/;
 
 /** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
 function createFigmaClient(accessToken: string, timeoutMs: number) {
@@ -60,8 +61,17 @@ export const getDribbbleShots = unstable_cache(
 				throw new Error("Failed to fetch Dribbble shots");
 			}
 
-			const data = await response.json();
-			return data;
+			const data: unknown = await response.json();
+			if (!Array.isArray(data)) {
+				throw new Error("Invalid Dribbble shots response");
+			}
+
+			// One broken shot must not discard healthy siblings. Preserve original records/order.
+			const shots = data.filter(isDribbbleShot);
+			if (shots.length !== data.length) {
+				console.error("Ignored invalid Dribbble shot records");
+			}
+			return shots;
 		} catch (error) {
 			console.error("Error fetching Dribbble shots:", error);
 			return [];
@@ -73,6 +83,62 @@ export const getDribbbleShots = unstable_cache(
 		tags: [CACHE_TAGS.DRIBBBLE],
 	}
 );
+
+function parseFigmaProjectId(value: unknown): string | null {
+	if (!isRecord(value)) {
+		return null;
+	}
+	const id = value.id;
+	if (isNonNegativeInteger(id) && id > 0) {
+		return String(id);
+	}
+	// Current responses use string IDs; keep large IDs exact rather than coercing to numbers.
+	return typeof id === "string" && FIGMA_PROJECT_ID.test(id) ? id : null;
+}
+
+function parseFigmaFileSummary(value: unknown): FigmaFile | null {
+	if (
+		!(
+			isRecord(value) &&
+			isNonEmptyString(value.key) &&
+			isNonEmptyString(value.name) &&
+			isApiTimestamp(value.last_modified) &&
+			(value.thumbnail_url === undefined || isHttpUrl(value.thumbnail_url))
+		)
+	) {
+		return null;
+	}
+	return {
+		key: value.key,
+		name: value.name,
+		thumbnail_url: value.thumbnail_url,
+		last_modified: value.last_modified,
+	};
+}
+
+async function getFigmaProjectFiles(
+	client: ReturnType<typeof createFigmaClient>,
+	projectId: string
+): Promise<FigmaFile[]> {
+	try {
+		const { data }: { data: unknown } = await client.projectFiles(projectId);
+		if (!(isRecord(data) && Array.isArray(data.files))) {
+			throw new Error("Invalid Figma project files response");
+		}
+		const files = data.files.map(parseFigmaFileSummary).filter((file) => file !== null);
+		if (files.length !== data.files.length) {
+			console.warn("Ignoring invalid Figma file metadata");
+		}
+		return files.slice(0, 12);
+	} catch (error) {
+		// Keep Axios request configuration (and its authentication headers) out of logs.
+		console.error(
+			`Failed to fetch files for project ${projectId}:`,
+			error instanceof Error ? error.message : "Unknown error"
+		);
+		return [];
+	}
+}
 
 export const getFigmaFiles = unstable_cache(
 	async (): Promise<FigmaFile[]> => {
@@ -87,41 +153,25 @@ export const getFigmaFiles = unstable_cache(
 		const client = createFigmaClient(accessToken, 3000);
 
 		try {
-			const { data: projectsResponse } = await client.teamProjects(teamId);
-
-			const projects = projectsResponse.projects;
-			const allFiles: FigmaFile[] = [];
-			const projectClient = createFigmaClient(accessToken, 5000);
-
-			// Process more projects to get all Figma files
-			const projectPromises = projects.slice(0, 6).map(async (project) => {
-				try {
-					const { data: filesResponse } = await projectClient.projectFiles(project.id.toString());
-
-					return filesResponse.files.slice(0, 12).map((file) => ({
-						key: file.key,
-						name: file.name,
-						thumbnail_url: file.thumbnail_url,
-						last_modified: file.last_modified,
-					}));
-				} catch (error) {
-					console.error(
-						`Failed to fetch files for project ${project.id}:`,
-						error instanceof Error ? error.message : "Unknown error"
-					);
-					return [];
-				}
-			});
-
-			const projectResults = await Promise.allSettled(projectPromises);
-
-			for (const result of projectResults) {
-				if (result.status === "fulfilled") {
-					allFiles.push(...result.value);
-				}
+			const { data }: { data: unknown } = await client.teamProjects(teamId);
+			if (!(isRecord(data) && Array.isArray(data.projects))) {
+				throw new Error("Invalid Figma team projects response");
 			}
 
-			return allFiles
+			const projectIds = data.projects.map(parseFigmaProjectId).filter((id) => id !== null);
+			if (projectIds.length !== data.projects.length) {
+				console.warn("Ignoring invalid Figma project metadata");
+			}
+			const projectClient = createFigmaClient(accessToken, 5000);
+
+			const projectPromises = projectIds
+				.slice(0, 6)
+				.map((id) => getFigmaProjectFiles(projectClient, id));
+
+			// Each project owns its fallback, so one failed request cannot discard siblings.
+			const projectResults = await Promise.all(projectPromises);
+			return projectResults
+				.flat()
 				.sort((a, b) => new Date(b.last_modified).getTime() - new Date(a.last_modified).getTime())
 				.slice(0, 30);
 		} catch (error) {
@@ -196,7 +246,7 @@ export const getFigmaFile = (key: string) =>
 		}
 	);
 
-// GitHub Profile Data (interface moved to types/github.ts)
+// Validate profile statistics before caching, using the same GitHub field rules as repositories.
 export const getGitHubStats = unstable_cache(
 	async () => {
 		try {
@@ -209,7 +259,19 @@ export const getGitHubStats = unstable_cache(
 				throw new Error("Failed to fetch GitHub stats");
 			}
 
-			const data = await response.json();
+			const data: unknown = await response.json();
+
+			if (
+				!(
+					isRecord(data) &&
+					isNonNegativeInteger(data.public_repos) &&
+					isNonNegativeInteger(data.followers) &&
+					isNonNegativeInteger(data.following) &&
+					isApiTimestamp(data.created_at)
+				)
+			) {
+				throw new Error("Invalid GitHub profile response");
+			}
 
 			return {
 				publicRepos: data.public_repos,
@@ -219,12 +281,8 @@ export const getGitHubStats = unstable_cache(
 			};
 		} catch (error) {
 			console.error("Error fetching GitHub stats:", error);
-			return {
-				publicRepos: 0,
-				followers: 0,
-				following: 0,
-				createdAt: null,
-			};
+			// The API owns the null/degraded fallback; zero counts must be real data.
+			throw error;
 		}
 	},
 	["github-stats"],
@@ -245,34 +303,81 @@ const PRIORITY_PROJECTS = [
 	"enterprise-integrations",
 ];
 
-const GITHUB_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+const API_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isRepositoryCount(value: unknown): value is number {
+function isNonNegativeInteger(value: unknown): value is number {
 	return typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 }
 
-function isRepositoryName(value: unknown): value is string {
+function isNonEmptyString(value: unknown): value is string {
 	return typeof value === "string" && value.trim().length > 0;
 }
 
-function isRepositoryDate(value: unknown): value is string {
+function isApiTimestamp(value: unknown): value is string {
 	return (
 		typeof value === "string" &&
-		GITHUB_TIMESTAMP.test(value) &&
+		API_TIMESTAMP.test(value) &&
 		isValid(parseISO(value)) &&
 		Number.isFinite(Date.parse(value))
 	);
 }
 
-function isRepositoryUrl(value: unknown): value is string {
+function isHttpUrl(value: unknown): value is string {
 	return (
 		typeof value === "string" &&
 		URL.canParse(value) &&
 		["https:", "http:"].includes(new URL(value).protocol)
+	);
+}
+
+function isDribbbleImages(value: unknown): value is DribbbleShot["images"] {
+	if (!isRecord(value)) {
+		return false;
+	}
+	return (
+		isHttpUrl(value.normal) &&
+		isHttpUrl(value.teaser) &&
+		(value.hidpi === null || isHttpUrl(value.hidpi)) &&
+		["four_x", "two_x", "one_x"].every(
+			(field) => value[field] === undefined || value[field] === null || isHttpUrl(value[field])
+		)
+	);
+}
+
+/** Only these validated fields are typed; other provider metadata remains opaque. */
+function isDribbbleShot(value: unknown): value is DribbbleShot {
+	if (!isRecord(value)) {
+		return false;
+	}
+	return (
+		isNonNegativeInteger(value.id) &&
+		value.id > 0 &&
+		isNonEmptyString(value.title) &&
+		isHttpUrl(value.html_url) &&
+		isDribbbleImages(value.images) &&
+		(value.description === undefined ||
+			value.description === null ||
+			typeof value.description === "string") &&
+		(value.animated === undefined || typeof value.animated === "boolean") &&
+		["tags", "colors"].every(
+			(field) =>
+				value[field] === undefined ||
+				(Array.isArray(value[field]) && value[field].every((item) => typeof item === "string"))
+		) &&
+		["width", "height"].every(
+			(field) =>
+				value[field] === undefined || (isNonNegativeInteger(value[field]) && value[field] > 0)
+		) &&
+		["likes_count", "views_count", "comments_count", "buckets_count", "rebounds_count"].every(
+			(field) => value[field] === undefined || isNonNegativeInteger(value[field])
+		) &&
+		["published_at", "updated_at"].every(
+			(field) => value[field] === undefined || isApiTimestamp(value[field])
+		)
 	);
 }
 
@@ -282,19 +387,18 @@ function isGitHubRepository(value: unknown): value is GitHubRepo {
 		return false;
 	}
 	return (
-		isRepositoryCount(value.id) &&
+		isNonNegativeInteger(value.id) &&
 		value.id > 0 &&
-		["name", "full_name"].every((field) => isRepositoryName(value[field])) &&
-		["stargazers_count", "forks_count"].every((field) => isRepositoryCount(value[field])) &&
+		["name", "full_name"].every((field) => isNonEmptyString(value[field])) &&
+		["stargazers_count", "forks_count"].every((field) => isNonNegativeInteger(value[field])) &&
 		(value.description === null || typeof value.description === "string") &&
 		["language", "homepage"].every(
 			(field) =>
 				value[field] === undefined || value[field] === null || typeof value[field] === "string"
 		) &&
-		isRepositoryUrl(value.html_url) &&
+		isHttpUrl(value.html_url) &&
 		["created_at", "updated_at", "pushed_at"].every(
-			(field) =>
-				value[field] === undefined || value[field] === null || isRepositoryDate(value[field])
+			(field) => value[field] === undefined || value[field] === null || isApiTimestamp(value[field])
 		) &&
 		typeof value.fork === "boolean" &&
 		(value.archived === undefined || typeof value.archived === "boolean") &&
