@@ -143,11 +143,14 @@ components/
   retains healthy sibling files; details remain usable without a thumbnail.
   Team/project list payloads are read as `unknown` despite the SDK's static types.
   Only positive safe numeric IDs or exact decimal string IDs can start project
-  requests. File keys/names, complete valid timestamps and optional HTTP(S)
+  requests. File keys use the same single plain path-segment rule as detail requests
+  (`[A-Za-z0-9_-]`, 1–128 characters), so list entries cannot advertise keys that
+  the detail loader rejects. File names, complete valid timestamps and optional HTTP(S)
   thumbnails are validated before sorting/caching, reusing the existing number,
   URL, nonempty-string and timestamp predicates. Invalid entries are skipped with a
   generic warning; healthy entries in the same list survive. A malformed team
-  envelope, or a project whose envelope is malformed or whose every file is
+  envelope, a nonempty team list whose every project ID is invalid, or a project
+  whose envelope is malformed or whose every file is
   invalid, counts as a failed request (see the optional-provider rules above).
   The first six valid
   projects and first twelve valid files per project feed the thirty-file sorted
@@ -169,7 +172,8 @@ components/
   version are omitted with one generic warning.
   `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
   against loopback HTTP, including connection closure, malformed fields/envelopes,
-  unsafe detail keys, healthy sibling retention, ordering and list caps.
+  unsafe list/detail keys, all-invalid team metadata, healthy sibling retention,
+  ordering and list caps.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
