@@ -1,0 +1,1880 @@
+{
+  "phase": "before",
+  "head": "622952431fd91decb2f28492b1483d4afdc5b019",
+  "cases": [
+    {
+      "name": "home",
+      "route": "/",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-375-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-375-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 32,
+            "height": 20
+          },
+          { "label": "Retry", "width": 74, "height": 26 },
+          { "label": "Open site", "width": 95.734375, "height": 24 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 343, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-375-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-375-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "30px"
+          }
+        ],
+        "truncated": [
+          "What Service Businesses Actually Need From Software",
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-375-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "24px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 57.484375,
+            "height": 20
+          },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-375-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-375-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "16px" },
+          { "label": "email", "size": "16px" },
+          { "label": "topic", "size": "16px" },
+          { "label": "message", "size": "16px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-375-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 311.765625, "height": 38 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-375-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-results-375-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 282.921875, "height": 38 }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-empty-375-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-375-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-375-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 375,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-375-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-375-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-375-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 32,
+            "height": 20
+          },
+          { "label": "Retry", "width": 74, "height": 26 },
+          { "label": "Open site", "width": 95.734375, "height": 24 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 343, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-375-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-375-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "30px"
+          }
+        ],
+        "truncated": [
+          "What Service Businesses Actually Need From Software",
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-375-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "24px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 57.484375,
+            "height": 20
+          },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-375-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-375-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "16px" },
+          { "label": "email", "size": "16px" },
+          { "label": "topic", "size": "16px" },
+          { "label": "message", "size": "16px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-375-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 311.765625, "height": 38 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-375-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-results-375-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 282.921875, "height": 38 }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }]
+      },
+      "errors": [],
+      "file": "search-empty-375-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-375-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-375-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 375,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-375-dark.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-768-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-768-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Desktop (1920 by 1080)", "width": 26, "height": 26 },
+          { "label": "Laptop (1440 by 900)", "width": 26, "height": 26 },
+          { "label": "Tablet (768 by 1024)", "width": 26, "height": 26 },
+          { "label": "Mobile (375 by 667)", "width": 26, "height": 26 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 62.625,
+            "height": 24
+          },
+          { "label": "Retry", "width": 74, "height": 26 },
+          { "label": "Open site", "width": 95.734375, "height": 24 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 129.28125, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-768-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-768-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "36px"
+          }
+        ],
+        "truncated": [
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-768-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 64.125,
+            "height": 21
+          },
+          {
+            "label": "Start a conversation",
+            "width": 164.953125,
+            "height": 36
+          },
+          { "label": "Download PDF", "width": 132, "height": 36 },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          },
+          { "label": "Contact Byron", "width": 131.703125, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-768-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 },
+          { "label": "Load more", "width": 87.171875, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-768-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "name", "width": 302, "height": 36 },
+          { "label": "email", "width": 302, "height": 36 }
+        ],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-768-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-768-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-results-768-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-empty-768-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-768-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-768-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 768,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-768-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-768-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-768-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Desktop (1920 by 1080)", "width": 26, "height": 26 },
+          { "label": "Laptop (1440 by 900)", "width": 26, "height": 26 },
+          { "label": "Tablet (768 by 1024)", "width": 26, "height": 26 },
+          { "label": "Mobile (375 by 667)", "width": 26, "height": 26 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 62.625,
+            "height": 24
+          },
+          { "label": "Retry", "width": 74, "height": 26 },
+          { "label": "Open site", "width": 95.734375, "height": 24 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 129.28125, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-768-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-768-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "36px"
+          }
+        ],
+        "truncated": [
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-768-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 64.125,
+            "height": 21
+          },
+          {
+            "label": "Start a conversation",
+            "width": 164.953125,
+            "height": 36
+          },
+          { "label": "Download PDF", "width": 132, "height": 36 },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          },
+          { "label": "Contact Byron", "width": 131.703125, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-768-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 },
+          { "label": "Load more", "width": 87.171875, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-768-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "name", "width": 302, "height": 36 },
+          { "label": "email", "width": 302, "height": 36 }
+        ],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-768-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-768-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-results-768-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-empty-768-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-768-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-768-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 768,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-768-dark.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-1440-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-1440-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Desktop (1920 by 1080)", "width": 26, "height": 26 },
+          { "label": "Laptop (1440 by 900)", "width": 26, "height": 26 },
+          { "label": "Tablet (768 by 1024)", "width": 26, "height": 26 },
+          { "label": "Mobile (375 by 667)", "width": 26, "height": 26 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 62.625,
+            "height": 24
+          },
+          { "label": "Retry", "width": 74, "height": 26 },
+          { "label": "Open site", "width": 95.734375, "height": 24 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 129.28125, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-1440-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-1440-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "36px"
+          }
+        ],
+        "truncated": [
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-1440-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 64.125,
+            "height": 21
+          },
+          {
+            "label": "Start a conversation",
+            "width": 164.953125,
+            "height": 36
+          },
+          { "label": "Download PDF", "width": 132, "height": 36 },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          },
+          { "label": "Contact Byron", "width": 131.703125, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-1440-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 },
+          { "label": "Load more", "width": 87.171875, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-1440-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "name", "width": 302, "height": 36 },
+          { "label": "email", "width": 302, "height": 36 }
+        ],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-1440-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-1440-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-results-1440-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-empty-1440-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-1440-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-1440-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 1440,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-1440-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "home-1440-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "projects-1440-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Visit site", "width": 95.109375, "height": 28 },
+          { "label": "Source", "width": 86.75, "height": 28 },
+          { "label": "Desktop (1920 by 1080)", "width": 26, "height": 26 },
+          { "label": "Laptop (1440 by 900)", "width": 26, "height": 26 },
+          { "label": "Tablet (768 by 1024)", "width": 26, "height": 26 },
+          { "label": "Mobile (375 by 667)", "width": 26, "height": 26 },
+          { "label": "Enter fullscreen", "width": 26, "height": 26 },
+          {
+            "label": "Visit design.thorbis.com (opens in a new tab)",
+            "width": 62.625,
+            "height": 24
+          },
+          { "label": "Resize preview width", "width": 24, "height": 48 },
+          { "label": "Resize preview width", "width": 24, "height": 48 },
+          { "label": "port notes", "width": 76.734375, "height": 20 },
+          { "label": "Back to projects", "width": 129.28125, "height": 20 },
+          { "label": "Start a conversation →", "width": 148.1875, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "project-1440-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "blog-1440-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "36px"
+          }
+        ],
+        "truncated": [
+          "Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer",
+          "A Design System Has to Be Enforceable or It Is Just Documentation"
+        ],
+        "smallTargets": [
+          { "label": "Thorbis", "width": 57.484375, "height": 20 },
+          {
+            "label": "fiscal 2026 annual filing",
+            "width": 178.96875,
+            "height": 20
+          },
+          { "label": "proof page", "width": 82.171875, "height": 20 },
+          { "label": "Share via native share", "width": 86.3125, "height": 34 },
+          { "label": "Share on Twitter", "width": 93.71875, "height": 34 },
+          { "label": "Share on LinkedIn", "width": 103.734375, "height": 34 },
+          { "label": "Copy link", "width": 113.734375, "height": 34 },
+          { "label": "← Back to writing", "width": 112.890625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "post-1440-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "width": 64.125,
+            "height": 21
+          },
+          {
+            "label": "Start a conversation",
+            "width": 164.953125,
+            "height": 36
+          },
+          { "label": "Download PDF", "width": 132, "height": 36 },
+          {
+            "label": "Thorbis (opens in a new tab)(thorbis.com)",
+            "width": 66.703125,
+            "height": 20
+          },
+          {
+            "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.com)",
+            "width": 188.765625,
+            "height": 20
+          },
+          { "label": "Contact Byron", "width": 131.703125, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "resume-1440-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "Refresh", "width": 94.640625, "height": 28 },
+          { "label": "GitHub", "width": 52.015625, "height": 20 },
+          { "label": "projects", "width": 60.734375, "height": 20 },
+          { "label": "Load more", "width": 87.171875, "height": 36 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "portfolio-1440-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "name", "width": 302, "height": 36 },
+          { "label": "email", "width": 302, "height": 36 }
+        ],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ]
+      },
+      "errors": [],
+      "file": "contact-1440-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 },
+          { "label": "read the writing", "width": 102.21875, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-1440-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-results-1440-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "browse projects", "width": 104.65625, "height": 17 }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }]
+      },
+      "errors": [],
+      "file": "search-empty-1440-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "privacy-1440-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "contact page", "width": 98.625, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [],
+      "file": "terms-1440-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 1440,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "36px" }],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "See selected work", "width": 120.609375, "height": 20 }
+        ],
+        "inputs": []
+      },
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ],
+      "file": "not-found-1440-dark.png"
+    }
+  ]
+}

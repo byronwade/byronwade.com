@@ -1,0 +1,1967 @@
+{
+  "phase": "after",
+  "head": "7eed588c33976749602529d27e03b8734773f38a",
+  "cases": [
+    {
+      "name": "portfolio-empty",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-empty-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-error-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-populated-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-partial-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-refresh-failed-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-degraded-refresh-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-loading-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-timeout-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-invalid-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-pending-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-failed-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 16
+        },
+        "select": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 16
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 375,
+      "theme": "light",
+      "file": "preview-loading-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 375,
+      "theme": "light",
+      "file": "preview-loaded-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 375,
+      "theme": "light",
+      "file": "preview-keyboard-resize-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•17%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 375,
+      "theme": "light",
+      "file": "preview-fullscreen-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 375,
+      "theme": "light",
+      "file": "preview-error-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 375,
+      "theme": "light",
+      "file": "home-contact-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklch(0.962 0.008 84.6)",
+        "parentBackground": "oklch(0.9915 0.0035 84.6)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 375,
+      "theme": "light",
+      "file": "home-contact-copied-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-empty-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-error-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-populated-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-partial-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-refresh-failed-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-degraded-refresh-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-loading-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-timeout-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-invalid-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-pending-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-failed-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 16
+        },
+        "select": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 16
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 375,
+      "theme": "dark",
+      "file": "preview-loading-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 375,
+      "theme": "dark",
+      "file": "preview-loaded-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 375,
+      "theme": "dark",
+      "file": "preview-keyboard-resize-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•17%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 375,
+      "theme": "dark",
+      "file": "preview-fullscreen-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 375,
+      "theme": "dark",
+      "file": "preview-error-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•18%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 375,
+      "theme": "dark",
+      "file": "home-contact-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklab(0.27367 0.0000762277 0.000806405)",
+        "parentBackground": "oklch(0.205 0 none)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 375,
+      "theme": "dark",
+      "file": "home-contact-copied-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-empty-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-error-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-populated-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-partial-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-refresh-failed-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-degraded-refresh-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-loading-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-timeout-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-invalid-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-pending-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-failed-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        },
+        "select": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-loading-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•67%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-loaded-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-mobile-preset",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-mobile-preset-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport375×667•100%MobileDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-keyboard-resize-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•36%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-fullscreen-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 768,
+      "theme": "light",
+      "file": "preview-error-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 768,
+      "theme": "light",
+      "file": "home-contact-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklch(0.962 0.008 84.6)",
+        "parentBackground": "oklch(0.9915 0.0035 84.6)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 768,
+      "theme": "light",
+      "file": "home-contact-copied-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-empty-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-error-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-populated-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-partial-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-refresh-failed-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-degraded-refresh-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-loading-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-timeout-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-invalid-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-pending-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-failed-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        },
+        "select": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-loading-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-loaded-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-mobile-preset",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-mobile-preset-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport375×667•100%MobileDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-keyboard-resize-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•36%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-fullscreen-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 768,
+      "theme": "dark",
+      "file": "preview-error-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 768,
+      "theme": "dark",
+      "file": "home-contact-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklab(0.27367 0.0000762277 0.000806405)",
+        "parentBackground": "oklch(0.205 0 none)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 768,
+      "theme": "dark",
+      "file": "home-contact-copied-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-empty-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-error-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-populated-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-partial-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-refresh-failed-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-degraded-refresh-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-loading-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-timeout-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-invalid-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-pending-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-failed-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        },
+        "select": {
+          "background": "oklch(0.932 0.012 84.6)",
+          "border": "oklch(0.485 0.015 68)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-loading-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•51%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-loaded-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•40%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-mobile-preset",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-mobile-preset-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport375×667•100%MobileDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-keyboard-resize-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-fullscreen-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 1440,
+      "theme": "light",
+      "file": "preview-error-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•51%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "project-toc-focus",
+      "width": 1440,
+      "theme": "light",
+      "file": "project-toc-focus-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"byronwade/ui: The Design System Behind Everything\",\"description\":\"My personal design system. The shared component library and chrome I build most of my projects on. Its signature is the Morph Panel: a single capsule that fluidly morphs between a compact pill and a full panel instead of popping a disconnected menu over the page.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://ui.byronwade.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://ui.byronwade.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=byronwade%2Fui%3A+The+Design+System+Behind+Everything&description=My+personal+design+system.+The+shared+component+library+and+chrome+I+build+most+of+my+projects+on.+Its+signature+is+the+Morph+Panel%3A+a+single+capsule+that+fluidly+morphs+between+a+compact+pill+and+a+full+panel+instead+of+popping+a+disconnected+menu+over+the+page.&type=project&date=2026-06-02T00%3A00%3A00.000Z\",\"width\":1200,\"height\":630},\"datePublished\":\"2026-06-02T00:00:00.000Z\",\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"byronwade/ui: The Design System Behind Everything\",\"item\":\"https://byronwade.com/projects/byronwade-ui\"}]}Product·June 2, 2026byronwade/ui: The Design System Behind EverythingMy personal design system. The shared component library and chrome I build most of my projects on. Its signature is the Morph Panel: a single capsule that fluidly morphs between a compact pill and a full panel instead of popping a disconnected menu over the page.ProblemShipping this many products on my own only works if they all share one hardened foundation. Otherwise every UI change turns into a rewrite.OutcomeOne design language across products: Morph Panels, semantic tokens, and accessible primitives reused everywhere I build.Morph PanelSignatureSemanticTokensThis siteUsed onVisit siteui.byronwade.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•51%Desktopbyronwade/ui is my personal design system. It is the component library, the design tokens, and the interaction chrome that most of my projects are built on. It's the layer underneath GoodMarks, SignalRoute, Thorbis, and this very portfolio: one consistent visual language and one set of battle-tested primitives, so every product I ship feels like it came from the same studio.\nIt is not a public framework chasing stars. It is the opposite. A sharp, opinionated toolkit tuned to exactly how I build, and it gets refined on real products instead of designed in the abstract.\n\nThe Morph Panel\nThe system's signature is the Morph Panel: a single shared capsule that morphs in place between a compact pill and a full panel, instead of popping a separate menu over the page.\nMost UI menus are a sleight of hand. There is a trigger here and a floating panel that appears somewhere else, and the two look unrelated. The Morph Panel refuses to do that. The collapsed pill and the expanded panel are the same element. When you open it, width, height, and corner radius animate together along a single eased curve while the contents cross-fade, so the control literally grows into its larger self and shrinks back down when dismissed. The slot it lives in reserves the collapsed footprint so nothing on the page jumps on first paint, and the whole choreography collapses gracefully to an instant swap under prefers-reduced-motion.\nYou're looking at it right now. The chrome on this site is built from it:\n\nThe launcher (top-left): the byronwade identity pill morphs into the cross-product switcher.\nThe dock (the floating toolbar): the same --dock capsule morphs between its compact pill and each active panel.\nThe breadcrumb: the same material, the same motion.\n\nThree different surfaces, one shared capsule material and one shared motion language. That consistency is the entire point of a design system, and the Morph Panel is the clearest expression of it.\n\nHow It's Built\nbyronwade/ui sits on the same React stack the rest of my work uses. Next.js, React, Tailwind, and Radix primitives for accessible behavior. But the real backbone is semantic design tokens. Surfaces are driven by intent-named tokens like --dock, --brand, and --dock-active rather than raw colors, so one brand decision like the gold accent that runs through everything reaches every product without a find-and-replace.\nThe components are server-components-first, dropping to client only where interaction demands it, and accessibility is foundational rather than retrofitted: real dialog semantics, managed focus, full keyboard support, visible focus rings, and proper hit targets are baked into the primitives. Motion is treated as a material. Eased, purposeful, and reduced-motion aware, not decoration sprinkled on at the end.\n\nWhy It Exists\nMaintaining a half-dozen products alone is only sustainable if they share a foundation. byronwade/ui is that foundation: build a pattern once, harden it against real use, and reuse it everywhere. When I improve the morph timing or tighten the focus behavior in one place, every project inherits it.\nIt is in continuous development and every product I ship feeds something back into it. See it living in the wild across this site, or explore the system itself at ui.byronwade.com.On this pageThe Morph PanelHow It's BuiltWhy It ExistsBack to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "keyboard": {
+        "href": "#why-it-exists",
+        "height": 44,
+        "outline": "solid",
+        "outlineWidth": "2px",
+        "top": 258.25,
+        "headerBottom": 88,
+        "hashAndFocusMoved": true,
+        "reducedMotion": true
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 1440,
+      "theme": "light",
+      "file": "home-contact-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklch(0.962 0.008 84.6)",
+        "parentBackground": "oklch(0.9915 0.0035 84.6)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 1440,
+      "theme": "light",
+      "file": "home-contact-copied-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-empty-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-error",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-error-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-populated-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-partial",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-partial-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-refresh-failed",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-refresh-failed-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-degraded-refresh",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-degraded-refresh-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-loading-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…Loading repositories…",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-timeout-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "contact-invalid",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-invalid-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-pending",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-pending-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      }
+    },
+    {
+      "name": "contact-failed",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-failed-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "fields": {
+        "input": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        },
+        "select": {
+          "background": "oklab(0.1131 0 0)",
+          "border": "oklch(0.78 0 none)",
+          "radius": "14px",
+          "height": 44,
+          "fontSize": 14
+        }
+      }
+    },
+    {
+      "name": "preview-loading",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-loading-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•51%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-loaded",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-loaded-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•40%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-mobile-preset",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-mobile-preset-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport375×667•100%MobileDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-keyboard-resize",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-keyboard-resize-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewport1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-fullscreen",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-fullscreen-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourceDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "preview-error",
+      "width": 1440,
+      "theme": "dark",
+      "file": "preview-error-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•51%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "project-toc-focus",
+      "width": 1440,
+      "theme": "dark",
+      "file": "project-toc-focus-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"byronwade/ui: The Design System Behind Everything\",\"description\":\"My personal design system. The shared component library and chrome I build most of my projects on. Its signature is the Morph Panel: a single capsule that fluidly morphs between a compact pill and a full panel instead of popping a disconnected menu over the page.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://ui.byronwade.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://ui.byronwade.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=byronwade%2Fui%3A+The+Design+System+Behind+Everything&description=My+personal+design+system.+The+shared+component+library+and+chrome+I+build+most+of+my+projects+on.+Its+signature+is+the+Morph+Panel%3A+a+single+capsule+that+fluidly+morphs+between+a+compact+pill+and+a+full+panel+instead+of+popping+a+disconnected+menu+over+the+page.&type=project&date=2026-06-02T00%3A00%3A00.000Z\",\"width\":1200,\"height\":630},\"datePublished\":\"2026-06-02T00:00:00.000Z\",\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"byronwade/ui: The Design System Behind Everything\",\"item\":\"https://byronwade.com/projects/byronwade-ui\"}]}Product·June 2, 2026byronwade/ui: The Design System Behind EverythingMy personal design system. The shared component library and chrome I build most of my projects on. Its signature is the Morph Panel: a single capsule that fluidly morphs between a compact pill and a full panel instead of popping a disconnected menu over the page.ProblemShipping this many products on my own only works if they all share one hardened foundation. Otherwise every UI change turns into a rewrite.OutcomeOne design language across products: Morph Panels, semantic tokens, and accessible primitives reused everywhere I build.Morph PanelSignatureSemanticTokensThis siteUsed onVisit siteui.byronwade.comPreview viewportPreview unavailableWe couldn’t capture this site right now.RetryOpen site1920×1080•51%Desktopbyronwade/ui is my personal design system. It is the component library, the design tokens, and the interaction chrome that most of my projects are built on. It's the layer underneath GoodMarks, SignalRoute, Thorbis, and this very portfolio: one consistent visual language and one set of battle-tested primitives, so every product I ship feels like it came from the same studio.\nIt is not a public framework chasing stars. It is the opposite. A sharp, opinionated toolkit tuned to exactly how I build, and it gets refined on real products instead of designed in the abstract.\n\nThe Morph Panel\nThe system's signature is the Morph Panel: a single shared capsule that morphs in place between a compact pill and a full panel, instead of popping a separate menu over the page.\nMost UI menus are a sleight of hand. There is a trigger here and a floating panel that appears somewhere else, and the two look unrelated. The Morph Panel refuses to do that. The collapsed pill and the expanded panel are the same element. When you open it, width, height, and corner radius animate together along a single eased curve while the contents cross-fade, so the control literally grows into its larger self and shrinks back down when dismissed. The slot it lives in reserves the collapsed footprint so nothing on the page jumps on first paint, and the whole choreography collapses gracefully to an instant swap under prefers-reduced-motion.\nYou're looking at it right now. The chrome on this site is built from it:\n\nThe launcher (top-left): the byronwade identity pill morphs into the cross-product switcher.\nThe dock (the floating toolbar): the same --dock capsule morphs between its compact pill and each active panel.\nThe breadcrumb: the same material, the same motion.\n\nThree different surfaces, one shared capsule material and one shared motion language. That consistency is the entire point of a design system, and the Morph Panel is the clearest expression of it.\n\nHow It's Built\nbyronwade/ui sits on the same React stack the rest of my work uses. Next.js, React, Tailwind, and Radix primitives for accessible behavior. But the real backbone is semantic design tokens. Surfaces are driven by intent-named tokens like --dock, --brand, and --dock-active rather than raw colors, so one brand decision like the gold accent that runs through everything reaches every product without a find-and-replace.\nThe components are server-components-first, dropping to client only where interaction demands it, and accessibility is foundational rather than retrofitted: real dialog semantics, managed focus, full keyboard support, visible focus rings, and proper hit targets are baked into the primitives. Motion is treated as a material. Eased, purposeful, and reduced-motion aware, not decoration sprinkled on at the end.\n\nWhy It Exists\nMaintaining a half-dozen products alone is only sustainable if they share a foundation. byronwade/ui is that foundation: build a pattern once, harden it against real use, and reuse it everywhere. When I improve the morph timing or tighten the focus behavior in one place, every project inherits it.\nIt is in continuous development and every product I ship feeds something back into it. See it living in the wild across this site, or explore the system itself at ui.byronwade.com.On this pageThe Morph PanelHow It's BuiltWhy It ExistsBack to projectsWant something like this?Start a conversation →",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "keyboard": {
+        "href": "#why-it-exists",
+        "height": 44,
+        "outline": "solid",
+        "outlineWidth": "2px",
+        "top": 258.25,
+        "headerBottom": 88,
+        "hashAndFocusMoved": true,
+        "reducedMotion": true
+      }
+    },
+    {
+      "name": "home-contact",
+      "width": 1440,
+      "theme": "dark",
+      "file": "home-contact-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": {
+        "background": "oklab(0.27367 0.0000762277 0.000806405)",
+        "parentBackground": "oklch(0.205 0 none)",
+        "width": 82.78125,
+        "height": 44
+      }
+    },
+    {
+      "name": "home-contact-copied",
+      "width": 1440,
+      "theme": "dark",
+      "file": "home-contact-copied-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopyEmail copiedSend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "copyControl": { "width": 82.78125, "label": "Copy" }
+    }
+  ],
+  "readingProgress": [
+    {
+      "width": 375,
+      "theme": "light",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 2, "duration": "0s" }
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 4, "duration": "0s" }
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 5, "duration": "0s" }
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 5, "duration": "0s" }
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 5, "duration": "0s" }
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "fit": { "range": 0, "value": 0 },
+      "scrolled": { "value": 5, "duration": "0s" }
+    }
+  ],
+  "failures": []
+}
