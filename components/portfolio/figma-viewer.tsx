@@ -23,7 +23,7 @@ export function FigmaInteractiveViewer({
 			{/* View Mode Toggle */}
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h3 className="mb-2 font-bold text-white text-xl">DESIGN VIEWER</h3>
+					<h3 className="mb-2 font-bold text-foreground text-xl">Design viewer</h3>
 					<p className="text-muted-foreground text-sm">
 						{viewMode === "interactive"
 							? "Interactive Figma embed - zoom, pan, and explore the design"

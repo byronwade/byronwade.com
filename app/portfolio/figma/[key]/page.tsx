@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/components/ui/link";
 import {
 	Calendar,
 	ChevronRight,
@@ -14,6 +14,7 @@ import {
 	Palette,
 	Zap,
 } from "@/lib/icons";
+import { safeFormatDate } from "@/lib/markdown-utils";
 import { getFigmaFile } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {
@@ -66,29 +67,50 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 	const pagesCount = fileData.pageCount;
 	const componentsCount = fileData.components.length;
 	const stylesCount = fileData.styleCount;
+	const modifiedDate = safeFormatDate(fileData.lastModified);
 
 	return (
 		<div className="min-h-screen py-16">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
-					<div className="mb-4 flex items-center gap-2 text-muted-foreground text-sm">
-						<Link href="/portfolio" className="transition-colors hover:text-brand">
-							Portfolio
-						</Link>
-						<ChevronRight className="h-4 w-4" />
-						<Link href="/portfolio?tab=figma" className="transition-colors hover:text-brand">
-							Figma
-						</Link>
-						<ChevronRight className="h-4 w-4" />
-						<span className="text-foreground">{fileData.name}</span>
-					</div>
+					<nav aria-label="Breadcrumb" className="mb-4 text-muted-foreground text-sm">
+						<ol className="flex flex-wrap items-center gap-x-2">
+							<li>
+								<Link
+									href="/portfolio"
+									className="inline-flex min-h-11 min-w-11 items-center px-1 transition-colors hover:text-brand focus-visible:text-brand"
+								>
+									Portfolio
+								</Link>
+							</li>
+							<li className="flex items-center gap-2">
+								<ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+								<Link
+									href="/portfolio?tab=figma"
+									className="inline-flex min-h-11 min-w-11 items-center px-1 transition-colors hover:text-brand focus-visible:text-brand"
+								>
+									Figma
+								</Link>
+							</li>
+							<li className="flex min-w-0 items-center gap-2">
+								<ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+								<span aria-current="page" className="wrap-anywhere text-foreground">
+									{fileData.name}
+								</span>
+							</li>
+						</ol>
+					</nav>
 
 					<div className="mb-6">
-						<h1 className="mb-4 font-bold text-4xl text-foreground">{fileData.name}</h1>
+						<h1 className="wrap-anywhere mb-4 font-bold text-4xl text-foreground">
+							{fileData.name}
+						</h1>
 						<div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
 							<div className="flex items-center gap-1">
 								<Calendar className="h-4 w-4 text-brand" />
-								<span>Updated {new Date(fileData.lastModified).toLocaleDateString()}</span>
+								<span>
+									Updated <time dateTime={fileData.lastModified}>{modifiedDate}</time>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -138,7 +160,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 					<div className="space-y-8 lg:col-span-2">
 						{/* Interactive Figma Viewer */}
 						<div className="space-y-4">
-							<h3 className="font-semibold text-foreground text-xl">Design File</h3>
+							<h2 className="font-semibold text-foreground text-xl">Design File</h2>
 							<FigmaInteractiveViewer
 								fileKey={key}
 								fileName={fileData.name}
@@ -150,9 +172,11 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						{componentsCount > 0 && (
 							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
-									<CardTitle className="flex items-center gap-2 text-foreground">
-										<Palette className="h-5 w-5 text-brand" />
-										Components ({componentsCount})
+									<CardTitle className="text-foreground">
+										<h2 className="flex items-center gap-2">
+											<Palette className="h-5 w-5 text-brand" />
+											Components ({componentsCount})
+										</h2>
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
@@ -168,9 +192,9 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 															{component.name?.charAt(0)?.toUpperCase() || "C"}
 														</div>
 														<div className="min-w-0 flex-1">
-															<h4 className="truncate font-medium text-foreground">
+															<h3 className="truncate font-medium text-foreground">
 																{component.name || "Unnamed Component"}
-															</h4>
+															</h3>
 															<p className="text-muted-foreground text-xs">
 																{component.description || "No description"}
 															</p>
@@ -211,14 +235,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								Open in Figma
 							</Button>
 						</div>
-
-						{/* The generated "case study" that used to sit here was removed. Every
-						    field in it was invented: view, like, and comment counts derived from
-						    the page count, a "4-8 weeks" duration, a team that does not exist, and
-						    five generic results, rendered identically for any Figma file key.
-						    DESIGN.md §9 requires real numbers with their source and §3.2 forbids
-						    manufacturing precision. What is left on this page is what the Figma
-						    API actually returns. */}
 					</div>
 
 					{/* Sidebar */}
@@ -226,7 +242,9 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						{/* File Information */}
 						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardHeader>
-								<CardTitle className="text-foreground">File Information</CardTitle>
+								<CardTitle className="text-foreground">
+									<h2>File Information</h2>
+								</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex items-center gap-2 text-muted-foreground">
@@ -234,7 +252,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 									<span className="text-sm">Last Modified</span>
 								</div>
 								<p className="font-medium text-foreground">
-									{new Date(fileData.lastModified).toLocaleDateString()}
+									<time dateTime={fileData.lastModified}>{modifiedDate}</time>
 								</p>
 
 								{fileData.version && (
@@ -248,11 +266,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								)}
 							</CardContent>
 						</Card>
-
-						{/* A "Complexity" score and label used to sit here, computed as
-						    pages x 10 + components x 2 + styles and capped at 100. It was a
-						    made-up metric presented as a measurement (DESIGN.md §3.2, §9). The
-						    "Quick Stats" card that repeated the three counts above went with it. */}
 					</div>
 				</div>
 			</div>
