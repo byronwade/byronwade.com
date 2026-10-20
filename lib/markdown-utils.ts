@@ -4,7 +4,7 @@ const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/;
 const LINE_BREAK = /\r?\n/;
 const FENCE_LINE = /^\s*(```|~~~)/;
-const ATX_HEADING = /^(#{2,3})\s+(.+?)\s*#*\s*$/;
+const ATX_HEADING = /^(#{1,4})\s+(.+?)\s*#*\s*$/;
 
 import { format, isValid, parseISO } from "date-fns";
 
@@ -50,18 +50,23 @@ function baseSlug(text: string): string {
 }
 
 /**
- * Returns a stateful slug function that deduplicates repeated headings by
- * appending `-1`, `-2`, … exactly like rehype-slug / github-slugger. Both the
- * markdown renderer and the TOC extractor must use a fresh slugger that walks
- * headings in document order so the generated ids line up.
+ * Allocate unique heading ids, reserving generated suffixes as well as authored
+ * names. Both the markdown renderer and the TOC extractor must use a fresh
+ * slugger that walks headings in document order so the generated ids line up.
  */
 export function createSlugger(): (text: string) => string {
 	const seen = new Map<string, number>();
 	return (text: string) => {
 		const base = baseSlug(text) || "section";
-		const count = seen.get(base) ?? 0;
-		seen.set(base, count + 1);
-		return count === 0 ? base : `${base}-${count}`;
+		let slug = base;
+		let count = seen.get(base) ?? 0;
+		while (seen.has(slug)) {
+			count++;
+			slug = `${base}-${count}`;
+		}
+		seen.set(base, count);
+		seen.set(slug, 0);
+		return slug;
 	};
 }
 
@@ -122,7 +127,8 @@ export function stripLeadingH1(markdown: string): string {
 
 /**
  * Extract level-2 and level-3 headings from markdown for a table of contents.
- * Skips fenced code blocks so `## ...` inside a code sample is ignored.
+ * Reserve ids for every heading level that the renderer assigns an id, even
+ * when that heading is not listed. Skip fenced code samples.
  */
 export function extractToc(markdown: string): TocItem[] {
 	if (!markdown) {
@@ -146,13 +152,16 @@ export function extractToc(markdown: string): TocItem[] {
 			continue;
 		}
 
-		const depth = (match[1]?.length ?? 2) as 2 | 3;
+		const depth = match[1]?.length;
 		const text = stripInline(match[2] ?? "");
 		if (!text) {
 			continue;
 		}
 
-		items.push({ id: slugger(text), text, depth });
+		const id = slugger(text);
+		if (depth === 2 || depth === 3) {
+			items.push({ id, text, depth });
+		}
 	}
 
 	return items;
