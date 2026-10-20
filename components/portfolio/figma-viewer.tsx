@@ -23,28 +23,30 @@ export function FigmaInteractiveViewer({
 			{/* View Mode Toggle */}
 			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<h3 className="mb-2 font-bold text-white text-xl">DESIGN VIEWER</h3>
+					<h3 className="mb-2 font-bold text-foreground text-xl">Design viewer</h3>
 					<p className="text-muted-foreground text-sm">
 						{viewMode === "interactive"
 							? "Interactive Figma embed - zoom, pan, and explore the design"
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1">
+				<div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-1">
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "interactive"}
 						variant={viewMode === "interactive" ? "default" : "ghost"}
 						onClick={() => setViewMode("interactive")}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<Monitor className="mr-1 h-3 w-3" />
 						Interactive
 					</Button>
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "static"}
 						variant={viewMode === "static" ? "default" : "ghost"}
 						onClick={() => setViewMode("static")}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<ImageIcon className="mr-1 h-3 w-3" />
 						Preview

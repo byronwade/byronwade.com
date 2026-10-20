@@ -152,7 +152,7 @@ Before creating any component, hook, utility, formatter, validator, schema,
 type, API client, or abstraction, search these first:
 
 - `components/ui/`. badge, button, card, input, label, link,
-  pill, popover, separator, sonner, status-dot, status-pill, tabs, textarea,
+  pill, popover, sonner, status-dot, status-pill, tabs, textarea,
   obfuscated-contact, design-case-study. The set is deliberately small:
   add a primitive with `npx shadcn add` only when a page actually needs it, and
   expect knip to delete it again if nothing imports it.
