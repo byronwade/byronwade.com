@@ -1,35 +1,10 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
 import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
+import { closeBrowser } from "../fixtures/browser.mjs";
 import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
-
-async function closeBrowser(browser, context) {
-	const child = browser.process();
-	let timer;
-	const closed = await Promise.race([
-		browser.close().then(() => true),
-		new Promise((resolve) => {
-			timer = setTimeout(() => resolve(false), 10_000);
-		}),
-	]);
-	clearTimeout(timer);
-	// Chrome sometimes leaves its owned process alive after a completed CDP close.
-	if (!closed && child && child.exitCode === null && child.signalCode === null) {
-		if (process.platform === "win32") {
-			const result = spawnSync("taskkill.exe", ["/pid", String(child.pid), "/t", "/f"], {
-				windowsHide: true,
-				timeout: 15_000,
-			});
-			assert.equal(result.status, 0, "the owned Chrome process tree must stop");
-			context.diagnostic(`Stopped owned Chrome tree ${child.pid} after its close timeout`);
-		} else {
-			child.kill("SIGKILL");
-		}
-	}
-}
 
 test("synthetic Figma details reflow and keep controls reachable at 200% text", {
 	timeout: 180_000,

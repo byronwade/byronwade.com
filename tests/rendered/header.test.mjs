@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
+import { closeBrowser } from "../fixtures/browser.mjs";
 
 const MENU = "[data-site-menu]";
 const PANEL = "[data-header-menu]";
@@ -400,7 +401,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				}
 			);
 		} finally {
-			await browser.close();
+			await closeBrowser(browser, t);
 		}
 	});
 });
@@ -448,7 +449,7 @@ test("header controls and panels fit real responsive viewports", {
 			);
 			assert.deepEqual(runtimeErrors, []);
 		} finally {
-			await browser.close();
+			await closeBrowser(browser, t);
 		}
 	});
 });
