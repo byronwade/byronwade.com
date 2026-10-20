@@ -30,3 +30,16 @@ The fifteen earlier write-ups and all their other frontmatter are preserved.
 Only `status`, `featured`, and existing `flagship` fields change to establish the
 earlier-work group and remove older entries from the homepage's featured set.
 Archived here is an editorial grouping; no GitHub repositories are archived.
+
+## Earlier-work performance claims, October 20, 2026
+
+The Zugzology case study (`content/projects/mushroom-cultivation-supplier.md`)
+previously claimed 80% fewer database queries, 70–80% faster loads, an 8+ second
+initial load, and a 2MB+ product payload. No supporting benchmark, workload,
+measurement date, or source was found in this repository or the introducing
+content commit (`ef54a5a0`). Those figures and unmeasured performance guarantees
+have been removed. The write-up retains its described caching and streaming
+approaches; it does not establish measured results for them. Restoring metrics
+requires a source and a reproducible before/after comparison.
+This correction does not independently verify the inherited feature list,
+production usage, scaling capacity, or field-management roadmap.
