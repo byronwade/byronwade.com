@@ -53,7 +53,18 @@ const repository = {
 	updated_at: "2026-10-01T00:00:00Z",
 };
 const undatedRepository = { ...repository, created_at: null, updated_at: null, pushed_at: null };
-const shots = [{ id: 2, title: "Synthetic design" }];
+const shots = [
+	{
+		id: 2,
+		title: "Synthetic design",
+		html_url: "https://dribbble.com/shots/2-example",
+		images: {
+			normal: "https://image.example/shot.jpg",
+			hidpi: null,
+			teaser: "https://image.example/teaser.jpg",
+		},
+	},
+];
 const stats = { publicRepos: 4, followers: 2, following: 1, createdAt: "2020-01-01T00:00:00Z" };
 const profile = {
 	public_repos: stats.publicRepos,
@@ -65,7 +76,8 @@ const profile = {
 function fixture(
 	context,
 	repositories,
-	loadProfile = () => Promise.resolve(Response.json(profile))
+	loadProfile = () => Promise.resolve(Response.json(profile)),
+	loadShots = () => Promise.resolve(Response.json(shots))
 ) {
 	const requests = [];
 	context.mock.method(console, "error", context.mock.fn());
@@ -82,12 +94,16 @@ function fixture(
 		}
 		assert.equal(origin, "https://api.dribbble.com");
 		assert.equal(pathname, "/v2/user/shots");
-		return Promise.resolve(Response.json(shots));
+		return loadShots();
 	});
 	return requests;
 }
 
-async function responseBody({ unavailable = false, profileFailed = false } = {}) {
+async function responseBody({
+	unavailable = false,
+	profileFailed = false,
+	expectedShots = shots,
+} = {}) {
 	const response = await GET();
 	assert.equal(response.status, 200);
 	const body = await response.json();
@@ -111,13 +127,40 @@ async function responseBody({ unavailable = false, profileFailed = false } = {})
 		"shots",
 		"stats",
 	]);
-	assert.deepEqual(body.shots, shots, "healthy optional data survives a GitHub failure");
+	assert.deepEqual(
+		body.shots,
+		expectedShots,
+		"validated optional data survives other provider failures"
+	);
 	assert.deepEqual(
 		body.stats,
 		profileFailed ? null : stats,
 		"profile failure must not invent counts"
 	);
 	return body;
+}
+
+for (const [name, payload, expectedShots] of [
+	["partial shot response", [shots[0], { ...shots[0], id: 3, images: null }], shots],
+	["malformed shot response", { message: "unexpected response" }, []],
+	["genuinely empty shot response", [], []],
+]) {
+	test(`portfolio API preserves healthy GitHub data and public fields with a ${name}`, async (context) => {
+		fixture(
+			context,
+			() => Promise.resolve(Response.json([repository])),
+			undefined,
+			() => Promise.resolve(Response.json(payload))
+		);
+		const body = await responseBody({ expectedShots });
+		assert.deepEqual(body.repos, [repository]);
+		assert.equal(body.githubFailed, false);
+		assert.equal(
+			body.degraded,
+			false,
+			"the existing optional-provider fallback contract is preserved"
+		);
+	});
 }
 
 for (const [name, repos, expected] of [
