@@ -24,7 +24,7 @@ Zugzology is an e-commerce platform for mushroom cultivation supplies. It is a r
 
 Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represents a modern approach to e-commerce:
 
-**Server Components by Default**: I chose React Server Components to render content on the server and reserve browser-side code for interactive features.
+**Server Components by Default**: React Server Components run on the server without shipping their component code to the browser. Loading still depends on the data requests, assets, and client components each page needs.
 
 **Shopify Storefront API Integration**: Seamless connection to Shopify's powerful e-commerce infrastructure. I get the benefits of Shopify's payment processing, inventory management, and order fulfillment without being locked into their templates.
 
@@ -32,9 +32,9 @@ Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represen
 
 **Dynamic Page Builder**: A flexible, metaobject-based system that allows merchants to create custom pages without touching code. This extensibility is built into the architecture from day one.
 
-**Progressive Loading Architecture**: Sections stream independently as their content becomes available, rather than waiting for every section to finish loading.
+**Progressive Loading Architecture**: Sections stream independently, so the page shell can render while other content is still loading. Streaming alone does not guarantee when a page becomes interactive.
 
-**Advanced Caching Strategy**: I used multiple caching layers to reuse product data across requests. The goal was to avoid repeated data fetching and keep product browsing responsive.
+**Advanced Caching Strategy**: Multi-layer caching reuses product data between requests. This case study does not include a reproducible benchmark for query reductions or load-time improvements, so I describe the approach without assigning it a percentage gain.
 
 ### Key Features
 
@@ -240,11 +240,11 @@ TypeScript ensures that as the data model evolves, all code remains type-safe. A
 
 ### Caching & Performance
 
-Extending the caching system to field data, sensor readings, and analytics results would require deciding how long each can remain cached and when to invalidate it.
+Caching field data, sensor readings, or analytics results would require decisions about freshness, invalidation, and data volume. The store's caching approach is a starting point to evaluate, rather than evidence of how a field management system would perform.
 
 ### Real-time Capabilities
 
-The streaming work offers a starting point for displaying field updates. Sensor integration would still need its own data ingestion, update frequency, and failure handling.
+Streaming page content and ingesting sensor updates have different requirements. Sensor data would need its own ingestion, storage, and delivery design, with testing under representative update rates.
 
 ---
 
@@ -254,13 +254,13 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 
 ### Performance at Scale
 
-- **Challenge**: Product browsing depended on the initial data load
+- **Challenge**: Waiting for product data delayed the initial page content
 - **Solution**: Implemented progressive loading and intelligent caching
 - **Application**: Field data will load progressively, with critical metrics first
 
 ### Data Management
 
-- **Challenge**: Product payloads needed to fit within cache limits
+- **Challenge**: Product data needed to be split into smaller cache entries
 - **Solution**: Segmented caching and data pagination
 - **Application**: Field sensor data will be segmented by location and time period
 
