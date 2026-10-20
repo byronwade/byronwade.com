@@ -45,7 +45,8 @@ export async function HomeHero() {
 						Read what went wrong, and what I learned
 					</Link>
 				</div>
-				<Card>
+				{/* Tone, not a border, separates this aside from the hero (DESIGN.md §4.5). */}
+				<Card className="border-0">
 					<CardHeader>
 						<p className="mb-3 text-copy-12 text-muted-foreground">What I’m building</p>
 						<CardTitle>
