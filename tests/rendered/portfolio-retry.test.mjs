@@ -34,7 +34,7 @@ test("portfolio retry renders provider recovery without caching failure HTML", {
 								fork: false,
 								archived: false,
 							},
-						],
+						]
 			)
 		);
 	});
@@ -57,13 +57,14 @@ test("portfolio retry renders provider recovery without caching failure HTML", {
 					assert.equal(response.status, 200);
 					return response.text();
 				};
-				assert.match(await load(), FAILURE);
+				const unavailable = await load();
 				assert.equal(requests, 1, "initial failure must reach the provider");
+				assert.match(unavailable, FAILURE);
 				failed = false;
 				const recovered = await load();
+				assert.equal(requests, 2, "retry must call the recovered provider");
 				assert.doesNotMatch(recovered, FAILURE);
 				assert.match(recovered, RECOVERED);
-				assert.equal(requests, 2, "retry must call the recovered provider");
 				assert.match(await load(), RECOVERED);
 				assert.equal(requests, 2, "successful data must remain cached");
 			},

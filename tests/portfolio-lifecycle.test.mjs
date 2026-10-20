@@ -68,7 +68,7 @@ function renderPage(load) {
 			return jsxRuntime;
 		},
 		console: { error: (...args) => errors.push(args) },
-		connection: async () => {},
+		connection: async () => undefined,
 		getGitHubRepositories: load,
 		SiteShell: ({ children }) => createElement("main", null, children),
 		PageHeader: ({ title, lede, aside }) =>
