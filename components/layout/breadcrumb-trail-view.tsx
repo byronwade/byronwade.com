@@ -14,7 +14,7 @@ const BreadcrumbOverflow = dynamic(
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
-/** Desktop breadcrumb within the shared header; long trails collapse to a popover. */
+/** Desktop breadcrumb beside the shared header; long trails collapse to a popover. */
 export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) {
 	const pathname = usePathname();
 	const crumbs = resolveTrail(pathname, labels);
@@ -31,7 +31,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 			return;
 		}
 		const compute = () => {
-			// The header grid owns the available space, including launcher width.
+			// The nav's width cap owns the available space beside the header.
 			setCollapsed(twin.scrollWidth > root.clientWidth && crumbs.length >= 3);
 		};
 		compute();
@@ -54,10 +54,11 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 	}
 
 	return (
-		// Only the wide header has room for the trail beside visible primary nav.
+		// The trail is fixed beside the centered header; its cap keeps it clear of
+		// the header's left edge at every xl width.
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 hidden h-[40px] w-full max-w-full items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
+			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
 		>
 			{/* DESKTOP, full trail, collapsing to root / … / current. */}
 			<ol ref={rootRef} className="flex min-w-0 flex-1 items-center gap-1.5">
