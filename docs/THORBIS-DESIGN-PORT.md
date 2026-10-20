@@ -5,6 +5,10 @@ byronwade.com adopts [Thorbis Design](https://design.thorbis.com), sourced from
 `46b6654d02fda9d8fde737395185c3141df52cd2` (October 16, 2026 inspection).
 The reference checkout `D:/Dev/thorbis-design` is read-only.
 
+The header recipes were re-inspected at `5d8cd27` for the mobile-first rebuild.
+That header-only port includes the source narrow-container reflow and light
+selected-surface/rim overrides. Other component and font pins stay as recorded below.
+
 ## Distribution decision
 
 This is a **port**, not an installed Thorbis package. Upstream package.json names
@@ -31,8 +35,8 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | components/ui/card.tsx | src/components/ui/card.tsx | Panel tone and source large radius; existing slots and size contract. Persistent regions stay planar under the later rules checklist. |
 | components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
 | components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
-| components/layout/nav-dock.tsx | src/components/site/site-shell.stylex.ts navLink/navLinkActive | Inter 13px, source pill, selected tone/short shadow, 44px targets; all destinations visible without JS |
-| conditional-layout.tsx; dock-toolbar.tsx; site-shell.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/tools/page | One sticky header in flow, panel/radius/elevation, reserved utilities, navigation wraps to separate row; existing launcher/search/theme/support retained |
+| components/layout/nav-dock.tsx; site-header.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/navLink/menu/menuLink | Fixed 52px row, 42rem measure, 8px top/16px mobile side insets, 13px nav and 12px descriptions, active pill/dot, 44px targets; Base UI modal focus and dismissal |
+| conditional-layout.tsx; dock-toolbar.tsx; dock-toolbar-client.tsx | src/components/site/shell.tsx; site-header.tsx tools; site-shell.stylex.ts chrome | Reserved chrome space, bare search/theme buttons, anchored search; existing breadcrumb component retained outside the compact row |
 | components/layout/page.tsx; common/index-list.tsx | src/components/rules/page.tsx; site-shell.stylex.ts section | Source 32px title/20px section roles; stable-contrast evidence rows, shared focus |
 | components/home/home-hero.tsx, home-projects.tsx, home-blog.tsx | src/components/rules/page.tsx; src/components/ui/card.tsx; site-shell.stylex.ts | Site-specific claim/proof composition using source roles, panel and existing content loaders |
 | components/layout/footer.tsx | src/components/site/site-footer.tsx; site-shell.stylex.ts footer | Brand/author and navigation regions, source type/tone, textual social links, source attribution; existing obfuscated email |
@@ -63,11 +67,24 @@ for introducing a new visual choice.
   in `lib/icons/` preserve duotone/brand-fill defaults, overrides and display names
   while allowing route-specific code splitting. A single wrapper module had pulled
   preview glyphs into home's shared initial chunk.
-- Launcher and toolbar public owners render their static SVGs on the server and
-  pass nodes into `app-launcher-client.tsx` / `dock-toolbar-client.tsx`. These
-  leaves retain the existing capsule, search, theme and dismissal behavior.
-- A single sticky header in flow and wrapping text navigation replace independently fixed capsules.
-  This retains the header landmark and prevents tablet overlap and focus clipping.
+- Header and toolbar owners render static identity and SVGs on the server and pass
+  nodes into `nav-dock.tsx` / `dock-toolbar-client.tsx`. The product-switcher,
+  nested utility capsules and width/height morph were removed. GitHub and X remain
+  in the mobile panel and footer. Search retains the shared index and matcher.
+- The header uses the source fixed chrome and reserves space before hydration.
+  All targets stay at least 44px, including desktop (source desktop defaults to 40px).
+  The source stable scrollbar gutter prevents chrome movement when a modal locks
+  scrolling. Header-scoped selected fill and panel rim preserve source light
+  overrides without changing other surfaces: `--header-on-panel` and
+  `--header-shadow-panel` in globals.css; retain these when syncing the token port.
+  Base UI owns focus containment, Escape, outside press and focus return. A scoped
+  CSS lock covers its intentional touch-scroll exception for inset popovers.
+- `header-popover.tsx` retains native server-rendered triggers and loads the shared
+  Base UI overlay only on the first open. The trigger stays operable and reports
+  busy while that code arrives, then the loaded overlay retains focus ownership
+  for subsequent opens. `header-search-panel.tsx` also defers the search field,
+  matching and query state. The header reserves its clearance with the same
+  container query used by its narrow reflow, including 200% text.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.
