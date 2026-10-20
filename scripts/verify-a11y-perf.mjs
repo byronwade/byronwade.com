@@ -408,6 +408,14 @@ async function checkPortfolioStates(page) {
 	if (!(refreshLabel.includes("Refresh") || refreshLabel.includes("Try again"))) {
 		throw new Error("Portfolio refresh must remain present");
 	}
+	const recoveryLinks = await page.$$eval("main a[href]", (links) =>
+		links
+			.filter((link) => ["Refresh", "Try again", "Open GitHub"].includes(link.textContent.trim()))
+			.map((link) => link.getAttribute("role"))
+	);
+	if (recoveryLinks.some((role) => role && role !== "link")) {
+		throw new Error("Portfolio recovery navigation must retain link semantics");
+	}
 	return [await readState(page, "Portfolio settled")];
 }
 

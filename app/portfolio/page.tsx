@@ -81,6 +81,7 @@ function RefreshLink({ label }: { label: string }) {
 	return (
 		<Button
 			className="gap-2"
+			role="link"
 			render={
 				<a href="/portfolio">
 					<RefreshCw aria-hidden="true" className="size-3.5" />
@@ -100,6 +101,7 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
 				<div className="flex flex-wrap items-center justify-center gap-2">
 					<RefreshLink label="Try again" />
 					<Button
+						role="link"
 						render={
 							<a href="https://github.com/byronwade" rel="noopener noreferrer" target="_blank">
 								Open GitHub
