@@ -6,7 +6,7 @@ import lighthouse, { snapshot } from "lighthouse";
 import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
 import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
 import { launchAuditBrowser } from "./audit-browser.mjs";
-import { writeEvidenceJson } from "./evidence-json.mjs";
+import { serializeEvidence, writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -19,9 +19,19 @@ const selectedRoute = process.argv.find((arg) => arg.startsWith("--route="))?.sl
 const reportFile = `${destination}/${phase}${selectedRoute ? `-${selectedRoute.replaceAll("/", "_")}` : ""}${measure ? "-lighthouse" : ""}.json`;
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
 const PAGE_SUFFIX = /\/?page\.tsx$/;
+const CONTENT_DETAIL_ROUTE = /^\/(blog|projects)\/[^/]+$/;
+const prerenderManifest = JSON.parse(readFileSync(".next/prerender-manifest.json", "utf8"));
+const publishedContentRoutes = Object.keys(prerenderManifest.routes)
+	.filter((route) => CONTENT_DETAIL_ROUTE.test(route))
+	.sort();
+const projectRoutes = publishedContentRoutes.filter((route) => route.startsWith("/projects/"));
+const blogRoutes = publishedContentRoutes.filter((route) => route.startsWith("/blog/"));
+if (!(projectRoutes.length && blogRoutes.length)) {
+	throw new Error("A production build must contain published project and writing detail routes");
+}
 const representatives = {
-	"/projects/[slug]": ["/projects/byronwade-ui"],
-	"/blog/[slug]": ["/blog/building-thorbis"],
+	"/projects/[slug]": projectRoutes,
+	"/blog/[slug]": blogRoutes,
 	"/portfolio/[...slug]": [
 		"/portfolio/thorbis",
 		"/portfolio/thorbis-ai",
@@ -62,6 +72,7 @@ const report = {
 		.update(readFileSync(import.meta.filename))
 		.update(readFileSync("scripts/lighthouse-budget.mjs"))
 		.update(readFileSync("scripts/audit-browser.mjs"))
+		.update(readFileSync("scripts/evidence-json.mjs"))
 		.update(readFileSync("scripts/production-session.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser-preload.mjs"))
@@ -190,11 +201,11 @@ async function restoreAuditedPage(page, url, route, width, theme, status) {
 	return restored.status();
 }
 
-async function openBrowser() {
+async function openBrowser(performanceSample) {
 	if (browser) {
 		return;
 	}
-	browser = await launchAuditBrowser({ lighthouse: measure });
+	browser = await launchAuditBrowser({ lighthouse: performanceSample });
 	report.chrome = report.chrome || (await browser.version());
 }
 
@@ -208,7 +219,9 @@ async function closeBrowser() {
 }
 
 async function auditPage(url, route, width, theme) {
-	await openBrowser();
+	const expectedStatus =
+		route === "/audit-not-found" || route === "/portfolio/figma/audit-unavailable" ? 404 : 200;
+	await openBrowser(measure && expectedStatus === 200);
 	const context = await browser.createBrowserContext();
 	const page = await context.newPage();
 	const runtimeErrors = [];
@@ -223,8 +236,6 @@ async function auditPage(url, route, width, theme) {
 	}, theme);
 	await prepareFigmaFrame(page, route, runtimeErrors);
 	try {
-		const expectedStatus =
-			route === "/audit-not-found" || route === "/portfolio/figma/audit-unavailable" ? 404 : 200;
 		const loaded = await loadAuditedPage(page, url, route, width, theme, expectedStatus);
 		const lighthouseResult = loaded.lighthouseResult;
 		await page.addScriptTag({ content: axeSource });
@@ -960,6 +971,8 @@ async function measurePage(url, route, width, page) {
 			document.documentElement.classList.contains("dark") ? "dark" : "light"
 		),
 		lighthouseVersion: lhr.lighthouseVersion,
+		environment: lhr.environment,
+		runWarnings: lhr.runWarnings,
 		profile: {
 			formFactor: lhr.configSettings.formFactor,
 			screenEmulation: lhr.configSettings.screenEmulation,
@@ -1008,7 +1021,7 @@ try {
 							previous.then(async () => {
 								const result = await auditPage(url, route, width, theme);
 								report.cases.push(result);
-								writeFileSync(reportFile, JSON.stringify(report));
+								writeFileSync(reportFile, serializeEvidence(report));
 								console.log(
 									JSON.stringify({
 										route,
@@ -1019,6 +1032,11 @@ try {
 										overflow: result.overflow,
 										navOverlap: result.navOverlap,
 										keyboardFailures: result.keyboard?.failures.length,
+										stateViolations: result.states?.reduce(
+											(total, state) => total + (state.violations?.length || 0),
+											0
+										),
+										failed: caseFailed(result),
 										lighthouseAccessibility: result.lighthouse?.accessibility,
 										tbt: result.lighthouse?.timings?.["total-blocking-time"],
 										lcp: result.lighthouse?.timings?.["largest-contentful-paint"],
@@ -1040,27 +1058,29 @@ try {
 		await closeBrowser();
 	}
 }
-const failures = report.cases.filter(
-	(entry) =>
+function caseFailed(entry) {
+	return Boolean(
 		entry.overflow ||
-		(entry.actualTheme && entry.actualTheme !== entry.theme) ||
-		entry.runtimeErrors?.length ||
-		entry.h1Count !== 1 ||
-		entry.navOverlap.length ||
-		entry.targetFailures.length ||
-		entry.keyboard?.failures.length ||
-		entry.states?.some(
-			(state) =>
-				state.failures?.length ||
-				state.targetFailures?.length ||
-				state.activeMotion > 0 ||
-				state.violations?.length
-		) ||
-		entry.violations.length ||
-		(entry.lighthouse &&
-			(entry.lighthouse.accessibility < 95 ||
-				entry.lighthouse.budget?.failures.length ||
-				(entry.lighthouse.theme && entry.lighthouse.theme !== entry.theme)))
-);
+			(entry.actualTheme && entry.actualTheme !== entry.theme) ||
+			entry.runtimeErrors?.length ||
+			entry.h1Count !== 1 ||
+			entry.navOverlap.length ||
+			entry.targetFailures.length ||
+			entry.keyboard?.failures.length ||
+			entry.states?.some(
+				(state) =>
+					state.failures?.length ||
+					state.targetFailures?.length ||
+					state.activeMotion > 0 ||
+					state.violations?.length
+			) ||
+			entry.violations.length ||
+			(entry.lighthouse &&
+				(entry.lighthouse.accessibility < 95 ||
+					entry.lighthouse.budget?.failures.length ||
+					(entry.lighthouse.theme && entry.lighthouse.theme !== entry.theme)))
+	);
+}
+const failures = report.cases.filter(caseFailed);
 console.log(`${report.cases.length} cases; ${failures.length} failed`);
 process.exitCode = failures.length || report.cases.length !== report.expectedCases ? 1 : 0;

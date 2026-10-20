@@ -36,8 +36,11 @@ There are no automatic GitHub Actions performance runs. Do not publish or deploy
 as part of measurement.
 
 `node scripts/verify-a11y-perf.mjs --lighthouse` audits every visual page
-template after a production build. It requires a representative for each dynamic
-template and covers 390, 768 and 1280 CSS pixels in light and dark. The same
+template and every published writing/project detail URL after a production build.
+Content URLs come from Next's prerender manifest, so the audit neither duplicates
+front-matter parsing nor silently skips newly published content. Other dynamic
+templates require explicit representatives. Each URL covers 390, 768 and 1280 CSS
+pixels in light and dark. The same
 budget assessor checks each route. Intentional HTTP errors use an accessibility
 snapshot because navigation-mode Lighthouse rejects them.
 Figma and email delivery use local fixtures. Browser submissions exercise success

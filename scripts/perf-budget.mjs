@@ -49,6 +49,8 @@ await withProductionServer(async (url) => {
 				chrome: await browser.version(),
 				score: lhr.categories.performance.score,
 				lighthouseVersion: lhr.lighthouseVersion,
+				environment: lhr.environment,
+				runWarnings: lhr.runWarnings,
 				profile: {
 					formFactor: lhr.configSettings.formFactor,
 					screenEmulation: lhr.configSettings.screenEmulation,
