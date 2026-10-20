@@ -43,3 +43,47 @@ approaches; it does not establish measured results for them. Restoring metrics
 requires a source and a reproducible before/after comparison.
 This correction does not independently verify the inherited feature list,
 production usage, scaling capacity, or field-management roadmap.
+
+## Zugzology AI claims, October 20, 2026
+
+The same case study described a multi-provider "enterprise AI/ML system"
+(recommendations, behavior analysis, sentiment analysis, segmentation, market
+basket analysis, A/B testing) as part of the current store. The store's public
+repository, [byronwade/zugzology.com](https://github.com/byronwade/zugzology.com),
+shows otherwise:
+
+- Commit [`a509ce9d`](https://github.com/byronwade/zugzology.com/commit/a509ce9dd04df8f450c2bf1421dc142817cc963c)
+  (2025-10-15, "Major architectural restructuring") deleted `app/api/ai/*`
+  (behavior-analysis, demand-forecasting, enhance-product, personalize-homepage,
+  recommendations, search-suggestions, sentiment-analysis, support,
+  user-segmentation) and `components/ai/*`, including the A/B testing framework.
+- Commit [`b7a6d695`](https://github.com/byronwade/zugzology.com/commit/b7a6d695110913681e1e9b9593b8387aa03b1d43)
+  (2026-07-31) deleted the remaining `src/app/api/analytics/ab-test` route.
+- At HEAD [`5b7f80d8`](https://github.com/byronwade/zugzology.com/tree/5b7f80d81b4819f9d38f51da89bf3247763077ed),
+  `package.json` has no OpenAI, Anthropic, or Groq SDK, and product order comes from
+  [`src/lib/ranking/product-ranker.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/ranking/product-ranker.ts)
+  ("without external dependencies or AI"), called from
+  `src/components/features/products/realtime-products-content.tsx`.
+- The removed system's statistical fallback when no provider key is set is
+  documented in that repository's `docs/AI_PREDICTIONS_STATUS.md`.
+
+This site's case study was added in `ef54a5a0` (2025-12-02), after the removal,
+so the AI passages were stale when published. They now describe the AI layer as
+a removed experiment and the ranker as current. Added feature-list items (typed
+analytics events, a Web Vitals route, Google Merchant/Facebook feeds, a Shopify
+outage degraded mode) come from routes and components present at that HEAD;
+whether custom analytics events record in production depends on the Vercel plan
+and was not checked. "Proven Scalability" / "thousands of products", "already
+handling production traffic", and "self-sustaining" revenue had no recorded load
+test, traffic, or revenue source and are now worded as design intent. No reason
+for the AI removal is given because the commit does not state one. The
+repository's own `docs/ENTERPRISE_AI_SYSTEM.md` still describes the deleted system;
+it was not edited.
+
+## Wade's Plumbing mobile-traffic figure, October 20, 2026
+
+`content/projects/wades-plumbing-and-septic.md` said 80% of local-service traffic
+comes from phones and called mobile speed a "massive ranking factor". Neither had
+a source, so the figure is removed and the sentence now says page experience is
+one Google ranking signal. The front-matter outcome "ranks in two markets" is
+also unsourced and is left for Byron to confirm.
