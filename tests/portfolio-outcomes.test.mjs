@@ -153,6 +153,11 @@ async function responseBody({
 		profileFailed ? null : stats,
 		"profile failure must not invent counts"
 	);
+	assert.deepEqual(
+		body.portfolioStats,
+		[],
+		"the API must not publish fixed claims, rounded-up counts or made-up trends"
+	);
 	return body;
 }
 
