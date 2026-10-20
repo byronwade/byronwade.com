@@ -91,8 +91,11 @@ function renderPage(load) {
 const repository = (id, stars = 1) => ({
 	id,
 	name: `project-${id}`,
+	full_name: `example/project-${id}`,
 	html_url: `https://github.com/example/project-${id}`,
+	description: null,
 	fork: false,
+	forks_count: 0,
 	stargazers_count: stars,
 	pushed_at: "2026-10-01T00:00:00Z",
 	language: "TypeScript",

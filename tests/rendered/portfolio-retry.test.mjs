@@ -27,7 +27,10 @@ test("portfolio retry renders provider recovery without caching failure HTML", {
 							{
 								id: 1,
 								name: "audit-recovery",
+								full_name: "fixture/audit-recovery",
 								html_url: "https://github.com/fixture/audit-recovery",
+								description: null,
+								forks_count: 0,
 								stargazers_count: 1,
 								pushed_at: "2026-10-19T00:00:00Z",
 								updated_at: "2026-10-19T00:00:00Z",

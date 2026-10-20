@@ -88,12 +88,31 @@ components/
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
-  while reading the JSON body. Profile and Dribbble failures use their existing
-  fallbacks. Repository failures throw so they are not cached as an empty profile;
-  the page and API route own recovery. Cache keys, tags and one-hour revalidation
-  policy remain unchanged.
+  while reading the JSON body. Repository failures reject instead of caching an
+  empty profile; the page and API route own recovery. The portfolio API's existing
+  `Promise.allSettled` boundary retains healthy provider
+  data and sets `githubFailed` / `degraded` without changing the JSON shape.
+  A successful empty or filtered-only repository list remains a healthy result.
+  The API stays dynamic rather than prerendering an unavailable response; failed
+  repository responses use `Cache-Control: no-store` so Retry can try again.
+  Successful responses retain their CDN policy, and provider data retains the
+  same cache keys, tags and one-hour revalidation. Dribbble and profile failures
+  still use their existing empty-list or zero/null fallback.
+  Repository JSON is read as `unknown` and every entry is validated before
+  filtering, sorting or caching. A malformed entry rejects the whole response
+  through that same unavailable/retry path, rather than exposing unsafe links,
+  invalid dates or values the page cannot render. Valid records keep additional
+  API fields. Counts are required by the page; optional metadata and nullable
+  timestamps follow GitHub's
+  [minimal-repository schema](https://github.com/github/rest-api-description/blob/main/descriptions/api.github.com/api.github.com.json).
+  Missing timestamps remain missing in the response and sort after dated
+  activity when priority and star counts tie. Native URL/number checks and
+  `date-fns` validate values without a new schema dependency.
+  `tests/portfolio-outcomes.test.mjs` checks the actual loader/API outcome boundary;
+  the rendered portfolio contract checks that the API is not prerendered.
   `tests/portfolio-rest.test.mjs` exercises stalled headers and streamed bodies
-  against a local HTTP server without calling the providers. Figma's SDK gets a
+  against a local HTTP server without calling the providers, including malformed
+  repository fields, optional/null metadata, filtering and ordering. Figma's SDK gets a
   fresh native abort signal for each request: three seconds for team projects,
   five for each project's files, and two for file details. These deadlines also
   cancel underlying connections during stalled response bodies. A failed project
