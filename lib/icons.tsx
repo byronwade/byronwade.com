@@ -7,7 +7,6 @@ export { AlertTriangle } from "./icons/alert-triangle";
 export { ArrowLeft } from "./icons/arrow-left";
 export { ArrowRight } from "./icons/arrow-right";
 export { ArrowUpRight } from "./icons/arrow-up-right";
-export { BarChart3 } from "./icons/bar-chart3";
 export { Box } from "./icons/box";
 export { Calendar } from "./icons/calendar";
 export { Check } from "./icons/check";

@@ -5,7 +5,6 @@ import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-	BarChart3,
 	Calendar,
 	ChevronRight,
 	ExternalLink,
@@ -53,26 +52,6 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 	};
 }
 
-function getComplexityLevel(score: number): { level: string; color: string; description: string } {
-	if (score >= 80) {
-		return {
-			level: "Very Complex",
-			color: "red",
-			description: "High-complexity design with many elements",
-		};
-	}
-	if (score >= 60) {
-		return { level: "Complex", color: "orange", description: "Moderately complex design" };
-	}
-	if (score >= 40) {
-		return { level: "Moderate", color: "yellow", description: "Well-structured design" };
-	}
-	if (score >= 20) {
-		return { level: "Simple", color: "green", description: "Clean and simple design" };
-	}
-	return { level: "Minimal", color: "blue", description: "Minimal design approach" };
-}
-
 export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) {
 	const { key } = await params;
 	const file = await getFigmaFile(key)();
@@ -87,14 +66,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 	const pagesCount = fileData.pageCount;
 	const componentsCount = fileData.components.length;
 	const stylesCount = fileData.styleCount;
-
-	// Calculate a simple complexity score based on available data
-	const simpleComplexityScore = Math.min(
-		100,
-		Math.round(pagesCount * 10 + componentsCount * 2 + stylesCount * 1)
-	);
-	const complexityAssessment =
-		simpleComplexityScore > 0 ? getComplexityLevel(simpleComplexityScore) : null;
 
 	return (
 		<div className="min-h-screen py-16">
@@ -122,8 +93,8 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</div>
 					</div>
 
-					{/* Metrics Overview */}
-					<div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+					{/* Metrics Overview: only counts the Figma API returns */}
+					<div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
 						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 							<CardContent className="flex items-center p-6">
 								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
@@ -156,18 +127,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 								<div>
 									<p className="font-bold text-2xl text-foreground">{stylesCount}</p>
 									<p className="text-muted-foreground text-sm">Styles</p>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardContent className="flex items-center p-6">
-								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
-									<BarChart3 className="h-6 w-6 text-brand" />
-								</div>
-								<div>
-									<p className="font-bold text-2xl text-foreground">{simpleComplexityScore}</p>
-									<p className="text-muted-foreground text-sm">Complexity</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -290,53 +249,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 							</CardContent>
 						</Card>
 
-						{/* Quick Stats */}
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardHeader>
-								<CardTitle className="text-foreground">Quick Stats</CardTitle>
-							</CardHeader>
-							<CardContent className="space-y-3">
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Pages</span>
-									<span className="font-semibold text-foreground">{pagesCount}</span>
-								</div>
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Components</span>
-									<span className="font-semibold text-foreground">{componentsCount}</span>
-								</div>
-								<div className="flex items-center justify-between">
-									<span className="text-muted-foreground">Styles</span>
-									<span className="font-semibold text-foreground">{stylesCount}</span>
-								</div>
-								{simpleComplexityScore > 0 && (
-									<div className="flex items-center justify-between">
-										<span className="text-muted-foreground">Complexity</span>
-										<span className="font-semibold text-foreground">{simpleComplexityScore}</span>
-									</div>
-								)}
-							</CardContent>
-						</Card>
-
-						{/* Complexity Assessment */}
-						{complexityAssessment && (
-							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-								<CardHeader>
-									<CardTitle className="text-foreground">Complexity Assessment</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<Card className="border-border/30 bg-background/80">
-										<CardContent className="p-4 text-center">
-											<div className="mb-1 font-bold text-brand text-lg">
-												{complexityAssessment.level}
-											</div>
-											<div className="text-muted-foreground text-sm">
-												{complexityAssessment.description}
-											</div>
-										</CardContent>
-									</Card>
-								</CardContent>
-							</Card>
-						)}
+						{/* A "Complexity" score and label used to sit here, computed as
+						    pages x 10 + components x 2 + styles and capped at 100. It was a
+						    made-up metric presented as a measurement (DESIGN.md §3.2, §9). The
+						    "Quick Stats" card that repeated the three counts above went with it. */}
 					</div>
 				</div>
 			</div>

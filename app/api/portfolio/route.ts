@@ -51,32 +51,6 @@ export async function GET() {
 			statsResult.status === "rejected";
 
 		const safeRepos = Array.isArray(repos) ? repos : [];
-		const repoCount = safeRepos.length;
-		const figmaCount = Array.isArray(figmaFiles) ? figmaFiles.length : 0;
-
-		const recentRepos = safeRepos.filter((repo) => {
-			if (!repo.updated_at) {
-				return false;
-			}
-			const updatedDate = new Date(repo.updated_at);
-			const threeMonthsAgo = new Date();
-			threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-			return updatedDate > threeMonthsAgo;
-		}).length;
-
-		const growthPercentage = repoCount > 0 ? Math.round((recentRepos / repoCount) * 100) : 0;
-
-		const portfolioStats = [
-			{ number: "50+", label: "Projects Completed", icon: "Award", trend: "+12%" },
-			{
-				number: `${repoCount}+`,
-				label: "GitHub Repositories",
-				icon: "Github",
-				trend: `+${growthPercentage}%`,
-			},
-			{ number: `${figmaCount}+`, label: "Design Projects", icon: "Figma", trend: "+15%" },
-			{ number: "100%", label: "Client Satisfaction", icon: "Users", trend: "Maintained" },
-		];
 
 		// Prefer a usable payload over a hard 500 when GitHub is briefly unavailable.
 		return NextResponse.json(
@@ -85,7 +59,11 @@ export async function GET() {
 				shots: Array.isArray(shots) ? shots : [],
 				figmaFiles: Array.isArray(figmaFiles) ? figmaFiles : [],
 				stats,
-				portfolioStats,
+				// Kept empty for existing clients. It used to publish fixed claims
+				// ("50+ Projects Completed", "100% Client Satisfaction"), counts rounded
+				// up with "+" and made-up trends; DESIGN.md §9 allows only real numbers
+				// with a source. Real counts are in `repos`, `figmaFiles` and `stats`.
+				portfolioStats: [],
 				degraded,
 				githubFailed,
 			},
