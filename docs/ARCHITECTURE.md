@@ -74,6 +74,13 @@ components/
 
 ## Data
 
+- `/portfolio` keeps its eight-second client deadline active through response
+  headers and JSON consumption. A timeout ends loading or refreshing and shows
+  the existing retry/profile recovery; the profile action retains link semantics.
+  Effect cleanup cancels quietly and blocks
+  stale state updates; settled requests clear their deadline. Native regressions
+  in `tests/portfolio-lifecycle.test.mjs` exercise the page's actual effect without
+  adding a test renderer or exposing the private hook as production API.
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
