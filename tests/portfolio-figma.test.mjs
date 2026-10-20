@@ -102,7 +102,7 @@ const detail = {
 /** The real SDK and Axios adapter run against loopback HTTP, never Figma. */
 async function fixture(
 	context,
-	{ target, mode = "success", projects = [{ id: 1 }], responses = {} } = {}
+	{ target, mode = "success", projects = [{ id: 1 }], responses = {}, delays = {} } = {}
 ) {
 	const previousToken = process.env.FIGMA_ACCESS_TOKEN;
 	const previousTeam = process.env.FIGMA_TEAM_ID;
@@ -160,7 +160,12 @@ async function fixture(
 		if (path === "/projects/1/files" && projects.length === 1) {
 			data.files = [summary];
 		}
-		response.end(JSON.stringify(Object.hasOwn(responses, path) ? responses[path] : data));
+		const body = JSON.stringify(Object.hasOwn(responses, path) ? responses[path] : data);
+		if (Object.hasOwn(delays, path)) {
+			setTimeout(() => response.end(body), delays[path]);
+		} else {
+			response.end(body);
+		}
 	});
 	await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 	const address = server.address();
@@ -226,19 +231,23 @@ test("Figma detail projects the document, cached-list thumbnail and cache policy
 	});
 });
 
+// The list rejects so the API can report an outage; the detail page keeps its null fallback.
 const operations = [
 	{
 		name: "team projects",
 		path: "/teams/fixture-team/projects",
 		load: getFigmaFiles,
-		fallback: [],
+		rejects: true,
+		logs: 1,
 		budget: 3000,
 	},
 	{
 		name: "project files",
 		path: "/projects/1/files",
 		load: getFigmaFiles,
-		fallback: [],
+		rejects: true,
+		// The project failure, then the list-level "every project failed" outcome.
+		logs: 2,
 		budget: 5000,
 	},
 	{
@@ -246,25 +255,38 @@ const operations = [
 		path: `/files/${summary.key}`,
 		load: () => getFigmaFile(summary.key)(),
 		fallback: null,
+		logs: 1,
 		budget: 2000,
 	},
 ];
 
+async function settle(load) {
+	try {
+		return { value: await load() };
+	} catch (error) {
+		return { error };
+	}
+}
+
 for (const operation of operations) {
 	for (const mode of ["headers", "body", "http-error"]) {
-		test(`Figma ${operation.name} cancels or settles ${mode} and retains its fallback`, {
+		test(`Figma ${operation.name} cancels or settles ${mode} with its failure outcome`, {
 			timeout: 12_000,
 		}, async (t) => {
 			const { errors, stalled, received } = await fixture(t, { target: operation.path, mode });
 			const started = performance.now();
-			const result = await operation.load();
+			const result = await settle(operation.load);
 			assert.ok(
 				performance.now() - started < operation.budget + 2000,
 				"the existing per-operation deadline must remain bounded"
 			);
-			assert.deepEqual(result, operation.fallback);
+			if (operation.rejects) {
+				assert.ok(result.error instanceof Error, "an outage must not resolve as an empty list");
+			} else {
+				assert.deepEqual(result, { value: operation.fallback });
+			}
 			assert.ok(received.includes(operation.path));
-			assert.equal(errors.length, 1);
+			assert.equal(errors.length, operation.logs);
 			if (mode !== "http-error") {
 				assert.ok(
 					performance.now() - started >= operation.budget - 100,
@@ -282,7 +304,7 @@ for (const operation of operations) {
 				assert.equal(request.signal.aborted, true);
 			}
 			assert.ok(
-				errors[0].every((argument) => typeof argument === "string"),
+				errors.every((args) => args.every((argument) => typeof argument === "string")),
 				"SDK error logs must not serialize Axios request configuration or access tokens"
 			);
 			assert.ok(!JSON.stringify(errors).includes("synthetic-test-token"));
@@ -377,7 +399,7 @@ for (const [index, payload] of invalidEnvelopes.entries()) {
 		const { received, errors } = await fixture(t, {
 			responses: { "/teams/fixture-team/projects": payload },
 		});
-		assert.deepEqual(await getFigmaFiles(), []);
+		await assert.rejects(getFigmaFiles(), /Invalid Figma team projects response/);
 		assert.deepEqual(received, ["/teams/fixture-team/projects"]);
 		assert.equal(errors.length, 1);
 		assert.ok(errors[0].every((argument) => typeof argument === "string"));
@@ -532,14 +554,48 @@ test("Figma accepts complete timestamps with offsets and fractional seconds", as
 	assert.equal(warnings.length, 0);
 });
 
-test("Figma returns no invalid files when every entry fails validation", async (t) => {
+test("Figma rejects a project whose every file fails validation instead of caching no files", async (t) => {
 	const { warnings, errors } = await fixture(t, {
 		responses: { "/projects/1/files": { files: invalidFiles.map(([, value]) => value) } },
 	});
-	assert.deepEqual(await getFigmaFiles(), []);
-	assert.equal(warnings.length, 1);
-	assert.equal(errors.length, 0);
+	await assert.rejects(getFigmaFiles(), /Every Figma project request failed/);
+	assert.equal(warnings.length, 0);
+	assert.equal(errors.length, 2);
+	assert.ok(errors.every((args) => args.every((argument) => typeof argument === "string")));
 });
+
+test("Figma keeps healthy projects when another project's files all fail validation", async (t) => {
+	const { errors } = await fixture(t, {
+		projects: [{ id: 1 }, { id: 2 }],
+		responses: { "/projects/2/files": { files: [null, { ...summary, name: {} }] } },
+	});
+	const files = await getFigmaFiles();
+	assert.equal(files.length, 12);
+	assert.ok(files.every((item) => item.key.startsWith("/projects/1/files-")));
+	assert.equal(errors.length, 1);
+});
+
+test("Figma rejects when every project request fails", { timeout: 5000 }, async (t) => {
+	const { errors } = await fixture(t, {
+		projects: [{ id: 1 }, { id: 2 }],
+		responses: { "/projects/1/files": null, "/projects/2/files": { files: null } },
+	});
+	await assert.rejects(getFigmaFiles(), /Every Figma project request failed/);
+	assert.equal(errors.length, 3);
+});
+
+for (const [name, value] of [
+	["FIGMA_ACCESS_TOKEN", ""],
+	["FIGMA_TEAM_ID", "  "],
+]) {
+	test(`Figma list treats a blank ${name} as unconfigured and makes no request`, async (t) => {
+		const { received, errors } = await fixture(t);
+		process.env[name] = value;
+		assert.deepEqual(await getFigmaFiles(), []);
+		assert.deepEqual(received, []);
+		assert.equal(errors.length, 0);
+	});
+}
 
 for (const projects of [[], [{ id: 1 }]]) {
 	test(`Figma preserves a genuinely empty ${projects.length ? "project" : "team"} list`, async (t) => {
@@ -553,9 +609,9 @@ for (const projects of [[], [{ id: 1 }]]) {
 	});
 }
 
-for (const [label, payload, expected] of [
-	["mixed metadata", { files: [null, { ...summary, name: {} }, summary] }, [summary]],
-	["malformed envelope", null, []],
+for (const [label, payload, expected, degraded] of [
+	["mixed metadata", { files: [null, { ...summary, name: {} }, summary] }, [summary], false],
+	["malformed envelope", null, [], true],
 ]) {
 	test(`Figma ${label} preserves the portfolio API shape and healthy provider data`, async (t) => {
 		await fixture(t, { responses: { "/projects/1/files": payload } });
@@ -595,13 +651,47 @@ for (const [label, payload, expected] of [
 		assert.deepEqual(body.repos, []);
 		assert.deepEqual(body.shots, []);
 		assert.equal(body.githubFailed, false);
-		assert.equal(body.degraded, false, "preserve the existing optional-provider outcome contract");
+		assert.equal(body.degraded, degraded, "a Figma outage is degraded; filtered records are not");
 		assert.equal(
 			response.headers.get("Cache-Control"),
-			"public, s-maxage=3600, stale-while-revalidate=86400"
+			degraded ? "no-store" : "public, s-maxage=3600, stale-while-revalidate=86400"
 		);
 	});
 }
+
+test("portfolio API stops waiting on a slow Figma list before the page's deadline", {
+	timeout: 15_000,
+}, async (t) => {
+	// A team listing that answers just inside its own deadline, then a stalled project:
+	// the loaders alone would hold the response for about eight seconds.
+	await fixture(t, {
+		target: "/projects/1/files",
+		mode: "headers",
+		delays: { "/teams/fixture-team/projects": 2500 },
+	});
+	t.mock.method(globalThis, "fetch", (url) => {
+		const { pathname } = new URL(url);
+		return Promise.resolve(
+			Response.json(
+				pathname.endsWith("/repos")
+					? []
+					: { public_repos: 4, followers: 2, following: 1, created_at: "2020-01-01T00:00:00Z" }
+			)
+		);
+	});
+	const started = performance.now();
+	const response = await GET();
+	const elapsed = performance.now() - started;
+	const body = await response.json();
+	assert.ok(elapsed < 7000, `the API answered after ${Math.round(elapsed)} ms`);
+	assert.ok(elapsed >= 5900, "the optional-provider budget, not an earlier failure, ended the wait");
+	assert.deepEqual(body.figmaFiles, []);
+	assert.equal(body.githubFailed, false);
+	assert.equal(body.degraded, true);
+	assert.equal(response.headers.get("Cache-Control"), "no-store");
+	// The loader still cancels its own stalled request at the five-second project deadline.
+	await delay(2000);
+});
 
 const detailPath = `/files/${summary.key}`;
 

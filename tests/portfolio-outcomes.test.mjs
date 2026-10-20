@@ -77,8 +77,22 @@ function fixture(
 	context,
 	repositories,
 	loadProfile = () => Promise.resolve(Response.json(profile)),
-	loadShots = () => Promise.resolve(Response.json(shots))
+	loadShots = () => Promise.resolve(Response.json(shots)),
+	dribbbleToken = "synthetic-dribbble-token"
 ) {
+	const previousToken = process.env.DRIBBBLE_TOKEN;
+	if (dribbbleToken === null) {
+		delete process.env.DRIBBBLE_TOKEN;
+	} else {
+		process.env.DRIBBBLE_TOKEN = dribbbleToken;
+	}
+	context.after(() => {
+		if (previousToken === undefined) {
+			delete process.env.DRIBBBLE_TOKEN;
+		} else {
+			process.env.DRIBBBLE_TOKEN = previousToken;
+		}
+	});
 	const requests = [];
 	context.mock.method(console, "error", context.mock.fn());
 	context.mock.method(console, "warn", context.mock.fn());
@@ -102,6 +116,7 @@ function fixture(
 async function responseBody({
 	unavailable = false,
 	profileFailed = false,
+	shotsFailed = false,
 	expectedShots = shots,
 } = {}) {
 	const response = await GET();
@@ -112,9 +127,10 @@ async function responseBody({
 		unavailable,
 		"GitHub request failure must remain distinguishable"
 	);
+	assert.equal(body.degraded, unavailable || profileFailed || shotsFailed);
 	assert.equal(
 		response.headers.get("Cache-Control"),
-		unavailable || profileFailed
+		unavailable || profileFailed || shotsFailed
 			? "no-store"
 			: "public, s-maxage=3600, stale-while-revalidate=86400"
 	);
@@ -140,28 +156,70 @@ async function responseBody({
 	return body;
 }
 
-for (const [name, payload, expectedShots] of [
-	["partial shot response", [shots[0], { ...shots[0], id: 3, images: null }], shots],
-	["malformed shot response", { message: "unexpected response" }, []],
-	["genuinely empty shot response", [], []],
+for (const [name, loadShots, expectedShots, shotsFailed] of [
+	[
+		"partial shot response",
+		() => Promise.resolve(Response.json([shots[0], { ...shots[0], id: 3, images: null }])),
+		shots,
+		false,
+	],
+	["genuinely empty shot response", () => Promise.resolve(Response.json([])), [], false],
+	[
+		"malformed shot response",
+		() => Promise.resolve(Response.json({ message: "unexpected response" })),
+		[],
+		true,
+	],
+	[
+		"all-invalid shot response",
+		() => Promise.resolve(Response.json([{ ...shots[0], images: null }])),
+		[],
+		true,
+	],
+	[
+		"shot HTTP failure",
+		() => Promise.resolve(Response.json({ message: "Unauthorized" }, { status: 401 })),
+		[],
+		true,
+	],
+	["shot network failure", () => Promise.reject(new TypeError("Synthetic shot failure")), [], true],
 ]) {
 	test(`portfolio API preserves healthy GitHub data and public fields with a ${name}`, async (context) => {
-		fixture(
-			context,
-			() => Promise.resolve(Response.json([repository])),
-			undefined,
-			() => Promise.resolve(Response.json(payload))
-		);
-		const body = await responseBody({ expectedShots });
+		fixture(context, () => Promise.resolve(Response.json([repository])), undefined, loadShots);
+		const body = await responseBody({ expectedShots, shotsFailed });
 		assert.deepEqual(body.repos, [repository]);
-		assert.equal(body.githubFailed, false);
-		assert.equal(
-			body.degraded,
-			false,
-			"the existing optional-provider fallback contract is preserved"
-		);
+		assert.equal(body.githubFailed, false, "an optional-provider outage is not a repository outage");
 	});
 }
+
+test("portfolio API treats an unconfigured Dribbble account as healthy without a request", async (context) => {
+	const requests = fixture(
+		context,
+		() => Promise.resolve(Response.json([repository])),
+		undefined,
+		() => assert.fail("an unconfigured provider must not be requested"),
+		null
+	);
+	const body = await responseBody({ expectedShots: [] });
+	assert.deepEqual(body.repos, [repository]);
+	assert.ok(requests.every((url) => new URL(url).origin === "https://api.github.com"));
+});
+
+test("portfolio API recovers shots on the next request instead of caching an outage", async (context) => {
+	let failed = true;
+	fixture(
+		context,
+		() => Promise.resolve(Response.json([repository])),
+		undefined,
+		() =>
+			failed
+				? Promise.resolve(Response.json({ message: "Unavailable" }, { status: 503 }))
+				: Promise.resolve(Response.json(shots))
+	);
+	await responseBody({ expectedShots: [], shotsFailed: true });
+	failed = false;
+	await responseBody();
+});
 
 for (const [name, repos, expected] of [
 	["populated", [repository], [repository]],
