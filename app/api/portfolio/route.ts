@@ -6,12 +6,35 @@ import {
 	getGitHubStats,
 } from "@/lib/portfolio-data";
 
+/**
+ * Failed optional-provider requests aren't cached, so an outage is paid on every
+ * request. Figma's team and project deadlines can add up to about eight seconds,
+ * which is the /portfolio page's own deadline, so cap the wait well below it.
+ * The loaders keep their own deadlines and still cancel their requests.
+ */
+const OPTIONAL_PROVIDER_BUDGET_MS = 6000;
+
+async function withinBudget<T>(load: Promise<T>): Promise<T> {
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const expired = new Promise<never>((_, reject) => {
+		timer = setTimeout(
+			() => reject(new Error("Optional portfolio provider exceeded its budget")),
+			OPTIONAL_PROVIDER_BUDGET_MS
+		);
+	});
+	try {
+		return await Promise.race([load, expired]);
+	} finally {
+		clearTimeout(timer);
+	}
+}
+
 export async function GET() {
 	try {
 		const [reposResult, shotsResult, figmaResult, statsResult] = await Promise.allSettled([
 			getGitHubRepositories(),
-			getDribbbleShots(),
-			getFigmaFiles(),
+			withinBudget(getDribbbleShots()),
+			withinBudget(getFigmaFiles()),
 			getGitHubStats(),
 		]);
 
