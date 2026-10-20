@@ -148,9 +148,20 @@ components/
   [project-files schema](https://github.com/figma/rest-api-spec/blob/main/openapi/openapi.yaml).
   No new API outcome fields are introduced: missing configuration, failed Figma
   lists and genuine empty lists still share the existing empty-list contract.
+  The `/portfolio/figma/[key]` detail loader accepts only a single plain path
+  segment (`[A-Za-z0-9_-]`, at most 128 characters) as the file key, because the
+  SDK concatenates it into the authenticated request path. Any other key returns
+  `null` (the page's 404) before a cache entry or request exists. The file response
+  is read as `unknown` and projected onto what the page renders: name, last
+  modified, optional version, `CANVAS` page count, components (id, optional name
+  and description) and style count. The document tree itself is never cached. A
+  missing name, an invalid timestamp, or a document, component or style map of the
+  wrong type rejects the response through the same `null` fallback instead of
+  becoming a false count. Malformed page, component or style entries and an invalid
+  version are omitted with one generic warning.
   `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
   against loopback HTTP, including connection closure, malformed fields/envelopes,
-  healthy sibling retention, ordering and list caps.
+  unsafe detail keys, healthy sibling retention, ordering and list caps.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;

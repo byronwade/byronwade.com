@@ -5,7 +5,7 @@ import * as Figma from "figma-js";
 import { unstable_cache } from "next/cache";
 import { CACHE_TAGS } from "@/lib/cache";
 import type { DribbbleShot } from "@/types/dribbble";
-import type { FigmaFile } from "@/types/figma";
+import type { FigmaFile, FigmaFileDetail } from "@/types/figma";
 import type { GitHubRepo } from "@/types/github";
 
 /** Keep the deadline active through JSON body consumption, not only headers. */
@@ -205,9 +205,79 @@ const getFigmaThumbnail = async (key: string): Promise<string | null> => {
 	}
 };
 
-// Individual Figma file factory function - optimized for speed
-export const getFigmaFile = (key: string) =>
-	unstable_cache(
+type FigmaComponent = FigmaFileDetail["components"][number];
+
+function parseFigmaComponent([id, value]: [string, unknown]): FigmaComponent | null {
+	if (!isRecord(value)) {
+		return null;
+	}
+	const { name, description } = value;
+	if (
+		!(
+			(name === undefined || typeof name === "string") &&
+			(description === undefined || typeof description === "string")
+		)
+	) {
+		return null;
+	}
+	return { id, name, description };
+}
+
+/**
+ * Project the file response onto what the detail page renders. Strings and arrays in
+ * place of the document, component or style maps would otherwise become false counts.
+ */
+function parseFigmaFileDetail(value: unknown): Omit<FigmaFileDetail, "thumbnailUrl"> | null {
+	if (
+		!(
+			isRecord(value) &&
+			isNonEmptyString(value.name) &&
+			isApiTimestamp(value.lastModified) &&
+			isRecord(value.document) &&
+			Array.isArray(value.document.children)
+		)
+	) {
+		return null;
+	}
+	const { components = {}, styles = {}, version } = value;
+	if (!(isRecord(components) && isRecord(styles))) {
+		return null;
+	}
+	const pages = value.document.children.filter(
+		(child) => isRecord(child) && child.type === "CANVAS"
+	);
+	const componentEntries = Object.entries(components);
+	const validComponents = componentEntries.map(parseFigmaComponent).filter((item) => item !== null);
+	const styleEntries = Object.values(styles);
+	const styleCount = styleEntries.filter(isRecord).length;
+	const validVersion = isNonEmptyString(version) ? version : undefined;
+	if (
+		pages.length !== value.document.children.length ||
+		validComponents.length !== componentEntries.length ||
+		styleCount !== styleEntries.length ||
+		validVersion !== version
+	) {
+		console.warn("Ignoring invalid Figma file detail metadata");
+	}
+	return {
+		name: value.name,
+		lastModified: value.lastModified,
+		version: validVersion,
+		pageCount: pages.length,
+		components: validComponents,
+		styleCount,
+	};
+}
+
+/** One plain path segment; the SDK concatenates the key into its authenticated request path. */
+const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
+
+export const getFigmaFile = (key: string): (() => Promise<FigmaFileDetail | null>) => {
+	// Rejected before the cache wrapper, so a crafted URL creates no entry or request.
+	if (!FIGMA_FILE_KEY.test(key)) {
+		return () => Promise.resolve(null);
+	}
+	return unstable_cache(
 		async () => {
 			const accessToken = process.env.FIGMA_ACCESS_TOKEN;
 
@@ -219,18 +289,14 @@ export const getFigmaFile = (key: string) =>
 			const client = createFigmaClient(accessToken, 2000);
 
 			try {
-				const { data: file } = await client.file(key);
+				const { data }: { data: unknown } = await client.file(key);
+				const file = parseFigmaFileDetail(data);
+				if (!file) {
+					throw new Error("Invalid Figma file response");
+				}
 
-				// Get thumbnail from cached file list (much faster)
-				const thumbnailUrl = await getFigmaThumbnail(key);
-
-				// Return file data immediately without fetching additional images
-				return {
-					...file,
-					// Use thumbnail from file list for faster loading
-					thumbnailUrl,
-					imageUrl: null,
-				};
+				// Keep the existing source: the cached list's validated thumbnail, or null.
+				return { ...file, thumbnailUrl: await getFigmaThumbnail(key) };
 			} catch (error) {
 				console.error(
 					`Failed to fetch Figma file with key ${key}:`,
@@ -245,6 +311,7 @@ export const getFigmaFile = (key: string) =>
 			tags: [CACHE_TAGS.FIGMA],
 		}
 	);
+};
 
 // Validate profile statistics before caching, using the same GitHub field rules as repositories.
 export const getGitHubStats = unstable_cache(

@@ -83,10 +83,10 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 
 	const fileData = file;
 
-	// Calculate some metrics from the file data directly (no expensive API calls)
-	const pagesCount = fileData.document?.children?.length || 0;
-	const componentsCount = Object.keys(fileData.components || {}).length;
-	const stylesCount = Object.keys(fileData.styles || {}).length;
+	// Counted from the validated file response (no expensive API calls)
+	const pagesCount = fileData.pageCount;
+	const componentsCount = fileData.components.length;
+	const stylesCount = fileData.styleCount;
 
 	// Calculate a simple complexity score based on available data
 	const simpleComplexityScore = Math.min(
@@ -188,48 +188,46 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</div>
 
 						{/* Components Library */}
-						{fileData.components && Object.keys(fileData.components || {}).length > 0 && (
+						{componentsCount > 0 && (
 							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
 								<CardHeader>
 									<CardTitle className="flex items-center gap-2 text-foreground">
 										<Palette className="h-5 w-5 text-brand" />
-										Components ({Object.keys(fileData.components || {}).length})
+										Components ({componentsCount})
 									</CardTitle>
 								</CardHeader>
 								<CardContent>
 									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-										{Object.entries(fileData.components || {})
-											.slice(0, 6)
-											.map(([nodeId, component]) => (
-												<Card
-													key={nodeId}
-													className="border-border/30 bg-background/80 transition-shadow duration-150 hover:shadow-lg"
-												>
-													<CardContent className="p-4">
-														<div className="mb-3 flex items-center gap-3">
-															<div className="flex h-10 w-10 items-center justify-center rounded border border-brand/30 bg-brand/10 font-medium text-brand text-xs">
-																{component.name?.charAt(0)?.toUpperCase() || "C"}
-															</div>
-															<div className="min-w-0 flex-1">
-																<h3 className="truncate font-medium text-foreground">
-																	{component.name || "Unnamed Component"}
-																</h3>
-																<p className="text-muted-foreground text-xs">
-																	{component.description || "No description"}
-																</p>
-															</div>
+										{fileData.components.slice(0, 6).map((component) => (
+											<Card
+												key={component.id}
+												className="border-border/30 bg-background/80 transition-shadow duration-150 hover:shadow-lg"
+											>
+												<CardContent className="p-4">
+													<div className="mb-3 flex items-center gap-3">
+														<div className="flex h-10 w-10 items-center justify-center rounded border border-brand/30 bg-brand/10 font-medium text-brand text-xs">
+															{component.name?.charAt(0)?.toUpperCase() || "C"}
 														</div>
-														<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
-															<Layers className="h-8 w-8 text-muted-foreground" />
+														<div className="min-w-0 flex-1">
+															<h3 className="truncate font-medium text-foreground">
+																{component.name || "Unnamed Component"}
+															</h3>
+															<p className="text-muted-foreground text-xs">
+																{component.description || "No description"}
+															</p>
 														</div>
-													</CardContent>
-												</Card>
-											))}
+													</div>
+													<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
+														<Layers className="h-8 w-8 text-muted-foreground" />
+													</div>
+												</CardContent>
+											</Card>
+										))}
 									</div>
-									{Object.keys(fileData.components || {}).length > 6 && (
+									{componentsCount > 6 && (
 										<div className="mt-4 text-center">
 											<p className="text-muted-foreground text-sm">
-												And {Object.keys(fileData.components || {}).length - 6} more components...
+												And {componentsCount - 6} more components...
 											</p>
 										</div>
 									)}
