@@ -111,6 +111,14 @@ matches this verified source.
 
 ## Final production evidence
 
+- Review follow-up: `node scripts/capture-design-polish.mjs after` exit 0 on
+  `8fb6741`, 96 cases. It now fails on any page error. The only recorded
+  errors are the six exempt 404 #418 breadcrumb warnings (R01). That source
+  restores the Card border, with the home aside opting out, and moves the copy
+  status beside its button. Home captures were pixel-identical, so the
+  previous PNGs are kept. Five 1440 post/project PNGs re-encoded slightly
+  differently on routes these fixes do not touch, so those PNGs also stay at
+  `b01c50d`; `matrix.json` is fresh.
 - `node scripts/capture-design-polish.mjs after`: exit 0, 96 full-page captures
   on `b01c50d`, one h1 and expected HTTP status in every case; no overflow,
   ellipsized labels, button-role destination anchors, undersized main-content
