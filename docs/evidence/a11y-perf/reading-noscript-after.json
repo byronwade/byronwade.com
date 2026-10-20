@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-20T00:43:40.211Z",
+  "cases": [
+    {
+      "route": "/blog",
+      "headings": [{ "text": "Writing", "visible": true }],
+      "contentCount": 6,
+      "loading": []
+    },
+    {
+      "route": "/projects",
+      "headings": [{ "text": "Projects", "visible": true }],
+      "contentCount": 24,
+      "loading": []
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "headings": [
+        {
+          "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+          "visible": true
+        }
+      ],
+      "contentCount": 115,
+      "loading": []
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "headings": [
+        {
+          "text": "byronwade/ui: The Design System Behind Everything",
+          "visible": true
+        }
+      ],
+      "contentCount": 10,
+      "loading": []
+    }
+  ]
+}

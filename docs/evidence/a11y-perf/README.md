@@ -1,6 +1,6 @@
 # Accessibility and performance evidence
 
-Collected on 2026-10-16 from local production builds. `final-lighthouse.json` records its source commit, build ID, browser, audit versions, viewport, theme and throttling settings. Measurements are lab observations on a shared machine, not field data.
+Collected from local production builds beginning on 2026-10-16. Each report records its source commit, build ID, browser, audit versions, viewport, theme and throttling settings where applicable. Measurements are lab observations on a shared machine, not field data.
 
 ## Coverage and reproduction
 
@@ -31,6 +31,12 @@ Files containing `precheck` retain unsuccessful or intermediate probes. `matrix-
 `a11y-precheck.json`, `final-_.json` and `final-_projects_byronwade-ui.json` are earlier interaction probes, not final acceptance results. `matrix-shortcut-precheck.json` is a partial run before the final breadcrumb and independent-scenario timing corrections. Source/build metadata distinguishes each probe.
 
 `matrix-toast-remount-precheck.json` and `toast-remount-before.txt` record the notification regression probe against application source `b722522`. Two mobile cases completed before the 768px light case stopped on two repeated success notifications. Its loopback transport never contacted Resend. The release matrix reruns this assertion after preserving the notification's keyed position across form closes.
+
+`matrix-shared-host-precheck-lighthouse.json` is an intentionally interrupted 13-case checkpoint, not a completed acceptance matrix. All completed accessibility checks passed, but timing limits failed. `home-budget-shared-startup-precheck.json` also failed blocking time at 337ms. These failures remain visible rather than being counted as successful release verification.
+
+`route-budget_blog-baseline.json` isolates the writing index before removing local-content streaming fallbacks: LCP 3138ms and TBT 232ms under the default mobile profile. Its LCP element is a post summary. Independently, `blog-noscript-before.json` records six failures with JavaScript disabled: no post links reached the visible document. A direct browser probe also found loading placeholders on `/projects` and both sampled detail pages. This motivated removing the four obsolete skeleton paths; repeat measurements determine the performance effect.
+
+`final-_blog.json` is the six-case retest of the reading fix, before its application source was committed as `9471c2f`. Its HEAD field therefore still names `8d2fe2e`; it is an interaction probe, not the final source-pinned release matrix. All six cases pass, including the reading check with JavaScript disabled. `reading-noscript-after.json` is an additional four-route browser probe of that same production build: each route exposes one visible heading and nonempty reading content, with no loading status.
 
 ## Release results
 
