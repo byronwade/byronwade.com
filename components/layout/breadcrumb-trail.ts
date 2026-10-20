@@ -3,10 +3,6 @@ export interface Crumb {
 	label: string;
 }
 
-function titleCase(seg: string): string {
-	return seg.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
 function dedupe(crumbs: Crumb[]): Crumb[] {
 	const seen = new Set<string>();
 	return crumbs.filter((c) => {
@@ -32,7 +28,11 @@ const LEAF_LABELS: Record<string, string> = {
  * page, and the current page. Labels come from the supplied map (built
  * server-side from the search index, which lists every page, so dynamic `[slug]`
  * leaves get real titles). Parents missing from it, like `/portfolio/figma`, have
- * no page to link to and are skipped; unknown leaves fall back to title case.
+ * no page to link to and are skipped.
+ *
+ * An unknown leaf is not a page, so it gets the bare root (which hides the trail).
+ * The static 404 is prerendered at `/_not-found` but hydrates at the visitor's
+ * URL; naming either path here would make server and client text disagree.
  */
 export function resolveTrail(pathname: string, labels: Record<string, string>): Crumb[] {
 	const root: Crumb = { label: labels["/"] ?? "Home", href: "/" };
@@ -48,7 +48,11 @@ export function resolveTrail(pathname: string, labels: Record<string, string>): 
 		acc += `/${seg}`;
 		const label = labels[acc];
 		if (i === segments.length - 1) {
-			trail.push({ label: label ?? LEAF_LABELS[parent] ?? titleCase(seg), href: acc });
+			const leaf = label ?? LEAF_LABELS[parent];
+			if (!leaf) {
+				return [root];
+			}
+			trail.push({ label: leaf, href: acc });
 		} else if (label) {
 			trail.push({ label, href: acc });
 		}
