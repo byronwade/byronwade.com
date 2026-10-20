@@ -293,7 +293,8 @@ export const getGitHubRepositories = unstable_cache(
 				});
 		} catch (error) {
 			console.error("Error fetching GitHub repositories:", error);
-			return [];
+			// The API owns recovery; [] must mean a successful, genuinely empty list.
+			throw error;
 		}
 	},
 	["github-repos"],

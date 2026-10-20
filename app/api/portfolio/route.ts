@@ -6,8 +6,6 @@ import {
 	getGitHubStats,
 } from "@/lib/portfolio-data";
 
-export const revalidate = 3600;
-
 export async function GET() {
 	try {
 		const [reposResult, shotsResult, figmaResult, statsResult] = await Promise.allSettled([
@@ -71,7 +69,10 @@ export async function GET() {
 			{
 				status: 200,
 				headers: {
-					"Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+					// Never cache a transient failure as an empty account, so Retry can recover.
+					"Cache-Control": githubFailed
+						? "no-store"
+						: "public, s-maxage=3600, stale-while-revalidate=86400",
 				},
 			}
 		);
@@ -90,9 +91,7 @@ export async function GET() {
 			},
 			{
 				status: 200,
-				headers: {
-					"Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
-				},
+				headers: { "Cache-Control": "no-store" },
 			}
 		);
 	}

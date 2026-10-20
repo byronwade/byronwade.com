@@ -7,6 +7,13 @@ import { fileURLToPath } from "node:url";
 const SERVER_PORTFOLIO_SYMBOLS =
 	/\b(?:GITHUB_(?:API_TOKEN|TOKEN)|FIGMA_(?:ACCESS_TOKEN|TEAM_ID)|DRIBBBLE_TOKEN|unstable_cache|CACHE_TAGS|githubHeaders|getFigmaFiles?|getGitHub(?:Stats|Repositories)|getDribbbleShots)\b|figma-js|next\/cache/;
 
+test("portfolio API is not prerendered with a potentially unavailable provider response", async () => {
+	const manifest = JSON.parse(
+		await readFile(new URL("../../.next/prerender-manifest.json", import.meta.url), "utf8")
+	);
+	assert.equal(Object.hasOwn(manifest.routes, "/api/portfolio"), false);
+});
+
 test("production client chunks exclude portfolio API and cache code", async (context) => {
 	const chunksDirectory = fileURLToPath(new URL("../../.next/static/chunks/", import.meta.url));
 	const files = await readdir(chunksDirectory, { recursive: true });
