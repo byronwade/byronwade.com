@@ -93,7 +93,7 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
-		// A deadline still needs recovery UI; only unmount suppresses state updates.
+		// A timeout must recover the mounted page; cleanup must stay silent.
 		let active = true;
 		const controller = new AbortController();
 		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -173,6 +173,7 @@ function PortfolioEmptyState({
 					</Button>
 					<Button
 						size="lg"
+						role="link"
 						variant="outline"
 						render={
 							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
