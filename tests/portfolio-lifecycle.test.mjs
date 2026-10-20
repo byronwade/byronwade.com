@@ -62,7 +62,7 @@ function mount({ refresh = false, phase = "headers", ignoreAbort = false } = {})
 		loading: !refresh,
 		refreshing: false,
 		error: false,
-		degraded: false,
+		githubFailed: false,
 	};
 	const writes = [];
 	const errors = [];
@@ -132,6 +132,18 @@ for (const refresh of [false, true]) {
 			{ repos: [REPO], stats: null, degraded: true, githubFailed: false },
 			false,
 		],
+		// The aggregate `degraded` flag also covers Dribbble and Figma; neither is
+		// a repository failure, so neither may raise the repository warning.
+		[
+			"populated repositories with unavailable Dribbble shots",
+			{ repos: [REPO], shots: [], degraded: true, githubFailed: false },
+			false,
+		],
+		[
+			"populated repositories with unavailable Figma files",
+			{ repos: [REPO], figmaFiles: [], degraded: true, githubFailed: false },
+			false,
+		],
 		["unavailable repositories", { repos: [], degraded: true, githubFailed: true }, true],
 	]) {
 		test(`${refresh ? "refresh" : "initial load"} identifies ${name} accurately`, async () => {
@@ -140,8 +152,12 @@ for (const refresh of [false, true]) {
 				request.pending.resolve(payload);
 				await flush();
 				assert.equal(request.state.error, repositoryFailure);
-				assert.equal(request.state.degraded, repositoryFailure);
-				assert.equal(request.state.repos.length, payload.repos.length);
+				assert.equal(request.state.githubFailed, repositoryFailure);
+				// A failed refresh keeps the previous list, as a timed-out one does.
+				assert.equal(
+					request.state.repos.length,
+					refresh && repositoryFailure ? 1 : payload.repos.length
+				);
 				assert.equal(request.state.loading, false);
 				assert.equal(request.state.refreshing, false);
 				assert.equal(request.timers.size, 0);

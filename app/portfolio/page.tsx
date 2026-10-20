@@ -44,7 +44,7 @@ const titleize = (name: string) =>
 
 async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	repos: GitHubRepo[];
-	degraded: boolean;
+	githubFailed: boolean;
 }> {
 	const response = await fetch("/api/portfolio", {
 		signal,
@@ -65,14 +65,14 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	});
 	return {
 		repos: filtered,
-		degraded: Boolean(data.githubFailed),
+		githubFailed: Boolean(data.githubFailed),
 	};
 }
 
 const REQUEST_TIMEOUT_MS = 8000;
 
 interface PortfolioReposState {
-	degraded: boolean;
+	githubFailed: boolean;
 	error: boolean;
 	loading: boolean;
 	refreshing: boolean;
@@ -89,7 +89,7 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [loading, setLoading] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 	const [error, setError] = useState(false);
-	const [degraded, setDegraded] = useState(false);
+	const [githubFailed, setGithubFailed] = useState(false);
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
@@ -111,13 +111,13 @@ function usePortfolioRepos(): PortfolioReposState {
 				if (!active) {
 					return;
 				}
-				if (!(result.degraded && result.repos.length === 0)) {
+				if (!(result.githubFailed && result.repos.length === 0)) {
 					setRepos(result.repos);
 				}
-				// An empty list is only an error when the upstream call degraded; a
+				// An empty list is only an error when the GitHub call failed; a
 				// genuinely empty profile is a valid, non-error state.
-				setDegraded(result.degraded);
-				setError(result.degraded && result.repos.length === 0);
+				setGithubFailed(result.githubFailed);
+				setError(result.githubFailed && result.repos.length === 0);
 			} catch (err) {
 				if (!active) {
 					return;
@@ -142,16 +142,16 @@ function usePortfolioRepos(): PortfolioReposState {
 
 	const reload = useCallback(() => setReloadKey((key) => key + 1), []);
 
-	return { repos, loading, refreshing, error, degraded, reload };
+	return { repos, loading, refreshing, error, githubFailed, reload };
 }
 
 function PortfolioEmptyState({
-	degraded,
+	githubFailed,
 	error,
 	refreshing,
 	reload,
 }: {
-	degraded: boolean;
+	githubFailed: boolean;
 	error: boolean;
 	refreshing: boolean;
 	reload: () => void;
@@ -159,9 +159,9 @@ function PortfolioEmptyState({
 	return (
 		<EmptyState
 			icon={Github}
-			title={degraded || error ? "Couldn't load repositories" : "No repositories yet"}
+			title={githubFailed || error ? "Couldn't load repositories" : "No repositories yet"}
 			description={
-				degraded || error
+				githubFailed || error
 					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
 					: "Public repositories will show up here once they’re available."
 			}
@@ -278,7 +278,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 }
 
 export default function PortfolioPage() {
-	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
+	const { repos, loading, refreshing, error, githubFailed, reload } = usePortfolioRepos();
 	const [visibleRepos, setVisibleRepos] = useState(8);
 
 	return (
@@ -326,14 +326,14 @@ export default function PortfolioPage() {
 					<RepoSkeletonList />
 				) : repos.length === 0 ? (
 					<PortfolioEmptyState
-						degraded={degraded}
+						githubFailed={githubFailed}
 						error={error}
 						refreshing={refreshing}
 						reload={reload}
 					/>
 				) : (
 					<>
-						{(degraded || error) && (
+						{(githubFailed || error) && (
 							<p className="text-body text-sm leading-relaxed" role="status">
 								{error
 									? "Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub."
