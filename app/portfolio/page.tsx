@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { EmptyState } from "@/components/common/empty-state";
 import {
 	IndexList,
@@ -46,8 +47,6 @@ const titleize = (name: string) =>
 		.split(WORD_SEPARATORS)
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ");
-
-export const revalidate = 3600;
 
 const portfolioDescription =
 	"Open-source work and experiments, pulled live from GitHub and sorted by stars.";
@@ -191,6 +190,8 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 }
 
 export default async function PortfolioPage() {
+	// Retry must render again after a provider failure. Only successful data is cached.
+	await connection();
 	let repos: GitHubRepo[] = [];
 	let failed = false;
 	try {

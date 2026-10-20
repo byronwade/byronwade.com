@@ -76,10 +76,15 @@ components/
 
 - `/portfolio` renders its repository list on the server. A failed request shows
   retry/profile recovery with link semantics; a successful empty profile has a
-  distinct empty state. The page has no client request effect or stale state to
+  distinct empty state. `connection()` keeps failure HTML out of the Full Route
+  Cache, so retry can call the loader again. Successful data keeps its existing
+  one-hour cache. The page has no client request effect or stale state to
   synchronize. Native regressions in `tests/portfolio-lifecycle.test.mjs` exercise
   the actual page orchestration and row rendering with primitive stand-ins;
   browser verification covers the real controls and keyboard behavior.
+  After a build, `tests/rendered/portfolio-retry.test.mjs` uses Next's real caches
+  and a loopback provider to verify failure, retry recovery and successful-data
+  reuse without replacing normal cached API data.
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
