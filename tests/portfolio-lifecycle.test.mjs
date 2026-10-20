@@ -120,6 +120,40 @@ function mount({ refresh = false, phase = "headers", ignoreAbort = false } = {})
 }
 
 for (const refresh of [false, true]) {
+	for (const [name, payload, repositoryFailure] of [
+		["healthy empty repositories", { repos: [], degraded: false, githubFailed: false }, false],
+		[
+			"empty repositories with an unavailable profile",
+			{ repos: [], stats: null, degraded: true, githubFailed: false },
+			false,
+		],
+		[
+			"populated repositories with an unavailable profile",
+			{ repos: [REPO], stats: null, degraded: true, githubFailed: false },
+			false,
+		],
+		["unavailable repositories", { repos: [], degraded: true, githubFailed: true }, true],
+	]) {
+		test(`${refresh ? "refresh" : "initial load"} identifies ${name} accurately`, async () => {
+			const request = mount({ refresh });
+			try {
+				request.pending.resolve(payload);
+				await flush();
+				assert.equal(request.state.error, repositoryFailure);
+				assert.equal(request.state.degraded, repositoryFailure);
+				assert.equal(request.state.repos.length, payload.repos.length);
+				assert.equal(request.state.loading, false);
+				assert.equal(request.state.refreshing, false);
+				assert.equal(request.timers.size, 0);
+				assert.equal(request.errors.length, 0);
+			} finally {
+				request.cleanup();
+			}
+		});
+	}
+}
+
+for (const refresh of [false, true]) {
 	for (const phase of ["headers", "body"]) {
 		test(`${refresh ? "refresh" : "initial load"} recovers when ${phase} stall`, async () => {
 			const request = mount({ refresh, phase });

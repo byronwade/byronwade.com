@@ -58,8 +58,22 @@ const repository = {
 	created_at: "2026-01-01T12:00:00Z",
 	updated_at: "2026-10-19T12:00:00Z",
 };
-const shot = { id: 1, title: "A design", images: { normal: "https://image.example/shot.jpg" } };
-const profile = { public_repos: 12, followers: 3, following: 4, created_at: "2020-01-01" };
+const shot = {
+	id: 1,
+	title: "A design",
+	html_url: "https://dribbble.com/shots/1-example",
+	images: {
+		normal: "https://image.example/shot.jpg",
+		hidpi: null,
+		teaser: "https://image.example/teaser.jpg",
+	},
+};
+const profile = {
+	public_repos: 12,
+	followers: 3,
+	following: 4,
+	created_at: "2020-01-01T00:00:00Z",
+};
 const integrations = [
 	{
 		name: "GitHub repositories",
@@ -75,8 +89,8 @@ const integrations = [
 		name: "GitHub profile",
 		load: getGitHubStats,
 		payload: profile,
-		expected: { publicRepos: 12, followers: 3, following: 4, createdAt: "2020-01-01" },
-		fallback: { publicRepos: 0, followers: 0, following: 0, createdAt: null },
+		expected: { publicRepos: 12, followers: 3, following: 4, createdAt: profile.created_at },
+		rejects: true,
 		key: "github-stats",
 		tag: "github",
 	},
@@ -137,13 +151,203 @@ async function loadOutcome(integration) {
 
 function assertFailure(integration, result) {
 	if (integration.rejects) {
-		assert.ok(result.error instanceof Error, "the API must receive the repository failure");
+		assert.ok(result.error instanceof Error, "the API must receive the GitHub failure");
 	} else {
 		assert.deepEqual(result, { value: integration.fallback });
 	}
 }
 
+const invalidShotFields = [
+	["id", [undefined, null, "1", 0, -1, 0.5, Number.MAX_SAFE_INTEGER + 1]],
+	["title", [undefined, null, 42, {}, [], "", "   "]],
+	["html_url", [undefined, null, {}, "", "/shot", "javascript:alert(1)", "data:text/html,test"]],
+	["images", [undefined, null, "image", [], {}, { ...shot.images, normal: null }]],
+	["description", [42, {}, [], false]],
+	["animated", [null, "false", 0, {}]],
+	["tags", [null, "design", {}, ["valid", 42]]],
+	["colors", [null, "blue", {}, ["valid", 42]]],
+	...["width", "height"].map((field) => [field, [null, "400", 0, -1, 0.5]]),
+	...["likes_count", "views_count", "comments_count", "buckets_count", "rebounds_count"].map(
+		(field) => [field, [null, "0", -1, 0.5, Number.MAX_SAFE_INTEGER + 1]]
+	),
+	...["published_at", "updated_at"].map((field) => [
+		field,
+		[null, 42, {}, "", "2026", "2026-01-01", "2026-02-30T12:00:00Z", "2026-01-01T00:00:00"],
+	]),
+];
+
+for (const [field, values] of invalidShotFields) {
+	for (const [index, value] of values.entries()) {
+		test(`Dribbble validation omits malformed ${field} variant ${index + 1} and keeps siblings`, {
+			timeout: 5000,
+		}, async (context) => {
+			const next = { ...shot, id: 3 };
+			await fixture(
+				context,
+				{ payload: [shot, { ...shot, id: 2, [field]: value }, next] },
+				"success"
+			);
+			assert.deepEqual(await getDribbbleShots(), [shot, next]);
+		});
+	}
+}
+
+for (const field of ["normal", "teaser", "hidpi", "four_x", "two_x", "one_x"]) {
+	const values = [42, {}, [], "", "/image", "javascript:alert(1)", "data:image/png;base64,test"];
+	if (["normal", "teaser", "hidpi"].includes(field)) {
+		values.push(undefined);
+	}
+	if (["normal", "teaser"].includes(field)) {
+		values.push(null);
+	}
+	for (const [index, value] of values.entries()) {
+		test(`Dribbble validation omits malformed images.${field} variant ${index + 1}`, {
+			timeout: 5000,
+		}, async (context) => {
+			await fixture(
+				context,
+				{ payload: [{ ...shot, images: { ...shot.images, [field]: value } }, shot] },
+				"success"
+			);
+			assert.deepEqual(await getDribbbleShots(), [shot]);
+		});
+	}
+}
+
+for (const [index, payload] of [
+	null,
+	42,
+	"shots",
+	{},
+	{ shots: [shot] },
+	[null, {}, 42, []],
+].entries()) {
+	test(`Dribbble validation recovers from malformed response ${index + 1}`, {
+		timeout: 5000,
+	}, async (context) => {
+		await fixture(context, { payload }, "success");
+		assert.deepEqual(await getDribbbleShots(), []);
+	});
+}
+
+test("Dribbble validation preserves optional metadata, extra fields, zeros and nullable image variants", {
+	timeout: 5000,
+}, async (context) => {
+	const full = {
+		...shot,
+		description: null,
+		animated: false,
+		tags: ["design"],
+		colors: [],
+		width: 400,
+		height: 300,
+		likes_count: 0,
+		views_count: Number.MAX_SAFE_INTEGER,
+		comments_count: 0,
+		buckets_count: 0,
+		rebounds_count: 0,
+		published_at: "2020-02-29T12:00:00-04:00",
+		updated_at: "2026-10-19T12:00:00.123Z",
+		images: { ...shot.images, four_x: null, two_x: "http://image.example/2x.jpg", one_x: null },
+		projects: [{ id: 3, name: "Extra provider metadata" }],
+		user: null,
+	};
+	const payload = [
+		full,
+		shot,
+		{
+			...full,
+			description: "<p>Literal provider text</p>",
+			images: { ...full.images, hidpi: "https://image.example/hd.jpg" },
+		},
+	];
+	const { errors } = await fixture(context, { payload }, "success");
+	assert.deepEqual(await getDribbbleShots(), payload);
+	assert.equal(errors.length, 0);
+});
+
+test("Dribbble validation preserves a genuinely empty response without diagnostics", {
+	timeout: 5000,
+}, async (context) => {
+	const { errors } = await fixture(context, { payload: [] }, "success");
+	assert.deepEqual(await getDribbbleShots(), []);
+	assert.equal(errors.length, 0);
+});
+
+test("Dribbble validation returns the existing empty fallback for all-invalid shots without logging payloads", {
+	timeout: 5000,
+}, async (context) => {
+	const payload = [{ ...shot, title: { untrusted: "synthetic-private-provider-value" } }];
+	const { errors } = await fixture(context, { payload }, "success");
+	assert.deepEqual(await getDribbbleShots(), []);
+	assert.deepEqual(errors, [["Ignored invalid Dribbble shot records"]]);
+});
+
 const INVALID_REPOSITORY_RESPONSE = /Invalid GitHub repository response/;
+const INVALID_PROFILE_RESPONSE = /Invalid GitHub profile response/;
+const invalidProfileFields = [
+	...["public_repos", "followers", "following"].map((field) => [
+		field,
+		[undefined, null, "0", -1, 0.5, Number.MAX_SAFE_INTEGER + 1, {}, [], false],
+	]),
+	[
+		"created_at",
+		[
+			undefined,
+			null,
+			42,
+			{},
+			[],
+			"",
+			"not a date",
+			"2020",
+			"2020-01-01",
+			"2026-02-30T12:00:00Z",
+			"2020-01-01T00:00:00",
+		],
+	],
+];
+
+for (const [field, invalidValues] of invalidProfileFields) {
+	for (const [index, value] of invalidValues.entries()) {
+		test(`profile validation rejects malformed ${field} variant ${index + 1}`, {
+			timeout: 5000,
+		}, async (context) => {
+			await fixture(context, { payload: { ...profile, [field]: value } }, "success");
+			await assert.rejects(getGitHubStats(), INVALID_PROFILE_RESPONSE);
+		});
+	}
+}
+
+for (const [index, payload] of [null, 42, "profile", [], {}, [profile]].entries()) {
+	test(`profile validation rejects malformed response ${index + 1}`, {
+		timeout: 5000,
+	}, async (context) => {
+		await fixture(context, { payload }, "success");
+		await assert.rejects(getGitHubStats(), INVALID_PROFILE_RESPONSE);
+	});
+}
+
+test("profile validation preserves genuine zero counts, timestamps and the public fields", {
+	timeout: 5000,
+}, async (context) => {
+	const payload = {
+		public_repos: 0,
+		followers: 0,
+		following: Number.MAX_SAFE_INTEGER,
+		created_at: "2020-02-29T12:00:00-04:00",
+		extra_api_field: { ignored: true },
+	};
+	const { errors } = await fixture(context, { payload }, "success");
+	assert.deepEqual(await getGitHubStats(), {
+		publicRepos: 0,
+		followers: 0,
+		following: Number.MAX_SAFE_INTEGER,
+		createdAt: payload.created_at,
+	});
+	assert.equal(errors.length, 0);
+});
+
 const invalidRepositoryFields = [
 	["id", [undefined, null, "1", 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1]],
 	["name", [undefined, null, {}, [], 42, "", "   "]],

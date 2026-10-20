@@ -20,6 +20,6 @@ export interface FigmaFile {
 	last_modified: string;
 	name: string;
 	styles?: Record<string, { key: string; name: string; styleType?: string }>;
-	thumbnail_url: string;
+	thumbnail_url?: string;
 	version?: string;
 }
