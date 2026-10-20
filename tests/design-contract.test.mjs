@@ -156,6 +156,36 @@ test("every Card consumer keeps the primitive's border unless it opts out on pur
 	);
 });
 
+test("live regions are siblings of their controls, never inside a button", async () => {
+	const files = await sourceFiles(["app", "components"]);
+	const nested = [];
+	for (const file of files) {
+		visit(file.source, (node) => {
+			if (
+				!(
+					ts.isJsxElement(node) &&
+					["button", "Button"].includes(node.openingElement.tagName.getText())
+				)
+			) {
+				return;
+			}
+			for (const child of node.children) {
+				visit(child, (descendant) => {
+					if (
+						(ts.isJsxOpeningElement(descendant) || ts.isJsxSelfClosingElement(descendant)) &&
+						(jsxAttribute(descendant, "aria-live") ||
+							literalValue(jsxAttribute(descendant, "role") ?? {}) === "status")
+					) {
+						nested.push(location(file, descendant));
+					}
+				});
+			}
+		});
+	}
+	// Button descendants are flattened into its name, so a nested status is not announced reliably.
+	assert.deepEqual(nested, []);
+});
+
 test("the small favicon route cannot be shadowed by a full-size public asset", async () => {
 	await assert.rejects(access(new URL("../public/icon.png", import.meta.url)), { code: "ENOENT" });
 	const icon = await stat(new URL("../app/icon.png", import.meta.url));

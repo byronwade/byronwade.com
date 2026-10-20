@@ -174,10 +174,10 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						<button type="button" onClick={copyEmail} className={pillLinkClass}>
 							{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
 							Copy
-							<span className="sr-only" role="status">
-								{copied ? "Email copied" : ""}
-							</span>
 						</button>
+						<span className="sr-only" role="status">
+							{copied ? "Email copied" : ""}
+						</span>
 					</div>
 					<Button type="submit" disabled={isSubmitting} className="h-11 gap-2">
 						{isSubmitting ? (
