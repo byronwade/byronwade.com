@@ -1,28 +1,55 @@
 "use client";
 
-// Thorbis Design port: site/site-shell.stylex navLink @ 46b6654.
+// Thorbis site-header + site-shell.stylex: headerBase, navLink, menu and menuLink.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { HeaderPopover } from "@/components/layout/header-popover";
+import { isActive, navItems } from "@/components/layout/nav-config";
+import { publicProfiles } from "@/lib/site";
 import { cn } from "@/lib/utils";
-import { isActive, navItems } from "./nav-config";
 
-export function NavDock() {
+export function NavDock({
+	brand,
+	tools,
+	icons,
+}: {
+	brand: ReactNode;
+	tools: ReactNode;
+	icons: Record<(typeof navItems)[number]["href"], ReactNode>;
+}) {
 	const pathname = usePathname();
-	const navRef = useRef<HTMLElement>(null);
+	const previousPath = useRef(pathname);
+	const [open, setOpen] = useState(false);
+	const headerRef = useRef<HTMLElement>(null);
+	const firstLinkRef = useRef<HTMLAnchorElement>(null);
+	const menuButtonRef = useRef<HTMLButtonElement>(null);
+	const menuId = useId();
+
 	useEffect(() => {
-		const header = navRef.current?.closest("header");
+		if (previousPath.current !== pathname) {
+			previousPath.current = pathname;
+			setOpen(false);
+		}
+	}, [pathname]);
+	useEffect(() => {
+		const closeForSearch = () => setOpen(false);
+		window.addEventListener("open-command-palette", closeForSearch);
+		return () => window.removeEventListener("open-command-palette", closeForSearch);
+	}, []);
+	useEffect(() => {
+		const header = headerRef.current;
 		if (!header) {
 			return;
 		}
-		// Thorbis scripts/chrome header clearance: focus and anchored content must
-		// clear the actual wrapped header, including text resizing.
 		const measure = () => {
-			const inset = Number.parseFloat(getComputedStyle(header).top) || 0;
-			// Only the root consumes this value. An inherited custom property
-			// invalidated styles across the document whenever the header changed.
-			document.documentElement.style.scrollPaddingBlockStart = `${header.offsetHeight + inset * 2}px`;
+			document.documentElement.style.scrollPaddingBlockStart = `${header.getBoundingClientRect().bottom + 16}px`;
+			const menuButton = menuButtonRef.current;
+			if (menuButton && getComputedStyle(menuButton).display === "none") {
+				setOpen(false);
+			}
 		};
+		measure();
 		const observer = new ResizeObserver(measure);
 		observer.observe(header);
 		return () => {
@@ -30,28 +57,135 @@ export function NavDock() {
 			document.documentElement.style.removeProperty("scroll-padding-block-start");
 		};
 	}, []);
+
 	return (
-		<nav
-			ref={navRef}
-			aria-label="Primary"
-			className="flex flex-wrap items-center justify-center gap-1"
-		>
-			{navItems.map((item) => (
-				<Link
-					prefetch={false}
-					key={item.href}
-					href={item.href}
-					aria-current={isActive(item, pathname) ? "page" : undefined}
-					className={cn(
-						"inline-flex min-h-11 items-center justify-center rounded-full px-2.5 font-medium text-copy-13 outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-						isActive(item, pathname)
-							? "bg-muted text-foreground shadow-(--shadow-short)"
-							: "text-muted-foreground"
-					)}
+		<>
+			<div
+				onKeyDownCapture={(event) => {
+					if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+						setOpen(false);
+					}
+				}}
+				className="@container/site-header pointer-events-none fixed inset-x-0 top-0 z-(--z-chrome) px-4 pt-[max(0.5rem,env(safe-area-inset-top))] pb-3 sm:px-5 print:hidden"
+			>
+				<header
+					ref={headerRef}
+					data-site-header
+					className="pointer-events-auto relative mx-auto flex min-h-13 w-full max-w-2xl @max-[16rem]/site-header:flex-wrap items-center justify-between @max-[16rem]/site-header:gap-2 gap-3 rounded-lg border border-border bg-card px-2.5 shadow-(--header-shadow-panel)"
 				>
-					{item.label}
-				</Link>
-			))}
-		</nav>
+					{brand}
+					<nav
+						aria-label="Primary"
+						className="@min-[40rem]/site-header:flex hidden items-center gap-0.5"
+					>
+						{navItems.map((item) => (
+							<Link
+								key={item.href}
+								href={item.href}
+								prefetch={false}
+								aria-current={isActive(item, pathname) ? "page" : undefined}
+								className={cn(
+									"relative isolate inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-2.5 font-medium text-copy-13 tracking-[-0.015em] outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+									isActive(item, pathname)
+										? "text-foreground before:pointer-events-none before:absolute before:inset-x-0 before:top-1/2 before:-z-10 before:h-7 before:-translate-y-1/2 before:rounded-full before:border before:border-border before:bg-muted"
+										: "text-muted-foreground"
+								)}
+							>
+								{item.label}
+							</Link>
+						))}
+					</nav>
+					<div className="flex @max-[16rem]/site-header:contents shrink-0 items-center">
+						{tools}
+						<HeaderPopover
+							kind="navigation"
+							id={menuId}
+							label="Navigate"
+							closedLabel="Open menu"
+							open={open}
+							onOpenChange={setOpen}
+							anchor={headerRef}
+							initialFocus={firstLinkRef}
+							finalFocus={menuButtonRef}
+							trigger={
+								<button
+									type="button"
+									ref={menuButtonRef}
+									data-site-menu
+									aria-expanded={open}
+									aria-controls={menuId}
+									aria-label={open ? "Close menu" : "Open menu"}
+									className="group inline-flex @min-[40rem]/site-header:hidden size-11 items-center justify-center rounded-full text-muted-foreground outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+								>
+									<span
+										aria-hidden="true"
+										className="group-aria-expanded:before:-translate-1/2 relative isolate block size-4 group-aria-expanded:before:absolute group-aria-expanded:before:inset-1/2 group-aria-expanded:before:-z-10 group-aria-expanded:before:size-7 group-aria-expanded:before:rounded-full group-aria-expanded:before:bg-muted"
+									>
+										<span className="absolute inset-x-0 top-1/2 h-px -translate-y-[0.15625rem] bg-current transition-transform duration-(--motion-fast) ease-(--ease-out) group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45 motion-reduce:transition-none" />
+										<span className="absolute inset-x-0 top-1/2 h-px translate-y-[0.15625rem] bg-current transition-transform duration-(--motion-fast) ease-(--ease-out) group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45 motion-reduce:transition-none" />
+									</span>
+								</button>
+							}
+						>
+							<div className="flex flex-wrap items-center justify-between gap-2 px-2 py-1.5 font-medium font-mono text-copy-12 text-muted-foreground">
+								<span>Navigate</span>
+								<span>{navItems.find((item) => isActive(item, pathname))?.label ?? "Explore"}</span>
+							</div>
+							<nav aria-label="Mobile site navigation" className="grid gap-0.5">
+								{navItems.map((item, index) => (
+									<Link
+										key={item.href}
+										ref={index === 0 ? firstLinkRef : undefined}
+										href={item.href}
+										prefetch={false}
+										onClick={() => setOpen(false)}
+										aria-current={isActive(item, pathname) ? "page" : undefined}
+										className={cn(
+											"grid min-h-12 grid-cols-[1.9rem_minmax(0,1fr)_auto] items-center gap-[0.65rem] rounded-lg px-2.5 py-1.5 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2",
+											isActive(item, pathname) && "bg-muted shadow-(--shadow-short)"
+										)}
+									>
+										<span className="text-muted-foreground">{icons[item.href]}</span>
+										<span className="min-w-0">
+											<span className="block font-medium text-copy-13 text-foreground">
+												{item.label}
+											</span>
+											<span className="block text-copy-12 text-muted-foreground">
+												{item.description}
+											</span>
+										</span>
+										<span
+											aria-hidden="true"
+											className={cn(
+												"size-1.5 rounded-full",
+												isActive(item, pathname) && "bg-brand ring-3 ring-brand/12"
+											)}
+										/>
+									</Link>
+								))}
+							</nav>
+							<div className="mt-2 flex flex-wrap gap-1 border-border border-t pt-2">
+								{publicProfiles.map((profile) => (
+									<a
+										key={profile.href}
+										href={profile.href}
+										target="_blank"
+										rel="noreferrer"
+										className="inline-flex min-h-11 min-w-11 items-center rounded-lg px-2.5 text-copy-13 text-muted-foreground hover:bg-muted hover:text-foreground"
+									>
+										{profile.name}
+										<span className="sr-only"> (opens in a new tab)</span>
+									</a>
+								))}
+							</div>
+						</HeaderPopover>
+					</div>
+				</header>
+			</div>
+			{/* Match the chrome's container without containing its fixed position. */}
+			<div aria-hidden="true" className="@container/site-header px-4 sm:px-5 print:hidden">
+				<div className="@max-[16rem]/site-header:h-[calc(var(--control-touch)*2+var(--spacing)*2+2px+1rem+env(safe-area-inset-top))] h-[calc(4.25rem+env(safe-area-inset-top))]" />
+			</div>
+		</>
 	);
 }
