@@ -657,15 +657,18 @@
   [data-site-header], [data-header-menu], [data-header-search] {
     --muted: var(--header-on-panel);
   }
+
   /* Base UI intentionally permits touch scrolling outside inset popovers.
      Site navigation is modal on touch too; retain the gutter for fixed chrome. */
   html:has(:is([data-header-menu], [data-header-search])[data-open]) {
     overflow: hidden;
     scrollbar-gutter: stable;
   }
+
   body:has(:is([data-header-menu], [data-header-search])[data-open]) {
     overflow: hidden;
   }
+
   * {
     @apply border-border outline-ring/50;
   }
