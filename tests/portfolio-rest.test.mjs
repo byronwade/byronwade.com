@@ -48,7 +48,14 @@ const repository = {
 	id: 1,
 	name: "site",
 	full_name: "byronwade/site",
+	html_url: "https://github.com/byronwade/site",
+	description: null,
+	homepage: null,
+	language: null,
+	fork: false,
+	forks_count: 0,
 	stargazers_count: 2,
+	created_at: "2026-01-01T12:00:00Z",
 	updated_at: "2026-10-19T12:00:00Z",
 };
 const shot = { id: 1, title: "A design", images: { normal: "https://image.example/shot.jpg" } };
@@ -135,6 +142,128 @@ function assertFailure(integration, result) {
 		assert.deepEqual(result, { value: integration.fallback });
 	}
 }
+
+const INVALID_REPOSITORY_RESPONSE = /Invalid GitHub repository response/;
+const invalidRepositoryFields = [
+	["id", [undefined, null, "1", 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1]],
+	["name", [undefined, null, {}, [], 42, "", "   "]],
+	["full_name", [undefined, null, {}, 42, "", "   "]],
+	[
+		"html_url",
+		[undefined, null, {}, "", "/repository", "javascript:alert(1)", "data:text/html,test"],
+	],
+	["description", [undefined, {}, [], 42, false]],
+	["language", [{}, [], 42, false]],
+	["homepage", [{}, [], 42]],
+	["stargazers_count", [undefined, null, "2", -1, 0.5, Number.MAX_SAFE_INTEGER + 1]],
+	["forks_count", [undefined, null, "0", -1, 0.5]],
+	["created_at", [{}, 42, "", "not a date", "2026", "2026-01-01", "2026-02-30T12:00:00Z"]],
+	["updated_at", [{}, 42, "", "not a date", "2026", "2026-01-01", "2026-02-30T12:00:00Z"]],
+	["pushed_at", [{}, [], 42, "", "not a date", "2026", "2026-01-01", "2026-02-30T12:00:00Z"]],
+	["fork", [undefined, null, "false", 0, {}]],
+	["archived", [null, "false", 0, {}]],
+	["topics", [null, "typescript", {}, ["valid", 42]]],
+];
+
+for (const [field, invalidValues] of invalidRepositoryFields) {
+	for (const [index, value] of invalidValues.entries()) {
+		test(`repository validation rejects malformed ${field} variant ${index + 1}`, {
+			timeout: 5000,
+		}, async (context) => {
+			const payload = [{ ...repository, [field]: value }];
+			await fixture(context, { payload }, "success");
+			await assert.rejects(getGitHubRepositories(), INVALID_REPOSITORY_RESPONSE);
+		});
+	}
+}
+
+for (const [index, entry] of [null, 42, "repository", [], {}].entries()) {
+	test(`repository validation rejects malformed list entry ${index + 1}`, {
+		timeout: 5000,
+	}, async (context) => {
+		// Reject the entire payload rather than misrepresenting a partial list as complete.
+		await fixture(context, { payload: [repository, entry] }, "success");
+		await assert.rejects(getGitHubRepositories(), INVALID_REPOSITORY_RESPONSE);
+	});
+}
+
+test("repository validation preserves nullable and optional fields and additional API fields", {
+	timeout: 5000,
+}, async (context) => {
+	const payload = [
+		{
+			...repository,
+			pushed_at: null,
+			homepage: "",
+			topics: [],
+			fork: false,
+			archived: false,
+			additional_api_field: { untouched: true },
+		},
+		{
+			...repository,
+			id: 2,
+			created_at: null,
+			updated_at: null,
+			homepage: "example.com",
+			description: "A repository",
+			language: "TypeScript",
+			pushed_at: "2026-10-19T10:00:00-04:00",
+		},
+		{
+			id: 3,
+			name: "metadata-free",
+			full_name: "byronwade/metadata-free",
+			html_url: "https://github.com/byronwade/metadata-free",
+			description: null,
+			fork: false,
+			forks_count: 0,
+			stargazers_count: 0,
+		},
+	];
+	const { errors } = await fixture(context, { payload }, "success");
+	assert.deepEqual(await getGitHubRepositories(), payload);
+	assert.equal(errors.length, 0);
+});
+
+test("repository validation retains priority, stars, activity and fork/archive filtering", {
+	timeout: 5000,
+}, async (context) => {
+	const payload = [
+		{ ...repository, id: 2, name: "older", stargazers_count: 20, fork: false, archived: false },
+		{
+			...repository,
+			id: 3,
+			name: "recent",
+			stargazers_count: 20,
+			updated_at: "2026-10-20T00:00:00Z",
+		},
+		{ ...repository, id: 4, name: "fork", fork: true },
+		{ ...repository, id: 5, name: "archived", archived: true },
+		{ ...repository, id: 6, name: "thorbis-ai", stargazers_count: 0 },
+		{ ...repository, id: 7, name: "thorbis.com", stargazers_count: 0 },
+		{
+			...repository,
+			id: 8,
+			name: "http-homepage",
+			homepage: "http://example.com",
+			topics: ["web"],
+		},
+	];
+	await fixture(context, { payload }, "success");
+	assert.deepEqual(
+		(await getGitHubRepositories()).map((repo) => repo.id),
+		[7, 6, 3, 2, 8]
+	);
+});
+
+test("repository validation accepts a genuinely empty account", {
+	timeout: 5000,
+}, async (context) => {
+	const { errors } = await fixture(context, { payload: [] }, "success");
+	assert.deepEqual(await getGitHubRepositories(), []);
+	assert.equal(errors.length, 0);
+});
 
 for (const integration of integrations) {
 	test(`${integration.name} retains its successful output and cache policy`, {

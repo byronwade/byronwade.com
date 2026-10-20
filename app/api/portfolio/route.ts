@@ -31,7 +31,7 @@ export async function GET() {
 		const repoCount = safeRepos.length;
 		const figmaCount = Array.isArray(figmaFiles) ? figmaFiles.length : 0;
 
-		const recentRepos = safeRepos.filter((repo: { updated_at?: string }) => {
+		const recentRepos = safeRepos.filter((repo) => {
 			if (!repo.updated_at) {
 				return false;
 			}

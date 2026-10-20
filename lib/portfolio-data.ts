@@ -1,5 +1,6 @@
 import "server-only";
 
+import { isValid, parseISO } from "date-fns";
 import * as Figma from "figma-js";
 import { unstable_cache } from "next/cache";
 import { CACHE_TAGS } from "@/lib/cache";
@@ -233,8 +234,6 @@ export const getGitHubStats = unstable_cache(
 	}
 );
 
-// GitHub Repository Interface (moved to types/github.ts)
-
 // Priority projects to show first
 const PRIORITY_PROJECTS = [
 	"thorbis.com",
@@ -245,6 +244,64 @@ const PRIORITY_PROJECTS = [
 	"b2b-analytics",
 	"enterprise-integrations",
 ];
+
+const GITHUB_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function isRepositoryCount(value: unknown): value is number {
+	return typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
+}
+
+function isRepositoryName(value: unknown): value is string {
+	return typeof value === "string" && value.trim().length > 0;
+}
+
+function isRepositoryDate(value: unknown): value is string {
+	return (
+		typeof value === "string" &&
+		GITHUB_TIMESTAMP.test(value) &&
+		isValid(parseISO(value)) &&
+		Number.isFinite(Date.parse(value))
+	);
+}
+
+function isRepositoryUrl(value: unknown): value is string {
+	return (
+		typeof value === "string" &&
+		URL.canParse(value) &&
+		["https:", "http:"].includes(new URL(value).protocol)
+	);
+}
+
+/** Validate every field consumed by the API and page before sorting or caching. */
+function isGitHubRepository(value: unknown): value is GitHubRepo {
+	if (!isRecord(value)) {
+		return false;
+	}
+	return (
+		isRepositoryCount(value.id) &&
+		value.id > 0 &&
+		["name", "full_name"].every((field) => isRepositoryName(value[field])) &&
+		["stargazers_count", "forks_count"].every((field) => isRepositoryCount(value[field])) &&
+		(value.description === null || typeof value.description === "string") &&
+		["language", "homepage"].every(
+			(field) =>
+				value[field] === undefined || value[field] === null || typeof value[field] === "string"
+		) &&
+		isRepositoryUrl(value.html_url) &&
+		["created_at", "updated_at", "pushed_at"].every(
+			(field) =>
+				value[field] === undefined || value[field] === null || isRepositoryDate(value[field])
+		) &&
+		typeof value.fork === "boolean" &&
+		(value.archived === undefined || typeof value.archived === "boolean") &&
+		(value.topics === undefined ||
+			(Array.isArray(value.topics) && value.topics.every((topic) => typeof topic === "string")))
+	);
+}
 
 // Fetch all GitHub repositories
 export const getGitHubRepositories = unstable_cache(
@@ -262,16 +319,16 @@ export const getGitHubRepositories = unstable_cache(
 				throw new Error(`Failed to fetch GitHub repositories: ${response.status}`);
 			}
 
-			const repos = await response.json();
+			const repos: unknown = await response.json();
 
-			if (!Array.isArray(repos)) {
-				throw new Error("GitHub repositories response was not an array");
+			if (!(Array.isArray(repos) && repos.every(isGitHubRepository))) {
+				throw new Error("Invalid GitHub repository response");
 			}
 
 			// Sort repositories by priority and activity
 			return repos
-				.filter((repo: GitHubRepo) => !(repo.fork || repo.archived))
-				.sort((a: GitHubRepo, b: GitHubRepo) => {
+				.filter((repo) => !(repo.fork || repo.archived))
+				.sort((a, b) => {
 					const aPriority = PRIORITY_PROJECTS.indexOf(a.name);
 					const bPriority = PRIORITY_PROJECTS.indexOf(b.name);
 
@@ -289,7 +346,7 @@ export const getGitHubRepositories = unstable_cache(
 						return b.stargazers_count - a.stargazers_count;
 					}
 
-					return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+					return new Date(b.updated_at ?? 0).getTime() - new Date(a.updated_at ?? 0).getTime();
 				});
 		} catch (error) {
 			console.error("Error fetching GitHub repositories:", error);
