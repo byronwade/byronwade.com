@@ -77,7 +77,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						if (isInline) {
 							return (
 								<code
-									className="rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm"
+									className="wrap-anywhere rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm"
 									{...props}
 								>
 									{children}
@@ -91,9 +91,12 @@ export function Markdown({ content, className }: MarkdownProps) {
 						);
 					},
 					pre: ({ children, ...props }) => (
+						// https://www.w3.org/WAI/standards-guidelines/act/rules/0ssw9k/
 						<pre
 							className="my-4 overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--muted)] p-4 text-sm"
 							{...props}
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: Native scroll containers require keyboard focus.
+							tabIndex={0}
 						>
 							{children}
 						</pre>

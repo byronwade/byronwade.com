@@ -120,7 +120,7 @@ function CrumbLink({
 				aria-current={current ? "page" : undefined}
 				className={cn(
 					"min-h-6 min-w-6 whitespace-nowrap rounded-sm leading-6 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-					truncate && "min-w-0 truncate",
+					truncate && "truncate",
 					current
 						? "font-semibold text-dock-active-foreground"
 						: "text-dock-foreground hover:text-dock-active-foreground"
