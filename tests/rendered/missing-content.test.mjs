@@ -111,6 +111,10 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 				await previous;
 				errors.length = 0;
 				await page.goto(url + path, { waitUntil: "networkidle0" });
+				// NavDock's mount effect sets this; the menu only opens once it has hydrated.
+				await page.waitForFunction(
+					() => document.documentElement.style.scrollPaddingBlockStart !== ""
+				);
 				const desktopCurrent = await page.$$eval(
 					'nav[aria-label="Primary"] a[aria-current="page"]',
 					(links) => links.map((link) => link.textContent)
