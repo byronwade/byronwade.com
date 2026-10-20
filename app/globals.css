@@ -416,6 +416,11 @@
  * Raw design values belong only in this token block. */
 /* thorbis-tokens:start */
 :root {
+  /* Header-only source recipes from src/styles.css light overrides.
+     Preserve these scoped values when regenerating the general token port. */
+  --header-on-panel: oklch(93.5% 0.011 84.6);
+  --header-shadow-panel: inset 0 0 0 1px var(--thorbis-border),
+    0 1px 2px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
   --thorbis-accent: oklch(52% 0.17 264.4);
   --thorbis-accent-foreground: oklch(100% 0 none);
   --thorbis-accent-hover: oklch(50% 0.188 264.4);
@@ -529,6 +534,8 @@
   --z-underlay: -1;
 }
 .dark {
+  --header-on-panel: var(--thorbis-on-panel);
+  --header-shadow-panel: var(--shadow-panel);
   --thorbis-accent: oklch(61% 0.17 264.4);
   --thorbis-accent-foreground: oklch(100% 0 none);
   --thorbis-accent-hover: oklch(63.2% 0.157 265.4);
@@ -646,10 +653,24 @@
 }
 
 @layer base {
+  /* Shared header and its portalled panels use the same selected surface. */
+  [data-site-header], [data-header-menu], [data-header-search] {
+    --muted: var(--header-on-panel);
+  }
+  /* Base UI intentionally permits touch scrolling outside inset popovers.
+     Site navigation is modal on touch too; retain the gutter for fixed chrome. */
+  html:has(:is([data-header-menu], [data-header-search])[data-open]) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+  body:has(:is([data-header-menu], [data-header-search])[data-open]) {
+    overflow: hidden;
+  }
   * {
     @apply border-border outline-ring/50;
   }
   html {
+    scrollbar-gutter: stable;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;

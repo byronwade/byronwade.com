@@ -54,8 +54,9 @@ workflow vocabulary into unrelated personal content.
 The homepage is compact claim-and-proof: experience beside the current product,
 then documented work and writing. Content renders immediately, including with
 JavaScript disabled. No viewport-height spacer, bottom-aligned hero, opacity-zero
-entrance or scroll reveal may hide that content. The single sticky header participates in flow;
-at narrow widths navigation wraps into its own row, with visible text and focus.
+entrance or scroll reveal may hide that content. The header follows Thorbis's fixed,
+52px single row, with space reserved before hydration. Narrow screens use a
+triggered navigation panel; wide screens show inline links on the same surface.
 
 ## 3. Surface profiles
 
