@@ -128,24 +128,28 @@ function readGeometry() {
 				height: rect.height,
 			};
 		});
-	const nav = document.querySelector('nav[aria-label="Primary"]');
-	const navBounds = nav.getBoundingClientRect();
+	const header = document.querySelector("[data-site-header]");
+	const nav = header.querySelector('nav[aria-label="Primary"]');
+	const intersects = (element, bounds) => {
+		const rect = element.getBoundingClientRect();
+		return (
+			rect.left < bounds.right &&
+			rect.right > bounds.left &&
+			rect.top < bounds.bottom &&
+			rect.bottom > bounds.top
+		);
+	};
+	// Header controls must clear the primary links; the separately fixed
+	// breadcrumb must clear the whole header surface.
 	const overlaps = [
-		...document.querySelectorAll(
-			'header button, header a[href], header nav[aria-label="Breadcrumb"]'
-		),
-	]
-		.filter(visible)
-		.filter((element) => !nav.contains(element))
-		.filter((element) => {
-			const rect = element.getBoundingClientRect();
-			return (
-				rect.left < navBounds.right &&
-				rect.right > navBounds.left &&
-				rect.top < navBounds.bottom &&
-				rect.bottom > navBounds.top
-			);
-		});
+		...[...header.querySelectorAll("button, a[href]")]
+			.filter(visible)
+			.filter((element) => !nav.contains(element))
+			.filter((element) => intersects(element, nav.getBoundingClientRect())),
+		...[...document.querySelectorAll('nav[aria-label="Breadcrumb"]')]
+			.filter(visible)
+			.filter((element) => intersects(element, header.getBoundingClientRect())),
+	];
 	return {
 		actualTheme: document.documentElement.classList.contains("dark") ? "dark" : "light",
 		overflow: document.documentElement.scrollWidth > innerWidth,
@@ -388,7 +392,11 @@ async function checkBreadcrumbStates(page) {
 	}
 	const viewport = page.viewport();
 	await page.setViewport({ ...viewport, width: 768 });
-	await page.waitForFunction((selector) => !document.querySelector(selector), {}, nav);
+	await page.waitForFunction(
+		(selector) => !document.querySelector(selector)?.getClientRects().length,
+		{},
+		nav
+	);
 	await page.setViewport(viewport);
 	await page.waitForSelector(nav, { visible: true });
 	const geometry = await page.evaluate(readGeometry);
@@ -469,125 +477,91 @@ async function readState(page, name) {
 async function checkShellStates(page) {
 	const states = [];
 	states.push(...(await checkInlineContact(page)));
-	await [
-		{ trigger: 'button[title="All products"]', label: "All products" },
+	// The menu trigger exists only while the header is too narrow for the primary links.
+	const candidates = [
 		{ trigger: 'button[aria-label="Search (⌘K)"]', label: "Search" },
-		{ trigger: 'button[aria-label="Support open source"]', label: "Support open source" },
-	].reduce(
-		(previous, { trigger, label }) =>
-			previous.then(async () => {
-				console.log(`Opening ${label}`);
-				// Independent pointer scenarios start at rest; rapid exit/reopen is tested below.
-				await waitForMotion(page);
-				await page.click(trigger);
-				await page.waitForFunction(
-					(name) => {
-						const panel = document.querySelector(`[role="dialog"][aria-label="${name}"]`);
-						return panel && getComputedStyle(panel).opacity === "1";
-					},
-					{},
-					label
-				);
-				states.push(await readState(page, label));
-				states.push(await checkCapsuleKeyboard(page, label));
-				if (label === "All products") {
-					states.push(await checkShortcutScope(page, label));
-				}
-				if (label === "Search") {
-					await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
-					await page.waitForFunction(() => document.body.textContent.includes("No results"));
-					states.push(await readState(page, "Empty search"));
-				}
-				await page.keyboard.press("Escape");
-				await page.waitForFunction(
-					(selector) => document.activeElement === document.querySelector(selector),
-					{},
-					trigger
-				);
-				await page.keyboard.press("Tab");
-				const active = await page.evaluate(
-					() =>
-						document.activeElement.tagName !== "BODY" &&
-						!document.activeElement.closest('[inert], [aria-hidden="true"]')
-				);
-				if (!active) {
-					throw new Error(`${label} trapped focus during exit`);
-				}
-				await page.focus(trigger);
-				await page.keyboard.press("Enter");
-				await page.waitForFunction(
-					(name) =>
-						document
-							.querySelector(`[role="dialog"][aria-label="${name}"]`)
-							?.getAttribute("aria-hidden") === "false",
-					{},
-					label
-				);
-				const viewport = page.viewport();
-				// The right edge can be the browser scrollbar rather than the document.
-				await page.mouse.click(2, viewport.height - 24);
-				await page.waitForFunction(
-					(selector) => document.querySelector(selector)?.getAttribute("aria-expanded") === "false",
-					{},
-					trigger
-				);
-				// Outside pointer actions retain normal background focus; keyboard dismissal returns it.
-				await page.keyboard.press("Tab");
-				const outsideFocus = await page.evaluate(() => {
-					const element = document.activeElement;
-					return (
-						element.tagName !== "BODY" &&
-						!element.closest('[inert], [aria-hidden="true"]') &&
-						element.getBoundingClientRect().height > 0
+		{ trigger: "button[data-site-menu]", label: "Navigate" },
+	];
+	const shown = await Promise.all(
+		candidates.map(({ trigger }) =>
+			page.$eval(trigger, (element) => element.getClientRects().length > 0)
+		)
+	);
+	await candidates
+		.filter((_, index) => shown[index])
+		.reduce(
+			(previous, { trigger, label }) =>
+				previous.then(async () => {
+					console.log(`Opening ${label}`);
+					// Independent pointer scenarios start at rest; rapid exit/reopen is tested below.
+					await waitForMotion(page);
+					await page.click(trigger);
+					await waitForHeaderPanel(page, label);
+					states.push(await readState(page, label));
+					states.push(await checkPanelKeyboard(page, label));
+					if (label === "Search") {
+						await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
+						await page.waitForFunction(() => document.body.textContent.includes("No results"));
+						states.push(await readState(page, "Empty search"));
+					}
+					await page.keyboard.press("Escape");
+					await page.waitForFunction(
+						(selector) => document.activeElement === document.querySelector(selector),
+						{},
+						trigger
 					);
-				});
-				if (!outsideFocus) {
-					throw new Error(`${label} retained hidden focus after outside dismissal`);
-				}
-				await page.focus(trigger);
-				await page.keyboard.press("Enter");
-				await page.waitForFunction(
-					(name) => {
-						const panel = document.querySelector(`[role="dialog"][aria-label="${name}"]`);
+					await page.keyboard.press("Tab");
+					const active = await page.evaluate(
+						() =>
+							document.activeElement.tagName !== "BODY" &&
+							!document.activeElement.closest('[inert], [aria-hidden="true"]')
+					);
+					if (!active) {
+						throw new Error(`${label} trapped focus during exit`);
+					}
+					await page.focus(trigger);
+					await page.keyboard.press("Enter");
+					await waitForHeaderPanel(page, label);
+					const viewport = page.viewport();
+					// The right edge can be the browser scrollbar rather than the document.
+					await page.mouse.click(2, viewport.height - 24);
+					await page.waitForFunction(
+						(selector) =>
+							document.querySelector(selector)?.getAttribute("aria-expanded") === "false",
+						{},
+						trigger
+					);
+					// Outside pointer actions retain normal background focus; keyboard dismissal returns it.
+					await page.keyboard.press("Tab");
+					const outsideFocus = await page.evaluate(() => {
+						const element = document.activeElement;
 						return (
-							panel?.getAttribute("aria-hidden") === "false" &&
-							getComputedStyle(panel).opacity === "1"
+							element.tagName !== "BODY" &&
+							!element.closest('[inert], [aria-hidden="true"]') &&
+							element.getBoundingClientRect().height > 0
 						);
-					},
-					{},
-					label
-				);
-				await page.focus(`[role="dialog"][aria-label="${label}"] button[aria-label^="Close"]`);
-				await page.keyboard.press("Enter");
-				await page.waitForFunction(
-					(selector) => document.activeElement === document.querySelector(selector),
-					{},
-					trigger
-				);
-				states.push({
-					name: `${label} rapid reopening, exit Tab and outside dismissal`,
-					passed: true,
-				});
-			}),
-		Promise.resolve()
-	);
-	await page.focus('button[aria-label="Support open source"]');
-	await page.keyboard.press("Enter");
-	await page.waitForSelector(
-		'[role="dialog"][aria-label="Support open source"][aria-hidden="false"]'
-	);
-	await page.keyboard.down("Control");
-	await page.keyboard.press("k");
-	await page.keyboard.up("Control");
-	await page.waitForSelector('[role="dialog"][aria-label="Search"][aria-hidden="false"]');
-	await page.evaluate(() => window.dispatchEvent(new Event("open-command-palette")));
-	await page.keyboard.press("Escape");
-	await page.waitForFunction(
-		() =>
-			document.activeElement === document.querySelector('button[aria-label="Support open source"]')
-	);
-	states.push({ name: "Support to search keeps the original invoking control", passed: true });
-	// Capsule closes are still in their 180ms transition here. Counting every
+					});
+					if (!outsideFocus) {
+						throw new Error(`${label} retained hidden focus after outside dismissal`);
+					}
+					await page.focus(trigger);
+					await page.keyboard.press("Enter");
+					await waitForHeaderPanel(page, label);
+					await focusPanelClose(page, label);
+					await page.keyboard.press("Enter");
+					await page.waitForFunction(
+						(selector) => document.activeElement === document.querySelector(selector),
+						{},
+						trigger
+					);
+					states.push({
+						name: `${label} rapid reopening, exit Tab and outside dismissal`,
+						passed: true,
+					});
+				}),
+			Promise.resolve()
+		);
+	// Popover closes can still be in their exit transition here. Counting every
 	// animation with a long activeDuration treats that leftover motion as a
 	// theme-toggle failure. Let it finish, then record only motion the toggle starts.
 	await waitForMotion(page);
@@ -622,22 +596,63 @@ async function checkShellStates(page) {
 	return states;
 }
 
+// Header popovers mount only while open; their popups carry these data hooks.
+const HEADER_PANELS = { Search: "[data-header-search]", Navigate: "[data-header-menu]" };
+
 async function checkShortcutScope(page, label) {
 	await page.keyboard.down("Control");
 	await page.keyboard.press("k");
 	await page.keyboard.up("Control");
 	await page.evaluate(() => window.dispatchEvent(new Event("open-command-palette")));
-	// A forbidden open could mount the deferred dialog several commits later.
+	// A forbidden open could mount the deferred popover several commits later.
 	await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 500)));
-	const dialogs = await page.evaluate(() =>
-		[...document.querySelectorAll('dialog[open], [role="dialog"][aria-hidden="false"]')].map(
-			(dialog) => dialog.getAttribute("aria-label")
-		)
+	const dialogs = await page.evaluate(
+		(headerPanels) => [
+			...[
+				...document.querySelectorAll(
+					["dialog[open]", ...headerPanels.map((selector) => `${selector}[data-open]`)].join(", ")
+				),
+			].map((dialog) => dialog.getAttribute("aria-label")),
+			// An expanded trigger whose panel cannot mount still captures the next Escape.
+			...[...document.querySelectorAll('button[aria-label="Search (⌘K)"][aria-expanded="true"]')]
+				.filter(() => !document.querySelector(`${headerPanels[0]}[data-open]`))
+				.map(() => "Search (unmounted)"),
+		],
+		Object.values(HEADER_PANELS)
 	);
 	if (dialogs.length !== 1 || dialogs[0] !== label) {
 		throw new Error(`Search shortcut conflicted with ${label}: ${JSON.stringify(dialogs)}`);
 	}
 	return { name: `${label} owns dialog shortcuts`, passed: true };
+}
+
+async function waitForHeaderPanel(page, label) {
+	await page.waitForFunction(
+		(selector) => {
+			const panel = document.querySelector(selector);
+			return panel?.hasAttribute("data-open") && !panel.hasAttribute("data-starting-style");
+		},
+		{},
+		HEADER_PANELS[label]
+	);
+	await waitForMotion(page);
+}
+
+// The search panel has a visible close control; the menu's close part is
+// visually hidden until it receives focus.
+async function focusPanelClose(page, label) {
+	const focused = await page.$eval(HEADER_PANELS[label], (panel) => {
+		const closes = [...panel.querySelectorAll("button")].filter((button) =>
+			(button.getAttribute("aria-label") || button.textContent).trim().startsWith("Close")
+		);
+		const close = closes.find((button) => button.hasAttribute("aria-label")) ?? closes[0];
+		close?.focus();
+		return Boolean(close) && document.activeElement === close;
+	});
+	if (!focused) {
+		throw new Error(`${label} has no focusable close control`);
+	}
+	await page.evaluate(() => new Promise(requestAnimationFrame));
 }
 
 async function checkReducedStyles(page) {
@@ -742,8 +757,8 @@ async function checkContactSuccess(page) {
 	return await readState(page, "Contact success with local transport");
 }
 
-async function checkCapsuleKeyboard(page, label) {
-	const selector = `[role="dialog"][aria-label="${label}"]`;
+async function checkPanelKeyboard(page, label) {
+	const selector = HEADER_PANELS[label];
 	const count = await page.$eval(
 		selector,
 		(panel) =>
@@ -751,11 +766,17 @@ async function checkCapsuleKeyboard(page, label) {
 				(element) => element.getClientRects().length && !element.matches(":disabled")
 			).length
 	);
+	await focusPanelClose(page, label);
 	const closeHit = await page.$eval(selector, (panel) => {
-		const button = panel.querySelector('button[aria-label^="Close"]');
+		const button = document.activeElement;
 		const bounds = button.getBoundingClientRect();
-		return button.contains(
-			document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+		return (
+			panel.contains(button) &&
+			bounds.width >= 24 &&
+			bounds.height >= 24 &&
+			button.contains(
+				document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+			)
 		);
 	});
 	if (!closeHit) {
@@ -891,7 +912,7 @@ async function checkKeyboard(page) {
 						const element = document.activeElement;
 						const style = getComputedStyle(element);
 						const rect = element.getBoundingClientRect();
-						const header = document.querySelector("body header");
+						const header = document.querySelector("[data-site-header]");
 						const bounds = header.getBoundingClientRect();
 						return {
 							label:
@@ -904,9 +925,13 @@ async function checkKeyboard(page) {
 								style.outlineStyle !== "none" && Number.parseFloat(style.outlineWidth) >= 2,
 							inViewport: rect.top >= 0 && rect.top < innerHeight && rect.bottom <= innerHeight + 1,
 							obscured:
+								// The fixed breadcrumb shares the header's band beside it; only
+								// a focus target under the header surface itself is obscured.
 								!(header.contains(element) || element.classList.contains("skip-link")) &&
 								rect.top < bounds.bottom &&
-								rect.bottom > bounds.top,
+								rect.bottom > bounds.top &&
+								rect.left < bounds.right &&
+								rect.right > bounds.left,
 						};
 					})
 				);
