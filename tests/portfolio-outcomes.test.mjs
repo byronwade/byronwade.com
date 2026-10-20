@@ -56,16 +56,19 @@ function fixture(context, repositories) {
 	context.mock.method(console, "warn", context.mock.fn());
 	context.mock.method(globalThis, "fetch", (url) => {
 		requests.push(url);
-		if (url.includes("/repos?")) {
-			return repositories();
+		const { origin, pathname } = new URL(url);
+		if (origin === "https://api.github.com") {
+			if (pathname === "/users/byronwade/repos") {
+				return repositories();
+			}
+			assert.equal(pathname, "/users/byronwade");
+			return Promise.resolve(
+				Response.json({ public_repos: 4, followers: 2, following: 1, created_at: "2020-01-01" })
+			);
 		}
-		return Promise.resolve(
-			Response.json(
-				url.includes("dribbble.com")
-					? shots
-					: { public_repos: 4, followers: 2, following: 1, created_at: "2020-01-01" }
-			)
-		);
+		assert.equal(origin, "https://api.dribbble.com");
+		assert.equal(pathname, "/v2/user/shots");
+		return Promise.resolve(Response.json(shots));
 	});
 	return requests;
 }
