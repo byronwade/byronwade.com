@@ -99,18 +99,33 @@ const integrations = [
 		load: getDribbbleShots,
 		payload: [shot],
 		expected: [shot],
-		fallback: [],
+		rejects: true,
 		key: "dribbble-shots",
 		tag: "dribbble",
 	},
 ];
+const DRIBBBLE_TOKEN = "synthetic-dribbble-token";
+const INVALID_SHOTS_RESPONSE = /Invalid Dribbble shots response/;
 
 /** Real local fetches exercise native aborts during headers and streamed JSON. */
-async function fixture(context, integration, mode) {
+async function fixture(context, integration, mode, { dribbbleToken = DRIBBBLE_TOKEN } = {}) {
 	const requests = [];
 	const errors = [];
 	const received = [];
 	const fetch = globalThis.fetch;
+	const previousToken = process.env.DRIBBBLE_TOKEN;
+	if (dribbbleToken === null) {
+		delete process.env.DRIBBBLE_TOKEN;
+	} else {
+		process.env.DRIBBBLE_TOKEN = dribbbleToken;
+	}
+	context.after(() => {
+		if (previousToken === undefined) {
+			delete process.env.DRIBBBLE_TOKEN;
+		} else {
+			process.env.DRIBBBLE_TOKEN = previousToken;
+		}
+	});
 	const server = createServer((_request, response) => {
 		received.push(mode);
 		if (mode === "headers") {
@@ -151,7 +166,10 @@ async function loadOutcome(integration) {
 
 function assertFailure(integration, result) {
 	if (integration.rejects) {
-		assert.ok(result.error instanceof Error, "the API must receive the GitHub failure");
+		assert.ok(
+			result.error instanceof Error,
+			`the API must receive the ${integration.name} failure`
+		);
 	} else {
 		assert.deepEqual(result, { value: integration.fallback });
 	}
@@ -222,13 +240,40 @@ for (const [index, payload] of [
 	{ shots: [shot] },
 	[null, {}, 42, []],
 ].entries()) {
-	test(`Dribbble validation recovers from malformed response ${index + 1}`, {
+	test(`Dribbble validation rejects malformed response ${index + 1} instead of caching no shots`, {
 		timeout: 5000,
 	}, async (context) => {
 		await fixture(context, { payload }, "success");
-		assert.deepEqual(await getDribbbleShots(), []);
+		await assert.rejects(getDribbbleShots(), INVALID_SHOTS_RESPONSE);
 	});
 }
+
+for (const [label, dribbbleToken] of [
+	["no", null],
+	["a blank", ""],
+	["a whitespace-only", "  "],
+]) {
+	test(`Dribbble with ${label} token is a healthy empty list with no request`, {
+		timeout: 5000,
+	}, async (context) => {
+		const { requests, errors } = await fixture(context, { payload: [shot] }, "success", {
+			dribbbleToken,
+		});
+		assert.deepEqual(await getDribbbleShots(), []);
+		assert.equal(requests.length, 0, "an unconfigured provider must not send `Bearer undefined`");
+		assert.equal(errors.length, 0);
+	});
+}
+
+test("Dribbble sends the configured token without surrounding whitespace", {
+	timeout: 5000,
+}, async (context) => {
+	const { requests } = await fixture(context, { payload: [shot] }, "success", {
+		dribbbleToken: ` ${DRIBBBLE_TOKEN}\n`,
+	});
+	assert.deepEqual(await getDribbbleShots(), [shot]);
+	assert.equal(requests[0].options.headers.Authorization, `Bearer ${DRIBBBLE_TOKEN}`);
+});
 
 test("Dribbble validation preserves optional metadata, extra fields, zeros and nullable image variants", {
 	timeout: 5000,
@@ -274,13 +319,14 @@ test("Dribbble validation preserves a genuinely empty response without diagnosti
 	assert.equal(errors.length, 0);
 });
 
-test("Dribbble validation returns the existing empty fallback for all-invalid shots without logging payloads", {
+test("Dribbble validation rejects all-invalid shots as a failure without logging payloads", {
 	timeout: 5000,
 }, async (context) => {
 	const payload = [{ ...shot, title: { untrusted: "synthetic-private-provider-value" } }];
 	const { errors } = await fixture(context, { payload }, "success");
-	assert.deepEqual(await getDribbbleShots(), []);
-	assert.deepEqual(errors, [["Ignored invalid Dribbble shot records"]]);
+	await assert.rejects(getDribbbleShots(), INVALID_SHOTS_RESPONSE);
+	assert.equal(errors.length, 1);
+	assert.ok(!JSON.stringify(errors).includes("synthetic-private-provider-value"));
 });
 
 const INVALID_REPOSITORY_RESPONSE = /Invalid GitHub repository response/;
