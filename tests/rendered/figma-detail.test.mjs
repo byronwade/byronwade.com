@@ -6,7 +6,7 @@ import { withProductionServer } from "../../scripts/production-session.mjs";
 import { closeBrowser } from "../fixtures/browser.mjs";
 import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
 
-test("synthetic Figma details reflow and keep controls reachable at 200% text", {
+test("synthetic Figma details preserve reflow, keyboard access and breadcrumb landmarks", {
 	timeout: 180_000,
 }, async (context) => {
 	const cssDirectory = new URL("../../.next/static/css/", import.meta.url);
@@ -17,6 +17,7 @@ test("synthetic Figma details reflow and keep controls reachable at 200% text", 
 		await Promise.all(files.map((file) => readFile(new URL(file, cssDirectory), "utf8")))
 	).join("\n");
 	const content = await renderFigmaDetail({ name: "LongUnbrokenDesignName".repeat(8) });
+	const breadcrumbs = await renderFigmaDetail({}, { includeSiteBreadcrumb: true });
 	await withProductionServer(async (url) => {
 		const browser = await puppeteer.launch({
 			executablePath:
@@ -28,6 +29,7 @@ test("synthetic Figma details reflow and keep controls reachable at 200% text", 
 		try {
 			const page = await browser.newPage();
 			page.setDefaultNavigationTimeout(20_000);
+			await page.setCacheEnabled(false);
 			await page.setRequestInterception(true);
 			let fixture;
 			page.on("request", async (request) => {
@@ -86,6 +88,63 @@ test("synthetic Figma details reflow and keep controls reachable at 200% text", 
 					stateLabel
 				);
 			}, Promise.resolve());
+
+			const client = await page.createCDPSession();
+			try {
+				await ["light", "dark"]
+					.flatMap((theme) => [390, 1440].map((width) => ({ theme, width })))
+					.reduce(async (previous, { theme, width }) => {
+						await previous;
+						await context.test(
+							`${theme}/${width}: breadcrumb landmarks are distinguishable`,
+							async () => {
+								fixture = `<!doctype html><html lang="en" class="${theme}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${breadcrumbs}</body></html>`;
+								await page.setViewport({
+									width,
+									height: 900,
+									isMobile: width === 390,
+									hasTouch: width === 390,
+								});
+								await page.goto(`${url}/portfolio/figma/ExampleKey`, { waitUntil: "networkidle0" });
+								const { nodes } = await client.send("Accessibility.getFullAXTree");
+								const navigationNames = nodes
+									.filter((node) => !node.ignored && node.role?.value === "navigation")
+									.map((node) => node.name?.value);
+								assert.deepEqual(
+									navigationNames.sort(),
+									width === 1440
+										? ["Breadcrumb", "Design file breadcrumb"]
+										: ["Design file breadcrumb"]
+								);
+								assert.equal(new Set(navigationNames).size, navigationNames.length);
+								const trail = 'main nav[aria-label="Design file breadcrumb"]';
+								assert.equal(
+									await page.$eval(
+										`${trail} [aria-current="page"]`,
+										(element) => element.textContent
+									),
+									"Example design"
+								);
+								assert.equal(
+									await page.$eval(`${trail} a`, (link) => link.getAttribute("href")),
+									"/portfolio"
+								);
+								await page.focus(`${trail} a`);
+								assert.equal(
+									await page.$eval(`${trail} a`, (link) => link === document.activeElement),
+									true
+								);
+								await page.keyboard.press("Tab");
+								assert.equal(
+									await page.$eval("main button", (button) => button === document.activeElement),
+									true
+								);
+							}
+						);
+					}, Promise.resolve());
+			} finally {
+				await client.detach();
+			}
 		} finally {
 			await closeBrowser(browser, context);
 		}
