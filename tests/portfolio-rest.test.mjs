@@ -245,11 +245,11 @@ for (const [index, payload] of [
 }
 
 for (const [label, dribbbleToken] of [
-	["unset", null],
-	["blank", ""],
-	["whitespace", "  "],
+	["no", null],
+	["a blank", ""],
+	["a whitespace-only", "  "],
 ]) {
-	test(`Dribbble with an ${label} token is a healthy empty list with no request`, {
+	test(`Dribbble with ${label} token is a healthy empty list with no request`, {
 		timeout: 5000,
 	}, async (context) => {
 		const { requests, errors } = await fixture(context, { payload: [shot] }, "success", {
