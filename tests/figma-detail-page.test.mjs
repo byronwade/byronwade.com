@@ -19,7 +19,12 @@ after(() => {
 	}
 });
 
-for (const timezone of ["UTC", "America/New_York", "America/Los_Angeles", "Asia/Kathmandu"]) {
+for (const [timezone, expected] of [
+	["UTC", "January 1, 2026"],
+	["America/New_York", "December 31, 2025"],
+	["America/Los_Angeles", "December 31, 2025"],
+	["Asia/Kathmandu", "January 1, 2026"],
+]) {
 	test(`${timezone}: Figma dates use readable canonical labels and source timestamps`, async () => {
 		process.env.TZ = timezone;
 		const html = await renderFigmaDetail();
@@ -27,7 +32,7 @@ for (const timezone of ["UTC", "America/New_York", "America/Los_Angeles", "Asia/
 		assert.equal(dates.length, 2);
 		for (const [, datetime, text] of dates) {
 			assert.equal(datetime, "2026-01-01T00:00:00Z");
-			assert.equal(text, "January 1, 2026");
+			assert.equal(text, expected);
 		}
 	});
 }

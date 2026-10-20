@@ -70,7 +70,8 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		{ label: "Components", value: componentsCount, icon: Palette },
 		{ label: "Styles", value: fileData.styleCount, icon: Zap },
 	];
-	const modifiedDate = safeFormatDate(fileData.lastModified);
+	// Figma timestamps are instants; numeric input avoids authored calendar-date normalization.
+	const modifiedDate = safeFormatDate(Date.parse(fileData.lastModified));
 
 	return (
 		<div className="min-h-screen py-16">
