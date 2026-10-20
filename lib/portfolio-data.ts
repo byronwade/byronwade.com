@@ -196,7 +196,7 @@ export const getFigmaFile = (key: string) =>
 		}
 	);
 
-// GitHub Profile Data (interface moved to types/github.ts)
+// Validate profile statistics before caching, using the same GitHub field rules as repositories.
 export const getGitHubStats = unstable_cache(
 	async () => {
 		try {
@@ -209,7 +209,19 @@ export const getGitHubStats = unstable_cache(
 				throw new Error("Failed to fetch GitHub stats");
 			}
 
-			const data = await response.json();
+			const data: unknown = await response.json();
+
+			if (
+				!(
+					isRecord(data) &&
+					isGitHubCount(data.public_repos) &&
+					isGitHubCount(data.followers) &&
+					isGitHubCount(data.following) &&
+					isGitHubTimestamp(data.created_at)
+				)
+			) {
+				throw new Error("Invalid GitHub profile response");
+			}
 
 			return {
 				publicRepos: data.public_repos,
@@ -219,12 +231,8 @@ export const getGitHubStats = unstable_cache(
 			};
 		} catch (error) {
 			console.error("Error fetching GitHub stats:", error);
-			return {
-				publicRepos: 0,
-				followers: 0,
-				following: 0,
-				createdAt: null,
-			};
+			// The API owns the null/degraded fallback; zero counts must be real data.
+			throw error;
 		}
 	},
 	["github-stats"],
@@ -251,7 +259,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isRepositoryCount(value: unknown): value is number {
+function isGitHubCount(value: unknown): value is number {
 	return typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 }
 
@@ -259,7 +267,7 @@ function isRepositoryName(value: unknown): value is string {
 	return typeof value === "string" && value.trim().length > 0;
 }
 
-function isRepositoryDate(value: unknown): value is string {
+function isGitHubTimestamp(value: unknown): value is string {
 	return (
 		typeof value === "string" &&
 		GITHUB_TIMESTAMP.test(value) &&
@@ -282,10 +290,10 @@ function isGitHubRepository(value: unknown): value is GitHubRepo {
 		return false;
 	}
 	return (
-		isRepositoryCount(value.id) &&
+		isGitHubCount(value.id) &&
 		value.id > 0 &&
 		["name", "full_name"].every((field) => isRepositoryName(value[field])) &&
-		["stargazers_count", "forks_count"].every((field) => isRepositoryCount(value[field])) &&
+		["stargazers_count", "forks_count"].every((field) => isGitHubCount(value[field])) &&
 		(value.description === null || typeof value.description === "string") &&
 		["language", "homepage"].every(
 			(field) =>
@@ -294,7 +302,7 @@ function isGitHubRepository(value: unknown): value is GitHubRepo {
 		isRepositoryUrl(value.html_url) &&
 		["created_at", "updated_at", "pushed_at"].every(
 			(field) =>
-				value[field] === undefined || value[field] === null || isRepositoryDate(value[field])
+				value[field] === undefined || value[field] === null || isGitHubTimestamp(value[field])
 		) &&
 		typeof value.fork === "boolean" &&
 		(value.archived === undefined || typeof value.archived === "boolean") &&

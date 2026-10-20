@@ -71,7 +71,7 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	});
 	return {
 		repos: filtered,
-		degraded: Boolean(data.degraded || data.githubFailed),
+		degraded: Boolean(data.githubFailed),
 	};
 }
 
