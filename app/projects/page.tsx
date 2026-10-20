@@ -111,7 +111,7 @@ export default async function ProjectsPage() {
 			<JsonLd data={websiteStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			<SiteShell>
+			<SiteShell profile="showcase">
 				<div className="flex flex-col gap-8 sm:gap-12">
 					<PageHeader
 						lede="What I’m building now, followed by earlier products, client work, and experiments. Every project stays listed."

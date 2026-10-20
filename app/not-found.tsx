@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
  */
 export default function NotFound() {
 	return (
-		<SiteShell>
+		<SiteShell profile="shared">
 			<div className="flex min-h-[60vh] flex-col justify-center gap-6">
 				<p className="font-mono text-muted-foreground text-sm tabular-nums">404</p>
 

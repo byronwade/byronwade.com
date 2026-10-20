@@ -109,7 +109,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 			<JsonLd data={projectStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			<SiteShell width="wide">
+			<SiteShell profile="evidence" width="wide">
 				<div className="flex flex-col gap-10 sm:gap-12">
 					{/* Header */}
 					<header className="flex w-full max-w-2xl flex-col gap-4">

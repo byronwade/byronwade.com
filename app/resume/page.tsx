@@ -166,7 +166,7 @@ export default function ResumePage() {
 			<JsonLd data={jsonLdData} />
 			<PrintInLightTheme />
 
-			<SiteShell className="print:max-w-none print:p-0">
+			<SiteShell className="print:max-w-none print:p-0" profile="evidence">
 				<div className="flex w-full flex-col gap-12 sm:gap-16 print:gap-6">
 					<header className="w-full">
 						<div className="flex w-full flex-col gap-6 print:gap-3">

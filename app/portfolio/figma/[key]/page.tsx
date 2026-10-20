@@ -1,25 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
+import { Sheet } from "@/components/layout/sheet";
+import { SiteShell } from "@/components/layout/site-shell";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
-import {
-	Calendar,
-	ChevronRight,
-	ExternalLink,
-	FileText,
-	GitBranch,
-	Layers,
-	Palette,
-	Zap,
-} from "@/lib/icons";
+import { ArrowUpRight } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
-import { getFigmaFile } from "@/lib/portfolio-data";
+import { getFigmaFile, isFigmaFileKey } from "@/lib/portfolio-data";
 
 interface FigmaDetailPageProps {
 	params: Promise<{ key: string }>;
 }
+
+/** Components shown inline; the rest are counted, not hidden. */
+const COMPONENT_PREVIEW = 6;
 
 export async function generateMetadata({ params }: FigmaDetailPageProps): Promise<Metadata> {
 	const { key } = await params;
@@ -27,8 +22,9 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 
 	if (!file) {
 		return {
-			title: "Design File Not Found",
-			description: "The requested Figma file could not be found.",
+			title: "Design file unavailable",
+			description: "This Figma file could not be loaded.",
+			robots: { index: false },
 		};
 	}
 
@@ -53,198 +49,190 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 	};
 }
 
+function DesignFileBreadcrumb({ current }: { current: string }) {
+	return (
+		<nav aria-label="Design file breadcrumb" className="text-copy-13 text-muted-foreground">
+			<ol className="flex flex-wrap items-center gap-x-2">
+				<li>
+					<Link
+						className="inline-flex min-h-11 items-center hover:text-foreground"
+						href="/portfolio"
+					>
+						Portfolio
+					</Link>
+				</li>
+				<li className="flex min-w-0 items-center gap-2">
+					<span aria-hidden="true">/</span>
+					<span aria-current="page" className="wrap-anywhere text-foreground">
+						{current}
+					</span>
+				</li>
+			</ol>
+		</nav>
+	);
+}
+
+function OpenInFigma({ fileKey, children }: { fileKey: string; children: ReactNode }) {
+	return (
+		<a
+			className="link-action"
+			href={`https://www.figma.com/file/${fileKey}`}
+			rel="noopener noreferrer"
+			target="_blank"
+		>
+			{children}
+			<ArrowUpRight aria-hidden="true" className="size-3.5" />
+			<span className="sr-only"> (opens in a new tab)</span>
+		</a>
+	);
+}
+
+/**
+ * Honest failure. A well-formed key that Figma did not return may be private,
+ * removed, or unreachable right now (no token, timeout, outage); the server
+ * cannot tell those apart, so the page says so and offers both ways out
+ * rather than claiming the file does not exist.
+ */
+function UnavailableFile({ fileKey }: { fileKey: string }) {
+	return (
+		<SiteShell profile="evidence">
+			<div className="flex flex-col gap-3">
+				<DesignFileBreadcrumb current="Design file" />
+				<h1 className="text-balance font-medium text-heading-32 tracking-tight">
+					Design file unavailable
+				</h1>
+				<p className="text-body text-copy-16 leading-relaxed">
+					Figma didn’t return this file. It may be private or removed, or Figma may be unreachable
+					right now. The file itself is unchanged; try it on Figma, or browse the rest of the work.
+				</p>
+				<p className="flex flex-wrap items-center gap-x-6">
+					<OpenInFigma fileKey={fileKey}>Try it on Figma</OpenInFigma>
+					<Link className="link-action" href="/portfolio">
+						Back to portfolio
+					</Link>
+				</p>
+			</div>
+		</SiteShell>
+	);
+}
+
+/**
+ * Figma file detail, Evidence profile (DESIGN.md §3.2).
+ *
+ * The file is the dominant object, so it gets the wide measure on a sheet with
+ * a caption, and the identity and counts sit above it as plain type. The old
+ * page wrapped every number and every section in hover-lifting cards with
+ * icon tiles, and drew placeholder thumbnails for components it had no images
+ * for; the counts are now a definition list and components are named, not
+ * illustrated.
+ */
 export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) {
 	const { key } = await params;
-	const file = await getFigmaFile(key)();
-
-	if (!file) {
+	if (!isFigmaFileKey(key)) {
 		notFound();
 	}
+	const file = await getFigmaFile(key)();
+	if (!file) {
+		return <UnavailableFile fileKey={key} />;
+	}
 
-	const fileData = file;
-
-	// Counted from the validated file response (no expensive API calls)
-	const componentsCount = fileData.components.length;
-	const metrics = [
-		{ label: "Pages", value: fileData.pageCount, icon: FileText },
-		{ label: "Components", value: componentsCount, icon: Palette },
-		{ label: "Styles", value: fileData.styleCount, icon: Zap },
+	const componentsCount = file.components.length;
+	const facts = [
+		{ label: "Pages", value: file.pageCount },
+		{ label: "Components", value: componentsCount },
+		{ label: "Styles", value: file.styleCount },
 	];
 	// Figma timestamps are instants; numeric input avoids authored calendar-date normalization.
-	const modifiedDate = safeFormatDate(Date.parse(fileData.lastModified));
+	const modifiedDate = safeFormatDate(Date.parse(file.lastModified));
 
 	return (
-		<div className="min-h-screen py-16">
-			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-				<div className="mb-8">
-					<nav aria-label="Design file breadcrumb" className="mb-4 text-muted-foreground text-sm">
-						<ol className="flex flex-wrap items-center gap-x-2">
-							<li>
-								<Link
-									href="/portfolio"
-									className="inline-flex min-h-11 min-w-11 items-center px-1 transition-colors hover:text-brand focus-visible:text-brand"
-								>
-									Portfolio
-								</Link>
-							</li>
-							<li className="flex min-w-0 items-center gap-2">
-								<ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
-								<span aria-current="page" className="wrap-anywhere text-foreground">
-									{fileData.name}
-								</span>
-							</li>
-						</ol>
-					</nav>
-
-					<div className="mb-6">
-						<h1 className="wrap-anywhere mb-4 font-bold text-4xl text-foreground">
-							{fileData.name}
-						</h1>
-						<div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
-							<div className="flex items-center gap-1">
-								<Calendar className="h-4 w-4 text-brand" />
-								<span>
-									Updated <time dateTime={fileData.lastModified}>{modifiedDate}</time>
-								</span>
+		<SiteShell profile="evidence" width="wide">
+			<div className="flex flex-col gap-12">
+				<header className="flex max-w-2xl flex-col gap-3">
+					<DesignFileBreadcrumb current={file.name} />
+					<h1 className="wrap-anywhere text-balance font-medium text-heading-32 tracking-tight">
+						{file.name}
+					</h1>
+					<p className="text-body text-copy-16 leading-relaxed">
+						A Figma file, last updated <time dateTime={file.lastModified}>{modifiedDate}</time>.
+					</p>
+					<dl className="flex flex-wrap gap-x-10 gap-y-3 pt-3">
+						{facts.map(({ label, value }) => (
+							<div className="flex flex-col gap-0.5" key={label}>
+								<dt className="text-copy-12 text-muted-foreground">{label}</dt>
+								<dd className="order-first font-medium text-heading-20 tabular-nums">{value}</dd>
 							</div>
-						</div>
-					</div>
-
-					{/* Counts from the validated Figma response. */}
-					<div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-						{metrics.map(({ label, value, icon: Icon }) => (
-							<Card
-								key={label}
-								className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl"
-							>
-								<CardContent className="flex flex-wrap items-center gap-4 p-6">
-									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand/10">
-										<Icon className="h-6 w-6 text-brand" />
-									</div>
-									<div className="wrap-anywhere min-w-0 max-w-full">
-										<p className="font-bold text-2xl text-foreground">{value}</p>
-										<p className="text-muted-foreground text-sm">{label}</p>
-									</div>
-								</CardContent>
-							</Card>
 						))}
-					</div>
-				</div>
+					</dl>
+					<p>
+						<OpenInFigma fileKey={key}>Open in Figma</OpenInFigma>
+					</p>
+				</header>
 
-				<div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-					{/* Main Content */}
-					<div className="space-y-8 lg:col-span-2">
-						{/* Interactive Figma Viewer */}
-						<div className="space-y-4">
-							<h2 className="font-semibold text-foreground text-xl">Design File</h2>
-							<FigmaInteractiveViewer
-								fileKey={key}
-								fileName={fileData.name}
-								imageUrl={fileData.thumbnailUrl}
-							/>
-						</div>
+				<section aria-labelledby="design-file" className="flex flex-col gap-4">
+					<h2 className="font-medium text-heading-20 tracking-tight" id="design-file">
+						Design file
+					</h2>
+					<Sheet caption="Served by Figma. Large files can take a few seconds to draw.">
+						<FigmaInteractiveViewer
+							fileKey={key}
+							fileName={file.name}
+							imageUrl={file.thumbnailUrl}
+						/>
+					</Sheet>
+				</section>
 
-						{/* Components Library */}
-						{componentsCount > 0 && (
-							<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-								<CardHeader>
-									<CardTitle className="text-foreground">
-										<h2 className="flex items-center gap-2">
-											<Palette className="h-5 w-5 text-brand" />
-											Components ({componentsCount})
-										</h2>
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-										{fileData.components.slice(0, 6).map((component) => (
-											<Card
-												key={component.id}
-												className="border-border/30 bg-background/80 transition-shadow duration-150 hover:shadow-lg"
-											>
-												<CardContent className="p-4">
-													<div className="mb-3 flex items-center gap-3">
-														<div className="flex h-10 w-10 items-center justify-center rounded border border-brand/30 bg-brand/10 font-medium text-brand text-xs">
-															{component.name?.charAt(0)?.toUpperCase() || "C"}
-														</div>
-														<div className="min-w-0 flex-1">
-															<h3 className="truncate font-medium text-foreground">
-																{component.name || "Unnamed Component"}
-															</h3>
-															<p className="text-muted-foreground text-xs">
-																{component.description || "No description"}
-															</p>
-														</div>
-													</div>
-													<div className="flex aspect-[4/3] items-center justify-center rounded bg-secondary">
-														<Layers className="h-8 w-8 text-muted-foreground" />
-													</div>
-												</CardContent>
-											</Card>
-										))}
-									</div>
-									{componentsCount > 6 && (
-										<div className="mt-4 text-center">
-											<p className="text-muted-foreground text-sm">
-												And {componentsCount - 6} more components...
-											</p>
-										</div>
-									)}
-								</CardContent>
-							</Card>
-						)}
-
-						{/* Action Buttons */}
-						<div className="flex flex-wrap gap-3">
-							<Button
-								render={
-									<a
-										href={`https://www.figma.com/file/${key}`}
-										target="_blank"
-										rel="noopener noreferrer"
-										aria-label="Open in Figma"
-									/>
-								}
-								size="lg"
-							>
-								<ExternalLink className="mr-2 h-4 w-4" />
-								Open in Figma
-							</Button>
-						</div>
-					</div>
-
-					{/* Sidebar */}
-					<div className="space-y-6">
-						{/* File Information */}
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardHeader>
-								<CardTitle className="text-foreground">
-									<h2>File Information</h2>
-								</CardTitle>
-							</CardHeader>
-							<CardContent className="space-y-4">
-								<div className="flex items-center gap-2 text-muted-foreground">
-									<Calendar className="h-4 w-4 text-brand" />
-									<span className="text-sm">Last Modified</span>
-								</div>
-								<p className="font-medium text-foreground">
-									<time dateTime={fileData.lastModified}>{modifiedDate}</time>
+				<div className="grid max-w-2xl gap-12 lg:max-w-none lg:grid-cols-3">
+					{componentsCount > 0 && (
+						<section
+							aria-labelledby="components"
+							className="flex min-w-0 flex-col gap-4 lg:col-span-2"
+						>
+							<h2 className="font-medium text-heading-20 tracking-tight" id="components">
+								Components{" "}
+								<span className="text-muted-foreground tabular-nums">{componentsCount}</span>
+							</h2>
+							<ul className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
+								{file.components.slice(0, COMPONENT_PREVIEW).map((component) => (
+									<li className="flex min-w-0 flex-col gap-0.5" key={component.id}>
+										<h3 className="wrap-anywhere font-medium text-copy-14 text-foreground">
+											{component.name || "Unnamed component"}
+										</h3>
+										<p className="text-copy-13 text-muted-foreground">
+											{component.description || "No description in Figma."}
+										</p>
+									</li>
+								))}
+							</ul>
+							{componentsCount > COMPONENT_PREVIEW && (
+								<p className="text-copy-13 text-muted-foreground">
+									{componentsCount - COMPONENT_PREVIEW} more in the file.
 								</p>
+							)}
+						</section>
+					)}
 
-								{fileData.version && (
-									<div>
-										<div className="mb-1 flex items-center gap-2 text-muted-foreground">
-											<GitBranch className="h-4 w-4 text-brand" />
-											<span className="text-sm">Version</span>
-										</div>
-										<p className="font-medium text-foreground">{fileData.version}</p>
-									</div>
-								)}
-							</CardContent>
-						</Card>
-					</div>
+					<section aria-labelledby="file-information" className="flex flex-col gap-4">
+						<h2 className="font-medium text-heading-20 tracking-tight" id="file-information">
+							File information
+						</h2>
+						<dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-copy-14">
+							<dt className="text-muted-foreground">Last modified</dt>
+							<dd className="text-foreground">
+								<time dateTime={file.lastModified}>{modifiedDate}</time>
+							</dd>
+							{file.version && (
+								<>
+									<dt className="text-muted-foreground">Version</dt>
+									<dd className="wrap-anywhere font-mono text-foreground tabular-nums">
+										{file.version}
+									</dd>
+								</>
+							)}
+						</dl>
+					</section>
 				</div>
 			</div>
-		</div>
+		</SiteShell>
 	);
 }

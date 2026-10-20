@@ -20,7 +20,7 @@ export default function ContactClient() {
 	return (
 		// Narrow, not wide. A single form has no business spanning a five-column
 		// shell; the measure is the point on a page with one task.
-		<SiteShell>
+		<SiteShell profile="guided">
 			<Toaster />
 			<div className="flex flex-col gap-10">
 				<PageHeader

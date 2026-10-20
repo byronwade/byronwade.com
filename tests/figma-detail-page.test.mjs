@@ -1,13 +1,15 @@
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
+import { renderToStaticMarkup } from "react-dom/server";
 import { renderFigmaDetail, renderMissingFigmaDetail } from "./fixtures/figma-detail.mjs";
 
 const BREADCRUMB = /<nav\b[^>]*aria-label="Design file breadcrumb"[^>]*>(.*?)<\/nav>/s;
 const CURRENT_FILE = /aria-current="page"[^>]*>Design &lt;draft&gt; &amp; review<\/span>/;
-const DESIGN_HEADING = /<h2\b[^>]*>Design File<\/h2>/;
+const DESIGN_HEADING = /<h2\b[^>]*>Design file<\/h2>/;
 const COMPONENT_HEADING = /<h3\b[^>]*>Primary button<\/h3>/;
-const INFORMATION_HEADING = /<h2\b[^>]*>File Information<\/h2>/;
+const INFORMATION_HEADING = /<h2\b[^>]*>File information<\/h2>/;
 const NOT_FOUND = /NEXT_HTTP_ERROR_FALLBACK;404/;
+const UNAVAILABLE_TITLE = /<h1\b[^>]*>Design file unavailable<\/h1>/;
 const VIEW_BUTTONS = /<button\b([^>]*)>(.*?)<\/button>/gs;
 
 const originalTimezone = process.env.TZ;
@@ -93,6 +95,14 @@ test("viewer controls expose the selected mode through native toggle buttons", a
 	assert.ok(buttons[1][2].includes("Preview"));
 });
 
-test("unavailable file retains the existing not-found route", async () => {
-	await assert.rejects(renderMissingFigmaDetail(), NOT_FOUND);
+test("a well-formed key Figma did not return renders an honest unavailable state", async () => {
+	const html = renderToStaticMarkup(await renderMissingFigmaDetail());
+	assert.match(html, UNAVAILABLE_TITLE);
+	assert.ok(html.includes('href="https://www.figma.com/file/UnavailableKey"'));
+	assert.ok(html.includes('href="/portfolio"'));
+	assert.ok(html.includes('data-profile="evidence"'));
+});
+
+test("a malformed key keeps the not-found route", async () => {
+	await assert.rejects(renderMissingFigmaDetail("bad key!"), NOT_FOUND);
 });

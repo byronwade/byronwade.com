@@ -11,98 +11,90 @@ interface FigmaInteractiveViewerProps {
 	imageUrl: string | null;
 }
 
+const MODES = [
+	{ id: "interactive", label: "Interactive", icon: Monitor },
+	{ id: "static", label: "Preview", icon: ImageIcon },
+] as const;
+
+type ViewMode = (typeof MODES)[number]["id"];
+
+/**
+ * Two representations of one design file (DESIGN.md §8 tabs): the live embed
+ * and the exported thumbnail. The toggle is a pair of native pressed buttons;
+ * the active one is filled, so the state is not carried by colour alone.
+ */
 export function FigmaInteractiveViewer({
 	fileKey,
 	fileName,
 	imageUrl,
 }: FigmaInteractiveViewerProps) {
-	const [viewMode, setViewMode] = useState<"interactive" | "static">("interactive");
+	const [viewMode, setViewMode] = useState<ViewMode>("interactive");
 
 	return (
-		<div className="space-y-6">
-			{/* View Mode Toggle */}
-			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<div>
-					<h3 className="mb-2 font-bold text-foreground text-xl">Design viewer</h3>
-					<p className="text-muted-foreground text-sm">
+		<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-3 px-1.5 pt-1 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex flex-col gap-0.5">
+					<h3 className="font-medium text-copy-14 text-foreground">Design viewer</h3>
+					<p className="text-copy-13 text-muted-foreground">
 						{viewMode === "interactive"
-							? "Interactive Figma embed - zoom, pan, and explore the design"
-							: "High-resolution static preview of the design"}
+							? "Live Figma embed. Zoom, pan, and click through the frames."
+							: "The exported thumbnail, for a quick look without loading Figma."}
 					</p>
 				</div>
-				<div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-1">
-					<Button
-						size="default"
-						aria-pressed={viewMode === "interactive"}
-						variant={viewMode === "interactive" ? "default" : "ghost"}
-						onClick={() => setViewMode("interactive")}
-						className="px-3"
-					>
-						<Monitor className="mr-1 h-3 w-3" />
-						Interactive
-					</Button>
-					<Button
-						size="default"
-						aria-pressed={viewMode === "static"}
-						variant={viewMode === "static" ? "default" : "ghost"}
-						onClick={() => setViewMode("static")}
-						className="px-3"
-					>
-						<ImageIcon className="mr-1 h-3 w-3" />
-						Preview
-					</Button>
+				<div className="flex flex-wrap items-center gap-1">
+					{MODES.map(({ id, label, icon: Icon }) => (
+						<Button
+							aria-pressed={viewMode === id}
+							className="rounded-full"
+							key={id}
+							onClick={() => setViewMode(id)}
+							size="lg"
+							type="button"
+							variant={viewMode === id ? "secondary" : "ghost"}
+						>
+							<Icon aria-hidden="true" className="size-4" />
+							{label}
+						</Button>
+					))}
 				</div>
 			</div>
 
-			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
-				<div className="group relative">
-					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
-						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
-							<iframe
-								sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-								style={{ border: "none" }}
-								width="100%"
-								height="100%"
-								src={`https://www.figma.com/embed?embed_host=share&url=https%3A//www.figma.com/file/${fileKey}`}
-								allowFullScreen
-								className="rounded-xl"
-								title={`Interactive ${fileName} Figma Design`}
-								loading="lazy"
-							/>
-						</div>
-					</div>
+				<div className="aspect-4/3 min-h-96 w-full overflow-hidden rounded-md bg-muted sm:aspect-video">
+					<iframe
+						allowFullScreen
+						className="size-full border-0"
+						height="100%"
+						loading="lazy"
+						sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+						src={`https://www.figma.com/embed?embed_host=share&url=https%3A//www.figma.com/file/${fileKey}`}
+						title={`Interactive ${fileName} Figma Design`}
+						width="100%"
+					/>
 				</div>
 			)}
 
-			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
-				<div className="group relative">
-					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
-						<div className="relative aspect-[16/9] w-full">
-							<Image
-								src={imageUrl}
-								alt={fileName}
-								fill
-								sizes="(min-width: 1280px) 1200px, 100vw"
-								className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-								priority
-							/>
-						</div>
-					</div>
+				<div className="relative aspect-video w-full overflow-hidden rounded-md bg-muted">
+					<Image
+						alt={fileName}
+						className="object-contain"
+						fill
+						priority
+						sizes="(min-width: 1024px) 64rem, 100vw"
+						src={imageUrl}
+					/>
 				</div>
 			)}
 
-			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
-				<div className="group relative">
-					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
-						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
-						<p className="text-muted-foreground">No static preview available for this design.</p>
-						<p className="mt-2 text-muted-foreground/70 text-sm">
-							Switch to Interactive mode to view the design.
-						</p>
-					</div>
+				<div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-md bg-muted px-6 text-center">
+					<ImageIcon aria-hidden="true" className="size-6 text-muted-foreground" />
+					<p className="font-medium text-copy-14 text-foreground">No exported preview</p>
+					<p className="max-w-sm text-copy-13 text-muted-foreground">
+						Figma didn’t return a thumbnail for this file. Switch to Interactive to see the design
+						itself.
+					</p>
 				</div>
 			)}
 		</div>

@@ -264,7 +264,7 @@ function PreviewViewport({
 				>
 					{status === "loading" && (
 						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
-							<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-transparent" />
+							<div className="absolute inset-0 animate-pulse bg-muted" />
 							<div className="relative size-7">
 								<div className="absolute inset-0 rounded-full border-2 border-border" />
 								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
@@ -503,7 +503,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog, role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
 						<div
 							ref={dialogRef}
-							className="fixed inset-0 z-[9998] flex flex-col bg-black/95 p-6 backdrop-blur-sm"
+							className="fixed inset-0 z-(--z-dialog) flex flex-col bg-background p-6"
 							onClick={(e) => {
 								if (e.target === e.currentTarget) {
 									setIsFullscreen(false);

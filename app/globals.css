@@ -724,6 +724,16 @@
   }
 }
 
+/* Registered utilities so pages and `@apply` can compose them. */
+@utility link-underline {
+  @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
+}
+/* Thorbis rule-content `action`: a standalone text link (back, next, open).
+   The 44px box is the target; the type stays at the 14px content role. */
+@utility link-action {
+  @apply link-underline inline-flex min-h-11 items-center gap-1.5 font-medium text-copy-14;
+}
+
 @layer utilities {
   /* ── Motion utilities (DESIGN.md §6.3) ──
      Hover-driven *motion* is gated to fine pointers. On touch, hover is
@@ -749,9 +759,6 @@
   }
 
   /* ── Site utilities ── */
-  .link-underline {
-    @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
-  }
   .skip-link {
     @apply inline-flex min-h-11 items-center rounded-md bg-card px-3 shadow-card;
     position: absolute;

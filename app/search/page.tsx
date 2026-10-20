@@ -34,7 +34,7 @@ export default async function SearchPage({
 	const count = groups.reduce((total, group) => total + group.items.length, 0);
 
 	return (
-		<SiteShell width="wide">
+		<SiteShell profile="guided" width="wide">
 			<div className="flex flex-col gap-10">
 				<PageHeader
 					lede="Pages, plus the titles, summaries, tags, and text of the projects and writing."

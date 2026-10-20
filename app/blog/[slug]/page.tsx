@@ -167,7 +167,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	return (
 		<>
 			<ReadingProgress />
-			<SiteShell>
+			<SiteShell profile="evidence">
 				<BlogPostContent slug={slug} />
 			</SiteShell>
 		</>

@@ -290,7 +290,7 @@ export default function PortfolioPage() {
 	const [visibleRepos, setVisibleRepos] = useState(8);
 
 	return (
-		<SiteShell width="wide">
+		<SiteShell profile="showcase" width="wide">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={

@@ -57,10 +57,16 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
 | Workbench | No | - | No authenticated or repeat-use operational surface exists |
-| Guided | Yes | `/contact`, the inline contact sheet | Single focused task, interruption- and failure-aware |
-| Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
+| Guided | Yes | `/contact`, `/search`, the inline contact sheet | Single focused task, interruption- and failure-aware |
+| Evidence | Yes | `/resume`, `/projects/[slug]`, `/blog/[slug]`, `/portfolio/figma/[key]`, `/privacy`, `/terms` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
-| Shared primitives | Yes | `components/ui/`, `app/globals.css` | One token system and one primitive set across all profiles |
+| Shared | Yes | 404, route error, `components/ui/`, `app/globals.css` | System pages, plus one token system and one primitive set across all profiles |
+
+Every route declares its profile through `SiteShell`'s required `profile` prop,
+which renders `data-profile` on the page container. `tests/design-system.test.mjs`
+fails when a route entry does not declare one. `SiteShell` keeps one 42rem
+measure shared with the header and footer; `width="wide"` is reserved for the
+homepage composition and live artifacts (project preview, Figma file).
 
 ## Repository ownership
 
@@ -219,7 +225,10 @@ use them correctly.
   touch targets and layout at 100%/200% text in both themes. They are not a full-route
   accessibility audit. Biome's a11y rules run in lint; manual keyboard passes are
   still required for critical flows.
-- **UI consistency:** no visual regression suite. Recorded as debt below.
+- **UI consistency:** `tests/design-system.test.mjs` (in `npm test`) fails on raw colour
+  literals, gradients, decorative blur, `transition-all`, a route without a profile, or a
+  loss of the reduced-motion block, and ratchets Tailwind default type sizes, pixel font
+  sizes and bold/semibold weights per file toward zero. No visual regression suite yet.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
 - **Bundle/performance:** `npm run build:analyze`, `npm run perf:budget`

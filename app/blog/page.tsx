@@ -143,7 +143,7 @@ export default function BlogPage() {
 			<JsonLd data={websiteStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			<SiteShell>
+			<SiteShell profile="showcase">
 				<div className="flex flex-col gap-8 sm:gap-10">
 					<PageHeader
 						lede="Notes from building products and running a service business. Design systems, field ops, and the software that has to work out in the truck."

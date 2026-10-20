@@ -59,13 +59,11 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 					controls: [...document.querySelectorAll("nav a, button")].map((element) =>
 						element.getBoundingClientRect().toJSON()
 					),
-					labels: [
-						...document.querySelector("h1").parentElement.nextElementSibling.querySelectorAll("p"),
-					].map((element) => {
+					labels: [...document.querySelectorAll('[data-slot="sheet"] p')].map((element) => {
 						const range = document.createRange();
 						range.selectNodeContents(element);
 						return {
-							card: element.closest('[data-slot="card"]').getBoundingClientRect().toJSON(),
+							card: element.closest('[data-slot="sheet"]').getBoundingClientRect().toJSON(),
 							text: [...range.getClientRects()].map((rect) => rect.toJSON()),
 						};
 					}),
@@ -132,6 +130,15 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 								await page.focus(`${trail} a`);
 								assert.equal(
 									await page.$eval(`${trail} a`, (link) => link === document.activeElement),
+									true
+								);
+								// The page's primary action comes next, then the viewer toggle.
+								await page.keyboard.press("Tab");
+								assert.equal(
+									await page.$eval(
+										'main a[href="https://www.figma.com/file/ExampleKey"]',
+										(link) => link === document.activeElement
+									),
 									true
 								);
 								await page.keyboard.press("Tab");
