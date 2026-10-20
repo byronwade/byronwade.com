@@ -24,7 +24,7 @@ Zugzology is an e-commerce platform for mushroom cultivation supplies. It is a r
 
 Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represents a modern approach to e-commerce:
 
-**Server Components by Default**: Leveraging React Server Components for optimal performance and SEO. Less JavaScript sent to the browser, faster initial page loads, better search engine visibility.
+**Server Components by Default**: React Server Components run on the server without shipping their component code to the browser. Loading still depends on the data requests, assets, and client components each page needs.
 
 **Shopify Storefront API Integration**: Seamless connection to Shopify's powerful e-commerce infrastructure. I get the benefits of Shopify's payment processing, inventory management, and order fulfillment without being locked into their templates.
 
@@ -32,14 +32,14 @@ Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represen
 
 **Dynamic Page Builder**: A flexible, metaobject-based system that allows merchants to create custom pages without touching code. This extensibility is built into the architecture from day one.
 
-**Progressive Loading Architecture**: Streaming sections that load independently, ensuring instant page interactivity. Users see the page shell immediately, then content streams in as it becomes available.
+**Progressive Loading Architecture**: Sections stream independently, so the page shell can render while other content is still loading. Streaming alone does not guarantee when a page becomes interactive.
 
-**Advanced Caching Strategy**: Multi-layer caching system that reduces database queries by 80% and improves load times by 70-80%. This performance obsession will be critical when handling real-time sensor data from fields.
+**Advanced Caching Strategy**: Multi-layer caching reuses product data between requests. This case study does not include a reproducible benchmark for query reductions or load-time improvements, so I describe the approach without assigning it a percentage gain.
 
 ### Key Features
 
 **For Customers:**
-- Lightning-fast product browsing with intelligent search
+- Product browsing with search
 - Personalized recommendations powered by AI
 - Authentication through Shopify Customer Accounts
 - Wishlist functionality with batch loading
@@ -240,11 +240,11 @@ TypeScript ensures that as the data model evolves, all code remains type-safe. A
 
 ### Caching & Performance
 
-The multi-layer caching system can be extended to cache field data, sensor readings, and analytics results, ensuring the system remains fast as data volume grows.
+Caching field data, sensor readings, or analytics results would require decisions about freshness, invalidation, and data volume. The store's caching approach is a starting point to evaluate, rather than evidence of how a field management system would perform.
 
 ### Real-time Capabilities
 
-The streaming architecture can handle real-time sensor data just as easily as it handles real-time inventory updates.
+Streaming page content and ingesting sensor updates have different requirements. Sensor data would need its own ingestion, storage, and delivery design, with testing under representative update rates.
 
 ---
 
@@ -254,13 +254,13 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 
 ### Performance at Scale
 
-- **Challenge**: Initial product loading was slow (8+ seconds)
+- **Challenge**: Waiting for product data delayed the initial page content
 - **Solution**: Implemented progressive loading and intelligent caching
 - **Application**: Field data will load progressively, with critical metrics first
 
 ### Data Management
 
-- **Challenge**: Product data exceeded cache limits (2MB+)
+- **Challenge**: Product data needed to be split into smaller cache entries
 - **Solution**: Segmented caching and data pagination
 - **Application**: Field sensor data will be segmented by location and time period
 
