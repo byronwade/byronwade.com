@@ -60,8 +60,17 @@ export const getDribbbleShots = unstable_cache(
 				throw new Error("Failed to fetch Dribbble shots");
 			}
 
-			const data = await response.json();
-			return data;
+			const data: unknown = await response.json();
+			if (!Array.isArray(data)) {
+				throw new Error("Invalid Dribbble shots response");
+			}
+
+			// One broken shot must not discard healthy siblings. Preserve original records/order.
+			const shots = data.filter(isDribbbleShot);
+			if (shots.length !== data.length) {
+				console.error("Ignored invalid Dribbble shot records");
+			}
+			return shots;
 		} catch (error) {
 			console.error("Error fetching Dribbble shots:", error);
 			return [];
@@ -214,10 +223,10 @@ export const getGitHubStats = unstable_cache(
 			if (
 				!(
 					isRecord(data) &&
-					isGitHubCount(data.public_repos) &&
-					isGitHubCount(data.followers) &&
-					isGitHubCount(data.following) &&
-					isGitHubTimestamp(data.created_at)
+					isNonNegativeInteger(data.public_repos) &&
+					isNonNegativeInteger(data.followers) &&
+					isNonNegativeInteger(data.following) &&
+					isApiTimestamp(data.created_at)
 				)
 			) {
 				throw new Error("Invalid GitHub profile response");
@@ -253,34 +262,81 @@ const PRIORITY_PROJECTS = [
 	"enterprise-integrations",
 ];
 
-const GITHUB_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+const API_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function isGitHubCount(value: unknown): value is number {
+function isNonNegativeInteger(value: unknown): value is number {
 	return typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 }
 
-function isRepositoryName(value: unknown): value is string {
+function isNonEmptyString(value: unknown): value is string {
 	return typeof value === "string" && value.trim().length > 0;
 }
 
-function isGitHubTimestamp(value: unknown): value is string {
+function isApiTimestamp(value: unknown): value is string {
 	return (
 		typeof value === "string" &&
-		GITHUB_TIMESTAMP.test(value) &&
+		API_TIMESTAMP.test(value) &&
 		isValid(parseISO(value)) &&
 		Number.isFinite(Date.parse(value))
 	);
 }
 
-function isRepositoryUrl(value: unknown): value is string {
+function isHttpUrl(value: unknown): value is string {
 	return (
 		typeof value === "string" &&
 		URL.canParse(value) &&
 		["https:", "http:"].includes(new URL(value).protocol)
+	);
+}
+
+function isDribbbleImages(value: unknown): value is DribbbleShot["images"] {
+	if (!isRecord(value)) {
+		return false;
+	}
+	return (
+		isHttpUrl(value.normal) &&
+		isHttpUrl(value.teaser) &&
+		(value.hidpi === null || isHttpUrl(value.hidpi)) &&
+		["four_x", "two_x", "one_x"].every(
+			(field) => value[field] === undefined || value[field] === null || isHttpUrl(value[field])
+		)
+	);
+}
+
+/** Only these validated fields are typed; other provider metadata remains opaque. */
+function isDribbbleShot(value: unknown): value is DribbbleShot {
+	if (!isRecord(value)) {
+		return false;
+	}
+	return (
+		isNonNegativeInteger(value.id) &&
+		value.id > 0 &&
+		isNonEmptyString(value.title) &&
+		isHttpUrl(value.html_url) &&
+		isDribbbleImages(value.images) &&
+		(value.description === undefined ||
+			value.description === null ||
+			typeof value.description === "string") &&
+		(value.animated === undefined || typeof value.animated === "boolean") &&
+		["tags", "colors"].every(
+			(field) =>
+				value[field] === undefined ||
+				(Array.isArray(value[field]) && value[field].every((item) => typeof item === "string"))
+		) &&
+		["width", "height"].every(
+			(field) =>
+				value[field] === undefined || (isNonNegativeInteger(value[field]) && value[field] > 0)
+		) &&
+		["likes_count", "views_count", "comments_count", "buckets_count", "rebounds_count"].every(
+			(field) => value[field] === undefined || isNonNegativeInteger(value[field])
+		) &&
+		["published_at", "updated_at"].every(
+			(field) => value[field] === undefined || isApiTimestamp(value[field])
+		)
 	);
 }
 
@@ -290,19 +346,18 @@ function isGitHubRepository(value: unknown): value is GitHubRepo {
 		return false;
 	}
 	return (
-		isGitHubCount(value.id) &&
+		isNonNegativeInteger(value.id) &&
 		value.id > 0 &&
-		["name", "full_name"].every((field) => isRepositoryName(value[field])) &&
-		["stargazers_count", "forks_count"].every((field) => isGitHubCount(value[field])) &&
+		["name", "full_name"].every((field) => isNonEmptyString(value[field])) &&
+		["stargazers_count", "forks_count"].every((field) => isNonNegativeInteger(value[field])) &&
 		(value.description === null || typeof value.description === "string") &&
 		["language", "homepage"].every(
 			(field) =>
 				value[field] === undefined || value[field] === null || typeof value[field] === "string"
 		) &&
-		isRepositoryUrl(value.html_url) &&
+		isHttpUrl(value.html_url) &&
 		["created_at", "updated_at", "pushed_at"].every(
-			(field) =>
-				value[field] === undefined || value[field] === null || isGitHubTimestamp(value[field])
+			(field) => value[field] === undefined || value[field] === null || isApiTimestamp(value[field])
 		) &&
 		typeof value.fork === "boolean" &&
 		(value.archived === undefined || typeof value.archived === "boolean") &&
