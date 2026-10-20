@@ -148,7 +148,10 @@ test("every Card consumer keeps the primitive's border unless it opts out on pur
 			}
 		});
 	}
-	assert.ok(cards.length >= 10, "the Card consumer scan must find the Figma detail cards");
+	assert.ok(
+		cards.some(({ at }) => at.startsWith("app/portfolio/figma/[key]/page.tsx:")),
+		"the Card consumer scan must find the Figma detail cards"
+	);
 	assert.deepEqual(
 		cards.filter(({ bordered, open }) => bordered === open).map(({ at }) => at),
 		[],
