@@ -63,6 +63,15 @@ feedback without delivering a message or certifying a live provider.
   stays inside the 100KiB font limit. The full
   `Modelistasignature-ownAV.otf` remains for server-side OG rendering and is not
   referenced by the page stylesheet.
+- Markdown blockquotes and emphasis are italic. Inter, Geist Mono and the full
+  Latin italic face together measured 103,933 bytes on a post with a quote,
+  over the 100KiB font limit. `public/fonts/inter-italic-latin-core.woff2` is a
+  Basic Latin and typographic-punctuation subset of that pinned italic face,
+  declared after the generated Thorbis faces so it takes precedence for the
+  characters it covers. The full face remains for other Latin characters. If the
+  Thorbis port replaces the italic file, regenerate the subset with
+  `python -m fontTools.subset public/fonts/UcC53FwrK3iLTcvneQg7B5iqpJlhKnPCkaL5UUM.woff2 --unicodes="U+0020-007E,U+00A0,U+00AB,U+00BB,U+2010-2014,U+2018-201E,U+2022,U+2026,U+2032-2033,U+2039-203A" --layout-features='*' --flavor=woff2 --output-file=public/fonts/inter-italic-latin-core.woff2`
+  and keep the face's `unicode-range` equal to that list.
 - Shared `Link` disables viewport prefetch. Index pages compose that link, so a
   long project or writing index does not request every destination during the
   initial load. Primary navigation does the same. The contact form loads on the

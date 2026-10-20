@@ -305,6 +305,23 @@
 
 /* thorbis-fonts:end */
 
+/* Inter italic, Basic Latin core. Blockquotes and emphasis are italic, and the
+   full Latin italic face put every post with a quote over the 100KiB font
+   budget. This face is a fontTools subset of the pinned
+   UcC53FwrK3iLTcvneQg7B5iqpJlhKnPCkaL5UUM.woff2 (same glyphs, axis and layout
+   features). Declared after the generated faces, it wins for the characters it
+   covers; the full face still loads for any other Latin character. Regenerate
+   it with the command in docs/PERFORMANCE.md if the Thorbis port changes. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/inter-italic-latin-core.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0, U+00AB, U+00BB, U+2010-2014, U+2018-201E, U+2022, U+2026, U+2032-2033, U+2039-203A;
+}
+
 /* Resume signature. The page renders only "Byron Wade", so the stylesheet
    loads a woff2 subset of those glyphs. The full OTF stays on disk for the
    OG image route and is not part of the page font budget. */
