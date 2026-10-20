@@ -99,6 +99,8 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
+		// A timeout must recover the mounted page; cleanup must stay silent.
+		let active = true;
 		const controller = new AbortController();
 		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -112,7 +114,7 @@ function usePortfolioRepos(): PortfolioReposState {
 		void (async () => {
 			try {
 				const result = await fetchPortfolioRepos(controller.signal);
-				if (controller.signal.aborted) {
+				if (!active) {
 					return;
 				}
 				setRepos(result.repos);
@@ -121,13 +123,14 @@ function usePortfolioRepos(): PortfolioReposState {
 				setDegraded(result.degraded && result.repos.length === 0);
 				setError(result.degraded && result.repos.length === 0);
 			} catch (err) {
-				if (controller.signal.aborted) {
+				if (!active) {
 					return;
 				}
 				console.error("Error loading portfolio data:", err);
 				setError(true);
 			} finally {
-				if (!controller.signal.aborted) {
+				clearTimeout(timeoutId);
+				if (active) {
 					setLoading(false);
 					setRefreshing(false);
 				}
@@ -135,6 +138,7 @@ function usePortfolioRepos(): PortfolioReposState {
 		})();
 
 		return () => {
+			active = false;
 			clearTimeout(timeoutId);
 			controller.abort();
 		};
@@ -172,6 +176,7 @@ function PortfolioEmptyState({
 						{refreshing ? "Retrying…" : "Try again"}
 					</Button>
 					<Button
+						role="link"
 						variant="outline"
 						render={
 							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
