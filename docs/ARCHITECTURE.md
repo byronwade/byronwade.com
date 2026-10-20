@@ -84,8 +84,17 @@ components/
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
-  while reading the JSON body. A timeout uses the existing empty-list or profile
-  fallback, with the same cache keys, tags and one-hour revalidation policy.
+  while reading the JSON body. GitHub repository failures reject to the portfolio
+  API's existing `Promise.allSettled` boundary, which retains healthy provider
+  data and sets `githubFailed` / `degraded` without changing the JSON shape.
+  A successful empty or filtered-only repository list remains a healthy result.
+  The API stays dynamic rather than prerendering an unavailable response; failed
+  repository responses use `Cache-Control: no-store` so Retry can try again.
+  Successful responses retain their CDN policy, and provider data retains the
+  same cache keys, tags and one-hour revalidation. Dribbble and profile failures
+  still use their existing empty-list or zero/null fallback.
+  `tests/portfolio-outcomes.test.mjs` checks the actual loader/API outcome boundary;
+  the rendered portfolio contract checks that the API is not prerendered.
   `tests/portfolio-rest.test.mjs` exercises stalled headers and streamed bodies
   against a local HTTP server without calling the providers. Figma's SDK gets a
   fresh native abort signal for each request: three seconds for team projects,
