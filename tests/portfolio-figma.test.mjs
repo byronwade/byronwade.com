@@ -61,12 +61,26 @@ const { getFigmaFiles, getFigmaFile } = await import("../lib/portfolio-data.ts")
 const { GET } = await import("../app/api/portfolio/route.ts");
 // Let Node's module-format warning settle before capturing loader diagnostics.
 await delay(0);
+const button = { key: "component-key", name: "Button", description: "Primary action" };
 const file = {
 	name: "Fixture design",
 	lastModified: "2026-10-19T12:00:00Z",
-	document: { id: "0:0", name: "Document", type: "DOCUMENT", children: [] },
-	components: {},
-	styles: {},
+	document: {
+		id: "0:0",
+		name: "Document",
+		type: "DOCUMENT",
+		children: [
+			{
+				id: "0:1",
+				name: "Cover",
+				type: "CANVAS",
+				children: [{ id: "1:1", name: "Frame", type: "FRAME", children: [] }],
+			},
+			{ id: "0:2", name: "Screens", type: "CANVAS", children: [] },
+		],
+	},
+	components: { "1:2": button },
+	styles: { "S:1": { key: "style-key", name: "Brand", styleType: "FILL" } },
 	version: "fixture-version",
 };
 const summary = {
@@ -74,6 +88,15 @@ const summary = {
 	name: file.name,
 	last_modified: file.lastModified,
 	thumbnail_url: "https://images.example/fixture.png",
+};
+/** Only what the detail page renders; the document tree itself is never cached. */
+const detail = {
+	name: file.name,
+	lastModified: file.lastModified,
+	version: file.version,
+	pageCount: 2,
+	components: [{ id: "1:2", name: button.name, description: button.description }],
+	styleCount: 1,
 };
 
 /** The real SDK and Axios adapter run against loopback HTTP, never Figma. */
@@ -189,13 +212,14 @@ test("Figma list preserves field mapping, ordering, caps and cache policy", {
 	);
 });
 
-test("Figma detail preserves document, cached-list thumbnail and cache policy", {
+test("Figma detail projects the document, cached-list thumbnail and cache policy", {
 	timeout: 5000,
 }, async (t) => {
-	const { errors } = await fixture(t);
+	const { errors, warnings } = await fixture(t);
 	const load = getFigmaFile(summary.key);
-	assert.deepEqual(await load(), { ...file, thumbnailUrl: summary.thumbnail_url, imageUrl: null });
+	assert.deepEqual(await load(), { ...detail, thumbnailUrl: summary.thumbnail_url });
 	assert.equal(errors.length, 0);
+	assert.equal(warnings.length, 0);
 	assert.deepEqual(load.cachePolicy, {
 		keys: ["figma-file", summary.key],
 		options: { revalidate: 7200, tags: ["figma"] },
@@ -304,11 +328,39 @@ test("Figma detail makes no request without an access token", async (t) => {
 
 test("Figma detail survives an unavailable thumbnail list", { timeout: 5000 }, async (t) => {
 	await fixture(t, { target: "/teams/fixture-team/projects", mode: "http-error" });
-	assert.deepEqual(await getFigmaFile(summary.key)(), {
-		...file,
-		thumbnailUrl: null,
-		imageUrl: null,
+	assert.deepEqual(await getFigmaFile(summary.key)(), { ...detail, thumbnailUrl: null });
+});
+
+// The SDK concatenates the key into "files/<key>", so anything beyond one plain path
+// segment would let a visitor steer an authenticated request to another endpoint.
+for (const key of [
+	"../me",
+	"..",
+	"%2e%2e",
+	"abc/nodes",
+	"abc?depth=1",
+	"abc#fragment",
+	"a%2Fb",
+	"",
+	" ",
+	"fixture key",
+	"fixture-key\n",
+	"a".repeat(129),
+]) {
+	test(`Figma detail rejects unsafe file key ${JSON.stringify(key.slice(0, 16))} without a request`, async (t) => {
+		const { received, errors } = await fixture(t);
+		assert.equal(await getFigmaFile(key)(), null);
+		assert.deepEqual(received, []);
+		assert.deepEqual(sdk.requests, []);
+		assert.equal(errors.length, 0);
 	});
+}
+
+test("Figma detail accepts the longest plain file key", async (t) => {
+	const key = "A_b-9".repeat(25).padEnd(128, "z");
+	const { received } = await fixture(t);
+	assert.deepEqual(await getFigmaFile(key)(), { ...detail, thumbnailUrl: null });
+	assert.ok(received.includes(`/files/${key}`));
 });
 
 const invalidEnvelopes = [
@@ -462,11 +514,7 @@ test("Figma preserves a valid file without its optional thumbnail", async (t) =>
 		responses: { "/projects/1/files": { files: [withoutThumbnail] } },
 	});
 	assert.deepEqual(JSON.parse(JSON.stringify(await getFigmaFiles())), [withoutThumbnail]);
-	assert.deepEqual(await getFigmaFile(summary.key)(), {
-		...file,
-		thumbnailUrl: null,
-		imageUrl: null,
-	});
+	assert.deepEqual(await getFigmaFile(summary.key)(), { ...detail, thumbnailUrl: null });
 	assert.equal(warnings.length, 0);
 	assert.equal(errors.length, 0);
 });
@@ -554,3 +602,128 @@ for (const [label, payload, expected] of [
 		);
 	});
 }
+
+const detailPath = `/files/${summary.key}`;
+
+// Each of these used to reach the page: strings gave false counts through `.length` and
+// `Object.keys`, a numeric name crashed `.charAt`, and a bad date rendered "Invalid Date".
+const invalidDetails = [
+	["null", null],
+	["array", []],
+	["primitive", "invalid"],
+	...[undefined, null, {}, [], 5, "", " "].map((value, index) => [
+		`name-${index}`,
+		{ ...file, name: value },
+	]),
+	...[undefined, null, 5, "2026-02-30T12:00:00Z", "2026-10-19", "yesterday"].map((value, index) => [
+		`lastModified-${index}`,
+		{ ...file, lastModified: value },
+	]),
+	...[
+		undefined,
+		null,
+		"document",
+		[],
+		{ ...file.document, children: "abcdef" },
+		{ ...file.document, children: {} },
+		{ ...file.document, children: undefined },
+	].map((value, index) => [`document-${index}`, { ...file, document: value }]),
+	...["components", "styles"].flatMap((field) =>
+		[null, "abcdef", [], 5, true].map((value, index) => [
+			`${field}-${index}`,
+			{ ...file, [field]: value },
+		])
+	),
+];
+
+for (const [label, payload] of invalidDetails) {
+	test(`Figma detail rejects malformed ${label} payload instead of rendering it`, async (t) => {
+		const { errors, warnings, received } = await fixture(t, {
+			responses: { [detailPath]: payload },
+		});
+		assert.equal(await getFigmaFile(summary.key)(), null);
+		assert.ok(received.includes(detailPath));
+		assert.equal(errors.length, 1);
+		assert.equal(warnings.length, 0);
+		assert.ok(errors[0].every((argument) => typeof argument === "string"));
+		assert.ok(!JSON.stringify(errors).includes("synthetic-test-token"));
+	});
+}
+
+const unnamed = { key: "unnamed-key" };
+const partialDetails = [
+	[
+		"component entries",
+		{
+			...file,
+			components: {
+				"9:1": null,
+				"9:2": "Button",
+				"9:3": [],
+				"9:4": { ...button, name: 5 },
+				"9:5": { ...button, name: {} },
+				"9:6": { ...button, description: {} },
+				"1:2": button,
+			},
+		},
+		{ components: detail.components },
+	],
+	[
+		"style entries",
+		{ ...file, styles: { "S:2": null, "S:3": "Brand", "S:4": 5, "S:5": [], ...file.styles } },
+		{ styleCount: 1 },
+	],
+	[
+		"page entries",
+		{
+			...file,
+			document: {
+				...file.document,
+				children: [null, "Cover", 5, {}, { type: "FRAME" }, ...file.document.children],
+			},
+		},
+		{ pageCount: 2 },
+	],
+	...[5, {}, [], ""].map((value, index) => [
+		`version-${index}`,
+		{ ...file, version: value },
+		{ version: undefined },
+	]),
+];
+
+for (const [label, payload, expected] of partialDetails) {
+	test(`Figma detail omits malformed ${label} and keeps the healthy file`, async (t) => {
+		const { errors, warnings } = await fixture(t, { responses: { [detailPath]: payload } });
+		assert.deepEqual(await getFigmaFile(summary.key)(), {
+			...detail,
+			...expected,
+			thumbnailUrl: summary.thumbnail_url,
+		});
+		assert.equal(errors.length, 0);
+		assert.equal(warnings.length, 1);
+		assert.ok(warnings[0].every((argument) => typeof argument === "string"));
+	});
+}
+
+test("Figma detail keeps genuinely absent optional metadata without warnings", async (t) => {
+	const { components, styles, version, ...required } = file;
+	const { errors, warnings } = await fixture(t, {
+		responses: {
+			[detailPath]: {
+				...required,
+				document: { ...file.document, children: [] },
+				components: { "1:3": unnamed },
+			},
+		},
+	});
+	assert.deepEqual(await getFigmaFile(summary.key)(), {
+		...detail,
+		version: undefined,
+		pageCount: 0,
+		components: [{ id: "1:3", name: undefined, description: undefined }],
+		styleCount: 0,
+		thumbnailUrl: summary.thumbnail_url,
+	});
+	assert.equal(errors.length, 0);
+	assert.equal(warnings.length, 0);
+});
