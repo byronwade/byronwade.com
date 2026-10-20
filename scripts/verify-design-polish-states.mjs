@@ -106,9 +106,10 @@ async function verifyInlineContact(page, url, width, theme) {
 			.find((button) => button.textContent.trim() === "Copy")
 			.click();
 	});
+	// A status nested in the button is flattened into its name, so require a sibling live region.
 	await page.waitForFunction(() =>
-		[...document.querySelectorAll('section[aria-label="Contact"] button')].some((button) =>
-			button.textContent.includes("Email copied")
+		[...document.querySelectorAll('section[aria-label="Contact"] [role="status"]')].some(
+			(status) => status.textContent.includes("Email copied") && !status.closest("button")
 		)
 	);
 	const copied = await page.$eval('section[aria-label="Contact"]', (section) => {
@@ -244,15 +245,17 @@ async function verifyCase(url, width, theme) {
 			await request.respond({
 				status: mode === "error" ? 503 : 200,
 				contentType: "application/json",
+				// Mirrors /api/portfolio: `degraded` covers every provider, `githubFailed` only repositories.
 				body: JSON.stringify({
-					repos: ["populated", "partial"].includes(mode) ? [repository] : [],
-					degraded: ["degraded", "partial"].includes(mode),
+					repos: ["populated", "partial", "provider"].includes(mode) ? [repository] : [],
+					degraded: ["degraded", "partial", "provider"].includes(mode),
+					githubFailed: ["degraded", "partial"].includes(mode),
 				}),
 			});
 		});
 		const states =
 			phase === "after"
-				? ["empty", "error", "populated", "partial"]
+				? ["empty", "error", "populated", "partial", "provider"]
 				: ["empty", "error", "populated"];
 		await states.reduce(async (previous, next) => {
 			await previous;
@@ -263,6 +266,13 @@ async function verifyCase(url, width, theme) {
 			if (mode === "partial") {
 				assert.equal(state.rows, 1);
 				assert.ok(state.text.includes("Some GitHub data may be unavailable or stale"));
+			}
+			if (mode === "provider") {
+				assert.equal(state.rows, 1);
+				assert.ok(
+					!(state.text.includes("GitHub data may be") || state.text.includes("Couldn")),
+					"a Dribbble, Figma or stats failure is not a repository warning"
+				);
 			}
 		}, Promise.resolve());
 		if (phase === "after") {
