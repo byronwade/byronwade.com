@@ -539,10 +539,10 @@ Known false positives in this repository, confirmed by reading the code:
 
 Accepted, and not worth changing:
 
-- `prefer-html-dialog` on the launcher and dock panels. Those panels retain
-  their measurable morph capsule while `CapsulePanel` delegates focus trapping,
-  dismissal and focus return to Base UI's Dialog. The fullscreen preview uses
-  a native `<dialog>` for modal focus containment, background inertness and Escape.
+- `prefer-html-dialog` on the header search and menu. They are anchored Base UI
+  modal popovers, which own focus containment, dismissal and focus return. The
+  fullscreen preview uses a native `<dialog>` for modal focus containment,
+  background inertness and Escape.
 - `react-compiler-no-manual-memoization` inside `hooks/`. A hook's returned
   callbacks are part of its public contract, consumers put them in dependency
   arrays, so stable identity is deliberate there even though the compiler
@@ -566,7 +566,7 @@ uncompilable twice.
 
 `noExcessiveCognitiveComplexity` is enforced, and the repository is at zero.
 Keep it that way by extracting a hook or a child component rather than raising
-the threshold, `hooks/use-capsule-morph.ts`, `use-drag-resize.ts`,
+the threshold, `hooks/use-drag-resize.ts`,
 `use-frame-size.ts`, and `use-screenshot.ts` all came out of that exercise and
 each owns one concern.
 

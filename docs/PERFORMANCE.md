@@ -76,8 +76,9 @@ feedback without delivering a message or certifying a live provider.
   long project or writing index does not request every destination during the
   initial load. Primary navigation does the same. The contact form loads on the
   first intentional open and remains mounted afterward to preserve drafts.
-- Closed launcher/search/support panel bodies do not render an inactive UI tree.
-  Contact addresses remain obfuscated until revealed. The breadcrumb popover
+- Closed header search and menu popovers render only their triggers. Popover
+  positioning, focus management and the search panel load on the first
+  intentional open (`components/layout/header-popover.tsx`). Contact addresses remain obfuscated until revealed. The breadcrumb popover
   graph loads only at the xl header, which is the first width that shows it.
 - The app favicon reuses an existing small asset. `tests/design-contract.test.mjs`
   prevents a large public asset from shadowing its route.
@@ -98,9 +99,9 @@ feedback without delivering a message or certifying a live provider.
 - Header measurement writes native root scroll padding directly. The old inherited
   custom property recalculated styles throughout the document even though only
   the root used it. No-JS defaults and measured focus clearance are retained.
-- Launcher/toolbar feature owners render static SVGs on the server and pass them
-  as ReactNode slots to their client interaction leaves. Their existing public
-  APIs and state logic stay intact while glyph-definition JavaScript is removed.
+- The site header and toolbar render static SVGs on the server and pass them as
+  ReactNode slots to their client interaction leaves, so glyph-definition
+  JavaScript stays out of the client bundle.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.
@@ -126,8 +127,7 @@ measurement is whatever `home-budget.json` records for the committed source.
 Timing variation on a shared machine is large; a pass close to a limit is not a
 comfortable regression margin.
 
-Closed shell capsules skip motion-token reads before their first opening. Header
-and launcher ResizeObservers supply their initial measurements without duplicate
-synchronous hydration reads. The launcher observer writes its slot geometry directly
-rather than scheduling a React render for measurements. Panel geometry and existing
-reduced-motion behavior remain owned by `useCapsuleMorph`.
+The rebuilt header from main (#80) replaced the launcher and morph capsule with
+anchored popovers. Probes recorded before merge commit `9c2953c` measured the
+previous header; only the release matrix and `home-budget.json` describe the
+merged source.
