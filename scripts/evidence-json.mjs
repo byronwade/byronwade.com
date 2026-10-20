@@ -18,7 +18,13 @@ export function writeEvidenceJson(path, value) {
 	const formatted = execFileSync(
 		process.execPath,
 		["node_modules/@biomejs/biome/bin/biome", "format", "--stdin-file-path", path],
-		{ input: serializeEvidence(value), encoding: "utf8", windowsHide: true }
+		{
+			input: serializeEvidence(value),
+			encoding: "utf8",
+			// Complete route matrices exceed Node's default 1 MiB subprocess output buffer.
+			maxBuffer: 16 * 1024 * 1024,
+			windowsHide: true,
+		}
 	);
 	writeFileSync(path, formatted);
 }
