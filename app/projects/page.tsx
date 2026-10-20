@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader, Section } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -98,24 +97,6 @@ async function ProjectsList() {
 	);
 }
 
-/** Mirrors the real row's height and rules so the swap does not shift layout. */
-function IndexFallback() {
-	return (
-		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
-			<p className="sr-only" role="status">
-				Loading projects…
-			</p>
-			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div className="flex items-center gap-4 border-border border-b py-5" key={`skeleton-${id}`}>
-					<div className="h-4 w-40 rounded bg-muted" />
-					<div className="h-3 w-56 rounded bg-muted/70" />
-					<div className="ml-auto h-3 w-10 rounded bg-muted" />
-				</div>
-			))}
-		</div>
-	);
-}
-
 export default async function ProjectsPage() {
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
@@ -138,9 +119,7 @@ export default async function ProjectsPage() {
 					/>
 
 					<div className="reveal reveal-delay-1 w-full">
-						<Suspense fallback={<IndexFallback />}>
-							<ProjectsList />
-						</Suspense>
+						<ProjectsList />
 					</div>
 				</div>
 			</SiteShell>

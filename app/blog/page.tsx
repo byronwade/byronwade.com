@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
@@ -130,30 +129,6 @@ async function BlogList() {
 	);
 }
 
-/**
- * Mirrors a real row rather than showing rounded slabs. The previous fallback
- * was three 64px pills, which meant the layout jumped on every load. §4.7 puts
- * that squarely in the design's remit, not the implementation's.
- */
-function BlogFallback() {
-	return (
-		<div aria-busy="true" className="flex animate-pulse flex-col border-border border-t">
-			<p className="sr-only" role="status">
-				Loading posts…
-			</p>
-			{["a", "b", "c", "d", "e"].map((id) => (
-				<div className="flex flex-col gap-2 border-border border-b py-5" key={`skeleton-${id}`}>
-					<div className="flex items-baseline gap-4">
-						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
-						<div className="h-4 w-1/3 rounded bg-muted" />
-					</div>
-					<div className="h-3 w-2/3 rounded bg-muted/70 sm:ml-16" />
-				</div>
-			))}
-		</div>
-	);
-}
-
 export default function BlogPage() {
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
@@ -176,9 +151,7 @@ export default function BlogPage() {
 					/>
 
 					<div className="reveal reveal-delay-1 w-full">
-						<Suspense fallback={<BlogFallback />}>
-							<BlogList />
-						</Suspense>
+						<BlogList />
 					</div>
 				</div>
 			</SiteShell>

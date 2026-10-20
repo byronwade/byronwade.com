@@ -255,6 +255,16 @@ async function auditPage(url, route, width, theme) {
 				result.states.push(...(await checkBreadcrumbStates(page)));
 			}
 			result.states.push(await checkReducedStyles(page));
+			if (
+				route === "/blog" ||
+				route === "/projects" ||
+				route.startsWith("/blog/") ||
+				route.startsWith("/projects/")
+			) {
+				result.states.push(
+					await checkReadingWithoutJavaScript(page, url, route, width, theme, expectedStatus)
+				);
+			}
 		}
 		return result;
 	} finally {
@@ -263,6 +273,39 @@ async function auditPage(url, route, width, theme) {
 		if (measure) {
 			await closeBrowser();
 		}
+	}
+}
+
+async function checkReadingWithoutJavaScript(page, url, route, width, theme, expectedStatus) {
+	await page.setJavaScriptEnabled(false);
+	try {
+		await restoreAuditedPage(page, url, route, width, theme, expectedStatus);
+		return await page.evaluate(() => {
+			const headings = [...document.querySelectorAll("main h1")];
+			const content = [
+				...document.querySelectorAll(
+					"main article p, main a[href^='/blog/'], main a[href^='/projects/']"
+				),
+			];
+			const failures = [];
+			if (
+				headings.length !== 1 ||
+				!headings[0].checkVisibility({ opacityProperty: true, visibilityProperty: true })
+			) {
+				failures.push("The reading heading must be visible without JavaScript");
+			}
+			if (
+				!content.length ||
+				content.some(
+					(element) => !element.checkVisibility({ opacityProperty: true, visibilityProperty: true })
+				)
+			) {
+				failures.push("The reading content must be visible without JavaScript");
+			}
+			return { name: "Reading without JavaScript", contentCount: content.length, failures };
+		});
+	} finally {
+		await page.setJavaScriptEnabled(true);
 	}
 }
 
@@ -999,7 +1042,11 @@ const failures = report.cases.filter(
 		entry.targetFailures.length ||
 		entry.keyboard?.failures.length ||
 		entry.states?.some(
-			(state) => state.targetFailures?.length || state.activeMotion > 0 || state.violations?.length
+			(state) =>
+				state.failures?.length ||
+				state.targetFailures?.length ||
+				state.activeMotion > 0 ||
+				state.violations?.length
 		) ||
 		entry.violations.length ||
 		(entry.lighthouse &&

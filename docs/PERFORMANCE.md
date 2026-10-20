@@ -47,6 +47,10 @@ feedback without delivering a message or certifying a live provider.
 
 - Server Components own content loading and static homepage composition. External
   data/cache rules remain in `lib/cache.ts` and their server-side callers.
+- Writing and project indexes and detail pages render local Markdown without a
+  streaming Suspense fallback. Their previous skeletons remained on screen with
+  JavaScript disabled. The browser matrix checks visible reading content with
+  scripts disabled after each route's normal interaction checks.
 - The exact Thorbis Inter and Geist Mono files and face descriptors are copied
   with their OFL licenses into the global CSS owner. The root layout preloads
   Latin Inter, avoiding a missing generated font manifest and a separate blocking
