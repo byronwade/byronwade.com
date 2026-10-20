@@ -32,11 +32,6 @@ if (!(projectRoutes.length && blogRoutes.length)) {
 const representatives = {
 	"/projects/[slug]": projectRoutes,
 	"/blog/[slug]": blogRoutes,
-	"/portfolio/[...slug]": [
-		"/portfolio/thorbis",
-		"/portfolio/thorbis-ai",
-		"/portfolio/thorbis-mobile",
-	],
 	"/portfolio/figma/[key]": [
 		"/portfolio/figma/audit-fixture",
 		"/portfolio/figma/audit-unavailable",
