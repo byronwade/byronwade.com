@@ -46,11 +46,11 @@ Those are good goals.
 
 But Nexstar’s own public success stories repeatedly emphasize a different scoreboard: **closing rate, average sale, revenue growth, objections cleared, and solutions presented per opportunity.**
 
-A 2026 Nexstar article about its Sales Objection Bootcamp says proper adoption should make closing rates and average sales rise consistently. It highlights one company whose revenue increased 53% while its average sale increased 72% on fewer leads. The same article compares a good sales process to a waterslide that moves the customer to the same ending with very little effort.
+A [2026 Nexstar article about its Sales Objection Bootcamp](https://www.nexstarnetwork.com/blog/insights-blog/sales-objection-bootcamp-adoption/) says proper adoption should make closing rates and average sales rise consistently. It reports one member company's revenue increasing 53% while its average sale increased 72% on fewer leads. The same article compares a good sales process to a waterslide that moves the customer to the same ending with very little effort.
 
 A separate Nexstar article about objection training discusses responses to price, shopping around, needing to speak with a spouse, repair versus replacement, and what it calls fake objections. It presents the idea that a customer’s “no” may simply mean the customer does not yet have enough information.
 
-Another Nexstar member story celebrates increasing the average number of solutions presented on each opportunity from 1.59 to 3.07. The company reported an average-sale increase of about $300 and a conversion increase of nearly 15%.
+Another [Nexstar member story](https://www.nexstarnetwork.com/blog/newsroom/power-to-the-buyer-a-conversion-breakthrough-for-dynamic-tradies/) celebrates increasing the average number of solutions presented on each opportunity from 1.59 to 3.07. The company reported an average-sale increase of about $300 and a conversion increase of nearly 15%. These are member-reported results, not controlled comparisons of sales methods or measurements of customer retention.
 
 None of those numbers prove wrongdoing. Presenting options is not unethical. Training a technician to communicate is not unethical. Following up on an unsold estimate is not unethical.
 
@@ -82,15 +82,15 @@ That is why homeowners often cannot explain exactly what bothered them. The tech
 
 ## Pressure can win the sale and lose the story
 
-Recent research supports what many technicians can feel in the room.
+Research outside plumbing points in the same direction as my experience.
 
-A 2025 study published in *Psychology & Marketing* compared pressure-to-purchase tactics with an approach that encouraged customers to deliberate. Across five experiments, giving customers more autonomy produced more positive word-of-mouth. In the study that measured actual comments, 88% of participants in the deliberate-first condition shared positive comments, compared with 25% in the pressure condition.
+A [2025 paper in *Psychology & Marketing*](https://onlinelibrary.wiley.com/doi/10.1002/mar.70019) reports five scenario-based experiments in retail and fitness settings. Encouraging deliberation produced more positive word-of-mouth than pressure to purchase. In one experiment, participants wrote comments about an imagined headphone purchase; those comments were not actually published to social media. This supports a reason to test less pressure, not a measured referral or retention gain for plumbing companies.
 
 That matters because the invoice is only one outcome of a service call. The customer also leaves with a story.
 
 That story gets told to a spouse, a neighbor, a local Facebook group, a real estate agent, a property manager, and sometimes thousands of people in a Google review. A pressured customer may still authorize the work because the toilet is overflowing or the water heater is dead. Authorization is not the same thing as loyalty.
 
-Housecall Pro’s 2025 homeowner survey found that 68% of homeowners would hire the same professional again after excellent service, and 73% would refer that business to someone else. Its research also identifies unclear pricing, weak communication, and unprofessional interactions as major sources of frustration.
+In [Housecall Pro’s 2025 survey of 1,040 U.S. homeowners](https://www.housecallpro.com/resources/home-service-customer-service-report-trends-statistics/), 68% said they would hire the same professional again after excellent service, and 73% said they would refer that business. Those are stated intentions, not tracked repeat bookings or referrals. The survey also identifies unclear pricing, weak communication, and unprofessional interactions as sources of frustration.
 
 The long-term opportunity is obvious: make the customer feel informed, respected, and safe, and one service call can become years of work and a stream of referrals.
 
@@ -118,15 +118,15 @@ Average ticket is easy to measure:
 
 `Average ticket = service revenue / completed jobs`
 
-Customer lifetime value is harder:
+Customer lifetime value is harder. For the examples below, I use:
 
-`Contribution LTV = lifetime gross profit - acquisition cost - retention cost - callbacks and warranty cost`
+`Contribution LTV = lifetime gross profit - acquisition cost - retention cost - additional callback and warranty costs`
 
-The first number tells you what happened on one invoice. The second tells you whether the relationship was actually valuable.
+The first number tells you what happened on one invoice. The second asks what the relationship contributes after those costs. Subtract callback and warranty costs here only if they are not already included in gross profit. This is not net profit after all company overhead.
 
 ### An illustrative one-and-done comparison
 
-These are example assumptions, not Nexstar pricing data and not a claim about every plumbing company.
+These are example assumptions, not Nexstar pricing data and not a claim about every plumbing company. Both outcomes use the same time window and a 50% gross margin on every job. They assume no additional callback or warranty costs and do not discount future cash flows.
 
 **Transaction-first outcome**
 
@@ -153,31 +153,39 @@ The contribution is:
 
 `$3,300 × 50% - $250 - $50 = $1,350`
 
-The trust-first customer produces **80% more contribution** even though the first invoice is 40% smaller.
+Under those assumptions, the trust-first outcome produces **80% more contribution** even though the first invoice is 40% smaller:
+
+`($1,350 - $750) / $750 = 80%`
+
+That result depends on winning the two later jobs. It is not an observed return rate or evidence that a lower first invoice causes retention.
 
 The lesson is not that every initial ticket should be reduced. The lesson is that maximizing the first ticket can be mathematically irrational when it lowers the probability of future work.
 
 ### The break-even point is lower than many owners think
 
-Assume one strategy produces a $2,000 initial sale and another produces a $1,200 initial sale. The apparent advantage is $800.
+For a separate example, assume one strategy produces a $2,000 initial sale and another produces a $1,200 initial sale. At the same 50% gross margin, the $800 revenue gap is a **$400 gross-profit gap**.
 
-Now assume the homeowner represents another $3,000 of reasonable plumbing work over the life of the relationship.
+Now assume the homeowner represents another $3,000 of work over the same future period under either strategy. At a 50% margin, that is $1,500 of potential future gross profit. For this first calculation, assume equal acquisition and retention costs, no difference in additional callback or warranty costs, and no discounting.
 
-The trust-first strategy only needs a 26.7-percentage-point advantage in the probability of capturing that future work to recover the entire initial-ticket difference:
+The trust-first strategy needs a **26.7-percentage-point advantage** in the probability of capturing that future work to recover the initial gross-profit gap:
 
-`$800 / $3,000 = 26.7%`
+`$400 / $1,500 ≈ 26.7%`
 
-More generally:
+That could mean a 50% chance instead of about 23.3%, not a 26.7% relative increase. The probabilities are assumptions, not measured outcomes.
 
-`Required retention advantage = initial ticket gap / future revenue opportunity`
+Within this simplified model:
 
-If a pressure-heavy process raises today’s ticket but drops the chance of winning the next water heater, sewer repair, fixture replacement, referral, or new-home relationship by more than that threshold, the “better” sale was actually the worse business decision.
+`Required retention advantage = (initial gross-profit gap + extra retention cost) / future gross profit`
+
+If the trust-first approach adds $50 of retention cost, the threshold rises to **30 percentage points**: `($400 + $50) / $1,500 = 30%`. If future work instead has a 25% margin, with no extra retention cost, it rises to **53.3 percentage points**: `$400 / $750 ≈ 53.3%`.
+
+The threshold changes with job mix, costs, timing, and the amount of future work actually available. A larger first sale can be the worse business decision if the lost expected future contribution exceeds its initial advantage. Revenue alone cannot settle that comparison.
 
 ### What 46% repeat revenue does during a slow season
 
 Use a company with a normal $100,000 revenue month.
 
-With our current mix:
+Using the reported 46% mix in this hypothetical month:
 
 - Returning-customer revenue: $46,000
 - New-customer revenue: $54,000
@@ -196,7 +204,7 @@ Now compare that with a company producing only 10% of revenue from returning cus
 - Returning-customer revenue: `$10,000 × 90% = $9,000`
 - Total slow-season revenue: **$63,000**
 
-The stronger repeat-customer base creates **$10,800 more revenue in that single slow month** on the same original $100,000 baseline. Across four slow months, that is $43,200.
+Under these assumptions, the stronger repeat-customer base leaves **$10,800 more revenue in that single slow month** on the same original $100,000 baseline. Four identical hypothetical slow months would make the difference $43,200. This compares revenue, not profit, and does not establish that returning customers are always less sensitive to a slowdown.
 
 The assumptions can change. The principle does not. New demand is more exposed to weather, advertising costs, search volume, economic fear, and competitors buying the same leads. Existing customers already know who to call.
 
@@ -204,7 +212,7 @@ Repeat revenue is not merely extra revenue. It is a stabilizer.
 
 ## Retention changes the cost structure
 
-Harvard Business Review has summarized research showing that acquiring a new customer can cost five to 25 times more than retaining an existing one. It also cites Bain research finding that a 5% improvement in retention can increase profits by 25% to 95%, depending on the business.
+[Harvard Business Review](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers) reports acquisition costs five to 25 times retention costs, varying by industry and study. Frederick Reichheld’s [*Loyalty Rules!* excerpt, hosted by Bain](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf), describes a 25% to 95% profit increase for what he calls a 5% increase in customer retention rates. These are historical cross-industry findings, not a plumbing forecast.
 
 Those ranges should not be pasted blindly onto a plumbing company’s financial statement. Plumbing is episodic, job mixes vary, and a homeowner may go years without needing service. But the underlying mechanism absolutely applies:
 
@@ -310,5 +318,6 @@ It needs better judgment.
 - [Nexstar Network: Power to the Buyer](https://www.nexstarnetwork.com/blog/newsroom/power-to-the-buyer-a-conversion-breakthrough-for-dynamic-tradies/) — Member case study connecting more solutions per opportunity with higher average sale and conversion.
 - [Nexstar Network: Service System and Customer Objections](https://www.nexstarnetwork.com/blog/newsroom/service-system-clearing-our-own-objections-to-help-others-find-clarity-in-theirs/) — Nexstar’s description of rapport, options, and objection clearing in the home.
 - [Harvard Business Review: The Value of Keeping the Right Customers](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers) — Summary of customer-acquisition and retention economics.
+- [Frederick Reichheld: *Loyalty Rules!*, chapter one (Bain PDF)](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf) — Original retention/profit discussion on printed page 10; cross-industry context, not a plumbing estimate.
 - [Housecall Pro: Home Service Customer Service Report](https://www.housecallpro.com/resources/home-service-customer-service-report-trends-statistics/) — 2025 survey of 1,040 U.S. homeowners on rehire, referrals, pricing, communication, and service expectations.
 - [Psychology & Marketing: When Less Pressure Leads to More Talk](https://onlinelibrary.wiley.com/doi/10.1002/mar.70019) — 2025 research comparing pressure-to-purchase tactics with encouraging customer deliberation.
