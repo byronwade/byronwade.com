@@ -71,7 +71,7 @@ function PreviewToolbar({
 	triggerRef,
 }: PreviewToolbarProps) {
 	return (
-		<div className="flex min-h-15 shrink-0 items-center justify-between gap-3 bg-secondary px-3 py-2">
+		<div className="flex min-h-15 shrink-0 flex-wrap items-center justify-between gap-3 bg-secondary px-3 py-2">
 			{/* Address */}
 			<div className="flex min-w-0 flex-1 items-center gap-2.5">
 				<div className="flex min-w-0 items-center gap-1.5 rounded-md bg-background/60 px-2 py-1">
@@ -82,7 +82,7 @@ function PreviewToolbar({
 
 			{/* Device presets */}
 			{!isFullscreen && (
-				<div className="hidden items-center gap-1 md:flex">
+				<div className="@xl/preview:order-none order-last hidden @xl/preview:w-auto w-full items-center justify-center gap-1 md:flex">
 					<span className="sr-only">Preview viewport</span>
 					{(Object.keys(VIEWPORT_PRESETS) as ViewportPreset[]).map((key) => {
 						const { icon: Icon, label, width, height } = VIEWPORT_PRESETS[key];
@@ -251,7 +251,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	const previewContent = (
 		<div
 			// Resizing tracks input directly; a size tween would lag the handle.
-			className={cn("relative flex flex-col", isFullscreen && "h-full w-full")}
+			className={cn("@container/preview relative flex flex-col", isFullscreen && "h-full w-full")}
 			style={isFullscreen ? undefined : { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" }}
 		>
 			<div
