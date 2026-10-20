@@ -11,6 +11,10 @@ which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
 clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
 with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
 search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
+On extra-wide screens a breadcrumb sits beside the header; its trail
+(`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
+links only parent paths that are real pages, and names Figma files "Design file"
+because the file name is page-owned data.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
