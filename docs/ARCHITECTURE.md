@@ -75,6 +75,13 @@ components/
 
 ## Data
 
+- Markdown rendering and project contents share CommonMark/GFM options in
+  `lib/markdown.ts`. Contents walk the installed renderer's element tree and
+  reuse `lib/markdown-utils.ts` text extraction and slug allocation, including
+  headings inside containers and setext headings. Parser dependencies stay out
+  of the date utility module used by client components. Renderer-agreement
+  regressions cover grammar edge cases and every authored blog/project file in
+  `tests/markdown-headings.test.mjs`.
 - `/portfolio` keeps its eight-second client deadline active through response
   headers and JSON consumption. A timeout ends loading or refreshing and shows
   the existing retry/profile recovery; the profile action retains link semantics.

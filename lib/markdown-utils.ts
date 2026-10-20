@@ -3,10 +3,9 @@ const HEADING_LINE = /^#\s+\S/;
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/;
 const LINE_BREAK = /\r?\n/;
-const FENCE_LINE = /^\s*(```|~~~)/;
-const ATX_HEADING = /^(#{1,4})\s+(.+?)\s*#*\s*$/;
 
 import { format, isValid, parseISO } from "date-fns";
+import { isValidElement } from "react";
 
 /**
  * Validate authored front-matter dates without inventing missing parts or using
@@ -27,12 +26,6 @@ export function parseContentDate(value: unknown): string | undefined {
 	}
 	// Metadata, sorting and RSS also consume these values with the native parser.
 	return isValid(parseISO(date)) && Number.isFinite(Date.parse(date)) ? date : undefined;
-}
-
-export interface TocItem {
-	depth: 2 | 3;
-	id: string;
-	text: string;
 }
 
 /**
@@ -81,24 +74,10 @@ export function childrenToText(children: React.ReactNode): string {
 	if (Array.isArray(children)) {
 		return children.map(childrenToText).join("");
 	}
-	if (
-		typeof children === "object" &&
-		"props" in children &&
-		(children as { props?: { children?: React.ReactNode } }).props
-	) {
-		return childrenToText((children as { props: { children?: React.ReactNode } }).props.children);
+	if (isValidElement<{ children?: React.ReactNode }>(children)) {
+		return childrenToText(children.props.children);
 	}
 	return "";
-}
-
-/** Strip the most common inline markdown tokens so TOC labels read cleanly. */
-function stripInline(text: string): string {
-	return text
-		.replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1") // images -> alt
-		.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") // links -> label
-		.replace(/`([^`]+)`/g, "$1") // inline code
-		.replace(/[*_~]+/g, "") // emphasis markers
-		.trim();
 }
 
 /**
@@ -123,48 +102,6 @@ export function stripLeadingH1(markdown: string): string {
 		return lines.join("\n");
 	}
 	return markdown;
-}
-
-/**
- * Extract level-2 and level-3 headings from markdown for a table of contents.
- * Reserve ids for every heading level that the renderer assigns an id, even
- * when that heading is not listed. Skip fenced code samples.
- */
-export function extractToc(markdown: string): TocItem[] {
-	if (!markdown) {
-		return [];
-	}
-	const slugger = createSlugger();
-	const items: TocItem[] = [];
-	let inFence = false;
-
-	for (const rawLine of markdown.split(LINE_BREAK)) {
-		if (FENCE_LINE.test(rawLine)) {
-			inFence = !inFence;
-			continue;
-		}
-		if (inFence) {
-			continue;
-		}
-
-		const match = rawLine.match(ATX_HEADING);
-		if (!match) {
-			continue;
-		}
-
-		const depth = match[1]?.length;
-		const text = stripInline(match[2] ?? "");
-		if (!text) {
-			continue;
-		}
-
-		const id = slugger(text);
-		if (depth === 2 || depth === 3) {
-			items.push({ id, text, depth });
-		}
-	}
-
-	return items;
 }
 
 /**

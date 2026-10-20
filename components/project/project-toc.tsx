@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { TocItem } from "@/lib/markdown-utils";
+import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 
 interface ProjectTocProps {
