@@ -11,6 +11,8 @@ import type { GitHubRepo } from "@/types/github";
 /** Keep the deadline active through JSON body consumption, not only headers. */
 const REST_TIMEOUT_MS = 5000;
 const FIGMA_PROJECT_ID = /^[1-9]\d*$/;
+/** One plain path segment; the SDK concatenates the key into its authenticated request path. */
+const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
 
 /** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
 function createFigmaClient(accessToken: string, timeoutMs: number) {
@@ -46,14 +48,23 @@ function githubHeaders(): Record<string, string> {
 	return headers;
 }
 
-// Aggressive caching for Dribbble shots
+/**
+ * Dribbble shots. An unset token means Dribbble isn't used, a healthy empty list
+ * with no request. A failed request rejects so the API reports it as degraded and
+ * `unstable_cache` doesn't store an outage as an hour of "no shots".
+ */
 export const getDribbbleShots = unstable_cache(
 	async (): Promise<DribbbleShot[]> => {
+		const token = process.env.DRIBBBLE_TOKEN?.trim();
+		if (!token) {
+			return [];
+		}
+
 		try {
 			const response = await fetch("https://api.dribbble.com/v2/user/shots?per_page=20", {
 				signal: AbortSignal.timeout(REST_TIMEOUT_MS),
 				headers: {
-					Authorization: `Bearer ${process.env.DRIBBBLE_TOKEN}`,
+					Authorization: `Bearer ${token}`,
 				},
 			});
 
@@ -68,13 +79,18 @@ export const getDribbbleShots = unstable_cache(
 
 			// One broken shot must not discard healthy siblings. Preserve original records/order.
 			const shots = data.filter(isDribbbleShot);
+			// Shots that all fail validation are a broken response, not an empty account.
+			if (data.length > 0 && shots.length === 0) {
+				throw new Error("Invalid Dribbble shots response");
+			}
 			if (shots.length !== data.length) {
 				console.error("Ignored invalid Dribbble shot records");
 			}
 			return shots;
 		} catch (error) {
 			console.error("Error fetching Dribbble shots:", error);
-			return [];
+			// The API owns the degraded fallback; [] must mean a genuinely empty account.
+			throw error;
 		}
 	},
 	["dribbble-shots"],
@@ -100,7 +116,8 @@ function parseFigmaFileSummary(value: unknown): FigmaFile | null {
 	if (
 		!(
 			isRecord(value) &&
-			isNonEmptyString(value.key) &&
+			typeof value.key === "string" &&
+			FIGMA_FILE_KEY.test(value.key) &&
 			isNonEmptyString(value.name) &&
 			isApiTimestamp(value.last_modified) &&
 			(value.thumbnail_url === undefined || isHttpUrl(value.thumbnail_url))
@@ -126,6 +143,10 @@ async function getFigmaProjectFiles(
 			throw new Error("Invalid Figma project files response");
 		}
 		const files = data.files.map(parseFigmaFileSummary).filter((file) => file !== null);
+		// Files that all fail validation are a broken response, not an empty project.
+		if (data.files.length > 0 && files.length === 0) {
+			throw new Error("Invalid Figma project files response");
+		}
 		if (files.length !== data.files.length) {
 			console.warn("Ignoring invalid Figma file metadata");
 		}
@@ -136,14 +157,19 @@ async function getFigmaProjectFiles(
 			`Failed to fetch files for project ${projectId}:`,
 			error instanceof Error ? error.message : "Unknown error"
 		);
-		return [];
+		throw error;
 	}
 }
 
+/**
+ * Recent Figma files. Missing credentials mean Figma isn't used, a healthy empty
+ * list with no request. A failed team request, or every project request failing,
+ * rejects so the API reports it as degraded instead of caching "no files".
+ */
 export const getFigmaFiles = unstable_cache(
 	async (): Promise<FigmaFile[]> => {
-		const accessToken = process.env.FIGMA_ACCESS_TOKEN;
-		const teamId = process.env.FIGMA_TEAM_ID;
+		const accessToken = process.env.FIGMA_ACCESS_TOKEN?.trim();
+		const teamId = process.env.FIGMA_TEAM_ID?.trim();
 
 		if (!(accessToken && teamId)) {
 			console.warn("Figma credentials not found - skipping Figma files");
@@ -159,6 +185,10 @@ export const getFigmaFiles = unstable_cache(
 			}
 
 			const projectIds = data.projects.map(parseFigmaProjectId).filter((id) => id !== null);
+			// Nonempty metadata with no usable IDs is a broken response, not an empty team.
+			if (data.projects.length > 0 && projectIds.length === 0) {
+				throw new Error("Invalid Figma team projects response");
+			}
 			if (projectIds.length !== data.projects.length) {
 				console.warn("Ignoring invalid Figma project metadata");
 			}
@@ -168,10 +198,16 @@ export const getFigmaFiles = unstable_cache(
 				.slice(0, 6)
 				.map((id) => getFigmaProjectFiles(projectClient, id));
 
-			// Each project owns its fallback, so one failed request cannot discard siblings.
-			const projectResults = await Promise.all(projectPromises);
+			// One failed project cannot discard healthy siblings; only a total failure is an outage.
+			const projectResults = await Promise.allSettled(projectPromises);
+			if (
+				projectResults.length > 0 &&
+				projectResults.every((result) => result.status === "rejected")
+			) {
+				throw new Error("Every Figma project request failed");
+			}
 			return projectResults
-				.flat()
+				.flatMap((result) => (result.status === "fulfilled" ? result.value : []))
 				.sort((a, b) => new Date(b.last_modified).getTime() - new Date(a.last_modified).getTime())
 				.slice(0, 30);
 		} catch (error) {
@@ -180,7 +216,8 @@ export const getFigmaFiles = unstable_cache(
 				"Failed to fetch Figma files:",
 				error instanceof Error ? error.message : "Unknown error"
 			);
-			return [];
+			// The API owns the degraded fallback; [] must mean genuinely no files.
+			throw error;
 		}
 	},
 	["figma-files"],
@@ -268,9 +305,6 @@ function parseFigmaFileDetail(value: unknown): Omit<FigmaFileDetail, "thumbnailU
 		styleCount,
 	};
 }
-
-/** One plain path segment; the SDK concatenates the key into its authenticated request path. */
-const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
 
 export const getFigmaFile = (key: string): (() => Promise<FigmaFileDetail | null>) => {
 	// Rejected before the cache wrapper, so a crafted URL creates no entry or request.

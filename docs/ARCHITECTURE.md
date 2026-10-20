@@ -101,14 +101,24 @@ components/
   same cache keys, tags and one-hour revalidation. A failed or malformed profile
   becomes `stats: null` with `degraded: true`; it does not invent zero counts or
   mark healthy repositories as failed. Genuine zero profile counts remain healthy.
-  Dribbble failures still use their existing empty-list fallback. Its JSON enters
+  Dribbble and Figma are optional. An unset or blank `DRIBBBLE_TOKEN`, or
+  `FIGMA_ACCESS_TOKEN`/`FIGMA_TEAM_ID`, is a healthy empty list with no request.
+  A configured provider whose request fails, times out, returns the wrong envelope
+  or returns only invalid records rejects, like GitHub, so the API sets `degraded`
+  with `no-store` and `unstable_cache` doesn't store the outage as an empty list.
+  A genuinely empty response stays healthy. Figma keeps healthy projects when one
+  project request fails; only a failed team request or every project failing
+  rejects, so a partial list is still cached as complete. Because failures are no
+  longer cached, the API waits at most six seconds for either optional provider
+  (Figma's 3 s team plus 5 s project deadlines would otherwise reach the page's
+  eight-second deadline); the loaders still cancel their own requests.
+  Dribbble JSON enters
   as `unknown`; malformed shot records are omitted while healthy siblings retain
   their original fields and order. Core identity, HTTP(S) media/links, optional
   display metadata, counts, dimensions and timestamps are validated before caching.
   The internal shot type models only validated fields; additional provider metadata
   passes through unchanged and remains untyped. Nullable high-resolution images
   follow the [Dribbble shot response](https://developer.dribbble.com/v2/shots/).
-  Optional-provider outage/configuration status remains a separate contract concern.
   Repository JSON is read as `unknown` and every entry is validated before
   filtering, sorting or caching. A malformed entry rejects the whole response
   through that same unavailable/retry path, rather than exposing unsafe links,
@@ -137,17 +147,22 @@ components/
   retains healthy sibling files; details remain usable without a thumbnail.
   Team/project list payloads are read as `unknown` despite the SDK's static types.
   Only positive safe numeric IDs or exact decimal string IDs can start project
-  requests. File keys/names, complete valid timestamps and optional HTTP(S)
+  requests. File keys use the same single plain path-segment rule as detail requests
+  (`[A-Za-z0-9_-]`, 1–128 characters), so list entries cannot advertise keys that
+  the detail loader rejects. File names, complete valid timestamps and optional HTTP(S)
   thumbnails are validated before sorting/caching, reusing the existing number,
   URL, nonempty-string and timestamp predicates. Invalid entries are skipped with a
-  generic warning; healthy entries in the same list survive. Malformed envelopes
-  retain the existing project/team empty-list fallback. The first six valid
+  generic warning; healthy entries in the same list survive. A malformed team
+  envelope, a nonempty team list whose every project ID is invalid, or a project
+  whose envelope is malformed or whose every file is
+  invalid, counts as a failed request (see the optional-provider rules above).
+  The first six valid
   projects and first twelve valid files per project feed the thirty-file sorted
   result; healthy payloads keep their existing order, caps and four-field projection.
   The optional thumbnail matches Figma's
   [project-files schema](https://github.com/figma/rest-api-spec/blob/main/openapi/openapi.yaml).
-  No new API outcome fields are introduced: missing configuration, failed Figma
-  lists and genuine empty lists still share the existing empty-list contract.
+  No new API outcome fields are introduced: missing configuration and genuine
+  empty lists return `[]`, while failed lists set the existing `degraded` flag.
   The `/portfolio/figma/[key]` detail loader accepts only a single plain path
   segment (`[A-Za-z0-9_-]`, at most 128 characters) as the file key, because the
   SDK concatenates it into the authenticated request path. Any other key returns
@@ -161,7 +176,8 @@ components/
   version are omitted with one generic warning.
   `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
   against loopback HTTP, including connection closure, malformed fields/envelopes,
-  unsafe detail keys, healthy sibling retention, ordering and list caps.
+  unsafe list/detail keys, all-invalid team metadata, healthy sibling retention,
+  ordering and list caps.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;

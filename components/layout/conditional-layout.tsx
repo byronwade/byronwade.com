@@ -1,34 +1,19 @@
 // Thorbis Design port: site/site-header + site-shell.stylex @ 46b6654.
 import type { ReactNode } from "react";
+import { SiteHeader } from "@/components/layout/site-header";
 import { buildSearchIndex } from "@/lib/search-index";
 import { AppBreadcrumb } from "./app-breadcrumb";
-import { AppLauncher } from "./app-launcher";
-import { DockToolbar } from "./dock-toolbar";
 import Footer from "./footer";
-import { NavDock } from "./nav-dock";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
 	const searchEntries = await buildSearchIndex();
 	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
 	return (
 		<div className="relative flex min-h-screen flex-col">
-			{/* xl is the first width that shows the breadcrumb. The wider cap keeps
-			    a short trail such as "Home / Projects" intact while the equal side
-			    columns keep the primary nav centered on every route. */}
-			<header className="sticky top-3 z-50 mx-auto mt-3 grid w-[calc(100%-2rem)] max-w-5xl grid-cols-[1fr_auto] items-center gap-x-2 gap-y-2 rounded-lg border border-border bg-card p-2 shadow-card lg:grid-cols-[1fr_auto_1fr] xl:max-w-6xl print:hidden">
-				<div className="flex min-w-0 items-center gap-2">
-					<AppLauncher />
-					<span className="hidden min-w-0 flex-1 xl:block">
-						<AppBreadcrumb labels={pathLabels} />
-					</span>
-				</div>
-				<div className="col-span-2 row-start-2 lg:col-span-1 lg:col-start-2 lg:row-start-1">
-					<NavDock />
-				</div>
-				<div className="col-start-2 row-start-1 justify-self-end lg:col-start-3">
-					<DockToolbar entries={searchEntries} />
-				</div>
-			</header>
+			<SiteHeader entries={searchEntries} />
+			<div className="fixed top-2 left-5 z-(--z-chrome) hidden xl:block print:hidden">
+				<AppBreadcrumb labels={pathLabels} />
+			</div>
 			<main id="main-content" className="min-w-0 flex-1">
 				{children}
 			</main>
