@@ -77,7 +77,7 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		<div className="min-h-screen py-16">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-8">
-					<nav aria-label="Breadcrumb" className="mb-4 text-muted-foreground text-sm">
+					<nav aria-label="Design file breadcrumb" className="mb-4 text-muted-foreground text-sm">
 						<ol className="flex flex-wrap items-center gap-x-2">
 							<li>
 								<Link

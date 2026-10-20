@@ -14,7 +14,9 @@ search panels. Content width and gutters come from `components/layout/site-shell
 On extra-wide screens a breadcrumb sits beside the header; its trail
 (`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
 links only parent paths that are real pages, and names Figma files "Design file"
-because the file name is page-owned data.
+because the file name is page-owned data. That page's own trail is named
+"Design file breadcrumb" so its navigation landmark is distinct from the shared
+"Breadcrumb" landmark when both are visible.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
