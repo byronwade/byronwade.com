@@ -196,11 +196,6 @@ const grammarCases = [
 		labels: ["Before  after", "Bold old"],
 	},
 	{
-		name: "empty headings reserve IDs without creating blank contents entries",
-		content: "##\n\n#### ![diagram](https://example.com/image.png)\n\n## Section",
-		labels: ["Section"],
-	},
-	{
 		name: "raw HTML is skipped consistently in heading labels",
 		content: "## One <em>two</em> &copy;\n\n### Three",
 		labels: ["One two ©", "Three"],
@@ -220,9 +215,7 @@ const grammarCases = [
 for (const { name, content, labels } of grammarCases) {
 	test(`contents agree with rendered grammar: ${name}`, () => {
 		const html = renderToStaticMarkup(createElement(Markdown, { content }));
-		const headings = [
-			...html.matchAll(/<h([23])\b[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h\1>/g),
-		].filter((match) => match[3].replace(/<[^>]*>/g, "").trim());
+		const headings = [...html.matchAll(/<h([23])\b[^>]*\bid="([^"]+)"/g)];
 		const toc = extractToc(content);
 		assert.deepEqual(
 			toc.map((item) => item.id),
@@ -238,6 +231,16 @@ for (const { name, content, labels } of grammarCases) {
 		);
 	});
 }
+
+test("empty and image-only headings reserve IDs without blank contents entries", () => {
+	const content = "#\n\n##\n\n## ![diagram](https://example.com/image.png)\n\n####\n\n## Section";
+	const html = renderToStaticMarkup(createElement(Markdown, { content }));
+	assert.deepEqual(
+		[...html.matchAll(HEADING_ID)].map((match) => match[1]),
+		["section", "section-1", "section-2", "section-3", "section-4"]
+	);
+	assert.deepEqual(extractToc(content), [{ id: "section-4", depth: 2, text: "Section" }]);
+});
 
 test("empty and heading-free documents do not invent contents entries", () => {
 	for (const content of ["", " \n", "A paragraph", "```\n## Code\n```", "#### Detail only"]) {
