@@ -6,13 +6,18 @@ import { writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
+const route = process.argv.find((argument) => argument.startsWith("--route="))?.slice(8) || "/";
+if (!route.startsWith("/") || route.startsWith("//") || route.includes("\\")) {
+	throw new Error("The budget route must be a same-origin path");
+}
+const reportStem = route === "/" ? "home-budget" : `route-budget${route.replaceAll("/", "_")}`;
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
 await withProductionServer(async (url) => {
 	const browser = await launchAuditBrowser({ lighthouse: true });
 	try {
 		const port = Number(new URL(browser.wsEndpoint()).port);
 		// Lighthouse 12 removed built-in budgets; assertions below own enforcement.
-		const result = await lighthouse(url, {
+		const result = await lighthouse(`${url}${route}`, {
 			port,
 			output: "json",
 			onlyCategories: ["performance"],
@@ -26,9 +31,10 @@ await withProductionServer(async (url) => {
 		const destination = "docs/evidence/a11y-perf";
 		mkdirSync(destination, { recursive: true });
 		writeEvidenceJson(
-			`${destination}/home-budget${process.argv.includes("--baseline") ? "-baseline" : ""}.json`,
+			`${destination}/${reportStem}${process.argv.includes("--baseline") ? "-baseline" : ""}.json`,
 			{
 				checkedAt: new Date().toISOString(),
+				route,
 				buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
 				workingTreeDirty: Boolean(
 					execFileSync("git", ["diff", "--name-only"], {
