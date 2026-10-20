@@ -93,8 +93,15 @@ components/
   the page and API route own recovery. Cache keys, tags and one-hour revalidation
   policy remain unchanged.
   `tests/portfolio-rest.test.mjs` exercises stalled headers and streamed bodies
-  against a local HTTP server without calling the providers. Figma's SDK uses
-  separate timeout races; these REST deadlines do not change that behavior.
+  against a local HTTP server without calling the providers. Figma's SDK gets a
+  fresh native abort signal for each request: three seconds for team projects,
+  five for each project's files, and two for file details. These deadlines also
+  cancel underlying connections during stalled response bodies. A failed project
+  retains healthy sibling files; details remain usable without a thumbnail.
+  `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
+  against loopback HTTP, including connection closure, ordering and list caps.
+  Figma failures log the error message rather than Axios request configuration,
+  which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
   client-safe, with no API, cache, or environment dependencies
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)

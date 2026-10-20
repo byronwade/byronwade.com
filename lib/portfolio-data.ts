@@ -10,6 +10,16 @@ import type { GitHubRepo } from "@/types/github";
 /** Keep the deadline active through JSON body consumption, not only headers. */
 const REST_TIMEOUT_MS = 5000;
 
+/** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
+function createFigmaClient(accessToken: string, timeoutMs: number) {
+	const client = Figma.Client({ personalAccessToken: accessToken });
+	client.client.interceptors.request.use((config) => {
+		config.signal = AbortSignal.timeout(timeoutMs);
+		return config;
+	});
+	return client;
+}
+
 /**
  * Headers for GitHub's REST API.
  *
@@ -73,34 +83,19 @@ export const getFigmaFiles = unstable_cache(
 			return [];
 		}
 
-		const client = Figma.Client({
-			personalAccessToken: accessToken,
-		});
+		const client = createFigmaClient(accessToken, 3000);
 
 		try {
-			const timeoutPromise = new Promise<never>((_, reject) => {
-				setTimeout(() => reject(new Error("Figma API timeout")), 3000);
-			});
-
-			const { data: projectsResponse } = await Promise.race([
-				client.teamProjects(teamId),
-				timeoutPromise,
-			]);
+			const { data: projectsResponse } = await client.teamProjects(teamId);
 
 			const projects = projectsResponse.projects;
 			const allFiles: FigmaFile[] = [];
+			const projectClient = createFigmaClient(accessToken, 5000);
 
 			// Process more projects to get all Figma files
 			const projectPromises = projects.slice(0, 6).map(async (project) => {
 				try {
-					const projectTimeoutPromise = new Promise<never>((_, reject) => {
-						setTimeout(() => reject(new Error("Project fetch timeout")), 5000);
-					});
-
-					const { data: filesResponse } = await Promise.race([
-						client.projectFiles(project.id.toString()),
-						projectTimeoutPromise,
-					]);
+					const { data: filesResponse } = await projectClient.projectFiles(project.id.toString());
 
 					return filesResponse.files.slice(0, 12).map((file) => ({
 						key: file.key,
@@ -109,7 +104,10 @@ export const getFigmaFiles = unstable_cache(
 						last_modified: file.last_modified,
 					}));
 				} catch (error) {
-					console.error(`Failed to fetch files for project ${project.id}:`, error);
+					console.error(
+						`Failed to fetch files for project ${project.id}:`,
+						error instanceof Error ? error.message : "Unknown error"
+					);
 					return [];
 				}
 			});
@@ -126,7 +124,11 @@ export const getFigmaFiles = unstable_cache(
 				.sort((a, b) => new Date(b.last_modified).getTime() - new Date(a.last_modified).getTime())
 				.slice(0, 30);
 		} catch (error) {
-			console.error("Failed to fetch Figma files:", error);
+			// Axios errors carry request headers, including the personal access token.
+			console.error(
+				"Failed to fetch Figma files:",
+				error instanceof Error ? error.message : "Unknown error"
+			);
 			return [];
 		}
 	},
@@ -144,7 +146,10 @@ const getFigmaThumbnail = async (key: string): Promise<string | null> => {
 		const file = files.find((f: FigmaFile) => f.key === key);
 		return file?.thumbnail_url || null;
 	} catch (error) {
-		console.error(`Failed to get Figma thumbnail for ${key}:`, error);
+		console.error(
+			`Failed to get Figma thumbnail for ${key}:`,
+			error instanceof Error ? error.message : "Unknown error"
+		);
 		return null;
 	}
 };
@@ -160,17 +165,10 @@ export const getFigmaFile = (key: string) =>
 				return null;
 			}
 
-			const client = Figma.Client({
-				personalAccessToken: accessToken,
-			});
+			const client = createFigmaClient(accessToken, 2000);
 
 			try {
-				// Shorter timeout for faster failure
-				const timeoutPromise = new Promise<never>((_, reject) => {
-					setTimeout(() => reject(new Error("Figma file fetch timeout")), 2000);
-				});
-
-				const { data: file } = await Promise.race([client.file(key), timeoutPromise]);
+				const { data: file } = await client.file(key);
 
 				// Get thumbnail from cached file list (much faster)
 				const thumbnailUrl = await getFigmaThumbnail(key);
@@ -183,7 +181,10 @@ export const getFigmaFile = (key: string) =>
 					imageUrl: null,
 				};
 			} catch (error) {
-				console.error(`Failed to fetch Figma file with key ${key}:`, error);
+				console.error(
+					`Failed to fetch Figma file with key ${key}:`,
+					error instanceof Error ? error.message : "Unknown error"
+				);
 				return null;
 			}
 		},
