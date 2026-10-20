@@ -11,6 +11,10 @@ which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
 clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
 with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
 search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
+On extra-wide screens a breadcrumb sits beside the header; its trail
+(`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
+links only parent paths that are real pages, and names Figma files "Design file"
+because the file name is page-owned data.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
@@ -75,6 +79,13 @@ components/
 
 ## Data
 
+- Markdown rendering and project contents share CommonMark/GFM options in
+  `lib/markdown.ts`. Contents walk the installed renderer's element tree and
+  reuse `lib/markdown-utils.ts` text extraction and slug allocation, including
+  headings inside containers and setext headings. Parser dependencies stay out
+  of the date utility module used by client components. Renderer-agreement
+  regressions cover grammar edge cases and every authored blog/project file in
+  `tests/markdown-headings.test.mjs`.
 - `/portfolio` renders its repository list on the server. A failed request shows
   retry/profile recovery with link semantics; a successful empty profile has a
   distinct empty state. Optional profile data cannot relabel healthy repositories

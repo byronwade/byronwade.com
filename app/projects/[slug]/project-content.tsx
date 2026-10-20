@@ -6,7 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
-import { extractToc, safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
+import { extractToc } from "@/lib/markdown";
+import { safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
 import type { Project, ProjectType } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
