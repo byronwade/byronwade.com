@@ -8,6 +8,7 @@ const DESIGN_HEADING = /<h2\b[^>]*>Design File<\/h2>/;
 const COMPONENT_HEADING = /<h3\b[^>]*>Primary button<\/h3>/;
 const INFORMATION_HEADING = /<h2\b[^>]*>File Information<\/h2>/;
 const NOT_FOUND = /NEXT_HTTP_ERROR_FALLBACK;404/;
+const VIEW_BUTTONS = /<button\b([^>]*)>(.*?)<\/button>/gs;
 
 const originalTimezone = process.env.TZ;
 after(() => {
@@ -43,9 +44,9 @@ test("breadcrumb identifies ordered parents and the current file", async () => {
 	const nav = html.match(BREADCRUMB)?.[1];
 	assert.ok(nav, "breadcrumb must be a named navigation landmark");
 	assert.ok(nav.includes("<ol "));
-	assert.equal((nav.match(/<li\b/g) ?? []).length, 3);
+	assert.equal((nav.match(/<li\b/g) ?? []).length, 2);
 	assert.ok(nav.includes('href="/portfolio"'));
-	assert.ok(nav.includes('href="/portfolio?tab=figma"'));
+	assert.ok(!nav.includes("tab=figma"), "the repository index no longer has a Figma tab");
 	assert.match(nav, CURRENT_FILE);
 });
 
@@ -68,6 +69,15 @@ test("empty component library omits its section without breaking heading order",
 		[1, 2, 3, 2]
 	);
 	assert.ok(!html.includes("Components (0)"));
+});
+
+test("viewer controls expose the selected mode through native toggle buttons", async () => {
+	const buttons = [...(await renderFigmaDetail()).matchAll(VIEW_BUTTONS)];
+	assert.equal(buttons.length, 2);
+	assert.ok(buttons[0][1].includes('aria-pressed="true"'));
+	assert.ok(buttons[0][2].includes("Interactive"));
+	assert.ok(buttons[1][1].includes('aria-pressed="false"'));
+	assert.ok(buttons[1][2].includes("Preview"));
 });
 
 test("unavailable file retains the existing not-found route", async () => {

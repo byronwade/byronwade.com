@@ -30,21 +30,23 @@ export function FigmaInteractiveViewer({
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<div className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1">
+				<div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-1">
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "interactive"}
 						variant={viewMode === "interactive" ? "default" : "ghost"}
 						onClick={() => setViewMode("interactive")}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<Monitor className="mr-1 h-3 w-3" />
 						Interactive
 					</Button>
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "static"}
 						variant={viewMode === "static" ? "default" : "ghost"}
 						onClick={() => setViewMode("static")}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<ImageIcon className="mr-1 h-3 w-3" />
 						Preview

@@ -64,9 +64,12 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 	const fileData = file;
 
 	// Counted from the validated file response (no expensive API calls)
-	const pagesCount = fileData.pageCount;
 	const componentsCount = fileData.components.length;
-	const stylesCount = fileData.styleCount;
+	const metrics = [
+		{ label: "Pages", value: fileData.pageCount, icon: FileText },
+		{ label: "Components", value: componentsCount, icon: Palette },
+		{ label: "Styles", value: fileData.styleCount, icon: Zap },
+	];
 	const modifiedDate = safeFormatDate(fileData.lastModified);
 
 	return (
@@ -81,15 +84,6 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 									className="inline-flex min-h-11 min-w-11 items-center px-1 transition-colors hover:text-brand focus-visible:text-brand"
 								>
 									Portfolio
-								</Link>
-							</li>
-							<li className="flex items-center gap-2">
-								<ChevronRight aria-hidden="true" className="h-4 w-4 shrink-0" />
-								<Link
-									href="/portfolio?tab=figma"
-									className="inline-flex min-h-11 min-w-11 items-center px-1 transition-colors hover:text-brand focus-visible:text-brand"
-								>
-									Figma
 								</Link>
 							</li>
 							<li className="flex min-w-0 items-center gap-2">
@@ -115,43 +109,24 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 						</div>
 					</div>
 
-					{/* Metrics Overview: only counts the Figma API returns */}
+					{/* Counts from the validated Figma response. */}
 					<div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardContent className="flex items-center p-6">
-								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
-									<FileText className="h-6 w-6 text-brand" />
-								</div>
-								<div>
-									<p className="font-bold text-2xl text-foreground">{pagesCount}</p>
-									<p className="text-muted-foreground text-sm">Pages</p>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardContent className="flex items-center p-6">
-								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
-									<Palette className="h-6 w-6 text-brand" />
-								</div>
-								<div>
-									<p className="font-bold text-2xl text-foreground">{componentsCount}</p>
-									<p className="text-muted-foreground text-sm">Components</p>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl">
-							<CardContent className="flex items-center p-6">
-								<div className="mr-4 flex h-12 w-12 items-center justify-center rounded-lg bg-brand/10">
-									<Zap className="h-6 w-6 text-brand" />
-								</div>
-								<div>
-									<p className="font-bold text-2xl text-foreground">{stylesCount}</p>
-									<p className="text-muted-foreground text-sm">Styles</p>
-								</div>
-							</CardContent>
-						</Card>
+						{metrics.map(({ label, value, icon: Icon }) => (
+							<Card
+								key={label}
+								className="border-border/30 bg-secondary/50 transition-[box-shadow,border-color] duration-150 hover:border-brand/30 hover:shadow-xl"
+							>
+								<CardContent className="flex flex-wrap items-center gap-4 p-6">
+									<div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-brand/10">
+										<Icon className="h-6 w-6 text-brand" />
+									</div>
+									<div className="wrap-anywhere min-w-0 max-w-full">
+										<p className="font-bold text-2xl text-foreground">{value}</p>
+										<p className="text-muted-foreground text-sm">{label}</p>
+									</div>
+								</CardContent>
+							</Card>
+						))}
 					</div>
 				</div>
 
