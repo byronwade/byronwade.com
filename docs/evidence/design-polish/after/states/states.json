@@ -1,6 +1,6 @@
 {
   "phase": "after",
-  "head": "7eed588c33976749602529d27e03b8734773f38a",
+  "head": "3ee3365e78198f0130823ed9b6b5035127ad5ffa",
   "cases": [
     {
       "name": "portfolio-empty",
@@ -52,6 +52,20 @@
       "overflow": false,
       "busy": false,
       "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
+      "name": "portfolio-provider",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-provider-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
       "rows": 1,
       "accessibility": {
         "violations": [],
@@ -339,6 +353,24 @@
       "overflow": false,
       "busy": false,
       "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-provider",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-provider-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
       "rows": 1,
       "accessibility": {
         "violations": [],
@@ -661,6 +693,20 @@
       }
     },
     {
+      "name": "portfolio-provider",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-provider-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
       "name": "portfolio-refresh-failed",
       "width": 768,
       "theme": "light",
@@ -781,7 +827,7 @@
       "file": "preview-loading-768-light.png",
       "overflow": false,
       "busy": true,
-      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•67%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•38%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
       "rows": 0,
       "accessibility": {
         "violations": [],
@@ -955,6 +1001,24 @@
       "overflow": false,
       "busy": false,
       "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-provider",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-provider-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
       "rows": 1,
       "accessibility": {
         "violations": [],
@@ -1295,6 +1359,20 @@
       }
     },
     {
+      "name": "portfolio-provider",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-provider-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      }
+    },
+    {
       "name": "portfolio-refresh-failed",
       "width": 1440,
       "theme": "light",
@@ -1415,7 +1493,7 @@
       "file": "preview-loading-1440-light.png",
       "overflow": false,
       "busy": true,
-      "text": "{\"@context\":\"https://schema.org\",\"@type\":\"CreativeWork\",\"name\":\"Thorbis Design\",\"description\":\"The shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.\",\"author\":{\"@type\":\"Person\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\"},\"publisher\":{\"@type\":\"Organization\",\"name\":\"Byron Wade\",\"url\":\"https://byronwade.com\",\"logo\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/logo.avif\"}},\"url\":\"https://design.thorbis.com\",\"mainEntityOfPage\":{\"@type\":\"WebPage\",\"@id\":\"https://design.thorbis.com\"},\"image\":{\"@type\":\"ImageObject\",\"url\":\"https://byronwade.com/api/og?title=Thorbis+Design&description=The+shared+design+foundations+behind+this+site%3A+semantic+tokens%2C+reusable+components%2C+and+interface+patterns.&type=project\",\"width\":1200,\"height\":630},\"keywords\":\"Product\"}{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://byronwade.com\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Projects\",\"item\":\"https://byronwade.com/projects\"},{\"@type\":\"ListItem\",\"position\":3,\"name\":\"Thorbis Design\",\"item\":\"https://byronwade.com/projects/thorbis-design\"}]}ProductThorbis DesignThe shared design foundations behind this site: semantic tokens, reusable components, and interface patterns.Visit siteSourcedesign.thorbis.comPreview viewportLoading preview…1920×1080•51%DesktopDesign foundations\nThorbis Design is the shared visual foundation behind this site. Its tokens, components, and interface patterns provide a consistent starting point for the work.\nUsed by this site\nThis site uses a CSS/Tailwind port of Thorbis Design while retaining Base UI for accessible interaction. The port notes document the source revision, component ownership, and site-specific adaptations. It is a port, not an installed Thorbis package.\nI’ll add a fuller account of the system’s development and adoption as that work becomes ready to share.Back to projectsWant something like this?Start a conversation →",
+      "text": "Loading project…",
       "rows": 0,
       "accessibility": {
         "violations": [],
@@ -1613,6 +1691,24 @@
       "overflow": false,
       "busy": false,
       "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Some GitHub data may be unavailable or stale. Refresh to try again.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
+      "rows": 1,
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      }
+    },
+    {
+      "name": "portfolio-provider",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-provider-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
       "rows": 1,
       "accessibility": {
         "violations": [],
@@ -1930,7 +2026,7 @@
       "width": 375,
       "theme": "light",
       "fit": { "range": 0, "value": 0 },
-      "scrolled": { "value": 2, "duration": "0s" }
+      "scrolled": { "value": 4, "duration": "0s" }
     },
     {
       "width": 375,

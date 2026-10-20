@@ -112,13 +112,20 @@ matches this verified source.
 ## Final production evidence
 
 - Review follow-up: `node scripts/capture-design-polish.mjs after` exit 0 on
-  `8fb6741`, 96 cases. It now fails on any page error. The only recorded
-  errors are the six exempt 404 #418 breadcrumb warnings (R01). That source
-  restores the Card border, with the home aside opting out, and moves the copy
-  status beside its button. Home captures were pixel-identical, so the
-  previous PNGs are kept. Five 1440 post/project PNGs re-encoded slightly
-  differently on routes these fixes do not touch, so those PNGs also stay at
-  `b01c50d`; `matrix.json` is fresh.
+  `8fb6741`, then again on `3ee3365` after merging main #81. Both runs had 96
+  cases. The run now fails on any page error. The only recorded errors are the
+  six exempt 404 #418 breadcrumb warnings (R01). These sources restore the
+  Card border, with the home aside opting out, and move the copy status beside
+  its button. Home captures were pixel-identical. Other PNGs that differed only
+  on untouched routes (not-found, post, privacy, project) were re-encode noise,
+  so they stay at `b01c50d`. `matrix.json` is from `3ee3365`.
+- `node scripts/verify-design-polish-states.mjs after` exit 0 on `3ee3365`,
+  using the verifier committed in `450d994`: 120 cases, 0 failures. The copy
+  confirmation must now appear in a live region outside the button. The
+  mocked API sends `githubFailed` as the real route does. The new
+  `portfolio-provider-*` states show that a Dribbble, Figma or stats failure
+  shows no repository warning. Previously captured state PNGs that changed only
+  by re-encoding were kept; `states.json` is fresh.
 - `node scripts/capture-design-polish.mjs after`: exit 0, 96 full-page captures
   on `b01c50d`, one h1 and expected HTTP status in every case; no overflow,
   ellipsized labels, button-role destination anchors, undersized main-content
