@@ -2,7 +2,7 @@
 /**
  * Reads the motion tokens from their canonical owner, `app/globals.css`.
  *
- * JS-driven animation (the capsule morph, the theme wipe) needs the same curves
+ * JS-driven animation (the theme wipe) needs the same curves
  * and durations CSS uses. Reading them at call time rather than re-declaring
  * them keeps one scale: `DESIGN.md` §6.2. Before this existed the same
  * `cubic-bezier` literal was copy-pasted into four files.

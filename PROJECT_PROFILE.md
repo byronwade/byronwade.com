@@ -74,7 +74,8 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
   `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
   public interface.
-- **Icon owner and approved family:** `@phosphor-icons/react`, duotone, reached only
+- **Icon owner and approved family:** `@phosphor-icons/react`, duotone by default
+  and source regular weight in the shared Thorbis header, reached only
   through the pure `lib/icons.tsx` facade; individual wrappers in `lib/icons/`
   keep route-only glyphs out of the shared initial bundle. One family, no exceptions.
   The hand-rolled X/Twitter glyph is gone: Phosphor ships `XLogo`, so that exception
@@ -87,7 +88,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Motion token owner:** `app/globals.css` (`--motion-*`). Established as part of
   adopting this standard; before that the curve was copy-pasted in four files.
 - **Theme owner:** `next-themes`, light default, system aware, toggled from the
-  dock and launcher through `hooks/use-theme-toggle.ts`.
+  header through `hooks/use-theme-toggle.ts`.
 - **Content/terminology owner:** `content/blog/*.md`, `content/projects/*.md`,
   read through `lib/blog.ts` and `lib/projects.ts`.
 - **Accessibility owner:** `docs/UI_GUIDELINES.md`
@@ -147,8 +148,8 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Capability | Approved owner | Version/range | Why | Replacement or overlap policy |
 | --- | --- | --- | --- | --- |
 | Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive uses it | No second primitive library. Radix was removed entirely. |
-| Motion | CSS and Web Animations API | platform | Thorbis transitions and existing capsule/theme behavior | No motion package; the footer preview and its sole dependency were removed |
-| Command menu | in-house (`dock-toolbar`) | - | The morph capsule is the product; `cmdk` was removed | Do not reintroduce a command-menu dependency |
+| Motion | CSS and Web Animations API | platform | Thorbis transitions and existing theme behavior | No motion package; the capsule morph was removed with the old header |
+| Command menu | Base UI popover + in-house search matching (`dock-toolbar`) | - | Anchored search shares focus, dismissal and scroll ownership with Base UI | Do not reintroduce a command-menu dependency |
 | Toasts | `sonner` | ^2.0.5 | Already standardized | - |
 | Charts | none | - | No data visualization on this site | Adding one requires a reader question first (`DESIGN.md` §9.12) |
 | Drag and drop | in-house hook | - | One width handle; a library would be heavier than the behavior | - |
@@ -269,5 +270,4 @@ the user's instruction each time.
 | --- | --- | --- | --- | --- |
 | `components/ui/**` a11y rule relaxations | Base UI primitives forward props, so the control an a11y rule looks for is at the call site | `biome.jsonc` | On any primitive rewrite | Keep call sites correct; the relaxation never applies to application UI |
 | `ObfuscatedPhone` exported but unused | Documented public API of the spam-protection module; the phone channel is kept ready | `components/ui/obfuscated-contact.tsx` | If still unused after the redesign | Delete and update `docs/SPAM_PROTECTION.md` together |
-| GitHub Sponsors pink inside the donate panel | It is the Sponsors brand mark, and the panel is a transient surface where donating is the subject; the resting toolbar icon inherits dock colour so no off-palette colour is ever persistent | `components/layout/dock-toolbar.tsx` | If a second off-palette brand colour appears | Promote to a `--sponsor` token or drop the brand tint |
 | `noLeakedRender` disabled | Every `&&` render tests a string or object; no numeric conditions exist, and there is no autofix | `biome.jsonc` | If numeric conditions appear in JSX | Re-enable and convert the affected sites |
