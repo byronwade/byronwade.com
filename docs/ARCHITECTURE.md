@@ -7,9 +7,10 @@ Tailwind CSS.
 ## Layout
 
 Every page is wrapped by `components/layout/conditional-layout.tsx` (`SiteLayout`),
-which renders a flow header with launcher, wrapping navigation and toolbar, the
-page `main`, and the `Footer`. Content width and gutters come from
-`components/layout/site-shell.tsx`.
+which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
+clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
+with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
+search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
@@ -63,7 +64,7 @@ these cases against a local server.
 
 ```
 components/
-  layout/        # Flow header, footer, site shell, nav dock, toolbar, launcher
+  layout/        # Fixed header, navigation, search, footer, site shell
   home/          # Homepage building blocks
   blog/          # Blog UI
   project/       # Project preview UI
