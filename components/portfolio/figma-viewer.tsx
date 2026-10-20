@@ -30,36 +30,33 @@ export function FigmaInteractiveViewer({
 							: "High-resolution static preview of the design"}
 					</p>
 				</div>
-				<fieldset
-					aria-label="Design view"
-					className="flex shrink-0 items-center gap-2 rounded-lg bg-muted p-1"
-				>
+				<div className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-1">
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "interactive"}
 						variant={viewMode === "interactive" ? "default" : "ghost"}
 						onClick={() => setViewMode("interactive")}
-						aria-pressed={viewMode === "interactive"}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<Monitor className="mr-1 h-3 w-3" />
 						Interactive
 					</Button>
 					<Button
-						size="sm"
+						size="default"
+						aria-pressed={viewMode === "static"}
 						variant={viewMode === "static" ? "default" : "ghost"}
 						onClick={() => setViewMode("static")}
-						aria-pressed={viewMode === "static"}
-						className="h-8 px-3 text-xs"
+						className="px-3"
 					>
 						<ImageIcon className="mr-1 h-3 w-3" />
 						Preview
 					</Button>
-				</fieldset>
+				</div>
 			</div>
 
 			{/* Interactive Figma Embed */}
 			{viewMode === "interactive" && (
-				<div className="relative">
+				<div className="group relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative h-[700px] w-full sm:h-[800px] md:h-[900px] lg:h-[1000px] xl:h-[1100px] 2xl:h-[1400px]">
 							<iframe
@@ -80,7 +77,7 @@ export function FigmaInteractiveViewer({
 
 			{/* Static Image Preview */}
 			{viewMode === "static" && imageUrl && (
-				<div className="relative">
+				<div className="group relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card">
 						<div className="relative aspect-[16/9] w-full">
 							<Image
@@ -88,7 +85,7 @@ export function FigmaInteractiveViewer({
 								alt={fileName}
 								fill
 								sizes="(min-width: 1280px) 1200px, 100vw"
-								className="object-contain"
+								className="object-contain transition-transform duration-500 group-hover:scale-[1.02]"
 								priority
 							/>
 						</div>
@@ -98,11 +95,11 @@ export function FigmaInteractiveViewer({
 
 			{/* Fallback message if no static image */}
 			{viewMode === "static" && !imageUrl && (
-				<div className="relative">
+				<div className="group relative">
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
 						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
 						<p className="text-muted-foreground">No static preview available for this design.</p>
-						<p className="mt-2 text-muted-foreground text-sm">
+						<p className="mt-2 text-muted-foreground/70 text-sm">
 							Switch to Interactive mode to view the design.
 						</p>
 					</div>
