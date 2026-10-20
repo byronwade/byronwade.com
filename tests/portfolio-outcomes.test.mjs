@@ -31,7 +31,9 @@ registerHooks({
 				format: "module",
 				shortCircuit: true,
 				source: `export function Client() { return {
-  client: { interceptors: { request: { use: () => undefined } } },
+  client: { interceptors: {
+    request: { use: () => undefined }, response: { use: () => undefined }
+  } },
   teamProjects: async () => ({ data: { projects: [] } })
 }; }`,
 			};
