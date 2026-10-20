@@ -10,6 +10,7 @@ import type { GitHubRepo } from "@/types/github";
 
 /** Keep the deadline active through JSON body consumption, not only headers. */
 const REST_TIMEOUT_MS = 5000;
+const FIGMA_PROJECT_ID = /^[1-9]\d*$/;
 
 /** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
 function createFigmaClient(accessToken: string, timeoutMs: number) {
@@ -83,6 +84,62 @@ export const getDribbbleShots = unstable_cache(
 	}
 );
 
+function parseFigmaProjectId(value: unknown): string | null {
+	if (!isRecord(value)) {
+		return null;
+	}
+	const id = value.id;
+	if (isNonNegativeInteger(id) && id > 0) {
+		return String(id);
+	}
+	// Current responses use string IDs; keep large IDs exact rather than coercing to numbers.
+	return typeof id === "string" && FIGMA_PROJECT_ID.test(id) ? id : null;
+}
+
+function parseFigmaFileSummary(value: unknown): FigmaFile | null {
+	if (
+		!(
+			isRecord(value) &&
+			isNonEmptyString(value.key) &&
+			isNonEmptyString(value.name) &&
+			isApiTimestamp(value.last_modified) &&
+			(value.thumbnail_url === undefined || isHttpUrl(value.thumbnail_url))
+		)
+	) {
+		return null;
+	}
+	return {
+		key: value.key,
+		name: value.name,
+		thumbnail_url: value.thumbnail_url,
+		last_modified: value.last_modified,
+	};
+}
+
+async function getFigmaProjectFiles(
+	client: ReturnType<typeof createFigmaClient>,
+	projectId: string
+): Promise<FigmaFile[]> {
+	try {
+		const { data }: { data: unknown } = await client.projectFiles(projectId);
+		if (!(isRecord(data) && Array.isArray(data.files))) {
+			throw new Error("Invalid Figma project files response");
+		}
+		const files = data.files.map(parseFigmaFileSummary).filter((file) => file !== null);
+		if (files.length !== data.files.length) {
+			console.warn("Ignoring invalid Figma file metadata");
+		}
+		return files.slice(0, 12);
+	} catch (error) {
+		// Keep Axios request configuration (and its authentication headers) out of logs.
+		console.error(
+			`Failed to fetch files for project ${projectId}:`,
+			error instanceof Error ? error.message : "Unknown error"
+		);
+		return [];
+	}
+}
+
 export const getFigmaFiles = unstable_cache(
 	async (): Promise<FigmaFile[]> => {
 		const accessToken = process.env.FIGMA_ACCESS_TOKEN;
@@ -96,41 +153,25 @@ export const getFigmaFiles = unstable_cache(
 		const client = createFigmaClient(accessToken, 3000);
 
 		try {
-			const { data: projectsResponse } = await client.teamProjects(teamId);
-
-			const projects = projectsResponse.projects;
-			const allFiles: FigmaFile[] = [];
-			const projectClient = createFigmaClient(accessToken, 5000);
-
-			// Process more projects to get all Figma files
-			const projectPromises = projects.slice(0, 6).map(async (project) => {
-				try {
-					const { data: filesResponse } = await projectClient.projectFiles(project.id.toString());
-
-					return filesResponse.files.slice(0, 12).map((file) => ({
-						key: file.key,
-						name: file.name,
-						thumbnail_url: file.thumbnail_url,
-						last_modified: file.last_modified,
-					}));
-				} catch (error) {
-					console.error(
-						`Failed to fetch files for project ${project.id}:`,
-						error instanceof Error ? error.message : "Unknown error"
-					);
-					return [];
-				}
-			});
-
-			const projectResults = await Promise.allSettled(projectPromises);
-
-			for (const result of projectResults) {
-				if (result.status === "fulfilled") {
-					allFiles.push(...result.value);
-				}
+			const { data }: { data: unknown } = await client.teamProjects(teamId);
+			if (!(isRecord(data) && Array.isArray(data.projects))) {
+				throw new Error("Invalid Figma team projects response");
 			}
 
-			return allFiles
+			const projectIds = data.projects.map(parseFigmaProjectId).filter((id) => id !== null);
+			if (projectIds.length !== data.projects.length) {
+				console.warn("Ignoring invalid Figma project metadata");
+			}
+			const projectClient = createFigmaClient(accessToken, 5000);
+
+			const projectPromises = projectIds
+				.slice(0, 6)
+				.map((id) => getFigmaProjectFiles(projectClient, id));
+
+			// Each project owns its fallback, so one failed request cannot discard siblings.
+			const projectResults = await Promise.all(projectPromises);
+			return projectResults
+				.flat()
 				.sort((a, b) => new Date(b.last_modified).getTime() - new Date(a.last_modified).getTime())
 				.slice(0, 30);
 		} catch (error) {

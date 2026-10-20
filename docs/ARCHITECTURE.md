@@ -131,8 +131,22 @@ components/
   five for each project's files, and two for file details. These deadlines also
   cancel underlying connections during stalled response bodies. A failed project
   retains healthy sibling files; details remain usable without a thumbnail.
+  Team/project list payloads are read as `unknown` despite the SDK's static types.
+  Only positive safe numeric IDs or exact decimal string IDs can start project
+  requests. File keys/names, complete valid timestamps and optional HTTP(S)
+  thumbnails are validated before sorting/caching, reusing the existing number,
+  URL, nonempty-string and timestamp predicates. Invalid entries are skipped with a
+  generic warning; healthy entries in the same list survive. Malformed envelopes
+  retain the existing project/team empty-list fallback. The first six valid
+  projects and first twelve valid files per project feed the thirty-file sorted
+  result; healthy payloads keep their existing order, caps and four-field projection.
+  The optional thumbnail matches Figma's
+  [project-files schema](https://github.com/figma/rest-api-spec/blob/main/openapi/openapi.yaml).
+  No new API outcome fields are introduced: missing configuration, failed Figma
+  lists and genuine empty lists still share the existing empty-list contract.
   `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
-  against loopback HTTP, including connection closure, ordering and list caps.
+  against loopback HTTP, including connection closure, malformed fields/envelopes,
+  healthy sibling retention, ordering and list caps.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;

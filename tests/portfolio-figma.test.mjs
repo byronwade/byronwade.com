@@ -9,6 +9,9 @@ registerHooks({
 		if (specifier === "server-only") {
 			return nextResolve(new URL("./fixtures/server-only.mjs", import.meta.url).href, context);
 		}
+		if (specifier === "next/server") {
+			return nextResolve("next/server.js", context);
+		}
 		if (specifier === "next/cache" || specifier === "figma-js") {
 			return { url: `fixture:${specifier}`, shortCircuit: true };
 		}
@@ -55,6 +58,7 @@ export function Client(options) {
 
 const { fixture: sdk } = await import("figma-js");
 const { getFigmaFiles, getFigmaFile } = await import("../lib/portfolio-data.ts");
+const { GET } = await import("../app/api/portfolio/route.ts");
 // Let Node's module-format warning settle before capturing loader diagnostics.
 await delay(0);
 const file = {
@@ -73,7 +77,10 @@ const summary = {
 };
 
 /** The real SDK and Axios adapter run against loopback HTTP, never Figma. */
-async function fixture(context, { target, mode = "success", projects = [{ id: 1 }] } = {}) {
+async function fixture(
+	context,
+	{ target, mode = "success", projects = [{ id: 1 }], responses = {} } = {}
+) {
 	const previousToken = process.env.FIGMA_ACCESS_TOKEN;
 	const previousTeam = process.env.FIGMA_TEAM_ID;
 	process.env.FIGMA_ACCESS_TOKEN = "synthetic-test-token";
@@ -92,9 +99,10 @@ async function fixture(context, { target, mode = "success", projects = [{ id: 1 
 	});
 	const received = [];
 	const errors = [];
+	const warnings = [];
 	const stalled = [];
 	context.mock.method(console, "error", (...args) => errors.push(args));
-	context.mock.method(console, "warn", context.mock.fn());
+	context.mock.method(console, "warn", (...args) => warnings.push(args));
 	const server = createServer((request, response) => {
 		const path = request.url.split("?")[0];
 		received.push(path);
@@ -129,7 +137,7 @@ async function fixture(context, { target, mode = "success", projects = [{ id: 1 
 		if (path === "/projects/1/files" && projects.length === 1) {
 			data.files = [summary];
 		}
-		response.end(JSON.stringify(data));
+		response.end(JSON.stringify(Object.hasOwn(responses, path) ? responses[path] : data));
 	});
 	await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 	const address = server.address();
@@ -143,7 +151,7 @@ async function fixture(context, { target, mode = "success", projects = [{ id: 1 
 		);
 		sdk.baseURL = "";
 	});
-	return { received, errors, stalled };
+	return { received, errors, warnings, stalled };
 }
 
 test("Figma list preserves field mapping, ordering, caps and cache policy", {
@@ -302,3 +310,247 @@ test("Figma detail survives an unavailable thumbnail list", { timeout: 5000 }, a
 		imageUrl: null,
 	});
 });
+
+const invalidEnvelopes = [
+	null,
+	[],
+	"invalid",
+	{},
+	{ projects: null, files: null },
+	{ projects: {}, files: {} },
+];
+
+for (const [index, payload] of invalidEnvelopes.entries()) {
+	test(`Figma rejects malformed team envelope ${index} without requesting projects`, async (t) => {
+		const { received, errors } = await fixture(t, {
+			responses: { "/teams/fixture-team/projects": payload },
+		});
+		assert.deepEqual(await getFigmaFiles(), []);
+		assert.deepEqual(received, ["/teams/fixture-team/projects"]);
+		assert.equal(errors.length, 1);
+		assert.ok(errors[0].every((argument) => typeof argument === "string"));
+	});
+
+	test(`Figma rejects malformed project envelope ${index} and retains healthy projects`, async (t) => {
+		const { errors } = await fixture(t, {
+			projects: [{ id: 1 }, { id: 2 }],
+			responses: { "/projects/2/files": payload },
+		});
+		const files = await getFigmaFiles();
+		assert.equal(files.length, 12);
+		assert.ok(files.every((item) => item.key.startsWith("/projects/1/files-")));
+		assert.equal(errors.length, 1);
+	});
+}
+
+test("Figma skips malformed project IDs before applying the six-request cap", async (t) => {
+	const invalid = [
+		null,
+		[],
+		"invalid",
+		{},
+		{ id: null },
+		{ id: {} },
+		{ id: true },
+		{ id: 0 },
+		{ id: -1 },
+		{ id: 1.5 },
+		{ id: Number.MAX_SAFE_INTEGER + 1 },
+		{ id: "" },
+		{ id: " " },
+		{ id: "0" },
+		{ id: "../files" },
+		{ id: "1?token=synthetic-test-token" },
+	];
+	const { received, warnings, errors } = await fixture(t, {
+		projects: [
+			...invalid,
+			{ id: "12345678901234567890" },
+			{ id: 1 },
+			{ id: 2 },
+			{ id: 3 },
+			{ id: 4 },
+			{ id: 5 },
+			{ id: 6 },
+		],
+	});
+	assert.equal((await getFigmaFiles()).length, 30);
+	assert.deepEqual(
+		received.filter((path) => path.startsWith("/projects/")).sort((a, b) => a.localeCompare(b)),
+		[
+			"/projects/1/files",
+			"/projects/12345678901234567890/files",
+			"/projects/2/files",
+			"/projects/3/files",
+			"/projects/4/files",
+			"/projects/5/files",
+		]
+	);
+	assert.equal(warnings.length, 1);
+	assert.equal(errors.length, 0);
+	assert.ok(!JSON.stringify(warnings).includes("synthetic-test-token"));
+});
+
+const invalidFiles = [
+	["null", null],
+	["array", []],
+	["primitive", "invalid"],
+	...["key", "name", "last_modified"].flatMap((field) =>
+		[undefined, null, {}, [], 5, true, "", " "].map((value, index) => [
+			`${field}-${index}`,
+			{ ...summary, [field]: value },
+		])
+	),
+	...[
+		"2026-02-30T12:00:00Z",
+		"2026-10-19",
+		"2026-10-19T12:00:00",
+		"yesterday",
+		"2026-10-19T25:00:00Z",
+	].map((value) => [`timestamp-${value}`, { ...summary, last_modified: value }]),
+	...[
+		null,
+		{},
+		[],
+		42,
+		true,
+		"",
+		"relative.png",
+		"javascript:alert(1)",
+		"data:image/png;base64,AA",
+	].map((value, index) => [`thumbnail-${index}`, { ...summary, thumbnail_url: value }]),
+];
+
+for (const [label, invalid] of invalidFiles) {
+	test(`Figma excludes invalid file ${label} without discarding healthy files in that project`, async (t) => {
+		const { errors, warnings } = await fixture(t, {
+			responses: { "/projects/1/files": { files: [invalid, summary] } },
+		});
+		assert.deepEqual(await getFigmaFiles(), [summary]);
+		assert.equal(errors.length, 0);
+		assert.equal(warnings.length, 1);
+		assert.ok(warnings[0].every((argument) => typeof argument === "string"));
+	});
+}
+
+test("Figma file validation precedes the twelve-file cap and preserves ordering and field projection", async (t) => {
+	const healthy = Array.from({ length: 14 }, (_, index) => ({
+		...summary,
+		key: `valid-${index}`,
+		last_modified: new Date(Date.UTC(2026, 0, index + 1)).toISOString(),
+		unexpected: { secret: "synthetic-test-token" },
+	}));
+	await fixture(t, {
+		responses: { "/projects/1/files": { files: [null, ...healthy] } },
+	});
+	const files = await getFigmaFiles();
+	assert.equal(files.length, 12);
+	assert.deepEqual(
+		files.map((item) => item.key),
+		Array.from({ length: 12 }, (_, index) => `valid-${11 - index}`)
+	);
+	assert.ok(files.every((item) => !Object.hasOwn(item, "unexpected")));
+});
+
+test("Figma preserves a valid file without its optional thumbnail", async (t) => {
+	const withoutThumbnail = {
+		key: summary.key,
+		name: summary.name,
+		last_modified: summary.last_modified,
+	};
+	const { warnings, errors } = await fixture(t, {
+		responses: { "/projects/1/files": { files: [withoutThumbnail] } },
+	});
+	assert.deepEqual(JSON.parse(JSON.stringify(await getFigmaFiles())), [withoutThumbnail]);
+	assert.deepEqual(await getFigmaFile(summary.key)(), {
+		...file,
+		thumbnailUrl: null,
+		imageUrl: null,
+	});
+	assert.equal(warnings.length, 0);
+	assert.equal(errors.length, 0);
+});
+
+test("Figma accepts complete timestamps with offsets and fractional seconds", async (t) => {
+	const files = [
+		{ ...summary, key: "older", last_modified: "2026-10-19T12:00:00.123+01:00" },
+		{ ...summary, key: "newer", last_modified: "2026-10-19T11:30:00Z" },
+	];
+	const { errors, warnings } = await fixture(t, {
+		responses: { "/projects/1/files": { files } },
+	});
+	assert.deepEqual(await getFigmaFiles(), [files[1], files[0]]);
+	assert.equal(errors.length, 0);
+	assert.equal(warnings.length, 0);
+});
+
+test("Figma returns no invalid files when every entry fails validation", async (t) => {
+	const { warnings, errors } = await fixture(t, {
+		responses: { "/projects/1/files": { files: invalidFiles.map(([, value]) => value) } },
+	});
+	assert.deepEqual(await getFigmaFiles(), []);
+	assert.equal(warnings.length, 1);
+	assert.equal(errors.length, 0);
+});
+
+for (const projects of [[], [{ id: 1 }]]) {
+	test(`Figma preserves a genuinely empty ${projects.length ? "project" : "team"} list`, async (t) => {
+		const { errors, warnings } = await fixture(t, {
+			projects,
+			responses: { "/projects/1/files": { files: [] } },
+		});
+		assert.deepEqual(await getFigmaFiles(), []);
+		assert.equal(errors.length, 0);
+		assert.equal(warnings.length, 0);
+	});
+}
+
+for (const [label, payload, expected] of [
+	["mixed metadata", { files: [null, { ...summary, name: {} }, summary] }, [summary]],
+	["malformed envelope", null, []],
+]) {
+	test(`Figma ${label} preserves the portfolio API shape and healthy provider data`, async (t) => {
+		await fixture(t, { responses: { "/projects/1/files": payload } });
+		t.mock.method(globalThis, "fetch", (url) => {
+			const { origin, pathname } = new URL(url);
+			if (origin === "https://api.dribbble.com") {
+				return Promise.resolve(Response.json([]));
+			}
+			assert.equal(origin, "https://api.github.com");
+			return Promise.resolve(
+				Response.json(
+					pathname.endsWith("/repos")
+						? []
+						: {
+								public_repos: 4,
+								followers: 2,
+								following: 1,
+								created_at: "2020-01-01T00:00:00Z",
+							}
+				)
+			);
+		});
+		const response = await GET();
+		assert.equal(response.status, 200);
+		const body = await response.json();
+		assert.deepEqual(
+			Object.keys(body).sort((a, b) => a.localeCompare(b)),
+			["degraded", "figmaFiles", "githubFailed", "portfolioStats", "repos", "shots", "stats"]
+		);
+		assert.deepEqual(body.figmaFiles, expected);
+		assert.deepEqual(body.stats, {
+			publicRepos: 4,
+			followers: 2,
+			following: 1,
+			createdAt: "2020-01-01T00:00:00Z",
+		});
+		assert.deepEqual(body.repos, []);
+		assert.deepEqual(body.shots, []);
+		assert.equal(body.githubFailed, false);
+		assert.equal(body.degraded, false, "preserve the existing optional-provider outcome contract");
+		assert.equal(
+			response.headers.get("Cache-Control"),
+			"public, s-maxage=3600, stale-while-revalidate=86400"
+		);
+	});
+}
