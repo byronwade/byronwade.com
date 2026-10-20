@@ -29,7 +29,7 @@ the header.
 |-------|---------|
 | `/` | Editorial homepage |
 | `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`) |
-| `/portfolio`, `/portfolio/*` | Live GitHub portfolio, static project details, and Figma viewer |
+| `/portfolio`, `/portfolio/figma/[key]` | Live GitHub portfolio and Figma viewer. The retired 2024 Thorbis pitch pages (`/portfolio/thorbis`, `-ai`, `-mobile`) redirect permanently to `/projects/thorbis` (`next.config.js`; checked by `tests/rendered/legacy-portfolio.test.mjs`) |
 | `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
@@ -186,8 +186,6 @@ components/
   errors without calling live providers.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
-- `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
-  client-safe, with no API, cache, or environment dependencies
 - `lib/projects.ts`, `lib/blog.ts`. Markdown content (`gray-matter`)
   Blog posts with `draft: true` are available only in development. The shared
   loader excludes them from production pages, search, RSS, sitemap, and slugs.
