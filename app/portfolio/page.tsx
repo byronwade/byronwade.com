@@ -72,8 +72,8 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 const REQUEST_TIMEOUT_MS = 8000;
 
 interface PortfolioReposState {
-	githubFailed: boolean;
 	error: boolean;
+	githubFailed: boolean;
 	loading: boolean;
 	refreshing: boolean;
 	reload: () => void;
