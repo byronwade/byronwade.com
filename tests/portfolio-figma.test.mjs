@@ -163,7 +163,7 @@ async function fixture(
 				? {
 						files: Array.from({ length: 14 }, (_, index) => ({
 							...summary,
-							key: `${path}-${index}`,
+							key: `project-${path.split("/")[2]}-file-${index}`,
 							last_modified: new Date(Date.UTC(2026, 0, 1 + index)).toISOString(),
 						})),
 					}
@@ -331,7 +331,7 @@ for (const mode of ["headers", "body", "http-error"]) {
 		});
 		const files = await getFigmaFiles();
 		assert.equal(files.length, 12);
-		assert.ok(files.every((item) => item.key.startsWith("/projects/1/files-")));
+		assert.ok(files.every((item) => item.key.startsWith("project-1-file-")));
 		assert.equal(errors.length, 1);
 		if (mode !== "http-error") {
 			await delay(100);
@@ -363,7 +363,7 @@ test("Figma detail survives an unavailable thumbnail list", { timeout: 5000 }, a
 
 // The SDK concatenates the key into "files/<key>", so anything beyond one plain path
 // segment would let a visitor steer an authenticated request to another endpoint.
-for (const key of [
+const unsafeFileKeys = [
 	"../me",
 	"..",
 	"%2e%2e",
@@ -375,8 +375,14 @@ for (const key of [
 	" ",
 	"fixture key",
 	"fixture-key\n",
+	"fixture-key\r",
+	"fixture-key\t",
+	"fixture-key\u2028",
+	"fixture-key\u2029",
 	"a".repeat(129),
-]) {
+];
+
+for (const key of unsafeFileKeys) {
 	test(`Figma detail rejects unsafe file key ${JSON.stringify(key.slice(0, 16))} without a request`, async (t) => {
 		const { received, errors } = await fixture(t);
 		assert.equal(await getFigmaFile(key)(), null);
@@ -391,6 +397,16 @@ test("Figma detail accepts the longest plain file key", async (t) => {
 	const { received } = await fixture(t);
 	assert.deepEqual(await getFigmaFile(key)(), { ...detail, thumbnailUrl: null });
 	assert.ok(received.includes(`/files/${key}`));
+});
+
+test("Figma list accepts the shortest and longest plain file keys unchanged", async (t) => {
+	const files = ["a", "A_b-9".repeat(25).padEnd(128, "z")].map((key) => ({ ...summary, key }));
+	const { errors, warnings } = await fixture(t, {
+		responses: { "/projects/1/files": { files } },
+	});
+	assert.deepEqual(await getFigmaFiles(), files);
+	assert.equal(errors.length, 0);
+	assert.equal(warnings.length, 0);
 });
 
 const invalidEnvelopes = [
@@ -420,33 +436,46 @@ for (const [index, payload] of invalidEnvelopes.entries()) {
 		});
 		const files = await getFigmaFiles();
 		assert.equal(files.length, 12);
-		assert.ok(files.every((item) => item.key.startsWith("/projects/1/files-")));
+		assert.ok(files.every((item) => item.key.startsWith("project-1-file-")));
 		assert.equal(errors.length, 1);
 	});
 }
 
+const invalidProjects = [
+	null,
+	[],
+	"invalid",
+	{},
+	{ id: null },
+	{ id: {} },
+	{ id: true },
+	{ id: 0 },
+	{ id: -1 },
+	{ id: 1.5 },
+	{ id: Number.MAX_SAFE_INTEGER + 1 },
+	{ id: "" },
+	{ id: " " },
+	{ id: "0" },
+	{ id: "../files" },
+	{ id: "1?token=synthetic-test-token" },
+];
+
+for (const [index, project] of invalidProjects.entries()) {
+	test(`Figma rejects all-invalid team project metadata ${index} without requesting files`, async (t) => {
+		const { received, errors, warnings } = await fixture(t, { projects: [project] });
+		await assert.rejects(getFigmaFiles(), INVALID_TEAM_RESPONSE);
+		assert.deepEqual(received, ["/teams/fixture-team/projects"]);
+		assert.equal(errors.length, 1);
+		assert.equal(warnings.length, 0);
+		assert.ok(errors[0].every((argument) => typeof argument === "string"));
+		assert.ok(!JSON.stringify(errors).includes("synthetic-test-token"));
+	});
+}
+
 test("Figma skips malformed project IDs before applying the six-request cap", async (t) => {
-	const invalid = [
-		null,
-		[],
-		"invalid",
-		{},
-		{ id: null },
-		{ id: {} },
-		{ id: true },
-		{ id: 0 },
-		{ id: -1 },
-		{ id: 1.5 },
-		{ id: Number.MAX_SAFE_INTEGER + 1 },
-		{ id: "" },
-		{ id: " " },
-		{ id: "0" },
-		{ id: "../files" },
-		{ id: "1?token=synthetic-test-token" },
-	];
 	const { received, warnings, errors } = await fixture(t, {
 		projects: [
-			...invalid,
+			...invalidProjects,
 			{ id: "12345678901234567890" },
 			{ id: 1 },
 			{ id: 2 },
@@ -477,6 +506,7 @@ const invalidFiles = [
 	["null", null],
 	["array", []],
 	["primitive", "invalid"],
+	...unsafeFileKeys.map((key, index) => [`unsafe-key-${index}`, { ...summary, key }]),
 	...["key", "name", "last_modified"].flatMap((field) =>
 		[undefined, null, {}, [], 5, true, "", " "].map((value, index) => [
 			`${field}-${index}`,
@@ -579,7 +609,7 @@ test("Figma keeps healthy projects when another project's files all fail validat
 	});
 	const files = await getFigmaFiles();
 	assert.equal(files.length, 12);
-	assert.ok(files.every((item) => item.key.startsWith("/projects/1/files-")));
+	assert.ok(files.every((item) => item.key.startsWith("project-1-file-")));
 	assert.equal(errors.length, 1);
 });
 
@@ -617,12 +647,14 @@ for (const projects of [[], [{ id: 1 }]]) {
 	});
 }
 
-for (const [label, payload, expected, degraded] of [
+for (const [label, payload, expected, degraded, projects = [{ id: 1 }]] of [
 	["mixed metadata", { files: [null, { ...summary, name: {} }, summary] }, [summary], false],
 	["malformed envelope", null, [], true],
+	["all-invalid file keys", { files: [{ ...summary, key: "../me" }] }, [], true],
+	["all-invalid team projects", { files: [] }, [], true, invalidProjects],
 ]) {
 	test(`Figma ${label} preserves the portfolio API shape and healthy provider data`, async (t) => {
-		await fixture(t, { responses: { "/projects/1/files": payload } });
+		await fixture(t, { projects, responses: { "/projects/1/files": payload } });
 		t.mock.method(globalThis, "fetch", (url) => {
 			const { origin, pathname } = new URL(url);
 			if (origin === "https://api.dribbble.com") {
