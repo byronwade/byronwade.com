@@ -28,8 +28,24 @@ registerHooks({
 			return {
 				format: "module",
 				shortCircuit: true,
-				source: `export function unstable_cache(fn, keys, options) {
-  return Object.assign(fn, { cachePolicy: { keys, options } });
+				source: `export const fixture = { enabled: false, values: new Map(), policies: [], failures: [] };
+export function unstable_cache(fn, keys, options) {
+  fixture.policies.push({ keys, options });
+  async function cached(...args) {
+    if (!fixture.enabled) return fn(...args);
+    const key = JSON.stringify([keys, args]);
+    if (fixture.values.has(key)) return fixture.values.get(key);
+    // Like Next, store resolved values (including null), never rejected promises.
+    try {
+      const value = await fn(...args);
+      fixture.values.set(key, value);
+      return value;
+    } catch (error) {
+      fixture.failures.push(error);
+      throw error;
+    }
+  }
+  return Object.assign(cached, { cachePolicy: { keys, options } });
 }`,
 			};
 		}
@@ -57,6 +73,7 @@ export function Client(options) {
 });
 
 const { fixture: sdk } = await import("figma-js");
+const { fixture: cache } = await import("next/cache");
 const { getFigmaFiles, getFigmaFile } = await import("../lib/portfolio-data.ts");
 const { GET } = await import("../app/api/portfolio/route.ts");
 // Let Node's module-format warning settle before capturing loader diagnostics.
@@ -111,11 +128,39 @@ function finish(response, body, delayMs) {
 	}
 }
 
+function defaultResponse(path, projects) {
+	if (path.startsWith("/teams/")) {
+		return { projects };
+	}
+	if (!path.startsWith("/projects/")) {
+		return file;
+	}
+	// The detail lookup finds this exact thumbnail in the existing list loader.
+	if (path === "/projects/1/files" && projects.length === 1) {
+		return { files: [summary] };
+	}
+	return {
+		files: Array.from({ length: 14 }, (_, index) => ({
+			...summary,
+			key: `project-${path.split("/")[2]}-file-${index}`,
+			last_modified: new Date(Date.UTC(2026, 0, 1 + index)).toISOString(),
+		})),
+	};
+}
+
 /** The real SDK and Axios adapter run against loopback HTTP, never Figma. */
 async function fixture(
 	context,
 	{ target, mode = "success", projects = [{ id: 1 }], responses = {}, delays = {} } = {}
 ) {
+	cache.enabled = false;
+	cache.values.clear();
+	cache.policies.length = 0;
+	cache.failures.length = 0;
+	context.after(() => {
+		cache.enabled = false;
+		cache.values.clear();
+	});
 	const previousToken = process.env.FIGMA_ACCESS_TOKEN;
 	const previousTeam = process.env.FIGMA_TEAM_ID;
 	process.env.FIGMA_ACCESS_TOKEN = "synthetic-test-token";
@@ -138,10 +183,11 @@ async function fixture(
 	const stalled = [];
 	context.mock.method(console, "error", (...args) => errors.push(args));
 	context.mock.method(console, "warn", (...args) => warnings.push(args));
+	let recovered = false;
 	const server = createServer((request, response) => {
 		const path = request.url.split("?")[0];
 		received.push(path);
-		const selected = path === target;
+		const selected = path === target && !recovered;
 		if (selected && (mode === "headers" || mode === "body")) {
 			const connection = { closed: false };
 			stalled.push(connection);
@@ -157,22 +203,10 @@ async function fixture(
 		response.writeHead(selected && mode === "http-error" ? 503 : 200, {
 			"Content-Type": "application/json",
 		});
-		const data = path.startsWith("/teams/")
-			? { projects }
-			: path.startsWith("/projects/")
-				? {
-						files: Array.from({ length: 14 }, (_, index) => ({
-							...summary,
-							key: `project-${path.split("/")[2]}-file-${index}`,
-							last_modified: new Date(Date.UTC(2026, 0, 1 + index)).toISOString(),
-						})),
-					}
-				: file;
-		// The detail lookup finds this exact thumbnail in the existing list loader.
-		if (path === "/projects/1/files" && projects.length === 1) {
-			data.files = [summary];
-		}
-		const body = JSON.stringify(Object.hasOwn(responses, path) ? responses[path] : data);
+		const data = defaultResponse(path, projects);
+		const body = JSON.stringify(
+			!recovered && Object.hasOwn(responses, path) ? responses[path] : data
+		);
 		finish(response, body, delays[path]);
 	});
 	await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
@@ -187,7 +221,15 @@ async function fixture(
 		);
 		sdk.baseURL = "";
 	});
-	return { received, errors, warnings, stalled };
+	return {
+		received,
+		errors,
+		warnings,
+		stalled,
+		recover: () => {
+			recovered = true;
+		},
+	};
 }
 
 test("Figma list preserves field mapping, ordering, caps and cache policy", {
@@ -231,9 +273,9 @@ test("Figma detail projects the document, cached-list thumbnail and cache policy
 	const { errors, warnings } = await fixture(t);
 	const load = getFigmaFile(summary.key);
 	assert.deepEqual(await load(), { ...detail, thumbnailUrl: summary.thumbnail_url });
-	assert.equal(errors.length, 0);
+	assert.equal(errors.length, 0, JSON.stringify(errors));
 	assert.equal(warnings.length, 0);
-	assert.deepEqual(load.cachePolicy, {
+	assert.deepEqual(cache.policies.at(-1), {
 		keys: ["figma-file", summary.key],
 		options: { revalidate: 7200, tags: ["figma"] },
 	});
@@ -359,6 +401,101 @@ test("Figma detail makes no request without an access token", async (t) => {
 test("Figma detail survives an unavailable thumbnail list", { timeout: 5000 }, async (t) => {
 	await fixture(t, { target: "/teams/fixture-team/projects", mode: "http-error" });
 	assert.deepEqual(await getFigmaFile(summary.key)(), { ...detail, thumbnailUrl: null });
+});
+
+for (const failure of ["http-error", "headers", "body", "invalid-response"]) {
+	test(`Figma detail cache retries after ${failure} instead of storing its null fallback`, {
+		timeout: 10_000,
+	}, async (t) => {
+		const path = `/files/${summary.key}`;
+		const broken = { [path]: { ...file, name: 5 } };
+		const first = await fixture(t, {
+			target: path,
+			mode: failure === "invalid-response" ? "success" : failure,
+			responses: failure === "invalid-response" ? broken : {},
+		});
+		cache.enabled = true;
+		const load = getFigmaFile(summary.key);
+		assert.equal(await load(), null);
+		assert.equal(first.errors.length, 1);
+		assert.equal(cache.values.has(JSON.stringify([["figma-file", summary.key], []])), false);
+		assert.equal(cache.failures.length, 1);
+		assert.ok(cache.failures[0] instanceof Error);
+		assert.deepEqual(
+			Object.keys(cache.failures[0]),
+			[],
+			"cache errors must not carry Axios config"
+		);
+		assert.equal(cache.failures[0].cause, undefined);
+
+		// The same provider recovers; neither the loader nor the cache is reset.
+		first.recover();
+		assert.deepEqual(await load(), { ...detail, thumbnailUrl: summary.thumbnail_url });
+		assert.equal(first.received.filter((url) => url === path).length, 2);
+		assert.deepEqual(await getFigmaFile(summary.key)(), {
+			...detail,
+			thumbnailUrl: summary.thumbnail_url,
+		});
+		assert.equal(first.received.filter((url) => url === path).length, 2);
+		assert.equal(first.errors.length, 1);
+	});
+}
+
+for (const [label, token] of [
+	["missing", undefined],
+	["empty", ""],
+	["blank", " \t "],
+]) {
+	test(`Figma detail cache retries after ${label} configuration without storing null`, async (t) => {
+		const { received, warnings, errors } = await fixture(t);
+		cache.enabled = true;
+		const load = getFigmaFile(summary.key);
+		if (token === undefined) {
+			delete process.env.FIGMA_ACCESS_TOKEN;
+		} else {
+			process.env.FIGMA_ACCESS_TOKEN = token;
+		}
+		assert.equal(await load(), null);
+		assert.deepEqual(received, []);
+		assert.equal(cache.values.size, 0);
+		assert.equal(warnings.length, 1);
+		assert.equal(errors.length, 0);
+		process.env.FIGMA_ACCESS_TOKEN = "synthetic-test-token";
+		assert.deepEqual(await load(), { ...detail, thumbnailUrl: summary.thumbnail_url });
+	});
+}
+
+test("Figma detail cache keeps successful files separate by key", async (t) => {
+	const { received } = await fixture(t);
+	cache.enabled = true;
+	const first = getFigmaFile(summary.key);
+	const second = getFigmaFile("other-key");
+	assert.deepEqual(await first(), { ...detail, thumbnailUrl: summary.thumbnail_url });
+	assert.deepEqual(await second(), { ...detail, thumbnailUrl: null });
+	await first();
+	await second();
+	assert.equal(received.filter((path) => path.startsWith("/files/")).length, 2);
+	assert.equal(received.filter((path) => path === "/teams/fixture-team/projects").length, 1);
+	assert.equal(cache.failures.length, 0);
+});
+
+test("Figma list cache rejects request errors without authenticated SDK configuration", async (t) => {
+	const { recover, received } = await fixture(t, {
+		target: "/teams/fixture-team/projects",
+		mode: "http-error",
+	});
+	cache.enabled = true;
+	await assert.rejects(getFigmaFiles(), (error) => {
+		assert.ok(error instanceof Error);
+		assert.deepEqual(Object.keys(error), [], "cache errors must not carry Axios config");
+		assert.equal(error.cause, undefined);
+		return true;
+	});
+	assert.equal(cache.values.size, 0);
+	recover();
+	assert.deepEqual(await getFigmaFiles(), [summary]);
+	assert.deepEqual(await getFigmaFiles(), [summary]);
+	assert.equal(received.filter((path) => path.startsWith("/teams/")).length, 2);
 });
 
 // The SDK concatenates the key into "files/<key>", so anything beyond one plain path
