@@ -44,9 +44,15 @@ const { GET } = await import("../app/api/portfolio/route.ts");
 const repository = {
 	id: 1,
 	name: "example-project",
+	full_name: "byronwade/example-project",
+	html_url: "https://github.com/byronwade/example-project",
+	description: null,
+	fork: false,
+	forks_count: 0,
 	stargazers_count: 3,
 	updated_at: "2026-10-01T00:00:00Z",
 };
+const undatedRepository = { ...repository, created_at: null, updated_at: null, pushed_at: null };
 const shots = [{ id: 2, title: "Synthetic design" }];
 const stats = { publicRepos: 4, followers: 2, following: 1, createdAt: "2020-01-01" };
 
@@ -103,6 +109,7 @@ async function responseBody({ unavailable = false } = {}) {
 for (const [name, repos, expected] of [
 	["populated", [repository], [repository]],
 	["genuinely empty", [], []],
+	["undated", [undatedRepository], [undatedRepository]],
 	[
 		"only forks and archived projects",
 		[
@@ -128,6 +135,14 @@ for (const [name, repositories] of [
 	],
 	["invalid JSON", () => Promise.resolve(new Response("{", { status: 200 }))],
 	["non-array JSON", () => Promise.resolve(Response.json({ message: "Unexpected payload" }))],
+	[
+		"malformed entry",
+		() => Promise.resolve(Response.json([repository, { ...repository, id: 2, name: {} }])),
+	],
+	[
+		"unsafe link",
+		() => Promise.resolve(Response.json([{ ...repository, html_url: "javascript:alert(1)" }])),
+	],
 	["network failure", () => Promise.reject(new TypeError("Synthetic connection failure"))],
 	["timeout", () => Promise.reject(new DOMException("Synthetic deadline", "TimeoutError"))],
 ]) {
@@ -153,5 +168,15 @@ test("portfolio API recovers on the next successful request after repository fai
 	const body = await responseBody();
 	assert.deepEqual(body.repos, [repository]);
 	assert.equal(body.githubFailed, false);
+	assert.equal(body.degraded, false);
+});
+
+test("portfolio API retries a malformed response without caching it as an empty account", async (context) => {
+	let payload = [{ ...repository, pushed_at: "2026-02-30T00:00:00Z" }];
+	fixture(context, () => Promise.resolve(Response.json(payload)));
+	assert.equal((await responseBody({ unavailable: true })).githubFailed, true);
+	payload = [repository];
+	const body = await responseBody();
+	assert.deepEqual(body.repos, [repository]);
 	assert.equal(body.degraded, false);
 });
