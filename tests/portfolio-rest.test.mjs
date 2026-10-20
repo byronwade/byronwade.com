@@ -105,6 +105,7 @@ const integrations = [
 	},
 ];
 const DRIBBBLE_TOKEN = "synthetic-dribbble-token";
+const INVALID_SHOTS_RESPONSE = /Invalid Dribbble shots response/;
 
 /** Real local fetches exercise native aborts during headers and streamed JSON. */
 async function fixture(context, integration, mode, { dribbbleToken = DRIBBBLE_TOKEN } = {}) {
@@ -165,7 +166,10 @@ async function loadOutcome(integration) {
 
 function assertFailure(integration, result) {
 	if (integration.rejects) {
-		assert.ok(result.error instanceof Error, `the API must receive the ${integration.name} failure`);
+		assert.ok(
+			result.error instanceof Error,
+			`the API must receive the ${integration.name} failure`
+		);
 	} else {
 		assert.deepEqual(result, { value: integration.fallback });
 	}
@@ -240,7 +244,7 @@ for (const [index, payload] of [
 		timeout: 5000,
 	}, async (context) => {
 		await fixture(context, { payload }, "success");
-		await assert.rejects(getDribbbleShots(), /Invalid Dribbble shots response/);
+		await assert.rejects(getDribbbleShots(), INVALID_SHOTS_RESPONSE);
 	});
 }
 
@@ -320,7 +324,7 @@ test("Dribbble validation rejects all-invalid shots as a failure without logging
 }, async (context) => {
 	const payload = [{ ...shot, title: { untrusted: "synthetic-private-provider-value" } }];
 	const { errors } = await fixture(context, { payload }, "success");
-	await assert.rejects(getDribbbleShots(), /Invalid Dribbble shots response/);
+	await assert.rejects(getDribbbleShots(), INVALID_SHOTS_RESPONSE);
 	assert.equal(errors.length, 1);
 	assert.ok(!JSON.stringify(errors).includes("synthetic-private-provider-value"));
 });

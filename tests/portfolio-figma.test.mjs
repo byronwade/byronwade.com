@@ -99,6 +99,18 @@ const detail = {
 	styleCount: 1,
 };
 
+const INVALID_TEAM_RESPONSE = /Invalid Figma team projects response/;
+const EVERY_PROJECT_FAILED = /Every Figma project request failed/;
+
+/** Finish a fixture response, optionally after a delay inside the client's deadline. */
+function finish(response, body, delayMs) {
+	if (delayMs === undefined) {
+		response.end(body);
+	} else {
+		setTimeout(() => response.end(body), delayMs);
+	}
+}
+
 /** The real SDK and Axios adapter run against loopback HTTP, never Figma. */
 async function fixture(
 	context,
@@ -161,11 +173,7 @@ async function fixture(
 			data.files = [summary];
 		}
 		const body = JSON.stringify(Object.hasOwn(responses, path) ? responses[path] : data);
-		if (Object.hasOwn(delays, path)) {
-			setTimeout(() => response.end(body), delays[path]);
-		} else {
-			response.end(body);
-		}
+		finish(response, body, delays[path]);
 	});
 	await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
 	const address = server.address();
@@ -399,7 +407,7 @@ for (const [index, payload] of invalidEnvelopes.entries()) {
 		const { received, errors } = await fixture(t, {
 			responses: { "/teams/fixture-team/projects": payload },
 		});
-		await assert.rejects(getFigmaFiles(), /Invalid Figma team projects response/);
+		await assert.rejects(getFigmaFiles(), INVALID_TEAM_RESPONSE);
 		assert.deepEqual(received, ["/teams/fixture-team/projects"]);
 		assert.equal(errors.length, 1);
 		assert.ok(errors[0].every((argument) => typeof argument === "string"));
@@ -558,7 +566,7 @@ test("Figma rejects a project whose every file fails validation instead of cachi
 	const { warnings, errors } = await fixture(t, {
 		responses: { "/projects/1/files": { files: invalidFiles.map(([, value]) => value) } },
 	});
-	await assert.rejects(getFigmaFiles(), /Every Figma project request failed/);
+	await assert.rejects(getFigmaFiles(), EVERY_PROJECT_FAILED);
 	assert.equal(warnings.length, 0);
 	assert.equal(errors.length, 2);
 	assert.ok(errors.every((args) => args.every((argument) => typeof argument === "string")));
@@ -580,7 +588,7 @@ test("Figma rejects when every project request fails", { timeout: 5000 }, async 
 		projects: [{ id: 1 }, { id: 2 }],
 		responses: { "/projects/1/files": null, "/projects/2/files": { files: null } },
 	});
-	await assert.rejects(getFigmaFiles(), /Every Figma project request failed/);
+	await assert.rejects(getFigmaFiles(), EVERY_PROJECT_FAILED);
 	assert.equal(errors.length, 3);
 });
 
@@ -684,7 +692,10 @@ test("portfolio API stops waiting on a slow Figma list before the page's deadlin
 	const elapsed = performance.now() - started;
 	const body = await response.json();
 	assert.ok(elapsed < 7000, `the API answered after ${Math.round(elapsed)} ms`);
-	assert.ok(elapsed >= 5900, "the optional-provider budget, not an earlier failure, ended the wait");
+	assert.ok(
+		elapsed >= 5900,
+		"the optional-provider budget, not an earlier failure, ended the wait"
+	);
 	assert.deepEqual(body.figmaFiles, []);
 	assert.equal(body.githubFailed, false);
 	assert.equal(body.degraded, true);

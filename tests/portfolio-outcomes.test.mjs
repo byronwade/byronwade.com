@@ -188,7 +188,11 @@ for (const [name, loadShots, expectedShots, shotsFailed] of [
 		fixture(context, () => Promise.resolve(Response.json([repository])), undefined, loadShots);
 		const body = await responseBody({ expectedShots, shotsFailed });
 		assert.deepEqual(body.repos, [repository]);
-		assert.equal(body.githubFailed, false, "an optional-provider outage is not a repository outage");
+		assert.equal(
+			body.githubFailed,
+			false,
+			"an optional-provider outage is not a repository outage"
+		);
 	});
 }
 
