@@ -44,3 +44,17 @@ test("a missing or invalid measurement cannot silently pass", () => {
 	assert.equal(assessBudget(report({ bytes: Number.NaN }), budget).failures.length, 1);
 	assert.equal(assessBudget(report({ requests: -1 }), budget).failures.length, 1);
 });
+
+test("an existing resource row requires both byte and request measurements", () => {
+	for (const field of ["transferSize", "requestCount"]) {
+		const incomplete = report();
+		delete incomplete.audits["resource-summary"].details.items[1][field];
+		assert.equal(assessBudget(incomplete, budget).failures.length, 1);
+	}
+});
+
+test("an absent resource category represents no requests", () => {
+	const absent = report();
+	absent.audits["resource-summary"].details.items.pop();
+	assert.deepEqual(assessBudget(absent, budget).failures, []);
+});

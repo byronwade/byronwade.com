@@ -15,7 +15,8 @@ export function assessBudget(lhr, budget) {
 		return { metric, value, budget: limit };
 	});
 	for (const { resourceType, budget: limit } of budget.resourceSizes) {
-		const value = resources.find((item) => item.resourceType === resourceType)?.transferSize ?? 0;
+		const resource = resources.find((item) => item.resourceType === resourceType);
+		const value = resource ? resource.transferSize : 0;
 		if (!Number.isFinite(value) || value < 0) {
 			failures.push(`${resourceType} bytes: invalid measurement`);
 		} else if (value > limit * 1024) {
@@ -23,7 +24,8 @@ export function assessBudget(lhr, budget) {
 		}
 	}
 	for (const { resourceType, budget: limit } of budget.resourceCounts) {
-		const value = resources.find((item) => item.resourceType === resourceType)?.requestCount ?? 0;
+		const resource = resources.find((item) => item.resourceType === resourceType);
+		const value = resource ? resource.requestCount : 0;
 		if (!Number.isFinite(value) || value < 0) {
 			failures.push(`${resourceType} count: invalid measurement`);
 		} else if (value > limit) {
