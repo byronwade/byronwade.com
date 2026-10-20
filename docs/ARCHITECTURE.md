@@ -97,7 +97,14 @@ components/
   same cache keys, tags and one-hour revalidation. A failed or malformed profile
   becomes `stats: null` with `degraded: true`; it does not invent zero counts or
   mark healthy repositories as failed. Genuine zero profile counts remain healthy.
-  Dribbble failures still use their existing empty-list fallback.
+  Dribbble failures still use their existing empty-list fallback. Its JSON enters
+  as `unknown`; malformed shot records are omitted while healthy siblings retain
+  their original fields and order. Core identity, HTTP(S) media/links, optional
+  display metadata, counts, dimensions and timestamps are validated before caching.
+  The internal shot type models only validated fields; additional provider metadata
+  passes through unchanged and remains untyped. Nullable high-resolution images
+  follow the [Dribbble shot response](https://developer.dribbble.com/v2/shots/).
+  Optional-provider outage/configuration status remains a separate contract concern.
   Repository JSON is read as `unknown` and every entry is validated before
   filtering, sorting or caching. A malformed entry rejects the whole response
   through that same unavailable/retry path, rather than exposing unsafe links,
