@@ -59,7 +59,12 @@ const repository = {
 	updated_at: "2026-10-19T12:00:00Z",
 };
 const shot = { id: 1, title: "A design", images: { normal: "https://image.example/shot.jpg" } };
-const profile = { public_repos: 12, followers: 3, following: 4, created_at: "2020-01-01" };
+const profile = {
+	public_repos: 12,
+	followers: 3,
+	following: 4,
+	created_at: "2020-01-01T00:00:00Z",
+};
 const integrations = [
 	{
 		name: "GitHub repositories",
@@ -75,8 +80,8 @@ const integrations = [
 		name: "GitHub profile",
 		load: getGitHubStats,
 		payload: profile,
-		expected: { publicRepos: 12, followers: 3, following: 4, createdAt: "2020-01-01" },
-		fallback: { publicRepos: 0, followers: 0, following: 0, createdAt: null },
+		expected: { publicRepos: 12, followers: 3, following: 4, createdAt: profile.created_at },
+		rejects: true,
 		key: "github-stats",
 		tag: "github",
 	},
@@ -137,13 +142,77 @@ async function loadOutcome(integration) {
 
 function assertFailure(integration, result) {
 	if (integration.rejects) {
-		assert.ok(result.error instanceof Error, "the API must receive the repository failure");
+		assert.ok(result.error instanceof Error, "the API must receive the GitHub failure");
 	} else {
 		assert.deepEqual(result, { value: integration.fallback });
 	}
 }
 
 const INVALID_REPOSITORY_RESPONSE = /Invalid GitHub repository response/;
+const INVALID_PROFILE_RESPONSE = /Invalid GitHub profile response/;
+const invalidProfileFields = [
+	...["public_repos", "followers", "following"].map((field) => [
+		field,
+		[undefined, null, "0", -1, 0.5, Number.MAX_SAFE_INTEGER + 1, {}, [], false],
+	]),
+	[
+		"created_at",
+		[
+			undefined,
+			null,
+			42,
+			{},
+			[],
+			"",
+			"not a date",
+			"2020",
+			"2020-01-01",
+			"2026-02-30T12:00:00Z",
+			"2020-01-01T00:00:00",
+		],
+	],
+];
+
+for (const [field, invalidValues] of invalidProfileFields) {
+	for (const [index, value] of invalidValues.entries()) {
+		test(`profile validation rejects malformed ${field} variant ${index + 1}`, {
+			timeout: 5000,
+		}, async (context) => {
+			await fixture(context, { payload: { ...profile, [field]: value } }, "success");
+			await assert.rejects(getGitHubStats(), INVALID_PROFILE_RESPONSE);
+		});
+	}
+}
+
+for (const [index, payload] of [null, 42, "profile", [], {}, [profile]].entries()) {
+	test(`profile validation rejects malformed response ${index + 1}`, {
+		timeout: 5000,
+	}, async (context) => {
+		await fixture(context, { payload }, "success");
+		await assert.rejects(getGitHubStats(), INVALID_PROFILE_RESPONSE);
+	});
+}
+
+test("profile validation preserves genuine zero counts, timestamps and the public fields", {
+	timeout: 5000,
+}, async (context) => {
+	const payload = {
+		public_repos: 0,
+		followers: 0,
+		following: Number.MAX_SAFE_INTEGER,
+		created_at: "2020-02-29T12:00:00-04:00",
+		extra_api_field: { ignored: true },
+	};
+	const { errors } = await fixture(context, { payload }, "success");
+	assert.deepEqual(await getGitHubStats(), {
+		publicRepos: 0,
+		followers: 0,
+		following: Number.MAX_SAFE_INTEGER,
+		createdAt: payload.created_at,
+	});
+	assert.equal(errors.length, 0);
+});
+
 const invalidRepositoryFields = [
 	["id", [undefined, null, "1", 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1]],
 	["name", [undefined, null, {}, [], 42, "", "   "]],

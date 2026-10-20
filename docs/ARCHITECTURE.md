@@ -77,6 +77,8 @@ components/
 - `/portfolio` keeps its eight-second client deadline active through response
   headers and JSON consumption. A timeout ends loading or refreshing and shows
   the existing retry/profile recovery; the profile action retains link semantics.
+  Repository empty/error states follow `githubFailed`, so an unavailable optional
+  profile does not relabel a healthy empty repository list as a repository outage.
   Effect cleanup cancels quietly and blocks
   stale state updates; settled requests clear their deadline. Native regressions
   in `tests/portfolio-lifecycle.test.mjs` exercise the page's actual effect without
@@ -84,15 +86,18 @@ components/
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
-  while reading the JSON body. GitHub repository failures reject to the portfolio
+  while reading the JSON body. GitHub repository and profile failures reject to the portfolio
   API's existing `Promise.allSettled` boundary, which retains healthy provider
-  data and sets `githubFailed` / `degraded` without changing the JSON shape.
+  data and sets `degraded` for either failure, plus `githubFailed` only for a
+  repository failure, without changing the JSON shape.
   A successful empty or filtered-only repository list remains a healthy result.
   The API stays dynamic rather than prerendering an unavailable response; failed
-  repository responses use `Cache-Control: no-store` so Retry can try again.
+  or degraded responses use `Cache-Control: no-store` so later requests can recover.
   Successful responses retain their CDN policy, and provider data retains the
-  same cache keys, tags and one-hour revalidation. Dribbble and profile failures
-  still use their existing empty-list or zero/null fallback.
+  same cache keys, tags and one-hour revalidation. A failed or malformed profile
+  becomes `stats: null` with `degraded: true`; it does not invent zero counts or
+  mark healthy repositories as failed. Genuine zero profile counts remain healthy.
+  Dribbble failures still use their existing empty-list fallback.
   Repository JSON is read as `unknown` and every entry is validated before
   filtering, sorting or caching. A malformed entry rejects the whole response
   through that same unavailable/retry path, rather than exposing unsafe links,
@@ -103,11 +108,18 @@ components/
   Missing timestamps remain missing in the response and sort after dated
   activity when priority and star counts tie. Native URL/number checks and
   `date-fns` validate values without a new schema dependency.
+  Profile JSON is also read as `unknown`: all three counts must be nonnegative
+  safe integers and the creation date must be a complete, valid timestamp with
+  an explicit timezone, as in GitHub's
+  [user endpoint](https://docs.github.com/en/rest/users/users#get-a-user).
+  Profile and repository validation share the count and timestamp predicates.
   `tests/portfolio-outcomes.test.mjs` checks the actual loader/API outcome boundary;
   the rendered portfolio contract checks that the API is not prerendered.
   `tests/portfolio-rest.test.mjs` exercises stalled headers and streamed bodies
   against a local HTTP server without calling the providers, including malformed
-  repository fields, optional/null metadata, filtering and ordering. Figma's SDK gets a
+  repository/profile fields, genuine zero counts, optional/null metadata, filtering
+  and ordering. API regressions cover profile failure, uncached recovery and healthy
+  sibling data. Figma's SDK gets a
   fresh native abort signal for each request: three seconds for team projects,
   five for each project's files, and two for file details. These deadlines also
   cancel underlying connections during stalled response bodies. A failed project
