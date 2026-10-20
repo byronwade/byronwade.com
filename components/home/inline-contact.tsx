@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
-import { cn } from "@/lib/utils";
 
 interface InlineContactProps {
 	email: string;
@@ -172,7 +171,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-wrap items-center gap-3">
 						<ObfuscatedEmail className="font-medium text-brand text-sm [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
-						<button type="button" onClick={copyEmail} className={cn(pillLinkClass, "min-h-11")}>
+						<button type="button" onClick={copyEmail} className={pillLinkClass}>
 							{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
 							Copy
 							<span className="sr-only" role="status">
