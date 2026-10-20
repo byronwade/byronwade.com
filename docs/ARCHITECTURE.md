@@ -7,9 +7,10 @@ Tailwind CSS.
 ## Layout
 
 Every page is wrapped by `components/layout/conditional-layout.tsx` (`SiteLayout`),
-which renders a flow header with launcher, wrapping navigation and toolbar, the
-page `main`, and the `Footer`. Content width and gutters come from
-`components/layout/site-shell.tsx`.
+which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
+clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
+with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
+search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
@@ -63,7 +64,7 @@ these cases against a local server.
 
 ```
 components/
-  layout/        # Flow header, footer, site shell, nav dock, toolbar, launcher
+  layout/        # Fixed header, navigation, search, footer, site shell
   home/          # Homepage building blocks
   blog/          # Blog UI
   project/       # Project preview UI
@@ -139,8 +140,11 @@ components/
   sibling data. Figma's SDK gets a
   fresh native abort signal for each request: three seconds for team projects,
   five for each project's files, and two for file details. These deadlines also
-  cancel underlying connections during stalled response bodies. A failed project
-  retains healthy sibling files; details remain usable without a thumbnail.
+  cancel underlying connections during stalled response bodies. The shared SDK
+  client replaces request errors with a fixed error before any cache sees them,
+  keeping Axios authentication headers out of Next's background revalidation logs.
+  A failed project retains healthy sibling files; details remain usable without
+  a thumbnail.
   Team/project list payloads are read as `unknown` despite the SDK's static types.
   Only positive safe numeric IDs or exact decimal string IDs can start project
   requests. File keys use the same single plain path-segment rule as detail requests
@@ -170,10 +174,16 @@ components/
   wrong type rejects the response through the same `null` fallback instead of
   becoming a false count. Malformed page, component or style entries and an invalid
   version are omitted with one generic warning.
+  Only successful detail results enter the two-hour cache. Missing or blank
+  credentials return before the cache, and failed requests or invalid responses
+  reject inside it; the existing `null` page fallback is applied outside, so a
+  transient failure cannot become a cached 404.
   `tests/portfolio-figma.test.mjs` verifies those contracts through the real SDK
   against loopback HTTP, including connection closure, malformed fields/envelopes,
   unsafe list/detail keys, all-invalid team metadata, healthy sibling retention,
-  ordering and list caps.
+  ordering and list caps. Its opt-in cache fixture also checks failure recovery,
+  success reuse across loader instances, per-file isolation and sanitized cache
+  errors without calling live providers.
   Figma failures log the error message rather than Axios request configuration,
   which includes authentication headers.
 - `lib/portfolio-projects.ts`. Static project catalog for `/portfolio/[...slug]`;
