@@ -12,7 +12,7 @@
 
 # next.js
 /.next/
-/out/   
+/out/
 
 # production
 /build
@@ -20,6 +20,8 @@
 # misc
 .DS_Store
 *.pem
+# Task receipts are local verification artifacts, not published repository docs.
+/RESULT.md
 
 # debug
 npm-debug.log*
