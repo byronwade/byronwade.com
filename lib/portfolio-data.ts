@@ -11,6 +11,8 @@ import type { GitHubRepo } from "@/types/github";
 /** Keep the deadline active through JSON body consumption, not only headers. */
 const REST_TIMEOUT_MS = 5000;
 const FIGMA_PROJECT_ID = /^[1-9]\d*$/;
+/** One plain path segment; the SDK concatenates the key into its authenticated request path. */
+const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
 
 /** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
 function createFigmaClient(accessToken: string, timeoutMs: number) {
@@ -114,7 +116,8 @@ function parseFigmaFileSummary(value: unknown): FigmaFile | null {
 	if (
 		!(
 			isRecord(value) &&
-			isNonEmptyString(value.key) &&
+			typeof value.key === "string" &&
+			FIGMA_FILE_KEY.test(value.key) &&
 			isNonEmptyString(value.name) &&
 			isApiTimestamp(value.last_modified) &&
 			(value.thumbnail_url === undefined || isHttpUrl(value.thumbnail_url))
@@ -182,6 +185,10 @@ export const getFigmaFiles = unstable_cache(
 			}
 
 			const projectIds = data.projects.map(parseFigmaProjectId).filter((id) => id !== null);
+			// Nonempty metadata with no usable IDs is a broken response, not an empty team.
+			if (data.projects.length > 0 && projectIds.length === 0) {
+				throw new Error("Invalid Figma team projects response");
+			}
 			if (projectIds.length !== data.projects.length) {
 				console.warn("Ignoring invalid Figma project metadata");
 			}
@@ -298,9 +305,6 @@ function parseFigmaFileDetail(value: unknown): Omit<FigmaFileDetail, "thumbnailU
 		styleCount,
 	};
 }
-
-/** One plain path segment; the SDK concatenates the key into its authenticated request path. */
-const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
 
 export const getFigmaFile = (key: string): (() => Promise<FigmaFileDetail | null>) => {
 	// Rejected before the cache wrapper, so a crafted URL creates no entry or request.
