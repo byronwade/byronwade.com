@@ -1,7 +1,7 @@
 import type React from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
+import { markdownOptions } from "@/lib/markdown";
 import { childrenToText, createSlugger } from "@/lib/markdown-utils";
 import { cn } from "@/lib/utils";
 
@@ -30,8 +30,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 			)}
 		>
 			<ReactMarkdown
-				skipHtml
-				remarkPlugins={[remarkGfm]}
+				{...markdownOptions}
 				rehypePlugins={[rehypeHighlight]}
 				components={{
 					p: ({ children, ...props }) => (

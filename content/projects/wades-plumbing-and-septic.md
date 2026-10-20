@@ -65,7 +65,7 @@ The content targets two types of keywords:
 
 ### Performance as a Ranking Factor
 
-By using a custom Tailwind build instead of bloated page builders, I prioritized **Core Web Vitals** (LCP, CLS, FID). Mobile page speed is a massive ranking factor for local service businesses where 80% of traffic comes from phones. Google rewards fast sites, and so do customers.
+By using a custom Tailwind build instead of bloated page builders, I prioritized **Core Web Vitals** (LCP, CLS, FID). Page experience is one of the signals Google uses in ranking, and many people looking for a local plumber are on a phone when something has just gone wrong. A fast page serves them, and it helps the listing.
 
 ---
 

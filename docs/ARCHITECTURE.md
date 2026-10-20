@@ -11,6 +11,16 @@ which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
 clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
 with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
 search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
+On extra-wide screens a breadcrumb sits beside the header; its trail
+(`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
+links only parent paths that are real pages, and names Figma files "Design file"
+because the file name is page-owned data. That page's own trail is named
+"Design file breadcrumb" so its navigation landmark is distinct from the shared
+"Breadcrumb" landmark when both are visible. URLs that are not pages show no
+trail: the static 404 is prerendered at `/_not-found` and hydrates at the
+visitor's URL, so any label taken from the path would differ between the two.
+For the same reason `NavDock` marks no section current when the root segment is
+`_not-found`; otherwise `/blog/missing` would highlight "Blog" in the browser only.
 
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
@@ -28,9 +38,9 @@ the header.
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |
-| `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`) |
+| `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`). Both slug routes set `dynamicParams = false`: only loader slugs are pages, so unknown slugs and production drafts get the static 404 (status 404, `noindex`, `no-store`) instead of a streamed 200 that `next start` would cache (`tests/rendered/missing-content.test.mjs`) |
 | `/portfolio`, `/portfolio/figma/[key]` | Live GitHub portfolio and Figma viewer. The retired 2024 Thorbis pitch pages (`/portfolio/thorbis`, `-ai`, `-mobile`) redirect permanently to `/projects/thorbis` (`next.config.js`; checked by `tests/rendered/legacy-portfolio.test.mjs`) |
-| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`) |
+| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`); same 404 contract as projects. Development rebuilds the slug list per request, so drafts still preview |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
@@ -75,6 +85,13 @@ components/
 
 ## Data
 
+- Markdown rendering and project contents share CommonMark/GFM options in
+  `lib/markdown.ts`. Contents walk the installed renderer's element tree and
+  reuse `lib/markdown-utils.ts` text extraction and slug allocation, including
+  headings inside containers and setext headings. Parser dependencies stay out
+  of the date utility module used by client components. Renderer-agreement
+  regressions cover grammar edge cases and every authored blog/project file in
+  `tests/markdown-headings.test.mjs`.
 - `/portfolio` keeps its eight-second client deadline active through response
   headers and JSON consumption. A timeout ends loading or refreshing and shows
   the existing retry/profile recovery; the profile action retains link semantics.

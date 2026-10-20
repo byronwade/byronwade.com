@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { after, test } from "node:test";
 import { renderFigmaDetail, renderMissingFigmaDetail } from "./fixtures/figma-detail.mjs";
 
-const BREADCRUMB = /<nav\b[^>]*aria-label="Breadcrumb"[^>]*>(.*?)<\/nav>/s;
+const BREADCRUMB = /<nav\b[^>]*aria-label="Design file breadcrumb"[^>]*>(.*?)<\/nav>/s;
 const CURRENT_FILE = /aria-current="page"[^>]*>Design &lt;draft&gt; &amp; review<\/span>/;
 const DESIGN_HEADING = /<h2\b[^>]*>Design File<\/h2>/;
 const COMPONENT_HEADING = /<h3\b[^>]*>Primary button<\/h3>/;
@@ -53,6 +53,14 @@ test("breadcrumb identifies ordered parents and the current file", async () => {
 	assert.ok(nav.includes('href="/portfolio"'));
 	assert.ok(!nav.includes("tab=figma"), "the repository index no longer has a Figma tab");
 	assert.match(nav, CURRENT_FILE);
+});
+
+test("site and design file breadcrumbs have distinct landmark names", async () => {
+	const html = await renderFigmaDetail({}, { includeSiteBreadcrumb: true });
+	const names = [...html.matchAll(/<nav\b[^>]*aria-label="([^"]+)"/g)].map(([, name]) => name);
+	assert.equal(names.length, 2, "the shared trail and the page trail must both be present");
+	assert.equal(new Set(names).size, names.length, "different trails need different landmark names");
+	assert.ok(names.includes("Design file breadcrumb"));
 });
 
 test("populated file has one title and sequential section/component headings", async () => {

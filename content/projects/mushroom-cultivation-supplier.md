@@ -24,35 +24,33 @@ Zugzology is an e-commerce platform for mushroom cultivation supplies. It is a r
 
 Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represents a modern approach to e-commerce:
 
-**Server Components by Default**: Leveraging React Server Components for optimal performance and SEO. Less JavaScript sent to the browser, faster initial page loads, better search engine visibility.
+**Server Components by Default**: React Server Components run on the server without shipping their component code to the browser. Loading still depends on the data requests, assets, and client components each page needs.
 
 **Shopify Storefront API Integration**: Seamless connection to Shopify's powerful e-commerce infrastructure. I get the benefits of Shopify's payment processing, inventory management, and order fulfillment without being locked into their templates.
 
-**Enterprise AI/ML System**: Multi-provider AI integration (OpenAI, Anthropic Claude, Groq) for intelligent product recommendations, behavior analysis, and predictive analytics. The same system that recommends products today will predict crop yields tomorrow.
+**Rule-Based Product Ranking**: Product lists are ordered by a simple, transparent score built from stock, price tier, recency, and a featured flag. An earlier version of the store had an experimental AI layer (OpenAI, Anthropic Claude, Groq) for recommendations and behavior analysis. I removed it in an October 2025 restructure, and the current store does not depend on any AI provider.
 
 **Dynamic Page Builder**: A flexible, metaobject-based system that allows merchants to create custom pages without touching code. This extensibility is built into the architecture from day one.
 
-**Progressive Loading Architecture**: Streaming sections that load independently, ensuring instant page interactivity. Users see the page shell immediately, then content streams in as it becomes available.
+**Progressive Loading Architecture**: Sections stream independently, so the page shell can render while other content is still loading. Streaming alone does not guarantee when a page becomes interactive.
 
-**Advanced Caching Strategy**: Multi-layer caching system that reduces database queries by 80% and improves load times by 70-80%. This performance obsession will be critical when handling real-time sensor data from fields.
+**Advanced Caching Strategy**: Multi-layer caching reuses product data between requests. This case study does not include a reproducible benchmark for query reductions or load-time improvements, so I describe the approach without assigning it a percentage gain.
 
 ### Key Features
 
 **For Customers:**
-- Lightning-fast product browsing with intelligent search
-- Personalized recommendations powered by AI
+- Product browsing with search
+- Product lists that favor in-stock, recent, and featured items
 - Authentication through Shopify Customer Accounts
 - Wishlist functionality with batch loading
 - Real-time inventory and pricing
 - Expert growing guides and educational content
 
 **For Business:**
-- Comprehensive analytics and performance monitoring
+- Typed analytics events and a Web Vitals reporting route
 - SEO-optimized with dynamic Open Graph images
-- A/B testing capabilities
-- Real-time sentiment analysis
-- Market basket analysis for cross-selling
-- User segmentation and behavioral clustering
+- Product feeds for Google Merchant Center and Facebook
+- A degraded mode that keeps navigation working when Shopify is unreachable
 
 ---
 
@@ -88,14 +86,11 @@ Every feature in Zugzology is designed with extensibility in mind. The architect
 **Data Collection & Analytics:**
 - User behavior tracking
 - Product performance metrics
-- Seasonal demand patterns
-- Customer segmentation
 - Purchase history and preferences
 
-**AI/ML Capabilities:**
-- Predictive analytics (currently for product recommendations, but the same system can predict crop yields)
-- Behavior analysis (currently for shopping patterns, but adaptable for cultivation behavior)
-- Pattern recognition (currently for market basket analysis, but extensible to growth pattern analysis)
+**Product Ranking:**
+- A transparent score (stock, price tier, recency, featured) that decides product order
+- Plain rules in place of the AI recommendations an earlier version experimented with
 
 **Real-time Processing:**
 - Streaming data architecture
@@ -103,7 +98,7 @@ Every feature in Zugzology is designed with extensibility in mind. The architect
 - Edge computing capabilities
 - Real-time inventory management
 
-All of these capabilities are directly transferable to field management. The same AI that recommends products can predict optimal harvest times. The same analytics system that tracks sales can monitor crop health. The same real-time architecture that updates inventory can update field conditions.
+Parts of this could carry over to field management. The analytics that track shopping could be extended to cultivation activity, and the real-time architecture that updates inventory could update field conditions. Predicting harvest times or yields would be new work, because the store has no prediction system today.
 
 ### 4. Establishing Market Presence and Trust
 
@@ -129,32 +124,27 @@ The product catalog in Zugzology already contains the seeds of field management 
 
 The data structures are already there, they just need to be extended with field-specific attributes.
 
-### 2. Proven Scalability
+### 2. Designed to Scale
 
-Zugzology is built to handle:
-- Thousands of products
+Zugzology is designed for:
+- A growing product catalog
 - Real-time inventory updates
 - Complex filtering and search
-- High traffic loads
+- Many visitors at once
 - Concurrent user sessions
 
-These same capabilities are essential for field management:
+This write-up doesn't include load-test results, so the list describes what the design is meant to handle, not a measured capacity. These same capabilities are essential for field management:
 - Multiple field locations
 - Real-time sensor data
 - Complex querying of historical data
 - Multiple users accessing the same data
 - High-frequency data updates from IoT devices
 
-### 3. AI/ML Infrastructure Already in Place
+### 3. The AI Experiment I Removed
 
-The enterprise AI system I've built for Zugzology includes:
+An earlier version of Zugzology had an experimental AI layer. It had routes for product recommendations, behavior analysis, demand forecasting, sentiment analysis, and user segmentation, backed by OpenAI, Anthropic Claude, or Groq, with a statistical fallback when no provider key was set.
 
-- **Collaborative Filtering**: Currently recommends products, but can recommend optimal growing conditions based on similar growers' success
-- **Time Series Forecasting**: Currently predicts product demand, but can predict crop yields and optimal harvest windows
-- **Sentiment Analysis**: Currently analyzes shopping behavior, but can analyze grower satisfaction and identify problem areas
-- **Market Basket Analysis**: Currently finds product relationships, but can identify which growing conditions correlate with successful harvests
-
-The infrastructure is there, it just needs different training data.
+I removed that code in an October 2025 restructure, and the current store ranks products with plain rules instead. Predicting yields or harvest windows for field management would need to be designed and validated on its own, not retrained from something the store already runs.
 
 ### 4. User Experience Patterns
 
@@ -192,7 +182,7 @@ These same skills are needed for field management integrations:
 
 ✅ Product catalog and sales
 ✅ Customer accounts and authentication
-✅ AI-powered recommendations
+✅ Rule-based product ranking
 ✅ Analytics and insights
 ✅ Educational content
 
@@ -240,11 +230,11 @@ TypeScript ensures that as the data model evolves, all code remains type-safe. A
 
 ### Caching & Performance
 
-The multi-layer caching system can be extended to cache field data, sensor readings, and analytics results, ensuring the system remains fast as data volume grows.
+Caching field data, sensor readings, or analytics results would require decisions about freshness, invalidation, and data volume. The store's caching approach is a starting point to evaluate, rather than evidence of how a field management system would perform.
 
 ### Real-time Capabilities
 
-The streaming architecture can handle real-time sensor data just as easily as it handles real-time inventory updates.
+Streaming page content and ingesting sensor updates have different requirements. Sensor data would need its own ingestion, storage, and delivery design, with testing under representative update rates.
 
 ---
 
@@ -254,13 +244,13 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 
 ### Performance at Scale
 
-- **Challenge**: Initial product loading was slow (8+ seconds)
+- **Challenge**: Waiting for product data delayed the initial page content
 - **Solution**: Implemented progressive loading and intelligent caching
 - **Application**: Field data will load progressively, with critical metrics first
 
 ### Data Management
 
-- **Challenge**: Product data exceeded cache limits (2MB+)
+- **Challenge**: Product data needed to be split into smaller cache entries
 - **Solution**: Segmented caching and data pagination
 - **Application**: Field sensor data will be segmented by location and time period
 
@@ -273,8 +263,8 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 ### AI Integration
 
 - **Challenge**: Multiple AI providers with different capabilities
-- **Solution**: Fallback systems and provider abstraction
-- **Application**: Field predictions will use the same AI infrastructure
+- **Solution**: Fallback systems and provider abstraction, then removing the AI layer in October 2025 in favor of a transparent rule-based ranker
+- **Application**: Field predictions will need their own design and validation
 
 ---
 
@@ -283,10 +273,10 @@ Building Zugzology has taught me invaluable lessons that will directly benefit t
 By building Zugzology first, the eventual field management system will have unique advantages:
 
 1. **Real Customer Data**: Not theoretical use cases, but actual patterns from real cultivators
-2. **Proven Technology**: Battle-tested architecture that's already handling production traffic
+2. **Working Technology**: A storefront architecture that is already built and deployed
 3. **Integrated Ecosystem**: E-commerce and operations in one platform, not separate systems
 4. **Community Trust**: Established brand and relationships in the cultivation community
-5. **Revenue Model**: Self-sustaining through e-commerce, not dependent on venture funding
+5. **Revenue Model**: Meant to fund development through e-commerce sales rather than venture funding
 
 ---
 
