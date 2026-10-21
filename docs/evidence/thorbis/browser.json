@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-21T08:38:39.779Z",
-  "chrome": "Chrome/155.0.8059.80",
+  "checkedAt": "2026-10-21T11:31:40.681Z",
+  "chrome": "Chrome/155.0.8059.85",
   "source": "46b6654d02fda9d8fde737395185c3141df52cd2",
   "axe": "4.10.3",
   "cases": [
@@ -2202,7 +2202,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.206423) 0px 0px 0px 0.619268px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.21311) 0px 0px 0px 0.63933px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2298,7 +2298,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.21311) 0px 0px 0px 0.63933px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.398124) 0px 0px 0px 1.19437px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2466,7 +2466,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.268948) 0px 0px 0px 0.806843px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.209769) 0px 0px 0px 0.629308px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false
@@ -2562,7 +2562,7 @@
           "label": "Start a conversation",
           "outline": "solid",
           "outlineWidth": "2px",
-          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.40103) 0px 0px 0px 1.20309px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.558 -0.0183456 -0.187103 / 0.209769) 0px 0px 0px 0.629308px, oklab(0.224 0.00432624 0.0133148 / 0.16) 0px 0px 0px 1px inset, oklab(0.968 0.000846975 0.00896006 / 0.4) 0px 1px 0px 0px inset, oklab(0.224 0.00432624 0.0133148 / 0.1) 0px 1px 1px 0px",
           "inViewport": true,
           "inert": false,
           "obscuredByHeader": false

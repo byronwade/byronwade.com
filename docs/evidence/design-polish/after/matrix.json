@@ -1,6 +1,6 @@
 {
   "phase": "after",
-  "head": "87fb4641afa38291372626e603e2cdcbfc9c3ae9",
+  "head": "73632939712dfb80bdc02daa5bef16695a5e0053",
   "cases": [
     {
       "name": "home",
@@ -3649,5 +3649,5 @@
       "file": "post-technical-1440-dark.png"
     }
   ],
-  "chrome": "Chrome/155.0.8059.80"
+  "chrome": "Chrome/155.0.8059.85"
 }
