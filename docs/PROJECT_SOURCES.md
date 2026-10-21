@@ -350,6 +350,47 @@ unchanged; the excerpt now matches the corrected body. The front matter's
 write-up's own heading asks "Why Build a CMS in 2024?", so the right date is a
 question for Byron. The repository has no license file.
 
+## Project destination availability, October 21, 2026
+
+All 16 project front-matter `url` destinations were requested with HTTP GET,
+following redirects, on October 21, 2026. These checks establish availability
+at that time, not feature completeness or the accuracy of the case studies.
+
+| Project | Destination | Result |
+| --- | --- | --- |
+| byronwade/ui | [ui.byronwade.com](https://ui.byronwade.com) | 200 |
+| Ciel | `https://ciel.byronwade.com` | 404, Vercel `DEPLOYMENT_NOT_FOUND`, confirmed by a second GET |
+| Dits | [dits.byronwade.com](https://dits.byronwade.com) | 200 |
+| Fakebase | [fakebase.byronwade.com](https://fakebase.byronwade.com) | 200 |
+| Goodmarks | [goodmarks.io](https://goodmarks.io) | 200 |
+| Impact Marine Group | [impactmarinegroup.com](https://impactmarinegroup.com) | 403, bot challenge; retained, not classified as a dead deployment |
+| Memoria | [memoria.byronwade.com](https://memoria.byronwade.com) | 200 |
+| Mushroom Cultivation Supplier | [zugz.byronwade.com](https://zugz.byronwade.com) | 200 |
+| ReactPress | [reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin) | 200 |
+| Rebuzzle | [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) | 200 |
+| SignalRoute | [getsignalroute.com](https://getsignalroute.com) | 200 |
+| Stream | [stream.byronwade.com](https://stream.byronwade.com) | 200 |
+| Thorbis Design | [design.thorbis.com](https://design.thorbis.com) | 200 |
+| Thorbis | [thorbis.com](https://thorbis.com) | 200 |
+| Wade's Plumbing and Septic | [wadesplumbingandseptic.com](https://wadesplumbingandseptic.com) | 200 after redirect to `www` |
+| Wormhole | [wormhole.byronwade.com](https://wormhole.byronwade.com) | 200 |
+
+Ciel's [public repository](https://github.com/byronwade/ciel.byronwade.com)
+returned 200. Its repository metadata lists `https://cielbyronwadecom.vercel.app`
+as the homepage, but that address also returned 404 with `DEPLOYMENT_NOT_FOUND`.
+The README at [`9493ede`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/README.md)
+identifies the project as a frontend prototype with mock data and stubbed auth.
+Only the dead demo reference was changed: the optional front-matter `url` is
+removed and the closing invitation now links to the source with a dated
+availability note. This reuses the project page's existing Source action and
+omits its Visit action and screenshot preview. No project route, date,
+classification, layout, or feature claim was changed.
+
+Impact Marine's challenge was not treated as evidence of a dead site. Its
+[public page](https://www.impactmarinegroup.com/), also checked through a separate
+web reader, still presents the dealership. No bypass was attempted and its link
+was retained.
+
 ## Fakebase API and export claims, October 21, 2026
 
 `content/projects/fakebase.md` was added in `801a940` (June 2, 2026,
