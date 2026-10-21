@@ -118,7 +118,7 @@ export default async function ProjectsPage() {
 						title="Projects"
 					/>
 
-					<div className="reveal reveal-delay-1 w-full">
+					<div className="w-full">
 						<ProjectsList />
 					</div>
 				</div>
