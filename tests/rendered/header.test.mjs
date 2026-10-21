@@ -249,18 +249,29 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			);
 
 			await t.test("Tab and Shift+Tab stay inside the panel; Escape returns focus", async () => {
+				// Past the last control, Tab lands on Base UI's focus-guard span, which
+				// moves focus back into the panel on its own focus event. Sampling the
+				// active element synchronously raced that redirect and failed on main
+				// as well. Waiting is not lenient: focus that escapes to the page never
+				// returns, so the wait still times out on a broken trap.
+				const focusInsidePanel = () =>
+					page.waitForFunction(
+						(selector) => document.querySelector(selector)?.contains(document.activeElement),
+						{ timeout: 1000 },
+						PANEL
+					);
 				await Array.from({ length: 12 }).reduce(
 					(steps) =>
 						steps.then(async () => {
 							await page.keyboard.press("Tab");
-							assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
+							await focusInsidePanel();
 						}),
 					Promise.resolve()
 				);
 				await page.keyboard.down("Shift");
 				await page.keyboard.press("Tab");
 				await page.keyboard.up("Shift");
-				assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
+				await focusInsidePanel();
 				await page.keyboard.press("Escape");
 				await page.waitForSelector(PANEL, { hidden: true });
 				await page.waitForFunction(
