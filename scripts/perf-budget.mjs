@@ -1,10 +1,12 @@
 import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
 import puppeteer from "puppeteer-core";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
 await withProductionServer(async (url) => {
 	const browser = await puppeteer.launch({
 		executablePath:
@@ -45,8 +47,8 @@ await withProductionServer(async (url) => {
 				failures.push(`${resourceType} count: ${value} > ${budget}`);
 			}
 		}
-		mkdirSync("docs/evidence/thorbis", { recursive: true });
-		writeEvidenceJson("docs/evidence/thorbis/performance.json", {
+		mkdirSync(destination, { recursive: true });
+		writeEvidenceJson(`${destination}/performance.json`, {
 			score: lhr.categories.performance.score,
 			lighthouseVersion: lhr.lighthouseVersion,
 			diagnostics: Object.fromEntries(
@@ -67,6 +69,6 @@ await withProductionServer(async (url) => {
 			throw new Error("Performance budget exceeded");
 		}
 	} finally {
-		await browser.close();
+		await closeBrowser(browser, { diagnostic: console.log });
 	}
 });

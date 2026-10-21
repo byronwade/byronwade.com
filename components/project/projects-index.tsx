@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
@@ -80,13 +80,13 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 				const carriesEvidence = Boolean(project.featured || project.flagship);
 
 				return (
-					<IndexRow key={project.slug}>
+					<li key={project.slug}>
 						<Link
 							className={cn(indexRowLinkClass, "focus-ring")}
 							href={`/projects/${project.slug}`}
 						>
 							<div className="flex items-center gap-4">
-								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
+								<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
 									<span
 										className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
 									>
@@ -99,7 +99,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 										/>
 									)}
 									{project.tagline && (
-										<span className="hidden truncate text-copy-14 text-muted-foreground sm:inline">
+										<span className="hidden text-copy-14 text-muted-foreground sm:inline">
 											{project.tagline}
 										</span>
 									)}
@@ -129,7 +129,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 								</div>
 							)}
 						</Link>
-					</IndexRow>
+					</li>
 				);
 			})}
 		</IndexList>

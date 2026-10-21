@@ -15,17 +15,21 @@ export function ReadingProgress() {
 			const documentHeight = document.documentElement.scrollHeight;
 			const scrollTop = window.scrollY || document.documentElement.scrollTop;
 			const scrollableHeight = documentHeight - windowHeight;
-			const scrolled = scrollTop / scrollableHeight;
+			// A short or still-hydrating document has no scroll range yet.
+			const scrolled = scrollableHeight > 0 ? scrollTop / scrollableHeight : 0;
 			setProgress(Math.min(Math.max(scrolled * 100, 0), 100));
 		};
 
-		// Update on scroll
+		const observer = new ResizeObserver(updateProgress);
+		observer.observe(document.body);
 		window.addEventListener("scroll", updateProgress, { passive: true });
-		// Initial update
+		window.addEventListener("resize", updateProgress);
 		updateProgress();
 
 		return () => {
+			observer.disconnect();
 			window.removeEventListener("scroll", updateProgress);
+			window.removeEventListener("resize", updateProgress);
 		};
 	}, []);
 
@@ -39,7 +43,7 @@ export function ReadingProgress() {
 			aria-label="Reading progress"
 		>
 			<div
-				className="h-full w-full origin-left bg-brand transition-transform"
+				className="h-full w-full origin-left bg-brand"
 				style={{ transform: `scaleX(${progress / 100})` }}
 			/>
 		</div>

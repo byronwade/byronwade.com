@@ -30,7 +30,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div
 			className={cn(
-				"relative flex min-w-full shrink-0 flex-col gap-5 font-normal text-body text-copy-16",
+				"relative flex min-w-0 flex-col gap-5 font-normal text-body text-copy-16",
 				className
 			)}
 		>
@@ -55,7 +55,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 								href={linkHref}
 								target={isExternal ? "_blank" : undefined}
 								rel={isExternal ? "noopener noreferrer" : undefined}
-								className="link-underline font-medium"
+								className="link-underline wrap-break-word font-medium"
 								{...props}
 							>
 								{children}

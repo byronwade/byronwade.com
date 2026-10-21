@@ -45,7 +45,7 @@ export default function ContactClient() {
 								id="name"
 								name="name"
 								onChange={(e) => handleChange("name", e.target.value)}
-								placeholder="Jordan Lee"
+								placeholder="Alex Rivera…"
 								required
 								value={formData.name}
 							/>
@@ -120,7 +120,7 @@ export default function ContactClient() {
 									e.currentTarget.form?.requestSubmit();
 								}
 							}}
-							placeholder="Tell me a little about what you’re working on…"
+							placeholder="I’d like to talk about a project…"
 							required
 							rows={8}
 							value={formData.message}
@@ -135,16 +135,11 @@ export default function ContactClient() {
 					<div className="flex flex-wrap items-center gap-4">
 						<Button className="gap-2" disabled={isSubmitting} type="submit">
 							{isSubmitting ? (
-								<>
-									<Loader2 aria-hidden="true" className="size-4 animate-spin" />
-									Send message
-								</>
+								<Loader2 aria-hidden="true" className="size-4 animate-spin" />
 							) : (
-								<>
-									<Send aria-hidden="true" className="size-4" />
-									Send message
-								</>
+								<Send aria-hidden="true" className="size-4" />
 							)}
+							Send message
 						</Button>
 
 						{/* Persistent outcome, announced. The toast is the echo, not the record. */}

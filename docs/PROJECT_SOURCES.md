@@ -272,3 +272,172 @@ The 2024-12-01 date is left as-is: the repository was created 2024-07-11, so it
 may be the project date rather than the write-up date (question for Byron).
 No Rebuzzle code was run, no account was used and production configuration was
 not inspected.
+
+## ReactPress stack and capability claims, October 21, 2026
+
+`content/projects/reactpress.md` was added as a short entry in `584c39b`
+(2025-12-01) and expanded into the current write-up in `ef54a5a` (2025-12-02).
+Its claims were checked against
+[byronwade/reactpress.byronwade.com](https://github.com/byronwade/reactpress.byronwade.com)
+(the old `byronwade/ReactPress` address redirects there) at `main`
+[`64b56a8`](https://github.com/byronwade/reactpress.byronwade.com/commit/64b56a835f654e219cdcb9d676a1dc77d247db1a)
+(2025-06-21), which is still the latest commit on `main`, and against
+[reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin),
+accessed October 21, 2026. All 63 source files at that commit were downloaded and
+searched; nothing was installed or run.
+
+| Claim | Source at `64b56a8` | Correction |
+| --- | --- | --- |
+| Next.js 15 (excerpt, body, roadmap, performance section) | `package.json`: `next ^14.2.30`, `react ^18.3.1`, `typescript ^4.9.5`. `next ^15.3.4` was tried in `379f5f6` and `839b6cb` (2025-06-20) and reverted to 14 in `6371112` the same evening. The repo's own README and page metadata still say Next.js 15. | Next.js 14 throughout, excerpt included. |
+| Bun "for package management and runtime" | `bun.lockb` and `package-lock.json` are both committed; every script calls `next` directly. | Bun or npm for installs; no runtime claim. |
+| "Faithfully recreates every aspect … from the post editor to the settings pages. Every pixel, every interaction, every workflow" | 39 `page.tsx` routes under `src/app/rp-admin`, mostly static WordPress markup styled by a copied 18,664-line `rp-admin/index.css`. `posts/post-new` and `pages/page-new` render only "this is the posts bilder page" (also live); the block editor code is commented out and the `@wordpress/*` packages are imported only in those comments. | The 39 screens are listed; the editor is described as a placeholder. |
+| "A working alternative" / "a functional admin interface" | No `fetch`, API route or data store in `src`. `utils/setup.js` only logs "Setting up database..."; its MongoDB/Firebase code is commented out. `utils/provider.js` wraps SWR and Recoil but nothing mounts it. | Screens on `main` render but do not load or save anything. |
+| API-first design that "works with any backend" | As above. | Kept as the plan; stated that `main` has no data layer. |
+| CSS conversion to Tailwind "currently in progress" | Tailwind is configured, but the screens use WordPress class names and the copied stylesheet. No commits on `main` after 2025-06-21. | Unfinished on `main`. |
+| "Fast"; performance "needed for real-world field operations"; "6–12 months" to build an admin | No benchmark or source in the repo. The README's "5x faster than traditional WordPress admin" has no measurement behind it either. | Removed; the write-up says no speed was measured. |
+| "Open source" | GitHub reports no license and there is no license file, although the README shows an MIT badge. | "Public on GitHub" with no license file. |
+| Reusable dashboard widget and form components | Shared components are the sidebar, toolbar, footer, screen-options toggle and list table. The dashboard (`rp-admin/page.tsx`, 541 lines) and settings forms are inline. | Says which pieces are shared and that extracting the rest is still to do. |
+
+Two unmerged branches were pushed on 2026-06-11 and 06-12, after the write-up:
+`claude/admiring-goldberg-c6t9fl` (28 commits ahead of `main`: dead-CSS removal,
+`rp-admin/index.css` trimmed from 18,664 to 9,839 lines, admin shell converted to
+Tailwind) and `claude/lucid-cannon-fujppo` (17 ahead: a Fakebase mock backend
+wired to the users, posts, pages, comments, plugins, categories, tags, media,
+dashboard and General Settings screens; the editors stay placeholders). Only their
+commit lists were read. The write-up mentions them as unmerged work and makes no
+claim about how well they work.
+
+Byron's motivation and the field-management-system framing are kept as intent,
+reworded where they described unbuilt work as existing. Title, URL, archived
+grouping, front-matter keys and headings are unchanged. The front matter's
+2024-01-01 date is left as-is: the repository was created 2023-03-04 and most
+work landed in March and October 2023, October 2024 and June 2025, so the right
+date is a question for Byron.
+
+## Content Management System prototype claims, October 21, 2026
+
+`content/projects/content-management-system.md` was added as a short entry in
+`584c39b` (2025-12-01) and expanded into the current write-up in `ef54a5a`
+(2025-12-02). Its claims were checked against
+[byronwade/cms.byronwade.com](https://github.com/byronwade/cms.byronwade.com)
+at `main` [`8353417`](https://github.com/byronwade/cms.byronwade.com/commit/8353417acc1264355b73177cd6882c98d1a122e6)
+(2025-12-02 03:08 UTC), the latest of its 16 commits and four minutes older than
+`584c39b`; its other branches have nothing `main` lacks. The previous commit,
+`8b7a050`, moved it from Next.js 15 to 16. Of the 22 files that changed between
+the two, most are formatting and lint fixes plus a landing-page rewrite; the only
+file cited below that changed is `app/cms/build/page.tsx` (+10/−4), which was read
+at `8353417`. Nothing was
+installed or run, so interactive behavior comes from reading the code. The
+repository README at that commit calls the project "entirely a design-only demo"
+in which "All data is fake".
+
+| Claim | Source at `8353417` | Correction |
+| --- | --- | --- |
+| "Visit cms.byronwade.com"; front-matter `url` `https://cms.byronwade.com/cms/build` | On October 21, 2026, `/`, `/cms/build` and four other paths returned 404 with `X-Vercel-Error: DEPLOYMENT_NOT_FOUND`. | `url` removed, so the page no longer shows a dead Visit link or live preview. The body links the repository instead, which gives the page a Source button. |
+| "Currently in active development" | No commits after 2025-12-02; most of the work landed 2024-12-20 to 12-29. | Front-end prototype, stopped December 2025. |
+| Zero JavaScript by default; data fetched in Server Components "without exposing API endpoints" | `app/cms/layout.tsx` and every working `app/cms/**` screen start with `"use client"`. The content editor (`app/cms/content/[...slug]/page.tsx`) calls `fetch('/api/content/…')`, and `app/api/content/[...slug]/route.ts` reads and writes JSON files. Server-rendered pages: landing, `analytics/overview` and three redirects. | Kept as the plan, with a statement that the prototype did not get there. |
+| Schema builder: create tables by drag and drop; export schemas | `app/cms/build/page.tsx` (ReactFlow): tables come from hard-coded `initialNodes`. The drop handler adds AI nodes for `application/aiflow` data, which is all the sidebar sets. `components/build/header.tsx`'s Add Table button is not rendered anywhere, and nothing dispatches `build:addTable`. No export or SQL generation exists. Add Field, data types and `onConnect` relationships exist. | Lists what works; adding tables and export are named as not wired up. |
+| Media management, analytics dashboard, publishing as working features (Phase 1 checklist) | Upload progress is simulated with `setTimeout` (`components/media/upload-dialog.tsx`); analytics use `Math.random()` (`lib/nodes/analytics/MetricsNode.ts`); the publish board is filled with hard-coded items. | Checklist and FMS mappings say these run on sample data. "Performance optimizations" removed from the checklist (no measurement). |
+| Radix "ensuring WCAG compliance" | No audit or accessibility tests; no tests at all. | Described as a starting point that was never audited. |
+| "Easy dark/light mode switching"; Zustand "DevTools support" | `<html className="dark">` is hard-coded; `next-themes` is installed but no ThemeProvider is mounted. The three Zustand stores do not use the devtools middleware. | Dark by default with no switch; DevTools bullet removed. |
+| Next.js 16 throughout | `next ^16.0.0` only from `8b7a050` (2025-12-01); Next.js 15 before that. | Next.js 16 since December 2025, started on 15. |
+| "Built on a foundation that's already proven its worth" | Prototype on sample data, deployment gone. | Now "built on what this prototype taught me". |
+
+Byron's reasons, the FMS mappings, the agriculture context, the roadmap and the
+lessons are kept as intent. Title, category, archived grouping and headings are
+unchanged; the excerpt now matches the corrected body. The front matter's
+2023-08-01 date is left as-is, but the repository was created 2024-12-20 and the
+write-up's own heading asks "Why Build a CMS in 2024?", so the right date is a
+question for Byron. The repository has no license file.
+
+## Project destination availability, October 21, 2026
+
+All 16 project front-matter `url` destinations were requested with HTTP GET,
+following redirects, on October 21, 2026. These checks establish availability
+at that time, not feature completeness or the accuracy of the case studies.
+
+| Project | Destination | Result |
+| --- | --- | --- |
+| byronwade/ui | [ui.byronwade.com](https://ui.byronwade.com) | 200 |
+| Ciel | `https://ciel.byronwade.com` | 404, Vercel `DEPLOYMENT_NOT_FOUND`, confirmed by a second GET |
+| Dits | [dits.byronwade.com](https://dits.byronwade.com) | 200 |
+| Fakebase | [fakebase.byronwade.com](https://fakebase.byronwade.com) | 200 |
+| Goodmarks | [goodmarks.io](https://goodmarks.io) | 200 |
+| Impact Marine Group | [impactmarinegroup.com](https://impactmarinegroup.com) | 403, bot challenge; retained, not classified as a dead deployment |
+| Memoria | [memoria.byronwade.com](https://memoria.byronwade.com) | 200 |
+| Mushroom Cultivation Supplier | [zugz.byronwade.com](https://zugz.byronwade.com) | 200 |
+| ReactPress | [reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin) | 200 |
+| Rebuzzle | [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) | 200 |
+| SignalRoute | [getsignalroute.com](https://getsignalroute.com) | 200 |
+| Stream | [stream.byronwade.com](https://stream.byronwade.com) | 200 |
+| Thorbis Design | [design.thorbis.com](https://design.thorbis.com) | 200 |
+| Thorbis | [thorbis.com](https://thorbis.com) | 200 |
+| Wade's Plumbing and Septic | [wadesplumbingandseptic.com](https://wadesplumbingandseptic.com) | 200 after redirect to `www` |
+| Wormhole | [wormhole.byronwade.com](https://wormhole.byronwade.com) | 200 |
+
+Ciel's [public repository](https://github.com/byronwade/ciel.byronwade.com)
+returned 200. Its repository metadata lists `https://cielbyronwadecom.vercel.app`
+as the homepage, but that address also returned 404 with `DEPLOYMENT_NOT_FOUND`.
+The README at [`9493ede`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/README.md)
+identifies the project as a frontend prototype with mock data and stubbed auth.
+Only the dead demo reference was changed: the optional front-matter `url` is
+removed and the closing invitation now links to the source with a dated
+availability note. This reuses the project page's existing Source action and
+omits its Visit action and screenshot preview. No project route, date,
+classification, layout, or feature claim was changed.
+
+Impact Marine's challenge was not treated as evidence of a dead site. Its
+[public page](https://www.impactmarinegroup.com/), also checked through a separate
+web reader, still presents the dealership. No bypass was attempted and its link
+was retained.
+
+## Fakebase API and export claims, October 21, 2026
+
+`content/projects/fakebase.md` was added in `801a940` (June 2, 2026,
+23:53:25 UTC), with a front-matter date of May 30. The old source URL,
+`byronwade/fakebase`, returns 404; the public repository is
+[byronwade/fakebase.byronwade.com](https://github.com/byronwade/fakebase.byronwade.com).
+Its available main history begins with
+[`758e902`](https://github.com/byronwade/fakebase.byronwade.com/commit/758e902b3c3bc246efc1a6d857fcf389b0b388bf)
+(June 3, 00:08:39 UTC), after the write-up was added. The API query for commits
+before the write-up returned none. This review therefore corroborates later public
+implementation, not the state on the article's original date.
+
+Implementation was inspected at latest main
+[`2f60fe6`](https://github.com/byronwade/fakebase.byronwade.com/commit/2f60fe695ca0cac03e18f954a231ca446fb3479c)
+(June 3, 2026, 04:04:25 UTC). Source files were read without installing or running
+Fakebase. No live Supabase migration, performance comparison, deployment parity,
+package publication or passing upstream test run was established.
+
+| Claim | Pinned source and correction |
+| --- | --- |
+| MIT, free and actively maintained flagship | The [license](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/LICENSE) supports MIT. Ongoing maintenance and commercial-grade operation are not established; copy now states why Byron made it available. Archived remains this site's editorial grouping, not GitHub's repository flag. |
+| Complete Supabase-compatible client including `rpc` | The [client interface and factory](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/create-client.ts) have no `rpc` method; the URL and key are ignored in favor of a required kernel. The [kernel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/core/src/kernel.ts) invokes a local JavaScript function registry. Copy says Supabase-shaped, with partial compatibility. |
+| Everything runs in memory; auth and storage reproduce production services | The [memory factory](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-memory/src/memory-adapter.ts) wires local auth and filesystem storage. The [auth service](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/auth/src/local-auth.ts) uses a development password representation, local OTP inbox and local identifiers for sessions. The [storage service](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/storage/src/local-storage.ts) stores bytes on disk and token records in memory. Copy distinguishes these from hosted auth and storage. |
+| Realtime broadcast, change streams and presence all work through the client | The [client channel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/realtime-client.ts) uses kernel mutation events and invokes same-object broadcast listeners. It stores presence callbacks but has no track/untrack/presenceState or presence dispatch. The [separate realtime channel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/realtime/src/channel.ts) contains richer behavior but is not the channel returned by createClient. The article names that boundary. |
+| Complete export path to real Supabase | [Migration export](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/migrate.ts) copies existing SQL files; local apply loads schema IR and updates a ledger rather than replaying arbitrary SQL. [Seed export](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/seed.ts) uses kernel.snapshot, which is empty when an adapter lacks exportData; PGLite lacks it. [Type generation](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/types.ts) is separate and writes example profiles types without a loaded schema. Copy describes inputs requiring real-stack validation, not an automatic migration. |
+| Unsupported features always throw CapabilityError; no silent faking | Unsupported [auth methods](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/auth-client.ts) return the error in a result. [Registry assertions](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/core/src/capability.ts) throw. The [CLI runtime](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/runtime.ts) can fall back to memory when SQLite/PGLite construction fails. The universal guarantee is removed; vector search and PITR remain outside the implemented production-service scope. |
+| AI init generates project schema scaffolding | [The command](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/ai.ts) writes five static instruction/reference templates, including a hard-coded profiles schema summary. It does not call the [schema-aware generator](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/ai/src/rules-generator.ts). Copy says starter templates. |
+| PGLite provides unqualified real Postgres semantics | The [adapter](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-pglite/src/pglite-adapter.ts) really uses PGlite, but generated tables omit foreign keys, defaults and complex filters use JavaScript, and the shared JS policy engine replaces Postgres roles. Copy keeps the real engine and states its local limits. [SQLite](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-sqlite/src/sqlite-adapter.ts) uses better-sqlite3; [JSON](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-json/src/json-adapter.ts) persists table data. Adapter durability does not imply persisted auth/session/storage metadata. |
+| Current Turborepo, eighteen packages, separate apps and CI release practice | The [initial manifest](https://github.com/byronwade/fakebase.byronwade.com/blob/758e902b3c3bc246efc1a6d857fcf389b0b388bf/package.json) and initial workflows describe that architecture. On reviewed main, the [root manifest](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/package.json) is the Next site, workspace membership is packages/* (19 package manifests), and turbo configuration, apps/ and workflow files are absent. Vitest and Playwright test sources remain. Copy qualifies historical workflow configuration and removes the package count. |
+| verify supabase establishes production compatibility | The [command](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/verify.ts) uses its own memory fixture, not the user's selected adapter or exported schema. Its [default suite](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/test-utils/src/compat-runner.ts) has twelve database-only scenarios. Missing real Supabase yields PARTIAL; real-side exceptions or matching top-level shapes can yield CLOSE. Only UNSUPPORTED/ERROR fail the command. It does not certify auth, storage, realtime or exports; copy states the limitation. |
+
+The [separate server package](https://github.com/byronwade/fakebase.byronwade.com/tree/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/server)
+adds HTTP and WebSocket endpoints for real Supabase clients. Its interoperability
+test files support an implemented local server path, not a claim that those tests
+passed or that it reproduces the hosted service. The article no longer calls all
+usage entirely in-process.
+
+All five public branch heads were compared with pinned main on October 21:
+`restore-library` (`0ebc5f8`) is 0 ahead / 21 behind;
+`changeset-release/main` (`b13803d`) is 1 ahead / 25 behind, changing release
+metadata only; the dependency branches (`f305cd1`, `95aab2b`) are each 1 ahead /
+0 behind and change manifests/lockfile only. Main is `2f60fe6`. These comparisons
+do not show later unmerged functionality. No private, deleted or unpublished
+history was available, so earlier capability and maintenance are not inferred.
+
+Title, published route, front-matter keys/date, category, archived grouping and
+section headings are retained. The redundant leading Markdown title no longer
+implies an unmeasured speed advantage. The excerpt follows the corrected body and flows
+through the existing metadata/search owners. No project code, dependencies,
+production environment, accounts or services were changed.

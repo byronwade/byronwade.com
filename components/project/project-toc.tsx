@@ -66,6 +66,9 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	}, [items]);
 
 	const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+			return;
+		}
 		event.preventDefault();
 		const el = document.getElementById(id);
 		if (!el) {
@@ -101,7 +104,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 								onClick={(event) => handleClick(event, item.id)}
 								aria-current={isActive ? "location" : undefined}
 								className={cn(
-									"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
+									"focus-ring flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
 									item.depth === 3 ? "pl-6" : "pl-3",
 									isActive
 										? "bg-muted font-medium text-foreground"

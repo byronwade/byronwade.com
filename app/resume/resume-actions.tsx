@@ -123,6 +123,7 @@ export function DownloadResumeButton() {
 	return (
 		<span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
 			<Button
+				size="lg"
 				variant="outline"
 				render={
 					<a aria-busy={phase === "pending"} href="/api/resume-pdf" onClick={onClick}>

@@ -2,13 +2,7 @@
 
 import { format } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import {
-	EmptyState,
-	IndexList,
-	IndexRow,
-	indexRowAccentClass,
-	indexRowLinkClass,
-} from "@/components/common";
+import { EmptyState, IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -51,7 +45,7 @@ const titleize = (name: string) =>
 
 async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	repos: GitHubRepo[];
-	degraded: boolean;
+	githubFailed: boolean;
 }> {
 	const response = await fetch("/api/portfolio", {
 		signal,
@@ -72,15 +66,15 @@ async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
 	});
 	return {
 		repos: filtered,
-		degraded: Boolean(data.githubFailed),
+		githubFailed: Boolean(data.githubFailed),
 	};
 }
 
 const REQUEST_TIMEOUT_MS = 8000;
 
 interface PortfolioReposState {
-	degraded: boolean;
 	error: boolean;
+	githubFailed: boolean;
 	loading: boolean;
 	refreshing: boolean;
 	reload: () => void;
@@ -96,7 +90,7 @@ function usePortfolioRepos(): PortfolioReposState {
 	const [loading, setLoading] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 	const [error, setError] = useState(false);
-	const [degraded, setDegraded] = useState(false);
+	const [githubFailed, setGithubFailed] = useState(false);
 	const [reloadKey, setReloadKey] = useState(0);
 
 	useEffect(() => {
@@ -118,11 +112,13 @@ function usePortfolioRepos(): PortfolioReposState {
 				if (!active) {
 					return;
 				}
-				setRepos(result.repos);
-				// An empty list is only an error when the upstream call degraded; a
+				if (!(result.githubFailed && result.repos.length === 0)) {
+					setRepos(result.repos);
+				}
+				// An empty list is only an error when the GitHub call failed; a
 				// genuinely empty profile is a valid, non-error state.
-				setDegraded(result.degraded && result.repos.length === 0);
-				setError(result.degraded && result.repos.length === 0);
+				setGithubFailed(result.githubFailed);
+				setError(result.githubFailed && result.repos.length === 0);
 			} catch (err) {
 				if (!active) {
 					return;
@@ -147,16 +143,16 @@ function usePortfolioRepos(): PortfolioReposState {
 
 	const reload = useCallback(() => setReloadKey((key) => key + 1), []);
 
-	return { repos, loading, refreshing, error, degraded, reload };
+	return { repos, loading, refreshing, error, githubFailed, reload };
 }
 
 function PortfolioEmptyState({
-	degraded,
+	githubFailed,
 	error,
 	refreshing,
 	reload,
 }: {
-	degraded: boolean;
+	githubFailed: boolean;
 	error: boolean;
 	refreshing: boolean;
 	reload: () => void;
@@ -164,19 +160,20 @@ function PortfolioEmptyState({
 	return (
 		<EmptyState
 			icon={Github}
-			title={degraded || error ? "Couldn’t load repositories" : "No repositories yet"}
+			title={githubFailed || error ? "Couldn’t load repositories" : "No repositories yet"}
 			description={
-				degraded || error
+				githubFailed || error
 					? "GitHub is slow or unavailable right now. Nothing here is lost; retry, or open the profile directly."
 					: "Public repositories will show up here once they’re available."
 			}
 			action={
 				<div className="flex flex-wrap items-center gap-3">
-					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
+					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2" size="lg">
 						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-						{refreshing ? "Retrying…" : "Try again"}
+						Try again
 					</Button>
 					<Button
+						size="lg"
 						role="link"
 						variant="secondary"
 						render={
@@ -223,7 +220,7 @@ function RepoSkeletonList() {
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
-		<IndexRow>
+		<li>
 			<a
 				className={indexRowLinkClass}
 				href={repo.html_url}
@@ -281,11 +278,11 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 				</div>
 				<span className="sr-only"> (opens in a new tab)</span>
 			</a>
-		</IndexRow>
+		</li>
 	);
 }
 export default function PortfolioPage() {
-	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
+	const { repos, loading, refreshing, error, githubFailed, reload } = usePortfolioRepos();
 	const [visibleRepos, setVisibleRepos] = useState(8);
 
 	return (
@@ -293,19 +290,17 @@ export default function PortfolioPage() {
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={
-						loading ? null : (
-							<Button
-								className="gap-2"
-								disabled={refreshing}
-								onClick={reload}
-								size="sm"
-								type="button"
-								variant="secondary"
-							>
-								<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-								{refreshing ? "Refreshing…" : "Refresh"}
-							</Button>
-						)
+						<Button
+							className="gap-2"
+							disabled={loading || refreshing}
+							onClick={reload}
+							size="lg"
+							type="button"
+							variant="secondary"
+						>
+							<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
+							Refresh
+						</Button>
 					}
 					lede={
 						<>
@@ -327,21 +322,26 @@ export default function PortfolioPage() {
 					}
 					title="Portfolio"
 				/>
+				<p className="sr-only" role="status">
+					{loading ? "Loading repositories…" : refreshing ? "Refreshing repositories…" : ""}
+				</p>
 
 				{loading ? (
 					<RepoSkeletonList />
-				) : error || repos.length === 0 ? (
+				) : repos.length === 0 ? (
 					<PortfolioEmptyState
-						degraded={degraded}
+						githubFailed={githubFailed}
 						error={error}
 						refreshing={refreshing}
 						reload={reload}
 					/>
 				) : (
 					<>
-						{degraded && (
+						{(githubFailed || error) && (
 							<p className="rounded-lg bg-muted px-4 py-3 text-body text-copy-14" role="status">
-								This is a partial response, so some GitHub data may be stale. Refresh to try again.
+								{error
+									? "Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub."
+									: "Some GitHub data may be unavailable or stale. Refresh to try again."}
 							</p>
 						)}
 						<IndexList as="ol">
@@ -353,6 +353,7 @@ export default function PortfolioPage() {
 						{visibleRepos < repos.length && (
 							<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 								<Button
+									size="lg"
 									onClick={() => setVisibleRepos((prev) => prev + 8)}
 									type="button"
 									variant="secondary"

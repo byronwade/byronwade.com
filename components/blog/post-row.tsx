@@ -8,18 +8,16 @@ import { safeFormatDate } from "@/lib/markdown-utils";
  * One post in any writing index: the home preview, /blog, and related posts.
  *
  * The date and reading time lead in a tabular column so a list of posts reads as
- * a chronology (DESIGN.md §7.1, /blog). `excerpt="full"` keeps the whole lede
- * where scanning is the reading; previews clamp it to two lines.
+ * a chronology (DESIGN.md §7.1, /blog). The whole excerpt stays readable; no
+ * index clamps it.
  */
 export function PostRow({
 	post,
 	dateFormat = "MMM d, yyyy",
-	excerpt = "clamp",
 	tagLimit = 0,
 }: {
 	post: BlogPost;
 	dateFormat?: string;
-	excerpt?: "clamp" | "full";
 	/** How many tags to show under the excerpt; none by default. */
 	tagLimit?: number;
 }) {
@@ -36,11 +34,7 @@ export function PostRow({
 							{post.title}
 						</span>
 						{post.excerpt && (
-							<p
-								className={`text-body text-copy-14 leading-relaxed ${excerpt === "clamp" ? "line-clamp-2" : ""}`}
-							>
-								{post.excerpt}
-							</p>
+							<p className="text-body text-copy-14 leading-relaxed">{post.excerpt}</p>
 						)}
 						{tagLimit > 0 && post.tags && post.tags.length > 0 && (
 							<TagList className="pt-1" limit={tagLimit} tags={post.tags} />

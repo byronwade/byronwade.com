@@ -31,7 +31,6 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	const shareLinks = {
 		twitter: `https://x.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=${xHandle}`,
 		linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-		facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
 	};
 
 	const handleCopy = async () => {
@@ -54,7 +53,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				});
 			} catch (err) {
 				// User cancelled or error
-				if ((err as Error).name !== "AbortError") {
+				if (!(err instanceof Error && err.name === "AbortError")) {
 					console.error("Share failed:", err);
 				}
 			}

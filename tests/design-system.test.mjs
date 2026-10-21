@@ -52,6 +52,7 @@ test("type uses only the Thorbis copy and heading roles at weight 500", () => {
 	const offenders = files.filter((path) => OFF_SCALE_TYPE.test(read(path)));
 	assert.deepEqual(offenders, [], "Use text-copy-*/text-heading-* and font-medium.");
 });
+
 test("no raw colour literals in class names or inline styles", () => {
 	const offenders = files.filter((path) => RAW_COLOUR.test(read(path)));
 	assert.deepEqual(offenders, [], "Colours come from app/globals.css tokens.");

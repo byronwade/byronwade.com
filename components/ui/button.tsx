@@ -13,18 +13,25 @@ function Button({
 	size = "default",
 	render,
 	nativeButton,
+	role,
 	...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
 	// When `render` swaps the underlying element for a non-<button> (e.g. a
 	// Next.js <Link> that renders an <a>), Base UI requires `nativeButton={false}`
-	// to keep correct button semantics. Infer it from the render target unless the
-	// caller set it explicitly.
+	// for a custom render target. Destinations keep native link semantics; other
+	// custom targets keep button semantics. Explicit caller roles still win.
+	const renderedElement = React.isValidElement<{ href?: unknown }>(render) ? render : null;
 	const resolvedNativeButton =
 		nativeButton ??
-		(render !== undefined &&
-		render !== null &&
-		!(React.isValidElement(render) && render.type === "button")
+		(render !== undefined && render !== null && renderedElement?.type !== "button"
 			? false
+			: undefined);
+	const resolvedRole =
+		role ??
+		(resolvedNativeButton === false &&
+		renderedElement?.props.href !== undefined &&
+		renderedElement?.props.href !== null
+			? "link"
 			: undefined);
 
 	return (
@@ -33,6 +40,7 @@ function Button({
 			className={cn(buttonVariants({ variant, size, className }))}
 			render={render}
 			nativeButton={resolvedNativeButton}
+			role={resolvedRole}
 			{...props}
 		/>
 	);

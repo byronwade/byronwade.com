@@ -83,7 +83,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							autoFocus
 							value={formData.name}
 							onChange={(event) => handleChange("name", event.target.value)}
-							placeholder="Jordan Lee"
+							placeholder="Alex Rivera…"
 							required
 						/>
 						{fieldError?.field === "name" && (
@@ -150,10 +150,10 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						name="message"
 						value={formData.message}
 						onChange={(event) => handleChange("message", event.target.value)}
-						placeholder="A sentence or two about what you’re working on…"
+						placeholder="I’d like to talk about a project…"
 						required
 						rows={4}
-						className="resize-y"
+						className="min-h-28 resize-y"
 						onKeyDown={(event) => {
 							if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
 								event.currentTarget.form?.requestSubmit();
@@ -184,19 +184,17 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 								</span>
 							</span>
 						</button>
+						<span className="sr-only" role="status">
+							{copied ? "Email copied" : ""}
+						</span>
 					</div>
 					<Button type="submit" disabled={isSubmitting} className="gap-2">
 						{isSubmitting ? (
-							<>
-								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
-								Send message
-							</>
+							<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
 						) : (
-							<>
-								<Send aria-hidden="true" className="h-4 w-4" />
-								Send message
-							</>
+							<Send aria-hidden="true" className="h-4 w-4" />
 						)}
+						Send message
 					</Button>
 				</div>
 				<p

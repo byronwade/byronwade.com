@@ -1,0 +1,15 @@
+{
+  "phase": "probe",
+  "head": "f738e96",
+  "width": 1440,
+  "theme": "light",
+  "preset": "mobile",
+  "geometry": {
+    "address": "design.thorbis.com",
+    "addressWidth": 1,
+    "addressHeight": 268.75,
+    "lineHeight": "16.8px",
+    "toolbarWidth": 373,
+    "toolbarHeight": 292.75
+  }
+}

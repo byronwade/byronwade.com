@@ -1,0 +1,20 @@
+{
+  "port": 62275,
+  "serverPid": 49052,
+  "mode": "Next development server (default Turbopack)",
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "pageErrors": [],
+  "checks": [
+    "invalid name receives focus in development",
+    "pending/error preserve draft without delivery",
+    "dark theme and keyboard path in development"
+  ],
+  "initialNotFound": "Page not found",
+  "notFound": "Page not found",
+  "stopperExitCode": 0,
+  "serverStopped": true
+}

@@ -1,0 +1,3653 @@
+{
+  "phase": "after",
+  "head": "73632939712dfb80bdc02daa5bef16695a5e0053",
+  "cases": [
+    {
+      "name": "home",
+      "route": "/",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 3010,
+        "footerBottom": 3009.796875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 3010
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "home-375-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 3450,
+        "footerBottom": 3449.546875,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 3450
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "projects-375-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1983,
+        "footerBottom": 1982.796875,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1983
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "project-375-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 2821,
+        "footerBottom": 2821.046875,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2821
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "blog-375-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 18181,
+        "footerBottom": 18181.046875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 18181
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "post-375-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 3558,
+        "footerBottom": 3558.015625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "24px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3558
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "resume-375-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 2042,
+        "footerBottom": 2042.046875,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2042
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "portfolio-375-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1512,
+        "footerBottom": 1511.796875,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "16px" },
+          { "label": "email", "size": "16px" },
+          { "label": "topic", "size": "16px" },
+          { "label": "message", "size": "16px" }
+        ],
+        "screenshotHeight": 1512
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-375-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1081,
+        "footerBottom": 1080.640625,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 311.765625,
+            "height": 38,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 1081
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-375-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2632,
+        "footerBottom": 2632.171875,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 2632
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-results-375-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1134,
+        "footerBottom": 1133.640625,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 282.921875,
+            "height": 38,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 1134
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-empty-375-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 2466,
+        "footerBottom": 2465.796875,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2466
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "privacy-375-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 2414,
+        "footerBottom": 2413.796875,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2414
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "terms-375-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 375,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1008,
+        "footerBottom": 1007.796875,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1008
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "not-found-375-light.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 5098,
+        "footerBottom": 5098.296875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 5098
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "project-evidence-375-light.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 17521,
+        "footerBottom": 17521.046875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 17521
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "post-technical-375-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 3010,
+        "footerBottom": 3009.796875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 3010
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "home-375-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 3450,
+        "footerBottom": 3449.546875,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 3450
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "projects-375-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1983,
+        "footerBottom": 1982.796875,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1983
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-375-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 2821,
+        "footerBottom": 2821.046875,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2821
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "blog-375-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 18181,
+        "footerBottom": 18181.046875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 18181
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-375-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 3558,
+        "footerBottom": 3558.015625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "24px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3558
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "resume-375-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 2042,
+        "footerBottom": 2042.046875,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2042
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "portfolio-375-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1512,
+        "footerBottom": 1511.796875,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "16px" },
+          { "label": "email", "size": "16px" },
+          { "label": "topic", "size": "16px" },
+          { "label": "message", "size": "16px" }
+        ],
+        "screenshotHeight": 1512
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-375-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1081,
+        "footerBottom": 1080.640625,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 311.765625,
+            "height": 38,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 1081
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-375-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2632,
+        "footerBottom": 2632.171875,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 2632
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "search-results-375-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1134,
+        "footerBottom": 1133.640625,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 282.921875,
+            "height": 38,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "16px" }],
+        "screenshotHeight": 1134
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-empty-375-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 2466,
+        "footerBottom": 2465.796875,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2466
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "privacy-375-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 2414,
+        "footerBottom": 2413.796875,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2414
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "terms-375-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 375,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1008,
+        "footerBottom": 1007.796875,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1008
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "not-found-375-dark.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 5098,
+        "footerBottom": 5098.296875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 5098
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-evidence-375-dark.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 17521,
+        "footerBottom": 17521.046875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 17521
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-technical-375-dark.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 2104,
+        "footerBottom": 2103.671875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2104
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "home-768-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 2823,
+        "footerBottom": 2823,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2823
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "projects-768-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1787,
+        "footerBottom": 1787,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1787
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "project-768-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1995
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "blog-768-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12591
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "post-768-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 64.125,
+            "height": 21,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2749
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "resume-768-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1706
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "portfolio-768-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1184,
+        "footerBottom": 1184,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ],
+        "screenshotHeight": 1184
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-768-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-768-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2204,
+        "footerBottom": 2204.375,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 2204
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-results-768-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-empty-768-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 1730,
+        "footerBottom": 1730,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1730
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "privacy-768-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 1782,
+        "footerBottom": 1782,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1782
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "terms-768-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 768,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "not-found-768-light.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3634,
+        "footerBottom": 3634.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis Design",
+            "tag": "A",
+            "role": null,
+            "width": 113.75,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3634
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "project-evidence-768-light.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "Target Size Enhanced",
+            "tag": "A",
+            "role": null,
+            "width": 162.84375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12419
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "post-technical-768-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 2104,
+        "footerBottom": 2103.671875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2104
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "home-768-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 2823,
+        "footerBottom": 2823,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2823
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "projects-768-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1787,
+        "footerBottom": 1787,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1787
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-768-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1995
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "blog-768-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12591
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-768-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 64.125,
+            "height": 21,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2749
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "resume-768-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1706
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "portfolio-768-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1184,
+        "footerBottom": 1184,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ],
+        "screenshotHeight": 1184
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-768-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-768-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2204,
+        "footerBottom": 2204.375,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 2204
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "search-results-768-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-empty-768-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 1730,
+        "footerBottom": 1730,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1730
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "privacy-768-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 1782,
+        "footerBottom": 1782,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1782
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "terms-768-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 768,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "not-found-768-dark.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3634,
+        "footerBottom": 3634.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis Design",
+            "tag": "A",
+            "role": null,
+            "width": 113.75,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3634
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-evidence-768-dark.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "Target Size Enhanced",
+            "tag": "A",
+            "role": null,
+            "width": 162.84375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12419
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-technical-768-dark.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 2012,
+        "footerBottom": 2011.671875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2012
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "home-1440-light.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 2823,
+        "footerBottom": 2823,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2823
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "projects-1440-light.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1939,
+        "footerBottom": 1939,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1939
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "project-1440-light.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1995
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "blog-1440-light.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home//Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12591
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "post-1440-light.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 64.125,
+            "height": 21,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2749
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "resume-1440-light.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1706
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "portfolio-1440-light.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1184,
+        "footerBottom": 1184,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ],
+        "screenshotHeight": 1184
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-1440-light.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-1440-light.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2152,
+        "footerBottom": 2152.375,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 2152
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-results-1440-light.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "search-empty-1440-light.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 1730,
+        "footerBottom": 1730,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1730
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "privacy-1440-light.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 1782,
+        "footerBottom": 1782,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1782
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "terms-1440-light.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 1440,
+      "theme": "light",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value"]
+      },
+      "errors": [],
+      "file": "not-found-1440-light.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3786,
+        "footerBottom": 3786.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis Design",
+            "tag": "A",
+            "role": null,
+            "width": 113.75,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3786
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "project-evidence-1440-light.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home//A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "Target Size Enhanced",
+            "tag": "A",
+            "role": null,
+            "width": 162.84375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12419
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "post-technical-1440-light.png"
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 2012,
+        "footerBottom": 2011.671875,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "I ran the service business. Now I build the software it needed.",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2012
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "home-1440-dark.png"
+    },
+    {
+      "name": "projects",
+      "route": "/projects",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ProjectsProjectsHome/Projects",
+        "documentHeight": 2823,
+        "footerBottom": 2823,
+        "overflow": false,
+        "headings": [{ "text": "Projects", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 2823
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "projects-1440-dark.png"
+    },
+    {
+      "name": "project",
+      "route": "/projects/thorbis-design",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1939,
+        "footerBottom": 1939,
+        "overflow": false,
+        "headings": [{ "text": "Thorbis Design", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "port notes",
+            "tag": "A",
+            "role": null,
+            "width": 76.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1939
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-1440-dark.png"
+    },
+    {
+      "name": "blog",
+      "route": "/blog",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/BlogBlogHome/Blog",
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
+        "overflow": false,
+        "headings": [{ "text": "Writing", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1995
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "blog-1440-dark.png"
+    },
+    {
+      "name": "post",
+      "route": "/blog/building-thorbis",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home//Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis",
+            "tag": "A",
+            "role": null,
+            "width": 57.484375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "fiscal 2026 annual filing",
+            "tag": "A",
+            "role": null,
+            "width": 178.96875,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "proof page",
+            "tag": "A",
+            "role": null,
+            "width": 82.171875,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12591
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-1440-dark.png"
+    },
+    {
+      "name": "resume",
+      "route": "/resume",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ResumeResumeHome/Resume",
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
+        "overflow": false,
+        "headings": [{ "text": "Byron Wade", "size": "30px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis (opens in a new tab)",
+            "tag": "A",
+            "role": null,
+            "width": 64.125,
+            "height": 21,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 2749
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "resume-1440-dark.png"
+    },
+    {
+      "name": "portfolio",
+      "route": "/portfolio",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
+        "overflow": false,
+        "headings": [{ "text": "Portfolio", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "GitHub",
+            "tag": "A",
+            "role": null,
+            "width": 52.015625,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "projects",
+            "tag": "A",
+            "role": null,
+            "width": 60.734375,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1706
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "portfolio-1440-dark.png"
+    },
+    {
+      "name": "contact",
+      "route": "/contact",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/ContactContactHome/Contact",
+        "documentHeight": 1184,
+        "footerBottom": 1184,
+        "overflow": false,
+        "headings": [{ "text": "Get in touch", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [
+          { "label": "name", "size": "14px" },
+          { "label": "email", "size": "14px" },
+          { "label": "topic", "size": "14px" },
+          { "label": "message", "size": "14px" }
+        ],
+        "screenshotHeight": 1184
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "contact-1440-dark.png"
+    },
+    {
+      "name": "search",
+      "route": "/search",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          },
+          {
+            "label": "read the writing",
+            "tag": "A",
+            "role": null,
+            "width": 102.21875,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-1440-dark.png"
+    },
+    {
+      "name": "search-results",
+      "route": "/search?q=design",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 2152,
+        "footerBottom": 2152.375,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 2152
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "search-results-1440-dark.png"
+    },
+    {
+      "name": "search-empty",
+      "route": "/search?q=zzzz-no-match",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/SearchSearchHome/Search",
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Search", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "browse projects",
+            "tag": "A",
+            "role": null,
+            "width": 104.65625,
+            "height": 17,
+            "inlineText": true
+          }
+        ],
+        "inputs": [{ "label": "q", "size": "14px" }],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "search-empty-1440-dark.png"
+    },
+    {
+      "name": "privacy",
+      "route": "/privacy",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
+        "documentHeight": 1730,
+        "footerBottom": 1730,
+        "overflow": false,
+        "headings": [{ "text": "Privacy policy", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1730
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "privacy-1440-dark.png"
+    },
+    {
+      "name": "terms",
+      "route": "/terms",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
+        "documentHeight": 1782,
+        "footerBottom": 1782,
+        "overflow": false,
+        "headings": [{ "text": "Terms of service", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "contact page",
+            "tag": "A",
+            "role": null,
+            "width": 98.625,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 1782
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "terms-1440-dark.png"
+    },
+    {
+      "name": "not-found",
+      "route": "/design-polish-missing-page",
+      "width": 1440,
+      "theme": "dark",
+      "status": 404,
+      "geometry": {
+        "documentHeight": 1000,
+        "footerBottom": 1000,
+        "overflow": false,
+        "headings": [{ "text": "Page not found", "size": "32px" }],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [],
+        "inputs": [],
+        "screenshotHeight": 1000
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "not-found-1440-dark.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3786,
+        "footerBottom": 3786.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "Thorbis Design",
+            "tag": "A",
+            "role": null,
+            "width": 113.75,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "ui.byronwade.com",
+            "tag": "A",
+            "role": null,
+            "width": 139.203125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3786
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "project-evidence-1440-dark.png"
+    },
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home//A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "buttonLinks": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "tag": "A",
+            "role": null,
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "tag": "A",
+            "role": null,
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "Target Size Enhanced",
+            "tag": "A",
+            "role": null,
+            "width": 162.84375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "tag": "A",
+            "role": null,
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12419
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "post-technical-1440-dark.png"
+    }
+  ],
+  "chrome": "Chrome/155.0.8059.85"
+}

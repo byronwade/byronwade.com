@@ -87,7 +87,7 @@ async function BlogList() {
 					</h2>
 					<IndexList as="ol">
 						{yearPosts.map((post) => (
-							<PostRow dateFormat="MMM d" excerpt="full" key={post.slug} post={post} tagLimit={4} />
+							<PostRow dateFormat="MMM d" key={post.slug} post={post} tagLimit={4} />
 						))}
 					</IndexList>
 				</section>
