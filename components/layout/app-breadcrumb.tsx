@@ -1,17 +1,12 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
+import { BreadcrumbTrail } from "./breadcrumb-trail-view";
 
-// Home has no breadcrumb. Keep its popover/positioning graph off the initial
-// homepage; other routes load the optional trail after the pathname is known.
-const BreadcrumbTrail = dynamic(
-	() => import("./breadcrumb-trail-view").then((module) => module.BreadcrumbTrail),
-	// A prerendered 404 knows /_not-found, not the visitor's requested pathname.
-	// Render that optional trail on the client to avoid mismatched links/text.
-	{ ssr: false }
-);
+// The trail itself is small and ships with the layout: a separate chunk made
+// every xl page exceed the 10-script budget. Its popover/positioning graph stays
+// lazy in BreadcrumbOverflow and loads only when a long trail collapses.
 
 export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
 	const pathname = usePathname();
