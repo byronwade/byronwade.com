@@ -89,11 +89,15 @@ export async function closeBrowser(browser, context) {
 		try {
 			if (child && isRunning(child)) {
 				const forced = killTree(child, context, controller.signal);
-				// The exact child's observed exit proves shutdown; taskkill can still be walking
-				// the tree on a loaded machine. A failed command before that exit still rejects.
-				forced.catch(() => undefined);
+				// Under load taskkill can outlast the deadline after the exact launched
+				// child has already exited cleanly. Exit code 0 means the browser shut
+				// itself down (a forced kill exits 1), so it proves shutdown without the
+				// command's result; any other exit still waits for the tree kill.
 				const stopped = await settlesWithin(
-					Promise.race([exited, forced.then(() => exited)]),
+					Promise.race([
+						Promise.all([forced, exited]),
+						exited.then(() => (child.exitCode === 0 ? undefined : forced)),
+					]),
 					15_000
 				);
 				assert.ok(stopped, `Owned browser process ${child.pid} did not exit after forced cleanup`);

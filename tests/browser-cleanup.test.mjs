@@ -193,30 +193,6 @@ for (const rejectsClose of [false, true]) {
 	});
 }
 
-test("an observed owned exit ends cleanup while taskkill is still running", async (t) => {
-	const { child, context, exit } = stubChild(t);
-	let aborted = false;
-	// A loaded machine can hold taskkill past the child's exit; only the abort ends it.
-	t.mock.method(childProcess, "execFile", (_file, _args, options, callback) => {
-		exit();
-		options.signal.addEventListener("abort", () => {
-			aborted = true;
-			callback(Object.assign(new Error("aborted"), { name: "AbortError" }), "", "");
-		});
-	});
-	syncBuiltinESMExports();
-	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
-	const check = assert.doesNotReject(result);
-	await nextTurn();
-	t.mock.timers.tick(10_000);
-	await nextTurn();
-	t.mock.timers.tick(15_000);
-	await check;
-	assert.equal(child.exitCode, 0);
-	assert.equal(aborted, true, "the outstanding cleanup command is cancelled");
-	assert.equal(child.listenerCount("exit"), 0);
-});
-
 test("a timed-out cleanup command records that it never reported an exit code", async (t) => {
 	const { child, context, diagnostics } = stubChild(t);
 	const timeout = Object.assign(new Error("taskkill timed out"), {
@@ -236,6 +212,36 @@ test("a timed-out cleanup command records that it never reported an exit code", 
 	assert.ok(diagnostics.join("\n").includes('"commandCode":null'));
 	assert.ok(diagnostics.join("\n").includes('"commandSignal":"SIGTERM"'));
 });
+
+for (const exitCode of [0, 1]) {
+	test(`a taskkill that outlasts the owned exit (code ${exitCode}) passes only a clean exit`, async (t) => {
+		const { child, context } = stubChild(t);
+		let command;
+		t.mock.method(childProcess, "execFile", (_file, _args, options, callback) => {
+			command = options;
+			// The command keeps walking the tree until the fixture aborts it.
+			options.signal.addEventListener("abort", () =>
+				callback(Object.assign(new Error("aborted"), { code: "ABORT_ERR" }), "", "")
+			);
+			setImmediate(() => {
+				child.exitCode = exitCode;
+				child.emit("exit", exitCode, null);
+			});
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check =
+			exitCode === 0 ? assert.doesNotReject(result) : assert.rejects(result, PROCESS_DID_NOT_EXIT);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await nextTurn();
+		await nextTurn();
+		t.mock.timers.tick(15_000);
+		await check;
+		assert.equal(command.signal.aborted, true, "the outstanding command is stopped");
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
 
 test("a failed cleanup command also rejects after a stalled close", async (t) => {
 	const { child, context } = stubChild(t);
