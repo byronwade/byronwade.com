@@ -1,92 +1,73 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { createServer } from "node:net";
 
-// Ephemeral ports can be claimed between the probe close and `next start`.
-const PORT_ATTEMPTS = 3;
+const READY_DEADLINE = 30_000;
+const LOCAL_URL = /Local:\s+(http:\/\/\S+)/;
 
-async function allocatePort() {
-	const socket = createServer();
-	socket.listen(0, "127.0.0.1");
-	await once(socket, "listening");
-	const address = socket.address();
-	if (!address || typeof address === "string") {
-		socket.close();
-		throw new Error("Could not allocate a verification port");
-	}
-	const { port } = address;
-	await new Promise((resolve, reject) => {
-		socket.close((error) => (error ? reject(error) : resolve()));
+/** Resolves with the served origin once the server answers a request, not merely once it logs. */
+async function serving(server, log) {
+	const deadline = new AbortController();
+	const timer = setTimeout(
+		() => deadline.abort(new Error(`Production server did not become ready: ${log()}`)),
+		READY_DEADLINE
+	);
+	const stopped = new Promise((_, reject) => {
+		server.once("error", reject);
+		server.once("exit", (code) => reject(new Error(`Production server exited ${code}: ${log()}`)));
 	});
-	return port;
+	const abandoned = new Promise((_, reject) => {
+		deadline.signal.addEventListener("abort", () => reject(deadline.signal.reason));
+	});
+	const listening = new Promise((resolve) => {
+		const check = () => {
+			const url = log().match(LOCAL_URL)?.[1];
+			if (url && log().includes("Ready in")) {
+				server.stdout.off("data", check);
+				resolve(url);
+			}
+		};
+		server.stdout.on("data", check);
+	});
+	try {
+		const url = await Promise.race([listening, stopped, abandoned]);
+		// Next logs "Ready in" before it loads the app; the first response proves it serves.
+		const response = await Promise.race([
+			fetch(`${url}/`, { signal: deadline.signal }),
+			stopped,
+			abandoned,
+		]);
+		await response.arrayBuffer();
+		if (!response.ok) {
+			throw new Error(`Production server answered ${response.status}: ${log()}`);
+		}
+		return url;
+	} finally {
+		clearTimeout(timer);
+		// Settled races must not leave a rejection unobserved.
+		stopped.catch(() => undefined);
+		abandoned.catch(() => undefined);
+	}
 }
 
-function startProductionServer(port, env) {
+// Every verification owns an OS-assigned port and a hidden child with guaranteed cleanup.
+export async function withProductionServer(verify, { env = {} } = {}) {
 	const server = spawn(
 		process.execPath,
-		["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"],
+		["node_modules/next/dist/bin/next", "start", "-p", "0", "-H", "127.0.0.1"],
 		{ windowsHide: true, stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, ...env } }
 	);
-	const output = { text: "" };
-	const ready = new Promise((resolve, reject) => {
-		const timer = setTimeout(
-			() => reject(new Error(`Production server did not become ready: ${output.text}`)),
-			90_000
-		);
-		const fail = (error) => {
-			clearTimeout(timer);
-			reject(error);
-		};
-		server.once("error", fail);
-		server.once("exit", (code) => {
-			fail(new Error(`Production server exited ${code}: ${output.text}`));
-		});
-		server.stderr.on("data", (chunk) => {
-			output.text += chunk;
-		});
-		server.stdout.on("data", (chunk) => {
-			output.text += chunk;
-			if (output.text.includes("Ready in")) {
-				clearTimeout(timer);
-				resolve();
-			}
-		});
-	});
-	return { server, output, ready };
-}
-
-function addressInUse(error) {
-	return `${error?.message ?? ""} ${error?.cause?.message ?? ""}`.includes("EADDRINUSE");
-}
-
-async function stopServer(server) {
-	if (server.exitCode === null && server.signalCode === null) {
-		server.kill();
-		await once(server, "exit");
-	}
-}
-
-async function runProductionAttempt(verify, env, remaining) {
-	const port = await allocatePort();
-	const { server, output, ready } = startProductionServer(port, env);
+	let output = "";
+	const collect = (chunk) => {
+		output += chunk;
+	};
+	server.stdout.on("data", collect);
+	server.stderr.on("data", collect);
 	try {
-		await ready;
-		return await verify(`http://127.0.0.1:${port}`);
-	} catch (error) {
-		const wrapped = new Error(
-			`Verification failed (server exit ${server.exitCode}, signal ${server.signalCode}): ${output.text.slice(-8192)}`,
-			{ cause: error }
-		);
-		if (!(addressInUse(wrapped) && remaining > 1)) {
-			throw wrapped;
-		}
+		return await verify(await serving(server, () => output));
 	} finally {
-		await stopServer(server);
+		if (server.exitCode === null && server.signalCode === null) {
+			server.kill();
+			await once(server, "exit");
+		}
 	}
-	return runProductionAttempt(verify, env, remaining - 1);
-}
-
-// Every verification owns an isolated port and a hidden child with guaranteed cleanup.
-export function withProductionServer(verify, { env = {} } = {}) {
-	return runProductionAttempt(verify, env, PORT_ATTEMPTS);
 }

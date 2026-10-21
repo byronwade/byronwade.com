@@ -329,6 +329,18 @@ pre code.hljs {
   unicode-range: U+0020-007E, U+00A0, U+00AB, U+00BB, U+2010-2014, U+2018-201E, U+2022, U+2026, U+2032-2033, U+2039-203A;
 }
 
+/* Arial scaled to Inter's metrics paints the text before Inter arrives, so the swap does
+   not reflow it. Values are next/font's for Inter over Arial (calculateSizeAdjustValues
+   with Next's capsize metrics); Liberation Sans and Arimo share Arial's metrics on Linux. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+
 /* Resume signature. The page renders only "Byron Wade", so the stylesheet
    loads a woff2 subset of those glyphs. The full OTF stays on disk for the
    OG image route and is not part of the page font budget. */
@@ -613,7 +625,7 @@ pre code.hljs {
 /* thorbis-tokens:end */
 
 :root {
-  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-inter: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-geist-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   --font-signature: "Byron Signature", cursive;
   --background: var(--thorbis-bg);
@@ -684,6 +696,20 @@ pre code.hljs {
   /* Shared header and its portalled panels use the same selected surface. */
   [data-site-header], [data-header-menu], [data-header-search] {
     --muted: var(--header-on-panel);
+  }
+
+  /* The header's width (max-w-2xl inside nav-dock's px-4 / sm:px-5 wrapper), resolved
+     against the viewport. Header panels size from it until Base UI first measures the
+     header, so their first computed position is already their final one. */
+  :root {
+    --site-header-width: min(var(--container-2xl), 100% - 2rem);
+  }
+
+  /* Tailwind's sm breakpoint, in rem so it tracks the reader's default text size too. */
+  @media (min-width: 40rem) {
+    :root {
+      --site-header-width: min(var(--container-2xl), 100% - 2.5rem);
+    }
   }
 
   /* Base UI intentionally permits touch scrolling outside inset popovers.
