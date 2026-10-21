@@ -15,8 +15,9 @@ On extra-wide screens a breadcrumb sits beside the header; its trail
 (`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
 links only parent paths that are real pages, and names Figma files "Design file"
 because the file name is page-owned data. That page's own trail is named
-"Design file breadcrumb" so its navigation landmark is distinct from the shared
-"Breadcrumb" landmark when both are visible. URLs that are not pages show no
+"Design file breadcrumb" so its landmark stays distinct from the shared
+"Breadcrumb", and it hides at xl, where the shared trail shows: one trail per
+viewport. URLs that are not pages show no
 trail: the static 404 is prerendered at `/_not-found` and hydrates at the
 visitor's URL, so any label taken from the path would differ between the two.
 For the same reason `NavDock` marks no section current when the root segment is

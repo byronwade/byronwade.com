@@ -1,6 +1,6 @@
 import { Markdown, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
-import { SiteShell } from "@/components/layout/site-shell";
+import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
@@ -14,6 +14,7 @@ import {
 	generateProjectStructuredData,
 } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 // Hoisted so each is compiled once rather than on every call.
 const WWW_PREFIX = /^www\./;
@@ -130,114 +131,118 @@ export function ProjectContent({ project }: ProjectContentProps) {
 			<JsonLd data={projectStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
+			{/* Only the live artifact spans the wide shell; the story keeps the
+			    header's 42rem measure so title, prose and chrome share one edge. */}
 			<SiteShell profile="evidence" width="wide">
-				<div className="flex flex-col gap-12">
-					{/* Executive read: identity, claim, the argument, the numbers, the way in. */}
-					<header className="flex w-full max-w-2xl flex-col gap-4">
-						<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground">
-							<span>{projectTypeLabel}</span>
-							{project.category && project.category !== projectTypeLabel && (
-								<>
-									<span aria-hidden="true">·</span>
-									<span>{project.category}</span>
-								</>
-							)}
-							{formattedDate && (
-								<>
-									<span aria-hidden="true">·</span>
-									<time dateTime={isoDate}>{formattedDate}</time>
-								</>
-							)}
-						</p>
-
-						<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
-							{project.title}
-						</h1>
-
-						{project.excerpt && (
-							<p className="text-pretty text-body text-copy-16 leading-relaxed">
-								{project.excerpt}
-							</p>
+				{/* Executive read: identity, claim, the argument, the numbers, the way in. */}
+				<header className={cn(measureClass, "flex flex-col gap-4")}>
+					<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground">
+						<span>{projectTypeLabel}</span>
+						{project.category && project.category !== projectTypeLabel && (
+							<>
+								<span aria-hidden="true">·</span>
+								<span>{project.category}</span>
+							</>
 						)}
-
-						<ProjectProof project={project} />
-
-						{(project.url || sourceUrl) && (
-							<div className="flex flex-wrap items-center gap-3 pt-2">
-								{project.url && (
-									<Button
-										render={
-											<a href={project.url} target="_blank" rel="noopener noreferrer">
-												Visit site
-												<ArrowUpRight aria-hidden="true" />
-												<span className="sr-only"> (opens in a new tab)</span>
-											</a>
-										}
-									/>
-								)}
-								{sourceUrl && (
-									<Button
-										variant="secondary"
-										render={
-											<a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-												<Github aria-hidden="true" />
-												Source
-												<span className="sr-only"> (opens in a new tab)</span>
-											</a>
-										}
-									/>
-								)}
-							</div>
+						{formattedDate && (
+							<>
+								<span aria-hidden="true">·</span>
+								<time dateTime={isoDate}>{formattedDate}</time>
+							</>
 						)}
-					</header>
+					</p>
 
-					{/* The live artifact, beside the story (§7.1). */}
-					{project.url && domain && (
-						<figure className="flex w-full flex-col gap-3.5">
-							<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
-							<figcaption className="text-copy-12 text-muted-foreground">
-								A capture of {domain}, refreshed from the live site. Switch the viewport, drag the
-								side handles, or use the arrow keys on a handle to resize.
-							</figcaption>
-						</figure>
+					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
+						{project.title}
+					</h1>
+
+					{project.excerpt && (
+						<p className="text-pretty text-body text-copy-16 leading-relaxed">{project.excerpt}</p>
 					)}
 
-					{/* Audit read: the write-up, with its outline docked beside it on wide screens. */}
-					<div className="flex w-full flex-col gap-10 xl:flex-row xl:gap-12">
-						<article className="w-full min-w-0 max-w-2xl flex-1">
-							{hasContent ? (
-								<Markdown content={body} />
-							) : (
-								<p className="text-body text-copy-16 leading-relaxed">
-									The write-up for this project isn’t published yet.
-									{project.url || sourceUrl
-										? " The live site and source above are the record for now."
-										: " Ask me about it through the contact page."}
-								</p>
+					<ProjectProof project={project} />
+
+					{(project.url || sourceUrl) && (
+						<div className="flex flex-wrap items-center gap-3 pt-2">
+							{project.url && (
+								<Button
+									render={
+										<a href={project.url} target="_blank" rel="noopener noreferrer">
+											Visit site
+											<ArrowUpRight aria-hidden="true" />
+											<span className="sr-only"> (opens in a new tab)</span>
+										</a>
+									}
+								/>
 							)}
-						</article>
+							{sourceUrl && (
+								<Button
+									variant="secondary"
+									render={
+										<a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+											<Github aria-hidden="true" />
+											Source
+											<span className="sr-only"> (opens in a new tab)</span>
+										</a>
+									}
+								/>
+							)}
+						</div>
+					)}
+				</header>
 
-						{toc.length >= 3 && (
-							<aside className="hidden w-60 shrink-0 xl:block">
-								<div className="sticky top-24">
-									<ProjectToc items={toc} />
-								</div>
-							</aside>
+				{/* The live artifact, beside the story (§7.1). */}
+				{project.url && domain && (
+					<figure className="flex w-full flex-col gap-3.5">
+						<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
+						<figcaption className="text-copy-12 text-muted-foreground">
+							A capture of {domain}, refreshed from the live site. Switch the viewport, drag the
+							side handles, or use the arrow keys on a handle to resize.
+						</figcaption>
+					</figure>
+				)}
+
+				{/* Audit read: the write-up on the measure, its outline docked in the
+					    right gutter on wide screens so it never moves the text's edge. */}
+				<div className={cn(measureClass, "relative")}>
+					<article className="min-w-0">
+						{hasContent ? (
+							<Markdown content={body} />
+						) : (
+							<p className="text-body text-copy-16 leading-relaxed">
+								The write-up for this project isn’t published yet.
+								{project.url || sourceUrl
+									? " The live site and source above are the record for now."
+									: " Ask me about it through the contact page."}
+							</p>
 						)}
-					</div>
+					</article>
 
-					<div className="flex w-full max-w-2xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-						<Link className="link-action" href="/projects">
-							<ArrowLeft aria-hidden="true" className="size-4" />
-							Back to projects
+					{toc.length >= 3 && (
+						<aside className="absolute inset-y-0 left-full ml-10 hidden w-60 xl:block">
+							<div className="sticky top-24">
+								<ProjectToc items={toc} />
+							</div>
+						</aside>
+					)}
+				</div>
+
+				<div
+					className={cn(
+						measureClass,
+						"flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
+					)}
+				>
+					<Link className="link-action" href="/projects">
+						<ArrowLeft aria-hidden="true" className="size-4" />
+						Back to projects
+					</Link>
+					<p className="flex flex-wrap items-center gap-x-2 text-copy-14 text-muted-foreground">
+						Want something like this?
+						<Link className="link-action" href="/contact">
+							Start a conversation
 						</Link>
-						<p className="flex flex-wrap items-center gap-x-2 text-copy-14 text-muted-foreground">
-							Want something like this?
-							<Link className="link-action" href="/contact">
-								Start a conversation
-							</Link>
-						</p>
-					</div>
+					</p>
 				</div>
 			</SiteShell>
 		</>

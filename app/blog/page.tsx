@@ -111,16 +111,11 @@ export default function BlogPage() {
 			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell profile="showcase">
-				<div className="flex flex-col gap-8 sm:gap-10">
-					<PageHeader
-						lede="Notes from building products and running a service business. Design systems, field ops, and the software that has to work out in the truck."
-						title="Writing"
-					/>
-
-					<div className="w-full">
-						<BlogList />
-					</div>
-				</div>
+				<PageHeader
+					lede="Notes from building products and running a service business. Design systems, field ops, and the software that has to work out in the truck."
+					title="Writing"
+				/>
+				<BlogList />
 			</SiteShell>
 		</>
 	);
