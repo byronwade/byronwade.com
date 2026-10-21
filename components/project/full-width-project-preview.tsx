@@ -170,20 +170,25 @@ interface PreviewFallbackProps {
 	url: string;
 }
 
-// A retry is available only after hydration and a failed capture.
+// A retry is available only after hydration and a failed capture. Before hydration the
+// scripts notice sits in <noscript>, so visitors with JavaScript never see it flash.
 function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
+	const icon = <ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />;
+	const noticeClass = "max-w-xs text-muted-foreground text-xs";
 	return (
 		<div className="flex min-w-0 flex-col items-center justify-center gap-3 p-6 text-center">
-			<ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />
+			{onRetry ? icon : <noscript>{icon}</noscript>}
 			<div className="space-y-1">
 				<p className="font-medium text-foreground text-sm">
 					{onRetry ? "Preview unavailable" : "Screenshot preview"}
 				</p>
-				<p className="max-w-xs text-muted-foreground text-xs">
-					{onRetry
-						? "We couldn’t capture this site right now."
-						: "Enable JavaScript to load the screenshot preview."}
-				</p>
+				{onRetry ? (
+					<p className={noticeClass}>We couldn’t capture this site right now.</p>
+				) : (
+					<noscript>
+						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>
+					</noscript>
+				)}
 			</div>
 			<div className="flex flex-wrap items-center justify-center gap-2">
 				{onRetry && (
