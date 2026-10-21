@@ -29,21 +29,30 @@ function Fact({ value, label }: { value: string; label: string }) {
 
 function ThorbisSpecimen() {
 	return (
-		<Sheet caption="What Thorbis organizes, first call to last invoice. An outline of the product’s scope, not live data.">
-			<div className="flex items-baseline justify-between gap-4 px-1.5 pt-1 pb-3">
-				<h2 className="font-medium text-copy-14 text-foreground">
-					Now building <span className="text-muted-foreground">·</span> Thorbis
-				</h2>
-				<a
-					className="link-action text-copy-13"
-					href="https://thorbis.com"
-					rel="noopener noreferrer"
-					target="_blank"
-				>
-					thorbis.com
-					<ArrowUpRight aria-hidden="true" className="size-3.5" />
-					<span className="sr-only"> (opens in a new tab)</span>
-				</a>
+		<Sheet caption="The chain Thorbis organizes. An outline of the product’s scope, not live data.">
+			<div className="flex flex-col gap-1.5 px-1.5 pt-1 pb-3">
+				<div className="flex items-baseline justify-between gap-4">
+					<h2 className="font-medium text-copy-14 text-foreground">
+						What I’m building <span className="text-muted-foreground">·</span> Thorbis
+					</h2>
+					<a
+						className="link-action text-copy-13"
+						href="https://thorbis.com"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						Explore Thorbis
+						<ArrowUpRight aria-hidden="true" className="size-3.5" />
+						<span className="sr-only"> (opens in a new tab)</span>
+					</a>
+				</div>
+				<p className="font-medium text-copy-13 text-foreground">
+					Software for the people who keep things running.
+				</p>
+				<p className="text-body text-copy-13 leading-relaxed">
+					From the first customer call to the last invoice. Product engineering and a shared design
+					system, grounded in the work of a service business.
+				</p>
 			</div>
 			<ol className="flex flex-col gap-0.5">
 				{CHAIN.map(({ stage, detail }, index) => (
