@@ -46,6 +46,41 @@ const MAX_NORMAL_HEIGHT = 760;
 const FULLSCREEN_PADDING_X = 48;
 const FULLSCREEN_PADDING_Y = 132;
 
+/**
+ * Inline sizes for the non-fullscreen frame. Until the container is measured
+ * (including the prerendered HTML), CSS applies useFrameSize's fit rule, so the
+ * measured pixel size replaces an equal layout instead of collapsing a
+ * full-width frame and shifting the article below it.
+ */
+function normalFrameStyles({
+	aspect,
+	captureWidth,
+	containerWidth,
+	frameHeight,
+	frameWidth,
+	manualWidth,
+}: {
+	aspect: number;
+	captureWidth: number;
+	containerWidth: number;
+	frameHeight: number;
+	frameWidth: number;
+	manualWidth: number | null;
+}) {
+	if (containerWidth === 0 && manualWidth === null) {
+		return {
+			frameStyle: {
+				width: `min(100%, ${Math.min(MAX_NORMAL_WIDTH, captureWidth)}px, ${MAX_NORMAL_HEIGHT * aspect}px)`,
+			},
+			viewportStyle: { aspectRatio: `${aspect}` },
+		};
+	}
+	return {
+		frameStyle: { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" },
+		viewportStyle: { height: `${Math.round(frameHeight)}px` },
+	};
+}
+
 interface PreviewToolbarProps {
 	href: string;
 	isFullscreen: boolean;
@@ -258,6 +293,15 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		};
 	}, [isFullscreen]);
 
+	const { frameStyle, viewportStyle } = normalFrameStyles({
+		aspect,
+		captureWidth: capture.width,
+		containerWidth,
+		frameHeight,
+		frameWidth,
+		manualWidth,
+	});
+
 	const previewContent = (
 		<div
 			// Animating width/height is normally avoided (DESIGN.md §6.1), but this
@@ -267,7 +311,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				"relative flex flex-col transition-[width,height] duration-300 ease-out",
 				isFullscreen && "h-full w-full"
 			)}
-			style={isFullscreen ? undefined : { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" }}
+			style={isFullscreen ? undefined : frameStyle}
 		>
 			<div
 				className={cn(
@@ -295,11 +339,12 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 						"relative flex w-full justify-center overflow-hidden bg-muted/30",
 						isFullscreen ? "flex-1 items-center" : "items-start"
 					)}
-					style={isFullscreen ? undefined : { height: `${Math.round(frameHeight)}px` }}
+					style={isFullscreen ? undefined : viewportStyle}
 					aria-busy={status === "loading"}
 				>
 					{status === "error" ? (
-						<div className="flex flex-col items-center justify-center gap-3 p-6 text-center">
+						// Fill the viewport so the message stays centered where it first painted.
+						<div className="flex w-full flex-col items-center justify-center gap-3 self-stretch p-6 text-center">
 							<ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />
 							<div className="space-y-1">
 								<p className="font-medium text-foreground text-sm">Preview unavailable</p>
