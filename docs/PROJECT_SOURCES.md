@@ -281,22 +281,31 @@ Its claims were checked against
 [byronwade/reactpress.byronwade.com](https://github.com/byronwade/reactpress.byronwade.com)
 (the old `byronwade/ReactPress` address redirects there) at `main`
 [`64b56a8`](https://github.com/byronwade/reactpress.byronwade.com/commit/64b56a835f654e219cdcb9d676a1dc77d247db1a)
-(2025-06-21), which is still the latest commit, and against
+(2025-06-21), which is still the latest commit on `main`, and against
 [reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin),
-accessed October 21, 2026. All 63 source files at that commit were read; nothing
-was installed or run.
+accessed October 21, 2026. All 63 source files at that commit were downloaded and
+searched; nothing was installed or run.
 
 | Claim | Source at `64b56a8` | Correction |
 | --- | --- | --- |
 | Next.js 15 (excerpt, body, roadmap, performance section) | `package.json`: `next ^14.2.30`, `react ^18.3.1`, `typescript ^4.9.5`. `next ^15.3.4` was tried in `379f5f6` and `839b6cb` (2025-06-20) and reverted to 14 in `6371112` the same evening. The repo's own README and page metadata still say Next.js 15. | Next.js 14 throughout, excerpt included. |
 | Bun "for package management and runtime" | `bun.lockb` and `package-lock.json` are both committed; every script calls `next` directly. | Bun or npm for installs; no runtime claim. |
 | "Faithfully recreates every aspect … from the post editor to the settings pages. Every pixel, every interaction, every workflow" | 39 `page.tsx` routes under `src/app/rp-admin`, mostly static WordPress markup styled by a copied 18,664-line `rp-admin/index.css`. `posts/post-new` and `pages/page-new` render only "this is the posts bilder page" (also live); the block editor code is commented out and the `@wordpress/*` packages are imported only in those comments. | The 39 screens are listed; the editor is described as a placeholder. |
-| "A working alternative" / "a functional admin interface" | No `fetch`, API route or data store in `src`. `utils/setup.js` only logs "Setting up database..."; its MongoDB/Firebase code is commented out. `utils/provider.js` wraps SWR and Recoil but nothing mounts it. | Screens render but do not load or save anything. |
-| API-first design that "works with any backend" | As above. | Kept as the plan; stated that no data layer exists. |
-| CSS conversion to Tailwind "currently in progress" | Tailwind is configured, but the screens use WordPress class names and the copied stylesheet. No commits after 2025-06-21. | Started and stopped. |
+| "A working alternative" / "a functional admin interface" | No `fetch`, API route or data store in `src`. `utils/setup.js` only logs "Setting up database..."; its MongoDB/Firebase code is commented out. `utils/provider.js` wraps SWR and Recoil but nothing mounts it. | Screens on `main` render but do not load or save anything. |
+| API-first design that "works with any backend" | As above. | Kept as the plan; stated that `main` has no data layer. |
+| CSS conversion to Tailwind "currently in progress" | Tailwind is configured, but the screens use WordPress class names and the copied stylesheet. No commits on `main` after 2025-06-21. | Unfinished on `main`. |
 | "Fast"; performance "needed for real-world field operations"; "6–12 months" to build an admin | No benchmark or source in the repo. The README's "5x faster than traditional WordPress admin" has no measurement behind it either. | Removed; the write-up says no speed was measured. |
 | "Open source" | GitHub reports no license and there is no license file, although the README shows an MIT badge. | "Public on GitHub" with no license file. |
 | Reusable dashboard widget and form components | Shared components are the sidebar, toolbar, footer, screen-options toggle and list table. The dashboard (`rp-admin/page.tsx`, 541 lines) and settings forms are inline. | Says which pieces are shared and that extracting the rest is still to do. |
+
+Two unmerged branches were pushed on 2026-06-11 and 06-12, after the write-up:
+`claude/admiring-goldberg-c6t9fl` (28 commits ahead of `main`: dead-CSS removal,
+`rp-admin/index.css` trimmed from 18,664 to 9,839 lines, admin shell converted to
+Tailwind) and `claude/lucid-cannon-fujppo` (17 ahead: a Fakebase mock backend
+wired to the users, posts, pages, comments, plugins, categories, tags, media,
+dashboard and General Settings screens; the editors stay placeholders). Only their
+commit lists were read. The write-up mentions them as unmerged work and makes no
+claim about how well they work.
 
 Byron's motivation and the field-management-system framing are kept as intent,
 reworded where they described unbuilt work as existing. Title, URL, archived
@@ -313,8 +322,11 @@ date is a question for Byron.
 [byronwade/cms.byronwade.com](https://github.com/byronwade/cms.byronwade.com)
 at `main` [`8353417`](https://github.com/byronwade/cms.byronwade.com/commit/8353417acc1264355b73177cd6882c98d1a122e6)
 (2025-12-02 03:08 UTC), the latest of its 16 commits and four minutes older than
-`584c39b`. The previous commit, `8b7a050`, moved it from Next.js 15 to 16; the 22
-files that changed between the two are formatting and lint fixes. Nothing was
+`584c39b`; its other branches have nothing `main` lacks. The previous commit,
+`8b7a050`, moved it from Next.js 15 to 16. Of the 22 files that changed between
+the two, most are formatting and lint fixes plus a landing-page rewrite; the only
+file cited below that changed is `app/cms/build/page.tsx` (+10/−4), which was read
+at `8353417`. Nothing was
 installed or run, so interactive behavior comes from reading the code. The
 repository README at that commit calls the project "entirely a design-only demo"
 in which "All data is fake".

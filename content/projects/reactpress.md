@@ -18,7 +18,7 @@ People know the WordPress admin. They have used it for years and they do not wan
 
 ## What is ReactPress?
 
-ReactPress rebuilds the WordPress admin interface as React pages using **Next.js 14**, **React 18**, and **TypeScript**. It is not a WordPress theme or a skin. It keeps the layout people already know and puts it on a stack I would actually choose today. So far the screens are static: nothing loads or saves real content yet.
+ReactPress rebuilds the WordPress admin interface as React pages using **Next.js 14**, **React 18**, and **TypeScript**. It is not a WordPress theme or a skin. It keeps the layout people already know and puts it on a stack I would actually choose today. On the main branch the screens are static: nothing loads or saves content yet.
 
 ### The Technical Foundation
 
@@ -67,11 +67,11 @@ The first phase focused on establishing the core architecture:
 - Carrying over the WordPress admin's own responsive styles
 - Building the navigation and routing system
 
-That gives every screen a real route and real components. It does not give them data yet: forms and tables render, but they do not load or save anything.
+That gives every screen a real route and real components. On the main branch it does not give them data: forms and tables render, but they do not load or save anything.
 
 ### Phase 2: CSS Modernization 🚧
 
-This phase started and stopped. The plan was to convert the original WordPress CSS to Tailwind CSS utility classes. The screens still run on the copied WordPress stylesheet, about 18,600 lines of it, and the repository has had no commits since June 2025. The point of the conversion was:
+This phase is unfinished. The plan was to convert the original WordPress CSS to Tailwind CSS utility classes. On the main branch the screens still run on the copied WordPress stylesheet, about 18,600 lines of it. Unmerged work from June 2026 removes unused rules from that stylesheet and starts converting the admin shell to Tailwind. The point of the conversion was:
 
 - Reducing bundle size
 - Improving maintainability
@@ -120,7 +120,7 @@ The sidebar, toolbar, footer and list table are shared components. Most screens 
 
 #### 3. API-First Design
 
-The plan is for ReactPress to work with any backend: WordPress, a custom API, MongoDB, or a field management database. None of that exists yet. There is no data layer; SWR and Recoil are installed but not used, and an early MongoDB and Firebase setup script is commented out. That flexibility matters for field management systems, which often need to integrate with:
+The plan is for ReactPress to work with any backend: WordPress, a custom API, MongoDB, or a field management database. None of that is on the main branch: SWR and Recoil are installed but not used, and an early MongoDB and Firebase setup script is commented out. An unmerged branch from June 2026 connects most list screens, the dashboard and General Settings to Fakebase, an in-process stand-in backend, which is a first step but not a real one. That flexibility matters for field management systems, which often need to integrate with:
 
 - Equipment tracking systems
 - GPS and mapping services
@@ -181,7 +181,7 @@ For the field management system, that foundation would give me a familiar UX, a 
 
 The journey from ReactPress to a full field management system is a natural progression: start with a solid foundation, extend it with domain-specific features, and build something that serves real-world needs while keeping the usability and familiarity that users expect.
 
-ReactPress has not changed since June 2025. The screens are in place; the data layer, the block editor and the CSS conversion are not. Those three are what would turn it into a real foundation for the field management system.
+ReactPress's main branch has not changed since June 2025. The screens are in place; the data layer, the block editor and the CSS conversion are not. Unmerged branches from June 2026 start on two of those. Finishing all three is what would turn it into a real foundation for the field management system.
 
 That is why ReactPress matters to me. It started as a WordPress experiment, and it is also a stepping stone toward building better applications that solve real problems.
 
