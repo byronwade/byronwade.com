@@ -173,7 +173,7 @@ interface PreviewFallbackProps {
 // A retry is available only after hydration and a failed capture.
 function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 	return (
-		<div className="flex flex-col items-center justify-center gap-3 p-6 text-center">
+		<div className="flex min-w-0 flex-col items-center justify-center gap-3 p-6 text-center">
 			<ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />
 			<div className="space-y-1">
 				<p className="font-medium text-foreground text-sm">
@@ -185,7 +185,7 @@ function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 						: "Enable JavaScript to load the screenshot preview."}
 				</p>
 			</div>
-			<div className="flex items-center gap-2">
+			<div className="flex flex-wrap items-center justify-center gap-2">
 				{onRetry && (
 					<Button onClick={onRetry} size="lg" variant="outline">
 						<RefreshCw className="size-3" aria-hidden="true" />
@@ -213,6 +213,80 @@ function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 	);
 }
 
+interface PreviewViewportProps extends FullWidthProjectPreviewProps {
+	frameHeight: number;
+	frameWidth: number;
+	isFullscreen: boolean;
+	mounted: boolean;
+	screenshot: ReturnType<typeof useScreenshot>;
+}
+
+function PreviewViewport({
+	href,
+	title,
+	url,
+	frameHeight,
+	frameWidth,
+	isFullscreen,
+	mounted,
+	screenshot,
+}: PreviewViewportProps) {
+	const { src, status, onLoad: onImageLoad, onError: onImageError, retry } = screenshot;
+	const showFallback = !mounted || status === "error";
+	const retryCapture = mounted ? retry : undefined;
+	// Preserve the capture area while allowing recovery controls and resized text to fit.
+	const height = showFallback ? "auto" : `${Math.round(frameHeight)}px`;
+
+	return (
+		<div
+			className={cn(
+				"relative flex w-full justify-center overflow-hidden bg-muted/30",
+				isFullscreen ? "flex-1 items-center" : "items-start"
+			)}
+			style={isFullscreen ? undefined : { height, minHeight: Math.round(frameHeight) }}
+			aria-busy={mounted && status === "loading"}
+		>
+			{showFallback ? (
+				<PreviewFallback href={href} onRetry={retryCapture} url={url} />
+			) : (
+				<div
+					className="relative"
+					style={
+						isFullscreen
+							? { width: `${Math.round(frameWidth)}px`, height: `${Math.round(frameHeight)}px` }
+							: { width: "100%", height: "100%" }
+					}
+				>
+					{status === "loading" && (
+						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
+							<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-transparent" />
+							<div className="relative size-7">
+								<div className="absolute inset-0 rounded-full border-2 border-border" />
+								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
+							</div>
+							<p className="relative font-medium text-muted-foreground text-xs">Loading preview…</p>
+						</div>
+					)}
+					{src && (
+						<Image
+							key={src}
+							src={src}
+							alt={`Screenshot of ${title}`}
+							fill
+							className="object-cover object-top"
+							sizes="(max-width: 768px) 100vw, 1280px"
+							onLoad={onImageLoad}
+							onError={onImageError}
+							priority
+							unoptimized
+						/>
+					)}
+				</div>
+			)}
+		</div>
+	);
+}
+
 export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPreviewProps) {
 	const [preset, setPreset] = useState<ViewportPreset>("desktop");
 	const [isFullscreen, setIsFullscreen] = useState(false);
@@ -224,15 +298,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	const capture = VIEWPORT_PRESETS[preset];
 
-	const {
-		src,
-		status,
-		naturalSize,
-		onLoad: onImageLoad,
-		onError: onImageError,
-		retry,
-	} = useScreenshot(href, capture.width, capture.height);
-	const retryCapture = mounted ? retry : undefined;
+	const screenshot = useScreenshot(href, capture.width, capture.height);
+	const { status, naturalSize } = screenshot;
 
 	const {
 		width: manualWidth,
@@ -337,55 +404,16 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					url={url}
 				/>
 
-				{/* Preview viewport */}
-				<div
-					className={cn(
-						"relative flex w-full justify-center overflow-hidden bg-muted/30",
-						isFullscreen ? "flex-1 items-center" : "items-start"
-					)}
-					style={isFullscreen ? undefined : { height: `${Math.round(frameHeight)}px` }}
-					aria-busy={mounted && status === "loading"}
-				>
-					{!mounted || status === "error" ? (
-						<PreviewFallback href={href} onRetry={retryCapture} url={url} />
-					) : (
-						<div
-							className="relative"
-							style={
-								isFullscreen
-									? { width: `${Math.round(frameWidth)}px`, height: `${Math.round(frameHeight)}px` }
-									: { width: "100%", height: "100%" }
-							}
-						>
-							{status === "loading" && (
-								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
-									<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-transparent" />
-									<div className="relative size-7">
-										<div className="absolute inset-0 rounded-full border-2 border-border" />
-										<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
-									</div>
-									<p className="relative font-medium text-muted-foreground text-xs">
-										Loading preview…
-									</p>
-								</div>
-							)}
-							{src && (
-								<Image
-									key={src}
-									src={src}
-									alt={`Screenshot of ${title}`}
-									fill
-									className="object-cover object-top"
-									sizes="(max-width: 768px) 100vw, 1280px"
-									onLoad={onImageLoad}
-									onError={onImageError}
-									priority
-									unoptimized
-								/>
-							)}
-						</div>
-					)}
-				</div>
+				<PreviewViewport
+					href={href}
+					title={title}
+					url={url}
+					frameHeight={frameHeight}
+					frameWidth={frameWidth}
+					isFullscreen={isFullscreen}
+					mounted={mounted}
+					screenshot={screenshot}
+				/>
 
 				{/* Bottom status bar */}
 				<div

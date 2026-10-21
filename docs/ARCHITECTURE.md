@@ -48,6 +48,8 @@ Project screenshots are optional progressive enhancement. `FullWidthProjectPrevi
 renders a native site link and explains the JavaScript requirement before hydration;
 capture controls and loading status appear only after mount. The same rendered
 reading test checks these fallbacks on every published project with a preview.
+Recovery content can grow beyond the capture dimensions; `project-preview.test.mjs`
+checks that both actions fit at 320px with 100% and 200% root text sizing.
 
 | Route | Purpose |
 |-------|---------|
