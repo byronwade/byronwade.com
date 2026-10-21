@@ -756,8 +756,11 @@ async function checkContactSuccess(page) {
 	await page.type('main input[name="email"]', "visitor@example.invalid");
 	await page.type('main textarea[name="message"]', "Local browser fixture; no email is delivered.");
 	await page.click('main button[type="submit"]');
+	// The form also has a copy-confirmation status; any status region may carry the result.
 	await page.waitForFunction(() =>
-		document.querySelector('main [role="status"]')?.textContent.includes("Sent.")
+		[...document.querySelectorAll('main [role="status"]')].some((status) =>
+			status.textContent.includes("Sent.")
+		)
 	);
 	await page.waitForSelector("[data-sonner-toast]");
 	return await readState(page, "Contact success with local transport");
