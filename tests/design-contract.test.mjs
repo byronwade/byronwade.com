@@ -202,3 +202,21 @@ test("the small favicon route cannot be shadowed by a full-size public asset", a
 	assert.ok(icon.size < 10_000, "the browser favicon must stay below 10KB");
 	await access(new URL("../public/icon-original.png", import.meta.url));
 });
+
+const FULL_ITALIC_LATIN = "UcC53FwrK3iLTcvneQg7B5iqpJlhKnPCkaL5UUM.woff2";
+const ITALIC_CORE = "inter-italic-latin-core.woff2";
+
+test("quoted posts load the italic Latin core subset instead of the full face", async () => {
+	const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+	const generatedEnd = css.indexOf("/* thorbis-fonts:end */");
+	const core = css.indexOf(`/fonts/${ITALIC_CORE}`);
+	assert.ok(css.indexOf(`/fonts/${FULL_ITALIC_LATIN}`) < generatedEnd);
+	// A later face wins for overlapping characters; before the full face it never would.
+	assert.ok(core > generatedEnd, "the core subset must follow the generated Thorbis faces");
+	const [full, subset] = await Promise.all(
+		[FULL_ITALIC_LATIN, ITALIC_CORE].map((file) =>
+			stat(new URL(`../public/fonts/${file}`, import.meta.url))
+		)
+	);
+	assert.ok(subset.size < full.size - 10_000, "the subset must stay materially smaller");
+});

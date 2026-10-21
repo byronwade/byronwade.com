@@ -21,7 +21,7 @@ export function IndexList({
  * native interactive element as the row's full target.
  */
 export const indexRowLinkClass =
-	"group/row flex flex-col gap-2 rounded-sm py-5 outline-none transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4";
+	"group/row flex flex-col items-stretch gap-2 rounded-sm py-5 outline-none transition-colors hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-4";
 
 /**
  * The colour transition a row's title and affordances share, so the whole row

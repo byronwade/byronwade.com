@@ -13,4 +13,4 @@
  * treatment belong here rather than in each caller.
  */
 export const pillLinkClass =
-	"inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-muted hover:text-foreground focus-ring";
+	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-muted hover:text-foreground focus-ring";

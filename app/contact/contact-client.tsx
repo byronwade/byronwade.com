@@ -1,16 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
-import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Loader2, Send } from "@/lib/icons";
+
+const ContactSentToast = dynamic(
+	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
+	{ ssr: false }
+);
 
 // Guided profile: one focused task, with persistent feedback and recoverable drafts.
 export default function ContactClient() {
@@ -21,7 +26,7 @@ export default function ContactClient() {
 		// Narrow, not wide. A single form has no business spanning a five-column
 		// shell; the measure is the point on a page with one task.
 		<SiteShell>
-			<Toaster />
+			{status.kind === "sent" ? <ContactSentToast /> : null}
 			<div className="flex flex-col gap-10">
 				<PageHeader
 					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two."

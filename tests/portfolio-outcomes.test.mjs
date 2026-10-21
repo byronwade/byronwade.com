@@ -327,6 +327,18 @@ for (const [name, loadProfile] of [
 	});
 }
 
+test("portfolio API keeps healthy empty repositories when the optional profile is unavailable", async (context) => {
+	fixture(
+		context,
+		() => Promise.resolve(Response.json([])),
+		() => Promise.resolve(Response.json({ message: "Unavailable" }, { status: 503 }))
+	);
+	const body = await responseBody({ profileFailed: true });
+	assert.deepEqual(body.repos, []);
+	assert.equal(body.githubFailed, false);
+	assert.equal(body.degraded, true);
+});
+
 test("portfolio API distinguishes genuine zero profile counts from an unavailable profile", async (context) => {
 	fixture(
 		context,

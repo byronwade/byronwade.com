@@ -1,0 +1,1831 @@
+{
+  "checkedAt": "2026-10-17T07:21:25.495Z",
+  "commit": "c81f4e9a0a0aac6c4a4013ce7d0353ccf27a9e7a",
+  "phase": "final",
+  "harnessHash": "6c1fbb2dab6775f3f924a15e00eb99b556380f70775ad8f23d2c6183e9a63fd9",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "buildId": "YXiSZ47cTNPe_YOtgvjHO",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "light",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "mobile",
+          "screenEmulation": {
+            "mobile": true,
+            "width": 390,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 92,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 925.9665,
+          "largest-contentful-paint": 2772.9497499999998,
+          "total-blocking-time": 239.01674999999955,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1238.4360999973296
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 925.9665,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2772.9497499999998,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            {
+              "metric": "total-blocking-time",
+              "value": 239.01674999999955,
+              "budget": 300
+            },
+            {
+              "metric": "speed-index",
+              "value": 1238.4360999973296,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.84
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.85
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.5
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.97
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 36, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "dark",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "mobile",
+          "screenEmulation": {
+            "mobile": true,
+            "width": 390,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 95,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 911.2765999999999,
+          "largest-contentful-paint": 2688.9149,
+          "total-blocking-time": 148,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1083.1763199799727
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 911.2765999999999,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2688.9149,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 148, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1083.1763199799727,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.86
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.95
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.67
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.97
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "screenshot": "home-390-dark.png",
+      "keyboard": { "checked": 36, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 768,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 80,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 911.1233,
+          "largest-contentful-paint": 2702.68495,
+          "total-blocking-time": 157,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1067.8904600290393
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 911.1233,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2702.68495,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 157, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1067.8904600290393,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.91
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.41
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.96 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.88
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.64
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.86
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 768,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 76,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 928.4889500000002,
+          "largest-contentful-paint": 2767.46685,
+          "total-blocking-time": 223.9999999999999,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1087.6971800330448
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 928.4889500000002,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2767.46685,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            {
+              "metric": "total-blocking-time",
+              "value": 223.9999999999999,
+              "budget": 300
+            },
+            {
+              "metric": "speed-index",
+              "value": 1087.6971800330448,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.9
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.39
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.95 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.75
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.44
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.85
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0.5
+          }
+        ]
+      },
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "light",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 1280,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 70,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 914.6806999999999,
+          "largest-contentful-paint": 2819.02105,
+          "total-blocking-time": 303.65965000000006,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1118.6304338160567
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 914.6806999999999,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2819.02105,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            {
+              "metric": "total-blocking-time",
+              "value": 303.65965000000006,
+              "budget": 300
+            },
+            {
+              "metric": "speed-index",
+              "value": 1118.6304338160567,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": ["total-blocking-time: 303.65965000000006 > 300"]
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.9
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.38
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.95 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.58
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.37
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.84
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "screenshot": "home-1280-light.png",
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "dark",
+      "status": 304,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 1280,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 78,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 972.2459,
+          "largest-contentful-paint": 2750.7376999999997,
+          "total-blocking-time": 191,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1119.1990210313863
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 262865
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 168720
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 1,
+            "transferSize": 49991
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 23096
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 972.2459,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2750.7376999999997,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 191, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1119.1990210313863,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 262865
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 168720
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 1,
+              "transferSize": 49991
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 23096
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.88
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.4
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.95 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.82
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.52
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.85
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        { "name": "All products", "violations": [], "targetFailures": [] },
+        {
+          "name": "All products keyboard containment and close hit area",
+          "checked": 13,
+          "closeHit": true
+        },
+        { "name": "All products owns dialog shortcuts", "passed": true },
+        {
+          "name": "All products rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 43,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support open source",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Support open source keyboard containment and close hit area",
+          "checked": 5,
+          "closeHit": true
+        },
+        {
+          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        {
+          "name": "Support to search keeps the original invoking control",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    }
+  ]
+}

@@ -215,10 +215,14 @@ use them correctly.
   Set `CHROME_PATH` when Chrome is not at the test's default Windows installation path.
   The 32-case geometry matrix uses the production shell with short main content to
   isolate the header; real-route interaction checks remain separate.
-- **Accessibility:** header browser regressions cover keyboard operation, focus,
-  touch targets and layout at 100%/200% text in both themes. They are not a full-route
-  accessibility audit. Biome's a11y rules run in lint; manual keyboard passes are
-  still required for critical flows.
+- **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` is the
+  full-route audit: every visual route template at 390/768/1280 in both themes with
+  axe, Lighthouse, keyboard, target, overflow and reduced-motion checks. Fixtures
+  cover Figma and email transport. Header browser regressions in `test:rendered`
+  cover keyboard operation, focus, touch targets and layout at 100%/200% text.
+  Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
+  checks remain outside these, so manual keyboard passes are still required for
+  critical flows.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero

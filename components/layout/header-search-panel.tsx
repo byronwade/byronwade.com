@@ -71,8 +71,8 @@ export default function HeaderSearchPanel({
 					aria-label="Search"
 					role="combobox"
 					aria-autocomplete="list"
-					aria-expanded={true}
-					aria-controls={listId}
+					aria-expanded={results.length > 0}
+					aria-controls={results.length > 0 ? listId : undefined}
 					aria-activedescendant={selected ? `${listId}-${active}` : undefined}
 					className="h-11 min-w-0 flex-1 text-copy-16 sm:h-11 md:text-copy-16"
 				/>
@@ -87,53 +87,50 @@ export default function HeaderSearchPanel({
 					{icons.close}
 				</Button>
 			</div>
-			<div
-				ref={listRef}
-				id={listId}
-				role="listbox"
-				aria-label="Search results"
-				className="max-h-80 overflow-y-auto p-2"
-			>
+			{/* A listbox must own options, so an empty query result is plain text instead. */}
+			<div ref={listRef} className="max-h-80 overflow-y-auto p-2">
 				{results.length === 0 ? (
 					<p className="px-2.5 py-8 text-center text-copy-13 text-muted-foreground">
 						No results for “{query}”.
 					</p>
 				) : (
-					groups.map((group) => (
-						<fieldset key={group.kind} aria-label={group.label}>
-							<div
-								aria-hidden="true"
-								className="px-2.5 py-1.5 font-mono text-copy-12 text-muted-foreground"
-							>
-								{group.label}
-							</div>
-							{group.items.map((entry) => {
-								const index = cursor++;
-								return (
-									<button
-										key={entry.href}
-										type="button"
-										id={`${listId}-${index}`}
-										role="option"
-										aria-selected={index === active}
-										onPointerMove={() => setActive(index)}
-										data-idx={index}
-										onClick={() => run(entry.href)}
-										className={cn(
-											"flex min-h-11 w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-copy-13",
-											index === active && "bg-muted"
-										)}
-									>
-										{icons.kinds[entry.kind]}
-										<span className="flex-1">{entry.label}</span>
-										{entry.meta && (
-											<span className="text-copy-12 text-muted-foreground">{entry.meta}</span>
-										)}
-									</button>
-								);
-							})}
-						</fieldset>
-					))
+					<div id={listId} role="listbox" aria-label="Search results">
+						{groups.map((group) => (
+							<fieldset key={group.kind} aria-label={group.label}>
+								<div
+									aria-hidden="true"
+									className="px-2.5 py-1.5 font-mono text-copy-12 text-muted-foreground"
+								>
+									{group.label}
+								</div>
+								{group.items.map((entry) => {
+									const index = cursor++;
+									return (
+										<button
+											key={entry.href}
+											type="button"
+											id={`${listId}-${index}`}
+											role="option"
+											aria-selected={index === active}
+											onPointerMove={() => setActive(index)}
+											data-idx={index}
+											onClick={() => run(entry.href)}
+											className={cn(
+												"flex min-h-11 w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-copy-13",
+												index === active && "bg-muted"
+											)}
+										>
+											{icons.kinds[entry.kind]}
+											<span className="flex-1">{entry.label}</span>
+											{entry.meta && (
+												<span className="text-copy-12 text-muted-foreground">{entry.meta}</span>
+											)}
+										</button>
+									);
+								})}
+							</fieldset>
+						))}
+					</div>
 				)}
 			</div>
 			<p

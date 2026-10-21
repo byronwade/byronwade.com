@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @import "highlight.js/styles/github-dark.css";
 
+/* The highlight theme made code.hljs a nested horizontal scroller that keyboard
+   users could not reach. The focusable <pre> in components/common/markdown.tsx
+   owns scrolling instead. Unlayered, like the imported theme, so it overrides it. */
+pre code.hljs {
+  overflow-x: visible;
+}
+
 /* thorbis-fonts:start */
 
 /* Thorbis src/styles.css font faces @ 46b6654d02fda9d8fde737395185c3141df52cd2; licenses: public/fonts/*-OFL.txt. */
@@ -305,14 +312,34 @@
 
 /* thorbis-fonts:end */
 
-/* Existing resume signature, retained as a personal identity asset. */
+/* Inter italic, Basic Latin core. Blockquotes and emphasis are italic, and the
+   full Latin italic face put every post with a quote over the 100KiB font
+   budget. This face is a fontTools subset of the pinned
+   UcC53FwrK3iLTcvneQg7B5iqpJlhKnPCkaL5UUM.woff2 (same glyphs, axis and layout
+   features). Declared after the generated faces, it wins for the characters it
+   covers; the full face still loads for any other Latin character. Regenerate
+   it with the command in docs/PERFORMANCE.md if the Thorbis port changes. */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/inter-italic-latin-core.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0, U+00AB, U+00BB, U+2010-2014, U+2018-201E, U+2022, U+2026, U+2032-2033, U+2039-203A;
+}
+
+/* Resume signature. The page renders only "Byron Wade", so the stylesheet
+   loads a woff2 subset of those glyphs. The full OTF stays on disk for the
+   OG image route and is not part of the page font budget. */
 
 @font-face {
   font-family: "Byron Signature";
-  src: url("/fonts/Modelistasignature-ownAV.otf") format("opentype");
+  src: url("/fonts/byron-signature.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0020, U+0042, U+0057, U+0061, U+0064, U+0065, U+006E, U+006F, U+0072, U+0079;
 }
 
 
@@ -422,7 +449,8 @@
   --header-shadow-panel: inset 0 0 0 1px var(--thorbis-border),
     0 1px 2px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
   --thorbis-accent: oklch(52% 0.17 264.4);
-  --thorbis-accent-foreground: oklch(100% 0 none);
+  /* Numeric achromatic hue preserves the color and supports the audit parser. */
+  --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(50% 0.188 264.4);
   --thorbis-bg: oklch(96.8% 0.009 84.6);
   --thorbis-body: oklch(38.2% 0.018 68);
@@ -447,11 +475,11 @@
   --thorbis-success: oklch(50% 0.14 149.2);
   --thorbis-warning: oklch(54% 0.13 80.5);
   --thorbis-work-body: oklch(94% 0.013 259.8);
-  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-canvas: oklch(14.5% 0 0);
   --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
   --thorbis-work-field: oklab(11.31% 0 0);
-  --thorbis-work-marker: oklch(78% 0 none);
-  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-marker: oklch(78% 0 0);
+  --thorbis-work-panel: oklch(20.5% 0 0);
   --thorbis-work-type: oklch(96.8% 0.009 84.6);
   --control-comfortable: 2.25rem;
   --control-compact: 2rem;
@@ -537,14 +565,14 @@
   --header-on-panel: var(--thorbis-on-panel);
   --header-shadow-panel: var(--shadow-panel);
   --thorbis-accent: oklch(61% 0.17 264.4);
-  --thorbis-accent-foreground: oklch(100% 0 none);
+  --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(63.2% 0.157 265.4);
-  --thorbis-bg: oklch(14.5% 0 none);
+  --thorbis-bg: oklch(14.5% 0 0);
   --thorbis-body: oklch(94% 0.013 259.8);
   --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
   --thorbis-burnt: oklch(49.6% 0.143 34);
   --thorbis-busy: oklch(96.8% 0.009 84.6);
-  --thorbis-code-bg: oklch(20.5% 0 none);
+  --thorbis-code-bg: oklch(20.5% 0 0);
   --thorbis-code-fg: oklch(96.8% 0.009 84.6);
   --thorbis-danger: oklch(62.6% 0.193 23);
   --thorbis-fg: oklch(96.8% 0.009 84.6);
@@ -553,20 +581,20 @@
   --thorbis-forest: oklch(38% 0.052 147.2);
   --thorbis-info: oklch(62.3% 0.188 259.8);
   --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
-  --thorbis-link-decoration: oklch(60% 0 none);
-  --thorbis-marker: oklch(78% 0 none);
+  --thorbis-link-decoration: oklch(60% 0 0);
+  --thorbis-marker: oklch(78% 0 0);
   --thorbis-olive: oklch(47.9% 0.05 115.3);
   --thorbis-on-panel: color-mix(in oklab, var(--thorbis-fg) 9%, var(--thorbis-panel));
-  --thorbis-panel: oklch(20.5% 0 none);
+  --thorbis-panel: oklch(20.5% 0 0);
   --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
   --thorbis-success: oklch(62.7% 0.17 149.2);
   --thorbis-warning: oklch(82.7% 0.171 80.5);
   --thorbis-work-body: oklch(94% 0.013 259.8);
-  --thorbis-work-canvas: oklch(14.5% 0 none);
+  --thorbis-work-canvas: oklch(14.5% 0 0);
   --thorbis-work-costume: oklab(23.586% -0.00403604 -0.0411626);
   --thorbis-work-field: oklab(11.31% 0 0);
-  --thorbis-work-marker: oklch(78% 0 none);
-  --thorbis-work-panel: oklch(20.5% 0 none);
+  --thorbis-work-marker: oklch(78% 0 0);
+  --thorbis-work-panel: oklch(20.5% 0 0);
   --thorbis-work-type: oklch(96.8% 0.009 84.6);
   --shadow-accent-action: 0 8px 24px color-mix(in oklab, var(--thorbis-accent) 22%, transparent), inset 0 1px rgb(255 255 255 / 0.2);
   --shadow-button: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 1px 1px rgb(0 0 0 / 0.2);
@@ -681,13 +709,6 @@
     scroll-behavior: auto;
     scroll-padding-block: 16rem 6rem;
   }
-  :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 3px;
-  }
-  @media (forced-colors: active) {
-    :focus-visible { outline-color: Highlight; }
-  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "liga" 1, "calt" 1, "kern" 1;
@@ -752,6 +773,10 @@
   .link-underline {
     @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
   }
+  /* Target defaults preserve larger sizes already set by a caller. */
+  :where(.link-underline) {
+    @apply inline-flex min-h-6 min-w-6 items-center max-sm:min-h-11 max-sm:min-w-11;
+  }
   .skip-link {
     @apply inline-flex min-h-11 items-center rounded-md bg-card px-3 shadow-card;
     position: absolute;
@@ -803,4 +828,13 @@
 }
 @media (forced-colors: active) {
   :focus-visible { outline-color: Highlight; }
+}
+
+/* Printed links are text, with no pointer target to reserve. */
+@media print {
+  .link-underline {
+    display: inline;
+    min-height: 0;
+    min-width: 0;
+  }
 }
