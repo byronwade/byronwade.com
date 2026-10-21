@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-10-19T23:45:09.313Z",
-  "commit": "c89bb503b281517b43ad497c73eb37d65e70c63e",
+  "checkedAt": "2026-10-21T16:33:06.200Z",
+  "commit": "bfab79e75ff84eb52d31c2e759db101f8cdecfa2",
   "phase": "final",
-  "harnessHash": "f6640aa5af0248009ddfe45f942ba45f75d812783c304d9fd9b06e6d59a5db5c",
+  "harnessHash": "25f32e7c4ccdfac43042347c5d6aaf03a3fde39a3242946750dcbdb65f0fe6af",
   "figma": "Local API and embed fixtures; live provider integration is outside this audit",
   "email": "Local Resend HTTP fixture; no message is delivered",
-  "buildId": "egDoeIhtSPU37F2tqeVeE",
-  "chrome": "Chrome/155.0.8059.80",
+  "buildId": "p4K4MZoYvKF6yTQx_9hyG",
+  "chrome": "Chrome/155.0.8059.85",
   "axe": "4.10.3",
   "routeCoverage": [
     { "template": "/", "routes": ["/"] },
@@ -18,16 +18,46 @@
     { "template": "/resume", "routes": ["/resume"] },
     { "template": "/search", "routes": ["/search"] },
     { "template": "/terms", "routes": ["/terms"] },
-    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
     {
-      "template": "/portfolio/[...slug]",
+      "template": "/blog/[slug]",
       "routes": [
-        "/portfolio/thorbis",
-        "/portfolio/thorbis-ai",
-        "/portfolio/thorbis-mobile"
+        "/blog/building-thorbis",
+        "/blog/design-systems-that-earn-their-keep",
+        "/blog/lessons-building-service-software",
+        "/blog/nexstar-win-invoice-lose-customer",
+        "/blog/scaling-plumbing-business",
+        "/blog/what-service-businesses-actually-need"
       ]
     },
-    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/projects/[slug]",
+      "routes": [
+        "/projects/byronwade-ui",
+        "/projects/ciel",
+        "/projects/content-management-system",
+        "/projects/dits",
+        "/projects/drone-pi",
+        "/projects/fakebase",
+        "/projects/goodmarks",
+        "/projects/hollowveil",
+        "/projects/impact-marine-group",
+        "/projects/memoria",
+        "/projects/movies",
+        "/projects/mushroom-cultivation-supplier",
+        "/projects/odb2",
+        "/projects/plumbing-code-playbook",
+        "/projects/reactpress",
+        "/projects/realistic-face",
+        "/projects/rebuzzle",
+        "/projects/signalroute",
+        "/projects/stream",
+        "/projects/subfield",
+        "/projects/thorbis",
+        "/projects/thorbis-design",
+        "/projects/wades-plumbing-and-septic",
+        "/projects/wormhole"
+      ]
+    },
     {
       "template": "/portfolio/figma/[key]",
       "routes": [
@@ -51,7 +81,7 @@
       "h1Count": 1,
       "navOverlap": [],
       "targetFailures": [],
-      "keyboard": { "checked": 35, "failures": [] },
+      "keyboard": { "checked": 29, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -72,21 +102,10 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
@@ -94,22 +113,14 @@
           "name": "Search rapid reopening, exit Tab and outside dismissal",
           "passed": true
         },
+        { "name": "Navigate", "violations": [], "targetFailures": [] },
         {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
+          "name": "Navigate keyboard containment and close hit area",
+          "checked": 10,
           "closeHit": true
         },
         {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
+          "name": "Navigate rapid reopening, exit Tab and outside dismissal",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },
@@ -130,7 +141,7 @@
       "navOverlap": [],
       "targetFailures": [],
       "screenshot": "home-390-dark.png",
-      "keyboard": { "checked": 35, "failures": [] },
+      "keyboard": { "checked": 29, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -151,21 +162,10 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
@@ -173,22 +173,14 @@
           "name": "Search rapid reopening, exit Tab and outside dismissal",
           "passed": true
         },
+        { "name": "Navigate", "violations": [], "targetFailures": [] },
         {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
+          "name": "Navigate keyboard containment and close hit area",
+          "checked": 10,
           "closeHit": true
         },
         {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
+          "name": "Navigate rapid reopening, exit Tab and outside dismissal",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },
@@ -208,7 +200,7 @@
       "h1Count": 1,
       "navOverlap": [],
       "targetFailures": [],
-      "keyboard": { "checked": 37, "failures": [] },
+      "keyboard": { "checked": 33, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -229,44 +221,15 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
         {
           "name": "Search rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
-          "closeHit": true
-        },
-        {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },
@@ -286,7 +249,7 @@
       "h1Count": 1,
       "navOverlap": [],
       "targetFailures": [],
-      "keyboard": { "checked": 37, "failures": [] },
+      "keyboard": { "checked": 33, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -307,44 +270,15 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
         {
           "name": "Search rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
-          "closeHit": true
-        },
-        {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },
@@ -365,7 +299,7 @@
       "navOverlap": [],
       "targetFailures": [],
       "screenshot": "home-1280-light.png",
-      "keyboard": { "checked": 37, "failures": [] },
+      "keyboard": { "checked": 33, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -386,44 +320,15 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
         {
           "name": "Search rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
-          "closeHit": true
-        },
-        {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },
@@ -443,7 +348,7 @@
       "h1Count": 1,
       "navOverlap": [],
       "targetFailures": [],
-      "keyboard": { "checked": 37, "failures": [] },
+      "keyboard": { "checked": 33, "failures": [] },
       "states": [
         {
           "name": "Inline contact open",
@@ -464,44 +369,15 @@
           "name": "Inline contact keeps one notification per send",
           "repeatedToasts": 0
         },
-        { "name": "All products", "violations": [], "targetFailures": [] },
-        {
-          "name": "All products keyboard containment and close hit area",
-          "checked": 13,
-          "closeHit": true
-        },
-        { "name": "All products owns dialog shortcuts", "passed": true },
-        {
-          "name": "All products rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
         { "name": "Search", "violations": [], "targetFailures": [] },
         {
           "name": "Search keyboard containment and close hit area",
-          "checked": 43,
+          "checked": 44,
           "closeHit": true
         },
         { "name": "Empty search", "violations": [], "targetFailures": [] },
         {
           "name": "Search rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support open source",
-          "violations": [],
-          "targetFailures": []
-        },
-        {
-          "name": "Support open source keyboard containment and close hit area",
-          "checked": 5,
-          "closeHit": true
-        },
-        {
-          "name": "Support open source rapid reopening, exit Tab and outside dismissal",
-          "passed": true
-        },
-        {
-          "name": "Support to search keeps the original invoking control",
           "passed": true
         },
         { "name": "Reduced motion theme", "activeMotion": 0 },

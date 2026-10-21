@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-10-21T11:25:21.127Z",
-  "commit": "d55e2a5a8bb27e4fd8d4298cda84fe0bb492965a",
+  "checkedAt": "2026-10-21T16:34:59.483Z",
+  "commit": "bfab79e75ff84eb52d31c2e759db101f8cdecfa2",
   "phase": "final",
-  "harnessHash": "c0ec13dd0a07e1b6b722fd969755b30df77d0b50e6fcf5d4cdc946b1957013b0",
+  "harnessHash": "25f32e7c4ccdfac43042347c5d6aaf03a3fde39a3242946750dcbdb65f0fe6af",
   "figma": "Local API and embed fixtures; live provider integration is outside this audit",
   "email": "Local Resend HTTP fixture; no message is delivered",
-  "buildId": "rQovQWku8BRUCHLWixJwh",
+  "buildId": "p4K4MZoYvKF6yTQx_9hyG",
   "chrome": "Chrome/155.0.8059.85",
   "axe": "4.10.3",
   "routeCoverage": [
@@ -87,7 +87,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1206,
+          "benchmarkIndex": 1509.5,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -110,27 +110,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 85,
+        "performance": 87,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1102.75845,
-          "largest-contentful-paint": 3382.7584500000003,
-          "total-blocking-time": 300.79307500000004,
-          "cumulative-layout-shift": 0,
-          "speed-index": 1627.1275332978516
+          "first-contentful-paint": 1087.79985,
+          "largest-contentful-paint": 3370.3997999999997,
+          "total-blocking-time": 242,
+          "cumulative-layout-shift": 0.0007030153846153845,
+          "speed-index": 1087.79985
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -142,13 +142,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -179,38 +179,34 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1102.75845,
+              "value": 1087.79985,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3382.7584500000003,
+              "value": 3370.3997999999997,
               "budget": 3000
             },
-            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
             {
-              "metric": "total-blocking-time",
-              "value": 300.79307500000004,
-              "budget": 300
+              "metric": "cumulative-layout-shift",
+              "value": 0.0007030153846153845,
+              "budget": 0.1
             },
-            {
-              "metric": "speed-index",
-              "value": 1627.1275332978516,
-              "budget": 3000
-            }
+            { "metric": "total-blocking-time", "value": 242, "budget": 300 },
+            { "metric": "speed-index", "value": 1087.79985, "budget": 3000 }
           ],
           "resources": [
             {
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -222,13 +218,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -255,10 +251,7 @@
               "transferSize": 0
             }
           ],
-          "failures": [
-            "largest-contentful-paint: 3382.7584500000003 > 3000",
-            "total-blocking-time: 300.79307500000004 > 300"
-          ]
+          "failures": ["largest-contentful-paint: 3370.3997999999997 > 3000"]
         },
         "failedAudits": [
           {
@@ -274,22 +267,17 @@
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.78
+            "score": 0.85
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.3
+            "score": 0.39
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
             "score": 0.93
-          },
-          {
-            "id": "mainthread-work-breakdown",
-            "title": "Minimize main-thread work",
-            "score": 0
           },
           {
             "id": "largest-contentful-paint-element",
@@ -309,12 +297,12 @@
           {
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
-            "score": 0.5
+            "score": 0
           },
           {
             "id": "legacy-javascript-insight",
             "title": "Legacy JavaScript",
-            "score": 0.5
+            "score": 0
           },
           {
             "id": "network-dependency-tree-insight",
@@ -357,7 +345,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1669,
+          "benchmarkIndex": 999.5,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -380,27 +368,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 82,
+        "performance": 74,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1072.5918000000001,
-          "largest-contentful-paint": 3294.5918,
-          "total-blocking-time": 422.9387999999999,
+          "first-contentful-paint": 1085.541,
+          "largest-contentful-paint": 3621.541,
+          "total-blocking-time": 640.3059999999996,
           "cumulative-layout-shift": 0,
-          "speed-index": 1752.1341662608852
+          "speed-index": 1397.6103025179218
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -412,13 +400,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -449,23 +437,23 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1072.5918000000001,
+              "value": 1085.541,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3294.5918,
+              "value": 3621.541,
               "budget": 3000
             },
             { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
             {
               "metric": "total-blocking-time",
-              "value": 422.9387999999999,
+              "value": 640.3059999999996,
               "budget": 300
             },
             {
               "metric": "speed-index",
-              "value": 1752.1341662608852,
+              "value": 1397.6103025179218,
               "budget": 3000
             }
           ],
@@ -474,13 +462,13 @@
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -492,13 +480,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -526,8 +514,8 @@
             }
           ],
           "failures": [
-            "largest-contentful-paint: 3294.5918 > 3000",
-            "total-blocking-time: 422.9387999999999 > 300"
+            "largest-contentful-paint: 3621.541 > 3000",
+            "total-blocking-time: 640.3059999999996 > 300"
           ]
         },
         "failedAudits": [
@@ -539,22 +527,22 @@
           {
             "id": "largest-contentful-paint",
             "title": "Largest Contentful Paint",
-            "score": 0.7
+            "score": 0.6
           },
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.65
+            "score": 0.46
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.32
+            "score": 0.06
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
-            "score": 0.93
+            "score": 0.91
           },
           {
             "id": "mainthread-work-breakdown",
@@ -628,7 +616,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1237.5,
+          "benchmarkIndex": 1423.5,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -651,27 +639,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 56.99999999999999,
+        "performance": 67,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1077.2527499999999,
-          "largest-contentful-paint": 3356.2527499999997,
-          "total-blocking-time": 494,
-          "cumulative-layout-shift": 0.0001600833333333333,
-          "speed-index": 1603.1693157216127
+          "first-contentful-paint": 1071.92805,
+          "largest-contentful-paint": 3381.082725,
+          "total-blocking-time": 292.5,
+          "cumulative-layout-shift": 0.000357,
+          "speed-index": 1082.9338337947975
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -683,13 +671,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -720,23 +708,23 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1077.2527499999999,
+              "value": 1071.92805,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3356.2527499999997,
+              "value": 3381.082725,
               "budget": 3000
             },
             {
               "metric": "cumulative-layout-shift",
-              "value": 0.0001600833333333333,
+              "value": 0.000357,
               "budget": 0.1
             },
-            { "metric": "total-blocking-time", "value": 494, "budget": 300 },
+            { "metric": "total-blocking-time", "value": 292.5, "budget": 300 },
             {
               "metric": "speed-index",
-              "value": 1603.1693157216127,
+              "value": 1082.9338337947975,
               "budget": 3000
             }
           ],
@@ -745,13 +733,13 @@
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -763,13 +751,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -796,10 +784,7 @@
               "transferSize": 0
             }
           ],
-          "failures": [
-            "largest-contentful-paint: 3356.2527499999997 > 3000",
-            "total-blocking-time: 494 > 300"
-          ]
+          "failures": ["largest-contentful-paint: 3381.082725 > 3000"]
         },
         "failedAudits": [
           {
@@ -812,26 +797,21 @@
             "title": "Largest Contentful Paint",
             "score": 0.26
           },
-          { "id": "speed-index", "title": "Speed Index", "score": 0.79 },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.95 },
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.3
+            "score": 0.6
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.27
+            "score": 0.28
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
-            "score": 0.73
-          },
-          {
-            "id": "mainthread-work-breakdown",
-            "title": "Minimize main-thread work",
-            "score": 0
+            "score": 0.72
           },
           {
             "id": "largest-contentful-paint-element",
@@ -852,11 +832,6 @@
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
             "score": 0.5
-          },
-          {
-            "id": "forced-reflow-insight",
-            "title": "Forced reflow",
-            "score": 0
           },
           {
             "id": "legacy-javascript-insight",
@@ -904,7 +879,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1415.5,
+          "benchmarkIndex": 1579.5,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -927,27 +902,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 69,
+        "performance": 75,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1066.2585,
-          "largest-contentful-paint": 3283.2585,
-          "total-blocking-time": 258.5,
-          "cumulative-layout-shift": 0.0001600833333333333,
-          "speed-index": 1451.5869277873176
+          "first-contentful-paint": 1068.78765,
+          "largest-contentful-paint": 3197.78765,
+          "total-blocking-time": 170,
+          "cumulative-layout-shift": 0.000357,
+          "speed-index": 1323.6006096914412
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -959,13 +934,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -996,23 +971,23 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1066.2585,
+              "value": 1068.78765,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3283.2585,
+              "value": 3197.78765,
               "budget": 3000
             },
             {
               "metric": "cumulative-layout-shift",
-              "value": 0.0001600833333333333,
+              "value": 0.000357,
               "budget": 0.1
             },
-            { "metric": "total-blocking-time", "value": 258.5, "budget": 300 },
+            { "metric": "total-blocking-time", "value": 170, "budget": 300 },
             {
               "metric": "speed-index",
-              "value": 1451.5869277873176,
+              "value": 1323.6006096914412,
               "budget": 3000
             }
           ],
@@ -1021,13 +996,13 @@
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -1039,13 +1014,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -1072,7 +1047,7 @@
               "transferSize": 0
             }
           ],
-          "failures": ["largest-contentful-paint: 3283.2585 > 3000"]
+          "failures": ["largest-contentful-paint: 3197.78765 > 3000"]
         },
         "failedAudits": [
           {
@@ -1083,23 +1058,23 @@
           {
             "id": "largest-contentful-paint",
             "title": "Largest Contentful Paint",
-            "score": 0.28
+            "score": 0.29
           },
-          { "id": "speed-index", "title": "Speed Index", "score": 0.85 },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.89 },
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.67
+            "score": 0.86
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.36
+            "score": 0.59
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
-            "score": 0.74
+            "score": 0.76
           },
           {
             "id": "largest-contentful-paint-element",
@@ -1167,7 +1142,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1518,
+          "benchmarkIndex": 1605,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -1190,27 +1165,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 69,
+        "performance": 56.99999999999999,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1065.99975,
-          "largest-contentful-paint": 3274.99975,
-          "total-blocking-time": 255,
-          "cumulative-layout-shift": 0.0000750390625,
-          "speed-index": 1449.0426645393234
+          "first-contentful-paint": 1076.7471,
+          "largest-contentful-paint": 3567.2049500000003,
+          "total-blocking-time": 456.66859999999997,
+          "cumulative-layout-shift": 0.00016734375,
+          "speed-index": 1676.6642113150665
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -1222,13 +1197,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -1259,23 +1234,27 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1065.99975,
+              "value": 1076.7471,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3274.99975,
+              "value": 3567.2049500000003,
               "budget": 3000
             },
             {
               "metric": "cumulative-layout-shift",
-              "value": 0.0000750390625,
+              "value": 0.00016734375,
               "budget": 0.1
             },
-            { "metric": "total-blocking-time", "value": 255, "budget": 300 },
+            {
+              "metric": "total-blocking-time",
+              "value": 456.66859999999997,
+              "budget": 300
+            },
             {
               "metric": "speed-index",
-              "value": 1449.0426645393234,
+              "value": 1676.6642113150665,
               "budget": 3000
             }
           ],
@@ -1284,13 +1263,13 @@
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -1302,13 +1281,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -1335,34 +1314,42 @@
               "transferSize": 0
             }
           ],
-          "failures": ["largest-contentful-paint: 3274.99975 > 3000"]
+          "failures": [
+            "largest-contentful-paint: 3567.2049500000003 > 3000",
+            "total-blocking-time: 456.66859999999997 > 300"
+          ]
         },
         "failedAudits": [
           {
             "id": "first-contentful-paint",
             "title": "First Contentful Paint",
-            "score": 0.83
+            "score": 0.82
           },
           {
             "id": "largest-contentful-paint",
             "title": "Largest Contentful Paint",
-            "score": 0.28
+            "score": 0.23
           },
-          { "id": "speed-index", "title": "Speed Index", "score": 0.85 },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.76 },
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.68
+            "score": 0.34
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.4
+            "score": 0.21
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
-            "score": 0.75
+            "score": 0.68
+          },
+          {
+            "id": "mainthread-work-breakdown",
+            "title": "Minimize main-thread work",
+            "score": 0
           },
           {
             "id": "largest-contentful-paint-element",
@@ -1383,6 +1370,11 @@
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
             "score": 0.5
+          },
+          {
+            "id": "forced-reflow-insight",
+            "title": "Forced reflow",
+            "score": 0
           },
           {
             "id": "legacy-javascript-insight",
@@ -1444,7 +1436,7 @@
         "environment": {
           "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
           "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-          "benchmarkIndex": 1236.5,
+          "benchmarkIndex": 1310.5,
           "credits": { "axe-core": "4.10.3" }
         },
         "runWarnings": [],
@@ -1467,27 +1459,27 @@
             "cpuSlowdownMultiplier": 4
           }
         },
-        "performance": 60,
+        "performance": 64,
         "accessibility": 100,
         "timings": {
-          "first-contentful-paint": 1069.80795,
-          "largest-contentful-paint": 3341.8079500000003,
-          "total-blocking-time": 415,
-          "cumulative-layout-shift": 0.0000750390625,
-          "speed-index": 1627.7158913088251
+          "first-contentful-paint": 1074.04785,
+          "largest-contentful-paint": 3433.0638,
+          "total-blocking-time": 318.96810000000005,
+          "cumulative-layout-shift": 0.00016734375,
+          "speed-index": 1632.191274105136
         },
         "resources": [
           {
             "resourceType": "total",
             "label": "Total",
             "requestCount": 16,
-            "transferSize": 313784
+            "transferSize": 319775
           },
           {
             "resourceType": "script",
             "label": "Script",
             "requestCount": 9,
-            "transferSize": 201384
+            "transferSize": 208089
           },
           {
             "resourceType": "font",
@@ -1499,13 +1491,13 @@
             "resourceType": "document",
             "label": "Document",
             "requestCount": 1,
-            "transferSize": 21262
+            "transferSize": 21028
           },
           {
             "resourceType": "stylesheet",
             "label": "Stylesheet",
             "requestCount": 1,
-            "transferSize": 18337
+            "transferSize": 17857
           },
           {
             "resourceType": "other",
@@ -1536,23 +1528,27 @@
           "timings": [
             {
               "metric": "first-contentful-paint",
-              "value": 1069.80795,
+              "value": 1074.04785,
               "budget": 2000
             },
             {
               "metric": "largest-contentful-paint",
-              "value": 3341.8079500000003,
+              "value": 3433.0638,
               "budget": 3000
             },
             {
               "metric": "cumulative-layout-shift",
-              "value": 0.0000750390625,
+              "value": 0.00016734375,
               "budget": 0.1
             },
-            { "metric": "total-blocking-time", "value": 415, "budget": 300 },
+            {
+              "metric": "total-blocking-time",
+              "value": 318.96810000000005,
+              "budget": 300
+            },
             {
               "metric": "speed-index",
-              "value": 1627.7158913088251,
+              "value": 1632.191274105136,
               "budget": 3000
             }
           ],
@@ -1561,13 +1557,13 @@
               "resourceType": "total",
               "label": "Total",
               "requestCount": 16,
-              "transferSize": 313784
+              "transferSize": 319775
             },
             {
               "resourceType": "script",
               "label": "Script",
               "requestCount": 9,
-              "transferSize": 201384
+              "transferSize": 208089
             },
             {
               "resourceType": "font",
@@ -1579,13 +1575,13 @@
               "resourceType": "document",
               "label": "Document",
               "requestCount": 1,
-              "transferSize": 21262
+              "transferSize": 21028
             },
             {
               "resourceType": "stylesheet",
               "label": "Stylesheet",
               "requestCount": 1,
-              "transferSize": 18337
+              "transferSize": 17857
             },
             {
               "resourceType": "other",
@@ -1613,41 +1609,36 @@
             }
           ],
           "failures": [
-            "largest-contentful-paint: 3341.8079500000003 > 3000",
-            "total-blocking-time: 415 > 300"
+            "largest-contentful-paint: 3433.0638 > 3000",
+            "total-blocking-time: 318.96810000000005 > 300"
           ]
         },
         "failedAudits": [
           {
             "id": "first-contentful-paint",
             "title": "First Contentful Paint",
-            "score": 0.83
+            "score": 0.82
           },
           {
             "id": "largest-contentful-paint",
             "title": "Largest Contentful Paint",
-            "score": 0.27
+            "score": 0.25
           },
           { "id": "speed-index", "title": "Speed Index", "score": 0.78 },
           {
             "id": "total-blocking-time",
             "title": "Total Blocking Time",
-            "score": 0.39
+            "score": 0.55
           },
           {
             "id": "max-potential-fid",
             "title": "Max Potential First Input Delay",
-            "score": 0.41
+            "score": 0.36
           },
           {
             "id": "interactive",
             "title": "Time to Interactive",
-            "score": 0.73
-          },
-          {
-            "id": "mainthread-work-breakdown",
-            "title": "Minimize main-thread work",
-            "score": 0
+            "score": 0.71
           },
           {
             "id": "largest-contentful-paint-element",
@@ -1667,7 +1658,7 @@
           {
             "id": "legacy-javascript",
             "title": "Avoid serving legacy JavaScript to modern browsers",
-            "score": 0.5
+            "score": 0
           },
           {
             "id": "forced-reflow-insight",
@@ -1677,7 +1668,7 @@
           {
             "id": "legacy-javascript-insight",
             "title": "Legacy JavaScript",
-            "score": 0.5
+            "score": 0
           },
           {
             "id": "network-dependency-tree-insight",

@@ -1,0 +1,238 @@
+{
+  "checkedAt": "2026-10-21T16:31:05.756Z",
+  "commit": "bfab79e75ff84eb52d31c2e759db101f8cdecfa2",
+  "phase": "final",
+  "harnessHash": "c0ec13dd0a07e1b6b722fd969755b30df77d0b50e6fcf5d4cdc946b1957013b0",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "email": "Local Resend HTTP fixture; no message is delivered",
+  "buildId": "p4K4MZoYvKF6yTQx_9hyG",
+  "chrome": "Chrome/155.0.8059.85",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    {
+      "template": "/blog/[slug]",
+      "routes": [
+        "/blog/building-thorbis",
+        "/blog/design-systems-that-earn-their-keep",
+        "/blog/lessons-building-service-software",
+        "/blog/nexstar-win-invoice-lose-customer",
+        "/blog/scaling-plumbing-business",
+        "/blog/what-service-businesses-actually-need"
+      ]
+    },
+    {
+      "template": "/projects/[slug]",
+      "routes": [
+        "/projects/byronwade-ui",
+        "/projects/ciel",
+        "/projects/content-management-system",
+        "/projects/dits",
+        "/projects/drone-pi",
+        "/projects/fakebase",
+        "/projects/goodmarks",
+        "/projects/hollowveil",
+        "/projects/impact-marine-group",
+        "/projects/memoria",
+        "/projects/movies",
+        "/projects/mushroom-cultivation-supplier",
+        "/projects/odb2",
+        "/projects/plumbing-code-playbook",
+        "/projects/reactpress",
+        "/projects/realistic-face",
+        "/projects/rebuzzle",
+        "/projects/signalroute",
+        "/projects/stream",
+        "/projects/subfield",
+        "/projects/thorbis",
+        "/projects/thorbis-design",
+        "/projects/wades-plumbing-and-septic",
+        "/projects/wormhole"
+      ]
+    },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/projects/thorbis",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 27, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "projects-thorbis-390-dark.png",
+      "keyboard": { "checked": 27, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 35, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 35, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "projects-thorbis-1280-light.png",
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb overflow",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Breadcrumb overflow returns keyboard focus",
+          "passed": true
+        },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb overflow",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Breadcrumb overflow returns keyboard focus",
+          "passed": true
+        },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 4,
+          "failures": []
+        }
+      ]
+    }
+  ]
+}
