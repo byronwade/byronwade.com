@@ -47,7 +47,8 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div
 			className={cn(
-				"relative flex min-w-0 flex-col gap-5 font-normal text-body text-copy-16",
+				// A body that opens on a heading starts at the page rhythm, not rhythm plus margin.
+				"relative flex min-w-0 flex-col gap-5 font-normal text-body text-copy-16 [&>:first-child]:mt-0",
 				className
 			)}
 		>

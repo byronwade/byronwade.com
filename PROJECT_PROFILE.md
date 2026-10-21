@@ -65,8 +65,10 @@ from the profile and makes first-visit clarity the dominant design concern.
 Every route declares its profile through `SiteShell`'s required `profile` prop,
 which renders `data-profile` on the page container. `tests/design-system.test.mjs`
 fails when a route entry does not declare one. `SiteShell` keeps one 42rem
-measure shared with the header and footer; `width="wide"` is reserved for the
-homepage composition and live artifacts (project preview, Figma file).
+measure shared with the header and footer, and the step between a page's
+regions; `width="wide"` is reserved for the homepage composition and pages with
+a live artifact (project preview, Figma file), where only the artifact spans
+and the text stays on `measureClass`.
 
 ## Repository ownership
 

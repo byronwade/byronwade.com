@@ -7,6 +7,7 @@ export { ArrowLeft } from "./icons/arrow-left";
 export { ArrowRight } from "./icons/arrow-right";
 export { ArrowUpRight } from "./icons/arrow-up-right";
 export { Box } from "./icons/box";
+export { CaretDown } from "./icons/caret-down";
 export { Check } from "./icons/check";
 export { CircleCheckIcon } from "./icons/circle-check-icon";
 export { Copy } from "./icons/copy";

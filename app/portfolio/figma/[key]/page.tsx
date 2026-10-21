@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Sheet } from "@/components/layout/sheet";
-import { SiteShell } from "@/components/layout/site-shell";
+import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Link } from "@/components/ui/link";
-import { ArrowUpRight } from "@/lib/icons";
+import { ArrowLeft, ArrowUpRight } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import { getFigmaFile, isFigmaFileKey } from "@/lib/portfolio-data";
+import { cn } from "@/lib/utils";
 
 interface FigmaDetailPageProps {
 	params: Promise<{ key: string }>;
@@ -49,9 +50,17 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 	};
 }
 
+/**
+ * The page's own trail, for widths where the site's floating breadcrumb is
+ * hidden. At xl that trail is visible, so this one steps aside: one trail per
+ * viewport, never two.
+ */
 function DesignFileBreadcrumb({ current }: { current: string }) {
 	return (
-		<nav aria-label="Design file breadcrumb" className="text-copy-13 text-muted-foreground">
+		<nav
+			aria-label="Design file breadcrumb"
+			className="text-copy-13 text-muted-foreground xl:hidden"
+		>
 			<ol className="flex flex-wrap items-center gap-x-2">
 				<li>
 					<Link
@@ -146,93 +155,97 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 	const modifiedDate = safeFormatDate(Date.parse(file.lastModified));
 
 	return (
+		// Only the file spans the wide shell; its identity and details keep the
+		// header's 42rem measure so the page shares one edge with the chrome.
 		<SiteShell profile="evidence" width="wide">
-			<div className="flex flex-col gap-12">
-				<header className="flex max-w-2xl flex-col gap-3">
-					<DesignFileBreadcrumb current={file.name} />
-					<h1 className="wrap-anywhere text-balance font-medium text-heading-32 tracking-tight">
-						{file.name}
-					</h1>
-					<p className="text-body text-copy-16 leading-relaxed">
-						A Figma file, last updated <time dateTime={file.lastModified}>{modifiedDate}</time>.
-					</p>
-					<dl className="flex flex-wrap gap-x-10 gap-y-3 pt-3">
-						{facts.map(({ label, value }) => (
-							<div className="flex flex-col gap-0.5" key={label}>
-								<dt className="text-copy-12 text-muted-foreground">{label}</dt>
-								<dd className="order-first font-medium text-heading-20 tabular-nums">{value}</dd>
-							</div>
-						))}
-					</dl>
-					<p>
-						<OpenInFigma fileKey={key}>Open in Figma</OpenInFigma>
-					</p>
-				</header>
+			<header className={cn(measureClass, "flex flex-col gap-3")}>
+				<DesignFileBreadcrumb current={file.name} />
+				<h1 className="wrap-anywhere text-balance font-medium text-heading-32 tracking-tight">
+					{file.name}
+				</h1>
+				<p className="text-body text-copy-16 leading-relaxed">
+					A Figma file, last updated <time dateTime={file.lastModified}>{modifiedDate}</time>.
+				</p>
+				<dl className="flex flex-wrap gap-x-10 gap-y-3 pt-3">
+					{facts.map(({ label, value }) => (
+						<div className="flex flex-col gap-0.5" key={label}>
+							<dt className="text-copy-12 text-muted-foreground">{label}</dt>
+							<dd className="order-first font-medium text-heading-20 tabular-nums">{value}</dd>
+						</div>
+					))}
+				</dl>
+				<p>
+					<OpenInFigma fileKey={key}>Open in Figma</OpenInFigma>
+				</p>
+			</header>
 
-				<section aria-labelledby="design-file" className="flex flex-col gap-4">
-					<h2 className="font-medium text-heading-20 tracking-tight" id="design-file">
-						Design file
+			<section aria-labelledby="design-file" className="flex flex-col gap-4">
+				<h2
+					className={cn(measureClass, "font-medium text-heading-20 tracking-tight")}
+					id="design-file"
+				>
+					Design file
+				</h2>
+				<Sheet caption="Served by Figma. Large files can take a few seconds to draw.">
+					<FigmaInteractiveViewer fileKey={key} fileName={file.name} imageUrl={file.thumbnailUrl} />
+				</Sheet>
+			</section>
+
+			{componentsCount > 0 && (
+				<section aria-labelledby="components" className={cn(measureClass, "flex flex-col gap-4")}>
+					<h2 className="font-medium text-heading-20 tracking-tight" id="components">
+						Components <span className="text-muted-foreground tabular-nums">{componentsCount}</span>
 					</h2>
-					<Sheet caption="Served by Figma. Large files can take a few seconds to draw.">
-						<FigmaInteractiveViewer
-							fileKey={key}
-							fileName={file.name}
-							imageUrl={file.thumbnailUrl}
-						/>
-					</Sheet>
-				</section>
-
-				<div className="grid max-w-2xl gap-12 lg:max-w-none lg:grid-cols-3">
-					{componentsCount > 0 && (
-						<section
-							aria-labelledby="components"
-							className="flex min-w-0 flex-col gap-4 lg:col-span-2"
-						>
-							<h2 className="font-medium text-heading-20 tracking-tight" id="components">
-								Components{" "}
-								<span className="text-muted-foreground tabular-nums">{componentsCount}</span>
-							</h2>
-							<ul className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-								{file.components.slice(0, COMPONENT_PREVIEW).map((component) => (
-									<li className="flex min-w-0 flex-col gap-0.5" key={component.id}>
-										<h3 className="wrap-anywhere font-medium text-copy-14 text-foreground">
-											{component.name || "Unnamed component"}
-										</h3>
-										<p className="text-copy-13 text-muted-foreground">
-											{component.description || "No description in Figma."}
-										</p>
-									</li>
-								))}
-							</ul>
-							{componentsCount > COMPONENT_PREVIEW && (
+					<ul className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
+						{file.components.slice(0, COMPONENT_PREVIEW).map((component) => (
+							<li className="flex min-w-0 flex-col gap-0.5" key={component.id}>
+								<h3 className="wrap-anywhere font-medium text-copy-14 text-foreground">
+									{component.name || "Unnamed component"}
+								</h3>
 								<p className="text-copy-13 text-muted-foreground">
-									{componentsCount - COMPONENT_PREVIEW} more in the file.
+									{component.description || "No description in Figma."}
 								</p>
-							)}
-						</section>
+							</li>
+						))}
+					</ul>
+					{componentsCount > COMPONENT_PREVIEW && (
+						<p className="text-copy-13 text-muted-foreground">
+							{componentsCount - COMPONENT_PREVIEW} more in the file.
+						</p>
 					)}
+				</section>
+			)}
 
-					<section aria-labelledby="file-information" className="flex flex-col gap-4">
-						<h2 className="font-medium text-heading-20 tracking-tight" id="file-information">
-							File information
-						</h2>
-						<dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-copy-14">
-							<dt className="text-muted-foreground">Last modified</dt>
-							<dd className="text-foreground">
-								<time dateTime={file.lastModified}>{modifiedDate}</time>
+			<section
+				aria-labelledby="file-information"
+				className={cn(measureClass, "flex flex-col gap-4")}
+			>
+				<h2 className="font-medium text-heading-20 tracking-tight" id="file-information">
+					File information
+				</h2>
+				<dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-copy-14">
+					<dt className="text-muted-foreground">Last modified</dt>
+					<dd className="text-foreground">
+						<time dateTime={file.lastModified}>{modifiedDate}</time>
+					</dd>
+					{file.version && (
+						<>
+							<dt className="text-muted-foreground">Version</dt>
+							<dd className="wrap-anywhere font-mono text-foreground tabular-nums">
+								{file.version}
 							</dd>
-							{file.version && (
-								<>
-									<dt className="text-muted-foreground">Version</dt>
-									<dd className="wrap-anywhere font-mono text-foreground tabular-nums">
-										{file.version}
-									</dd>
-								</>
-							)}
-						</dl>
-					</section>
-				</div>
-			</div>
+						</>
+					)}
+				</dl>
+			</section>
+
+			{/* The same foot as a case study: the way back to the collection. */}
+			<p className={measureClass}>
+				<Link className="link-action" href="/portfolio">
+					<ArrowLeft aria-hidden="true" className="size-4" />
+					Back to portfolio
+				</Link>
+			</p>
 		</SiteShell>
 	);
 }

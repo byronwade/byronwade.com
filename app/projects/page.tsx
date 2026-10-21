@@ -117,16 +117,11 @@ export default async function ProjectsPage() {
 			<JsonLd data={breadcrumbStructuredData} />
 
 			<SiteShell profile="showcase">
-				<div className="flex flex-col gap-10 sm:gap-12">
-					<PageHeader
-						lede="What I’m building now, followed by earlier products, client work, and experiments. Every project stays listed."
-						title="Projects"
-					/>
-
-					<div className="w-full">
-						<ProjectsList />
-					</div>
-				</div>
+				<PageHeader
+					lede="What I’m building now, followed by earlier products, client work, and experiments. Every project stays listed."
+					title="Projects"
+				/>
+				<ProjectsList />
 			</SiteShell>
 		</>
 	);

@@ -14,13 +14,19 @@ interface LinkProps extends NextLinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorE
 	ref?: Ref<HTMLAnchorElement>;
 }
 
+/**
+ * Focus only. Size and display belong to the caller's recipe: `link-action`
+ * for a standalone 44px target, `link-underline` for a link inside a sentence,
+ * or a row/nav class. A default `min-h-6` here outranked `link-action`'s 44px
+ * on desktop, and `inline-flex` pulled sentence links off the line.
+ */
 export const Link = ({ className, children, ref, ...props }: LinkProps) => (
 	<NextLink
 		{...props}
 		prefetch={false}
 		ref={ref}
 		className={cn(
-			"inline-flex min-h-6 min-w-6 items-center rounded-sm focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 max-sm:min-h-11 max-sm:min-w-11",
+			"rounded-sm focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
 			className
 		)}
 	>
