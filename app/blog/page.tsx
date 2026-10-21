@@ -1,4 +1,4 @@
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
 import { PageHeader } from "@/components/layout/page";
@@ -47,8 +47,7 @@ export async function generateMetadata() {
  *
  * The organizing move for /blog (DESIGN.md §7.1) is chronology with the lede
  * visible, so scanning is reading. Posts group by year and every row keeps its
- * excerpt. This is an open list on hairlines rather than a card: a card around
- * the whole list would be decoration, and §13 rejects bordered rows. The grammar
+ * excerpt. Space groups the rows without decorative separators. The grammar
  * deliberately matches components/project/projects-index.tsx: one index pattern
  * for the site, two kinds of content.
  */
@@ -86,7 +85,7 @@ async function BlogList() {
 
 					<IndexList as="ol">
 						{yearPosts.map((post) => (
-							<IndexRow key={post.slug}>
+							<li key={post.slug}>
 								<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
 									<div className="flex items-baseline gap-4">
 										{post.date && (
@@ -109,7 +108,7 @@ async function BlogList() {
 									</div>
 
 									{post.excerpt && (
-										<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
+										<p className="max-w-2xl text-body text-sm leading-relaxed sm:pl-16">
 											{post.excerpt}
 										</p>
 									)}
@@ -120,7 +119,7 @@ async function BlogList() {
 										</div>
 									)}
 								</Link>
-							</IndexRow>
+							</li>
 						))}
 					</IndexList>
 				</section>

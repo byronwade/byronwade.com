@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { lazy, type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { lazy, type ReactNode, useEffect, useId, useMemo, useRef, useState } from "react";
 import { HeaderPopover } from "@/components/layout/header-popover";
 import { useThemeToggle } from "@/hooks/use-theme-toggle";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
@@ -28,6 +28,22 @@ export function DockToolbarClient({
 	const [open, setOpen] = useState(false);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
+	// A shortcut open returns focus to where the visitor was; trigger opens, and origins
+	// that have since closed or disappeared, return to the trigger.
+	const shortcutOrigin = useRef<HTMLElement | null>(null);
+	const finalFocus = useMemo(
+		() => ({
+			get current() {
+				const origin = shortcutOrigin.current;
+				return origin?.isConnected &&
+					origin.getClientRects().length > 0 &&
+					!origin.closest("[inert], [data-header-menu]")
+					? origin
+					: triggerRef.current;
+			},
+		}),
+		[]
+	);
 	const panelId = useId();
 	useEffect(() => {
 		if (previousPath.current !== pathname) {
@@ -39,12 +55,20 @@ export function DockToolbarClient({
 		// A native modal (the fullscreen preview) owns the keyboard. Opening search
 		// behind it would leave an unmounted panel that captures the next Escape.
 		const modalOpen = () => Boolean(document.querySelector("dialog:modal"));
+		const rememberOrigin = () => {
+			const active = document.activeElement;
+			if (!active?.closest("[data-header-search]")) {
+				shortcutOrigin.current =
+					active instanceof HTMLElement && active !== document.body ? active : null;
+			}
+		};
 		const onKey = (event: KeyboardEvent) => {
 			if (modalOpen()) {
 				return;
 			}
 			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
 				event.preventDefault();
+				rememberOrigin();
 				setOpen((value) => !value);
 			} else if (event.key === "Escape" && !inputRef.current) {
 				setOpen(false);
@@ -52,6 +76,7 @@ export function DockToolbarClient({
 		};
 		const onOpen = () => {
 			if (!modalOpen()) {
+				rememberOrigin();
 				setOpen(true);
 			}
 		};
@@ -70,10 +95,15 @@ export function DockToolbarClient({
 				label="Search"
 				closedLabel="Search (⌘K)"
 				open={open}
-				onOpenChange={setOpen}
+				onOpenChange={(next) => {
+					if (next) {
+						shortcutOrigin.current = null;
+					}
+					setOpen(next);
+				}}
 				anchor={() => triggerRef.current?.closest("header") ?? null}
 				initialFocus={inputRef}
-				finalFocus={triggerRef}
+				finalFocus={finalFocus}
 				trigger={
 					<button
 						type="button"

@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { launchAuditBrowser } from "./audit-browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
@@ -12,6 +13,7 @@ if (!route.startsWith("/") || route.startsWith("//") || route.includes("\\")) {
 }
 const reportStem = route === "/" ? "home-budget" : `route-budget${route.replaceAll("/", "_")}`;
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/a11y-perf";
 await withProductionServer(async (url) => {
 	const browser = await launchAuditBrowser({ lighthouse: true });
 	try {
@@ -28,7 +30,6 @@ await withProductionServer(async (url) => {
 		}
 		const { lhr } = result;
 		const { timings, resources, failures } = assessBudget(lhr, budgets[0]);
-		const destination = "docs/evidence/a11y-perf";
 		mkdirSync(destination, { recursive: true });
 		writeEvidenceJson(
 			`${destination}/${reportStem}${process.argv.includes("--baseline") ? "-baseline" : ""}.json`,
@@ -76,6 +77,6 @@ await withProductionServer(async (url) => {
 			throw new Error("Performance budget exceeded");
 		}
 	} finally {
-		await browser.close();
+		await closeBrowser(browser, { diagnostic: console.log });
 	}
 });

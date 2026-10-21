@@ -1,11 +1,6 @@
 import { connection } from "next/server";
 import { EmptyState } from "@/components/common/empty-state";
-import {
-	IndexList,
-	IndexRow,
-	indexRowAccentClass,
-	indexRowLinkClass,
-} from "@/components/common/index-list";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common/index-list";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -87,7 +82,7 @@ function RefreshLink({ label }: { label: string }) {
 					{label}
 				</a>
 			}
-			size={label === "Refresh" ? "sm" : "default"}
+			size="lg"
 			variant="outline"
 		/>
 	);
@@ -97,7 +92,7 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
 	return (
 		<EmptyState
 			action={
-				<div className="flex flex-wrap items-center justify-center gap-2">
+				<div className="flex flex-wrap items-center justify-center gap-3">
 					<RefreshLink label="Try again" />
 					<Button
 						role="link"
@@ -107,6 +102,7 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
 								<ExternalLink aria-hidden="true" className="size-3.5" />
 							</a>
 						}
+						size="lg"
 						variant="outline"
 					/>
 				</div>
@@ -127,7 +123,7 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
-		<IndexRow>
+		<li>
 			<a
 				className={indexRowLinkClass}
 				href={repo.html_url}
@@ -142,14 +138,14 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 						{repo.stargazers_count}
 					</span>
 
-					<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-						<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
+					<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
+						<span
+							className={`wrap-anywhere min-w-0 font-medium text-foreground ${indexRowAccentClass}`}
+						>
 							{titleize(repo.name)}
 						</span>
 						{repo.archived && (
-							<span className="shrink-0 font-mono text-[10px] text-muted-foreground uppercase tracking-wide">
-								Archived
-							</span>
+							<span className="shrink-0 text-copy-12 text-muted-foreground">Archived</span>
 						)}
 					</span>
 
@@ -175,17 +171,15 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 
 					<ExternalLink
 						aria-hidden="true"
-						className="size-3.5 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-150 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
+						className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
 					/>
 				</div>
 
 				{repo.description && (
-					<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
-						{repo.description}
-					</p>
+					<p className="max-w-2xl text-body text-sm leading-relaxed sm:pl-16">{repo.description}</p>
 				)}
 			</a>
-		</IndexRow>
+		</li>
 	);
 }
 

@@ -272,3 +272,80 @@ The 2024-12-01 date is left as-is: the repository was created 2024-07-11, so it
 may be the project date rather than the write-up date (question for Byron).
 No Rebuzzle code was run, no account was used and production configuration was
 not inspected.
+
+## ReactPress stack and capability claims, October 21, 2026
+
+`content/projects/reactpress.md` was added as a short entry in `584c39b`
+(2025-12-01) and expanded into the current write-up in `ef54a5a` (2025-12-02).
+Its claims were checked against
+[byronwade/reactpress.byronwade.com](https://github.com/byronwade/reactpress.byronwade.com)
+(the old `byronwade/ReactPress` address redirects there) at `main`
+[`64b56a8`](https://github.com/byronwade/reactpress.byronwade.com/commit/64b56a835f654e219cdcb9d676a1dc77d247db1a)
+(2025-06-21), which is still the latest commit on `main`, and against
+[reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin),
+accessed October 21, 2026. All 63 source files at that commit were downloaded and
+searched; nothing was installed or run.
+
+| Claim | Source at `64b56a8` | Correction |
+| --- | --- | --- |
+| Next.js 15 (excerpt, body, roadmap, performance section) | `package.json`: `next ^14.2.30`, `react ^18.3.1`, `typescript ^4.9.5`. `next ^15.3.4` was tried in `379f5f6` and `839b6cb` (2025-06-20) and reverted to 14 in `6371112` the same evening. The repo's own README and page metadata still say Next.js 15. | Next.js 14 throughout, excerpt included. |
+| Bun "for package management and runtime" | `bun.lockb` and `package-lock.json` are both committed; every script calls `next` directly. | Bun or npm for installs; no runtime claim. |
+| "Faithfully recreates every aspect … from the post editor to the settings pages. Every pixel, every interaction, every workflow" | 39 `page.tsx` routes under `src/app/rp-admin`, mostly static WordPress markup styled by a copied 18,664-line `rp-admin/index.css`. `posts/post-new` and `pages/page-new` render only "this is the posts bilder page" (also live); the block editor code is commented out and the `@wordpress/*` packages are imported only in those comments. | The 39 screens are listed; the editor is described as a placeholder. |
+| "A working alternative" / "a functional admin interface" | No `fetch`, API route or data store in `src`. `utils/setup.js` only logs "Setting up database..."; its MongoDB/Firebase code is commented out. `utils/provider.js` wraps SWR and Recoil but nothing mounts it. | Screens on `main` render but do not load or save anything. |
+| API-first design that "works with any backend" | As above. | Kept as the plan; stated that `main` has no data layer. |
+| CSS conversion to Tailwind "currently in progress" | Tailwind is configured, but the screens use WordPress class names and the copied stylesheet. No commits on `main` after 2025-06-21. | Unfinished on `main`. |
+| "Fast"; performance "needed for real-world field operations"; "6–12 months" to build an admin | No benchmark or source in the repo. The README's "5x faster than traditional WordPress admin" has no measurement behind it either. | Removed; the write-up says no speed was measured. |
+| "Open source" | GitHub reports no license and there is no license file, although the README shows an MIT badge. | "Public on GitHub" with no license file. |
+| Reusable dashboard widget and form components | Shared components are the sidebar, toolbar, footer, screen-options toggle and list table. The dashboard (`rp-admin/page.tsx`, 541 lines) and settings forms are inline. | Says which pieces are shared and that extracting the rest is still to do. |
+
+Two unmerged branches were pushed on 2026-06-11 and 06-12, after the write-up:
+`claude/admiring-goldberg-c6t9fl` (28 commits ahead of `main`: dead-CSS removal,
+`rp-admin/index.css` trimmed from 18,664 to 9,839 lines, admin shell converted to
+Tailwind) and `claude/lucid-cannon-fujppo` (17 ahead: a Fakebase mock backend
+wired to the users, posts, pages, comments, plugins, categories, tags, media,
+dashboard and General Settings screens; the editors stay placeholders). Only their
+commit lists were read. The write-up mentions them as unmerged work and makes no
+claim about how well they work.
+
+Byron's motivation and the field-management-system framing are kept as intent,
+reworded where they described unbuilt work as existing. Title, URL, archived
+grouping, front-matter keys and headings are unchanged. The front matter's
+2024-01-01 date is left as-is: the repository was created 2023-03-04 and most
+work landed in March and October 2023, October 2024 and June 2025, so the right
+date is a question for Byron.
+
+## Content Management System prototype claims, October 21, 2026
+
+`content/projects/content-management-system.md` was added as a short entry in
+`584c39b` (2025-12-01) and expanded into the current write-up in `ef54a5a`
+(2025-12-02). Its claims were checked against
+[byronwade/cms.byronwade.com](https://github.com/byronwade/cms.byronwade.com)
+at `main` [`8353417`](https://github.com/byronwade/cms.byronwade.com/commit/8353417acc1264355b73177cd6882c98d1a122e6)
+(2025-12-02 03:08 UTC), the latest of its 16 commits and four minutes older than
+`584c39b`; its other branches have nothing `main` lacks. The previous commit,
+`8b7a050`, moved it from Next.js 15 to 16. Of the 22 files that changed between
+the two, most are formatting and lint fixes plus a landing-page rewrite; the only
+file cited below that changed is `app/cms/build/page.tsx` (+10/−4), which was read
+at `8353417`. Nothing was
+installed or run, so interactive behavior comes from reading the code. The
+repository README at that commit calls the project "entirely a design-only demo"
+in which "All data is fake".
+
+| Claim | Source at `8353417` | Correction |
+| --- | --- | --- |
+| "Visit cms.byronwade.com"; front-matter `url` `https://cms.byronwade.com/cms/build` | On October 21, 2026, `/`, `/cms/build` and four other paths returned 404 with `X-Vercel-Error: DEPLOYMENT_NOT_FOUND`. | `url` removed, so the page no longer shows a dead Visit link or live preview. The body links the repository instead, which gives the page a Source button. |
+| "Currently in active development" | No commits after 2025-12-02; most of the work landed 2024-12-20 to 12-29. | Front-end prototype, stopped December 2025. |
+| Zero JavaScript by default; data fetched in Server Components "without exposing API endpoints" | `app/cms/layout.tsx` and every working `app/cms/**` screen start with `"use client"`. The content editor (`app/cms/content/[...slug]/page.tsx`) calls `fetch('/api/content/…')`, and `app/api/content/[...slug]/route.ts` reads and writes JSON files. Server-rendered pages: landing, `analytics/overview` and three redirects. | Kept as the plan, with a statement that the prototype did not get there. |
+| Schema builder: create tables by drag and drop; export schemas | `app/cms/build/page.tsx` (ReactFlow): tables come from hard-coded `initialNodes`. The drop handler adds AI nodes for `application/aiflow` data, which is all the sidebar sets. `components/build/header.tsx`'s Add Table button is not rendered anywhere, and nothing dispatches `build:addTable`. No export or SQL generation exists. Add Field, data types and `onConnect` relationships exist. | Lists what works; adding tables and export are named as not wired up. |
+| Media management, analytics dashboard, publishing as working features (Phase 1 checklist) | Upload progress is simulated with `setTimeout` (`components/media/upload-dialog.tsx`); analytics use `Math.random()` (`lib/nodes/analytics/MetricsNode.ts`); the publish board is filled with hard-coded items. | Checklist and FMS mappings say these run on sample data. "Performance optimizations" removed from the checklist (no measurement). |
+| Radix "ensuring WCAG compliance" | No audit or accessibility tests; no tests at all. | Described as a starting point that was never audited. |
+| "Easy dark/light mode switching"; Zustand "DevTools support" | `<html className="dark">` is hard-coded; `next-themes` is installed but no ThemeProvider is mounted. The three Zustand stores do not use the devtools middleware. | Dark by default with no switch; DevTools bullet removed. |
+| Next.js 16 throughout | `next ^16.0.0` only from `8b7a050` (2025-12-01); Next.js 15 before that. | Next.js 16 since December 2025, started on 15. |
+| "Built on a foundation that's already proven its worth" | Prototype on sample data, deployment gone. | Now "built on what this prototype taught me". |
+
+Byron's reasons, the FMS mappings, the agriculture context, the roadmap and the
+lessons are kept as intent. Title, category, archived grouping and headings are
+unchanged; the excerpt now matches the corrected body. The front matter's
+2023-08-01 date is left as-is, but the repository was created 2024-12-20 and the
+write-up's own heading asks "Why Build a CMS in 2024?", so the right date is a
+question for Byron. The repository has no license file.

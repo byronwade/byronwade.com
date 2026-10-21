@@ -113,31 +113,26 @@ function PreviewToolbar({
 	triggerRef,
 }: PreviewToolbarProps) {
 	return (
-		<div className="flex min-h-12 shrink-0 items-center justify-between gap-2 border-border border-b bg-secondary px-3 sm:min-h-10">
-			{/* Window dots + address */}
+		<div className="flex min-h-15 shrink-0 flex-wrap items-center justify-between gap-3 bg-secondary px-3 py-2">
+			{/* Address */}
 			<div className="flex min-w-0 flex-1 items-center gap-2.5">
-				<div className="hidden items-center gap-1.5 sm:flex" aria-hidden="true">
-					<span className="size-2.5 rounded-full bg-border" />
-					<span className="size-2.5 rounded-full bg-border" />
-					<span className="size-2.5 rounded-full bg-border" />
-				</div>
 				<div className="flex min-w-0 items-center gap-1.5 rounded-md bg-background/60 px-2 py-1">
 					<Globe className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
-					<span className="truncate font-mono text-foreground text-xs">{url}</span>
+					<span className="min-w-0 break-all font-mono text-copy-12 text-foreground">{url}</span>
 				</div>
 			</div>
 
 			{/* Device presets */}
 			{interactive && !isFullscreen && (
-				<div className="mx-2 hidden items-center gap-0.5 rounded-lg bg-background/50 p-0.5 md:flex">
+				<div className="@xl/preview:order-none order-last hidden @xl/preview:w-auto w-full items-center justify-center gap-1 md:flex">
 					<span className="sr-only">Preview viewport</span>
 					{(Object.keys(VIEWPORT_PRESETS) as ViewportPreset[]).map((key) => {
 						const { icon: Icon, label, width, height } = VIEWPORT_PRESETS[key];
 						const isActive = preset === key;
 						return (
 							<Button
+								size="lg"
 								variant="ghost"
-								size="icon-sm"
 								key={key}
 								type="button"
 								onClick={() => setPreset(key)}
@@ -145,10 +140,10 @@ function PreviewToolbar({
 								aria-label={`${label} (${width} by ${height})`}
 								title={`${label} · ${width}×${height}`}
 								className={cn(
-									"rounded-md p-1.5 transition-colors",
+									"size-11 rounded-full p-0",
 									isActive
-										? "bg-primary text-primary-foreground"
-										: "text-muted-foreground hover:bg-brand/5 hover:text-brand"
+										? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+										: "text-muted-foreground"
 								)}
 							>
 								<Icon className="size-3.5" aria-hidden="true" />
@@ -159,16 +154,16 @@ function PreviewToolbar({
 			)}
 
 			{/* Actions */}
-			<div className="flex shrink-0 items-center gap-1">
+			<div className="flex shrink-0 items-center gap-3">
 				{interactive && manualWidth !== null && !isFullscreen && (
 					<Button
+						size="lg"
 						variant="ghost"
-						size="icon-sm"
 						type="button"
 						onClick={resetWidth}
 						aria-label="Reset preview width"
 						title="Reset width"
-						className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
+						className="size-11 rounded-full p-0 text-muted-foreground"
 					>
 						<RotateCcw className="size-3.5" aria-hidden="true" />
 					</Button>
@@ -176,14 +171,14 @@ function PreviewToolbar({
 
 				{interactive && (
 					<Button
+						size="lg"
 						variant="ghost"
-						size="icon-sm"
 						ref={triggerRef}
 						type="button"
 						onClick={toggleFullscreen}
 						aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
 						title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
-						className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-brand/5 hover:text-brand"
+						className="size-11 rounded-full p-0 text-muted-foreground"
 					>
 						{isFullscreen ? (
 							<Minimize2 className="size-3.5" aria-hidden="true" />
@@ -193,18 +188,15 @@ function PreviewToolbar({
 					</Button>
 				)}
 
-				<div className="mx-1 h-4 w-px bg-border" />
-
-				<a
-					href={href}
-					target="_blank"
-					rel="noopener noreferrer"
+				<Button
+					size="lg"
+					className="size-11 rounded-full p-0"
 					aria-label={`Visit ${url} (opens in a new tab)`}
-					className="flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-md bg-primary px-2.5 py-1 font-medium text-primary-foreground text-xs shadow-sm transition-colors hover:bg-primary/90 sm:min-h-6 sm:min-w-6"
+					title="Open site"
+					render={<a href={href} target="_blank" rel="noopener noreferrer" />}
 				>
-					<span className="hidden sm:inline">Visit</span>
 					<ExternalLink className="size-3" aria-hidden="true" />
-				</a>
+				</Button>
 			</div>
 		</div>
 	);
@@ -219,10 +211,10 @@ interface PreviewFallbackProps {
 // A retry is available only after hydration and a failed capture. Before hydration the
 // scripts notice sits in <noscript>, so visitors with JavaScript never see it flash.
 function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
-	const icon = <ImageOff className="size-9 text-muted-foreground" aria-hidden="true" />;
+	const icon = <ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />;
 	const noticeClass = "max-w-xs text-muted-foreground text-xs";
 	return (
-		<div className="flex min-w-0 flex-col items-center justify-center gap-3 self-stretch p-6 text-center">
+		<div className="flex min-w-0 flex-col items-center justify-center gap-2 self-stretch p-4 text-center">
 			{onRetry ? icon : <noscript>{icon}</noscript>}
 			<div className="space-y-1">
 				<p className="font-medium text-foreground text-sm">
@@ -236,7 +228,7 @@ function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 					</noscript>
 				)}
 			</div>
-			<div className="flex flex-wrap items-center justify-center gap-2">
+			<div className="flex flex-wrap items-center justify-center gap-3">
 				{onRetry && (
 					<Button onClick={onRetry} size="lg" variant="outline">
 						<RefreshCw className="size-3" aria-hidden="true" />
@@ -314,12 +306,14 @@ function PreviewViewport({
 				>
 					{status === "loading" && (
 						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
-							<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-muted/60 via-muted/30 to-transparent" />
+							<div className="absolute inset-0 bg-muted/40" />
 							<div className="relative size-7">
 								<div className="absolute inset-0 rounded-full border-2 border-border" />
-								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-brand" />
+								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-foreground" />
 							</div>
-							<p className="relative font-medium text-muted-foreground text-xs">Loading preview…</p>
+							<p className="relative font-medium text-muted-foreground text-xs" role="status">
+								Loading preview…
+							</p>
 						</div>
 					)}
 					{src && (
@@ -442,13 +436,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	const previewContent = (
 		<div
-			// Animating width/height is normally avoided (DESIGN.md §6.1), but this
-			// frame *is* the resizing object, a transform would misrepresent the
-			// viewport being previewed. Occasional tier, 300ms = --motion-slow.
-			className={cn(
-				"relative flex flex-col transition-[width,height] duration-300 ease-out",
-				isFullscreen && "h-full w-full"
-			)}
+			// Resizing tracks input directly; a size tween would lag the handle.
+			className={cn("@container/preview relative flex flex-col", isFullscreen && "h-full w-full")}
 			style={isFullscreen ? undefined : frameStyle}
 		>
 			<div
@@ -456,7 +445,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					"relative flex flex-col overflow-hidden bg-background",
 					isFullscreen
 						? "h-full rounded-none border-0"
-						: "rounded-2xl border border-border shadow-card"
+						: "rounded-lg border border-border shadow-card"
 				)}
 			>
 				<PreviewToolbar
@@ -487,12 +476,11 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 				{/* Bottom status bar */}
 				<div
-					className={cn(
-						"flex h-7 shrink-0 items-center justify-between border-border border-t bg-secondary px-3",
-						{ invisible: !mounted }
-					)}
+					className={cn("flex h-7 shrink-0 items-center justify-between bg-secondary px-3", {
+						invisible: !mounted,
+					})}
 				>
-					<div className="flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+					<div className="flex items-center gap-2 font-mono text-copy-12 text-muted-foreground">
 						<span className="text-foreground">
 							{capture.width}×{capture.height}
 						</span>
@@ -502,12 +490,12 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					</div>
 
 					{isFullscreen ? (
-						<div className="font-mono text-[10px] text-muted-foreground">
+						<div className="font-mono text-copy-12 text-muted-foreground">
 							Press <kbd className="rounded bg-background px-1 py-0.5 text-foreground">ESC</kbd> to
 							exit
 						</div>
 					) : (
-						<span className="font-mono text-[10px] text-muted-foreground capitalize">
+						<span className="font-mono text-copy-12 text-muted-foreground capitalize">
 							{capture.label}
 						</span>
 					)}
@@ -535,14 +523,13 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 							handleResizeKey(event, frameWidth, containerWidth || MAX_NORMAL_WIDTH)
 						}
 						className={cn(
-							"group absolute top-1/2 z-40 flex min-h-11 min-w-11 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center transition-opacity duration-200 focus-visible:opacity-100 focus-visible:outline-none sm:min-h-6 sm:min-w-6",
-							side === "right" ? "-right-4" : "-left-4",
-							isResizing ? "opacity-100" : "opacity-0 hover:opacity-100"
+							"group absolute top-1/2 z-40 flex size-11 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center focus-visible:outline-none",
+							side === "right" ? "-right-2" : "-left-2"
 						)}
 					>
 						<span
 							className={cn(
-								"flex h-12 w-6 items-center justify-center rounded-full border bg-background shadow-md transition-colors",
+								"flex h-11 w-6 items-center justify-center rounded-full border bg-background shadow-card transition-colors",
 								isResizing
 									? "border-primary bg-primary"
 									: "border-border group-hover:border-brand/50 group-focus-visible:border-brand"

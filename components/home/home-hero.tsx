@@ -45,7 +45,8 @@ export async function HomeHero() {
 						Read what went wrong, and what I learned
 					</Link>
 				</div>
-				<Card>
+				{/* Tone, not a border, separates this aside from the hero (DESIGN.md §4.5). */}
+				<Card className="border-0">
 					<CardHeader>
 						<p className="mb-3 text-copy-12 text-muted-foreground">What I’m building</p>
 						<CardTitle>
@@ -70,7 +71,7 @@ export async function HomeHero() {
 					</CardContent>
 				</Card>
 			</div>
-			<dl className="grid grid-cols-3 gap-4 border-border border-t pt-6">
+			<dl className="grid grid-cols-3 gap-4 pt-6">
 				<Fact label="Year-two revenue, before closing" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
 				<Fact label="Projects documented here" value={String(projects.length)} />

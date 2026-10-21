@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -57,7 +57,7 @@ export default async function SearchPage({
 								id="site-search"
 								maxLength={SEARCH_QUERY_MAX}
 								name="q"
-								placeholder="Projects, writing, pages"
+								placeholder="Projects, writing, pages…"
 								type="search"
 							/>
 						</div>
@@ -85,7 +85,7 @@ export default async function SearchPage({
 									</h2>
 									<IndexList>
 										{group.items.map((entry) => (
-											<IndexRow key={entry.href}>
+											<li key={entry.href}>
 												<Link className={indexRowLinkClass} href={entry.href} prefetch={false}>
 													<span className="flex items-baseline justify-between gap-4">
 														<span className={`font-medium text-foreground ${indexRowAccentClass}`}>
@@ -98,7 +98,7 @@ export default async function SearchPage({
 														) : null}
 													</span>
 												</Link>
-											</IndexRow>
+											</li>
 										))}
 									</IndexList>
 								</section>

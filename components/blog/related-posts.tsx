@@ -1,4 +1,4 @@
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/components/ui/link";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
@@ -46,19 +46,16 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 	}
 
 	return (
-		<div className="mt-12 w-full border-border border-t pt-8">
-			<h3 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+		<section className="w-full">
+			<h2 className="mb-4 font-heading font-medium text-foreground text-heading-20 tracking-tight">
 				Related posts
-			</h3>
-			{/* The site's index grammar, not a bordered card with a tinted fill and a
-			    hover background. §13 rejects the card wrapper and the border-per-row;
-			    this is the same list the blog index uses, three rows long. */}
+			</h2>
 			<IndexList>
 				{relatedPosts.map((post) => (
-					<IndexRow key={post.slug}>
+					<li key={post.slug}>
 						<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-							<div className="flex items-start justify-between gap-4">
-								<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
+							<div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+								<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
 									{post.title}
 								</span>
 								<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
@@ -73,15 +70,11 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 									)}
 								</div>
 							</div>
-							{post.excerpt && (
-								<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
-									{post.excerpt}
-								</p>
-							)}
+							{post.excerpt && <p className="text-body text-sm leading-relaxed">{post.excerpt}</p>}
 						</Link>
-					</IndexRow>
+					</li>
 				))}
 			</IndexList>
-		</div>
+		</section>
 	);
 }

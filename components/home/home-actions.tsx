@@ -38,7 +38,6 @@ export function HomeActions() {
 						onClick={() => setContactState("open")}
 						size="lg"
 						type="button"
-						variant="brand"
 					>
 						Start a conversation
 						<ArrowRight aria-hidden="true" className="size-4" />

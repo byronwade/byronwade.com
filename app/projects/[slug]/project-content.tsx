@@ -135,23 +135,23 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							)}
 						</div>
 
-						<h1 className="text-balance font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
+						<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 leading-normal tracking-tight">
 							{project.title}
 						</h1>
 
 						{project.excerpt && (
-							<p className="text-pretty text-lg text-muted-foreground leading-relaxed">
+							<p className="text-pretty text-body text-copy-16 leading-relaxed">
 								{project.excerpt}
 							</p>
 						)}
 
 						{/* Problem and outcome are the argument of an Evidence page (§3.2), so
-						    they are set as a plain definition list on a hairline rather than
+						    they are set as a plain definition list with space rather than
 						    in two tinted cards with all-caps labels. §13 rejects the card
 						    wrapper and the eyebrow, and §3.2 says the comparison itself is the
 						    dominant object, not the box around it. */}
 						{(project.problem || project.outcome) && (
-							<dl className="mt-1 flex flex-col gap-4 border-border border-t pt-4 sm:flex-row sm:gap-10">
+							<dl className="mt-1 flex flex-col gap-4 pt-4 sm:flex-row sm:gap-10">
 								{project.problem && (
 									<div className="flex flex-1 flex-col gap-1">
 										<dt className="text-muted-foreground text-xs">Problem</dt>
@@ -168,7 +168,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 
 						{project.metrics && project.metrics.length > 0 && (
-							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 border-border border-y py-3 tabular-nums">
+							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 py-3 tabular-nums">
 								{project.metrics.map((metric) => (
 									<li key={`${project.slug}-${metric.label}`} className="flex flex-col gap-0.5">
 										<span className="font-semibold text-base text-foreground">{metric.value}</span>
@@ -179,10 +179,10 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 
 						{(project.url || sourceUrl) && (
-							<div className="mt-1 flex flex-wrap items-center gap-2">
+							<div className="mt-1 flex flex-wrap items-center gap-3">
 								{project.url && (
 									<Button
-										size="sm"
+										size="lg"
 										render={
 											<a href={project.url} target="_blank" rel="noopener noreferrer">
 												Visit site
@@ -193,7 +193,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 								)}
 								{sourceUrl && (
 									<Button
-										size="sm"
+										size="lg"
 										variant="outline"
 										render={
 											<a href={sourceUrl} target="_blank" rel="noopener noreferrer">
@@ -216,7 +216,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 
 					{/* Body + table of contents */}
 					<div className="grid w-full grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(0,1fr)_15rem]">
-						<article className="w-full max-w-2xl">
+						<article className="w-full min-w-0 max-w-2xl">
 							{hasContent ? (
 								<Markdown content={body} />
 							) : (
@@ -236,9 +236,9 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					</div>
 
 					{/* Footer nav */}
-					<div className="flex w-full flex-col gap-4 border-border border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<Link
-							className="inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
+							className="inline-flex min-h-11 items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
 							href="/projects"
 						>
 							<ArrowLeft aria-hidden="true" className="size-4" />
@@ -248,7 +248,10 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						    affordance; weight carries the emphasis. */}
 						<div className="flex flex-wrap items-center gap-3 text-sm">
 							<span className="text-muted-foreground">Want something like this?</span>
-							<Link className="link-underline font-medium" href="/contact">
+							<Link
+								className="link-underline inline-flex min-h-11 items-center font-medium"
+								href="/contact"
+							>
 								Start a conversation →
 							</Link>
 						</div>

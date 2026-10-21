@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import sharp from "sharp";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
-const destination = "docs/evidence/thorbis";
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
 mkdirSync(destination, { recursive: true });
 const axeResponse = await fetch(
-	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js"
+	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
+	{ signal: AbortSignal.timeout(30_000) }
 );
 assert.ok(axeResponse.ok, "axe must load; a missing audit cannot pass");
 const axeSource = await axeResponse.text();
@@ -30,9 +32,21 @@ const report = {
 	interactions: {},
 };
 
+const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
+const MENU_TRIGGER = "[data-site-menu]";
+
 // Browser cases stay serial so viewport/focus state and machine load stay isolated.
 function serial(items, visit) {
 	return items.reduce((previous, item) => previous.then(() => visit(item)), Promise.resolve());
+}
+
+// Panels load on first open and return focus a frame after closing; wait, bounded, for it to settle.
+function focusSettlesOn(page, selector) {
+	return page.waitForFunction(
+		(value) => document.activeElement === document.querySelector(value),
+		{ timeout: 2000 },
+		selector
+	);
 }
 
 function readTargets() {
@@ -331,72 +345,78 @@ async function checkKeyboard(page, width) {
 	);
 	await page.focus('nav[aria-label="Primary"] a[href="/projects"]');
 	await page.screenshot({ path: `${destination}/focus-${width}-light.png` });
-	await page.click('button[aria-label="Search (⌘K)"]');
+	await page.click(SEARCH_TRIGGER);
+	await page.waitForFunction(() => document.activeElement.getAttribute("aria-label") === "Search");
 	await page.keyboard.press("Escape");
-	assert.equal(
-		await page.evaluate(() => document.activeElement.getAttribute("aria-label")),
-		"Search (⌘K)"
-	);
+	await focusSettlesOn(page, SEARCH_TRIGGER);
 	report.keyboard.push({ width, steps, searchFocusReturn: true });
 }
 
 async function checkShellStates(page, width, theme) {
 	await page.addScriptTag({ content: axeSource });
-	await serial(
-		[
-			{ trigger: 'button[title="All products"]', label: "All products" },
-			{ trigger: 'button[aria-label="Search (⌘K)"]', label: "Search" },
-			{ trigger: 'button[aria-label="Support open source"]', label: "Support open source" },
-		],
-		async ({ trigger, label }) => {
-			await page.click(trigger);
-			const selector = `[role="dialog"][aria-label="${label}"]`;
+	// The #80 header has two panels: search at every width, and the navigation menu that
+	// replaces the inline primary links below the 40rem header container.
+	const panels = [{ trigger: SEARCH_TRIGGER, label: "Search" }];
+	if (width < 640) {
+		assert.ok(
+			await page.$eval(MENU_TRIGGER, (button) => getComputedStyle(button).display !== "none"),
+			`navigation menu is offered at ${width}`
+		);
+		panels.push({ trigger: MENU_TRIGGER, label: "Navigate" });
+	}
+	await serial(panels, async ({ trigger, label }) => {
+		await page.click(trigger);
+		const selector = `[role="dialog"][aria-label="${label}"]`;
+		await page.waitForFunction(
+			(value) => {
+				const panel = document.querySelector(value);
+				return panel && getComputedStyle(panel).opacity === "1";
+			},
+			{},
+			selector
+		);
+		if (label === "Search") {
 			await page.waitForFunction(
-				(value) => getComputedStyle(document.querySelector(value)).opacity === "1",
-				{},
-				selector
+				() => document.activeElement.getAttribute("aria-label") === "Search"
 			);
-			if (label === "Search") {
-				await page.waitForFunction(
-					() => document.activeElement.getAttribute("aria-label") === "Search"
-				);
-			}
-			const violations = await page.evaluate(async () =>
-				(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
-			);
-			const contrast = await page.evaluate(readContrast);
-			const targets = await page.evaluate(readTargets);
-			assertTargets(targets, width);
-			const bounds = await page.$eval(selector, (element) => {
-				const rect = element.getBoundingClientRect();
-				return { left: rect.left, right: rect.right, viewport: innerWidth };
-			});
-			report.panels.push({ width, theme, label, bounds, violations, contrast, targets });
-			assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport, `${label} fits ${width}`);
-			assert.equal(
-				violations.filter(({ impact }) => impact === "serious" || impact === "critical").length,
-				0,
-				JSON.stringify(violations)
-			);
-			assert.ok(
-				contrast.every(({ ratio, required }) => ratio >= required),
-				JSON.stringify(contrast.filter(({ ratio, required }) => ratio < required))
-			);
-			if (width === 768 && theme === "light") {
-				await page.screenshot({
-					path: `${destination}/panel-${label.replaceAll(" ", "-").toLowerCase()}-768.png`,
-				});
-			}
-			if (label === "Search") {
-				await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
-				await page.waitForSelector('[role="dialog"]');
-				assert.ok(
-					await page.$eval(selector, (element) => element.textContent.includes("No results"))
-				);
-			}
-			await page.keyboard.press("Escape");
 		}
-	);
+		const violations = await page.evaluate(async () =>
+			(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
+		);
+		const contrast = await page.evaluate(readContrast);
+		const targets = await page.evaluate(readTargets);
+		assertTargets(targets, width);
+		const bounds = await page.$eval(selector, (element) => {
+			const rect = element.getBoundingClientRect();
+			return { left: rect.left, right: rect.right, viewport: innerWidth };
+		});
+		report.panels.push({ width, theme, label, bounds, violations, contrast, targets });
+		assert.ok(bounds.left >= 0 && bounds.right <= bounds.viewport, `${label} fits ${width}`);
+		assert.equal(
+			violations.filter(({ impact }) => impact === "serious" || impact === "critical").length,
+			0,
+			JSON.stringify(violations)
+		);
+		assert.ok(
+			contrast.every(({ ratio, required }) => ratio >= required),
+			JSON.stringify(contrast.filter(({ ratio, required }) => ratio < required))
+		);
+		if (width === 768 && theme === "light") {
+			await page.screenshot({
+				path: `${destination}/panel-${label.replaceAll(" ", "-").toLowerCase()}-768.png`,
+			});
+		}
+		if (label === "Search") {
+			await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
+			await page.waitForSelector('[role="dialog"]');
+			assert.ok(
+				await page.$eval(selector, (element) => element.textContent.includes("No results"))
+			);
+		}
+		await page.keyboard.press("Escape");
+		await page.waitForSelector(selector, { hidden: true });
+		await focusSettlesOn(page, trigger);
+	});
 }
 
 async function checkInteractions(url) {
@@ -439,7 +459,7 @@ async function checkInteractions(url) {
 	assert.ok(shortcut.visible, "global search stays visible from the footer");
 	assert.ok(Number.parseFloat(shortcut.reducedTransition) <= 0.000_01, "reduced motion snaps");
 	await page.keyboard.press("Escape");
-	assert.equal(await page.evaluate(() => document.activeElement.getAttribute("href")), "/privacy");
+	await focusSettlesOn(page, 'footer a[href="/privacy"]');
 	const before = await page.evaluate(() => document.documentElement.classList.contains("dark"));
 	await page.click('button[aria-label="Toggle theme"]');
 	await page.waitForFunction(
@@ -457,27 +477,27 @@ async function checkInteractions(url) {
 	await page.close();
 }
 
-async function checkSlowMotion(page) {
-	const duration = await page.evaluate(() => {
-		const root = document.documentElement;
-		const token = getComputedStyle(root).getPropertyValue("--motion-base").trim();
-		const value = Number.parseFloat(token) * (token.endsWith("ms") ? 1 : 1000) * 4;
-		root.style.setProperty("--motion-base", `${value}ms`);
-		return value;
+async function checkSearchInterruption(page) {
+	// The current header has no entrance animation; its retired capsule's duration
+	// override cannot slow this panel. Inspect actual styles and exercise interruption.
+	await page.click(SEARCH_TRIGGER);
+	await page.waitForSelector("[data-header-search]", { visible: true });
+	const styles = await page.$eval("[data-header-search]", (panel) => {
+		const computed = getComputedStyle(panel);
+		return {
+			transitionDuration: computed.transitionDuration,
+			animationDuration: computed.animationDuration,
+		};
 	});
-	await page.click('button[title="All products"]');
-	await page.screenshot({ path: `${destination}/motion-open-start-768.png` });
-	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms / 2)), duration);
-	await page.screenshot({ path: `${destination}/motion-open-middle-768.png` });
-	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms)), duration);
-	await page.screenshot({ path: `${destination}/motion-open-end-768.png` });
+	await page.screenshot({ path: `${destination}/search-open-768.png` });
 	await page.keyboard.press("Escape");
-	assert.equal(await page.evaluate(() => document.activeElement.title), "All products");
-	await page.click('button[title="All products"]');
+	await focusSettlesOn(page, SEARCH_TRIGGER);
+	await page.screenshot({ path: `${destination}/search-closed-768.png` });
+	// Interrupt an open immediately; focus must still return to the trigger.
+	await page.click(SEARCH_TRIGGER);
 	await page.keyboard.press("Escape");
-	assert.equal(await page.evaluate(() => document.activeElement.title), "All products");
-	await page.evaluate(() => document.documentElement.style.removeProperty("--motion-base"));
-	report.motion = { slowFactor: 4, duration, interruptedOpenClose: true, focusReturned: true };
+	await focusSettlesOn(page, SEARCH_TRIGGER);
+	report.searchInterruption = { styles, interruptedOpenClose: true, focusReturned: true };
 }
 
 try {
@@ -496,7 +516,7 @@ try {
 				}
 				await checkShellStates(page, width, theme);
 				if (width === 768 && theme === "light") {
-					await checkSlowMotion(page);
+					await checkSearchInterruption(page);
 				}
 				await page.close();
 			}
@@ -509,14 +529,29 @@ try {
 			const heading = await page.$eval("h1", readElementVisibility);
 			const visible = heading.visible && heading.top < 350;
 			assert.ok(visible, "no-JS content must be visible at first paint");
-			const navigation = await page.$eval('nav[aria-label="Primary"]', readElementVisibility);
+			// Below the 40rem header container the #80 header replaces its inline links with a
+			// menu that needs JavaScript, so the footer's full navigation is the no-JS route there.
+			const navigationSelector =
+				width < 640 ? 'nav[aria-label="Footer"]' : 'nav[aria-label="Primary"]';
+			const navigation = await page.$eval(navigationSelector, readElementVisibility);
 			const navigationVisible = navigation.visible;
 			assert.ok(
 				navigationVisible,
 				"no-JS navigation must remain visible across hydration boundaries"
 			);
+			const sections = await page.$eval(navigationSelector, (element) =>
+				[...element.querySelectorAll("a[href]")].map((link) => link.getAttribute("href"))
+			);
+			for (const href of ["/", "/projects", "/portfolio", "/blog", "/resume"]) {
+				assert.ok(sections.includes(href), `no-JS navigation reaches ${href} at ${width}`);
+			}
 			await page.screenshot({ path: `${destination}/home-${width}-no-js.png` });
-			report.noJavaScript.push({ width, visible, navigationVisible });
+			report.noJavaScript.push({
+				width,
+				visible,
+				navigation: navigationSelector,
+				navigationVisible,
+			});
 			await page.close();
 		});
 		await checkInteractions(url);
@@ -557,6 +592,6 @@ try {
 	try {
 		writeEvidenceJson(`${destination}/browser.json`, report);
 	} finally {
-		await browser.close();
+		await closeBrowser(browser, { diagnostic: console.log });
 	}
 }

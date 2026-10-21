@@ -8,9 +8,9 @@
  */
 
 /**
- * Interactive outline pill: social links, tags, share buttons, skill chips.
- * Muted by default; borrows the brand accent on hover so interaction reads
- * consistently everywhere (gold hover, never a loud fill).
+ * Interactive pill for sharing and copy actions. The secondary surface keeps
+ * it distinct from its parent, like the outlined Button. Height and focus
+ * treatment belong here rather than in each caller.
  */
 export const pillLinkClass =
-	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-brand/5 hover:text-foreground focus-ring sm:min-h-6 sm:min-w-6";
+	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-muted hover:text-foreground focus-ring";

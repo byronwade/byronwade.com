@@ -10,6 +10,9 @@
 # testing
 /coverage
 
+# Local task handoff; historical reports belong beside their evidence.
+/RESULT.md
+
 # next.js
 /.next/
 /out/
@@ -20,8 +23,6 @@
 # misc
 .DS_Store
 *.pem
-# Task receipts are local verification artifacts, not published repository docs.
-/RESULT.md
 
 # debug
 npm-debug.log*

@@ -25,7 +25,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div
 			className={cn(
-				"relative flex min-w-full shrink-0 flex-col gap-5 font-normal text-[var(--foreground)] text-base",
+				"relative flex min-w-0 flex-col gap-5 font-normal text-body text-copy-16",
 				className
 			)}
 		>
@@ -50,7 +50,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 								href={linkHref}
 								target={isExternal ? "_blank" : undefined}
 								rel={isExternal ? "noopener noreferrer" : undefined}
-								className="link-underline font-medium"
+								className="link-underline wrap-break-word font-medium"
 								{...props}
 							>
 								{children}
@@ -76,7 +76,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						if (isInline) {
 							return (
 								<code
-									className="wrap-anywhere rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm"
+									className="wrap-anywhere rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-copy-14"
 									{...props}
 								>
 									{children}
@@ -118,7 +118,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h1: ({ children, ...props }) => (
 						<h1
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 font-semibold text-2xl text-[var(--foreground)]"
+							className="mt-6 scroll-mt-24 text-balance font-medium text-foreground text-heading-20"
 							{...props}
 						>
 							{children}
@@ -127,7 +127,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h2: ({ children, ...props }) => (
 						<h2
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 font-semibold text-[var(--foreground)] text-xl"
+							className="mt-6 scroll-mt-24 text-balance font-medium text-foreground text-heading-20"
 							{...props}
 						>
 							{children}
@@ -136,7 +136,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h3: ({ children, ...props }) => (
 						<h3
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-lg"
+							className="mt-4 scroll-mt-24 text-balance font-medium text-foreground text-heading-16"
 							{...props}
 						>
 							{children}
@@ -145,17 +145,14 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h4: ({ children, ...props }) => (
 						<h4
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-base"
+							className="mt-4 scroll-mt-24 text-balance font-medium text-foreground text-heading-16"
 							{...props}
 						>
 							{children}
 						</h4>
 					),
 					blockquote: ({ children, ...props }) => (
-						<blockquote
-							className="my-4 border-brand border-l-2 py-1 pl-4 text-[var(--muted-foreground)] italic"
-							{...props}
-						>
+						<blockquote className="my-2 pl-4 text-body italic" {...props}>
 							{children}
 						</blockquote>
 					),

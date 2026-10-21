@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
-import { cn } from "@/lib/utils";
 
 const ContactSentToast = dynamic(
 	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
@@ -53,7 +52,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 				className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
 				aria-label="Contact"
 			>
-				<div className="flex items-center justify-between border-border border-b px-4 py-3">
+				<div className="flex items-center justify-between px-4 pt-4 pb-1">
 					<div className="flex flex-col">
 						<span className="font-medium text-sm">Start a conversation</span>
 						<span className="text-muted-foreground text-xs">
@@ -80,7 +79,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor={`${formId}-name`}>Name</Label>
 							<Input
-								className="h-11"
+								className="h-11 sm:h-11"
 								aria-invalid={fieldError?.field === "name"}
 								aria-describedby={fieldError?.field === "name" ? `${formId}-name-error` : undefined}
 								id={nameFieldId}
@@ -89,7 +88,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 								autoFocus
 								value={formData.name}
 								onChange={(event) => handleChange("name", event.target.value)}
-								placeholder="Your name…"
+								placeholder="Alex Rivera…"
 								required
 							/>
 							{fieldError?.field === "name" && (
@@ -101,7 +100,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor={`${formId}-email`}>Email</Label>
 							<Input
-								className="h-11"
+								className="h-11 sm:h-11"
 								aria-invalid={fieldError?.field === "email"}
 								aria-describedby={
 									fieldError?.field === "email" ? `${formId}-email-error` : undefined
@@ -134,7 +133,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							name="topic"
 							value={formData.topic}
 							onChange={(event) => handleChange("topic", event.target.value)}
-							className="h-11 rounded-lg border border-input bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive md:text-sm"
+							className="h-11 w-full rounded-lg border border-muted-foreground bg-field px-3 text-base shadow-(--shadow-field) outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:ring-destructive/40"
 						>
 							{CONTACT_TOPICS.map((topic) => (
 								<option key={topic.value} value={topic.value}>
@@ -160,10 +159,10 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							name="message"
 							value={formData.message}
 							onChange={(event) => handleChange("message", event.target.value)}
-							placeholder="A sentence or two about what you’re working on…"
+							placeholder="I’d like to talk about a project…"
 							required
 							rows={4}
-							className="resize-y"
+							className="min-h-28 resize-y"
 							onKeyDown={(event) => {
 								if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
 									event.currentTarget.form?.requestSubmit();
@@ -178,25 +177,23 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					</div>
 
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-						<div className="flex flex-wrap items-center gap-2">
+						<div className="flex flex-wrap items-center gap-3">
 							<ObfuscatedEmail className="font-medium text-brand text-sm [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
-							<button type="button" onClick={copyEmail} className={cn(pillLinkClass, "min-h-11")}>
+							<button type="button" onClick={copyEmail} className={pillLinkClass}>
 								{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
-								{copied ? "Copied" : "Copy"}
+								Copy
 							</button>
+							<span className="sr-only" role="status">
+								{copied ? "Email copied" : ""}
+							</span>
 						</div>
 						<Button type="submit" disabled={isSubmitting} className="h-11 gap-2">
 							{isSubmitting ? (
-								<>
-									<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
-									Send message
-								</>
+								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
 							) : (
-								<>
-									<Send aria-hidden="true" className="h-4 w-4" />
-									Send message
-								</>
+								<Send aria-hidden="true" className="h-4 w-4" />
 							)}
+							Send message
 						</Button>
 					</div>
 					<p

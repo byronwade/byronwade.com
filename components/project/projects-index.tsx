@@ -1,4 +1,4 @@
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight, Sparkle } from "@/lib/icons";
@@ -78,13 +78,13 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 				const carriesEvidence = Boolean(project.featured || project.flagship);
 
 				return (
-					<IndexRow key={project.slug}>
+					<li key={project.slug}>
 						<Link
 							className={cn(indexRowLinkClass, "focus-ring")}
 							href={`/projects/${project.slug}`}
 						>
 							<div className="flex items-center gap-4">
-								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
+								<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
 									<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
 										{project.title.split(":")[0]}
 									</span>
@@ -95,7 +95,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 										/>
 									)}
 									{project.tagline && (
-										<span className="hidden truncate text-muted-foreground text-sm sm:inline">
+										<span className="hidden text-muted-foreground text-sm sm:inline">
 											{project.tagline}
 										</span>
 									)}
@@ -112,11 +112,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 							{carriesEvidence && (proof || leadMetric) && (
 								<div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-									{proof && (
-										<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed">
-											{proof}
-										</p>
-									)}
+									{proof && <p className="max-w-2xl text-body text-sm leading-relaxed">{proof}</p>}
 									{leadMetric && (
 										<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
 											<span className="font-medium text-foreground">{leadMetric.value}</span>
@@ -127,7 +123,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 								</div>
 							)}
 						</Link>
-					</IndexRow>
+					</li>
 				);
 			})}
 		</IndexList>
