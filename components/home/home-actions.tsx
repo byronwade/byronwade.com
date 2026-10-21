@@ -26,29 +26,15 @@ export function HomeActions() {
 
 			{!contactOpen && (
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-					<Button
-						className="gap-2"
-						onClick={() => setContactState("open")}
-						size="lg"
-						type="button"
-						variant="brand"
-					>
+					<Button className="gap-2" onClick={() => setContactState("open")} size="lg" type="button">
 						Start a conversation
 						<ArrowRight aria-hidden="true" className="size-4" />
 					</Button>
-					<Link
-						prefetch={false}
-						className="link-underline inline-flex min-h-11 items-center text-sm"
-						href="/projects"
-					>
+					<Link prefetch={false} className="link-action" href="/projects">
 						See selected work
 					</Link>
 					<noscript>
-						<Link
-							prefetch={false}
-							className="link-underline inline-flex min-h-11 items-center text-sm"
-							href="/contact"
-						>
+						<Link prefetch={false} className="link-action" href="/contact">
 							Contact Byron
 						</Link>
 					</noscript>

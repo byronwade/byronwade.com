@@ -68,15 +68,10 @@ const BASELINE = {
 	"components/blog/related-posts.tsx": { type: 3, weight: 1 },
 	"components/common/empty-state.tsx": { type: 2, weight: 1 },
 	"components/common/markdown.tsx": { type: 8, weight: 5 },
-	"components/home/home-actions.tsx": { type: 2 },
-	"components/home/home-blog.tsx": { type: 4 },
-	"components/home/home-projects.tsx": { type: 6 },
 	"components/home/inline-contact.tsx": { type: 11 },
-	"components/layout/page.tsx": { type: 2, weight: 1 },
 	"components/project/full-width-project-preview.tsx": { type: 7, arbitrary: 3 },
 	"components/project/project-toc.tsx": { type: 2 },
 	"components/project/projects-index.tsx": { type: 5 },
-	"components/ui/card.tsx": { type: 1 },
 	"components/ui/pill.tsx": { type: 1 },
 };
 

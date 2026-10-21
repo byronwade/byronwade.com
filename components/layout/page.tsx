@@ -38,14 +38,14 @@ export function PageHeader({
 	return (
 		<header className={cn("flex w-full flex-col gap-3", className)}>
 			<div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-				<h1 className="font-heading font-medium text-foreground text-heading-32 tracking-tight">
+				<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
 					{title}
 				</h1>
 				{aside}
 			</div>
 			{lede && (
 				// Reading measure near 60–72 characters (§5.2).
-				<p className="max-w-2xl text-muted-foreground leading-relaxed">{lede}</p>
+				<p className="max-w-2xl text-pretty text-body text-copy-16 leading-relaxed">{lede}</p>
 			)}
 		</header>
 	);
@@ -66,8 +66,8 @@ export function Prose({ children, className }: { children: ReactNode; className?
 	return (
 		<div
 			className={cn(
-				"flex max-w-2xl flex-col gap-5 text-muted-foreground leading-relaxed",
-				"[&_h2]:mt-5 [&_h2]:font-heading [&_h2]:font-semibold [&_h2]:text-foreground [&_h2]:text-xl [&_h2]:tracking-tight",
+				"flex max-w-2xl flex-col gap-5 text-body text-copy-16 leading-relaxed",
+				"[&_h2]:mt-5 [&_h2]:font-heading [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:text-heading-20 [&_h2]:tracking-tight",
 				"[&_strong]:font-medium [&_strong]:text-foreground",
 				"[&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5",
 				"[&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:decoration-muted-foreground/40 [&_a]:underline-offset-[3px] [&_a]:transition-colors hover:[&_a]:decoration-foreground",
@@ -103,8 +103,10 @@ export function Section({
 		<section className={cn("flex w-full flex-col gap-5", className)}>
 			<div className="flex items-baseline justify-between gap-4">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-heading font-medium text-heading-20 tracking-tight">{title}</h2>
-					{description && <p className="text-muted-foreground text-sm">{description}</p>}
+					<h2 className="text-balance font-heading font-medium text-heading-20 tracking-tight">
+						{title}
+					</h2>
+					{description && <p className="text-body text-copy-14">{description}</p>}
 				</div>
 				{link}
 			</div>

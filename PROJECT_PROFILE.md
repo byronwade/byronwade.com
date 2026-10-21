@@ -136,7 +136,9 @@ homepage composition and live artifacts (project preview, Figma file).
   index built by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet
 - **Tables/lists:** none, no tabular data on this site
-- **Cards/panels:** `components/ui/card.tsx`
+- **Cards/panels:** `components/layout/sheet.tsx`, the Thorbis specimen frame for
+  real work (a live artifact, a product outline). There is no card primitive: counts
+  and sections are type and space, never boxes
 - **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`. There is no dialog primitive; the one modal
   (fullscreen preview) is a portal in `full-width-project-preview.tsx`.
 - **Inspectors:** `components/project/project-toc.tsx`

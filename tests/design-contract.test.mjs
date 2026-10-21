@@ -39,7 +39,7 @@ test("Thorbis tokens remain the only color values in the migrated surface", asyn
 		"components/layout/dock-toolbar.tsx",
 		"components/ui/button.tsx",
 		"components/ui/badge.tsx",
-		"components/ui/card.tsx",
+		"components/layout/sheet.tsx",
 		"components/ui/input.tsx",
 		"components/ui/textarea.tsx",
 	];
