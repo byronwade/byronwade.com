@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Toaster } from "@/components/ui/sonner";
@@ -43,21 +44,21 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 	return (
 		<section
-			className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-card"
+			className="w-full overflow-hidden rounded-lg border border-border bg-card shadow-card"
 			aria-label="Contact"
 		>
 			<Toaster />
-			<div className="flex items-center justify-between border-border border-b px-4 py-3">
-				<div className="flex flex-col">
-					<span className="font-medium text-sm">Start a conversation</span>
-					<span className="text-muted-foreground text-xs">
+			<div className="flex items-center justify-between gap-3 px-4 pt-3">
+				<div className="flex flex-col gap-0.5">
+					<span className="font-medium text-copy-14">Start a conversation</span>
+					<span className="text-copy-12 text-muted-foreground">
 						Product builds, service software, or just an intro. Brief is fine.
 					</span>
 				</div>
 				<button
 					type="button"
 					onClick={onClose}
-					className="flex size-11 shrink-0 items-center justify-center rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+					className="flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 					aria-label="Close"
 				>
 					<X className="h-4 w-4" />
@@ -74,7 +75,6 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					<div className="flex flex-col gap-2">
 						<Label htmlFor={`${formId}-name`}>Name</Label>
 						<Input
-							className="h-11"
 							aria-invalid={fieldError?.field === "name"}
 							aria-describedby={fieldError?.field === "name" ? `${formId}-name-error` : undefined}
 							id={nameFieldId}
@@ -83,11 +83,11 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							autoFocus
 							value={formData.name}
 							onChange={(event) => handleChange("name", event.target.value)}
-							placeholder="Your name…"
+							placeholder="Jordan Lee"
 							required
 						/>
 						{fieldError?.field === "name" && (
-							<p id={`${formId}-name-error`} className="text-destructive text-sm">
+							<p id={`${formId}-name-error`} className="text-copy-13 text-destructive">
 								{fieldError.reason}
 							</p>
 						)}
@@ -95,7 +95,6 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					<div className="flex flex-col gap-2">
 						<Label htmlFor={`${formId}-email`}>Email</Label>
 						<Input
-							className="h-11"
 							aria-invalid={fieldError?.field === "email"}
 							aria-describedby={fieldError?.field === "email" ? `${formId}-email-error` : undefined}
 							id={`${formId}-email`}
@@ -110,7 +109,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							required
 						/>
 						{fieldError?.field === "email" && (
-							<p id={`${formId}-email-error`} className="text-destructive text-sm">
+							<p id={`${formId}-email-error`} className="text-copy-13 text-destructive">
 								{fieldError.reason}
 							</p>
 						)}
@@ -119,23 +118,22 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 				<div className="flex flex-col gap-2">
 					<Label htmlFor={`${formId}-topic`}>What is this about?</Label>
-					<select
+					<NativeSelect
 						aria-invalid={fieldError?.field === "topic"}
 						aria-describedby={fieldError?.field === "topic" ? `${formId}-topic-error` : undefined}
 						id={`${formId}-topic`}
 						name="topic"
 						value={formData.topic}
 						onChange={(event) => handleChange("topic", event.target.value)}
-						className="h-11 rounded-lg border border-input bg-background px-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive md:text-sm"
 					>
 						{CONTACT_TOPICS.map((topic) => (
 							<option key={topic.value} value={topic.value}>
 								{topic.label}
 							</option>
 						))}
-					</select>
+					</NativeSelect>
 					{fieldError?.field === "topic" && (
-						<p id={`${formId}-topic-error`} className="text-destructive text-sm">
+						<p id={`${formId}-topic-error`} className="text-copy-13 text-destructive">
 							{fieldError.reason}
 						</p>
 					)}
@@ -163,7 +161,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 						}}
 					/>
 					{fieldError?.field === "message" && (
-						<p id={`${formId}-message-error`} className="text-destructive text-sm">
+						<p id={`${formId}-message-error`} className="text-copy-13 text-destructive">
 							{fieldError.reason}
 						</p>
 					)}
@@ -171,13 +169,23 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 					<div className="flex flex-wrap items-center gap-2">
-						<ObfuscatedEmail className="font-medium text-brand text-sm [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
-						<button type="button" onClick={copyEmail} className={cn(pillLinkClass, "min-h-11")}>
-							{copied ? <Check className="h-4 w-4 text-brand" /> : <Copy className="h-4 w-4" />}
-							{copied ? "Copied" : "Copy"}
+						<ObfuscatedEmail className="font-medium text-copy-14 text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
+						{/* Both words share one cell so the chip never changes width. */}
+						<button type="button" onClick={copyEmail} className={pillLinkClass}>
+							{copied ? (
+								<Check aria-hidden="true" className="size-4" />
+							) : (
+								<Copy aria-hidden="true" className="size-4" />
+							)}
+							<span className="grid">
+								<span className={cn("col-start-1 row-start-1", copied && "invisible")}>Copy</span>
+								<span className={cn("col-start-1 row-start-1", !copied && "invisible")}>
+									Copied
+								</span>
+							</span>
 						</button>
 					</div>
-					<Button type="submit" disabled={isSubmitting} className="h-11 gap-2">
+					<Button type="submit" disabled={isSubmitting} className="gap-2">
 						{isSubmitting ? (
 							<>
 								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
@@ -194,9 +202,13 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 				<p
 					aria-live="polite"
 					role="status"
-					className={status.kind === "failed" ? "text-destructive text-sm" : "text-sm text-success"}
+					className={
+						status.kind === "failed"
+							? "text-copy-14 text-destructive"
+							: "text-copy-14 text-success-contrast"
+					}
 				>
-					{status.kind === "sent" && "Sent. I'll be in touch."}
+					{status.kind === "sent" && "Sent. I’ll be in touch."}
 					{isSubmitting && "Sending your message…"}
 					{status.kind === "failed" &&
 						(fieldError ? "Check the highlighted field." : status.reason)}

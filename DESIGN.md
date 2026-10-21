@@ -279,6 +279,27 @@ Filters, tabs, selected items, and search queries belong in the URL when they
 are worth sharing. Use native URL/search params; evaluate a query-state library
 when a real interactive surface needs one.
 
+### 7.4 Shared arrangements
+
+These are the site's one way of doing each thing; routes compose them rather
+than restyling them.
+
+- **Measure.** `SiteShell` keeps the header's 42rem measure with the gutter
+  outside it, so title, header and footer share an edge. `width="wide"` is
+  only for the homepage composition and live artifacts (project preview,
+  Figma file). Every route passes its `profile`.
+- **Rows.** Indexes separate rows with space and a rounded hover fill, never
+  hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
+  with a mono column for the date or signal; `PostRow` owns the writing row.
+- **Sheet.** `components/layout/sheet.tsx` frames real work with a caption that
+  says what it is. It bleeds to the phone edge. It is not a card for counts or
+  sections, and there is no card primitive.
+- **Standalone links.** Back, next and open links use `link-action`: 14px,
+  underlined, 44px target. Inline prose links use `link-underline`.
+- **Failure.** Route errors and the root boundary render `ErrorNotice`;
+  collections render `EmptyState`. Both are start-aligned type, never a boxed
+  illustration.
+
 ## 8. Component contracts
 
 - **Buttons:** one dominant primary action per region; verb-first labels;
