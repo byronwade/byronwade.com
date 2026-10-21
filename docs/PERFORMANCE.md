@@ -116,10 +116,10 @@ feedback without delivering a message or certifying a live provider.
   JavaScript stays out of the client bundle. The project site preview does the
   same (`components/project/full-width-project-preview.tsx` wraps the client
   file). Each Phosphor icon module carries path data for all six weights; the
-  preview's twelve glyphs were 29,405 bytes of the project page chunk. Moving
-  them cut that chunk from 92,188 to 59,880 bytes (29,997 to 21,773 gzipped)
-  and added the rendered SVG to the page payload instead (`/projects/dits`
-  HTML 62,389 to 64,471 bytes gzipped). Lighthouse's script transfer for a
+  preview's twelve glyphs were 29,405 bytes of the project page chunk.
+  Measured against `4b1202f`, moving them cut that chunk from 92,188 to 59,880
+  bytes (29,997 to 21,773 gzipped) and added the rendered SVG to the page
+  payload instead (`/projects/dits` HTML 62,389 to 64,471 bytes gzipped). Lighthouse's script transfer for a
   project page went from 209,005 to 200,663 bytes. This is a byte reduction;
   it did not measurably change LCP.
 - The success toast loads only after a contact submission succeeds; the unused
@@ -162,15 +162,19 @@ exceed the LCP limit, which remains a recorded budget exception:
 `/projects/dits` 3293 to 3470 ms, `/projects/thorbis` 3226 to 3309 ms (both
 before and after the preview icon change above, which did not move LCP beyond
 run-to-run variation) and `/blog/nexstar-win-invoice-lose-customer` 3277 ms.
+After merging main through `5cef5db` (#129 shortened the Dits article to a
+30,450-byte document), one more sample each recorded Dits 3214 ms, the Thorbis
+case study 3261 ms and the Nexstar post 3301 ms, all still over the limit.
 `lighthouse-budget.json` is unchanged.
 
 Lighthouse simulates this LCP. On the homepage the observed paint happens about
-300 ms after navigation, but the simulation counts every request that started before it, and
-the async scripts start within 80 ms. The simulated LCP therefore tracks the
+300 ms after navigation, but the simulation counts every request that started
+before it, and the async scripts start within 80 ms. The simulated LCP therefore tracks the
 bytes of the document, the preloaded font and all initial scripts, of which
 about 132 KB is the React and Next framework. Detail pages add a larger document
-(Dits 65 KB gzipped, much of it the RSC payload repeating the article) and, on
-posts, italic and mono fonts discovered from the stylesheet. Preloading the mono
+(the Nexstar post is 45 KB gzipped, much of it the RSC payload repeating the
+article), a 22 KB gzipped page chunk on project pages and, on posts, italic and mono
+fonts discovered from the stylesheet. Preloading the mono
 face was tried and rejected (see the evidence README).
 
 The rebuilt header from main (#80) replaced the launcher and morph capsule with
