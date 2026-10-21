@@ -56,7 +56,6 @@ const HEAVY_WEIGHT = /\bfont-(?:semibold|bold|extrabold|black)\b/g;
 /** Remaining allowance per file. Lower it as files are migrated; never raise it. */
 const BASELINE = {
 	"app/contact/contact-client.tsx": { type: 9 },
-	"app/not-found.tsx": { type: 4, weight: 1 },
 	"app/search/page.tsx": { type: 1 },
 	"components/home/inline-contact.tsx": { type: 11 },
 };

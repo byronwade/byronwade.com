@@ -10,9 +10,12 @@
 # testing
 /coverage
 
+# Local task handoff; historical reports belong beside their evidence.
+/RESULT.md
+
 # next.js
 /.next/
-/out/   
+/out/
 
 # production
 /build

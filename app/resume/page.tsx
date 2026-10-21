@@ -226,6 +226,7 @@ export default function ResumePage() {
 							</p>
 							<div className="flex flex-wrap items-center gap-3 pt-2 print:hidden">
 								<Button
+									size="lg"
 									render={
 										<Link href="/contact">
 											Start a conversation
@@ -351,6 +352,7 @@ export default function ResumePage() {
 								</p>
 							</div>
 							<Button
+								size="lg"
 								render={
 									<Link href="/contact">
 										Contact Byron

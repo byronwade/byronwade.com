@@ -1,0 +1,25 @@
+{
+  "phase": "probe",
+  "head": "67dede779f3185e8926caa48128ce98df9ad6548",
+  "command": "node scripts/verify-design-polish-states.mjs after",
+  "exitCode": 1,
+  "failure": "copy control has its own surface: background was rgba(0, 0, 0, 0)",
+  "cases": [
+    {
+      "name": "home-contact",
+      "width": 375,
+      "theme": "light",
+      "file": "pill-before-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Byron Wade Product engineer · FounderI ran the service business. Now I build the software it needed.I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones, reputation: I learned the problems firsthand. Today I turn those lessons into products for the trades.Start a conversationProduct builds, service software, or just an intro. Brief is fine.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationBriefClick to reveal emailCopySend messageRead what went wrong, and what I learnedWhat I’m buildingThorbisSoftware for the people who keep things running.From the first customer call to the last invoice. Product engineering and a shared design system, grounded in the work of a service business.Explore Thorbis (opens in a new tab)Year-two revenue, before closing$2.4MYears shipping software8+Projects documented here24Selected workProof from products and the service business that shaped them.All projects →Thorbis Network / FMSActivefield-service softwareThorbis DesignActiveshared design foundationsSubfieldActivewrite-up in progressWritingNotes from building products and running a service business.All posts →Nexstar Is Teaching Plumbing Companies to Win the Invoice and Lose the Customer17 minAug 7, 2026After ten years in plumbing, two master licenses, owning a company, and working inside three shops, I believe the industry’s obsession with average ticket is trading lifetime trust for a one-day sales number.PlumbingCustomer experienceSalesWhat Service Businesses Actually Need From Software14 minJul 28, 2026Contractors do not need a larger feature checklist. They need software that protects the chain from first call to collected payment, keeps context attached to the job, and makes operational failure visible early.Field serviceProductOperationsA Design System Has to Be Enforceable or It Is Just Documentation13 minJul 12, 2026Tokens, components, accessibility rules, and motion principles only become a system when products inherit them automatically. AI-generated interfaces make that enforcement more important, not less.Design systemsUIProduct engineering",
+      "rows": 0,
+      "copyControl": {
+        "background": "rgba(0, 0, 0, 0)",
+        "parentBackground": "oklch(0.9915 0.0035 84.6)",
+        "width": 82.78125,
+        "height": 44
+      }
+    }
+  ]
+}

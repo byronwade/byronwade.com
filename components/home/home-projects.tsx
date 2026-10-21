@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Section } from "@/components/layout/page";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowUpRight } from "@/lib/icons";
@@ -14,7 +14,7 @@ function FeaturedProject({ project }: { project: Project }) {
 	const tone = statusTone(project.status);
 
 	return (
-		<IndexRow>
+		<li>
 			<Link prefetch={false} className={indexRowLinkClass} href={`/projects/${project.slug}`}>
 				<div className="flex items-start justify-between gap-4">
 					<div className="flex min-w-0 flex-col gap-1">
@@ -55,7 +55,7 @@ function FeaturedProject({ project }: { project: Project }) {
 					</ul>
 				)}
 			</Link>
-		</IndexRow>
+		</li>
 	);
 }
 
