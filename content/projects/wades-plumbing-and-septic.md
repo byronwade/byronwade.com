@@ -7,9 +7,9 @@ status: "Archived"
 tagline: "trust at emergency speed"
 order: 4
 date: 2023-10-01
-excerpt: "A conversion-focused website built on trust, speed, and local authenticity for a plumbing and septic business serving two states."
-problem: "People with an emergency bounce off slow, generic franchise sites, and running SEO across two states is easy to get wrong."
-outcome: "A fast, neighborly site that ranks in two markets and makes calling feel obvious under stress."
+excerpt: "A historical two-state website project focused on local service pages, clear contact actions, and a neighborly identity."
+problem: "Help emergency callers find the right service area and a clear way to contact the business."
+outcome: "Location-specific service pages and prominent contact actions for the two-market project."
 metrics:
   - label: Peak revenue
     value: "$2.4M yr-2"
@@ -21,6 +21,7 @@ metrics:
 
 # Building Wade's Plumbing and Septic: Designing for Trust in a Skeptical Industry
 
+This case study describes my earlier website work for the business in California and Georgia. The [current service-area page](https://www.wadesplumbingandseptic.com/service-areas) lists California coverage. The choices below were intended to help people find local services and make contact. This write-up includes no before-and-after speed, search-ranking, or conversion study for the project.
 
 ---
 
@@ -29,9 +30,9 @@ metrics:
 
 ### Why Tailwind Over Page Builders
 
-I chose **Tailwind CSS** over standard WordPress page builders like Elementor or Divi for one reason: speed. When someone has a sewage backup or a burst pipe, they're not going to wait 5 seconds for a heavy site to load. They'll bounce to the next result in their search.
+I chose **Tailwind CSS** over WordPress page builders like Elementor or Divi to control the page structure and styling directly. For someone dealing with a sewage backup or a burst pipe, I wanted the service information and contact action to be easy to reach.
 
-Tailwind gave me total control over the code to ensure the site loads faster than competitors. It also allowed for a custom, non-cookie-cutter look that differentiates the business from the generic templates that every other plumbing company seems to use.
+Tailwind supported a custom visual identity without a page-builder template. Images, scripts, hosting, and the rest of the implementation also affect page speed; the CSS framework alone does not establish a speed advantage.
 
 ### The "Neighborly" Aesthetic
 
@@ -41,7 +42,7 @@ The goal was authenticity. When someone is searching for a plumber, they're look
 
 ### Dual-State Navigation
 
-This was a unique challenge: the business serves two completely different areas, Santa Cruz, California and Pickens County, Georgia. I designed the navigation to immediately filter users by location to prevent confusion and high bounce rates. If someone in Georgia lands on California content, they're gone. The navigation had to solve that problem instantly.
+The project covered two different areas: Santa Cruz, California and Pickens County, Georgia. I designed the navigation around location so a visitor could find the relevant services without having to sort through another area's content.
 
 ---
 
@@ -49,23 +50,23 @@ This was a unique challenge: the business serves two completely different areas,
 
 ### Service Area Pages
 
-I built specific landing pages for each city, "Plumber in Scotts Valley" vs. "Septic Service in Jasper, GA." This is critical for ranking in two completely separate states without confusing Google. Each page targets local intent with location-specific content and schema markup.
+I built location-specific landing pages, such as "Plumber in Scotts Valley" and "Septic Service in Jasper, GA," to distinguish the services and places each page described. The local content and schema markup were intended to make that context clear to readers and search engines.
 
 ### Schema Markup and Local Signals
 
-I implemented **LocalBusiness schema** heavily, specifically marking up the "ServiceArea" properties to tell Google explicitly, "We are in California AND Georgia." Managing this dual-location signal is complex, but it's necessary when you're serving markets 2,500 miles apart.
+I used **LocalBusiness structured data** to describe the business and its service areas alongside the visible location content. The aim was to keep the machine-readable business description consistent with what a visitor could read on the page.
 
 ### Keyword Intent Targeting
 
 The content targets two types of keywords:
 
-**High-Intent Emergency Keywords**: *leak detection*, *septic pumping*, *emergency plumber*, these capture people who need help right now.
+**High-Intent Emergency Keywords**: *leak detection*, *septic pumping*, *emergency plumber*, intended for people looking for immediate help.
 
-**Research Keywords**: *tankless water heater benefits*, *septic system maintenance*, these capture users earlier in the funnel who are researching solutions.
+**Research Keywords**: *tankless water heater benefits*, *septic system maintenance*, intended for people researching solutions before arranging work.
 
 ### Performance as a Ranking Factor
 
-By using a custom Tailwind build instead of bloated page builders, I prioritized **Core Web Vitals** (LCP, CLS, FID). Page experience is one of the signals Google uses in ranking, and many people looking for a local plumber are on a phone when something has just gone wrong. A fast page serves them, and it helps the listing.
+Loading, visual stability, and responsiveness were design priorities. The current **Core Web Vitals** are LCP, CLS, and INP; INP replaced FID in March 2024. [Google's guidance](https://developers.google.com/search/docs/appearance/page-experience) says its ranking systems use Core Web Vitals, but good scores do not guarantee top rankings. These are priorities for evaluating the site, not measured results for this project.
 
 ---
 
@@ -99,21 +100,21 @@ I recognized a gap in the market: **Trust**.
 
 Most plumbing sites shout "WE ARE THE BEST" and "CHEAPEST PRICES." I went the other direction: **"We are honest, and we are distinct."**
 
-**I used Tailwind** because I wanted total control over the code to ensure it's faster than competitors. Every millisecond matters when someone is in a panic.
+**I used Tailwind** to control the layout and styling directly, with loading speed as a design priority rather than a verified competitive advantage.
 
 **I wrote "No Upselling"** because I know that's the #1 pain point for customers in this industry. It's not about being clever, it's about addressing the fear that prevents people from calling.
 
-**I structured it for two states** because I wanted to prove that a local feel can scale across state lines without losing its soul. You can serve multiple markets while still feeling like the neighborhood plumber.
+**I structured it for two states** to give each service area its own context while keeping a consistent local identity.
 
 ---
 
 ## The Result
 
-This was not really a website. It was a conversion funnel built on customer psychology, page speed, and local SEO. Every design decision was made with one question in mind: "Does this help a stressed homeowner trust us enough to pick up the phone?"
+The result was a website organized around local service information and clear contact actions. My design question was: "Does this help a stressed homeowner understand the service and find a way to get in touch?"
 
-In an industry where trust is broken, the design strategy that wins isn't about looking the most professional. It's about being the most trustworthy, the fastest, and the easiest to contact when someone's basement is flooding.
+The case study records those choices. It does not attribute the business's revenue to the website or claim a measured increase in calls, conversions, rankings, or speed.
 
-Visit [wadesplumbingandseptic.com](https://wadesplumbingandseptic.com) to see the site.
+Visit [wadesplumbingandseptic.com](https://wadesplumbingandseptic.com) to see the current site, which has continued to change since this project.
 
 
 

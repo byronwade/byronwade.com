@@ -54,7 +54,8 @@ export async function generateMetadata({
 	});
 }
 
-async function ProjectPageContent({ slug }: { slug: string }) {
+export default async function ProjectPage({ params }: ProjectPageProps) {
+	const { slug } = await params;
 	const project = await getProject(slug);
 
 	if (!project) {
@@ -62,10 +63,4 @@ async function ProjectPageContent({ slug }: { slug: string }) {
 	}
 
 	return <ProjectContent project={project} />;
-}
-
-export default async function ProjectPage({ params }: ProjectPageProps) {
-	const { slug } = await params;
-
-	return <ProjectPageContent slug={slug} />;
 }

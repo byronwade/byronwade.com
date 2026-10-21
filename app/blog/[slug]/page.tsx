@@ -19,9 +19,8 @@ interface BlogPostPageProps {
 }
 
 /**
- * Only the loader's slugs are pages, so other URLs get a real 404 before any
- * response is sent. The `notFound()` below runs inside Suspense, after the 200
- * status and the skeleton are already streamed, and then gets cached as a page.
+ * Only the loader's published slugs are pages, so other URLs get a real 404
+ * before any response is sent and cannot become cached pages on demand.
  * Development regenerates this list on every request, so drafts still preview.
  */
 export const dynamicParams = false;
