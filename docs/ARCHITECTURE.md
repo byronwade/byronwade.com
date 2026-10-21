@@ -35,6 +35,15 @@ the header.
 
 ## Route map
 
+Blog and project indexes, posts, and case studies render their local Markdown
+without a page-level Suspense fallback. Streaming these prerendered pages can
+leave the prose in hidden containers that need JavaScript to replace the
+skeleton. `tests/rendered/readable-content.test.mjs` checks every published URL
+from the build manifest and both indexes in a browser with JavaScript disabled,
+asserting visible titles, prose, index entries, and no article/list loading status.
+Slug enumeration still owns which URLs exist; missing content keeps the real 404
+contract below.
+
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |
