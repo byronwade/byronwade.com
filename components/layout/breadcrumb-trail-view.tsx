@@ -5,12 +5,28 @@ import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
+import { BreadcrumbOverflowTrigger } from "./breadcrumb-overflow-trigger";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
 const BreadcrumbOverflow = dynamic(
 	() => import("./breadcrumb-overflow").then((module) => module.BreadcrumbOverflow),
-	{ ssr: false }
+	{ ssr: false, loading: () => <BreadcrumbOverflowTrigger aria-busy="true" /> }
 );
+
+// A long trail collapses on load; its popover graph loads on the first open.
+// Loading it with the collapse put an eleventh script on every long-titled xl page.
+function CollapsedLevels({ crumbs }: { crumbs: Crumb[] }) {
+	const [requested, setRequested] = React.useState(false);
+	return requested ? (
+		<BreadcrumbOverflow crumbs={crumbs} />
+	) : (
+		<BreadcrumbOverflowTrigger
+			aria-expanded={false}
+			aria-haspopup="dialog"
+			onClick={() => setRequested(true)}
+		/>
+	);
+}
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
@@ -67,7 +83,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
-							<BreadcrumbOverflow crumbs={middle} />
+							<CollapsedLevels crumbs={middle} />
 						</li>
 						<Sep />
 						<CrumbLink crumb={last} current truncate />

@@ -1,28 +1,24 @@
 "use client";
 
+import { useRef } from "react";
 import { Link } from "@/components/ui/link";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MoreHorizontal } from "@/lib/icons";
+import { BreadcrumbOverflowTrigger } from "./breadcrumb-overflow-trigger";
 import type { Crumb } from "./breadcrumb-trail";
 
-/** The hidden-ancestor menu. Loaded only after a trail actually collapses. */
+/**
+ * The hidden-ancestor menu. Loaded by the first activation of the collapsed
+ * trail's trigger, so it mounts open; closing returns focus to its trigger.
+ */
 export function BreadcrumbOverflow({ crumbs }: { crumbs: Crumb[] }) {
+	const triggerRef = useRef<HTMLButtonElement>(null);
 	return (
-		<Popover>
-			<PopoverTrigger
-				render={
-					<button
-						aria-label="Show hidden breadcrumb levels"
-						className="flex size-6 items-center justify-center rounded-md text-dock-foreground outline-none transition-colors hover:bg-dock-active hover:text-dock-active-foreground focus-visible:ring-2 focus-visible:ring-ring"
-						type="button"
-					>
-						<MoreHorizontal className="size-4" />
-					</button>
-				}
-			/>
+		<Popover defaultOpen>
+			<PopoverTrigger render={<BreadcrumbOverflowTrigger ref={triggerRef} />} />
 			<PopoverContent
 				align="start"
 				className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-dock-border bg-dock p-1.5 text-dock-foreground ring-0"
+				finalFocus={triggerRef}
 				sideOffset={8}
 			>
 				{crumbs.map((crumb) => (
