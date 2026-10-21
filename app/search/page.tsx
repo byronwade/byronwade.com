@@ -75,7 +75,7 @@ export default async function SearchPage({
 							groups.map((group) => (
 								<section aria-labelledby={`search-${group.kind}`} key={group.kind}>
 									<h2
-										className="mb-1 font-mono text-copy-12 text-muted-foreground"
+										className="mb-1 text-copy-12 text-muted-foreground"
 										id={`search-${group.kind}`}
 									>
 										{group.label}
