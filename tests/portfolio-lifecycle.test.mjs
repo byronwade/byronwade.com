@@ -7,15 +7,15 @@ import * as jsxRuntime from "react/jsx-runtime";
 import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 
-const FAILED = /Couldn(?:'|&#x27;)t load repositories/;
+const FAILED = /Couldn(?:'|&#x27;|’)t load repositories/;
 const RETRY = /<a[^>]*href="\/portfolio"[^>]*role="link"[^>]*>Try again<\/a>/;
 const PROFILE =
 	/<a[^>]*href="https:\/\/github.com\/byronwade"[^>]*role="link"[^>]*>Open GitHub<\/a>/;
 const EMPTY_OR_LOADING = /No repositories yet|Loading repositories|Refreshing/;
 const EMPTY = /No repositories yet/;
-const ERROR_OR_LOADING = /Couldn(?:'|&#x27;)t load repositories|Loading repositories/;
+const ERROR_OR_LOADING = /Couldn(?:'|&#x27;|’)t load repositories|Loading repositories/;
 const ROW = /<li>/g;
-const EXCLUDED = /project-90|project-91|Loading repositories|Couldn(?:'|&#x27;)t load repositories/;
+const EXCLUDED = /project-90|project-91|Loading repositories|Couldn(?:'|&#x27;|’)t load repositories/;
 
 // Keep the actual page orchestration and row rendering. Primitive stand-ins
 // isolate its data outcomes without exposing private functions or loading Next.

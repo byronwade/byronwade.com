@@ -422,7 +422,7 @@ async function checkPortfolioStates(page) {
 	const settled =
 		hasRepositories ||
 		text.includes("No repositories yet") ||
-		text.includes("Couldn't load repositories");
+		/Couldn['’]t load repositories/.test(text);
 	if (!settled) {
 		throw new Error("Portfolio must show repositories, an empty profile, or a load error");
 	}
