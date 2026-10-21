@@ -349,3 +349,95 @@ unchanged; the excerpt now matches the corrected body. The front matter's
 2023-08-01 date is left as-is, but the repository was created 2024-12-20 and the
 write-up's own heading asks "Why Build a CMS in 2024?", so the right date is a
 question for Byron. The repository has no license file.
+
+## Project destination availability, October 21, 2026
+
+All 16 project front-matter `url` destinations were requested with HTTP GET,
+following redirects, on October 21, 2026. These checks establish availability
+at that time, not feature completeness or the accuracy of the case studies.
+
+| Project | Destination | Result |
+| --- | --- | --- |
+| byronwade/ui | [ui.byronwade.com](https://ui.byronwade.com) | 200 |
+| Ciel | `https://ciel.byronwade.com` | 404, Vercel `DEPLOYMENT_NOT_FOUND`, confirmed by a second GET |
+| Dits | [dits.byronwade.com](https://dits.byronwade.com) | 200 |
+| Fakebase | [fakebase.byronwade.com](https://fakebase.byronwade.com) | 200 |
+| Goodmarks | [goodmarks.io](https://goodmarks.io) | 200 |
+| Impact Marine Group | [impactmarinegroup.com](https://impactmarinegroup.com) | 403, bot challenge; retained, not classified as a dead deployment |
+| Memoria | [memoria.byronwade.com](https://memoria.byronwade.com) | 200 |
+| Mushroom Cultivation Supplier | [zugz.byronwade.com](https://zugz.byronwade.com) | 200 |
+| ReactPress | [reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin) | 200 |
+| Rebuzzle | [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) | 200 |
+| SignalRoute | [getsignalroute.com](https://getsignalroute.com) | 200 |
+| Stream | [stream.byronwade.com](https://stream.byronwade.com) | 200 |
+| Thorbis Design | [design.thorbis.com](https://design.thorbis.com) | 200 |
+| Thorbis | [thorbis.com](https://thorbis.com) | 200 |
+| Wade's Plumbing and Septic | [wadesplumbingandseptic.com](https://wadesplumbingandseptic.com) | 200 after redirect to `www` |
+| Wormhole | [wormhole.byronwade.com](https://wormhole.byronwade.com) | 200 |
+
+Ciel's [public repository](https://github.com/byronwade/ciel.byronwade.com)
+returned 200. Its repository metadata lists `https://cielbyronwadecom.vercel.app`
+as the homepage, but that address also returned 404 with `DEPLOYMENT_NOT_FOUND`.
+The README at [`9493ede`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/README.md)
+identifies the project as a frontend prototype with mock data and stubbed auth.
+Only the dead demo reference was changed: the optional front-matter `url` is
+removed and the closing invitation now links to the source with a dated
+availability note. This reuses the project page's existing Source action and
+omits its Visit action and screenshot preview. No project route, date,
+classification, layout, or feature claim was changed.
+
+Impact Marine's challenge was not treated as evidence of a dead site. Its
+[public page](https://www.impactmarinegroup.com/), also checked through a separate
+web reader, still presents the dealership. No bypass was attempted and its link
+was retained.
+
+## Fakebase API and export claims, October 21, 2026
+
+`content/projects/fakebase.md` was added in `801a940` (June 2, 2026,
+23:53:25 UTC), with a front-matter date of May 30. The old source URL,
+`byronwade/fakebase`, returns 404; the public repository is
+[byronwade/fakebase.byronwade.com](https://github.com/byronwade/fakebase.byronwade.com).
+Its available main history begins with
+[`758e902`](https://github.com/byronwade/fakebase.byronwade.com/commit/758e902b3c3bc246efc1a6d857fcf389b0b388bf)
+(June 3, 00:08:39 UTC), after the write-up was added. The API query for commits
+before the write-up returned none. This review therefore corroborates later public
+implementation, not the state on the article's original date.
+
+Implementation was inspected at latest main
+[`2f60fe6`](https://github.com/byronwade/fakebase.byronwade.com/commit/2f60fe695ca0cac03e18f954a231ca446fb3479c)
+(June 3, 2026, 04:04:25 UTC). Source files were read without installing or running
+Fakebase. No live Supabase migration, performance comparison, deployment parity,
+package publication or passing upstream test run was established.
+
+| Claim | Pinned source and correction |
+| --- | --- |
+| MIT, free and actively maintained flagship | The [license](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/LICENSE) supports MIT. Ongoing maintenance and commercial-grade operation are not established; copy now states why Byron made it available. Archived remains this site's editorial grouping, not GitHub's repository flag. |
+| Complete Supabase-compatible client including `rpc` | The [client interface and factory](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/create-client.ts) have no `rpc` method; the URL and key are ignored in favor of a required kernel. The [kernel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/core/src/kernel.ts) invokes a local JavaScript function registry. Copy says Supabase-shaped, with partial compatibility. |
+| Everything runs in memory; auth and storage reproduce production services | The [memory factory](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-memory/src/memory-adapter.ts) wires local auth and filesystem storage. The [auth service](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/auth/src/local-auth.ts) uses a development password representation, local OTP inbox and local identifiers for sessions. The [storage service](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/storage/src/local-storage.ts) stores bytes on disk and token records in memory. Copy distinguishes these from hosted auth and storage. |
+| Realtime broadcast, change streams and presence all work through the client | The [client channel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/realtime-client.ts) uses kernel mutation events and invokes same-object broadcast listeners. It stores presence callbacks but has no track/untrack/presenceState or presence dispatch. The [separate realtime channel](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/realtime/src/channel.ts) contains richer behavior but is not the channel returned by createClient. The article names that boundary. |
+| Complete export path to real Supabase | [Migration export](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/migrate.ts) copies existing SQL files; local apply loads schema IR and updates a ledger rather than replaying arbitrary SQL. [Seed export](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/seed.ts) uses kernel.snapshot, which is empty when an adapter lacks exportData; PGLite lacks it. [Type generation](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/types.ts) is separate and writes example profiles types without a loaded schema. Copy describes inputs requiring real-stack validation, not an automatic migration. |
+| Unsupported features always throw CapabilityError; no silent faking | Unsupported [auth methods](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/client/src/auth-client.ts) return the error in a result. [Registry assertions](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/core/src/capability.ts) throw. The [CLI runtime](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/runtime.ts) can fall back to memory when SQLite/PGLite construction fails. The universal guarantee is removed; vector search and PITR remain outside the implemented production-service scope. |
+| AI init generates project schema scaffolding | [The command](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/ai.ts) writes five static instruction/reference templates, including a hard-coded profiles schema summary. It does not call the [schema-aware generator](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/ai/src/rules-generator.ts). Copy says starter templates. |
+| PGLite provides unqualified real Postgres semantics | The [adapter](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-pglite/src/pglite-adapter.ts) really uses PGlite, but generated tables omit foreign keys, defaults and complex filters use JavaScript, and the shared JS policy engine replaces Postgres roles. Copy keeps the real engine and states its local limits. [SQLite](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-sqlite/src/sqlite-adapter.ts) uses better-sqlite3; [JSON](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/adapter-json/src/json-adapter.ts) persists table data. Adapter durability does not imply persisted auth/session/storage metadata. |
+| Current Turborepo, eighteen packages, separate apps and CI release practice | The [initial manifest](https://github.com/byronwade/fakebase.byronwade.com/blob/758e902b3c3bc246efc1a6d857fcf389b0b388bf/package.json) and initial workflows describe that architecture. On reviewed main, the [root manifest](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/package.json) is the Next site, workspace membership is packages/* (19 package manifests), and turbo configuration, apps/ and workflow files are absent. Vitest and Playwright test sources remain. Copy qualifies historical workflow configuration and removes the package count. |
+| verify supabase establishes production compatibility | The [command](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/cli/src/commands/verify.ts) uses its own memory fixture, not the user's selected adapter or exported schema. Its [default suite](https://github.com/byronwade/fakebase.byronwade.com/blob/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/test-utils/src/compat-runner.ts) has twelve database-only scenarios. Missing real Supabase yields PARTIAL; real-side exceptions or matching top-level shapes can yield CLOSE. Only UNSUPPORTED/ERROR fail the command. It does not certify auth, storage, realtime or exports; copy states the limitation. |
+
+The [separate server package](https://github.com/byronwade/fakebase.byronwade.com/tree/2f60fe695ca0cac03e18f954a231ca446fb3479c/packages/server)
+adds HTTP and WebSocket endpoints for real Supabase clients. Its interoperability
+test files support an implemented local server path, not a claim that those tests
+passed or that it reproduces the hosted service. The article no longer calls all
+usage entirely in-process.
+
+All five public branch heads were compared with pinned main on October 21:
+`restore-library` (`0ebc5f8`) is 0 ahead / 21 behind;
+`changeset-release/main` (`b13803d`) is 1 ahead / 25 behind, changing release
+metadata only; the dependency branches (`f305cd1`, `95aab2b`) are each 1 ahead /
+0 behind and change manifests/lockfile only. Main is `2f60fe6`. These comparisons
+do not show later unmerged functionality. No private, deleted or unpublished
+history was available, so earlier capability and maintenance are not inferred.
+
+Title, published route, front-matter keys/date, category, archived grouping and
+section headings are retained. The redundant leading Markdown title no longer
+implies an unmeasured speed advantage. The excerpt follows the corrected body and flows
+through the existing metadata/search owners. No project code, dependencies,
+production environment, accounts or services were changed.
