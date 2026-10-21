@@ -49,24 +49,24 @@ for (const kind of ["blog", "projects"]) {
 					await previous;
 					const response = await page.goto(url + path, { waitUntil: "networkidle0" });
 					assert.equal(response.status(), 200, path);
-					const visible = await page.evaluate(
-						(loadingMessages) => ({
+					const visible = await page.evaluate((loadingMessages) => {
+						const visibility = { checkOpacity: true, checkVisibilityCSS: true };
+						return {
 							title: [...document.querySelectorAll("main h1")]
-								.filter((heading) => heading.checkVisibility())
+								.filter((heading) => heading.checkVisibility(visibility))
 								.map((heading) => heading.textContent),
 							paragraphs: [...document.querySelectorAll("main article p")].filter((paragraph) =>
-								paragraph.checkVisibility()
+								paragraph.checkVisibility(visibility)
 							).length,
 							// Preview widgets load independently; the reading surface must be complete.
 							loading: [...document.querySelectorAll('main [role="status"]')].some((status) =>
 								loadingMessages.includes(status.textContent.trim())
 							),
 							links: [...document.querySelectorAll("main a[href]")]
-								.filter((link) => link.checkVisibility())
+								.filter((link) => link.checkVisibility(visibility))
 								.map((link) => link.getAttribute("href")),
-						}),
-						CONTENT_LOADING
-					);
+						};
+					}, CONTENT_LOADING);
 					assert.equal(visible.title.length, 1, `${path} exposes one title without scripts`);
 					assert.ok(visible.title[0].trim(), `${path} has a descriptive title`);
 					if (path === `/${kind}`) {
