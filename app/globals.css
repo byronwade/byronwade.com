@@ -664,7 +664,8 @@
   :root {
     --site-header-width: min(var(--container-2xl), 100% - 2rem);
   }
-  @media (min-width: 640px) {
+  /* Tailwind's sm breakpoint, in rem so it tracks the reader's default text size too. */
+  @media (min-width: 40rem) {
     :root {
       --site-header-width: min(var(--container-2xl), 100% - 2.5rem);
     }
