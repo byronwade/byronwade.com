@@ -53,10 +53,10 @@ incomplete axe checks remain visible and require human judgment.
 | Surface | Profile | Dominant object and organizing move |
 | --- | --- | --- |
 | Home | Showcase | Claim followed by selected proof and a conversation action |
-| Projects / detail | Evidence | Ranked work; a case study with working preview and outcomes |
-| Blog / post | Evidence | Chronology; a readable article with related writing |
+| Projects / detail | Showcase / Evidence | Ranked work; a case study with working preview and outcomes |
+| Blog / post | Showcase / Evidence | Chronology; a readable article with related writing |
 | Resume | Evidence | A printable record with supporting links |
-| Portfolio | Evidence | A repository catalogue with refresh and bounded recovery |
+| Portfolio | Showcase | A repository catalogue with refresh and bounded recovery |
 | Contact | Guided | One form and a persistent outcome |
 | Search | Guided | Query followed by grouped results or a clear empty result |
 | Privacy / terms | Evidence | A restrained reading column |
@@ -67,14 +67,16 @@ identity on narrow rows. Main-content standalone actions and form controls are a
 44px; prose links keep natural line boxes. Keyboard focus uses existing rings
 and outlines. Native controls retain touch and keyboard behavior. Themes reuse
 the existing body, field, secondary and border roles.
-The unchanged shared shell retains compact tablet/desktop targets (R05);
-navigation is reserved for the separate lane. The legacy verifier's desktop
-minimum is 24px, so its pass must not be read as a 44px shell-target pass.
+Navigation remains owned by the shared header. R05 records its historical
+compact targets; the current header's rendered tests require 44px targets.
+The legacy verifier's desktop minimum is 24px, so its pass alone does not
+establish the current header contract.
 
-`verify-design-polish-states.mjs after` exercises 18 controlled states at all
-six width/theme combinations: portfolio empty, error, populated, partial, failed refresh,
+`verify-design-polish-states.mjs after` exercises 21 controlled states at all
+six width/theme combinations: portfolio empty, error, populated, partial, unrelated-provider failure, failed refresh,
 degraded empty refresh, loading and timeout; contact invalid, pending and failed; preview loading,
-loaded, keyboard resize, fullscreen and error; and the open homepage contact
+loaded, mobile preset, keyboard resize, fullscreen and error; keyboard focus on a
+case-study contents link clearing the header; and the open homepage contact
 form and copy confirmation with a distinct, 44px control and stable label/width.
 Clipboard delivery is stubbed; no contact address is written to the OS clipboard.
 Fixtures stay in the browser.
@@ -96,7 +98,10 @@ The motion gate rejects decorative motion for frequent reading, hovering and
 resizing. Frame size follows input immediately. Existing color transitions and
 progress glyphs communicate state without changing labels. Global reduced-motion
 tokens supply the snapped path. No animation library or new motion scale is
-introduced; the existing verifier provides the separate capsule slow-motion check.
+introduced; the existing verifier provides a separate header-popover interruption check.
+The current header has no entrance animation. Its verifier records the actual
+panel durations and interruption/focus behavior rather than overriding the
+retired capsule's motion token or claiming slow-motion evidence.
 
 ## Checklist applicability
 
@@ -119,7 +124,7 @@ personal site has no such workflows. The shop is explicitly excluded.
 Existing adopted-port differences remain governed by DESIGN.md and
 docs/THORBIS-DESIGN-PORT.md: Next.js/Vercel instead of Thorbis's TanStack/Cloudflare
 infrastructure; Phosphor duotone defaults; the resume signature identity asset;
-light default; the existing capsule shell. Morphicons would add a runtime
+light default; the existing anchored-popover header. Morphicons would add a runtime
 dependency and a motion rewrite, so stable words and the current Phosphor/CSS
 state feedback remain. These are documented adaptations, not claims of literal
 upstream identity.
@@ -135,3 +140,10 @@ improvement is claimed without a before/after measurement.
 
 Findings and final gate results are recorded alongside this evidence and in the
 PR. RESULT.md is a local, uncommitted handoff.
+
+For a fresh verification without replacing this historical evidence, set
+`DESIGN_EVIDENCE_DIR` to an absolute output folder before running
+`capture-design-polish.mjs after` and `verify-design-polish-states.mjs after`.
+Both retain the phase and states subfolders. `THORBIS_EVIDENCE_DIR` similarly
+redirects `verify-thorbis-browser.mjs` and `perf-budget.mjs` output. Scheduler
+jobs use their own C: job folder for these generated files.
