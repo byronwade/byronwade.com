@@ -61,7 +61,8 @@ function killTree(child, context, signal) {
 					executable: child.spawnfile,
 					exitCode: child.exitCode,
 					signalCode: child.signalCode,
-					commandCode: error?.code ?? 0,
+					// A timed-out or signalled command has no exit code; never report it as 0.
+					commandCode: error ? error.code : 0,
 					commandSignal: error?.signal ?? null,
 					stdout,
 					stderr,
@@ -100,8 +101,16 @@ export async function closeBrowser(browser, context) {
 		const closed = await settlesWithin(Promise.all([closing, exited]), 10_000);
 		try {
 			if (child && isRunning(child)) {
+				const forced = killTree(child, context, controller.signal);
+				// Under load taskkill can outlast the deadline after the exact launched
+				// child has already exited cleanly. Exit code 0 means the browser shut
+				// itself down (a forced kill exits 1), so it proves shutdown without the
+				// command's result; any other exit still waits for the tree kill.
 				const stopped = await settlesWithin(
-					Promise.all([killTree(child, context, controller.signal), exited]),
+					Promise.race([
+						Promise.all([forced, exited]),
+						exited.then(() => (child.exitCode === 0 ? undefined : forced)),
+					]),
 					15_000
 				);
 				assert.ok(stopped, `Owned browser process ${child.pid} did not exit after forced cleanup`);

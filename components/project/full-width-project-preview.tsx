@@ -48,6 +48,7 @@ const FULLSCREEN_PADDING_Y = 132;
 
 interface PreviewToolbarProps {
 	href: string;
+	interactive: boolean;
 	isFullscreen: boolean;
 	manualWidth: number | null;
 	preset: ViewportPreset;
@@ -62,6 +63,7 @@ interface PreviewToolbarProps {
 function PreviewToolbar({
 	url,
 	href,
+	interactive,
 	isFullscreen,
 	preset,
 	setPreset,
@@ -81,7 +83,7 @@ function PreviewToolbar({
 			</div>
 
 			{/* Device presets */}
-			{!isFullscreen && (
+			{interactive && !isFullscreen && (
 				<div className="@xl/preview:order-none order-last hidden @xl/preview:w-auto w-full items-center justify-center gap-1 md:flex">
 					<span className="sr-only">Preview viewport</span>
 					{(Object.keys(VIEWPORT_PRESETS) as ViewportPreset[]).map((key) => {
@@ -113,7 +115,7 @@ function PreviewToolbar({
 
 			{/* Actions */}
 			<div className="flex shrink-0 items-center gap-3">
-				{manualWidth !== null && !isFullscreen && (
+				{interactive && manualWidth !== null && !isFullscreen && (
 					<Button
 						size="lg"
 						variant="ghost"
@@ -127,22 +129,24 @@ function PreviewToolbar({
 					</Button>
 				)}
 
-				<Button
-					size="lg"
-					variant="ghost"
-					ref={triggerRef}
-					type="button"
-					onClick={toggleFullscreen}
-					aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-					title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
-					className="size-11 rounded-full p-0 text-muted-foreground"
-				>
-					{isFullscreen ? (
-						<Minimize2 className="size-3.5" aria-hidden="true" />
-					) : (
-						<Maximize2 className="size-3.5" aria-hidden="true" />
-					)}
-				</Button>
+				{interactive && (
+					<Button
+						size="lg"
+						variant="ghost"
+						ref={triggerRef}
+						type="button"
+						onClick={toggleFullscreen}
+						aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+						title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+						className="size-11 rounded-full p-0 text-muted-foreground"
+					>
+						{isFullscreen ? (
+							<Minimize2 className="size-3.5" aria-hidden="true" />
+						) : (
+							<Maximize2 className="size-3.5" aria-hidden="true" />
+						)}
+					</Button>
+				)}
 
 				<Button
 					size="lg"
@@ -158,25 +162,149 @@ function PreviewToolbar({
 	);
 }
 
+interface PreviewFallbackProps {
+	href: string;
+	onRetry?: () => void;
+	url: string;
+}
+
+// A retry is available only after hydration and a failed capture. Before hydration the
+// scripts notice sits in <noscript>, so visitors with JavaScript never see it flash.
+function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
+	const icon = <ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />;
+	const noticeClass = "max-w-xs text-muted-foreground text-xs";
+	return (
+		<div className="flex min-w-0 flex-col items-center justify-center gap-2 p-4 text-center">
+			{onRetry ? icon : <noscript>{icon}</noscript>}
+			<div className="space-y-1">
+				<p className="font-medium text-foreground text-sm">
+					{onRetry ? "Preview unavailable" : "Screenshot preview"}
+				</p>
+				{onRetry ? (
+					<p className={noticeClass}>We couldn’t capture this site right now.</p>
+				) : (
+					<noscript>
+						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>
+					</noscript>
+				)}
+			</div>
+			<div className="flex flex-wrap items-center justify-center gap-3">
+				{onRetry && (
+					<Button onClick={onRetry} size="lg" variant="outline">
+						<RefreshCw className="size-3" aria-hidden="true" />
+						Retry
+					</Button>
+				)}
+				{/* Base UI defaults to button semantics even when rendering an anchor. */}
+				<Button
+					role="link"
+					size="lg"
+					render={
+						<a
+							href={href}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label={`Open site: ${url} (opens in a new tab)`}
+						/>
+					}
+				>
+					Open site
+					<ExternalLink className="size-3" aria-hidden="true" />
+				</Button>
+			</div>
+		</div>
+	);
+}
+
+interface PreviewViewportProps extends FullWidthProjectPreviewProps {
+	frameHeight: number;
+	frameWidth: number;
+	isFullscreen: boolean;
+	mounted: boolean;
+	screenshot: ReturnType<typeof useScreenshot>;
+}
+
+function PreviewViewport({
+	href,
+	title,
+	url,
+	frameHeight,
+	frameWidth,
+	isFullscreen,
+	mounted,
+	screenshot,
+}: PreviewViewportProps) {
+	const { src, status, onLoad: onImageLoad, onError: onImageError, retry } = screenshot;
+	const showFallback = !mounted || status === "error";
+	const retryCapture = mounted ? retry : undefined;
+	// Preserve the capture area while allowing recovery controls and resized text to fit.
+	const height = showFallback ? "auto" : `${Math.round(frameHeight)}px`;
+
+	return (
+		<div
+			className={cn(
+				"relative flex w-full justify-center overflow-hidden bg-muted/30",
+				isFullscreen ? "flex-1 items-center" : "items-start"
+			)}
+			style={isFullscreen ? undefined : { height, minHeight: Math.round(frameHeight) }}
+			aria-busy={mounted && status === "loading"}
+		>
+			{showFallback ? (
+				<PreviewFallback href={href} onRetry={retryCapture} url={url} />
+			) : (
+				<div
+					className="relative"
+					style={
+						isFullscreen
+							? { width: `${Math.round(frameWidth)}px`, height: `${Math.round(frameHeight)}px` }
+							: { width: "100%", height: "100%" }
+					}
+				>
+					{status === "loading" && (
+						<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
+							<div className="absolute inset-0 bg-muted/40" />
+							<div className="relative size-7">
+								<div className="absolute inset-0 rounded-full border-2 border-border" />
+								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-foreground" />
+							</div>
+							<p className="relative font-medium text-muted-foreground text-xs" role="status">
+								Loading preview…
+							</p>
+						</div>
+					)}
+					{src && (
+						<Image
+							key={src}
+							src={src}
+							alt={`Screenshot of ${title}`}
+							fill
+							className="object-cover object-top"
+							sizes="(max-width: 768px) 100vw, 1280px"
+							onLoad={onImageLoad}
+							onError={onImageError}
+							priority
+							unoptimized
+						/>
+					)}
+				</div>
+			)}
+		</div>
+	);
+}
+
 export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPreviewProps) {
 	const [preset, setPreset] = useState<ViewportPreset>("desktop");
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [mounted, setMounted] = useState(false);
 
-	const wrapperRef = useRef<HTMLDivElement>(null);
+	const wrapperRef = useRef<HTMLElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const dialogRef = useRef<HTMLDivElement>(null);
 
 	const capture = VIEWPORT_PRESETS[preset];
 
-	const {
-		src,
-		status,
-		naturalSize,
-		onLoad: onImageLoad,
-		onError: onImageError,
-		retry,
-	} = useScreenshot(href, capture.width, capture.height);
+	const screenshot = useScreenshot(href, capture.width, capture.height);
+	const { status, naturalSize } = screenshot;
 
 	const {
 		width: manualWidth,
@@ -204,6 +332,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		fullscreenPaddingY: FULLSCREEN_PADDING_Y,
 	});
 
+	// Keep the server-rendered site link usable before screenshot effects can run.
 	useEffect(() => {
 		setMounted(true);
 	}, []);
@@ -264,6 +393,7 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 			>
 				<PreviewToolbar
 					href={href}
+					interactive={mounted}
 					isFullscreen={isFullscreen}
 					manualWidth={manualWidth}
 					preset={preset}
@@ -274,79 +404,23 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					url={url}
 				/>
 
-				{/* Preview viewport */}
-				<div
-					className={cn(
-						"relative flex w-full justify-center overflow-hidden bg-muted/30",
-						isFullscreen ? "flex-1 items-center" : "items-start"
-					)}
-					style={isFullscreen ? undefined : { height: `${Math.round(frameHeight)}px` }}
-					aria-busy={status === "loading"}
-				>
-					{status === "error" ? (
-						<div className="flex flex-col items-center justify-center gap-2 p-4 text-center">
-							<ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />
-							<div className="space-y-1">
-								<p className="font-medium text-foreground text-sm">Preview unavailable</p>
-								<p className="max-w-xs text-muted-foreground text-xs">
-									We couldn’t capture this site right now.
-								</p>
-							</div>
-							<div className="flex items-center gap-3">
-								<Button size="lg" variant="outline" type="button" onClick={retry}>
-									<RefreshCw className="size-3" aria-hidden="true" />
-									Retry
-								</Button>
-								<Button
-									size="lg"
-									render={<a href={href} target="_blank" rel="noopener noreferrer" />}
-								>
-									Open site
-									<ExternalLink className="size-3" aria-hidden="true" />
-								</Button>
-							</div>
-						</div>
-					) : (
-						<div
-							className="relative"
-							style={
-								isFullscreen
-									? { width: `${Math.round(frameWidth)}px`, height: `${Math.round(frameHeight)}px` }
-									: { width: "100%", height: "100%" }
-							}
-						>
-							{status === "loading" && (
-								<div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background">
-									<div className="absolute inset-0 bg-muted/40" />
-									<div className="relative size-7">
-										<div className="absolute inset-0 rounded-full border-2 border-border" />
-										<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-foreground" />
-									</div>
-									<p className="relative font-medium text-muted-foreground text-xs" role="status">
-										Loading preview…
-									</p>
-								</div>
-							)}
-							{src && (
-								<Image
-									key={src}
-									src={src}
-									alt={`Screenshot of ${title}`}
-									fill
-									className="object-cover object-top"
-									sizes="(max-width: 768px) 100vw, 1280px"
-									onLoad={onImageLoad}
-									onError={onImageError}
-									priority
-									unoptimized
-								/>
-							)}
-						</div>
-					)}
-				</div>
+				<PreviewViewport
+					href={href}
+					title={title}
+					url={url}
+					frameHeight={frameHeight}
+					frameWidth={frameWidth}
+					isFullscreen={isFullscreen}
+					mounted={mounted}
+					screenshot={screenshot}
+				/>
 
 				{/* Bottom status bar */}
-				<div className="flex h-7 shrink-0 items-center justify-between bg-secondary px-3">
+				<div
+					className={cn("flex h-7 shrink-0 items-center justify-between bg-secondary px-3", {
+						invisible: !mounted,
+					})}
+				>
 					<div className="flex items-center gap-2 font-mono text-copy-12 text-muted-foreground">
 						<span className="text-foreground">
 							{capture.width}×{capture.height}
@@ -370,7 +444,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 			</div>
 
 			{/* Resize handles (pointer + keyboard) */}
-			{!isFullscreen &&
+			{mounted &&
+				!isFullscreen &&
 				status !== "error" &&
 				(["left", "right"] as const).map((side) => (
 					<button
@@ -415,8 +490,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 	);
 
 	return (
-		<div ref={wrapperRef} className="w-full">
-			{isFullscreen && mounted && typeof document !== "undefined"
+		<section ref={wrapperRef} className="w-full" aria-label={`${title} site preview`}>
+			{isFullscreen
 				? createPortal(
 						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog, role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
 						<div
@@ -444,6 +519,6 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 				: null}
 
 			{!isFullscreen && <div className="flex w-full justify-center">{previewContent}</div>}
-		</div>
+		</section>
 	);
 }
