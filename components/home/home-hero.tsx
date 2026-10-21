@@ -51,7 +51,7 @@ function ThorbisSpecimen() {
 						className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 odd:bg-muted"
 						key={stage}
 					>
-						<span className="font-mono text-copy-12 text-muted-foreground tabular-nums">
+						<span className="text-copy-12 text-muted-foreground tabular-nums">
 							{String(index + 1).padStart(2, "0")}
 						</span>
 						<span className="flex min-w-0 flex-col">

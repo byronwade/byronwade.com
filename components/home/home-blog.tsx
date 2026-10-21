@@ -6,7 +6,7 @@ import { safeFormatDate } from "@/lib/markdown-utils";
 
 /**
  * Thorbis chronological rows; dates and excerpts remain server-rendered.
- * The date leads in a mono column, as on /blog, so the two indexes read as
+ * The date leads in a tabular column, as on /blog, so the two indexes read as
  * one pattern. Reading time sits in that column instead of a badge rack.
  */
 async function BlogList() {
@@ -27,7 +27,7 @@ async function BlogList() {
 				<IndexRow key={post.slug}>
 					<Link prefetch={false} className={indexRowLinkClass} href={`/blog/${post.slug}`}>
 						<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
-							<p className="flex gap-3 font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
+							<p className="flex gap-3 text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
 								{post.date && (
 									<time dateTime={post.date}>{safeFormatDate(post.date, "MMM d, yyyy")}</time>
 								)}
