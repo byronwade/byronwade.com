@@ -157,7 +157,11 @@ On main at `4b1202f` (2026-10-21, same runner, clean tree), the indexes pass
 every limit: the homepage in three samples at LCP 2916 to 2940 ms and TBT 112 to
 127 ms, `/blog` at 2961 ms and `/projects` at 2948 ms, all with CLS 0. That is
 1 to 3 percent under the LCP limit, so it is not regression margin, and no
-single change is credited for the movement since `84d9b5c`. Detail pages still
+single change is credited for the movement since `84d9b5c`. After merging main
+through `5cef5db` (source `e098e9c`), the homepage passed two of three samples
+(LCP 2918 and 2943 ms) and failed one at 3045 ms with identical bytes, so it
+sits on the limit rather than under it; `/blog` (2772 ms) and `/projects`
+(2940 ms) passed. Detail pages still
 exceed the LCP limit, which remains a recorded budget exception:
 `/projects/dits` 3293 to 3470 ms, `/projects/thorbis` 3226 to 3309 ms (both
 before and after the preview icon change above, which did not move LCP beyond
