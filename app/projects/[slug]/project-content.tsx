@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { Markdown, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
 import { extractToc } from "@/lib/markdown";
 import { safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";

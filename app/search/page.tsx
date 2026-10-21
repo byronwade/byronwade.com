@@ -107,11 +107,11 @@ export default async function SearchPage({
 				) : (
 					<p className="text-copy-14 text-muted-foreground">
 						Type a name, then search. You can also{" "}
-						<Link className="link-underline" href="/projects">
+						<Link className="link-underline" href="/projects" prefetch={false}>
 							browse projects
 						</Link>{" "}
 						or{" "}
-						<Link className="link-underline" href="/blog">
+						<Link className="link-underline" href="/blog" prefetch={false}>
 							read the writing
 						</Link>
 						.
@@ -126,7 +126,7 @@ function NoMatches() {
 	return (
 		<p className="text-copy-14 text-muted-foreground">
 			No matches. Try a shorter name, or{" "}
-			<Link className="link-underline" href="/projects">
+			<Link className="link-underline" href="/projects" prefetch={false}>
 				browse projects
 			</Link>
 			.

@@ -75,10 +75,8 @@ export function ProjectToc({ items }: ProjectTocProps) {
 			return;
 		}
 		setActiveId(id);
-		// CSS `scroll-behavior` overrides do not reach scrollIntoView, so the
-		// reduced-motion preference is honoured here explicitly.
-		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-		el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		el.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" });
 		// Update the hash without jumping (smooth scroll handles position).
 		if (typeof history !== "undefined") {
 			history.replaceState(null, "", `#${id}`);

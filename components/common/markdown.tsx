@@ -95,9 +95,12 @@ export function Markdown({ content, className }: MarkdownProps) {
 						);
 					},
 					pre: ({ children, ...props }) => (
+						// https://www.w3.org/WAI/standards-guidelines/act/rules/0ssw9k/
 						<pre
 							className="my-2 overflow-x-auto rounded-lg border border-border bg-muted p-4 text-copy-13"
 							{...props}
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: Native scroll containers require keyboard focus.
+							tabIndex={0}
 						>
 							{children}
 						</pre>

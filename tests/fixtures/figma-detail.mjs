@@ -10,7 +10,7 @@ registerHooks({
 		if (specifier === "@/lib/portfolio-data") {
 			return { url: "fixture:figma-detail", shortCircuit: true };
 		}
-		if (["next/link", "next/image", "next/navigation"].includes(specifier)) {
+		if (["next/dynamic", "next/link", "next/image", "next/navigation"].includes(specifier)) {
 			return nextResolve(`${specifier}.js`, context);
 		}
 		if (specifier.startsWith("@/")) {

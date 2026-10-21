@@ -1,0 +1,63 @@
+{
+  "checkedAt": "2026-10-16T14:51:40.043Z",
+  "commit": "11d12a05dfa246099bdc5c8fbc7aefd08c92188a",
+  "buildId": "PCKv99DO4b5bnuKfwOFTE",
+  "mode": "production motion at quarter playback speed",
+  "cases": [
+    {
+      "width": 375,
+      "theme": "dark",
+      "frames": [
+        {
+          "label": "opening",
+          "x": 82,
+          "y": 22,
+          "width": 0,
+          "height": 389.796875
+        },
+        { "label": "expanded", "x": 82, "y": 22, "width": 0, "height": 571 }
+      ],
+      "anchors": [
+        { "name": "Search (⌘K)", "before": 207, "samples": [207, 207, 207] },
+        {
+          "name": "Support open source",
+          "before": 299,
+          "samples": [299, 299, 299]
+        }
+      ],
+      "interruptedAndReturnedFocus": true,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "frames": [
+        {
+          "label": "opening",
+          "x": 294.171875,
+          "y": 22,
+          "width": 0,
+          "height": 418.734375
+        },
+        {
+          "label": "expanded",
+          "x": 294.171875,
+          "y": 22,
+          "width": 0,
+          "height": 571
+        }
+      ],
+      "anchors": [
+        { "name": "Search (⌘K)", "before": 928, "samples": [928, 928, 928] },
+        {
+          "name": "Support open source",
+          "before": 1096,
+          "samples": [1096, 1096, 1096]
+        }
+      ],
+      "interruptedAndReturnedFocus": true,
+      "errors": []
+    }
+  ],
+  "chrome": "Chrome/155.0.8059.80"
+}

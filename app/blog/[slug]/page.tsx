@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Link } from "@/components/ui/link";
 import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import { ArrowLeft } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";

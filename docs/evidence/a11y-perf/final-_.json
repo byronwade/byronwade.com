@@ -1,0 +1,388 @@
+{
+  "checkedAt": "2026-10-21T16:33:06.200Z",
+  "commit": "bfab79e75ff84eb52d31c2e759db101f8cdecfa2",
+  "phase": "final",
+  "harnessHash": "25f32e7c4ccdfac43042347c5d6aaf03a3fde39a3242946750dcbdb65f0fe6af",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "email": "Local Resend HTTP fixture; no message is delivered",
+  "buildId": "p4K4MZoYvKF6yTQx_9hyG",
+  "chrome": "Chrome/155.0.8059.85",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    {
+      "template": "/blog/[slug]",
+      "routes": [
+        "/blog/building-thorbis",
+        "/blog/design-systems-that-earn-their-keep",
+        "/blog/lessons-building-service-software",
+        "/blog/nexstar-win-invoice-lose-customer",
+        "/blog/scaling-plumbing-business",
+        "/blog/what-service-businesses-actually-need"
+      ]
+    },
+    {
+      "template": "/projects/[slug]",
+      "routes": [
+        "/projects/byronwade-ui",
+        "/projects/ciel",
+        "/projects/content-management-system",
+        "/projects/dits",
+        "/projects/drone-pi",
+        "/projects/fakebase",
+        "/projects/goodmarks",
+        "/projects/hollowveil",
+        "/projects/impact-marine-group",
+        "/projects/memoria",
+        "/projects/movies",
+        "/projects/mushroom-cultivation-supplier",
+        "/projects/odb2",
+        "/projects/plumbing-code-playbook",
+        "/projects/reactpress",
+        "/projects/realistic-face",
+        "/projects/rebuzzle",
+        "/projects/signalroute",
+        "/projects/stream",
+        "/projects/subfield",
+        "/projects/thorbis",
+        "/projects/thorbis-design",
+        "/projects/wades-plumbing-and-septic",
+        "/projects/wormhole"
+      ]
+    },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 29, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Navigate", "violations": [], "targetFailures": [] },
+        {
+          "name": "Navigate keyboard containment and close hit area",
+          "checked": 10,
+          "closeHit": true
+        },
+        {
+          "name": "Navigate rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "home-390-dark.png",
+      "keyboard": { "checked": 29, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Navigate", "violations": [], "targetFailures": [] },
+        {
+          "name": "Navigate keyboard containment and close hit area",
+          "checked": 10,
+          "closeHit": true
+        },
+        {
+          "name": "Navigate rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "home-1280-light.png",
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Inline contact open",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact focus return and draft",
+          "focusReturned": true,
+          "draftPreserved": true
+        },
+        {
+          "name": "Contact success with local transport",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Inline contact keeps one notification per send",
+          "repeatedToasts": 0
+        },
+        { "name": "Search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search keyboard containment and close hit area",
+          "checked": 44,
+          "closeHit": true
+        },
+        { "name": "Empty search", "violations": [], "targetFailures": [] },
+        {
+          "name": "Search rapid reopening, exit Tab and outside dismissal",
+          "passed": true
+        },
+        { "name": "Reduced motion theme", "activeMotion": 0 },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    }
+  ]
+}

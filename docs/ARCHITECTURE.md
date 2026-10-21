@@ -120,22 +120,26 @@ components/
   of the date utility module used by client components. Renderer-agreement
   regressions cover grammar edge cases and every authored blog/project file in
   `tests/markdown-headings.test.mjs`.
-- `/portfolio` keeps its eight-second client deadline active through response
-  headers and JSON consumption. A timeout ends loading or refreshing and shows
-  the existing retry/profile recovery; the profile action retains link semantics.
-  Repository empty/error states follow `githubFailed`, so an unavailable optional
-  profile does not relabel a healthy empty repository list as a repository outage.
-  Effect cleanup cancels quietly and blocks
-  stale state updates; settled requests clear their deadline. Native regressions
-  in `tests/portfolio-lifecycle.test.mjs` exercise the page's actual effect without
-  adding a test renderer or exposing the private hook as production API.
+- `/portfolio` renders its repository list on the server. A failed request shows
+  retry/profile recovery with link semantics; a successful empty profile has a
+  distinct empty state. Optional profile data cannot relabel healthy repositories
+  as a repository outage. `connection()` keeps failure HTML out of the Full Route
+  Cache, so retry can call the loader again. Successful data keeps its existing
+  one-hour cache. The page has no client request effect or stale state to
+  synchronize. Native regressions in `tests/portfolio-lifecycle.test.mjs` exercise
+  the actual page orchestration and row rendering with primitive stand-ins;
+  browser verification covers the real controls and keyboard behavior.
+  After a build, `tests/rendered/portfolio-retry.test.mjs` uses Next's real caches
+  and a loopback provider to verify failure, retry recovery and successful-data
+  reuse without replacing normal cached API data.
 - `lib/portfolio-data.ts`. Server-only GitHub / Dribbble / Figma APIs and caching;
   guarded against imports from client components. GitHub repository/profile and
   Dribbble REST fetches have a five-second abort deadline that remains active
-  while reading the JSON body. GitHub repository and profile failures reject to the portfolio
-  API's existing `Promise.allSettled` boundary, which retains healthy provider
-  data and sets `degraded` for either failure, plus `githubFailed` only for a
-  repository failure, without changing the JSON shape.
+  while reading the JSON body. GitHub repository and profile failures reject
+  instead of caching missing data. The page owns repository recovery; the API's
+  existing `Promise.allSettled` boundary retains healthy provider data and sets
+  `degraded` for either failure, plus `githubFailed` only for a repository failure,
+  without changing the JSON shape.
   A successful empty or filtered-only repository list remains a healthy result.
   The API stays dynamic rather than prerendering an unavailable response; failed
   or degraded responses use `Cache-Control: no-store` so later requests can recover.

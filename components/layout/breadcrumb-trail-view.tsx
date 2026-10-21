@@ -1,20 +1,36 @@
 "use client";
 
-import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as React from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { MoreHorizontal } from "@/lib/icons";
+import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
+import { BreadcrumbOverflowTrigger } from "./breadcrumb-overflow-trigger";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
+
+const BreadcrumbOverflow = dynamic(
+	() => import("./breadcrumb-overflow").then((module) => module.BreadcrumbOverflow),
+	{ ssr: false, loading: () => <BreadcrumbOverflowTrigger aria-busy="true" /> }
+);
+
+// A long trail collapses on load; its popover graph loads on the first open.
+// Loading it with the collapse put an eleventh script on every long-titled xl page.
+function CollapsedLevels({ crumbs }: { crumbs: Crumb[] }) {
+	const [requested, setRequested] = React.useState(false);
+	return requested ? (
+		<BreadcrumbOverflow crumbs={crumbs} />
+	) : (
+		<BreadcrumbOverflowTrigger
+			aria-expanded={false}
+			aria-haspopup="dialog"
+			onClick={() => setRequested(true)}
+		/>
+	);
+}
 
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
-/** Room reserved around the centered nav dock so the breadcrumb never crowds it. */
-const NAV_RESERVE = 420;
-const GAP = 12;
-
-/** Desktop breadcrumb within the shared header; long trails collapse to a popover. */
+/** Desktop breadcrumb beside the shared header; long trails collapse to a popover. */
 export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) {
 	const pathname = usePathname();
 	const crumbs = resolveTrail(pathname, labels);
@@ -22,10 +38,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 
 	const rootRef = React.useRef<HTMLOListElement>(null);
 	const twinRef = React.useRef<HTMLOListElement>(null);
-	const [{ collapsed, maxW }, setFit] = React.useState<{ collapsed: boolean; maxW: number }>({
-		collapsed: false,
-		maxW: Number.POSITIVE_INFINITY,
-	});
+	const [collapsed, setCollapsed] = React.useState(false);
 
 	useIsoLayoutEffect(() => {
 		const root = rootRef.current;
@@ -34,20 +47,14 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 			return;
 		}
 		const compute = () => {
-			const W = window.innerWidth;
-			const left = root.getBoundingClientRect().left;
-			const budget = Math.max(0, W / 2 - NAV_RESERVE / 2 - GAP - left);
-			const full = twin.scrollWidth;
-			setFit({ collapsed: full > budget && crumbs.length >= 3, maxW: budget });
+			// The nav's width cap owns the available space beside the header.
+			setCollapsed(twin.scrollWidth > root.clientWidth && crumbs.length >= 3);
 		};
 		compute();
 		const ro = new ResizeObserver(compute);
 		ro.observe(twin);
-		window.addEventListener("resize", compute);
-		return () => {
-			ro.disconnect();
-			window.removeEventListener("resize", compute);
-		};
+		ro.observe(root);
+		return () => ro.disconnect();
 	}, [trailKey, crumbs.length]);
 
 	if (crumbs.length <= 1) {
@@ -63,59 +70,33 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 	}
 
 	return (
-		// Only the wide header has room for the trail beside visible primary nav.
+		// The trail is fixed beside the centered header; its cap keeps it clear of
+		// the header's left edge at every xl width.
 		<nav
 			aria-label="Breadcrumb"
 			className="pointer-events-auto relative z-0 hidden min-h-13 max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-lg border border-border bg-card px-1.5 text-copy-13 shadow-(--header-shadow-panel) lg:flex"
 		>
 			{/* DESKTOP, full trail, collapsing to root / … / current. */}
-			<ol
-				ref={rootRef}
-				style={maxW === Number.POSITIVE_INFINITY ? undefined : { maxWidth: maxW }}
-				className="flex min-w-0 items-center"
-			>
+			<ol ref={rootRef} className="flex min-w-0 flex-1 items-center">
 				{collapsed ? (
 					<>
 						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
-							<Popover>
-								<PopoverTrigger
-									render={
-										<button
-											type="button"
-											aria-label="Show hidden breadcrumb levels"
-											className="flex size-11 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-										>
-											<MoreHorizontal className="size-4" />
-										</button>
-									}
-								/>
-								<PopoverContent
-									align="start"
-									sideOffset={8}
-									className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1.5 text-popover-foreground ring-0"
-								>
-									{middle.map((c) => (
-										<Link
-											key={c.href}
-											href={c.href}
-											className="flex min-h-11 items-center truncate rounded-lg px-2.5 text-body text-copy-13 transition-colors hover:bg-muted hover:text-foreground"
-										>
-											{c.label}
-										</Link>
-									))}
-								</PopoverContent>
-							</Popover>
+							<CollapsedLevels crumbs={middle} />
 						</li>
 						<Sep />
-						<CrumbLink crumb={last} current />
+						<CrumbLink crumb={last} current truncate />
 					</>
 				) : (
 					crumbs.map((c, i) => (
 						<React.Fragment key={c.href}>
 							{i > 0 && <Sep />}
-							<CrumbLink crumb={c} current={i === crumbs.length - 1} />
+							<CrumbLink
+								crumb={c}
+								current={i === crumbs.length - 1}
+								truncate={i === crumbs.length - 1}
+							/>
 						</React.Fragment>
 					))
 				)}
@@ -140,19 +121,27 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 	);
 }
 
-function CrumbLink({ crumb, current }: { crumb: Crumb; current?: boolean }) {
+function CrumbLink({
+	crumb,
+	current,
+	truncate,
+}: {
+	crumb: Crumb;
+	current?: boolean;
+	truncate?: boolean;
+}) {
 	return (
-		<li className={cn("flex items-center", current ? "min-w-0" : "shrink-0")}>
+		<li className={cn("flex items-center", truncate ? "min-w-0" : "shrink-0")}>
 			{/* Same pill target as the header's nav links: 44px, quiet until hovered. */}
 			<Link
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"inline-flex min-h-11 min-w-11 items-center justify-center truncate rounded-full px-2.5 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+					"inline-flex min-h-11 min-w-11 max-w-full items-center justify-center whitespace-nowrap rounded-full px-2.5 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
 					current ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
 				)}
 			>
-				<span className="truncate">{crumb.label}</span>
+				<span className={cn(truncate && "truncate")}>{crumb.label}</span>
 			</Link>
 		</li>
 	);

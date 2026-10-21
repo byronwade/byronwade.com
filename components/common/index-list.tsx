@@ -40,7 +40,7 @@ export function IndexRow({
  * extend past the text edge while the text stays on the page measure.
  */
 export const indexRowLinkClass =
-	"group/row -mx-3 flex flex-col gap-1.5 rounded-lg px-3 py-4 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2";
+	"group/row -mx-3 flex flex-col items-stretch gap-1.5 rounded-lg px-3 py-4 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2";
 
 /**
  * The colour transition a row's title and affordances share, so the whole row

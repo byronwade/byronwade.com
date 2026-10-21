@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { PostRow } from "@/components/blog/post-row";
 import { IndexList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Link } from "@/components/ui/link";
 import { getBlogPosts } from "@/lib/blog";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import {

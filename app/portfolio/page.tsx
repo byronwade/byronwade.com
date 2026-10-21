@@ -1,24 +1,21 @@
-"use client";
-
-import { format } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
-import { EmptyState, IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { connection } from "next/server";
+import { EmptyState } from "@/components/common/empty-state";
+import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common/index-list";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "@/lib/icons";
+import { getGitHubRepositories } from "@/lib/portfolio-data";
+import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { siteUrl } from "@/lib/site";
 import type { GitHubRepo } from "@/types/github";
 
 /**
  * Language dots, drawn from the taxonomy family rather than raw Tailwind hues.
  *
- * This was ten hardcoded palette colours (`bg-blue-500`, `bg-rose-600`, and so
- * on), which is exactly the page-local palette §5.1 forbids: none of them were
- * tokens, none had a dark-mode counterpart, and they were the most saturated
- * thing on the page. Language is a classification, so it reuses the same four
- * `--type-*` hues the project types use, assigned stably by name.
+ * Language is a classification, so it reuses the same four `--type-*` hues the
+ * project types use, assigned stably by name.
  */
 const LANGUAGE_TONES = [
 	"bg-type-product",
@@ -36,6 +33,10 @@ function languageTone(language: string): string {
 }
 
 const WORD_SEPARATORS = /[-_]/;
+const pushedAtFormat = new Intl.DateTimeFormat("en-US", {
+	month: "short",
+	year: "numeric",
+});
 
 const titleize = (name: string) =>
 	name
@@ -43,169 +44,78 @@ const titleize = (name: string) =>
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(" ");
 
-async function fetchPortfolioRepos(signal?: AbortSignal): Promise<{
-	repos: GitHubRepo[];
-	githubFailed: boolean;
-}> {
-	const response = await fetch("/api/portfolio", {
-		signal,
-		headers: { Accept: "application/json" },
-	});
-	if (!response.ok) {
-		throw new Error("Failed to fetch portfolio data");
-	}
-	const data = await response.json();
-	const filtered: GitHubRepo[] = (data.repos ?? []).filter(
-		(repo: GitHubRepo) => !repo.fork && repo.name !== "byronwade.com"
-	);
-	filtered.sort((a, b) => {
-		if (b.stargazers_count !== a.stargazers_count) {
-			return b.stargazers_count - a.stargazers_count;
-		}
-		return new Date(b.pushed_at ?? 0).getTime() - new Date(a.pushed_at ?? 0).getTime();
-	});
-	return {
-		repos: filtered,
-		githubFailed: Boolean(data.githubFailed),
-	};
-}
+const portfolioDescription =
+	"Open-source work and experiments, pulled live from GitHub and sorted by stars.";
 
-const REQUEST_TIMEOUT_MS = 8000;
+export const metadata = generateSEOMetadata({
+	title: "Portfolio",
+	description: portfolioDescription,
+	keywords: ["Portfolio", "Open Source", "GitHub", "Byron Wade"],
+	image: generateOGImageUrl({
+		title: "Portfolio",
+		description: portfolioDescription,
+		type: "website",
+	}),
+	type: "website",
+	canonical: `${siteUrl}/portfolio`,
+});
 
-interface PortfolioReposState {
-	error: boolean;
-	githubFailed: boolean;
-	loading: boolean;
-	refreshing: boolean;
-	reload: () => void;
-	repos: GitHubRepo[];
-}
-
-/**
- * Loads the repository list, keeping the request lifecycle, abort on unmount,
- * timeout, refresh-vs-initial-load, out of the rendering component.
- */
-function usePortfolioRepos(): PortfolioReposState {
-	const [repos, setRepos] = useState<GitHubRepo[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [refreshing, setRefreshing] = useState(false);
-	const [error, setError] = useState(false);
-	const [githubFailed, setGithubFailed] = useState(false);
-	const [reloadKey, setReloadKey] = useState(0);
-
-	useEffect(() => {
-		// A timeout must recover the mounted page; cleanup must stay silent.
-		let active = true;
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
-		if (reloadKey > 0) {
-			setRefreshing(true);
-		} else {
-			setLoading(true);
-		}
-		setError(false);
-
-		void (async () => {
-			try {
-				const result = await fetchPortfolioRepos(controller.signal);
-				if (!active) {
-					return;
-				}
-				if (!(result.githubFailed && result.repos.length === 0)) {
-					setRepos(result.repos);
-				}
-				// An empty list is only an error when the GitHub call failed; a
-				// genuinely empty profile is a valid, non-error state.
-				setGithubFailed(result.githubFailed);
-				setError(result.githubFailed && result.repos.length === 0);
-			} catch (err) {
-				if (!active) {
-					return;
-				}
-				console.error("Error loading portfolio data:", err);
-				setError(true);
-			} finally {
-				clearTimeout(timeoutId);
-				if (active) {
-					setLoading(false);
-					setRefreshing(false);
-				}
+/** The page's own sort: stars, then last push. The site repository is not a project. */
+function selectRepos(repos: GitHubRepo[]): GitHubRepo[] {
+	return repos
+		.filter((repo) => !(repo.fork || repo.name === "byronwade.com"))
+		.sort((a, b) => {
+			if (b.stargazers_count !== a.stargazers_count) {
+				return b.stargazers_count - a.stargazers_count;
 			}
-		})();
-
-		return () => {
-			active = false;
-			clearTimeout(timeoutId);
-			controller.abort();
-		};
-	}, [reloadKey]);
-
-	const reload = useCallback(() => setReloadKey((key) => key + 1), []);
-
-	return { repos, loading, refreshing, error, githubFailed, reload };
+			return new Date(b.pushed_at ?? 0).getTime() - new Date(a.pushed_at ?? 0).getTime();
+		});
 }
 
-function PortfolioEmptyState({
-	githubFailed,
-	error,
-	refreshing,
-	reload,
-}: {
-	githubFailed: boolean;
-	error: boolean;
-	refreshing: boolean;
-	reload: () => void;
-}) {
+function RefreshLink({ label }: { label: string }) {
 	return (
-		<EmptyState
-			icon={Github}
-			title={githubFailed || error ? "Couldn’t load repositories" : "No repositories yet"}
-			description={
-				githubFailed || error
-					? "GitHub is slow or unavailable right now. Nothing here is lost; retry, or open the profile directly."
-					: "Public repositories will show up here once they’re available."
+		<Button
+			className="gap-2"
+			role="link"
+			render={
+				<a href="/portfolio">
+					<RefreshCw aria-hidden="true" className="size-3.5" />
+					{label}
+				</a>
 			}
-			action={
-				<div className="flex flex-wrap items-center gap-3">
-					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2" size="lg">
-						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-						Try again
-					</Button>
-					<Button
-						size="lg"
-						role="link"
-						variant="secondary"
-						render={
-							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
-								Open GitHub
-								<ExternalLink className="size-3.5" aria-hidden="true" />
-							</a>
-						}
-					/>
-				</div>
-			}
+			size="lg"
+			variant="secondary"
 		/>
 	);
 }
 
-/** Mirrors RepoRow's shape so the swap to real data does not shift layout. */
-function RepoSkeletonList() {
+function PortfolioUnavailable({ failed }: { failed: boolean }) {
 	return (
-		<div aria-busy="true" className="flex animate-pulse flex-col gap-1">
-			<p className="sr-only" role="status">
-				Loading repositories…
-			</p>
-			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div className="flex flex-col gap-x-6 gap-y-2 py-4 sm:flex-row" key={`skeleton-${id}`}>
-					<div className="h-3 w-16 shrink-0 rounded-sm bg-muted sm:mt-1 sm:w-28" />
-					<div className="flex flex-1 flex-col gap-2">
-						<div className="h-4 w-1/3 rounded-sm bg-muted" />
-						<div className="h-3 w-2/3 rounded-sm bg-muted" />
-					</div>
+		<EmptyState
+			action={
+				<div className="flex flex-wrap items-center gap-3">
+					<RefreshLink label="Try again" />
+					<Button
+						role="link"
+						render={
+							<a href="https://github.com/byronwade" rel="noopener noreferrer" target="_blank">
+								Open GitHub
+								<ExternalLink aria-hidden="true" className="size-3.5" />
+							</a>
+						}
+						size="lg"
+						variant="secondary"
+					/>
 				</div>
-			))}
-		</div>
+			}
+			description={
+				failed
+					? "GitHub is slow or unavailable right now. Nothing here is lost; retry, or open the profile directly."
+					: "Public repositories will show up here once they’re available."
+			}
+			icon={Github}
+			title={failed ? "Couldn’t load repositories" : "No repositories yet"}
+		/>
 	);
 }
 
@@ -235,7 +145,9 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 							<span className="sr-only"> stars</span>
 						</span>
 						{repo.pushed_at && (
-							<time dateTime={repo.pushed_at}>{format(new Date(repo.pushed_at), "MMM yyyy")}</time>
+							<time dateTime={repo.pushed_at}>
+								{pushedAtFormat.format(new Date(repo.pushed_at))}
+							</time>
 						)}
 					</p>
 					<div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -281,27 +193,24 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 		</li>
 	);
 }
-export default function PortfolioPage() {
-	const { repos, loading, refreshing, error, githubFailed, reload } = usePortfolioRepos();
-	const [visibleRepos, setVisibleRepos] = useState(8);
+
+export default async function PortfolioPage() {
+	// Retry must render again after a provider failure. Only successful data is cached.
+	await connection();
+	let repos: GitHubRepo[] = [];
+	let failed = false;
+	try {
+		repos = selectRepos(await getGitHubRepositories());
+	} catch (error) {
+		console.error("Error loading portfolio data:", error);
+		failed = true;
+	}
 
 	return (
 		<SiteShell profile="showcase">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
-					aside={
-						<Button
-							className="gap-2"
-							disabled={loading || refreshing}
-							onClick={reload}
-							size="lg"
-							type="button"
-							variant="secondary"
-						>
-							<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
-							Refresh
-						</Button>
-					}
+					aside={<RefreshLink label="Refresh" />}
 					lede={
 						<>
 							Open-source work and experiments. Pulled live from{" "}
@@ -314,58 +223,23 @@ export default function PortfolioPage() {
 								GitHub
 							</a>
 							. For in-depth case studies, see{" "}
-							<Link className="link-underline font-medium" href="/projects">
+							<a className="link-underline font-medium" href="/projects">
 								projects
-							</Link>
+							</a>
 							.
 						</>
 					}
 					title="Portfolio"
 				/>
-				<p className="sr-only" role="status">
-					{loading ? "Loading repositories…" : refreshing ? "Refreshing repositories…" : ""}
-				</p>
 
-				{loading ? (
-					<RepoSkeletonList />
-				) : repos.length === 0 ? (
-					<PortfolioEmptyState
-						githubFailed={githubFailed}
-						error={error}
-						refreshing={refreshing}
-						reload={reload}
-					/>
+				{failed || repos.length === 0 ? (
+					<PortfolioUnavailable failed={failed} />
 				) : (
-					<>
-						{(githubFailed || error) && (
-							<p className="rounded-lg bg-muted px-4 py-3 text-body text-copy-14" role="status">
-								{error
-									? "Couldn’t refresh repositories. The previous results are still here. Try Refresh again or open GitHub."
-									: "Some GitHub data may be unavailable or stale. Refresh to try again."}
-							</p>
-						)}
-						<IndexList as="ol">
-							{repos.slice(0, visibleRepos).map((repo) => (
-								<RepoRow key={repo.id} repo={repo} />
-							))}
-						</IndexList>
-
-						{visibleRepos < repos.length && (
-							<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-								<Button
-									size="lg"
-									onClick={() => setVisibleRepos((prev) => prev + 8)}
-									type="button"
-									variant="secondary"
-								>
-									Show more
-								</Button>
-								<p className="text-copy-13 text-muted-foreground tabular-nums">
-									Showing {Math.min(visibleRepos, repos.length)} of {repos.length}
-								</p>
-							</div>
-						)}
-					</>
+					<IndexList as="ol">
+						{repos.map((repo) => (
+							<RepoRow key={repo.id} repo={repo} />
+						))}
+					</IndexList>
 				)}
 			</div>
 		</SiteShell>

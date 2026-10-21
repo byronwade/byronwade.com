@@ -1,0 +1,1996 @@
+{
+  "checkedAt": "2026-10-16T12:45:48.226Z",
+  "commit": "73496a0e589165631e83b2f0323e4f4e4a5a1786",
+  "phase": "baseline",
+  "buildId": "XN8CNe4o1xcRsD64mJDf_",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": ["/portfolio/figma/audit-unavailable"]
+    }
+  ],
+  "cases": [
+    {
+      "route": "/",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/blog",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": ["time[datetime=\"2026-08-07T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-28T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-12T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2025-11-18T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-03-10T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-02-20T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/blog",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/blog",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": ["time[datetime=\"2026-08-07T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(1) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-28T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(1) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-12T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0.border-border:nth-child(3) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2025-11-18T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "a[href$=\"building-thorbis\"] > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-03-10T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(3) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-02-20T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(3) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/blog",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/blog",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": ["time[datetime=\"2026-08-07T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(1) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-28T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(1) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-07-12T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0.border-border:nth-child(3) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2025-11-18T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "a[href$=\"building-thorbis\"] > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-03-10T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(3) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2024-02-20T00:00:00.000Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "section:nth-child(3) > .group\\/list.border-t > .border-b.last\\:border-b-0.border-border:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .items-baseline.gap-4 > .sm\\:flex.gap-1.hidden"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Blog", "tag": "A", "width": 27.34375, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Blog", "tag": "A", "width": 27.34375, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/contact",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/contact",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/contact",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/contact",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Contact", "tag": "A", "width": 45.359375, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/contact",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Contact", "tag": "A", "width": 45.359375, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Refresh",
+          "tag": "BUTTON",
+          "width": 94.640625,
+          "height": 28
+        },
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Refresh",
+          "tag": "BUTTON",
+          "width": 94.640625,
+          "height": 28
+        },
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-10-14T09:56:43Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:30:08Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(3) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-09T17:21:57Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(4) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-10-12T23:34:57Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(5) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-26T02:47:27Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(6) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:31:04Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(7) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:28:56Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(8) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-09T17:24:15Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(1) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-10-14T09:56:43Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(2) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:30:08Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(3) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-09T17:21:57Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(4) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-10-12T23:34:57Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(5) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-26T02:47:27Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(6) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:31:04Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(7) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-13T13:28:56Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".border-b.last\\:border-b-0:nth-child(8) > .group\\/row.py-5.hover\\:bg-muted\\/50 > .gap-4.items-baseline > .sm\\:flex.gap-3.hidden > .gap-1\\.5.inline-flex"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": ["time[datetime=\"2026-08-09T17:24:15Z\"]"],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.07 (foreground color: #918b84, background color: #f7f4ee, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Portfolio",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        },
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Portfolio",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        },
+        { "label": "GitHub", "tag": "A", "width": 52.015625, "height": 20 },
+        { "label": "projects", "tag": "A", "width": 60.734375, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Privacy",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        },
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Privacy",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        },
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/projects",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/projects",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/projects",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/projects",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Projects",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Projects",
+          "tag": "A",
+          "width": 45.359375,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 57.484375,
+          "height": 20
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 57.484375,
+          "height": 20
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 64.125,
+          "height": 21
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 64.125,
+          "height": 21
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Resume", "tag": "A", "width": 45.359375, "height": 21.125 },
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 64.125,
+          "height": 21
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Resume", "tag": "A", "width": 45.359375, "height": 21.125 },
+        {
+          "label": "Thorbis (opens in a new tab)",
+          "tag": "A",
+          "width": 64.125,
+          "height": 21
+        },
+        {
+          "label": "Thorbis (opens in a new tab)(thorbis.com)",
+          "tag": "A",
+          "width": 66.703125,
+          "height": 20
+        },
+        {
+          "label": "Wade's Plumbing & Septic (opens in a new tab)(wadesplumbingandseptic.c",
+          "tag": "A",
+          "width": 188.765625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Terms", "tag": "A", "width": 38.375, "height": 21.125 },
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/terms",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Terms", "tag": "A", "width": 38.375, "height": 21.125 },
+        { "label": "contact page", "tag": "A", "width": 98.625, "height": 20 }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "Share via native share",
+          "tag": "BUTTON",
+          "width": 86.3125,
+          "height": 34
+        },
+        {
+          "label": "Share on Twitter",
+          "tag": "A",
+          "width": 93.71875,
+          "height": 34
+        },
+        {
+          "label": "Share on LinkedIn",
+          "tag": "A",
+          "width": 103.734375,
+          "height": 34
+        },
+        {
+          "label": "Copy link",
+          "tag": "BUTTON",
+          "width": 113.734375,
+          "height": 34
+        },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "Share via native share",
+          "tag": "BUTTON",
+          "width": 86.3125,
+          "height": 34
+        },
+        {
+          "label": "Share on Twitter",
+          "tag": "A",
+          "width": 93.71875,
+          "height": 34
+        },
+        {
+          "label": "Share on LinkedIn",
+          "tag": "A",
+          "width": 103.734375,
+          "height": 34
+        },
+        {
+          "label": "Copy link",
+          "tag": "BUTTON",
+          "width": 113.734375,
+          "height": 34
+        },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Why I’m Building Thorbis: Field-Service Software Should Understand the",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Why I’m Building Thorbis: Field-Service Software Should Understand the",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        { "label": "Thorbis", "tag": "A", "width": 57.484375, "height": 20 },
+        {
+          "label": "fiscal 2026 annual filing",
+          "tag": "A",
+          "width": 178.96875,
+          "height": 20
+        },
+        { "label": "proof page", "tag": "A", "width": 82.171875, "height": 20 },
+        {
+          "label": "← Back to writing",
+          "tag": "A",
+          "width": 112.890625,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Thorbis", "tag": "A", "width": 4.765625, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        { "label": "Thorbis", "tag": "A", "width": 4.765625, "height": 21.125 }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Thorbis Ai",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Thorbis Ai",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": []
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Thorbis Mobile",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Thorbis Mobile",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Visit site", "tag": "A", "width": 95.109375, "height": 28 },
+        {
+          "label": "Enter fullscreen",
+          "tag": "BUTTON",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "label": "Visit ui.byronwade.com (opens in a new tab)",
+          "tag": "A",
+          "width": 32,
+          "height": 20
+        },
+        { "label": "Retry", "tag": "BUTTON", "width": 74, "height": 26 },
+        { "label": "Open site", "tag": "A", "width": 95.734375, "height": 24 },
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        { "label": "Back to projects", "tag": "A", "width": 343, "height": 20 },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Visit site", "tag": "A", "width": 95.109375, "height": 28 },
+        {
+          "label": "Enter fullscreen",
+          "tag": "BUTTON",
+          "width": 26,
+          "height": 26
+        },
+        {
+          "label": "Visit ui.byronwade.com (opens in a new tab)",
+          "tag": "A",
+          "width": 32,
+          "height": 20
+        },
+        { "label": "Retry", "tag": "BUTTON", "width": 74, "height": 26 },
+        { "label": "Open site", "tag": "A", "width": 95.734375, "height": 24 },
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        { "label": "Back to projects", "tag": "A", "width": 343, "height": 20 },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        {
+          "label": "Back to projects",
+          "tag": "A",
+          "width": 129.28125,
+          "height": 20
+        },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        {
+          "label": "Back to projects",
+          "tag": "A",
+          "width": 129.28125,
+          "height": 20
+        },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "byronwade/ui",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        {
+          "label": "Back to projects",
+          "tag": "A",
+          "width": 129.28125,
+          "height": 20
+        },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "byronwade/ui",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        {
+          "label": "ui.byronwade.com",
+          "tag": "A",
+          "width": 139.203125,
+          "height": 20
+        },
+        {
+          "label": "Back to projects",
+          "tag": "A",
+          "width": 129.28125,
+          "height": 20
+        },
+        {
+          "label": "Start a conversation →",
+          "tag": "A",
+          "width": 148.1875,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 375,
+      "theme": "light",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 375,
+      "theme": "dark",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 768,
+      "theme": "light",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 768,
+      "theme": "dark",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 1280,
+      "theme": "light",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Audit Unavailable",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 1280,
+      "theme": "dark",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        { "label": "Home", "tag": "A", "width": 36.046875, "height": 21.125 },
+        {
+          "label": "Audit Unavailable",
+          "tag": "A",
+          "width": 4.765625,
+          "height": 21.125
+        },
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/audit-not-found",
+      "width": 375,
+      "theme": "light",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/audit-not-found",
+      "width": 375,
+      "theme": "dark",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/audit-not-found",
+      "width": 768,
+      "theme": "light",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    },
+    {
+      "route": "/audit-not-found",
+      "width": 768,
+      "theme": "dark",
+      "status": 404,
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [
+        {
+          "label": "See selected work",
+          "tag": "A",
+          "width": 120.609375,
+          "height": 20
+        }
+      ]
+    }
+  ],
+  "resumedAt": "2026-10-16T12:55:50.304Z"
+}

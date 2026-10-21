@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { useDragResize } from "@/hooks/use-drag-resize";
@@ -45,6 +45,46 @@ const MAX_NORMAL_WIDTH = 1280;
 const MAX_NORMAL_HEIGHT = 760;
 const FULLSCREEN_PADDING_X = 48;
 const FULLSCREEN_PADDING_Y = 132;
+
+/**
+ * Inline sizes for the non-fullscreen frame. Until the container is measured
+ * (including the prerendered HTML), CSS applies useFrameSize's fit rule, so the
+ * measured pixel size replaces an equal layout instead of collapsing a
+ * full-width frame and shifting the article below it. The fallback reserves the
+ * same area but may grow, so recovery controls and enlarged text still fit.
+ */
+function normalFrameStyles({
+	aspect,
+	captureWidth,
+	containerWidth,
+	fitContent,
+	frameHeight,
+	frameWidth,
+	manualWidth,
+}: {
+	aspect: number;
+	captureWidth: number;
+	containerWidth: number;
+	fitContent: boolean;
+	frameHeight: number;
+	frameWidth: number;
+	manualWidth: number | null;
+}) {
+	if (containerWidth === 0 && manualWidth === null) {
+		return {
+			frameStyle: {
+				width: `min(100%, ${Math.min(MAX_NORMAL_WIDTH, captureWidth)}px, ${MAX_NORMAL_HEIGHT * aspect}px)`,
+			},
+			viewportStyle: { aspectRatio: `${aspect}` },
+		};
+	}
+	return {
+		frameStyle: { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" },
+		viewportStyle: fitContent
+			? { minHeight: `${Math.round(frameHeight)}px` }
+			: { height: `${Math.round(frameHeight)}px` },
+	};
+}
 
 interface PreviewToolbarProps {
 	href: string;
@@ -174,7 +214,7 @@ function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 	const icon = <ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />;
 	const noticeClass = "max-w-xs text-copy-13 text-muted-foreground";
 	return (
-		<div className="flex min-w-0 flex-col items-center justify-center gap-2 p-4 text-center">
+		<div className="flex min-w-0 flex-col items-center justify-center gap-2 self-stretch p-4 text-center">
 			{onRetry ? icon : <noscript>{icon}</noscript>}
 			<div className="flex flex-col gap-1">
 				<p className="font-medium text-copy-14 text-foreground">
@@ -225,6 +265,8 @@ interface PreviewViewportProps extends FullWidthProjectPreviewProps {
 	isFullscreen: boolean;
 	mounted: boolean;
 	screenshot: ReturnType<typeof useScreenshot>;
+	showFallback: boolean;
+	style: CSSProperties;
 }
 
 function PreviewViewport({
@@ -236,20 +278,22 @@ function PreviewViewport({
 	isFullscreen,
 	mounted,
 	screenshot,
+	showFallback,
+	style,
 }: PreviewViewportProps) {
 	const { src, status, onLoad: onImageLoad, onError: onImageError, retry } = screenshot;
-	const showFallback = !mounted || status === "error";
 	const retryCapture = mounted ? retry : undefined;
-	// Preserve the capture area while allowing recovery controls and resized text to fit.
-	const height = showFallback ? "auto" : `${Math.round(frameHeight)}px`;
 
 	return (
 		<div
+			// Clipping would make the fallback a scroll container, which caps an
+			// aspect-ratio box at its ratio instead of letting the content grow it.
 			className={cn(
-				"relative flex w-full justify-center overflow-hidden bg-muted/30",
-				isFullscreen ? "flex-1 items-center" : "items-start"
+				"relative flex w-full justify-center bg-muted/30",
+				isFullscreen ? "flex-1 items-center" : "items-start",
+				!showFallback && "overflow-hidden"
 			)}
-			style={isFullscreen ? undefined : { height, minHeight: Math.round(frameHeight) }}
+			style={isFullscreen ? undefined : style}
 			aria-busy={mounted && status === "loading"}
 		>
 			{showFallback ? (
@@ -302,12 +346,13 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 
 	const wrapperRef = useRef<HTMLElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
-	const dialogRef = useRef<HTMLDivElement>(null);
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
 	const capture = VIEWPORT_PRESETS[preset];
 
 	const screenshot = useScreenshot(href, capture.width, capture.height);
 	const { status, naturalSize } = screenshot;
+	const showFallback = !mounted || status === "error";
 
 	const {
 		width: manualWidth,
@@ -357,34 +402,46 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		resetWidth();
 	}, [preset, resetWidth]);
 
-	// Fullscreen: lock scroll, ESC to close, manage focus.
+	// The native modal owns focus containment, background inertness and Escape.
 	useEffect(() => {
-		if (!isFullscreen) {
+		const dialog = dialogRef.current;
+		if (!(isFullscreen && dialog)) {
 			return;
 		}
 		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
+		dialog.showModal();
+		// Pointer dismissal uses the dialog's padding; native cancel owns Escape.
+		const dismissBackdrop = (event: MouseEvent) => {
+			if (event.target === dialog) {
 				setIsFullscreen(false);
 			}
 		};
-		document.addEventListener("keydown", onKeyDown);
-		const focusTimer = window.setTimeout(() => dialogRef.current?.focus(), 0);
+		dialog.addEventListener("click", dismissBackdrop);
 
 		return () => {
+			dialog.removeEventListener("click", dismissBackdrop);
+			dialog.close();
 			document.body.style.overflow = previousOverflow;
-			document.removeEventListener("keydown", onKeyDown);
-			window.clearTimeout(focusTimer);
 			triggerRef.current?.focus();
 		};
 	}, [isFullscreen]);
+
+	const { frameStyle, viewportStyle } = normalFrameStyles({
+		aspect,
+		captureWidth: capture.width,
+		containerWidth,
+		fitContent: showFallback,
+		frameHeight,
+		frameWidth,
+		manualWidth,
+	});
 
 	const previewContent = (
 		<div
 			// Resizing tracks input directly; a size tween would lag the handle.
 			className={cn("@container/preview relative flex flex-col", isFullscreen && "h-full w-full")}
-			style={isFullscreen ? undefined : { width: `${Math.round(frameWidth)}px`, maxWidth: "100%" }}
+			style={isFullscreen ? undefined : frameStyle}
 		>
 			<div
 				className={cn(
@@ -416,6 +473,8 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 					isFullscreen={isFullscreen}
 					mounted={mounted}
 					screenshot={screenshot}
+					showFallback={showFallback}
+					style={viewportStyle}
 				/>
 
 				{/* Bottom status bar */}
@@ -496,27 +555,14 @@ export function FullWidthProjectPreview({ href, title, url }: FullWidthProjectPr
 		<section ref={wrapperRef} className="w-full" aria-label={`${title} site preview`}>
 			{isFullscreen
 				? createPortal(
-						// biome-ignore lint/a11y/noNoninteractiveElementInteractions: this is a modal dialog, role, aria-modal, focus target, Escape, and backdrop dismissal are all present below.
-						<div
+						<dialog
 							ref={dialogRef}
-							className="fixed inset-0 z-(--z-dialog) flex flex-col bg-background/95 p-4 sm:p-6"
-							onClick={(e) => {
-								if (e.target === e.currentTarget) {
-									setIsFullscreen(false);
-								}
-							}}
-							onKeyDown={(e) => {
-								if (e.key === "Escape") {
-									setIsFullscreen(false);
-								}
-							}}
-							role="dialog"
-							aria-modal="true"
+							className="fixed inset-0 m-0 flex h-dvh max-h-none w-screen max-w-none flex-col border-0 bg-background p-4 text-foreground sm:p-6"
+							onCancel={() => setIsFullscreen(false)}
 							aria-label={`${title} fullscreen preview`}
-							tabIndex={-1}
 						>
 							<div className="flex h-full w-full items-center justify-center">{previewContent}</div>
-						</div>,
+						</dialog>,
 						document.body
 					)
 				: null}

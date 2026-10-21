@@ -70,7 +70,7 @@ export const ObfuscatedEmail = ({
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
-						className="inline-flex min-h-11 items-center transition-colors hover:text-primary"
+						className="inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-primary"
 						// Additional protection: use JavaScript to build the href
 						onClick={(e) => {
 							e.preventDefault();
@@ -147,7 +147,7 @@ export const ObfuscatedPhone = ({
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}
-						className="inline-flex min-h-11 items-center transition-colors hover:text-primary"
+						className="inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-primary"
 						onClick={(e) => {
 							e.preventDefault();
 							window.location.href = `tel:${phone}`;

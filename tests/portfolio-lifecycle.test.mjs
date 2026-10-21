@@ -2,11 +2,23 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { Script } from "node:vm";
+import { cloneElement, createElement } from "react";
+import * as jsxRuntime from "react/jsx-runtime";
+import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 
-// Exercise the page's actual effect without adding a React test renderer or
-// exposing private lifecycle code as production API. A browser pass separately
-// verifies React rendering and native fetch cancellation.
+const FAILED = /Couldn(?:'|&#x27;)t load repositories/;
+const RETRY = /<a[^>]*href="\/portfolio"[^>]*role="link"[^>]*>Try again<\/a>/;
+const PROFILE =
+	/<a[^>]*href="https:\/\/github.com\/byronwade"[^>]*role="link"[^>]*>Open GitHub<\/a>/;
+const EMPTY_OR_LOADING = /No repositories yet|Loading repositories|Refreshing/;
+const EMPTY = /No repositories yet/;
+const ERROR_OR_LOADING = /Couldn(?:'|&#x27;)t load repositories|Loading repositories/;
+const ROW = /<li>/g;
+const EXCLUDED = /project-90|project-91|Loading repositories|Couldn(?:'|&#x27;)t load repositories/;
+
+// Keep the actual page orchestration and row rendering. Primitive stand-ins
+// isolate its data outcomes without exposing private functions or loading Next.
 const source = readFileSync(new URL("../app/portfolio/page.tsx", import.meta.url), "utf8");
 const page = ts.createSourceFile(
 	"page.tsx",
@@ -15,253 +27,112 @@ const page = ts.createSourceFile(
 	true,
 	ts.ScriptKind.TSX
 );
-const loader = page.statements.find(
-	(node) => ts.isFunctionDeclaration(node) && node.name?.text === "fetchPortfolioRepos"
-);
-const hook = page.statements.find(
-	(node) => ts.isFunctionDeclaration(node) && node.name?.text === "usePortfolioRepos"
-);
-const deadline = page.statements.find(
+const functions = new Set([
+	"languageTone",
+	"selectRepos",
+	"RefreshLink",
+	"PortfolioUnavailable",
+	"RepoRow",
+	"PortfolioPage",
+]);
+const constants = new Set(["LANGUAGE_TONES", "WORD_SEPARATORS", "pushedAtFormat", "titleize"]);
+const statements = page.statements.filter(
 	(node) =>
-		ts.isVariableStatement(node) &&
-		node.declarationList.declarations.some(
-			(declaration) => declaration.name.getText(page) === "REQUEST_TIMEOUT_MS"
-		)
+		(ts.isFunctionDeclaration(node) && functions.has(node.name?.text)) ||
+		(ts.isVariableStatement(node) &&
+			node.declarationList.declarations.some((declaration) =>
+				constants.has(declaration.name.getText(page))
+			))
 );
-let effect;
-function findEffect(node) {
-	if (ts.isCallExpression(node) && node.expression.getText(page) === "useEffect") {
-		effect = node.arguments[0];
-	}
-
-	ts.forEachChild(node, findEffect);
-}
-assert.ok(loader && hook && deadline, "the portfolio lifecycle must have one owner");
-findEffect(hook);
-assert.ok(effect, "the portfolio hook must register its request lifecycle");
+assert.equal(
+	statements.length,
+	functions.size + constants.size,
+	"all page behavior must remain in the test"
+);
 const script = new Script(
-	ts.transpileModule(
-		`${loader.getText(page)}\n${deadline.getText(page)}\n(${effect.getText(page)})();`,
-		{ compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None } }
-	).outputText
+	ts.transpileModule(statements.map((node) => node.getText(page)).join("\n"), {
+		compilerOptions: {
+			target: ts.ScriptTarget.ES2022,
+			module: ts.ModuleKind.CommonJS,
+			jsx: ts.JsxEmit.ReactJSX,
+		},
+	}).outputText
 );
 
-const REPO = {
-	id: 1,
-	name: "example-project",
-	fork: false,
-	stargazers_count: 3,
-	pushed_at: "2026-10-01T00:00:00Z",
-};
-const flush = () => new Promise((resolve) => setImmediate(resolve));
-
-function mount({ refresh = false, phase = "headers", ignoreAbort = false } = {}) {
-	const pending = Promise.withResolvers();
-	const state = {
-		repos: refresh ? [REPO] : [],
-		loading: !refresh,
-		refreshing: false,
-		error: false,
-		githubFailed: false,
-	};
-	const writes = [];
+function renderPage(load) {
 	const errors = [];
-	const timers = new Map();
-	let signal;
 	const context = {
-		AbortController,
-		reloadKey: refresh ? 1 : 0,
+		exports: {},
+		require(name) {
+			assert.equal(name, "react/jsx-runtime");
+			return jsxRuntime;
+		},
 		console: { error: (...args) => errors.push(args) },
-		setTimeout(callback, delay) {
-			assert.equal(delay, 8000, "keep the existing eight-second request budget");
-			const id = Symbol("deadline");
-			timers.set(id, callback);
-			return id;
-		},
-		clearTimeout(id) {
-			timers.delete(id);
-		},
-		fetch(url, options) {
-			assert.equal(url, "/api/portfolio");
-			signal = options.signal;
-			if (!ignoreAbort) {
-				signal.addEventListener("abort", () => pending.reject(signal.reason), { once: true });
-			}
-			if (phase === "body") {
-				return Promise.resolve({ ok: true, json: () => pending.promise });
-			}
-			return pending.promise.then((data) => ({ ok: true, json: async () => data }));
-		},
+		connection: async () => undefined,
+		getGitHubRepositories: load,
+		SiteShell: ({ children }) => createElement("main", null, children),
+		PageHeader: ({ title, lede, aside }) =>
+			createElement("header", null, createElement("h1", null, title), lede, aside),
+		IndexList: ({ children }) => createElement("ol", null, children),
+		IndexRow: ({ children }) => createElement("li", null, children),
+		EmptyState: ({ title, description, action }) =>
+			createElement("section", null, createElement("h2", null, title), description, action),
+		Button: ({ render, role }) => cloneElement(render, { role }),
+		indexRowAccentClass: "",
+		indexRowLinkClass: "",
 	};
-	for (const key of Object.keys(state)) {
-		context[`set${key[0].toUpperCase()}${key.slice(1)}`] = (value) => {
-			state[key] = value;
-			writes.push(key);
-		};
+	for (const icon of ["RefreshCw", "ExternalLink", "Github", "Star", "GitFork"]) {
+		context[icon] = () => null;
 	}
-	const cleanup = script.runInNewContext(context);
-	return {
-		state,
-		writes,
-		errors,
-		timers,
-		pending,
-		cleanup,
-		get signal() {
-			return signal;
-		},
-		timeout() {
-			assert.equal(timers.size, 1);
-			const [id, callback] = timers.entries().next().value;
-			timers.delete(id);
-			callback();
-		},
-	};
+	script.runInNewContext(context);
+	return { errors, html: Promise.resolve(context.exports.default()).then(renderToStaticMarkup) };
 }
 
-for (const refresh of [false, true]) {
-	for (const [name, payload, repositoryFailure] of [
-		["healthy empty repositories", { repos: [], degraded: false, githubFailed: false }, false],
-		[
-			"empty repositories with an unavailable profile",
-			{ repos: [], stats: null, degraded: true, githubFailed: false },
-			false,
-		],
-		[
-			"populated repositories with an unavailable profile",
-			{ repos: [REPO], stats: null, degraded: true, githubFailed: false },
-			false,
-		],
-		// The aggregate `degraded` flag also covers Dribbble and Figma; neither is
-		// a repository failure, so neither may raise the repository warning.
-		[
-			"populated repositories with unavailable Dribbble shots",
-			{ repos: [REPO], shots: [], degraded: true, githubFailed: false },
-			false,
-		],
-		[
-			"populated repositories with unavailable Figma files",
-			{ repos: [REPO], figmaFiles: [], degraded: true, githubFailed: false },
-			false,
-		],
-		["unavailable repositories", { repos: [], degraded: true, githubFailed: true }, true],
-	]) {
-		test(`${refresh ? "refresh" : "initial load"} identifies ${name} accurately`, async () => {
-			const request = mount({ refresh });
-			try {
-				request.pending.resolve(payload);
-				await flush();
-				assert.equal(request.state.error, repositoryFailure);
-				assert.equal(request.state.githubFailed, repositoryFailure);
-				// A failed refresh keeps the previous list, as a timed-out one does.
-				assert.equal(
-					request.state.repos.length,
-					refresh && repositoryFailure ? 1 : payload.repos.length
-				);
-				assert.equal(request.state.loading, false);
-				assert.equal(request.state.refreshing, false);
-				assert.equal(request.timers.size, 0);
-				assert.equal(request.errors.length, 0);
-			} finally {
-				request.cleanup();
-			}
-		});
-	}
-}
-
-for (const refresh of [false, true]) {
-	for (const phase of ["headers", "body"]) {
-		test(`${refresh ? "refresh" : "initial load"} recovers when ${phase} stall`, async () => {
-			const request = mount({ refresh, phase });
-			try {
-				await flush();
-				request.timeout();
-				await flush();
-				assert.equal(request.signal.aborted, true);
-				assert.equal(request.state.loading, false, "replace the skeleton with recovery");
-				assert.equal(request.state.refreshing, false, "enable retry again");
-				assert.equal(request.state.error, true, "show the existing error/profile recovery");
-				assert.equal(request.state.repos.length, refresh ? 1 : 0, "do not discard prior data");
-				assert.equal(request.timers.size, 0);
-				assert.equal(request.errors.length, 1);
-			} finally {
-				request.cleanup();
-			}
-		});
-	}
-}
-
-for (const outcome of ["success", "failure"]) {
-	test(`a settled ${outcome} clears its deadline`, async () => {
-		const request = mount();
-		try {
-			if (outcome === "success") {
-				request.pending.resolve({ repos: [REPO] });
-			} else {
-				request.pending.reject(new Error("fixture network failure"));
-			}
-			await flush();
-			assert.equal(request.state.loading, false);
-			assert.equal(request.state.refreshing, false);
-			assert.equal(request.state.error, outcome === "failure");
-			assert.equal(request.state.repos.length, outcome === "success" ? 1 : 0);
-			assert.equal(request.timers.size, 0, "do not leave a settled request timer running");
-			assert.equal(request.errors.length, outcome === "failure" ? 1 : 0);
-		} finally {
-			request.cleanup();
-		}
-	});
-}
-
-for (const phase of ["headers", "body"]) {
-	test(`leaving during ${phase} cancels quietly without stale state writes`, async () => {
-		const request = mount({ phase });
-		await flush();
-		request.cleanup();
-		const writeCount = request.writes.length;
-		await flush();
-		assert.equal(request.signal.aborted, true);
-		assert.equal(request.timers.size, 0);
-		assert.equal(request.writes.length, writeCount);
-		assert.equal(request.state.error, false);
-		assert.equal(request.errors.length, 0, "navigation cancellation stays quiet");
-	});
-}
-
-test("a replaced request cannot overwrite a successful retry, even if abort is ignored", async () => {
-	const previous = mount({ ignoreAbort: true });
-	previous.cleanup();
-	const writeCount = previous.writes.length;
-	const retry = mount({ refresh: true });
-	try {
-		retry.pending.resolve({ repos: [REPO] });
-		await flush();
-		previous.pending.resolve({ repos: [{ ...REPO, id: 2, name: "stale" }] });
-		await flush();
-		assert.equal(previous.writes.length, writeCount);
-		assert.equal(retry.state.repos[0].name, REPO.name);
-		assert.equal(retry.state.error, false);
-		assert.equal(retry.state.refreshing, false);
-	} finally {
-		retry.cleanup();
-	}
+const repository = (id, stars = 1) => ({
+	id,
+	name: `project-${id}`,
+	full_name: `example/project-${id}`,
+	html_url: `https://github.com/example/project-${id}`,
+	description: null,
+	fork: false,
+	forks_count: 0,
+	stargazers_count: stars,
+	pushed_at: "2026-10-01T00:00:00Z",
+	language: "TypeScript",
 });
 
-test("retry can succeed after a timed out request", async () => {
-	const previous = mount();
-	previous.timeout();
-	await flush();
-	previous.cleanup();
-	const retry = mount({ refresh: true });
-	try {
-		retry.pending.resolve({ repos: [REPO] });
-		await flush();
-		assert.equal(previous.state.error, true);
-		assert.equal(retry.state.error, false);
-		assert.equal(retry.state.loading, false);
-		assert.equal(retry.state.refreshing, false);
-		assert.equal(retry.state.repos[0].name, REPO.name);
-	} finally {
-		retry.cleanup();
-	}
+test("repository failure renders recovery links instead of an empty profile or perpetual loading", async () => {
+	const failure = new Error("fixture timeout while reading JSON");
+	const { html, errors } = renderPage(() => Promise.reject(failure));
+	const output = await html;
+	assert.match(output, FAILED);
+	assert.match(output, RETRY);
+	assert.match(output, PROFILE);
+	assert.doesNotMatch(output, EMPTY_OR_LOADING);
+	assert.equal(errors.length, 1);
+	assert.equal(errors[0][1], failure);
+});
+
+test("an empty repository profile has a distinct non-error result", async () => {
+	const { html, errors } = renderPage(async () => []);
+	const output = await html;
+	assert.match(output, EMPTY);
+	assert.doesNotMatch(output, ERROR_OR_LOADING);
+	assert.deepEqual(errors, []);
+});
+
+test("retry can succeed after failure and renders every eligible repository in rank order", async () => {
+	const failed = renderPage(() => Promise.reject(new Error("fixture timeout")));
+	assert.match(await failed.html, FAILED);
+	const repos = Array.from({ length: 12 }, (_, index) => repository(index + 1, index + 1));
+	const { html, errors } = renderPage(async () => [
+		...repos,
+		{ ...repository(90), fork: true },
+		{ ...repository(91), name: "byronwade.com" },
+	]);
+	const output = await html;
+	assert.equal((output.match(ROW) || []).length, 12, "no client-only load-more gate");
+	assert.ok(output.indexOf("project-12") < output.indexOf('project-1"'));
+	assert.doesNotMatch(output, EXCLUDED);
+	assert.deepEqual(errors, []);
 });

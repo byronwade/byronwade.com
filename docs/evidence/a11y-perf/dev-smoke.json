@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-16T14:54:26.029Z",
+  "commit": "909d55e27d8b94a0c6d64466a83440122063f1c8",
+  "buildId": "PCKv99DO4b5bnuKfwOFTE",
+  "mode": "development",
+  "cases": [
+    {
+      "width": 375,
+      "theme": "dark",
+      "inlineFocusReturn": true,
+      "emptyContactFocus": true,
+      "errors": []
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "inlineFocusReturn": true,
+      "emptyContactFocus": true,
+      "errors": []
+    }
+  ],
+  "server": { "pid": 115748, "port": 56123 },
+  "chrome": "Chrome/155.0.8059.80"
+}

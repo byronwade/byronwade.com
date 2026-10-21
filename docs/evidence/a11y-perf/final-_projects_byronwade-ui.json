@@ -1,0 +1,165 @@
+{
+  "checkedAt": "2026-10-16T13:11:19.508Z",
+  "commit": "73496a0e589165631e83b2f0323e4f4e4a5a1786",
+  "phase": "final",
+  "buildId": "lZ6-f40RuOvlJ26jp4-SL",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": ["/portfolio/figma/audit-unavailable"]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "light",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 375,
+      "theme": "dark",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "projects-byronwade-ui-375-dark.png",
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 38, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "projects-byronwade-ui-1280-light.png",
+      "keyboard": { "checked": 44, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true },
+        { "name": "Reduced motion table of contents", "behavior": "instant" }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 44, "failures": [] },
+      "states": [
+        {
+          "name": "Fullscreen preview",
+          "violations": [],
+          "targetFailures": []
+        },
+        { "name": "Preview focus containment and return", "passed": true },
+        { "name": "Reduced motion table of contents", "behavior": "instant" }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import type { Person, WithContext } from "schema-dts";
 import { IndexList, IndexRow } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { getContactForStructuredData } from "@/lib/contact";
 import { ArrowRight, ExternalLink, MapPin } from "@/lib/icons";
