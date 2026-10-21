@@ -214,7 +214,16 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"touch open moves focus, locks scrolling and preserves header geometry",
 				async () => {
-					await page.tap(MENU);
+					try {
+						await page.tap(MENU);
+					} catch (error) {
+						// Loaded panel code can replace the fallback trigger between lookup and tap;
+						// Puppeteer rejects before dispatching the touch, so tap the current trigger.
+						if (!error.message.includes("detached")) {
+							throw error;
+						}
+						await page.tap(MENU);
+					}
 					await page.waitForSelector(PANEL);
 					await page.waitForFunction(() =>
 						document.querySelector("[data-header-menu]")?.contains(document.activeElement)
@@ -369,6 +378,8 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					{ timeout: 2000 },
 					origin
 				);
+				// Focusing the footer scrolled the page; later geometry checks start from the top.
+				await page.evaluate(() => window.scrollTo(0, 0));
 			});
 
 			await t.test(

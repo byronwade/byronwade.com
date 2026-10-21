@@ -184,6 +184,50 @@ test("a failed cleanup command also rejects after a stalled close", async (t) =>
 	assert.equal(child.listenerCount("exit"), 0);
 });
 
+const ALREADY_EXITED_TREE = [
+	"ERROR: The process with PID 456 (child process of PID 123) could not be terminated.",
+	"Reason: There is no running instance of the task.",
+	'ERROR: The process "789" not found.',
+	"",
+].join("\r\n");
+
+test("a tree that exited before taskkill reached it is not a failed cleanup", async (t) => {
+	const { child, context, diagnostics, exit } = stubChild(t);
+	const killError = Object.assign(new Error("taskkill partial"), { code: 128, signal: null });
+	t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+		exit();
+		callback(
+			killError,
+			"SUCCESS: The process with PID 123 has been terminated.",
+			ALREADY_EXITED_TREE
+		);
+	});
+	syncBuiltinESMExports();
+	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+	await nextTurn();
+	t.mock.timers.tick(10_000);
+	await result;
+	assert.ok(diagnostics.join("\n").includes("no running instance"));
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+test("an already-gone report cannot hide an owned process that never exits", async (t) => {
+	const { child, context } = stubChild(t);
+	const killError = Object.assign(new Error("taskkill partial"), { code: 128, signal: null });
+	t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+		callback(killError, "", ALREADY_EXITED_TREE);
+	});
+	syncBuiltinESMExports();
+	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+	const check = assert.rejects(result, PROCESS_DID_NOT_EXIT);
+	await nextTurn();
+	t.mock.timers.tick(10_000);
+	await nextTurn();
+	t.mock.timers.tick(15_000);
+	await check;
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
 test("non-Windows forced cleanup uses the owned child handle and observes exit", async (t) => {
 	const { child, context, exit, kill } = stubChild(t);
 	Object.defineProperty(process, "platform", { value: "linux" });
