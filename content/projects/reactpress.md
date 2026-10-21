@@ -3,7 +3,7 @@ title: "ReactPress"
 url: "https://reactpress.byronwade.com/rp-admin"
 category: "Hobby Project"
 date: 2024-01-01
-excerpt: "A complete recreation of the WordPress admin interface rebuilt with Next.js 15 and React 18, serving as a foundation for modern field management systems."
+excerpt: "The WordPress admin screens rebuilt as React pages in Next.js 14 and React 18, as a starting point for modern field management systems."
 status: "Archived"
 featured: false
 ---
@@ -18,19 +18,19 @@ People know the WordPress admin. They have used it for years and they do not wan
 
 ## What is ReactPress?
 
-ReactPress is a complete recreation of the WordPress admin interface, rebuilt from the ground up using **Next.js 15**, **React 18**, and **TypeScript**. It is not a theme or a skin. It is a working alternative that keeps the WordPress layout people already know, but it is fast and it is built on a stack I would actually choose today.
+ReactPress rebuilds the WordPress admin interface as React pages using **Next.js 14**, **React 18**, and **TypeScript**. It is not a WordPress theme or a skin. It keeps the layout people already know and puts it on a stack I would actually choose today. So far the screens are static: nothing loads or saves real content yet.
 
 ### The Technical Foundation
 
-Built with a modern tech stack:
+Built with:
 
-- **Next.js 15** with App Router and React Server Components for optimal performance
+- **Next.js 14** with the App Router
 - **React 18** for component-based architecture
 - **TypeScript** for type safety and developer experience
-- **Tailwind CSS** for modern, utility-first styling
-- **Bun** for lightning-fast package management and runtime
+- **Tailwind CSS**, set up alongside the original WordPress admin stylesheet
+- **Bun** or npm for installs (both lockfiles are in the repository)
 
-The project faithfully recreates every aspect of the WordPress admin experience, from the dashboard widgets to the navigation menus, from the post editor to the settings pages. Every pixel, every interaction, every workflow has been carefully recreated to maintain that familiar WordPress feel.
+The admin area has 39 routes under `/rp-admin`: the dashboard, post and page lists, categories and tags, comments, media, plugins, themes and menus, users, tools, login, install, and all seven settings pages. They reuse WordPress's own markup, class names and admin stylesheet, which is why they look like the real thing. The block editor is the gap. The new-post and new-page screens are placeholders, and the Gutenberg editor code is commented out.
 
 ---
 
@@ -62,16 +62,16 @@ ReactPress was born from this vision: **take the best of WordPress's UX and comb
 
 The first phase focused on establishing the core architecture:
 
-- Setting up Next.js 15 with the App Router
+- Setting up Next.js with the App Router
 - Recreating the WordPress admin layout structure
-- Implementing responsive design for all devices
+- Carrying over the WordPress admin's own responsive styles
 - Building the navigation and routing system
 
-That foundation is what makes ReactPress a working admin rather than a picture of one. It is a functional admin interface that can be extended and customized.
+That gives every screen a real route and real components. It does not give them data yet: forms and tables render, but they do not load or save anything.
 
 ### Phase 2: CSS Modernization 🚧
 
-Currently in progress, this phase involves converting the original WordPress CSS to modern Tailwind CSS utility classes. This is about more than using a modern CSS framework. It is about:
+This phase started and stopped. The plan was to convert the original WordPress CSS to Tailwind CSS utility classes. The screens still run on the copied WordPress stylesheet, about 18,600 lines of it, and the repository has had no commits since June 2025. The point of the conversion was:
 
 - Reducing bundle size
 - Improving maintainability
@@ -80,7 +80,7 @@ Currently in progress, this phase involves converting the original WordPress CSS
 
 ### Future Phases
 
-The roadmap includes:
+The roadmap, none of it built yet:
 
 - **Component Library**: Reusable admin components with Storybook documentation
 - **API Integration**: Adapters for WordPress REST API, headless CMS platforms, and custom APIs
@@ -108,7 +108,7 @@ Building such a system from scratch is a massive undertaking. You need:
 
 ### How ReactPress Fills the Gap
 
-ReactPress provides exactly this foundation:
+That is the foundation ReactPress is meant to become:
 
 #### 1. Proven UX Patterns
 
@@ -116,11 +116,11 @@ WordPress's admin interface has been refined over two decades. Millions of users
 
 #### 2. Component-Based Architecture
 
-ReactPress is built with reusable components. The sidebar, toolbar, dashboard widgets, forms, and tables are all modular. This means that when building a field management system, you're not starting from scratch, you're extending and customizing existing components. Need a custom dashboard widget for field operations? Start with the existing widget component. Need a specialized form for equipment tracking? Build on the form components already in place.
+The sidebar, toolbar, footer and list table are shared components. Most screens are still one large page file each, so breaking the dashboard widgets and settings forms into their own components is part of the remaining work. Once they are, a field management system extends them instead of starting from scratch: a field-operations widget built on the dashboard's widget layout, an equipment-tracking form built on the settings forms.
 
 #### 3. API-First Design
 
-ReactPress is designed to work with any backend. It doesn't care if your data comes from WordPress, a custom API, MongoDB, or a field management database. This flexibility is crucial for field management systems, which often need to integrate with:
+The plan is for ReactPress to work with any backend: WordPress, a custom API, MongoDB, or a field management database. None of that exists yet. There is no data layer; SWR and Recoil are installed but not used, and an early MongoDB and Firebase setup script is commented out. That flexibility matters for field management systems, which often need to integrate with:
 
 - Equipment tracking systems
 - GPS and mapping services
@@ -130,13 +130,13 @@ ReactPress is designed to work with any backend. It doesn't care if your data co
 
 #### 4. Modern Performance
 
-Field management systems need to be fast, especially when field workers are accessing them on mobile devices with limited connectivity. ReactPress's modern architecture, built on Next.js 15 with React Server Components, delivers the performance needed for real-world field operations.
+Field management systems need to be fast, especially when field workers are accessing them on mobile devices with limited connectivity. I have not measured ReactPress against the WordPress admin, so I make no speed claim here. The bet is that React pages built with the Next.js App Router are a better place to start than a PHP admin carrying years of plugins.
 
 #### 5. Developer Productivity
 
-Building a field management system is complex enough without also having to build an admin interface from scratch. ReactPress provides:
+Building a field management system is complex enough without also having to build an admin interface from scratch. ReactPress aims to provide:
 
-- TypeScript types for all components
+- TypeScript for the components
 - Consistent styling patterns
 - Reusable UI components
 - A familiar structure that any WordPress developer can understand
@@ -152,7 +152,7 @@ ReactPress isn't the end goal, it's the foundation. Here's how it enables the fi
 3. **Integrate with Backend APIs**: Connect to your field management database and services
 4. **Customize the Experience**: Modify the interface to match your specific workflows while maintaining familiar patterns
 
-This approach dramatically reduces development time and risk. Instead of building an admin interface from scratch (which could take 6-12 months), you start with a proven foundation and focus on the unique value your field management system provides.
+The aim is to cut development time and risk: start from screens people already know, and spend the effort on what your field management system does differently.
 
 ---
 
@@ -163,9 +163,8 @@ ReactPress represents more than just a WordPress alternative. It's a demonstrati
 - **Familiar interfaces can be modernized** without sacrificing usability
 - **You can keep the interface people already know** while replacing everything under it
 - **Developer productivity matters** as much as user experience
-- **Open source foundations** enable faster innovation
 
-For the field management system, ReactPress provides:
+For the field management system, ReactPress is meant to provide:
 
 - A **proven starting point** that reduces risk
 - **Familiar patterns** that reduce training time
@@ -176,17 +175,17 @@ For the field management system, ReactPress provides:
 
 ## Conclusion
 
-ReactPress started as an experiment: "What if we could have the WordPress admin interface with modern performance?" But it's evolved into something much more, a foundation for building complex applications that need robust admin interfaces.
+ReactPress started as an experiment: "What if we could have the WordPress admin interface on a modern stack?" It grew into a plan for something bigger, a foundation for complex applications that need robust admin interfaces.
 
-For the field management system, ReactPress is more than convenient. It gives me a proven UX foundation, a modern technical architecture, and a component library that can be extended for domain-specific needs. Most importantly, it allows the development team to focus on what makes the field management system unique rather than rebuilding basic admin functionality.
+For the field management system, that foundation would give me a familiar UX, a modern technical architecture, and components that can be extended for domain-specific needs. Most importantly, it would let the development team focus on what makes the field management system unique rather than rebuilding basic admin functionality.
 
-The journey from ReactPress to a full field management system is a natural progression: start with a solid foundation, extend it with domain-specific features, and build something that serves real-world needs while maintaining the usability and familiarity that users expect.
+The journey from ReactPress to a full field management system is a natural progression: start with a solid foundation, extend it with domain-specific features, and build something that serves real-world needs while keeping the usability and familiarity that users expect.
 
-As ReactPress continues to evolve, it becomes an even stronger foundation for the field management system. Each component that gets modernized, each API integration that gets added, and each performance optimization that gets implemented makes the eventual field management system more robust, more maintainable, and more capable.
+ReactPress has not changed since June 2025. The screens are in place; the data layer, the block editor and the CSS conversion are not. Those three are what would turn it into a real foundation for the field management system.
 
-That is why ReactPress matters to me. It is a WordPress alternative, but it is also a stepping stone toward building better applications that solve real problems.
+That is why ReactPress matters to me. It started as a WordPress experiment, and it is also a stepping stone toward building better applications that solve real problems.
 
 ---
 
-*ReactPress is open source and available on [GitHub](https://github.com/byronwade/ReactPress). You can see it in action at [reactpress.byronwade.com](https://reactpress.byronwade.com).*
+*ReactPress's source is public on [GitHub](https://github.com/byronwade/reactpress.byronwade.com); the repository has no license file. You can click through the static screens at [reactpress.byronwade.com/rp-admin](https://reactpress.byronwade.com/rp-admin).*
 
