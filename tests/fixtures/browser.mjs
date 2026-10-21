@@ -97,8 +97,11 @@ export async function closeBrowser(browser, context) {
 		const closed = await settlesWithin(Promise.all([closing, exited]), 10_000);
 		try {
 			if (child && isRunning(child)) {
+				const killing = killTree(child, context, controller.signal);
+				// The owned exit completes cleanup even when taskkill itself stalls; a kill
+				// failure reported before that exit still fails.
 				const stopped = await settlesWithin(
-					Promise.all([killTree(child, context, controller.signal), exited]),
+					Promise.race([exited, killing.then(() => exited)]),
 					15_000
 				);
 				assert.ok(stopped, `Owned browser process ${child.pid} did not exit after forced cleanup`);

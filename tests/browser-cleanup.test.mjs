@@ -211,6 +211,20 @@ test("a tree that exited before taskkill reached it is not a failed cleanup", as
 	assert.equal(child.listenerCount("exit"), 0);
 });
 
+test("an owned process that exits while taskkill stalls completes cleanup", async (t) => {
+	const { child, context, exit } = stubChild(t);
+	t.mock.method(childProcess, "execFile", () => {
+		// The tree stops, but the kill command itself never reports back.
+		setImmediate(exit);
+	});
+	syncBuiltinESMExports();
+	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+	await nextTurn();
+	t.mock.timers.tick(10_000);
+	await result;
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
 test("an already-gone report cannot hide an owned process that never exits", async (t) => {
 	const { child, context } = stubChild(t);
 	const killError = Object.assign(new Error("taskkill partial"), { code: 128, signal: null });
