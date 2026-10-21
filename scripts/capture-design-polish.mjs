@@ -266,14 +266,7 @@ await withProductionServer(async (url) => {
 		}
 	}, Promise.resolve());
 });
-// The 404 breadcrumb hydration mismatch (FINDINGS.md R01) belongs to the breadcrumb lane.
-// Exempt only that React text-mismatch error, only on the 404 route; anything else fails.
-const KNOWN_NOT_FOUND_HYDRATION =
-	/^Minified React error #418; visit https:\/\/react\.dev\/errors\/418\?args\[\]=text&args\[\]= /;
-const pageErrors = (entry) =>
-	entry.errors.filter(
-		(message) => !(entry.name === "not-found" && KNOWN_NOT_FOUND_HYDRATION.test(message))
-	);
+// Every page error fails, including on the 404 route: main #98 fixed its hydration mismatch.
 if (phase === "after") {
 	assert.equal(report.cases.length, routes.length * 6, "complete route/viewport/theme matrix");
 	const failures = report.cases.filter(
@@ -284,7 +277,7 @@ if (phase === "after") {
 			entry.geometry.buttonLinks.length > 0 ||
 			entry.geometry.smallTargets.some((target) => !target.inlineText) ||
 			entry.accessibility.violations.length > 0 ||
-			pageErrors(entry).length > 0 ||
+			entry.errors.length > 0 ||
 			entry.status !== (entry.name === "not-found" ? 404 : 200)
 	);
 	assert.deepEqual(

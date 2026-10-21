@@ -34,8 +34,7 @@ measurements, not silently excluded from the evidence.
 The after runner rejects main-content standalone targets below 44px; only native inline
 anchors within prose/list text use the documented inline-text exception.
 It also fails on any uncaught page error or route that never leaves loading.
-The one exemption is React's #418 text mismatch on the 404 route, the
-breadcrumb hydration warning reserved for the other lane (FINDINGS.md R01).
+There is no exemption: main #98 fixed the 404 hydration mismatch (FINDINGS.md R01).
 
 There is no `/about` route. `/` and `/resume` contain that material. The 14
 baseline destinations include the 12 requested present routes plus populated
@@ -83,7 +82,8 @@ Preview fixtures reuse an existing local JPEG with a distinct URL per capture
 size, matching the real API's image identity contract. They test the frame and
 controls; they do not certify a live provider capture.
 Failed contact requests are intercepted before delivery; drafts remain intact.
-Fullscreen Escape returns focus. The baseline runner recorded eight states per
+Fullscreen Escape returns focus. Any uncaught page error fails the run.
+The baseline runner recorded eight states per
 combination, including the six timeout failures fixed by this pass.
 Two additional desktop captures exercise table-of-contents keyboard activation,
 focus clearance, visible focus, URL hash and reduced-motion navigation.

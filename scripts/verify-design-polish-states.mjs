@@ -21,6 +21,7 @@ const report = {
 	cases: [],
 	readingProgress: [],
 	failures: [],
+	pageErrors: [],
 };
 // Controlled browser fixtures exercise presentation; these never enter app data.
 const repository = {
@@ -208,12 +209,23 @@ async function verifyCase(url, width, theme) {
 	});
 	try {
 		const page = await browser.newPage();
-		await page.setViewport({ width, height: 1000 });
-		await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
-		await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
 		let mode = "empty";
 		let previewMode = "loading";
 		let contactRequest;
+		// A browser exception fails the run even when the state still renders.
+		page.on("pageerror", (error) =>
+			report.pageErrors.push({
+				width,
+				theme,
+				url: page.url(),
+				mode,
+				previewMode,
+				message: error.message,
+			})
+		);
+		await page.setViewport({ width, height: 1000 });
+		await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+		await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
 		await page.setRequestInterception(true);
 		page.on("request", async (request) => {
 			if (request.method() === "POST" && request.url().endsWith("/contact")) {
@@ -450,6 +462,7 @@ await withProductionServer(async (url) => {
 		await verifyCase(url, width, theme);
 	}, Promise.resolve());
 });
+assert.deepEqual(report.pageErrors, [], "state checks raise no page errors");
 if (phase === "after") {
 	assert.deepEqual(report.failures, [], "bounded requests must offer recovery");
 }
