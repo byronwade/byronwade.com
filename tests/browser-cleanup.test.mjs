@@ -193,6 +193,36 @@ for (const rejectsClose of [false, true]) {
 	});
 }
 
+for (const exitCode of [0, 1]) {
+	test(`a taskkill that outlasts the owned exit (code ${exitCode}) passes only a clean exit`, async (t) => {
+		const { child, context } = stubChild(t);
+		let command;
+		t.mock.method(childProcess, "execFile", (_file, _args, options, callback) => {
+			command = options;
+			// The command keeps walking the tree until the fixture aborts it.
+			options.signal.addEventListener("abort", () =>
+				callback(Object.assign(new Error("aborted"), { code: "ABORT_ERR" }), "", "")
+			);
+			setImmediate(() => {
+				child.exitCode = exitCode;
+				child.emit("exit", exitCode, null);
+			});
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check =
+			exitCode === 0 ? assert.doesNotReject(result) : assert.rejects(result, PROCESS_DID_NOT_EXIT);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await nextTurn();
+		await nextTurn();
+		t.mock.timers.tick(15_000);
+		await check;
+		assert.equal(command.signal.aborted, true, "the outstanding command is stopped");
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
+
 test("a failed cleanup command also rejects after a stalled close", async (t) => {
 	const { child, context } = stubChild(t);
 	const error = Object.assign(new Error("could not launch taskkill"), { code: "ENOENT" });
