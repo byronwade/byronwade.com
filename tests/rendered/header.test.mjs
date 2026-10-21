@@ -172,7 +172,18 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				new PerformanceObserver((entries) => {
 					for (const entry of entries.getEntries()) {
 						if (entry.sources?.some((source) => source.node?.closest?.("header"))) {
-							window.headerShifts.push(entry.value);
+							// Enough to name the cause: a late font swap once moved header text 3.7px.
+							window.headerShifts.push({
+								value: entry.value,
+								hadRecentInput: entry.hadRecentInput,
+								startTime: Math.round(entry.startTime),
+								path: location.pathname,
+								sources: entry.sources.map((source) => ({
+									node: `${source.node?.nodeName}.${source.node?.className?.baseVal ?? source.node?.className}`,
+									previous: source.previousRect.toJSON(),
+									current: source.currentRect.toJSON(),
+								})),
+							});
 						}
 					}
 				}).observe({ type: "layout-shift", buffered: true });
@@ -446,8 +457,10 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				}
 			);
 
-			assert.deepEqual(hydrationErrors, []);
-			assert.deepEqual(await page.evaluate(() => window.headerShifts), []);
+			// Snapshot before the 200% case rewrites the root size, but assert after it, so a
+			// failure here never drops that subtest from the run.
+			const loadErrors = [...hydrationErrors];
+			const headerShifts = await page.evaluate(() => window.headerShifts);
 			await t.test(
 				"200% text keeps every header control inside the header and reserves clearance",
 				async () => {
@@ -473,6 +486,12 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 						})
 					);
 				}
+			);
+			assert.deepEqual(loadErrors, []);
+			assert.deepEqual(
+				headerShifts.map((shift) => shift.value),
+				[],
+				`header layout shift: ${JSON.stringify(headerShifts)}`
 			);
 		})
 	);

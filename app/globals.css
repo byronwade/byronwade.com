@@ -305,6 +305,18 @@
 
 /* thorbis-fonts:end */
 
+/* Arial scaled to Inter's metrics paints the text before Inter arrives, so the swap does
+   not reflow it. Values are next/font's for Inter over Arial (calculateSizeAdjustValues
+   with Next's capsize metrics); Liberation Sans and Arimo share Arial's metrics on Linux. */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+
 /* Existing resume signature, retained as a personal identity asset. */
 
 @font-face {
@@ -585,7 +597,7 @@
 /* thorbis-tokens:end */
 
 :root {
-  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-inter: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-geist-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   --font-signature: "Byron Signature", cursive;
   --background: var(--thorbis-bg);
