@@ -9,7 +9,8 @@ import { closeBrowser } from "../fixtures/browser.mjs";
 const HYDRATION_ERROR = /hydration|hydrating|did not match|Minified React error/i;
 const H1 = /<h1[^>]*>([\s\S]*?)<\/h1>/;
 const NO_STORE = /no-store/;
-const NOINDEX = /<meta name="robots" content="noindex"/;
+const ROBOTS = /<meta name="(robots|googlebot)" content="([^"]*)"\s*\/?\s*>/g;
+const DIRECTIVE_SEPARATOR = /,\s*/;
 const SKELETON = /Loading (?:post|project)/;
 const BUILT_PAGES = ["blog", "projects"].map(
 	(kind) => new URL(`../../.next/server/app/${kind}/`, import.meta.url)
@@ -44,9 +45,12 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 	const blog = await contentSlugs("blog");
 	const projects = await contentSlugs("projects");
 	const missing = [
+		"/does-not-exist",
+		"/missing/nested/page",
 		"/blog/no-such-post",
 		"/projects/no-such-project",
 		...blog.drafts.map((slug) => `/blog/${slug}`),
+		...projects.drafts.map((slug) => `/projects/${slug}`),
 	];
 	const pages = [
 		[`/blog/${blog.published}`, "Blog"],
@@ -61,7 +65,18 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 				const html = await response.text();
 				assert.equal(response.status, 404, path);
 				assert.match(response.headers.get("cache-control") ?? "", NO_STORE, path);
-				assert.match(html, NOINDEX, path);
+				const directives = [...html.matchAll(ROBOTS)];
+				assert.deepEqual(
+					directives.filter(([, name]) => name === "robots").map(([, , value]) => value),
+					["noindex"],
+					`${path} has one unambiguous robots policy`
+				);
+				for (const [, name, value] of directives) {
+					assert.ok(
+						!value.split(DIRECTIVE_SEPARATOR).includes("index"),
+						`${path}: ${name} cannot index a 404`
+					);
+				}
 				assert.equal(html.match(H1)?.[1], "Page not found", `${path} server-renders recovery`);
 				assert.doesNotMatch(html, SKELETON, `${path} streams no skeleton`);
 			})
@@ -144,4 +159,57 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 	// next start writes a cache page for any slug it renders on demand.
 	assert.deepEqual(await builtPages(), before, "missing URLs must not become cached pages");
 	context.diagnostic(`Checked ${missing.length} missing and ${pages.length} real content URLs`);
+});
+
+test("published pages remain indexable while search stays noindex", {
+	timeout: 60_000,
+}, async () => {
+	const blog = await contentSlugs("blog");
+	const projects = await contentSlugs("projects");
+	const published = [
+		"/",
+		"/portfolio",
+		"/blog",
+		"/projects",
+		"/contact",
+		"/resume",
+		"/privacy",
+		"/terms",
+		`/blog/${blog.published}`,
+		`/projects/${projects.published}`,
+	];
+	await withProductionServer(async (url) => {
+		await Promise.all(
+			[...published, "/search?q=robots"].map(async (path) => {
+				const response = await fetch(url + path, { signal: AbortSignal.timeout(15_000) });
+				assert.equal(response.status, 200, path);
+				const directives = [...(await response.text()).matchAll(ROBOTS)];
+				const robots = directives.filter(([, name]) => name === "robots");
+				assert.ok(robots.length <= 1, `${path} has no duplicate robots metadata`);
+				if (path.startsWith("/search")) {
+					assert.equal(robots.length, 1, "search explicitly opts out of indexing");
+					for (const [, name, value] of directives) {
+						assert.ok(value.split(DIRECTIVE_SEPARATOR).includes("noindex"), `${path}: ${name}`);
+					}
+				} else {
+					for (const [, name, value] of directives) {
+						const tokens = value.split(DIRECTIVE_SEPARATOR);
+						assert.ok(!tokens.includes("noindex"), `${path}: ${name} allows indexing`);
+						assert.ok(!tokens.includes("nofollow"), `${path}: ${name} allows following links`);
+					}
+				}
+				if (path === "/" || path === "/portfolio") {
+					const googlebot = directives.find(([, name]) => name === "googlebot")?.[2];
+					assert.deepEqual(
+						googlebot
+							?.split(DIRECTIVE_SEPARATOR)
+							.filter((token) => token.startsWith("max-"))
+							.sort(),
+						["max-image-preview:large", "max-snippet:-1", "max-video-preview:-1"],
+						`${path} preserves inherited rich-preview settings`
+					);
+				}
+			})
+		);
+	});
 });

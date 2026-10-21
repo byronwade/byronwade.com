@@ -40,7 +40,7 @@ as part of measurement.
 - Home/shared navigation requests routes on navigation rather than speculative
   viewport prefetch. The contact form loads on the first intentional open and
   remains mounted afterward to preserve drafts.
-- Closed launcher/search/support panel bodies do not render an inactive UI tree.
+- Closed menu and search panel bodies do not render an inactive UI tree.
   Contact addresses remain obfuscated until revealed.
 - The app favicon reuses an existing small asset. `tests/design-contract.test.mjs`
   prevents a large public asset from shadowing its route.
@@ -60,7 +60,7 @@ as part of measurement.
 - Header measurement writes native root scroll padding directly. The old inherited
   custom property recalculated styles throughout the document even though only
   the root used it. No-JS defaults and measured focus clearance are retained.
-- Launcher/toolbar feature owners render static SVGs on the server and pass them
+- Header/toolbar feature owners render static SVGs on the server and pass them
   as ReactNode slots to their client interaction leaves. Their existing public
   APIs and state logic stay intact while glyph-definition JavaScript is removed.
 - Toast notifications mount with the contact forms; the unused global query-state
@@ -78,9 +78,3 @@ browser matrix in `docs/evidence/thorbis/`. The evidence README identifies the
 measurement environment, results, source pin and reproduction commands. They are
 local lab results, not a real-user or production latency claim. Report machine
 contention and failed runs honestly; do not relax a budget to obtain a pass.
-
-Closed shell capsules skip motion-token reads before their first opening. Header
-and launcher ResizeObservers supply their initial measurements without duplicate
-synchronous hydration reads. The launcher observer writes its slot geometry directly
-rather than scheduling a React render for measurements. Panel geometry and existing reduced-motion behavior
-remain owned by `useCapsuleMorph`.

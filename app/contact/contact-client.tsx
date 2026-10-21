@@ -162,7 +162,7 @@ export default function ContactClient() {
 				</form>
 
 				{/* The fallback, not a second column. */}
-				<p className="reveal reveal-delay-2 text-muted-foreground text-sm">
+				<p className="text-muted-foreground text-sm">
 					Prefer email?{" "}
 					<ObfuscatedEmail
 						className="text-foreground hover:text-brand [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"

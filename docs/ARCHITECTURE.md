@@ -35,6 +35,24 @@ the header.
 
 ## Route map
 
+Blog and project indexes, posts, and case studies render their local Markdown
+without a page-level Suspense fallback. Streaming these prerendered pages can
+leave the prose in hidden containers that need JavaScript to replace the
+skeleton. `tests/rendered/readable-content.test.mjs` checks every published URL
+from the build manifest and both indexes in a browser with JavaScript disabled,
+asserting visible titles, prose, index entries, and no article/list loading status.
+Slug enumeration still owns which URLs exist; missing content keeps the real 404
+contract below.
+
+Root metadata (`app/metadata.config.ts`) sets only Googlebot preview limits,
+so it cannot add an indexing directive to Next's automatic `noindex` on 404s.
+Public pages without a page-level policy use the crawler defaults, `index, follow`;
+the root no longer adds `nocache`. Page-specific policies remain in `lib/seo.ts`,
+including `/search`'s `noindex`. The missing-content regression checks one generic
+robots tag on 404s, no contradictory Googlebot `index`, published-page indexing,
+and preserved preview limits. See [Next's notFound contract](https://nextjs.org/docs/app/api-reference/functions/not-found)
+and [Google's robots defaults](https://developers.google.com/search/docs/crawling-indexing/special-tags).
+
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |

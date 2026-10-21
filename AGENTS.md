@@ -539,11 +539,10 @@ Known false positives in this repository, confirmed by reading the code:
 
 Accepted, and not worth changing:
 
-- `prefer-html-dialog` on the launcher and dock panels. A native `<dialog>`
-  would give focus trapping for free, but those panels *are* the morph capsule;
-  replacing the element would break the animation the component exists for. The
-  fullscreen preview already implements `role="dialog"`, `aria-modal`, Escape,
-  and focus return by hand.
+- `prefer-html-dialog` on hand-built dialogs. The launcher and dock morph
+  capsules that first motivated this were removed with the Thorbis header
+  (#80). The fullscreen preview implements `role="dialog"`, `aria-modal`,
+  Escape, and focus return by hand.
 - `react-compiler-no-manual-memoization` inside `hooks/`. A hook's returned
   callbacks are part of its public contract, consumers put them in dependency
   arrays, so stable identity is deliberate there even though the compiler
@@ -567,9 +566,8 @@ uncompilable twice.
 
 `noExcessiveCognitiveComplexity` is enforced, and the repository is at zero.
 Keep it that way by extracting a hook or a child component rather than raising
-the threshold, `hooks/use-capsule-morph.ts`, `use-drag-resize.ts`,
-`use-frame-size.ts`, and `use-screenshot.ts` all came out of that exercise and
-each owns one concern.
+the threshold, `hooks/use-drag-resize.ts`, `use-frame-size.ts`, and
+`use-screenshot.ts` all came out of that exercise and each owns one concern.
 
 `ultracite/biome/type-aware` is enabled for its import-graph rules, so import
 cycles and undeclared dependencies fail release checks.

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
@@ -20,9 +19,8 @@ interface BlogPostPageProps {
 }
 
 /**
- * Only the loader's slugs are pages, so other URLs get a real 404 before any
- * response is sent. The `notFound()` below runs inside Suspense, after the 200
- * status and the skeleton are already streamed, and then gets cached as a page.
+ * Only the loader's published slugs are pages, so other URLs get a real 404
+ * before any response is sent and cannot become cached pages on demand.
  * Development regenerates this list on every request, so drafts still preview.
  */
 export const dynamicParams = false;
@@ -119,7 +117,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    wrapper were removed with it, and the share row moved to the foot.
 			    Sharing is something a reader does after reading, and having it in
 			    both places meant the same control competed with itself. */}
-				<header className="reveal flex w-full flex-col gap-3">
+				<header className="flex w-full flex-col gap-3">
 					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 leading-normal tracking-tight">
 						{post.title}
 					</h1>
@@ -143,7 +141,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				</header>
 
 				{/* Blog Post Content */}
-				<article className="reveal reveal-delay-1 w-full">
+				<article className="w-full">
 					<Markdown content={post.content} />
 				</article>
 
@@ -152,7 +150,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 				{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}
-				<div className="reveal reveal-delay-2 flex w-full flex-col gap-4">
+				<div className="flex w-full flex-col gap-4">
 					<SocialShare description={post.excerpt} title={post.title} url={url} />
 					<Link
 						className="link-underline inline-flex min-h-11 w-fit items-center text-sm"
@@ -166,22 +164,6 @@ async function BlogPostContent({ slug }: { slug: string }) {
 	);
 }
 
-/** Mirrors the article's real rhythm so the swap does not shift the page. */
-function PostFallback() {
-	return (
-		<div aria-busy="true" className="flex w-full animate-pulse flex-col gap-4">
-			<p className="sr-only" role="status">
-				Loading post…
-			</p>
-			<div className="h-9 w-3/4 rounded bg-muted" />
-			<div className="h-4 w-1/2 rounded bg-muted/70" />
-			<div className="mt-4 h-4 w-full rounded bg-muted/70" />
-			<div className="h-4 w-full rounded bg-muted/70" />
-			<div className="h-4 w-2/3 rounded bg-muted/70" />
-		</div>
-	);
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 
@@ -189,9 +171,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 		<>
 			<ReadingProgress />
 			<SiteShell>
-				<Suspense fallback={<PostFallback />}>
-					<BlogPostContent slug={slug} />
-				</Suspense>
+				<BlogPostContent slug={slug} />
 			</SiteShell>
 		</>
 	);
