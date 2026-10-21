@@ -22,7 +22,7 @@ export default function TermsPage() {
 			<article className="flex flex-col gap-8">
 				<PageHeader lede={`Last updated ${LAST_UPDATED}`} title="Terms of service" />
 
-				<Prose className="reveal reveal-delay-1">
+				<Prose>
 					<p>
 						These Terms of Service (&ldquo;Terms&rdquo;) govern your use of byronwade.com and any
 						services provided by Byron Wade, including the Wade&rsquo;s Plumbing &amp; Septic brand.
