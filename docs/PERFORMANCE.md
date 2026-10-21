@@ -58,10 +58,10 @@ feedback without delivering a message or certifying a live provider.
   element overrides spread props onto the DOM. Spread through, every element
   printed `node="[object Object]"` and the page's RSC payload repeated that
   element's hast subtree with source positions. Removing it left the visible
-  markup byte-identical and cut prerendered HTML from 6,181,468 to 4,432,121
-  bytes across all pages (`/projects/dits` 711,204 to 322,457 bytes, 99,877 to
-  62,397 gzipped). `tests/markdown-headings.test.mjs` fails if any post or case
-  study renders the attribute again.
+  markup byte-identical and, measured at 170cd73, cut prerendered HTML from
+  6,181,468 to 4,432,121 bytes across all pages (`/projects/dits` 711,204 to
+  322,457 bytes, 99,877 to 62,397 gzipped). `tests/markdown-headings.test.mjs`
+  fails if any post or case study renders the attribute again.
 - The exact Thorbis Inter and Geist Mono files and face descriptors are copied
   with their OFL licenses into the global CSS owner. The root layout preloads
   Latin Inter, avoiding a missing generated font manifest and a separate blocking
