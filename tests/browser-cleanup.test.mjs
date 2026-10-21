@@ -164,6 +164,35 @@ test("a child that has already exited never receives a forced kill", async (t) =
 	assert.equal(child.listenerCount("exit"), 0);
 });
 
+for (const rejectsClose of [false, true]) {
+	test(`a successful owned exit racing taskkill preserves close rejection: ${rejectsClose}`, async (t) => {
+		const { child, context, diagnostics, exit } = stubChild(t);
+		const killError = Object.assign(new Error("process not found"), { code: 128 });
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			exit();
+			callback(killError, "", "synthetic process not found");
+		});
+		syncBuiltinESMExports();
+		const closeError = rejectsClose ? new Error("original close failure") : null;
+		const result = closeBrowser(
+			{
+				process: () => child,
+				close: closeError ? () => Promise.reject(closeError) : stalledClose,
+			},
+			context
+		);
+		const check = closeError
+			? assert.rejects(result, (error) => error === closeError)
+			: assert.doesNotReject(result);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await check;
+		assert.equal(child.exitCode, 0);
+		assert.equal(child.listenerCount("exit"), 0);
+		assert.ok(diagnostics.join("\n").includes("128"));
+	});
+}
+
 test("a failed cleanup command also rejects after a stalled close", async (t) => {
 	const { child, context } = stubChild(t);
 	const error = Object.assign(new Error("could not launch taskkill"), { code: "ENOENT" });
