@@ -2,9 +2,8 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
 import matter from "gray-matter";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const HYDRATION_ERROR = /hydration|hydrating|did not match|Minified React error/i;
 const H1 = /<h1[^>]*>([\s\S]*?)<\/h1>/;
@@ -89,14 +88,7 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 			})
 		);
 
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-			timeout: 30_000,
-			protocolTimeout: 15_000,
-		});
-		try {
+		await withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(20_000);
 			await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
@@ -151,9 +143,7 @@ test("unknown and draft content URLs are real 404s that hydrate cleanly", {
 					assert.equal(state.heading, heading, path);
 				}
 			}, Promise.resolve());
-		} finally {
-			await closeBrowser(browser, context);
-		}
+		});
 	});
 
 	// next start writes a cache page for any slug it renders on demand.

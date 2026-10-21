@@ -6,8 +6,9 @@ import { navItems } from "./nav-config";
 
 export default function Footer() {
 	return (
-		<footer className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 print:hidden">
-			<div className="grid gap-8 sm:grid-cols-[1.5fr_1fr]">
+		<footer className="w-full px-4 pb-10 sm:px-5 print:hidden">
+			{/* The sign-off keeps the header's 42rem measure (Thorbis site-footer). */}
+			<div className="mx-auto grid max-w-2xl gap-8 border-border border-t pt-10 sm:grid-cols-[1.5fr_1fr]">
 				<div className="flex max-w-sm flex-col items-start gap-3">
 					<p className="font-medium text-heading-16">Byron Wade</p>
 					<p className="text-body text-copy-14">
@@ -46,7 +47,7 @@ export default function Footer() {
 					</Link>
 				</nav>
 			</div>
-			<div className="mt-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-5 text-copy-12 text-muted-foreground">
+			<div className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-between gap-x-6 gap-y-3 text-copy-12 text-muted-foreground">
 				<p>© {new Date().getFullYear()} Byron Wade</p>
 				<div className="flex flex-wrap items-center gap-x-5">
 					{publicProfiles.map((item) => (

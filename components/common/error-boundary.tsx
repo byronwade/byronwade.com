@@ -1,9 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle, Home, RefreshCw } from "@/lib/icons";
+import { ErrorNotice } from "./error-notice";
 
 interface ErrorBoundaryState {
 	error?: Error;
@@ -68,10 +66,6 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 		}, 100);
 	};
 
-	handleGoHome = () => {
-		window.location.href = "/";
-	};
-
 	render() {
 		if (this.state.hasError) {
 			const { error } = this.state;
@@ -93,50 +87,18 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 			);
 
 			return (
-				<div className="flex min-h-screen items-center justify-center p-4">
-					<Card className="w-full max-w-md">
-						<CardHeader className="text-center">
-							<div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-								<AlertTriangle className="h-6 w-6 text-destructive" />
-							</div>
-							<CardTitle className="text-xl">
-								{isWebpackError ? "Loading Error" : "Something went wrong"}
-							</CardTitle>
-							<CardDescription>
-								{isWebpackError
-									? "There was an issue loading the page. This usually resolves with a refresh."
-									: "An unexpected error occurred. Please try again."}
-							</CardDescription>
-						</CardHeader>
-						<CardContent className="space-y-4">
-							{process.env.NODE_ENV === "development" && error && (
-								<div className="rounded-md bg-muted p-3">
-									<p className="font-mono text-muted-foreground text-sm">{error.message}</p>
-								</div>
-							)}
-
-							<div className="flex flex-col gap-2">
-								<Button onClick={this.handleRetry} className="w-full">
-									<RefreshCw className="mr-2 h-4 w-4" />
-									Try Again
-								</Button>
-								<Button variant="outline" onClick={this.handleGoHome} className="w-full">
-									<Home className="mr-2 h-4 w-4" />
-									Go Home
-								</Button>
-							</div>
-
-							{isWebpackError && (
-								<p className="text-center text-muted-foreground text-xs">
-									If this error persists, try clearing your browser cache or refreshing the page.
-								</p>
-							)}
-						</CardContent>
-					</Card>
-				</div>
+				<ErrorNotice
+					description={
+						isWebpackError
+							? "Part of the site’s code didn’t arrive. This usually clears with a refresh; if it doesn’t, clearing the browser cache will."
+							: "Something failed while the site was rendering. Nothing you typed was sent or lost. Try again, or start from the homepage."
+					}
+					onRetry={this.handleRetry}
+					reference={process.env.NODE_ENV === "development" ? error?.message : undefined}
+					title={isWebpackError ? "The page didn’t finish loading" : "This page didn’t load"}
+				/>
 			);
 		}
-
 		return this.props.children;
 	}
 }

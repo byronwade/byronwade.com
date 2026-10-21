@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
 
 test("synthetic Figma details preserve reflow, keyboard access and breadcrumb landmarks", {
@@ -18,15 +17,8 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 	).join("\n");
 	const content = await renderFigmaDetail({ name: "LongUnbrokenDesignName".repeat(8) });
 	const breadcrumbs = await renderFigmaDetail({}, { includeSiteBreadcrumb: true });
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-			timeout: 30_000,
-			protocolTimeout: 15_000,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultNavigationTimeout(20_000);
 			await page.setCacheEnabled(false);
@@ -59,13 +51,11 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 					controls: [...document.querySelectorAll("nav a, button")].map((element) =>
 						element.getBoundingClientRect().toJSON()
 					),
-					labels: [
-						...document.querySelector("h1").parentElement.nextElementSibling.querySelectorAll("p"),
-					].map((element) => {
+					labels: [...document.querySelectorAll('[data-slot="sheet"] p')].map((element) => {
 						const range = document.createRange();
 						range.selectNodeContents(element);
 						return {
-							card: element.closest('[data-slot="card"]').getBoundingClientRect().toJSON(),
+							card: element.closest('[data-slot="sheet"]').getBoundingClientRect().toJSON(),
 							text: [...range.getClientRects()].map((rect) => rect.toJSON()),
 						};
 					}),
@@ -134,6 +124,15 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 									await page.$eval(`${trail} a`, (link) => link === document.activeElement),
 									true
 								);
+								// The page's primary action comes next, then the viewer toggle.
+								await page.keyboard.press("Tab");
+								assert.equal(
+									await page.$eval(
+										'main a[href="https://www.figma.com/file/ExampleKey"]',
+										(link) => link === document.activeElement
+									),
+									true
+								);
 								await page.keyboard.press("Tab");
 								assert.equal(
 									await page.$eval("main button", (button) => button === document.activeElement),
@@ -145,8 +144,6 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 			} finally {
 				await client.detach();
 			}
-		} finally {
-			await closeBrowser(browser, context);
-		}
-	});
+		})
+	);
 });

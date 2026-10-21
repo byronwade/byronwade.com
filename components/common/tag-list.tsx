@@ -20,7 +20,7 @@ export function TagList({ tags, limit, className, itemClassName }: TagListProps)
 				<li
 					key={tag}
 					className={cn(
-						"rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground",
+						"rounded-full bg-muted px-2 py-0.5 text-copy-12 text-muted-foreground",
 						itemClassName
 					)}
 				>

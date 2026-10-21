@@ -51,9 +51,14 @@ export default function HeaderPopoverContent({
 					alignOffset={navigation ? 1 : 0}
 					collisionAvoidance={{ side: "none", align: "none" }}
 					collisionPadding={navigation ? 1 : 16}
+					// --anchor-width is unset until the first measurement. Without a fallback that
+					// frame sized to content, widening a narrow mobile viewport, and the first
+					// end-aligned position was computed from the wrong width.
 					className={cn(
 						"z-(--z-popover)",
-						navigation ? "w-[calc(var(--anchor-width)-2px)]" : "w-[min(34rem,var(--anchor-width))]"
+						navigation
+							? "w-[calc(var(--anchor-width,var(--site-header-width))-2px)]"
+							: "w-[min(34rem,var(--anchor-width,var(--site-header-width)))]"
 					)}
 				>
 					<Popover.Popup

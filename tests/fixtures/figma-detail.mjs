@@ -38,7 +38,8 @@ registerHooks({
 				format: "module",
 				shortCircuit: true,
 				source: `export const fixture = { file: null };
-export const getFigmaFile = () => async () => fixture.file;`,
+export const getFigmaFile = () => async () => fixture.file;
+export const isFigmaFileKey = (key) => /^[\\w-]{1,128}$/.test(key);`,
 			};
 		}
 		if (url.endsWith(".tsx")) {
@@ -100,7 +101,7 @@ export async function renderFigmaDetail(overrides = {}, { includeSiteBreadcrumb 
 	);
 }
 
-export function renderMissingFigmaDetail() {
+export function renderMissingFigmaDetail(key = "UnavailableKey") {
 	fixture.file = null;
-	return FigmaDetailPage({ params: Promise.resolve({ key: "UnavailableKey" }) });
+	return FigmaDetailPage({ params: Promise.resolve({ key }) });
 }

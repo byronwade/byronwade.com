@@ -65,7 +65,9 @@ feedback without delivering a message or certifying a live provider.
 - The exact Thorbis Inter and Geist Mono files and face descriptors are copied
   with their OFL licenses into the global CSS owner. The root layout preloads
   Latin Inter, avoiding a missing generated font manifest and a separate blocking
-  font stylesheet. Mono loads when used. All fonts use swap.
+  font stylesheet. Mono loads when used. All fonts use swap. Inter falls back to
+  a local Arial face scaled to Inter's metrics, so a late swap does not shift
+  layout at the default text size.
 - The resume signature renders only the name "Byron Wade". The stylesheet loads
   `public/fonts/byron-signature.woff2`, a subset of those glyphs, so `/resume`
   stays inside the 100KiB font limit. The full

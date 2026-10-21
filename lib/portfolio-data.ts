@@ -14,6 +14,15 @@ const FIGMA_PROJECT_ID = /^[1-9]\d*$/;
 /** One plain path segment; the SDK concatenates the key into its authenticated request path. */
 const FIGMA_FILE_KEY = /^[\w-]{1,128}$/;
 
+/**
+ * Whether `key` could name a Figma file. The detail page uses it to tell a
+ * malformed URL (a real 404) from a well-formed key Figma did not return, which
+ * may be private, removed, or simply unreachable right now.
+ */
+export function isFigmaFileKey(key: string): boolean {
+	return FIGMA_FILE_KEY.test(key);
+}
+
 /** Each SDK request gets a fresh deadline that also cancels stalled body reads. */
 function createFigmaClient(accessToken: string, timeoutMs: number) {
 	const client = Figma.Client({ personalAccessToken: accessToken });
@@ -312,7 +321,7 @@ function parseFigmaFileDetail(value: unknown): Omit<FigmaFileDetail, "thumbnailU
 
 export const getFigmaFile = (key: string): (() => Promise<FigmaFileDetail | null>) => {
 	// Rejected before the cache wrapper, so a crafted URL creates no entry or request.
-	if (!FIGMA_FILE_KEY.test(key)) {
+	if (!isFigmaFileKey(key)) {
 		return () => Promise.resolve(null);
 	}
 	return async () => {

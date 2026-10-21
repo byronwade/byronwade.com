@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Check, Copy, Linkedin, Share2, Twitter } from "@/lib/icons";
 import { xHandle } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
 interface SocialShareProps {
 	className?: string;
@@ -60,7 +61,7 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 	};
 
 	return (
-		<div className={`flex flex-wrap items-center gap-3 ${className || ""}`}>
+		<div className={cn("flex flex-wrap items-center gap-3", className)}>
 			{/* Native Share (mobile) */}
 			{canShare && (
 				<button
@@ -80,10 +81,10 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				target="_blank"
 				rel="noopener noreferrer"
 				className={pillLinkClass}
-				aria-label="Share on Twitter"
+				aria-label="Share on X"
 			>
 				<Twitter className="size-4" />
-				<span>Twitter</span>
+				<span>X</span>
 			</a>
 
 			{/* LinkedIn */}
@@ -98,10 +99,19 @@ export function SocialShare({ url, title, description, className }: SocialShareP
 				<span>LinkedIn</span>
 			</a>
 
-			{/* Copy Link */}
+			{/* Copy link. Both words share one grid cell so the chip never changes
+			    width when the label swaps (Thorbis "nothing shifts"); the result is
+			    announced from a sibling live region, not by renaming the button. */}
 			<button type="button" onClick={handleCopy} className={pillLinkClass} aria-label="Copy link">
-				{copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-				<span>Copy link</span>
+				{copied ? (
+					<Check aria-hidden="true" className="size-4" />
+				) : (
+					<Copy aria-hidden="true" className="size-4" />
+				)}
+				<span className="grid">
+					<span className={cn("col-start-1 row-start-1", copied && "invisible")}>Copy link</span>
+					<span className={cn("col-start-1 row-start-1", !copied && "invisible")}>Copied</span>
+				</span>
 			</button>
 			<span className="sr-only" role="status">
 				{copied ? "Link copied" : ""}

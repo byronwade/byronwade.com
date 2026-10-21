@@ -8,7 +8,7 @@ import { test } from "node:test";
 import { pathToFileURL } from "node:url";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 
-const FAILURE = /Couldn(?:'|&#x27;)t load repositories/;
+const FAILURE = /Couldn(?:'|&#x27;|’)t load repositories/;
 const RECOVERED = /href="https:\/\/github.com\/fixture\/audit-recovery"/;
 
 test("portfolio retry renders provider recovery without caching failure HTML", {
