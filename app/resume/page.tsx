@@ -182,14 +182,16 @@ export default function ResumePage() {
 									/>
 								</div>
 								<div className="flex flex-col gap-1 pt-1">
-									<h1 className="font-medium font-signature text-2xl text-foreground sm:text-3xl">
+									<h1 className="font-medium font-signature text-foreground text-heading-32">
 										Byron Wade
 									</h1>
-									<p className="text-muted-foreground">Founder at Thorbis · Full Stack Developer</p>
+									<p className="text-body text-copy-16">
+										Founder at Thorbis · Full Stack Developer
+									</p>
 								</div>
 							</div>
 
-							<div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-muted-foreground text-sm">
+							<div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-copy-14 text-muted-foreground">
 								<CopyEmailButton />
 								<span className="flex items-center gap-2">
 									<MapPin className="size-4" aria-hidden="true" />
@@ -202,7 +204,7 @@ export default function ResumePage() {
 					{/* Summary */}
 					<section className="w-full">
 						<div className="flex flex-col gap-4">
-							<p className="text-base text-foreground leading-relaxed sm:text-lg">
+							<p className="text-pretty text-copy-16 text-foreground leading-relaxed">
 								I have spent about eight years running service businesses and building the software
 								they need. I grew a plumbing company from nothing to $2.4M and then lost it, and
 								that is where most of what I know about this work came from. Right now I am building{" "}
@@ -217,12 +219,12 @@ export default function ResumePage() {
 								</a>
 								, a field management system for service professionals.
 							</p>
-							<p className="text-muted-foreground leading-relaxed">
+							<p className="text-body text-copy-16 leading-relaxed">
 								<span className="font-medium text-foreground">Open to opportunities.</span> I am
 								looking for full time work in software development or technical leadership, or
 								anywhere that both the engineering side and the running-a-business side are useful.
 							</p>
-							<div className="flex flex-wrap items-center gap-2 pt-1 print:hidden">
+							<div className="flex flex-wrap items-center gap-3 pt-2 print:hidden">
 								<Button
 									render={
 										<Link href="/contact">
@@ -238,65 +240,63 @@ export default function ResumePage() {
 
 					{/* Experience */}
 					<section className="w-full">
-						<h2 className="mb-8 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-3">
+						<h2 className="mb-6 font-heading font-medium text-foreground text-heading-20 tracking-tight print:mb-3">
 							Experience
 						</h2>
-						<div className="flex flex-col gap-10 print:gap-4">
+						{/* The site's chronology grammar: the period leads in a mono column,
+						    the record sits beside it. Paper keeps the same two columns. */}
+						<div className="flex flex-col gap-8 print:gap-4">
 							{workExperience.map((job) => (
 								<article
 									key={`${job.company}-${job.role}`}
-									className="flex flex-col gap-2 print:break-inside-avoid print:gap-1"
+									className="flex flex-col gap-x-6 gap-y-1 sm:flex-row print:break-inside-avoid"
 								>
-									<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-										<h3 className="font-medium text-foreground">
+									<p className="font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
+										{job.period}
+									</p>
+									<div className="flex min-w-0 flex-1 flex-col gap-1 print:gap-0.5">
+										<h3 className="flex flex-wrap items-center gap-2 font-medium text-copy-16 text-foreground">
 											{job.role}
-											{job.current && (
-												<StatusPill tone="success" pulse className="ml-2 align-middle">
-													Current
-												</StatusPill>
-											)}
+											{job.current && <StatusPill tone="success">Current</StatusPill>}
 										</h3>
-										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
-											{job.period}
-										</span>
+										<p className="flex min-h-11 flex-wrap items-center gap-x-1.5 text-copy-14 text-muted-foreground print:min-h-0">
+											{job.companyUrl ? (
+												<a
+													href={job.companyUrl}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="link-underline inline-flex min-h-11 items-center gap-1 font-medium print:min-h-0"
+												>
+													{job.company}
+													<ExternalLink className="size-3 print:hidden" aria-hidden="true" />
+													<span className="sr-only"> (opens in a new tab)</span>
+													{/* Paper has no links, so print where it goes. */}
+													<span className="hidden font-normal print:inline">
+														({new URL(job.companyUrl).host})
+													</span>
+												</a>
+											) : (
+												job.company
+											)}
+											<span aria-hidden="true">·</span>
+											{job.location}
+										</p>
+										<p className="text-body text-copy-14 leading-relaxed">
+											{(() => {
+												if (!(job.highlight && job.description.includes(job.highlight))) {
+													return job.description;
+												}
+												const idx = job.description.indexOf(job.highlight);
+												return (
+													<>
+														{job.description.slice(0, idx)}
+														<span className="font-medium text-foreground">{job.highlight}</span>
+														{job.description.slice(idx + job.highlight.length)}
+													</>
+												);
+											})()}
+										</p>
 									</div>
-									<p className="text-muted-foreground text-sm">
-										{job.companyUrl ? (
-											<a
-												href={job.companyUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="link-underline inline-flex items-center gap-1 font-medium"
-											>
-												{job.company}
-												<ExternalLink className="size-3 print:hidden" aria-hidden="true" />
-												<span className="sr-only"> (opens in a new tab)</span>
-												{/* Paper has no links, so print where it goes. */}
-												<span className="hidden font-normal print:inline">
-													({new URL(job.companyUrl).host})
-												</span>
-											</a>
-										) : (
-											job.company
-										)}
-										{" · "}
-										{job.location}
-									</p>
-									<p className="mt-2 text-muted-foreground leading-relaxed print:mt-0">
-										{(() => {
-											if (!(job.highlight && job.description.includes(job.highlight))) {
-												return job.description;
-											}
-											const idx = job.description.indexOf(job.highlight);
-											return (
-												<>
-													{job.description.slice(0, idx)}
-													<span className="font-medium text-foreground">{job.highlight}</span>
-													{job.description.slice(idx + job.highlight.length)}
-												</>
-											);
-										})()}
-									</p>
 								</article>
 							))}
 						</div>
@@ -304,36 +304,33 @@ export default function ResumePage() {
 
 					{/* Skills */}
 					<section className="w-full">
-						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-2">
+						<h2 className="mb-4 font-heading font-medium text-foreground text-heading-20 tracking-tight print:mb-2">
 							Skills
 						</h2>
 						{/* Not pills. These are read, not pressed. §5.4 makes a pill a
 						    semantic shape, and giving forty static strings the shape of a
 						    control made the section look like a filter bar. */}
-						<ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-muted-foreground">
+						<ul className="flex flex-wrap gap-x-4 gap-y-1.5 text-body text-copy-14">
 							{skills.map((skill) => (
-								<li className="text-sm" key={skill}>
-									{skill}
-								</li>
+								<li key={skill}>{skill}</li>
 							))}
 						</ul>
 					</section>
 
 					{/* Certifications */}
 					<section className="w-full">
-						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-2">
+						<h2 className="mb-4 font-heading font-medium text-foreground text-heading-20 tracking-tight print:mb-2">
 							Licenses and certifications
 						</h2>
-						{/* Hairlines, not a bordered card. §13 rejects both the card wrapper
-						    and a border around every row; the site already has one index
-						    grammar and this is a list like any other. `pending` is stated in
-						    words rather than tinted, so it survives print and colour blindness. */}
+						{/* The site's index grammar: rows separated by space, not rules or a
+						    card (Thorbis D-017). `pending` is stated in words rather than tinted,
+						    so it survives print and colour blindness. */}
 						<IndexList>
 							{certifications.map((cert) => (
 								<IndexRow key={`${cert.name}-${cert.year}`}>
-									<div className="flex items-center justify-between gap-4 py-3 print:py-1">
-										<span className="text-foreground">{cert.name}</span>
-										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
+									<div className="flex items-baseline justify-between gap-4 py-2 print:py-0.5">
+										<span className="text-copy-14 text-foreground">{cert.name}</span>
+										<span className="shrink-0 font-mono text-copy-12 text-muted-foreground tabular-nums">
 											{cert.year}
 											{cert.pending && " · in progress"}
 										</span>
@@ -343,13 +340,13 @@ export default function ResumePage() {
 						</IndexList>
 					</section>
 
-					<section className="w-full border-border border-t pt-10 print:hidden">
+					<section className="w-full print:hidden">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex flex-col gap-1">
-								<h2 className="font-heading font-semibold text-lg tracking-tight">
+								<h2 className="font-heading font-medium text-heading-20 tracking-tight">
 									Interested in working together?
 								</h2>
-								<p className="text-muted-foreground text-sm">
+								<p className="text-body text-copy-14">
 									Tell me what you’re building. Product roles, service software, or just an intro.
 								</p>
 							</div>

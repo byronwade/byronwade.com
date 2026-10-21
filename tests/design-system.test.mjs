@@ -57,11 +57,7 @@ const HEAVY_WEIGHT = /\bfont-(?:semibold|bold|extrabold|black)\b/g;
 const BASELINE = {
 	"app/contact/contact-client.tsx": { type: 9 },
 	"app/not-found.tsx": { type: 4, weight: 1 },
-	"app/portfolio/page.tsx": { type: 5, arbitrary: 1 },
-	"app/resume/page.tsx": { type: 14, weight: 4 },
-	"app/resume/resume-actions.tsx": { type: 2 },
 	"app/search/page.tsx": { type: 1 },
-	"components/common/empty-state.tsx": { type: 2, weight: 1 },
 	"components/home/inline-contact.tsx": { type: 11 },
 };
 

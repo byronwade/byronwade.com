@@ -57,7 +57,7 @@ export function CopyEmailButton() {
 				{email ? <span data-resume-email="">{email}</span> : <span>Email</span>}
 				<span className="sr-only">, copy to clipboard</span>
 			</button>
-			<span role="status" className="text-sm print:hidden">
+			<span role="status" className="text-copy-14 print:hidden">
 				{STATUS_TEXT[status]}
 			</span>
 		</span>
@@ -131,7 +131,7 @@ export function DownloadResumeButton() {
 					</a>
 				}
 			/>
-			<span role="status" className="text-sm print:hidden">
+			<span role="status" className="text-copy-14 print:hidden">
 				{DOWNLOAD_STATUS[phase]}
 			</span>
 		</span>

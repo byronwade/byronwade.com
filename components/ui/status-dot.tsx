@@ -9,31 +9,21 @@ const dot: Record<StatusTone, string> = {
 	neutral: "bg-muted-foreground",
 };
 
-const sizes = { sm: "size-1.5", md: "size-2", lg: "size-2.5" } as const;
-
-/** Atomic status indicator dot. Reused by StatusPill, tables, metric rows, timelines. */
+/**
+ * Atomic status indicator dot, reused by StatusPill. It never pulses: status
+ * is a word with a quiet mark, and Thorbis keeps motion for work in progress.
+ */
 export function StatusDot({
 	tone = "neutral",
-	size = "sm",
-	pulse = false,
 	className,
 }: {
 	tone?: StatusTone;
-	size?: keyof typeof sizes;
-	pulse?: boolean;
 	className?: string;
 }) {
 	return (
-		<span className={cn("relative inline-flex", sizes[size], className)}>
-			{pulse && (
-				<span
-					className={cn(
-						"absolute inline-flex size-full animate-ping rounded-full opacity-75",
-						dot[tone]
-					)}
-				/>
-			)}
-			<span className={cn("relative inline-flex size-full rounded-full", dot[tone])} />
-		</span>
+		<span
+			aria-hidden="true"
+			className={cn("inline-flex size-1.5 rounded-full", dot[tone], className)}
+		/>
 	);
 }

@@ -13,6 +13,7 @@ import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
+import { StatusPill } from "@/components/ui/status-pill";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "@/lib/icons";
 import type { GitHubRepo } from "@/types/github";
 
@@ -163,21 +164,21 @@ function PortfolioEmptyState({
 	return (
 		<EmptyState
 			icon={Github}
-			title={degraded || error ? "Couldn't load repositories" : "No repositories yet"}
+			title={degraded || error ? "Couldn’t load repositories" : "No repositories yet"}
 			description={
 				degraded || error
-					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
+					? "GitHub is slow or unavailable right now. Nothing here is lost; retry, or open the profile directly."
 					: "Public repositories will show up here once they’re available."
 			}
 			action={
-				<div className="flex flex-wrap items-center justify-center gap-2">
+				<div className="flex flex-wrap items-center gap-3">
 					<Button type="button" onClick={reload} disabled={refreshing} className="gap-2">
 						<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
 						{refreshing ? "Retrying…" : "Try again"}
 					</Button>
 					<Button
 						role="link"
-						variant="outline"
+						variant="secondary"
 						render={
 							<a href="https://github.com/byronwade" target="_blank" rel="noopener noreferrer">
 								Open GitHub
@@ -194,20 +195,17 @@ function PortfolioEmptyState({
 /** Mirrors RepoRow's shape so the swap to real data does not shift layout. */
 function RepoSkeletonList() {
 	return (
-		<div aria-busy="true" className="flex flex-col">
+		<div aria-busy="true" className="flex animate-pulse flex-col gap-1">
 			<p className="sr-only" role="status">
 				Loading repositories…
 			</p>
 			{["a", "b", "c", "d", "e", "f"].map((id) => (
-				<div
-					className="flex animate-pulse flex-col gap-2 border-border border-b py-5 last:border-b-0"
-					key={`skeleton-${id}`}
-				>
-					<div className="flex items-baseline gap-4">
-						<div className="h-3 w-12 shrink-0 rounded bg-muted" />
-						<div className="h-4 w-1/3 rounded bg-muted" />
+				<div className="flex flex-col gap-x-6 gap-y-2 py-4 sm:flex-row" key={`skeleton-${id}`}>
+					<div className="h-3 w-16 shrink-0 rounded-sm bg-muted sm:mt-1 sm:w-28" />
+					<div className="flex flex-1 flex-col gap-2">
+						<div className="h-4 w-1/3 rounded-sm bg-muted" />
+						<div className="h-3 w-2/3 rounded-sm bg-muted" />
 					</div>
-					<div className="h-3 w-2/3 rounded bg-muted/70 sm:ml-16" />
 				</div>
 			))}
 		</div>
@@ -218,10 +216,10 @@ function RepoSkeletonList() {
  * One repository row: Showcase profile.
  *
  * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
- * activity sorted by signal. A card grid worked against that: cards give every
- * repository the same visual weight regardless of how much traction it has, and
- * §13 rejects the card-grid reflex outright. Star count now leads the row, so
- * the sort order is visible as structure rather than buried in a metadata strip.
+ * activity sorted by signal. Signal leads in the mono column, stars and the
+ * last push, the same column the writing and resume rows use for dates, so
+ * the sort order is visible as structure. Language and forks follow the
+ * description on every width instead of disappearing on phones.
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
@@ -232,65 +230,66 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 				rel="noopener noreferrer"
 				target="_blank"
 			>
-				<div className="flex items-baseline gap-4">
-					<span
-						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground/70 text-xs tabular-nums ${indexRowAccentClass}`}
-					>
-						<Star aria-hidden="true" className="size-3" />
-						{repo.stargazers_count}
-					</span>
-
-					<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-						<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
-							{titleize(repo.name)}
+				<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
+					<p className="flex gap-3 font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
+						<span className="inline-flex items-center gap-1">
+							<Star aria-hidden="true" className="size-3" />
+							{repo.stargazers_count}
+							<span className="sr-only"> stars</span>
 						</span>
-						{repo.archived && (
-							<span className="shrink-0 font-mono text-[10px] text-muted-foreground uppercase tracking-wide">
-								Archived
-							</span>
-						)}
-					</span>
-
-					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground/70 text-xs tabular-nums sm:flex">
-						{repo.language && (
-							<span className="inline-flex items-center gap-1.5">
-								<span className={`size-2 rounded-full ${languageTone(repo.language)}`} />
-								{repo.language}
-							</span>
-						)}
-						{repo.forks_count > 0 && (
-							<span className="inline-flex items-center gap-1">
-								<GitFork aria-hidden="true" className="size-3" />
-								{repo.forks_count}
-							</span>
-						)}
 						{repo.pushed_at && (
 							<time dateTime={repo.pushed_at}>{format(new Date(repo.pushed_at), "MMM yyyy")}</time>
 						)}
-					</span>
-
-					<ExternalLink
-						aria-hidden="true"
-						className="size-3.5 shrink-0 text-muted-foreground/50 transition-[transform,color] duration-150 group-hover/row:translate-x-0.5 group-hover/row:-translate-y-0.5 group-hover/row:text-brand"
-					/>
-				</div>
-
-				{repo.description && (
-					<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed sm:pl-16">
-						{repo.description}
 					</p>
-				)}
+					<div className="flex min-w-0 flex-1 flex-col gap-1">
+						<span className="flex items-center gap-2">
+							<span
+								className={`wrap-anywhere font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
+							>
+								{titleize(repo.name)}
+							</span>
+							{repo.archived && <StatusPill className="shrink-0">Archived</StatusPill>}
+							<ExternalLink
+								aria-hidden="true"
+								className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
+							/>
+						</span>
+						{repo.description && (
+							<p className="text-body text-copy-14 leading-relaxed">{repo.description}</p>
+						)}
+						{(repo.language || repo.forks_count > 0) && (
+							<p className="flex flex-wrap items-center gap-x-4 font-mono text-copy-12 text-muted-foreground tabular-nums">
+								{repo.language && (
+									<span className="inline-flex items-center gap-1.5">
+										<span
+											aria-hidden="true"
+											className={`size-2 rounded-full ${languageTone(repo.language)}`}
+										/>
+										{repo.language}
+									</span>
+								)}
+								{repo.forks_count > 0 && (
+									<span className="inline-flex items-center gap-1">
+										<GitFork aria-hidden="true" className="size-3" />
+										{repo.forks_count}
+										<span className="sr-only"> forks</span>
+									</span>
+								)}
+							</p>
+						)}
+					</div>
+				</div>
+				<span className="sr-only"> (opens in a new tab)</span>
 			</a>
 		</IndexRow>
 	);
 }
-
 export default function PortfolioPage() {
 	const { repos, loading, refreshing, error, degraded, reload } = usePortfolioRepos();
 	const [visibleRepos, setVisibleRepos] = useState(8);
 
 	return (
-		<SiteShell profile="showcase" width="wide">
+		<SiteShell profile="showcase">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={
@@ -301,7 +300,7 @@ export default function PortfolioPage() {
 								onClick={reload}
 								size="sm"
 								type="button"
-								variant="outline"
+								variant="secondary"
 							>
 								<RefreshCw className={`size-3.5 ${refreshing ? "animate-spin" : ""}`} />
 								{refreshing ? "Refreshing…" : "Refresh"}
@@ -341,10 +340,7 @@ export default function PortfolioPage() {
 				) : (
 					<>
 						{degraded && (
-							<p
-								className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-muted-foreground text-sm"
-								role="status"
-							>
+							<p className="rounded-lg bg-muted px-4 py-3 text-body text-copy-14" role="status">
 								This is a partial response, so some GitHub data may be stale. Refresh to try again.
 							</p>
 						)}
@@ -355,15 +351,15 @@ export default function PortfolioPage() {
 						</IndexList>
 
 						{visibleRepos < repos.length && (
-							<div className="text-center">
+							<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 								<Button
-									type="button"
-									variant="outline"
 									onClick={() => setVisibleRepos((prev) => prev + 8)}
+									type="button"
+									variant="secondary"
 								>
-									Load more
+									Show more
 								</Button>
-								<p className="mt-3 text-muted-foreground text-sm">
+								<p className="text-copy-13 text-muted-foreground tabular-nums">
 									Showing {Math.min(visibleRepos, repos.length)} of {repos.length}
 								</p>
 							</div>
