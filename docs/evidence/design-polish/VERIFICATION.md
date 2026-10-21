@@ -111,6 +111,25 @@ matches this verified source.
 
 ## Final production evidence
 
+- Second review follow-up, after merging main through `0bf3bd8` (#100). The
+  reports record code head `ea0a592`; later commits change only test fixtures,
+  not the application or these runners.
+  - `node scripts/capture-design-polish.mjs after`: exit 0, 96 cases, 0 page
+    errors, 0 overflow and 0 axe A/AA violations. The six 404 cases return 404
+    with no error, so the React #418 exemption is gone and any page error fails.
+  - `node scripts/verify-design-polish-states.mjs after`: exit 0, 120 cases,
+    6 reading-progress probes, 0 page errors, 0 failed recoveries and 0 axe
+    A/AA violations. Every
+    page now records `pageerror` and the run fails on any. Main #88 removed
+    `public/images/portfolio`, so the preview fixture now reuses
+    `images/analysis/figma-analysis.jpg`.
+  - `node scripts/verify-thorbis-browser.mjs`: exit 0 after retargeting the #80
+    header. Search is checked at every width and the Navigate menu below 640px,
+    replacing the retired All products and Support open source panels. Focus
+    checks after Escape wait up to 2s for focus to return. Below 640px the no-JS
+    check uses the footer navigation, because the header menu needs JavaScript.
+    Closing a Ctrl/⌘K search now returns focus to where it was opened (`7e1a701`).
+  - Rendered and native gates are listed in the PR body with every attempt.
 - Review follow-up: `node scripts/capture-design-polish.mjs after` exit 0 on
   `8fb6741`, then again on `3ee3365` after merging main #81. Both runs had 96
   cases. The run now fails on any page error. The only recorded errors are the

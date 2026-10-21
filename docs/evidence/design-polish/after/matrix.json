@@ -1,7 +1,6 @@
 {
   "phase": "after",
-  "head": "3ee3365e78198f0130823ed9b6b5035127ad5ffa",
-  "serverNotFoundBreadcrumb": "Home / Not Found Not Found Home / Not Found",
+  "head": "ea0a5921502aff7bf78261538dcd17211d12089d",
   "cases": [
     {
       "name": "home",
@@ -10,8 +9,8 @@
       "theme": "light",
       "status": 200,
       "geometry": {
-        "documentHeight": 3048,
-        "footerBottom": 3047.5,
+        "documentHeight": 3010,
+        "footerBottom": 3009.796875,
         "overflow": false,
         "headings": [
           {
@@ -23,7 +22,7 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 3048
+        "screenshotHeight": 3010
       },
       "accessibility": {
         "version": "4.10.3",
@@ -41,15 +40,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 3544,
-        "footerBottom": 3543.546875,
+        "documentHeight": 3450,
+        "footerBottom": 3449.546875,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 3544
+        "screenshotHeight": 3450
       },
       "accessibility": {
         "version": "4.10.3",
@@ -67,8 +66,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 2111,
-        "footerBottom": 2110.796875,
+        "documentHeight": 1983,
+        "footerBottom": 1982.796875,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -84,7 +83,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2111
+        "screenshotHeight": 1983
       },
       "accessibility": {
         "version": "4.10.3",
@@ -102,15 +101,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2791,
-        "footerBottom": 2791.046875,
+        "documentHeight": 2821,
+        "footerBottom": 2821.046875,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2791
+        "screenshotHeight": 2821
       },
       "accessibility": {
         "version": "4.10.3",
@@ -128,8 +127,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 17792,
-        "footerBottom": 17791.546875,
+        "documentHeight": 18181,
+        "footerBottom": 18181.046875,
         "overflow": false,
         "headings": [
           {
@@ -166,7 +165,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 17792
+        "screenshotHeight": 18181
       },
       "accessibility": {
         "version": "4.10.3",
@@ -184,8 +183,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 3596,
-        "footerBottom": 3596.015625,
+        "documentHeight": 3558,
+        "footerBottom": 3558.015625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "24px" }],
         "truncated": [],
@@ -201,7 +200,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3596
+        "screenshotHeight": 3558
       },
       "accessibility": {
         "version": "4.10.3",
@@ -219,8 +218,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 2162,
-        "footerBottom": 2162.046875,
+        "documentHeight": 2042,
+        "footerBottom": 2042.046875,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -244,7 +243,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2162
+        "screenshotHeight": 2042
       },
       "accessibility": {
         "version": "4.10.3",
@@ -262,8 +261,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1632,
-        "footerBottom": 1631.796875,
+        "documentHeight": 1512,
+        "footerBottom": 1511.796875,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -275,7 +274,7 @@
           { "label": "topic", "size": "16px" },
           { "label": "message", "size": "16px" }
         ],
-        "screenshotHeight": 1632
+        "screenshotHeight": 1512
       },
       "accessibility": {
         "version": "4.10.3",
@@ -293,8 +292,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 1201,
-        "footerBottom": 1200.640625,
+        "documentHeight": 1081,
+        "footerBottom": 1080.640625,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
@@ -318,7 +317,7 @@
           }
         ],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 1201
+        "screenshotHeight": 1081
       },
       "accessibility": {
         "version": "4.10.3",
@@ -336,15 +335,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2752,
-        "footerBottom": 2752.171875,
+        "documentHeight": 2632,
+        "footerBottom": 2632.171875,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 2752
+        "screenshotHeight": 2632
       },
       "accessibility": {
         "version": "4.10.3",
@@ -362,8 +361,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 1254,
-        "footerBottom": 1253.640625,
+        "documentHeight": 1134,
+        "footerBottom": 1133.640625,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
@@ -379,7 +378,7 @@
           }
         ],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 1254
+        "screenshotHeight": 1134
       },
       "accessibility": {
         "version": "4.10.3",
@@ -397,8 +396,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 2508,
-        "footerBottom": 2507.796875,
+        "documentHeight": 2466,
+        "footerBottom": 2465.796875,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -414,7 +413,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2508
+        "screenshotHeight": 2466
       },
       "accessibility": {
         "version": "4.10.3",
@@ -432,8 +431,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 2508,
-        "footerBottom": 2507.796875,
+        "documentHeight": 2414,
+        "footerBottom": 2413.796875,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -449,7 +448,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2508
+        "screenshotHeight": 2414
       },
       "accessibility": {
         "version": "4.10.3",
@@ -466,25 +465,22 @@
       "theme": "light",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
-        "documentHeight": 1128,
-        "footerBottom": 1127.796875,
+        "documentHeight": 1008,
+        "footerBottom": 1007.796875,
         "overflow": false,
         "headings": [{ "text": "Page not found", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 1128
+        "screenshotHeight": 1008
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
         "incomplete": ["aria-valid-attr-value"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-375-light.png"
     },
     {
@@ -495,8 +491,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 4870,
-        "footerBottom": 4870.296875,
+        "documentHeight": 4794,
+        "footerBottom": 4794.296875,
         "overflow": false,
         "headings": [
           {
@@ -517,7 +513,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 4870
+        "screenshotHeight": 4794
       },
       "accessibility": {
         "version": "4.10.3",
@@ -535,8 +531,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 17360,
-        "footerBottom": 17360.296875,
+        "documentHeight": 17521,
+        "footerBottom": 17521.046875,
         "overflow": false,
         "headings": [
           {
@@ -573,7 +569,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 17360
+        "screenshotHeight": 17521
       },
       "accessibility": {
         "version": "4.10.3",
@@ -590,8 +586,8 @@
       "theme": "dark",
       "status": 200,
       "geometry": {
-        "documentHeight": 3048,
-        "footerBottom": 3047.5,
+        "documentHeight": 3010,
+        "footerBottom": 3009.796875,
         "overflow": false,
         "headings": [
           {
@@ -603,7 +599,7 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 3048
+        "screenshotHeight": 3010
       },
       "accessibility": {
         "version": "4.10.3",
@@ -621,15 +617,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 3544,
-        "footerBottom": 3543.546875,
+        "documentHeight": 3450,
+        "footerBottom": 3449.546875,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 3544
+        "screenshotHeight": 3450
       },
       "accessibility": {
         "version": "4.10.3",
@@ -647,8 +643,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 2111,
-        "footerBottom": 2110.796875,
+        "documentHeight": 1983,
+        "footerBottom": 1982.796875,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -664,7 +660,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2111
+        "screenshotHeight": 1983
       },
       "accessibility": {
         "version": "4.10.3",
@@ -686,15 +682,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2791,
-        "footerBottom": 2791.046875,
+        "documentHeight": 2821,
+        "footerBottom": 2821.046875,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2791
+        "screenshotHeight": 2821
       },
       "accessibility": {
         "version": "4.10.3",
@@ -712,8 +708,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 17792,
-        "footerBottom": 17791.546875,
+        "documentHeight": 18181,
+        "footerBottom": 18181.046875,
         "overflow": false,
         "headings": [
           {
@@ -750,7 +746,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 17792
+        "screenshotHeight": 18181
       },
       "accessibility": {
         "version": "4.10.3",
@@ -772,8 +768,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 3596,
-        "footerBottom": 3596.015625,
+        "documentHeight": 3558,
+        "footerBottom": 3558.015625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "24px" }],
         "truncated": [],
@@ -789,7 +785,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3596
+        "screenshotHeight": 3558
       },
       "accessibility": {
         "version": "4.10.3",
@@ -811,8 +807,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 2162,
-        "footerBottom": 2162.046875,
+        "documentHeight": 2042,
+        "footerBottom": 2042.046875,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -836,7 +832,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2162
+        "screenshotHeight": 2042
       },
       "accessibility": {
         "version": "4.10.3",
@@ -858,8 +854,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1632,
-        "footerBottom": 1631.796875,
+        "documentHeight": 1512,
+        "footerBottom": 1511.796875,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -871,7 +867,7 @@
           { "label": "topic", "size": "16px" },
           { "label": "message", "size": "16px" }
         ],
-        "screenshotHeight": 1632
+        "screenshotHeight": 1512
       },
       "accessibility": {
         "version": "4.10.3",
@@ -889,8 +885,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 1201,
-        "footerBottom": 1200.640625,
+        "documentHeight": 1081,
+        "footerBottom": 1080.640625,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
@@ -914,7 +910,7 @@
           }
         ],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 1201
+        "screenshotHeight": 1081
       },
       "accessibility": {
         "version": "4.10.3",
@@ -936,15 +932,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2752,
-        "footerBottom": 2752.171875,
+        "documentHeight": 2632,
+        "footerBottom": 2632.171875,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 2752
+        "screenshotHeight": 2632
       },
       "accessibility": {
         "version": "4.10.3",
@@ -962,8 +958,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 1254,
-        "footerBottom": 1253.640625,
+        "documentHeight": 1134,
+        "footerBottom": 1133.640625,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
@@ -979,7 +975,7 @@
           }
         ],
         "inputs": [{ "label": "q", "size": "16px" }],
-        "screenshotHeight": 1254
+        "screenshotHeight": 1134
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1001,8 +997,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 2508,
-        "footerBottom": 2507.796875,
+        "documentHeight": 2466,
+        "footerBottom": 2465.796875,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -1018,7 +1014,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2508
+        "screenshotHeight": 2466
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1040,8 +1036,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 2508,
-        "footerBottom": 2507.796875,
+        "documentHeight": 2414,
+        "footerBottom": 2413.796875,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -1057,7 +1053,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2508
+        "screenshotHeight": 2414
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1078,25 +1074,22 @@
       "theme": "dark",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
-        "documentHeight": 1128,
-        "footerBottom": 1127.796875,
+        "documentHeight": 1008,
+        "footerBottom": 1007.796875,
         "overflow": false,
         "headings": [{ "text": "Page not found", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 1128
+        "screenshotHeight": 1008
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
         "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-375-dark.png"
     },
     {
@@ -1107,8 +1100,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 4870,
-        "footerBottom": 4870.296875,
+        "documentHeight": 4794,
+        "footerBottom": 4794.296875,
         "overflow": false,
         "headings": [
           {
@@ -1129,7 +1122,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 4870
+        "screenshotHeight": 4794
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1151,8 +1144,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 17360,
-        "footerBottom": 17360.296875,
+        "documentHeight": 17521,
+        "footerBottom": 17521.046875,
         "overflow": false,
         "headings": [
           {
@@ -1189,7 +1182,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 17360
+        "screenshotHeight": 17521
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1210,8 +1203,8 @@
       "theme": "light",
       "status": 200,
       "geometry": {
-        "documentHeight": 2136,
-        "footerBottom": 2135.671875,
+        "documentHeight": 2104,
+        "footerBottom": 2103.671875,
         "overflow": false,
         "headings": [
           {
@@ -1223,12 +1216,12 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2136
+        "screenshotHeight": 2104
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "home-768-light.png"
@@ -1241,20 +1234,20 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 2895,
-        "footerBottom": 2895,
+        "documentHeight": 2823,
+        "footerBottom": 2823,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2895
+        "screenshotHeight": 2823
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "projects-768-light.png"
@@ -1267,8 +1260,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 1867,
-        "footerBottom": 1867,
+        "documentHeight": 1787,
+        "footerBottom": 1787,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -1284,12 +1277,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1867
+        "screenshotHeight": 1787
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "project-768-light.png"
@@ -1302,20 +1295,20 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2067,
-        "footerBottom": 2066.75,
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2067
+        "screenshotHeight": 1995
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "blog-768-light.png"
@@ -1328,8 +1321,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 12663,
-        "footerBottom": 12662.75,
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
         "overflow": false,
         "headings": [
           {
@@ -1366,12 +1359,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12663
+        "screenshotHeight": 12591
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "post-768-light.png"
@@ -1384,8 +1377,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 2821,
-        "footerBottom": 2820.90625,
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "30px" }],
         "truncated": [],
@@ -1401,12 +1394,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2821
+        "screenshotHeight": 2749
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "resume-768-light.png"
@@ -1419,8 +1412,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 1778,
-        "footerBottom": 1777.75,
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -1444,12 +1437,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1778
+        "screenshotHeight": 1706
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "portfolio-768-light.png"
@@ -1462,8 +1455,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1256,
-        "footerBottom": 1256,
+        "documentHeight": 1184,
+        "footerBottom": 1184,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -1475,7 +1468,7 @@
           { "label": "topic", "size": "14px" },
           { "label": "message", "size": "14px" }
         ],
-        "screenshotHeight": 1256
+        "screenshotHeight": 1184
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1536,15 +1529,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2250,
-        "footerBottom": 2250.375,
+        "documentHeight": 2204,
+        "footerBottom": 2204.375,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "14px" }],
-        "screenshotHeight": 2250
+        "screenshotHeight": 2204
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1597,8 +1590,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 1802,
-        "footerBottom": 1802,
+        "documentHeight": 1730,
+        "footerBottom": 1730,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -1614,7 +1607,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1802
+        "screenshotHeight": 1730
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1632,8 +1625,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 1854,
-        "footerBottom": 1854,
+        "documentHeight": 1782,
+        "footerBottom": 1782,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -1649,7 +1642,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1854
+        "screenshotHeight": 1782
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1666,7 +1659,6 @@
       "theme": "light",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
         "documentHeight": 1000,
         "footerBottom": 1000,
         "overflow": false,
@@ -1682,9 +1674,7 @@
         "violations": [],
         "incomplete": ["aria-valid-attr-value"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-768-light.png"
     },
     {
@@ -1695,8 +1685,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 3564,
-        "footerBottom": 3564.25,
+        "documentHeight": 3484,
+        "footerBottom": 3484.25,
         "overflow": false,
         "headings": [
           {
@@ -1717,7 +1707,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3564
+        "screenshotHeight": 3484
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1735,8 +1725,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 12491,
-        "footerBottom": 12490.75,
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
         "overflow": false,
         "headings": [
           {
@@ -1781,12 +1771,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12491
+        "screenshotHeight": 12419
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "post-technical-768-light.png"
@@ -1798,8 +1788,8 @@
       "theme": "dark",
       "status": 200,
       "geometry": {
-        "documentHeight": 2136,
-        "footerBottom": 2135.671875,
+        "documentHeight": 2104,
+        "footerBottom": 2103.671875,
         "overflow": false,
         "headings": [
           {
@@ -1811,7 +1801,7 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2136
+        "screenshotHeight": 2104
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1829,15 +1819,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 2895,
-        "footerBottom": 2895,
+        "documentHeight": 2823,
+        "footerBottom": 2823,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2895
+        "screenshotHeight": 2823
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1855,8 +1845,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 1867,
-        "footerBottom": 1867,
+        "documentHeight": 1787,
+        "footerBottom": 1787,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -1872,7 +1862,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1867
+        "screenshotHeight": 1787
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1894,15 +1884,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2067,
-        "footerBottom": 2066.75,
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2067
+        "screenshotHeight": 1995
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1920,8 +1910,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 12663,
-        "footerBottom": 12662.75,
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
         "overflow": false,
         "headings": [
           {
@@ -1958,7 +1948,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12663
+        "screenshotHeight": 12591
       },
       "accessibility": {
         "version": "4.10.3",
@@ -1980,8 +1970,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 2821,
-        "footerBottom": 2820.90625,
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "30px" }],
         "truncated": [],
@@ -1997,7 +1987,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2821
+        "screenshotHeight": 2749
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2019,8 +2009,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 1778,
-        "footerBottom": 1777.75,
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -2044,7 +2034,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1778
+        "screenshotHeight": 1706
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2066,8 +2056,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1256,
-        "footerBottom": 1256,
+        "documentHeight": 1184,
+        "footerBottom": 1184,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -2079,7 +2069,7 @@
           { "label": "topic", "size": "14px" },
           { "label": "message", "size": "14px" }
         ],
-        "screenshotHeight": 1256
+        "screenshotHeight": 1184
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2144,15 +2134,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2250,
-        "footerBottom": 2250.375,
+        "documentHeight": 2204,
+        "footerBottom": 2204.375,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "14px" }],
-        "screenshotHeight": 2250
+        "screenshotHeight": 2204
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2209,8 +2199,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 1802,
-        "footerBottom": 1802,
+        "documentHeight": 1730,
+        "footerBottom": 1730,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -2226,7 +2216,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1802
+        "screenshotHeight": 1730
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2248,8 +2238,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 1854,
-        "footerBottom": 1854,
+        "documentHeight": 1782,
+        "footerBottom": 1782,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -2265,7 +2255,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1854
+        "screenshotHeight": 1782
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2286,7 +2276,6 @@
       "theme": "dark",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
         "documentHeight": 1000,
         "footerBottom": 1000,
         "overflow": false,
@@ -2302,9 +2291,7 @@
         "violations": [],
         "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-768-dark.png"
     },
     {
@@ -2315,8 +2302,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 3564,
-        "footerBottom": 3564.25,
+        "documentHeight": 3484,
+        "footerBottom": 3484.25,
         "overflow": false,
         "headings": [
           {
@@ -2337,7 +2324,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3564
+        "screenshotHeight": 3484
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2359,8 +2346,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 12491,
-        "footerBottom": 12490.75,
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
         "overflow": false,
         "headings": [
           {
@@ -2405,7 +2392,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12491
+        "screenshotHeight": 12419
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2426,8 +2413,8 @@
       "theme": "light",
       "status": 200,
       "geometry": {
-        "documentHeight": 2032,
-        "footerBottom": 2031.671875,
+        "documentHeight": 2012,
+        "footerBottom": 2011.671875,
         "overflow": false,
         "headings": [
           {
@@ -2439,12 +2426,12 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2032
+        "screenshotHeight": 2012
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "home-1440-light.png"
@@ -2457,20 +2444,20 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 2843,
-        "footerBottom": 2843,
+        "documentHeight": 2823,
+        "footerBottom": 2823,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2843
+        "screenshotHeight": 2823
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "projects-1440-light.png"
@@ -2482,9 +2469,9 @@
       "theme": "light",
       "status": 200,
       "geometry": {
-        "breadcrumb": "Home//Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 1959,
-        "footerBottom": 1959,
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1939,
+        "footerBottom": 1939,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -2500,12 +2487,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1959
+        "screenshotHeight": 1939
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "project-1440-light.png"
@@ -2518,20 +2505,20 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2015,
-        "footerBottom": 2014.75,
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2015
+        "screenshotHeight": 1995
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "blog-1440-light.png"
@@ -2544,8 +2531,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home//Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 12611,
-        "footerBottom": 12610.75,
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
         "overflow": false,
         "headings": [
           {
@@ -2582,12 +2569,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12611
+        "screenshotHeight": 12591
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "post-1440-light.png"
@@ -2600,8 +2587,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 2769,
-        "footerBottom": 2768.90625,
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "30px" }],
         "truncated": [],
@@ -2617,12 +2604,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2769
+        "screenshotHeight": 2749
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "resume-1440-light.png"
@@ -2635,8 +2622,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 1726,
-        "footerBottom": 1725.75,
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -2660,12 +2647,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1726
+        "screenshotHeight": 1706
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "portfolio-1440-light.png"
@@ -2678,8 +2665,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1204,
-        "footerBottom": 1204,
+        "documentHeight": 1184,
+        "footerBottom": 1184,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -2691,7 +2678,7 @@
           { "label": "topic", "size": "14px" },
           { "label": "message", "size": "14px" }
         ],
-        "screenshotHeight": 1204
+        "screenshotHeight": 1184
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2752,15 +2739,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2172,
-        "footerBottom": 2172.375,
+        "documentHeight": 2152,
+        "footerBottom": 2152.375,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "14px" }],
-        "screenshotHeight": 2172
+        "screenshotHeight": 2152
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2813,8 +2800,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 1750,
-        "footerBottom": 1750,
+        "documentHeight": 1730,
+        "footerBottom": 1730,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -2830,7 +2817,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1750
+        "screenshotHeight": 1730
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2848,8 +2835,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 1802,
-        "footerBottom": 1802,
+        "documentHeight": 1782,
+        "footerBottom": 1782,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -2865,7 +2852,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1802
+        "screenshotHeight": 1782
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2882,7 +2869,6 @@
       "theme": "light",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
         "documentHeight": 1000,
         "footerBottom": 1000,
         "overflow": false,
@@ -2898,9 +2884,7 @@
         "violations": [],
         "incomplete": ["aria-valid-attr-value"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-1440-light.png"
     },
     {
@@ -2910,9 +2894,9 @@
       "theme": "light",
       "status": 200,
       "geometry": {
-        "breadcrumb": "Home//byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 3656,
-        "footerBottom": 3656.25,
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3636,
+        "footerBottom": 3636.25,
         "overflow": false,
         "headings": [
           {
@@ -2933,7 +2917,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3656
+        "screenshotHeight": 3636
       },
       "accessibility": {
         "version": "4.10.3",
@@ -2951,8 +2935,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home//A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 12439,
-        "footerBottom": 12438.75,
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
         "overflow": false,
         "headings": [
           {
@@ -2997,12 +2981,12 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12439
+        "screenshotHeight": 12419
       },
       "accessibility": {
         "version": "4.10.3",
         "violations": [],
-        "incomplete": ["aria-valid-attr-value"]
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
       "errors": [],
       "file": "post-technical-1440-light.png"
@@ -3014,8 +2998,8 @@
       "theme": "dark",
       "status": 200,
       "geometry": {
-        "documentHeight": 2032,
-        "footerBottom": 2031.671875,
+        "documentHeight": 2012,
+        "footerBottom": 2011.671875,
         "overflow": false,
         "headings": [
           {
@@ -3027,7 +3011,7 @@
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2032
+        "screenshotHeight": 2012
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3045,15 +3029,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ProjectsProjectsHome/Projects",
-        "documentHeight": 2843,
-        "footerBottom": 2843,
+        "documentHeight": 2823,
+        "footerBottom": 2823,
         "overflow": false,
         "headings": [{ "text": "Projects", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2843
+        "screenshotHeight": 2823
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3070,9 +3054,9 @@
       "theme": "dark",
       "status": 200,
       "geometry": {
-        "breadcrumb": "Home//Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
-        "documentHeight": 1959,
-        "footerBottom": 1959,
+        "breadcrumb": "Home/Projects/Thorbis DesignThorbis DesignHome/Projects/Thorbis Design",
+        "documentHeight": 1939,
+        "footerBottom": 1939,
         "overflow": false,
         "headings": [{ "text": "Thorbis Design", "size": "32px" }],
         "truncated": [],
@@ -3088,7 +3072,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1959
+        "screenshotHeight": 1939
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3110,15 +3094,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/BlogBlogHome/Blog",
-        "documentHeight": 2015,
-        "footerBottom": 2014.75,
+        "documentHeight": 1995,
+        "footerBottom": 1994.75,
         "overflow": false,
         "headings": [{ "text": "Writing", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [],
-        "screenshotHeight": 2015
+        "screenshotHeight": 1995
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3136,8 +3120,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home//Why I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessWhy I’m Building Thorbis: Field-Service Software Should Understand the Whole BusinessHome/Blog/Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business",
-        "documentHeight": 12611,
-        "footerBottom": 12610.75,
+        "documentHeight": 12591,
+        "footerBottom": 12590.75,
         "overflow": false,
         "headings": [
           {
@@ -3174,7 +3158,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12611
+        "screenshotHeight": 12591
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3196,8 +3180,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ResumeResumeHome/Resume",
-        "documentHeight": 2769,
-        "footerBottom": 2768.90625,
+        "documentHeight": 2749,
+        "footerBottom": 2748.90625,
         "overflow": false,
         "headings": [{ "text": "Byron Wade", "size": "30px" }],
         "truncated": [],
@@ -3213,7 +3197,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 2769
+        "screenshotHeight": 2749
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3235,8 +3219,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/PortfolioPortfolioHome/Portfolio",
-        "documentHeight": 1726,
-        "footerBottom": 1725.75,
+        "documentHeight": 1706,
+        "footerBottom": 1705.75,
         "overflow": false,
         "headings": [{ "text": "Portfolio", "size": "32px" }],
         "truncated": [],
@@ -3260,7 +3244,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1726
+        "screenshotHeight": 1706
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3282,8 +3266,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/ContactContactHome/Contact",
-        "documentHeight": 1204,
-        "footerBottom": 1204,
+        "documentHeight": 1184,
+        "footerBottom": 1184,
         "overflow": false,
         "headings": [{ "text": "Get in touch", "size": "32px" }],
         "truncated": [],
@@ -3295,7 +3279,7 @@
           { "label": "topic", "size": "14px" },
           { "label": "message", "size": "14px" }
         ],
-        "screenshotHeight": 1204
+        "screenshotHeight": 1184
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3360,15 +3344,15 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/SearchSearchHome/Search",
-        "documentHeight": 2172,
-        "footerBottom": 2172.375,
+        "documentHeight": 2152,
+        "footerBottom": 2152.375,
         "overflow": false,
         "headings": [{ "text": "Search", "size": "32px" }],
         "truncated": [],
         "buttonLinks": [],
         "smallTargets": [],
         "inputs": [{ "label": "q", "size": "14px" }],
-        "screenshotHeight": 2172
+        "screenshotHeight": 2152
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3425,8 +3409,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Privacy policyPrivacy policyHome/Privacy policy",
-        "documentHeight": 1750,
-        "footerBottom": 1750,
+        "documentHeight": 1730,
+        "footerBottom": 1730,
         "overflow": false,
         "headings": [{ "text": "Privacy policy", "size": "32px" }],
         "truncated": [],
@@ -3442,7 +3426,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1750
+        "screenshotHeight": 1730
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3464,8 +3448,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home/Terms of serviceTerms of serviceHome/Terms of service",
-        "documentHeight": 1802,
-        "footerBottom": 1802,
+        "documentHeight": 1782,
+        "footerBottom": 1782,
         "overflow": false,
         "headings": [{ "text": "Terms of service", "size": "32px" }],
         "truncated": [],
@@ -3481,7 +3465,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 1802
+        "screenshotHeight": 1782
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3502,7 +3486,6 @@
       "theme": "dark",
       "status": 404,
       "geometry": {
-        "breadcrumb": "Home/Design Polish Missing PageDesign Polish Missing PageHome/Design Polish Missing Page",
         "documentHeight": 1000,
         "footerBottom": 1000,
         "overflow": false,
@@ -3518,9 +3501,7 @@
         "violations": [],
         "incomplete": ["aria-valid-attr-value", "color-contrast"]
       },
-      "errors": [
-        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
-      ],
+      "errors": [],
       "file": "not-found-1440-dark.png"
     },
     {
@@ -3530,9 +3511,9 @@
       "theme": "dark",
       "status": 200,
       "geometry": {
-        "breadcrumb": "Home//byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
-        "documentHeight": 3656,
-        "footerBottom": 3656.25,
+        "breadcrumb": "Home/Projects/byronwade/uibyronwade/uiHome/Projects/byronwade/ui",
+        "documentHeight": 3636,
+        "footerBottom": 3636.25,
         "overflow": false,
         "headings": [
           {
@@ -3553,7 +3534,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 3656
+        "screenshotHeight": 3636
       },
       "accessibility": {
         "version": "4.10.3",
@@ -3575,8 +3556,8 @@
       "status": 200,
       "geometry": {
         "breadcrumb": "Home//A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
-        "documentHeight": 12439,
-        "footerBottom": 12438.75,
+        "documentHeight": 12419,
+        "footerBottom": 12418.75,
         "overflow": false,
         "headings": [
           {
@@ -3621,7 +3602,7 @@
           }
         ],
         "inputs": [],
-        "screenshotHeight": 12439
+        "screenshotHeight": 12419
       },
       "accessibility": {
         "version": "4.10.3",
