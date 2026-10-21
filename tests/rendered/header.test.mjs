@@ -205,9 +205,16 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.setRequestInterception(false);
 				}
 				await page.waitForNetworkIdle({ idleTime: 100 });
-				await page.waitForFunction(
-					() => document.querySelector("[data-site-menu]") === document.activeElement
-				);
+				// The loaded panel code replaces the fallback trigger with Base UI's own
+				// node. Network idle can arrive before React commits that swap, and the
+				// next test would then tap the fallback as it is removed. Wait for focus
+				// on the mounted trigger, which is what the cancelled open promises.
+				await page.waitForFunction(() => {
+					const menu = document.querySelector("[data-site-menu]");
+					return (
+						menu?.hasAttribute("data-base-ui-click-trigger") && menu === document.activeElement
+					);
+				});
 				assert.equal(await page.$(PANEL), null);
 			});
 
