@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/components/ui/link";
 
 /**
  * 404. Shared profile.

@@ -99,7 +99,7 @@ export function FigmaInteractiveViewer({
 					<div className="relative overflow-hidden rounded-2xl border border-border bg-card p-12 text-center">
 						<ImageIcon className="mx-auto mb-4 h-12 w-12 text-muted-foreground/60" />
 						<p className="text-muted-foreground">No static preview available for this design.</p>
-						<p className="mt-2 text-muted-foreground/70 text-sm">
+						<p className="mt-2 text-muted-foreground text-sm">
 							Switch to Interactive mode to view the design.
 						</p>
 					</div>

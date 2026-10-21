@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["app/**/*.{ts,tsx}", "next.config.js", "postcss.config.mjs"],
+  "entry": ["app/**/*.{ts,tsx}"],
   "project": [
     "app/**/*.{ts,tsx}",
     "components/**/*.{ts,tsx}",
@@ -8,7 +8,6 @@
     "lib/**/*.{ts,tsx}",
     "types/**/*.{ts,tsx}"
   ],
-  "ignore": ["**/node_modules/**", ".next/**"],
   "ignoreDependencies": ["@biomejs/biome", "postcss-load-config", "sharp"],
   "ignoreBinaries": ["docker-compose"],
   "tags": ["-public"]

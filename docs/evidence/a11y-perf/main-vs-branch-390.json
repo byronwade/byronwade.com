@@ -1,0 +1,1405 @@
+{
+  "checkedAt": "2026-10-20",
+  "purpose": "Matched before/after probe: the same Lighthouse settings as verify-a11y-perf measurePage at 390px (mobile simulated throttling), alternating main and branch per route on one host.",
+  "main": "d729160 (origin/main)",
+  "branch": "019fd57 build 34vG9aXWQ8yEY4qUGCu5g",
+  "theme": "default (light)",
+  "excluded": "Figma fixture routes and /audit-not-found need fixtures that main does not run; no .env files on either side, so providers use fallbacks",
+  "notes": "Single sample per route, three for /resume, /projects/hollowveil, /projects/dits and /projects/fakebase. Another lane started a next server during the run; timing variation is large.",
+  "routes": [
+    {
+      "route": "/",
+      "main": [
+        {
+          "fcp": 939,
+          "lcp": 2927,
+          "tbt": 185,
+          "cls": 0.0,
+          "si": 2788,
+          "observedLcp": 1711,
+          "scriptBytes": 167855,
+          "fontBytes": 49991,
+          "totalBytes": 262857
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 933,
+          "lcp": 2888,
+          "tbt": 154,
+          "cls": 0.0,
+          "si": 1343,
+          "observedLcp": 937,
+          "scriptBytes": 168729,
+          "fontBytes": 49991,
+          "totalBytes": 263529
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "main": [
+        {
+          "fcp": 1099,
+          "lcp": 3351,
+          "tbt": 187,
+          "cls": 0.0,
+          "si": 2324,
+          "observedLcp": 1483,
+          "scriptBytes": 215080,
+          "fontBytes": 65886,
+          "totalBytes": 444323
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1112,
+          "lcp": 3107,
+          "tbt": 207,
+          "cls": 0.0,
+          "si": 1427,
+          "observedLcp": 592,
+          "scriptBytes": 171290,
+          "fontBytes": 65886,
+          "totalBytes": 280319
+        }
+      ]
+    },
+    {
+      "route": "/contact",
+      "main": [
+        {
+          "fcp": 944,
+          "lcp": 3651,
+          "tbt": 352,
+          "cls": 0.0036,
+          "si": 2616,
+          "observedLcp": 1631,
+          "scriptBytes": 240259,
+          "fontBytes": 49991,
+          "totalBytes": 332245
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 942,
+          "lcp": 3145,
+          "tbt": 293,
+          "cls": 0.0,
+          "si": 8960,
+          "observedLcp": 6420,
+          "scriptBytes": 183917,
+          "fontBytes": 49991,
+          "totalBytes": 275097
+        }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "main": [
+        {
+          "fcp": 940,
+          "lcp": 3454,
+          "tbt": 227,
+          "cls": 0.1024,
+          "si": 3806,
+          "observedLcp": 2399,
+          "scriptBytes": 236100,
+          "fontBytes": 65886,
+          "totalBytes": 541309
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 980,
+          "lcp": 2791,
+          "tbt": 262,
+          "cls": 0.0037,
+          "si": 9658,
+          "observedLcp": 6928,
+          "scriptBytes": 170105,
+          "fontBytes": 49991,
+          "totalBytes": 267697
+        }
+      ]
+    },
+    {
+      "route": "/privacy",
+      "main": [
+        {
+          "fcp": 968,
+          "lcp": 3068,
+          "tbt": 395,
+          "cls": 0.0,
+          "si": 5243,
+          "observedLcp": 3362,
+          "scriptBytes": 215470,
+          "fontBytes": 49991,
+          "totalBytes": 306548
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 964,
+          "lcp": 3088,
+          "tbt": 264,
+          "cls": 0.0,
+          "si": 2597,
+          "observedLcp": 1613,
+          "scriptBytes": 171290,
+          "fontBytes": 49991,
+          "totalBytes": 261445
+        }
+      ]
+    },
+    {
+      "route": "/projects",
+      "main": [
+        {
+          "fcp": 924,
+          "lcp": 3501,
+          "tbt": 343,
+          "cls": 0.0,
+          "si": 3617,
+          "observedLcp": 2425,
+          "scriptBytes": 272086,
+          "fontBytes": 49991,
+          "totalBytes": 429727
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 936,
+          "lcp": 3050,
+          "tbt": 287,
+          "cls": 0.0,
+          "si": 3553,
+          "observedLcp": 2431,
+          "scriptBytes": 171334,
+          "fontBytes": 49991,
+          "totalBytes": 267329
+        }
+      ]
+    },
+    {
+      "route": "/resume",
+      "main": [
+        {
+          "fcp": 1117,
+          "lcp": 1717,
+          "tbt": 1470,
+          "cls": 0.0012,
+          "si": 4150,
+          "observedLcp": 2635,
+          "scriptBytes": 267228,
+          "fontBytes": 166455,
+          "totalBytes": 497621
+        },
+        {
+          "fcp": 1563,
+          "lcp": 3772,
+          "tbt": 664,
+          "cls": 0.0012,
+          "si": 3515,
+          "observedLcp": 2336,
+          "scriptBytes": 267228,
+          "fontBytes": 166455,
+          "totalBytes": 497620
+        },
+        {
+          "fcp": 1628,
+          "lcp": 3881,
+          "tbt": 211,
+          "cls": 0.0012,
+          "si": 2559,
+          "observedLcp": 1465,
+          "scriptBytes": 267228,
+          "fontBytes": 166455,
+          "totalBytes": 497620
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1265,
+          "lcp": 3422,
+          "tbt": 2866,
+          "cls": 0.0,
+          "si": 4211,
+          "observedLcp": 2730,
+          "scriptBytes": 183998,
+          "fontBytes": 60854,
+          "totalBytes": 292752
+        },
+        {
+          "fcp": 1274,
+          "lcp": 3419,
+          "tbt": 155,
+          "cls": 0.0012,
+          "si": 2991,
+          "observedLcp": 1914,
+          "scriptBytes": 183998,
+          "fontBytes": 60854,
+          "totalBytes": 292750
+        },
+        {
+          "fcp": 1877,
+          "lcp": 3809,
+          "tbt": 993,
+          "cls": 0.0012,
+          "si": 2225,
+          "observedLcp": 1377,
+          "scriptBytes": 183998,
+          "fontBytes": 60854,
+          "totalBytes": 292750
+        }
+      ]
+    },
+    {
+      "route": "/search",
+      "main": [
+        {
+          "fcp": 930,
+          "lcp": 3214,
+          "tbt": 271,
+          "cls": 0.0127,
+          "si": 2228,
+          "observedLcp": 1289,
+          "scriptBytes": 248103,
+          "fontBytes": 49991,
+          "totalBytes": 371434
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 935,
+          "lcp": 3056,
+          "tbt": 231,
+          "cls": 0.0115,
+          "si": 1551,
+          "observedLcp": 1098,
+          "scriptBytes": 175305,
+          "fontBytes": 49991,
+          "totalBytes": 271019
+        }
+      ]
+    },
+    {
+      "route": "/terms",
+      "main": [
+        {
+          "fcp": 942,
+          "lcp": 3325,
+          "tbt": 216,
+          "cls": 0.0,
+          "si": 1845,
+          "observedLcp": 1187,
+          "scriptBytes": 215470,
+          "fontBytes": 49991,
+          "totalBytes": 306517
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 932,
+          "lcp": 3032,
+          "tbt": 231,
+          "cls": 0.0,
+          "si": 2181,
+          "observedLcp": 1404,
+          "scriptBytes": 171290,
+          "fontBytes": 49991,
+          "totalBytes": 261407
+        }
+      ]
+    },
+    {
+      "route": "/blog/building-thorbis",
+      "main": [
+        {
+          "fcp": 1707,
+          "lcp": 3890,
+          "tbt": 353,
+          "cls": 0.0,
+          "si": 3992,
+          "observedLcp": 2319,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 387018
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1557,
+          "lcp": 3525,
+          "tbt": 225,
+          "cls": 0.0,
+          "si": 3482,
+          "observedLcp": 2155,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 336144
+        }
+      ]
+    },
+    {
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "main": [
+        {
+          "fcp": 1691,
+          "lcp": 3770,
+          "tbt": 338,
+          "cls": 0.0,
+          "si": 3570,
+          "observedLcp": 2112,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 387305
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1549,
+          "lcp": 3371,
+          "tbt": 192,
+          "cls": 0.0,
+          "si": 3555,
+          "observedLcp": 2161,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 336251
+        }
+      ]
+    },
+    {
+      "route": "/blog/lessons-building-service-software",
+      "main": [
+        {
+          "fcp": 1700,
+          "lcp": 3806,
+          "tbt": 275,
+          "cls": 0.0002,
+          "si": 1700,
+          "observedLcp": 684,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 385393
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1552,
+          "lcp": 3551,
+          "tbt": 259,
+          "cls": 0.0,
+          "si": 3551,
+          "observedLcp": 2208,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 334457
+        }
+      ]
+    },
+    {
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "main": [
+        {
+          "fcp": 1709,
+          "lcp": 3814,
+          "tbt": 290,
+          "cls": 0.0,
+          "si": 1771,
+          "observedLcp": 637,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 393680
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1566,
+          "lcp": 3418,
+          "tbt": 206,
+          "cls": 0.0,
+          "si": 4054,
+          "observedLcp": 2591,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 342452
+        }
+      ]
+    },
+    {
+      "route": "/blog/scaling-plumbing-business",
+      "main": [
+        {
+          "fcp": 1730,
+          "lcp": 3831,
+          "tbt": 308,
+          "cls": 0.0,
+          "si": 4206,
+          "observedLcp": 2456,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 386503
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1558,
+          "lcp": 3389,
+          "tbt": 189,
+          "cls": 0.0,
+          "si": 3518,
+          "observedLcp": 2153,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 335523
+        }
+      ]
+    },
+    {
+      "route": "/blog/what-service-businesses-actually-need",
+      "main": [
+        {
+          "fcp": 1554,
+          "lcp": 3862,
+          "tbt": 341,
+          "cls": 0.0002,
+          "si": 1554,
+          "observedLcp": 614,
+          "scriptBytes": 210990,
+          "fontBytes": 103933,
+          "totalBytes": 389411
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1545,
+          "lcp": 3175,
+          "tbt": 127,
+          "cls": 0.0,
+          "si": 3592,
+          "observedLcp": 2271,
+          "scriptBytes": 177130,
+          "fontBytes": 88141,
+          "totalBytes": 338468
+        }
+      ]
+    },
+    {
+      "route": "/projects/byronwade-ui",
+      "main": [
+        {
+          "fcp": 1562,
+          "lcp": 3822,
+          "tbt": 314,
+          "cls": 0.0022,
+          "si": 3736,
+          "observedLcp": 2287,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 395418
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1417,
+          "lcp": 3365,
+          "tbt": 190,
+          "cls": 0.0012,
+          "si": 3786,
+          "observedLcp": 2463,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 337408
+        }
+      ]
+    },
+    {
+      "route": "/projects/ciel",
+      "main": [
+        {
+          "fcp": 1584,
+          "lcp": 4054,
+          "tbt": 1418,
+          "cls": 0.1706,
+          "si": 4523,
+          "observedLcp": 2735,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 396881
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1501,
+          "lcp": 3537,
+          "tbt": 420,
+          "cls": 0.1588,
+          "si": 3839,
+          "observedLcp": 2434,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 338594
+        }
+      ]
+    },
+    {
+      "route": "/projects/content-management-system",
+      "main": [
+        {
+          "fcp": 1721,
+          "lcp": 4010,
+          "tbt": 780,
+          "cls": 0.1847,
+          "si": 2369,
+          "observedLcp": 1199,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 418802
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1611,
+          "lcp": 3670,
+          "tbt": 679,
+          "cls": 0.1732,
+          "si": 6129,
+          "observedLcp": 4065,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 359981
+        }
+      ]
+    },
+    {
+      "route": "/projects/dits",
+      "main": [
+        {
+          "fcp": 1547,
+          "lcp": 4001,
+          "tbt": 1063,
+          "cls": 0.2026,
+          "si": 7836,
+          "observedLcp": 5057,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 431909
+        },
+        {
+          "fcp": 1549,
+          "lcp": 4111,
+          "tbt": 1040,
+          "cls": 0.2026,
+          "si": 8668,
+          "observedLcp": 5665,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 431909
+        },
+        {
+          "fcp": 1549,
+          "lcp": 4087,
+          "tbt": 1280,
+          "cls": 0.2026,
+          "si": 7887,
+          "observedLcp": 5036,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 431909
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1451,
+          "lcp": 3708,
+          "tbt": 1429,
+          "cls": 0.1873,
+          "si": 8643,
+          "observedLcp": 5889,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 388922
+        },
+        {
+          "fcp": 1420,
+          "lcp": 3781,
+          "tbt": 1722,
+          "cls": 0.1037,
+          "si": 2361,
+          "observedLcp": 1359,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 388922
+        },
+        {
+          "fcp": 1394,
+          "lcp": 3609,
+          "tbt": 1263,
+          "cls": 0.1873,
+          "si": 2296,
+          "observedLcp": 1321,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 388922
+        }
+      ]
+    },
+    {
+      "route": "/projects/drone-pi",
+      "main": [
+        {
+          "fcp": 1036,
+          "lcp": 3266,
+          "tbt": 423,
+          "cls": 0.002,
+          "si": 3841,
+          "observedLcp": 2647,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427786
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 946,
+          "lcp": 3110,
+          "tbt": 235,
+          "cls": 0.0008,
+          "si": 6101,
+          "observedLcp": 4427,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287180
+        }
+      ]
+    },
+    {
+      "route": "/projects/fakebase",
+      "main": [
+        {
+          "fcp": 1412,
+          "lcp": 3833,
+          "tbt": 325,
+          "cls": 0.1706,
+          "si": 3723,
+          "observedLcp": 2115,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398750
+        },
+        {
+          "fcp": 1586,
+          "lcp": 3871,
+          "tbt": 530,
+          "cls": 0.1703,
+          "si": 7375,
+          "observedLcp": 4755,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398750
+        },
+        {
+          "fcp": 1577,
+          "lcp": 3844,
+          "tbt": 4719,
+          "cls": 0.1703,
+          "si": 6399,
+          "observedLcp": 4144,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398750
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1407,
+          "lcp": 3446,
+          "tbt": 1533,
+          "cls": 0.1588,
+          "si": 4187,
+          "observedLcp": 2748,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 340082
+        },
+        {
+          "fcp": 1457,
+          "lcp": 3508,
+          "tbt": 915,
+          "cls": 0.1588,
+          "si": 2267,
+          "observedLcp": 1330,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 340082
+        },
+        {
+          "fcp": 1421,
+          "lcp": 3403,
+          "tbt": 382,
+          "cls": 0.1588,
+          "si": 2078,
+          "observedLcp": 1164,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 340082
+        }
+      ]
+    },
+    {
+      "route": "/projects/goodmarks",
+      "main": [
+        {
+          "fcp": 1574,
+          "lcp": 3765,
+          "tbt": 335,
+          "cls": 0.0019,
+          "si": 4151,
+          "observedLcp": 2503,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398414
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1760,
+          "lcp": 3851,
+          "tbt": 223,
+          "cls": 0.0009,
+          "si": 3595,
+          "observedLcp": 2203,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 339577
+        }
+      ]
+    },
+    {
+      "route": "/projects/hollowveil",
+      "main": [
+        {
+          "fcp": 1151,
+          "lcp": 2666,
+          "tbt": 178,
+          "cls": 0.002,
+          "si": 3822,
+          "observedLcp": 2496,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427916
+        },
+        {
+          "fcp": 926,
+          "lcp": 3401,
+          "tbt": 269,
+          "cls": 0.002,
+          "si": 2065,
+          "observedLcp": 1432,
+          "scriptBytes": 309336,
+          "fontBytes": 49991,
+          "totalBytes": 425803
+        },
+        {
+          "fcp": 944,
+          "lcp": 3390,
+          "tbt": 370,
+          "cls": 0.002,
+          "si": 4522,
+          "observedLcp": 3086,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427916
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 936,
+          "lcp": 3107,
+          "tbt": 411,
+          "cls": 0.0008,
+          "si": 7954,
+          "observedLcp": 5577,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287499
+        },
+        {
+          "fcp": 950,
+          "lcp": 3097,
+          "tbt": 215,
+          "cls": 0.0,
+          "si": 1254,
+          "observedLcp": 781,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287499
+        },
+        {
+          "fcp": 1019,
+          "lcp": 3387,
+          "tbt": 381,
+          "cls": 0.0008,
+          "si": 1413,
+          "observedLcp": 1006,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287499
+        }
+      ]
+    },
+    {
+      "route": "/projects/impact-marine-group",
+      "main": [
+        {
+          "fcp": 1566,
+          "lcp": 3959,
+          "tbt": 1165,
+          "cls": 0.2297,
+          "si": 4866,
+          "observedLcp": 3033,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 401074
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1427,
+          "lcp": 3404,
+          "tbt": 537,
+          "cls": 0.2182,
+          "si": 3928,
+          "observedLcp": 2415,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 342156
+        }
+      ]
+    },
+    {
+      "route": "/projects/memoria",
+      "main": [
+        {
+          "fcp": 1811,
+          "lcp": 4079,
+          "tbt": 488,
+          "cls": 0.1989,
+          "si": 4601,
+          "observedLcp": 2740,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398444
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1422,
+          "lcp": 3269,
+          "tbt": 280,
+          "cls": 0.1871,
+          "si": 7404,
+          "observedLcp": 5029,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 339617
+        }
+      ]
+    },
+    {
+      "route": "/projects/movies",
+      "main": [
+        {
+          "fcp": 938,
+          "lcp": 3459,
+          "tbt": 328,
+          "cls": 0.0,
+          "si": 2408,
+          "observedLcp": 1769,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 429371
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 951,
+          "lcp": 3160,
+          "tbt": 255,
+          "cls": 0.0,
+          "si": 2134,
+          "observedLcp": 1607,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 288829
+        }
+      ]
+    },
+    {
+      "route": "/projects/mushroom-cultivation-supplier",
+      "main": [
+        {
+          "fcp": 1253,
+          "lcp": 3723,
+          "tbt": 1112,
+          "cls": 0.1988,
+          "si": 5045,
+          "observedLcp": 3155,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 376686
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1275,
+          "lcp": 3453,
+          "tbt": 506,
+          "cls": 0.1873,
+          "si": 6908,
+          "observedLcp": 4640,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 333716
+        }
+      ]
+    },
+    {
+      "route": "/projects/odb2",
+      "main": [
+        {
+          "fcp": 944,
+          "lcp": 3469,
+          "tbt": 293,
+          "cls": 0.002,
+          "si": 4734,
+          "observedLcp": 3428,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427913
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 930,
+          "lcp": 3041,
+          "tbt": 168,
+          "cls": 0.0008,
+          "si": 1887,
+          "observedLcp": 1384,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287497
+        }
+      ]
+    },
+    {
+      "route": "/projects/plumbing-code-playbook",
+      "main": [
+        {
+          "fcp": 936,
+          "lcp": 3361,
+          "tbt": 267,
+          "cls": 0.0005,
+          "si": 2370,
+          "observedLcp": 1645,
+          "scriptBytes": 309336,
+          "fontBytes": 49991,
+          "totalBytes": 425891
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 947,
+          "lcp": 3119,
+          "tbt": 220,
+          "cls": 0.0,
+          "si": 2064,
+          "observedLcp": 1361,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287610
+        }
+      ]
+    },
+    {
+      "route": "/projects/reactpress",
+      "main": [
+        {
+          "fcp": 1569,
+          "lcp": 3855,
+          "tbt": 936,
+          "cls": 0.2158,
+          "si": 4364,
+          "observedLcp": 2733,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 406658
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1398,
+          "lcp": 3332,
+          "tbt": 289,
+          "cls": 0.2043,
+          "si": 4280,
+          "observedLcp": 2826,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 347857
+        }
+      ]
+    },
+    {
+      "route": "/projects/realistic-face",
+      "main": [
+        {
+          "fcp": 931,
+          "lcp": 3374,
+          "tbt": 215,
+          "cls": 0.0,
+          "si": 1772,
+          "observedLcp": 1248,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427805
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 962,
+          "lcp": 3181,
+          "tbt": 304,
+          "cls": 0.0011,
+          "si": 7185,
+          "observedLcp": 4968,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287527
+        }
+      ]
+    },
+    {
+      "route": "/projects/rebuzzle",
+      "main": [
+        {
+          "fcp": 1805,
+          "lcp": 4072,
+          "tbt": 1814,
+          "cls": 0.1983,
+          "si": 4664,
+          "observedLcp": 2744,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398357
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1416,
+          "lcp": 3367,
+          "tbt": 310,
+          "cls": 0.1868,
+          "si": 3265,
+          "observedLcp": 2050,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 339410
+        }
+      ]
+    },
+    {
+      "route": "/projects/signalroute",
+      "main": [
+        {
+          "fcp": 1568,
+          "lcp": 3752,
+          "tbt": 329,
+          "cls": 0.0034,
+          "si": 3994,
+          "observedLcp": 2417,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 398101
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1407,
+          "lcp": 3349,
+          "tbt": 176,
+          "cls": 0.0024,
+          "si": 3645,
+          "observedLcp": 2288,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 339217
+        }
+      ]
+    },
+    {
+      "route": "/projects/stream",
+      "main": [
+        {
+          "fcp": 1548,
+          "lcp": 3806,
+          "tbt": 294,
+          "cls": 0.1565,
+          "si": 3502,
+          "observedLcp": 1961,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 396655
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1406,
+          "lcp": 3402,
+          "tbt": 185,
+          "cls": 0.145,
+          "si": 3509,
+          "observedLcp": 2101,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 338599
+        }
+      ]
+    },
+    {
+      "route": "/projects/subfield",
+      "main": [
+        {
+          "fcp": 951,
+          "lcp": 3920,
+          "tbt": 352,
+          "cls": 0.0,
+          "si": 2821,
+          "observedLcp": 1452,
+          "scriptBytes": 311451,
+          "fontBytes": 49991,
+          "totalBytes": 427963
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 948,
+          "lcp": 3124,
+          "tbt": 214,
+          "cls": 0.0,
+          "si": 1863,
+          "observedLcp": 1299,
+          "scriptBytes": 196251,
+          "fontBytes": 49991,
+          "totalBytes": 287219
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis",
+      "main": [
+        {
+          "fcp": 1098,
+          "lcp": 3496,
+          "tbt": 263,
+          "cls": 0.2158,
+          "si": 2888,
+          "observedLcp": 1691,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 351117
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1155,
+          "lcp": 3415,
+          "tbt": 1055,
+          "cls": 0.2043,
+          "si": 4504,
+          "observedLcp": 2454,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 308537
+        }
+      ]
+    },
+    {
+      "route": "/projects/thorbis-design",
+      "main": [
+        {
+          "fcp": 1220,
+          "lcp": 3876,
+          "tbt": 2016,
+          "cls": 0.229,
+          "si": 4235,
+          "observedLcp": 2770,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 350563
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1117,
+          "lcp": 3353,
+          "tbt": 1644,
+          "cls": 0.2176,
+          "si": 3191,
+          "observedLcp": 2245,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 307808
+        }
+      ]
+    },
+    {
+      "route": "/projects/wades-plumbing-and-septic",
+      "main": [
+        {
+          "fcp": 1558,
+          "lcp": 3806,
+          "tbt": 282,
+          "cls": 0.0068,
+          "si": 3836,
+          "observedLcp": 2326,
+          "scriptBytes": 238240,
+          "fontBytes": 103933,
+          "totalBytes": 400750
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1410,
+          "lcp": 3341,
+          "tbt": 335,
+          "cls": 0.0058,
+          "si": 3858,
+          "observedLcp": 2574,
+          "scriptBytes": 196251,
+          "fontBytes": 88141,
+          "totalBytes": 342013
+        }
+      ]
+    },
+    {
+      "route": "/projects/wormhole",
+      "main": [
+        {
+          "fcp": 1112,
+          "lcp": 3559,
+          "tbt": 465,
+          "cls": 0.1817,
+          "si": 4376,
+          "observedLcp": 2326,
+          "scriptBytes": 238240,
+          "fontBytes": 65886,
+          "totalBytes": 364539
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1546,
+          "lcp": 3614,
+          "tbt": 1959,
+          "cls": 0.1698,
+          "si": 6338,
+          "observedLcp": 4153,
+          "scriptBytes": 196251,
+          "fontBytes": 65886,
+          "totalBytes": 321529
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis",
+      "main": [
+        {
+          "fcp": 1001,
+          "lcp": 3248,
+          "tbt": 891,
+          "cls": 0.0,
+          "si": 3602,
+          "observedLcp": 1644,
+          "scriptBytes": 233653,
+          "fontBytes": 49991,
+          "totalBytes": 343442
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 1036,
+          "lcp": 3401,
+          "tbt": 468,
+          "cls": 0.0,
+          "si": 2673,
+          "observedLcp": 1409,
+          "scriptBytes": 192441,
+          "fontBytes": 49991,
+          "totalBytes": 301550
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-ai",
+      "main": [
+        {
+          "fcp": 976,
+          "lcp": 3585,
+          "tbt": 427,
+          "cls": 0.0,
+          "si": 2764,
+          "observedLcp": 1368,
+          "scriptBytes": 233653,
+          "fontBytes": 49991,
+          "totalBytes": 331363
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 935,
+          "lcp": 2903,
+          "tbt": 393,
+          "cls": 0.0,
+          "si": 2296,
+          "observedLcp": 1455,
+          "scriptBytes": 192441,
+          "fontBytes": 49991,
+          "totalBytes": 288950
+        }
+      ]
+    },
+    {
+      "route": "/portfolio/thorbis-mobile",
+      "main": [
+        {
+          "fcp": 1002,
+          "lcp": 3615,
+          "tbt": 396,
+          "cls": 0.0,
+          "si": 2711,
+          "observedLcp": 1349,
+          "scriptBytes": 233653,
+          "fontBytes": 49991,
+          "totalBytes": 332401
+        }
+      ],
+      "branch": [
+        {
+          "fcp": 969,
+          "lcp": 3017,
+          "tbt": 286,
+          "cls": 0.0,
+          "si": 2299,
+          "observedLcp": 1289,
+          "scriptBytes": 192441,
+          "fontBytes": 49991,
+          "totalBytes": 290519
+        }
+      ]
+    }
+  ]
+}

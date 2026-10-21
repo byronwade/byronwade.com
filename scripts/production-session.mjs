@@ -50,11 +50,11 @@ async function serving(server, log) {
 }
 
 // Every verification owns an OS-assigned port and a hidden child with guaranteed cleanup.
-export async function withProductionServer(verify) {
+export async function withProductionServer(verify, { env = {} } = {}) {
 	const server = spawn(
 		process.execPath,
 		["node_modules/next/dist/bin/next", "start", "-p", "0", "-H", "127.0.0.1"],
-		{ windowsHide: true, stdio: ["ignore", "pipe", "pipe"] }
+		{ windowsHide: true, stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, ...env } }
 	);
 	let output = "";
 	const collect = (chunk) => {

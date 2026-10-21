@@ -32,19 +32,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<link rel="dns-prefetch" href="//api.dribbble.com" />
 				<link rel="dns-prefetch" href="//api.figma.com" />
 			</head>
-			<body className="min-h-screen touch-pan-y bg-background font-sans antialiased">
+			<body className="min-h-screen bg-background font-sans antialiased">
 				<a href="#main-content" className="skip-link">
 					Skip to main content
 				</a>
 				<JsonLd data={personJsonLd} />
 				<JsonLd data={organizationJsonLd} />
 				<JsonLd data={websiteJsonLd} />
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="light"
-					enableSystem
-					disableTransitionOnChange
-				>
+				<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
 					<ErrorBoundary>
 						<SiteLayout>{children}</SiteLayout>
 					</ErrorBoundary>

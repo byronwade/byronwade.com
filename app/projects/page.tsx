@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader, Section } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
-import { ProjectsIndex } from "@/components/project";
+import { ProjectsIndex } from "@/components/project/projects-index";
 import { getProjects, type Project } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,

@@ -1,0 +1,190 @@
+{
+  "checkedAt": "2026-10-20T00:42:09.140Z",
+  "commit": "8d2fe2ee2ec217934654ecb629767e5e5a3278eb",
+  "phase": "final",
+  "harnessHash": "95b4dc271e11ce77f0959c6a1f21f9e22ede0e4949b219d816e9d946121cbb57",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "email": "Local Resend HTTP fixture; no message is delivered",
+  "buildId": "Rkj0pbIHpn9_FqahD_Wfv",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/blog",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 29, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "blog-390-dark.png",
+      "keyboard": { "checked": 29, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "screenshot": "blog-1280-light.png",
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "route": "/blog",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "keyboard": { "checked": 33, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true },
+        {
+          "name": "Reading without JavaScript",
+          "contentCount": 6,
+          "failures": []
+        }
+      ]
+    }
+  ]
+}

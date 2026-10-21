@@ -1,22 +1,25 @@
+import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
-import puppeteer from "puppeteer-core";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { launchAuditBrowser } from "./audit-browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
+import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
+const route = process.argv.find((argument) => argument.startsWith("--route="))?.slice(8) || "/";
+if (!route.startsWith("/") || route.startsWith("//") || route.includes("\\")) {
+	throw new Error("The budget route must be a same-origin path");
+}
+const reportStem = route === "/" ? "home-budget" : `route-budget${route.replaceAll("/", "_")}`;
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
-const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/a11y-perf";
 await withProductionServer(async (url) => {
-	const browser = await puppeteer.launch({
-		executablePath:
-			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-		headless: true,
-	});
+	const browser = await launchAuditBrowser({ lighthouse: true });
 	try {
 		const port = Number(new URL(browser.wsEndpoint()).port);
 		// Lighthouse 12 removed built-in budgets; assertions below own enforcement.
-		const result = await lighthouse(url, {
+		const result = await lighthouse(`${url}${route}`, {
 			port,
 			output: "json",
 			onlyCategories: ["performance"],
@@ -26,44 +29,49 @@ await withProductionServer(async (url) => {
 			throw new Error(result?.lhr.runtimeError?.message || "Lighthouse returned no result");
 		}
 		const { lhr } = result;
-		const resources = lhr.audits["resource-summary"].details.items;
-		const failures = [];
-		const timings = budgets[0].timings.map(({ metric, budget }) => {
-			const value = lhr.audits[metric].numericValue;
-			if (value > budget) {
-				failures.push(`${metric}: ${value} > ${budget}`);
-			}
-			return { metric, value, budget };
-		});
-		for (const { resourceType, budget } of budgets[0].resourceSizes) {
-			const value = resources.find((item) => item.resourceType === resourceType)?.transferSize ?? 0;
-			if (value > budget * 1024) {
-				failures.push(`${resourceType} bytes: ${value} > ${budget * 1024}`);
-			}
-		}
-		for (const { resourceType, budget } of budgets[0].resourceCounts) {
-			const value = resources.find((item) => item.resourceType === resourceType)?.requestCount ?? 0;
-			if (value > budget) {
-				failures.push(`${resourceType} count: ${value} > ${budget}`);
-			}
-		}
+		const { timings, resources, failures } = assessBudget(lhr, budgets[0]);
 		mkdirSync(destination, { recursive: true });
-		writeEvidenceJson(`${destination}/performance.json`, {
-			score: lhr.categories.performance.score,
-			lighthouseVersion: lhr.lighthouseVersion,
-			diagnostics: Object.fromEntries(
-				[
-					"network-requests",
-					"bootup-time",
-					"mainthread-work-breakdown",
-					"largest-contentful-paint-element",
-					"lcp-breakdown-insight",
-				].map((name) => [name, lhr.audits[name]?.details])
-			),
-			timings,
-			resources,
-			failures,
-		});
+		writeEvidenceJson(
+			`${destination}/${reportStem}${process.argv.includes("--baseline") ? "-baseline" : ""}.json`,
+			{
+				checkedAt: new Date().toISOString(),
+				route,
+				buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
+				workingTreeDirty: Boolean(
+					execFileSync("git", ["diff", "--name-only"], {
+						encoding: "utf8",
+						windowsHide: true,
+					}).trim()
+				),
+				commit: execFileSync("git", ["rev-parse", "HEAD"], {
+					encoding: "utf8",
+					windowsHide: true,
+				}).trim(),
+				chrome: await browser.version(),
+				score: lhr.categories.performance.score,
+				lighthouseVersion: lhr.lighthouseVersion,
+				environment: lhr.environment,
+				runWarnings: lhr.runWarnings,
+				profile: {
+					formFactor: lhr.configSettings.formFactor,
+					screenEmulation: lhr.configSettings.screenEmulation,
+					throttlingMethod: lhr.configSettings.throttlingMethod,
+					throttling: lhr.configSettings.throttling,
+				},
+				diagnostics: Object.fromEntries(
+					[
+						"network-requests",
+						"bootup-time",
+						"mainthread-work-breakdown",
+						"largest-contentful-paint-element",
+						"lcp-breakdown-insight",
+					].map((name) => [name, lhr.audits[name]?.details])
+				),
+				timings,
+				resources,
+				failures,
+			}
+		);
 		console.log(JSON.stringify({ timings, resources, failures }, null, 2));
 		if (failures.length) {
 			throw new Error("Performance budget exceeded");

@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-20T03:41:07.089Z",
+  "commit": "991b111fc848ba7345a19d212e89b6e32863ddcb",
+  "buildId": "UchjbZrNsTim0343cTfQl",
+  "diagnosticOnly": true,
+  "note": "Initial production geometry and temporary CSS counterfactuals before the source repairs.",
+  "cases": [
+    {
+      "route": "/projects/dits",
+      "phase": "initial",
+      "viewport": 390,
+      "width": 571,
+      "offenders": [
+        {
+          "tag": "CODE",
+          "classes": "rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm",
+          "width": 531.46875,
+          "right": 571.46875
+        }
+      ]
+    },
+    {
+      "route": "/projects/dits",
+      "phase": "wrap-links",
+      "viewport": 390,
+      "width": 571,
+      "offenders": [
+        {
+          "tag": "CODE",
+          "classes": "rounded bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-sm",
+          "width": 531.46875,
+          "right": 531.46875
+        }
+      ]
+    },
+    {
+      "route": "/projects/dits",
+      "phase": "wrap-links-and-inline-code",
+      "viewport": 390,
+      "width": 390,
+      "offenders": []
+    },
+    {
+      "route": "/projects/memoria",
+      "phase": "initial",
+      "before": {
+        "tabIndex": -1,
+        "clientWidth": 356,
+        "scrollWidth": 418,
+        "scrollLeft": 0
+      },
+      "sequentialFocus": true,
+      "after": { "focused": true, "scrollLeft": 40 }
+    },
+    { "route": "/projects/ciel", "phase": "initial", "width": 23.34375 }
+  ]
+}

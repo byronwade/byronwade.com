@@ -1,0 +1,42 @@
+✖ portfolio retry renders provider recovery without caching failure HTML (6315.793ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11873.1387
+
+✖ failing tests:
+
+test at tests\rendered\portfolio-retry.test.mjs:14:1
+✖ portfolio retry renders provider recovery without caching failure HTML (6315.793ms)
+  Error: Verification failed (server exit null, signal null): ▲ Next.js 16.2.7
+  - Local:         http://127.0.0.1:62471
+  - Network:       http://127.0.0.1:62471
+  ✓ Ready in 639ms
+  
+      at runProductionAttempt (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/production-session.mjs:76:19)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/rendered/portfolio-retry.test.mjs:53:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    [cause]: AssertionError [ERR_ASSERTION]: initial failure must reach the provider
+    
+    0 !== 1
+    
+        at file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/rendered/portfolio-retry.test.mjs:61:12
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async runProductionAttempt (file:///D:/Dev/byronwade-com-wt/a11y-perf/scripts/production-session.mjs:74:10)
+        at async TestContext.<anonymous> (file:///D:/Dev/byronwade-com-wt/a11y-perf/tests/rendered/portfolio-retry.test.mjs:53:3)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+      generatedMessage: false,
+      code: 'ERR_ASSERTION',
+      actual: 0,
+      expected: 1,
+      operator: 'strictEqual',
+      diff: 'simple'
+    }
+  }

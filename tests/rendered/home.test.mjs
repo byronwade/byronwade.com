@@ -14,6 +14,7 @@ const INTER_PRELOAD =
 const INITIAL_SCRIPT = /<script[^>]+src="\/_next\/([^"]+)"/g;
 const NON_CLIENT_GLYPHS =
 	/(?:DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
+const DEFERRED_DIALOG = /trap-focus/;
 
 test("homepage content and navigation are present before hydration", async () => {
 	const html = await readFile(
@@ -33,7 +34,7 @@ test("homepage content and navigation are present before hydration", async () =>
 	assert.doesNotMatch(html, HIDDEN_HEADING);
 });
 
-test("homepage initial scripts exclude server-shell and project-preview glyphs", async () => {
+test("homepage initial scripts exclude shell glyphs, preview glyphs and closed dialogs", async () => {
 	const html = await readFile(
 		new URL("../../.next/server/app/index.html", import.meta.url),
 		"utf8"
@@ -54,5 +55,10 @@ test("homepage initial scripts exclude server-shell and project-preview glyphs",
 		chunks.filter(({ source }) => NON_CLIENT_GLYPHS.test(source)).map(({ file }) => file),
 		[],
 		"Server-shell and preview glyph definitions belong outside the homepage JavaScript"
+	);
+	assert.deepEqual(
+		chunks.filter(({ source }) => DEFERRED_DIALOG.test(source)).map(({ file }) => file),
+		[],
+		"Capsule dialog behavior loads on intentional opening, alongside its panel"
 	);
 });

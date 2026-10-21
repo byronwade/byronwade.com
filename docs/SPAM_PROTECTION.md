@@ -108,6 +108,9 @@ formatDetection: {
   only success or an actionable, generic error.
 - `npm test` exercises the actual server action with a fixture transport. It
   cannot send real email. There is no added test dependency.
+- The browser audit uses an owned loopback Resend base URL and a synthetic
+  credential to check success feedback and notification lifecycle without live
+  delivery. It does not verify inbox delivery or the provider integration.
 - Regression tests assert exactly one owner-addressed delivery, including repeated
   submissions with different visitor addresses and forged delivery fields.
 - Rate limiting and CAPTCHA are not implemented. Input validation and address

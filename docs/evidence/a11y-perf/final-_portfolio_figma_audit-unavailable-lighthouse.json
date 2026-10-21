@@ -1,0 +1,183 @@
+{
+  "checkedAt": "2026-10-17T05:37:46.725Z",
+  "commit": "67f5d09bbe0b5886903c1668d851e7f208ecc004",
+  "phase": "final",
+  "harnessHash": "8e68eecc570d2f8e512b104f8e36d8cc78e4f6c8b66a59388497a064ac9c44ef",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "buildId": "m0-Dy0ggkxQK78XWfecSc",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 390,
+      "theme": "light",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "keyboard": { "checked": 26, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 390,
+      "theme": "dark",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "screenshot": "portfolio-figma-audit-unavailable-390-dark.png",
+      "keyboard": { "checked": 26, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 768,
+      "theme": "light",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "keyboard": { "checked": 28, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 768,
+      "theme": "dark",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "keyboard": { "checked": 28, "failures": [] },
+      "states": [
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 1280,
+      "theme": "light",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "screenshot": "portfolio-figma-audit-unavailable-1280-light.png",
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb overflow",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Breadcrumb overflow returns keyboard focus",
+          "passed": true
+        },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio/figma/audit-unavailable",
+      "width": 1280,
+      "theme": "dark",
+      "status": 404,
+      "expectedStatus": 404,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": { "mode": "snapshot", "accessibility": 100 },
+      "keyboard": { "checked": 31, "failures": [] },
+      "states": [
+        {
+          "name": "Breadcrumb overflow",
+          "violations": [],
+          "targetFailures": []
+        },
+        {
+          "name": "Breadcrumb overflow returns keyboard focus",
+          "passed": true
+        },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    }
+  ]
+}

@@ -158,7 +158,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
 | Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
-| Content front matter | `gray-matter` and `js-yaml` 3.15.2 | 3.15.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not import knip's nested js-yaml 4 in app code, and do not hand-roll a YAML parser |
+| Content front matter | `gray-matter` and `js-yaml` 3.15.2 | 3.15.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not add js-yaml 4 for app code, and do not hand-roll a YAML parser |
 
 ## Design tokens and defaults
 
@@ -215,10 +215,14 @@ use them correctly.
   Set `CHROME_PATH` when Chrome is not at the test's default Windows installation path.
   The 32-case geometry matrix uses the production shell with short main content to
   isolate the header; real-route interaction checks remain separate.
-- **Accessibility:** header browser regressions cover keyboard operation, focus,
-  touch targets and layout at 100%/200% text in both themes. They are not a full-route
-  accessibility audit. Biome's a11y rules run in lint; manual keyboard passes are
-  still required for critical flows.
+- **Accessibility:** `node scripts/verify-a11y-perf.mjs --lighthouse` is the
+  full-route audit: every visual route template at 390/768/1280 in both themes with
+  axe, Lighthouse, keyboard, target, overflow and reduced-motion checks. Fixtures
+  cover Figma and email transport. Header browser regressions in `test:rendered`
+  cover keyboard operation, focus, touch targets and layout at 100%/200% text.
+  Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
+  checks remain outside these, so manual keyboard passes are still required for
+  critical flows.
 - **UI consistency:** no visual regression suite. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
@@ -269,6 +273,7 @@ the user's instruction each time.
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
+| `npm audit` advisories | 31 entries, 11 from production dependencies, none critical (2026-10-21). All trace to three roots. (1) `puppeteer-core` 24's browser-download code: `extract-zip`, and `basic-ftp` (one `Client.list` DoS advisory left) behind `proxy-agent`. `/api/resume-pdf` passes `executablePath` and sets no proxy, so neither runs. (2) The pinned `js-yaml` 3.15.2 (`argparse`/`sprintf-js`), used only by its command-line tool, not the parser gray-matter calls. (3) Lighthouse 12's Sentry/OpenTelemetry, dev-only | No | Move `puppeteer-core` to 25 together with a matching `@sparticuz/chromium` and Lighthouse 13 (Lighthouse 13 alone leaves an invalid `proxy-agent` peer). Prove `/api/resume-pdf` returns a PDF on a Vercel preview before merging. Never apply npm's `--force` suggestion for gray-matter (a downgrade to 2.0.1) | This table |
 | React Compiler bailouts | 7, all `try`/`catch` around `await` | No | Leave unless the surrounding code is being rewritten anyway | `AGENTS.md` § Audit tooling |
 
 ## Explicit exceptions

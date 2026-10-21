@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { TagList } from "@/components/common/tag-list";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
+import { Link } from "@/components/ui/link";
 import { getBlogPosts } from "@/lib/blog";
 import { Clock } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";

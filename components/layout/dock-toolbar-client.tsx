@@ -52,6 +52,9 @@ export function DockToolbarClient({
 		}
 	}, [pathname]);
 	useEffect(() => {
+		// A native modal (the fullscreen preview) owns the keyboard. Opening search
+		// behind it would leave an unmounted panel that captures the next Escape.
+		const modalOpen = () => Boolean(document.querySelector("dialog:modal"));
 		const rememberOrigin = () => {
 			const active = document.activeElement;
 			if (!active?.closest("[data-header-search]")) {
@@ -60,6 +63,9 @@ export function DockToolbarClient({
 			}
 		};
 		const onKey = (event: KeyboardEvent) => {
+			if (modalOpen()) {
+				return;
+			}
 			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
 				event.preventDefault();
 				rememberOrigin();
@@ -69,8 +75,10 @@ export function DockToolbarClient({
 			}
 		};
 		const onOpen = () => {
-			rememberOrigin();
-			setOpen(true);
+			if (!modalOpen()) {
+				rememberOrigin();
+				setOpen(true);
+			}
 		};
 		window.addEventListener("keydown", onKey);
 		window.addEventListener("open-command-palette", onOpen);

@@ -1,0 +1,1541 @@
+{
+  "checkedAt": "2026-10-17T03:19:10.204Z",
+  "commit": "c5daf67f5b646e3117833d08bc206593430a37a6",
+  "phase": "final",
+  "harnessHash": "4e79c62104f1f421e9318f55ad225b08331354c339efb5d6ed1dc3fdf01d30b3",
+  "figma": "Local API and embed fixtures; live provider integration is outside this audit",
+  "buildId": "IDw5jsbLdtVaQGK9LZrGh",
+  "chrome": "Chrome/155.0.8059.80",
+  "axe": "4.10.3",
+  "routeCoverage": [
+    { "template": "/", "routes": ["/"] },
+    { "template": "/blog", "routes": ["/blog"] },
+    { "template": "/contact", "routes": ["/contact"] },
+    { "template": "/portfolio", "routes": ["/portfolio"] },
+    { "template": "/privacy", "routes": ["/privacy"] },
+    { "template": "/projects", "routes": ["/projects"] },
+    { "template": "/resume", "routes": ["/resume"] },
+    { "template": "/search", "routes": ["/search"] },
+    { "template": "/terms", "routes": ["/terms"] },
+    { "template": "/blog/[slug]", "routes": ["/blog/building-thorbis"] },
+    {
+      "template": "/portfolio/[...slug]",
+      "routes": [
+        "/portfolio/thorbis",
+        "/portfolio/thorbis-ai",
+        "/portfolio/thorbis-mobile"
+      ]
+    },
+    { "template": "/projects/[slug]", "routes": ["/projects/byronwade-ui"] },
+    {
+      "template": "/portfolio/figma/[key]",
+      "routes": [
+        "/portfolio/figma/audit-fixture",
+        "/portfolio/figma/audit-unavailable"
+      ]
+    }
+  ],
+  "expectedCases": 6,
+  "cases": [
+    {
+      "route": "/portfolio",
+      "width": 390,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "mobile",
+          "screenEmulation": {
+            "mobile": true,
+            "width": 390,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 96,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1072.6884,
+          "largest-contentful-paint": 2190.1256000000003,
+          "total-blocking-time": 194,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1072.6884
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 284833
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 8,
+            "transferSize": 170057
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1072.6884,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2190.1256000000003,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 194, "budget": 300 },
+            { "metric": "speed-index", "value": 1072.6884, "budget": 3000 }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 284833
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 8,
+              "transferSize": 170057
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.99
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.95
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.9
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.52
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.97
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "forced-reflow-insight",
+            "title": "Forced reflow",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 63, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 390,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "mobile",
+          "screenEmulation": {
+            "mobile": true,
+            "width": 390,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 94,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1069.6093499999997,
+          "largest-contentful-paint": 2186.0729,
+          "total-blocking-time": 232,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1069.6093499999997
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 284833
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 8,
+            "transferSize": 170057
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1069.6093499999997,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2186.0729,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 232, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1069.6093499999997,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 284833
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 8,
+              "transferSize": 170057
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.99
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.95
+          },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.86
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.4
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.97
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "screenshot": "portfolio-390-dark.png",
+      "keyboard": { "checked": 63, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 768,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 75,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1071.6588000000002,
+          "largest-contentful-paint": 2765.4392,
+          "total-blocking-time": 217,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1071.6588000000002
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 284833
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 8,
+            "transferSize": 170057
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1071.6588000000002,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2765.4392,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 217, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1071.6588000000002,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 284833
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 8,
+              "transferSize": 170057
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.83
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.39
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.96 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.76
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.44
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.85
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 65, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 768,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 65,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1066.68345,
+          "largest-contentful-paint": 2772.1223,
+          "total-blocking-time": 394,
+          "cumulative-layout-shift": 0.0002031226399739583,
+          "speed-index": 1127.7033946331462
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 13,
+            "transferSize": 284833
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 8,
+            "transferSize": 170057
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1066.68345,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2772.1223,
+              "budget": 3000
+            },
+            {
+              "metric": "cumulative-layout-shift",
+              "value": 0.0002031226399739583,
+              "budget": 0.1
+            },
+            { "metric": "total-blocking-time", "value": 394, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1127.7033946331462,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 13,
+              "transferSize": 284833
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 8,
+              "transferSize": 170057
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": ["total-blocking-time: 394 > 300"]
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.83
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.39
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.95 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.42
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.46
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.81
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 65, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 1280,
+      "theme": "light",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "light",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "light",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 1280,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 73,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1066.9533000000001,
+          "largest-contentful-paint": 2772.3022,
+          "total-blocking-time": 257,
+          "cumulative-layout-shift": 0,
+          "speed-index": 1147.5864617269106
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 14,
+            "transferSize": 321839
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 207063
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1066.9533000000001,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2772.3022,
+              "budget": 3000
+            },
+            { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+            { "metric": "total-blocking-time", "value": 257, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1147.5864617269106,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 14,
+              "transferSize": 321839
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 207063
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": []
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.83
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.39
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.94 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.67
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.37
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.78
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "screenshot": "portfolio-1280-light.png",
+      "keyboard": { "checked": 67, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    },
+    {
+      "route": "/portfolio",
+      "width": 1280,
+      "theme": "dark",
+      "status": 200,
+      "expectedStatus": 200,
+      "runtimeErrors": [],
+      "violations": [],
+      "actualTheme": "dark",
+      "overflow": false,
+      "h1Count": 1,
+      "navOverlap": [],
+      "targetFailures": [],
+      "lighthouse": {
+        "theme": "dark",
+        "lighthouseVersion": "12.8.2",
+        "profile": {
+          "formFactor": "desktop",
+          "screenEmulation": {
+            "mobile": false,
+            "width": 1280,
+            "height": 1000,
+            "deviceScaleFactor": 1,
+            "disabled": false
+          },
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          }
+        },
+        "performance": 67,
+        "accessibility": 100,
+        "timings": {
+          "first-contentful-paint": 1067.58315,
+          "largest-contentful-paint": 2777.7221,
+          "total-blocking-time": 360,
+          "cumulative-layout-shift": 0.0001095758819580078,
+          "speed-index": 1187.389369173794
+        },
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 14,
+            "transferSize": 321839
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 9,
+            "transferSize": 207063
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 27832
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 17806
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budget": {
+          "timings": [
+            {
+              "metric": "first-contentful-paint",
+              "value": 1067.58315,
+              "budget": 2000
+            },
+            {
+              "metric": "largest-contentful-paint",
+              "value": 2777.7221,
+              "budget": 3000
+            },
+            {
+              "metric": "cumulative-layout-shift",
+              "value": 0.0001095758819580078,
+              "budget": 0.1
+            },
+            { "metric": "total-blocking-time", "value": 360, "budget": 300 },
+            {
+              "metric": "speed-index",
+              "value": 1187.389369173794,
+              "budget": 3000
+            }
+          ],
+          "resources": [
+            {
+              "resourceType": "total",
+              "label": "Total",
+              "requestCount": 14,
+              "transferSize": 321839
+            },
+            {
+              "resourceType": "script",
+              "label": "Script",
+              "requestCount": 9,
+              "transferSize": 207063
+            },
+            {
+              "resourceType": "font",
+              "label": "Font",
+              "requestCount": 2,
+              "transferSize": 65886
+            },
+            {
+              "resourceType": "document",
+              "label": "Document",
+              "requestCount": 1,
+              "transferSize": 27832
+            },
+            {
+              "resourceType": "stylesheet",
+              "label": "Stylesheet",
+              "requestCount": 1,
+              "transferSize": 17806
+            },
+            {
+              "resourceType": "other",
+              "label": "Other",
+              "requestCount": 1,
+              "transferSize": 3252
+            },
+            {
+              "resourceType": "image",
+              "label": "Image",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "media",
+              "label": "Media",
+              "requestCount": 0,
+              "transferSize": 0
+            },
+            {
+              "resourceType": "third-party",
+              "label": "Third-party",
+              "requestCount": 0,
+              "transferSize": 0
+            }
+          ],
+          "failures": ["total-blocking-time: 360 > 300"]
+        },
+        "failedAudits": [
+          {
+            "id": "first-contentful-paint",
+            "title": "First Contentful Paint",
+            "score": 0.83
+          },
+          {
+            "id": "largest-contentful-paint",
+            "title": "Largest Contentful Paint",
+            "score": 0.39
+          },
+          { "id": "speed-index", "title": "Speed Index", "score": 0.93 },
+          {
+            "id": "total-blocking-time",
+            "title": "Total Blocking Time",
+            "score": 0.48
+          },
+          {
+            "id": "max-potential-fid",
+            "title": "Max Potential First Input Delay",
+            "score": 0.37
+          },
+          {
+            "id": "interactive",
+            "title": "Time to Interactive",
+            "score": 0.76
+          },
+          {
+            "id": "largest-contentful-paint-element",
+            "title": "Largest Contentful Paint element",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-resources",
+            "title": "Eliminate render-blocking resources",
+            "score": 0.5
+          },
+          {
+            "id": "unused-javascript",
+            "title": "Reduce unused JavaScript",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript",
+            "title": "Avoid serving legacy JavaScript to modern browsers",
+            "score": 0.5
+          },
+          {
+            "id": "forced-reflow-insight",
+            "title": "Forced reflow",
+            "score": 0
+          },
+          {
+            "id": "legacy-javascript-insight",
+            "title": "Legacy JavaScript",
+            "score": 0.5
+          },
+          {
+            "id": "network-dependency-tree-insight",
+            "title": "Network dependency tree",
+            "score": 0
+          },
+          {
+            "id": "render-blocking-insight",
+            "title": "Render blocking requests",
+            "score": 0
+          }
+        ]
+      },
+      "keyboard": { "checked": 67, "failures": [] },
+      "states": [
+        { "name": "Portfolio settled", "violations": [], "targetFailures": [] },
+        {
+          "name": "Breadcrumb follows the visible header breakpoint",
+          "passed": true
+        },
+        { "name": "Reduced motion CSS across the document", "passed": true }
+      ]
+    }
+  ]
+}
