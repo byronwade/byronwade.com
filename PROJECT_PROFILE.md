@@ -228,9 +228,9 @@ use them correctly.
   accessibility audit. Biome's a11y rules run in lint; manual keyboard passes are
   still required for critical flows.
 - **UI consistency:** `tests/design-system.test.mjs` (in `npm test`) fails on raw colour
-  literals, gradients, decorative blur, `transition-all`, a route without a profile, or a
-  loss of the reduced-motion block, and ratchets Tailwind default type sizes, pixel font
-  sizes and bold/semibold weights per file toward zero. No visual regression suite yet.
+  literals, gradients, decorative blur, `transition-all`, a route without a profile, a
+  loss of the reduced-motion block, Tailwind default type sizes, pixel font sizes, or
+  weights above 500. No visual regression suite yet.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
 - **Bundle/performance:** `npm run build:analyze`, `npm run perf:budget`

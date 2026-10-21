@@ -5,6 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,7 +25,7 @@ export default function ContactClient() {
 			<Toaster />
 			<div className="flex flex-col gap-10">
 				<PageHeader
-					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two."
+					lede="Product engineering, software for service businesses, and design systems that have to ship. Tell me what you’re working on and I usually reply within a day or two."
 					title="Get in touch"
 				/>
 
@@ -38,7 +39,6 @@ export default function ContactClient() {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="name">Name</Label>
 							<Input
-								className="h-11 sm:h-11"
 								autoComplete="name"
 								aria-invalid={fieldError?.field === "name"}
 								aria-describedby={fieldError?.field === "name" ? "name-error" : undefined}
@@ -50,7 +50,7 @@ export default function ContactClient() {
 								value={formData.name}
 							/>
 							{fieldError?.field === "name" && (
-								<p id="name-error" className="text-destructive text-sm">
+								<p id="name-error" className="text-copy-13 text-destructive">
 									{fieldError.reason}
 								</p>
 							)}
@@ -58,7 +58,6 @@ export default function ContactClient() {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="email">Email</Label>
 							<Input
-								className="h-11 sm:h-11"
 								autoComplete="email"
 								inputMode="email"
 								spellCheck={false}
@@ -73,7 +72,7 @@ export default function ContactClient() {
 								value={formData.email}
 							/>
 							{fieldError?.field === "email" && (
-								<p id="email-error" className="text-destructive text-sm">
+								<p id="email-error" className="text-copy-13 text-destructive">
 									{fieldError.reason}
 								</p>
 							)}
@@ -82,10 +81,8 @@ export default function ContactClient() {
 
 					<div className="flex flex-col gap-2">
 						<Label htmlFor="topic">What is this about?</Label>
-						{/* Matches Input's height, radius, and focus treatment exactly. A
-						    native select styled as a peer rather than as its own control. */}
-						<select
-							className="h-11 w-full rounded-lg border border-muted-foreground bg-field px-3 text-base shadow-(--shadow-field) outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:ring-destructive/40"
+						{/* A select is a well, the same sink as the text fields. */}
+						<NativeSelect
 							aria-invalid={fieldError?.field === "topic"}
 							aria-describedby={fieldError?.field === "topic" ? "topic-error" : undefined}
 							id="topic"
@@ -98,9 +95,9 @@ export default function ContactClient() {
 									{topic.label}
 								</option>
 							))}
-						</select>
+						</NativeSelect>
 						{fieldError?.field === "topic" && (
-							<p id="topic-error" className="text-destructive text-sm">
+							<p id="topic-error" className="text-copy-13 text-destructive">
 								{fieldError.reason}
 							</p>
 						)}
@@ -129,14 +126,14 @@ export default function ContactClient() {
 							value={formData.message}
 						/>
 						{fieldError?.field === "message" && (
-							<p id="message-error" className="text-destructive text-sm">
+							<p id="message-error" className="text-copy-13 text-destructive">
 								{fieldError.reason}
 							</p>
 						)}
 					</div>
 
 					<div className="flex flex-wrap items-center gap-4">
-						<Button className="h-11 gap-2" disabled={isSubmitting} type="submit">
+						<Button className="gap-2" disabled={isSubmitting} type="submit">
 							{isSubmitting ? (
 								<Loader2 aria-hidden="true" className="size-4 animate-spin" />
 							) : (
@@ -149,11 +146,13 @@ export default function ContactClient() {
 						<p
 							aria-live="polite"
 							className={
-								status.kind === "failed" ? "text-destructive text-sm" : "text-sm text-success"
+								status.kind === "failed"
+									? "text-copy-14 text-destructive"
+									: "text-copy-14 text-success-contrast"
 							}
 							role="status"
 						>
-							{status.kind === "sent" && "Sent. I'll be in touch."}
+							{status.kind === "sent" && "Sent. I’ll be in touch."}
 							{isSubmitting && "Sending your message…"}
 							{status.kind === "failed" &&
 								(fieldError ? "Check the highlighted field." : status.reason)}
@@ -162,10 +161,10 @@ export default function ContactClient() {
 				</form>
 
 				{/* The fallback, not a second column. */}
-				<p className="text-muted-foreground text-sm">
+				<p className="text-copy-14 text-muted-foreground">
 					Prefer email?{" "}
 					<ObfuscatedEmail
-						className="text-foreground hover:text-brand [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"
+						className="text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"
 						showIcon={false}
 						variant="link"
 					/>

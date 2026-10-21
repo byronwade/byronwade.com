@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 
 /**
  * Thorbis token and profile sensors (DESIGN.md §5, §13; AGENTS.md "Mechanical
- * prevention"). Hard rules have no exceptions. The type-scale rules ratchet:
- * BASELINE is the exact count still allowed per file, so a new violation fails
- * and a removed one must be recorded here, until every entry reaches zero.
+ * prevention"). Every rule here is hard: one type scale, token colours only,
+ * no gradients or decorative blur, a reduced-motion path, and a declared
+ * surface profile on every route.
  */
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -42,43 +42,15 @@ function sourceFiles(dir = "") {
 const files = SOURCE_DIRS.flatMap((dir) => sourceFiles(dir));
 const read = (path) => readFileSync(join(ROOT, path), "utf8");
 
-function count(source, pattern) {
-	return (source.match(pattern) ?? []).length;
-}
-
 // Tailwind's default type ramp and pixel font sizes bypass the Thorbis roles
-// (text-copy-12/13/14/16, text-heading-16/20/32).
-const DEFAULT_TYPE = /\btext-(?:xs|sm|base|lg|xl|[2-9]xl)\b/g;
-const ARBITRARY_TYPE = /\btext-\[\d+(?:\.\d+)?(?:px|rem|em)\]/g;
-// Thorbis sets every heading and emphasis at 500.
-const HEAVY_WEIGHT = /\bfont-(?:semibold|bold|extrabold|black)\b/g;
+// (text-copy-12/13/14/16, text-heading-16/20/32); Thorbis sets every heading
+// and emphasis at weight 500.
+const OFF_SCALE_TYPE =
+	/\btext-(?:xs|sm|base|lg|xl|[2-9]xl)\b|\btext-\[\d+(?:\.\d+)?(?:px|rem|em)\]|\bfont-(?:semibold|bold|extrabold|black)\b/;
 
-/** Remaining allowance per file. Lower it as files are migrated; never raise it. */
-const BASELINE = {
-	"app/contact/contact-client.tsx": { type: 9 },
-	"app/search/page.tsx": { type: 1 },
-	"components/home/inline-contact.tsx": { type: 11 },
-};
-
-test("type scale and weights only shrink (ratchet against BASELINE)", () => {
-	const actual = {};
-	for (const path of files) {
-		const source = read(path);
-		const entry = {
-			type: count(source, DEFAULT_TYPE),
-			arbitrary: count(source, ARBITRARY_TYPE),
-			weight: count(source, HEAVY_WEIGHT),
-		};
-		const kept = Object.fromEntries(Object.entries(entry).filter(([, value]) => value > 0));
-		if (Object.keys(kept).length > 0) {
-			actual[path] = kept;
-		}
-	}
-	assert.deepEqual(
-		actual,
-		BASELINE,
-		"Use the Thorbis copy/heading roles and weight 500. If you removed violations, lower BASELINE to match."
-	);
+test("type uses only the Thorbis copy and heading roles at weight 500", () => {
+	const offenders = files.filter((path) => OFF_SCALE_TYPE.test(read(path)));
+	assert.deepEqual(offenders, [], "Use text-copy-*/text-heading-* and font-medium.");
 });
 
 test("no raw colour literals in class names or inline styles", () => {
