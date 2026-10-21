@@ -210,6 +210,9 @@ test("a timed-out cleanup command records that it never reported an exit code", 
 	const check = assert.rejects(result, (error) => error.cause === timeout);
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.ok(diagnostics.join("\n").includes('"commandCode":null'));
 	assert.ok(diagnostics.join("\n").includes('"commandSignal":"SIGTERM"'));
@@ -261,6 +264,9 @@ test("a failed cleanup command also rejects after a stalled close", async (t) =>
 	});
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.equal(child.listenerCount("exit"), 0);
 });
@@ -291,6 +297,38 @@ test("a tree that exited before taskkill reached it is not a failed cleanup", as
 	assert.ok(diagnostics.join("\n").includes("no running instance"));
 	assert.equal(child.listenerCount("exit"), 0);
 });
+
+// Observed on Windows: taskkill stopped a renderer, then found the root already gone because the
+// browser was finishing its own shutdown, and reported before that root's exit event arrived.
+const ROOT_EXITING = [
+	"ERROR: The process with PID 123 (child process of PID 99) could not be terminated.",
+	"Reason: There is no running instance of the task.",
+	"",
+].join("\r\n");
+
+for (const exitCode of [0, 1]) {
+	test(`a failed taskkill followed by the owned exit (code ${exitCode}) passes only a clean exit`, async (t) => {
+		const { child, context } = stubChild(t);
+		const killError = Object.assign(new Error("taskkill failed"), { code: 255, signal: null });
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			callback(killError, "SUCCESS: The process with PID 456 has been terminated.", ROOT_EXITING);
+			setImmediate(() => {
+				child.exitCode = exitCode;
+				child.emit("exit", exitCode, null);
+			});
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check =
+			exitCode === 0
+				? assert.doesNotReject(result)
+				: assert.rejects(result, (error) => error.cause === killError);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await check;
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
 
 test("an already-gone report cannot hide an owned process that never exits", async (t) => {
 	const { child, context } = stubChild(t);
@@ -365,6 +403,9 @@ test("failed forced cleanup retains command output and the original close error"
 	});
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.ok(diagnostics.join("\n").includes("123"));
 	assert.ok(diagnostics.join("\n").includes("synthetic access denied"));

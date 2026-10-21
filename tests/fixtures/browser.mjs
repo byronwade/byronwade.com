@@ -67,10 +67,7 @@ function killTree(child, context, signal) {
 					stderr,
 				});
 				context.diagnostic(`Owned browser cleanup: ${evidence}`);
-				// taskkill can lose a race with a normal exit. The exact launched
-				// child's observed exit, rather than a missing PID, proves shutdown.
-				const alreadyExited = error?.code === 128 && child.exitCode === 0;
-				if (error && !(alreadyExited || onlyAlreadyGone(error, stderr))) {
+				if (error && !onlyAlreadyGone(error, stderr)) {
 					reject(
 						new Error(`Could not stop owned browser process tree: ${evidence}`, { cause: error })
 					);
@@ -100,18 +97,29 @@ export async function closeBrowser(browser, context) {
 		const closed = await settlesWithin(Promise.all([closing, exited]), 10_000);
 		try {
 			if (child && isRunning(child)) {
-				const forced = killTree(child, context, controller.signal);
-				// Under load taskkill can outlast the deadline after the exact launched
-				// child has already exited cleanly. Exit code 0 means the browser shut
-				// itself down (a forced kill exits 1), so it proves shutdown without the
-				// command's result; any other exit still waits for the tree kill.
+				let commandError;
+				const forced = killTree(child, context, controller.signal).catch((error) => {
+					commandError = error;
+				});
+				// Under load the browser can finish shutting itself down while taskkill walks
+				// its tree: the command outlasts the deadline, or fails on the root it was
+				// about to kill. Exit code 0 means the browser shut itself down (a forced kill
+				// exits 1), so it proves shutdown whatever the command reports; any other exit
+				// needs the tree kill to have succeeded.
 				const stopped = await settlesWithin(
-					Promise.race([
-						Promise.all([forced, exited]),
-						exited.then(() => (child.exitCode === 0 ? undefined : forced)),
-					]),
+					exited.then(async () => {
+						if (child.exitCode !== 0) {
+							await forced;
+							if (commandError) {
+								throw commandError;
+							}
+						}
+					}),
 					15_000
 				);
+				if (!stopped && commandError) {
+					throw commandError;
+				}
 				assert.ok(stopped, `Owned browser process ${child.pid} did not exit after forced cleanup`);
 			} else if (!(child || closed)) {
 				throw new Error("Browser close timed out and no owned process is available for cleanup");
