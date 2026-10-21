@@ -15,17 +15,15 @@ const variants = {
 export function StatusPill({
 	tone = "neutral",
 	children,
-	pulse = false,
 	className,
 }: {
 	tone?: StatusTone;
 	children: React.ReactNode;
-	pulse?: boolean;
 	className?: string;
 }) {
 	return (
 		<Badge variant={variants[tone]} className={cn("gap-1.5", className)}>
-			<StatusDot tone={tone} pulse={pulse} />
+			<StatusDot tone={tone} />
 			{children}
 		</Badge>
 	);

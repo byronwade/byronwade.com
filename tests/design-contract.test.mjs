@@ -94,7 +94,7 @@ test("Thorbis tokens remain the only color values in the migrated surface", asyn
 		"components/layout/dock-toolbar.tsx",
 		"components/ui/button.tsx",
 		"components/ui/badge.tsx",
-		"components/ui/card.tsx",
+		"components/layout/sheet.tsx",
 		"components/ui/input.tsx",
 		"components/ui/textarea.tsx",
 	];
@@ -106,64 +106,13 @@ test("Thorbis tokens remain the only color values in the migrated surface", asyn
 	}
 });
 
-// A full border width; `border-0` and colour-only classes such as `border-border/30` do not count.
-const BORDER_WIDTH = /^border(?:-[xytblrse])?(?:-[1-9]\d*|-\[[^\]]+\])?$/;
-// Cards that deliberately drop the primitive's border. Every other consumer keeps it.
-const OPEN_CARDS = new Set(["components/home/home-hero.tsx"]);
-
-test("every Card consumer keeps the primitive's border unless it opts out on purpose", async () => {
-	const primitive = ts.createSourceFile(
-		"card.tsx",
-		await readFile(new URL("components/ui/card.tsx", ROOT), "utf8"),
-		ts.ScriptTarget.Latest,
-		true,
-		ts.ScriptKind.TSX
-	);
-	let base;
-	visit(primitive, (node) => {
-		if (
-			base === undefined &&
-			ts.isCallExpression(node) &&
-			node.expression.getText() === "cn" &&
-			ts.isStringLiteralLike(node.arguments[0])
-		) {
-			base = node.arguments[0].text;
-		}
-	});
-	assert.ok(
-		base?.split(" ").some((name) => BORDER_WIDTH.test(name)),
-		"Card owns a border width"
-	);
-
-	const consumers = (await sourceFiles(["app", "components"])).filter(({ text }) =>
-		text.includes('from "@/components/ui/card"')
-	);
-	const cards = [];
-	for (const file of consumers) {
-		visit(file.source, (node) => {
-			if (
-				(ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) &&
-				node.tagName.getText() === "Card"
-			) {
-				const attribute = jsxAttribute(node, "className");
-				const className = attribute ? literalValue(attribute) : "";
-				assert.notEqual(className, undefined, `${location(file, node)} needs a literal className`);
-				const bordered = cn(base, className)
-					.split(" ")
-					.some((name) => BORDER_WIDTH.test(name));
-				cards.push({ at: location(file, node), bordered, open: OPEN_CARDS.has(file.path) });
-			}
-		});
-	}
-	assert.ok(
-		cards.some(({ at }) => at.startsWith("app/portfolio/figma/[key]/page.tsx:")),
-		"the Card consumer scan must find the Figma detail cards"
-	);
-	assert.deepEqual(
-		cards.filter(({ bordered, open }) => bordered === open).map(({ at }) => at),
-		[],
-		"a Card lost its border, or an intended open card kept one"
-	);
+// The redesign retired the Card primitive: surfaces are wells, rows and specimens
+// built from tokens, so a bordered box cannot creep back in through an import.
+test("no route or component imports the retired Card primitive", async () => {
+	const consumers = (await sourceFiles(["app", "components"]))
+		.filter(({ text }) => text.includes('from "@/components/ui/card"'))
+		.map(({ path }) => path);
+	assert.deepEqual(consumers, []);
 });
 
 test("live regions are siblings of their controls, never inside a button", async () => {

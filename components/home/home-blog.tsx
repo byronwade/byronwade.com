@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
-import { TagList } from "@/components/common/tag-list";
+import { PostRow } from "@/components/blog/post-row";
+import { IndexList } from "@/components/common";
 import { Section } from "@/components/layout/page";
-import { Badge } from "@/components/ui/badge";
 import { getBlogPosts } from "@/lib/blog";
-import { Clock } from "@/lib/icons";
-import { safeFormatDate } from "@/lib/markdown-utils";
 
 // Thorbis chronological rows; dates and excerpts remain server-rendered.
 async function BlogList() {
@@ -13,36 +10,17 @@ async function BlogList() {
 	const recentPosts = posts.slice(0, 3);
 
 	if (recentPosts.length === 0) {
-		return <p className="text-muted-foreground text-sm">No blog posts yet. Check back soon.</p>;
+		return (
+			<p className="text-copy-14 text-muted-foreground">
+				Nothing published yet. The first post is in progress.
+			</p>
+		);
 	}
 
 	return (
 		<IndexList>
 			{recentPosts.map((post) => (
-				<li key={post.slug}>
-					<Link prefetch={false} className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-						<div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-							<span className={`font-medium text-foreground ${indexRowAccentClass}`}>
-								{post.title}
-							</span>
-							<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
-								<Badge variant="muted">
-									<Clock />
-									{post.readingTime} min
-								</Badge>
-								{post.date && (
-									<time className="hidden sm:inline" dateTime={post.date}>
-										{safeFormatDate(post.date, "MMM d, yyyy")}
-									</time>
-								)}
-							</div>
-						</div>
-						{post.excerpt && (
-							<p className="max-w-2xl text-body text-sm leading-relaxed">{post.excerpt}</p>
-						)}
-						{post.tags && post.tags.length > 0 && <TagList limit={3} tags={post.tags} />}
-					</Link>
-				</li>
+				<PostRow key={post.slug} post={post} tagLimit={3} />
 			))}
 		</IndexList>
 	);
@@ -51,15 +29,10 @@ async function BlogList() {
 export function HomeBlog() {
 	return (
 		<Section
-			className=""
 			description="Notes from building products and running a service business."
 			link={
-				<Link
-					prefetch={false}
-					className="inline-flex min-h-11 shrink-0 items-center text-muted-foreground text-sm transition-colors hover:text-brand"
-					href="/blog"
-				>
-					All posts →
+				<Link prefetch={false} className="link-action shrink-0" href="/blog">
+					All writing
 				</Link>
 			}
 			title="Writing"

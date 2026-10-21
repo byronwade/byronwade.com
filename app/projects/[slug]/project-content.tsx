@@ -2,7 +2,6 @@ import { Markdown, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
@@ -32,22 +31,6 @@ const typeLabels: Record<ProjectType, string> = {
 	hobby: "Hobby",
 };
 
-/**
- * One hue per project type, from the `--type-*` family in globals.css.
- *
- * This used to map `product` onto the `success` variant, which made the palette
- * assert a positive outcome where it only meant a category, and it flattened
- * concept and hobby into the same outline treatment so two different kinds of
- * work looked identical. These are classification colours; the label is always
- * beside them, so §5.1's "status never relies on colour alone" is not in play.
- */
-const typeBadgeVariant: Record<ProjectType, "product" | "client" | "concept" | "hobby"> = {
-	product: "product",
-	client: "client",
-	concept: "concept",
-	hobby: "hobby",
-};
-
 function extractDomain(url?: string): string {
 	if (!url) {
 		return "";
@@ -68,6 +51,44 @@ function extractSourceUrl(content: string): string | null {
 	return match[0].replace(TRAILING_PUNCTUATION, "");
 }
 
+/** The argument (problem, outcome) and the numbers: the executive read's evidence. */
+function ProjectProof({ project }: { project: Project }) {
+	return (
+		<>
+			{/* Problem and outcome are the argument of an Evidence page (§3.2):
+			    a plain definition list, separated from the lede by space. */}
+			{(project.problem || project.outcome) && (
+				<dl className="flex flex-col gap-4 pt-2 sm:flex-row sm:gap-10">
+					{project.problem && (
+						<div className="flex flex-1 flex-col gap-1">
+							<dt className="text-copy-12 text-muted-foreground">Problem</dt>
+							<dd className="text-body text-copy-14 leading-relaxed">{project.problem}</dd>
+						</div>
+					)}
+					{project.outcome && (
+						<div className="flex flex-1 flex-col gap-1">
+							<dt className="text-copy-12 text-muted-foreground">Outcome</dt>
+							<dd className="text-body text-copy-14 leading-relaxed">{project.outcome}</dd>
+						</div>
+					)}
+				</dl>
+			)}
+
+			{project.metrics && project.metrics.length > 0 && (
+				<dl className="flex flex-wrap gap-x-10 gap-y-3 pt-2 tabular-nums">
+					{project.metrics.map((metric) => (
+						<div key={`${project.slug}-${metric.label}`} className="flex flex-col gap-0.5">
+							<dt className="text-copy-12 text-muted-foreground">{metric.label}</dt>
+							<dd className="order-first font-medium text-foreground text-heading-20">
+								{metric.value}
+							</dd>
+						</div>
+					))}
+				</dl>
+			)}
+		</>
+	);
+}
 export function ProjectContent({ project }: ProjectContentProps) {
 	const domain = extractDomain(project.url);
 	const projectType = project.type;
@@ -109,33 +130,27 @@ export function ProjectContent({ project }: ProjectContentProps) {
 			<JsonLd data={projectStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			<SiteShell width="wide">
-				<div className="flex flex-col gap-10 sm:gap-12">
-					{/* Header */}
+			<SiteShell profile="evidence" width="wide">
+				<div className="flex flex-col gap-12">
+					{/* Executive read: identity, claim, the argument, the numbers, the way in. */}
 					<header className="flex w-full max-w-2xl flex-col gap-4">
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-sm">
-							<Badge variant={projectType ? typeBadgeVariant[projectType] : "outline"}>
-								{projectTypeLabel}
-							</Badge>
+						<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground">
+							<span>{projectTypeLabel}</span>
 							{project.category && project.category !== projectTypeLabel && (
 								<>
-									<span aria-hidden="true" className="text-border">
-										·
-									</span>
+									<span aria-hidden="true">·</span>
 									<span>{project.category}</span>
 								</>
 							)}
 							{formattedDate && (
 								<>
-									<span aria-hidden="true" className="text-border">
-										·
-									</span>
+									<span aria-hidden="true">·</span>
 									<time dateTime={isoDate}>{formattedDate}</time>
 								</>
 							)}
-						</div>
+						</p>
 
-						<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 leading-normal tracking-tight">
+						<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
 							{project.title}
 						</h1>
 
@@ -145,60 +160,29 @@ export function ProjectContent({ project }: ProjectContentProps) {
 							</p>
 						)}
 
-						{/* Problem and outcome are the argument of an Evidence page (§3.2), so
-						    they are set as a plain definition list with space rather than
-						    in two tinted cards with all-caps labels. §13 rejects the card
-						    wrapper and the eyebrow, and §3.2 says the comparison itself is the
-						    dominant object, not the box around it. */}
-						{(project.problem || project.outcome) && (
-							<dl className="mt-1 flex flex-col gap-4 pt-4 sm:flex-row sm:gap-10">
-								{project.problem && (
-									<div className="flex flex-1 flex-col gap-1">
-										<dt className="text-muted-foreground text-xs">Problem</dt>
-										<dd className="text-foreground text-sm leading-relaxed">{project.problem}</dd>
-									</div>
-								)}
-								{project.outcome && (
-									<div className="flex flex-1 flex-col gap-1">
-										<dt className="text-muted-foreground text-xs">Outcome</dt>
-										<dd className="text-foreground text-sm leading-relaxed">{project.outcome}</dd>
-									</div>
-								)}
-							</dl>
-						)}
-
-						{project.metrics && project.metrics.length > 0 && (
-							<ul className="mt-1 flex flex-wrap gap-x-5 gap-y-2 py-3 tabular-nums">
-								{project.metrics.map((metric) => (
-									<li key={`${project.slug}-${metric.label}`} className="flex flex-col gap-0.5">
-										<span className="font-semibold text-base text-foreground">{metric.value}</span>
-										<span className="text-muted-foreground text-xs">{metric.label}</span>
-									</li>
-								))}
-							</ul>
-						)}
+						<ProjectProof project={project} />
 
 						{(project.url || sourceUrl) && (
-							<div className="mt-1 flex flex-wrap items-center gap-3">
+							<div className="flex flex-wrap items-center gap-3 pt-2">
 								{project.url && (
 									<Button
-										size="lg"
 										render={
 											<a href={project.url} target="_blank" rel="noopener noreferrer">
 												Visit site
 												<ArrowUpRight aria-hidden="true" />
+												<span className="sr-only"> (opens in a new tab)</span>
 											</a>
 										}
 									/>
 								)}
 								{sourceUrl && (
 									<Button
-										size="lg"
-										variant="outline"
+										variant="secondary"
 										render={
 											<a href={sourceUrl} target="_blank" rel="noopener noreferrer">
 												<Github aria-hidden="true" />
 												Source
+												<span className="sr-only"> (opens in a new tab)</span>
 											</a>
 										}
 									/>
@@ -207,27 +191,34 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 					</header>
 
-					{/* Live preview */}
+					{/* The live artifact, beside the story (§7.1). */}
 					{project.url && domain && (
-						<div className="w-full">
+						<figure className="flex w-full flex-col gap-3.5">
 							<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
-						</div>
+							<figcaption className="text-copy-12 text-muted-foreground">
+								A capture of {domain}, refreshed from the live site. Switch the viewport, drag the
+								side handles, or use the arrow keys on a handle to resize.
+							</figcaption>
+						</figure>
 					)}
 
-					{/* Body + table of contents */}
-					<div className="grid w-full grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(0,1fr)_15rem]">
-						<article className="w-full min-w-0 max-w-2xl">
+					{/* Audit read: the write-up, with its outline docked beside it on wide screens. */}
+					<div className="flex w-full flex-col gap-10 xl:flex-row xl:gap-12">
+						<article className="w-full min-w-0 max-w-2xl flex-1">
 							{hasContent ? (
 								<Markdown content={body} />
 							) : (
-								<p className="text-base text-muted-foreground leading-relaxed">
-									Details for this project are coming soon.
+								<p className="text-body text-copy-16 leading-relaxed">
+									The write-up for this project isn’t published yet.
+									{project.url || sourceUrl
+										? " The live site and source above are the record for now."
+										: " Ask me about it through the contact page."}
 								</p>
 							)}
 						</article>
 
 						{toc.length >= 3 && (
-							<aside className="hidden xl:block">
+							<aside className="hidden w-60 shrink-0 xl:block">
 								<div className="sticky top-24">
 									<ProjectToc items={toc} />
 								</div>
@@ -235,26 +226,17 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 					</div>
 
-					{/* Footer nav */}
-					<div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-						<Link
-							className="inline-flex min-h-11 items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
-							href="/projects"
-						>
+					<div className="flex w-full max-w-2xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+						<Link className="link-action" href="/projects">
 							<ArrowLeft aria-hidden="true" className="size-4" />
 							Back to projects
 						</Link>
-						{/* Brand is not a link colour (§5.1). The underline carries the
-						    affordance; weight carries the emphasis. */}
-						<div className="flex flex-wrap items-center gap-3 text-sm">
-							<span className="text-muted-foreground">Want something like this?</span>
-							<Link
-								className="link-underline inline-flex min-h-11 items-center font-medium"
-								href="/contact"
-							>
-								Start a conversation →
+						<p className="flex flex-wrap items-center gap-x-2 text-copy-14 text-muted-foreground">
+							Want something like this?
+							<Link className="link-action" href="/contact">
+								Start a conversation
 							</Link>
-						</div>
+						</p>
 					</div>
 				</div>
 			</SiteShell>

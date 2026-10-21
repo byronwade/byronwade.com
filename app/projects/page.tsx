@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader, Section } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -66,8 +67,12 @@ async function ProjectsList() {
 
 	if (sorted.length === 0) {
 		return (
-			<p className="text-muted-foreground text-sm leading-relaxed">
-				No projects yet. Check back soon.
+			<p className="text-body text-copy-16 leading-relaxed">
+				No project write-ups are published yet. Open-source work is listed on the{" "}
+				<Link className="link-underline" href="/portfolio" prefetch={false}>
+					portfolio
+				</Link>{" "}
+				in the meantime.
 			</p>
 		);
 	}
@@ -111,8 +116,8 @@ export default async function ProjectsPage() {
 			<JsonLd data={websiteStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			<SiteShell>
-				<div className="flex flex-col gap-8 sm:gap-12">
+			<SiteShell profile="showcase">
+				<div className="flex flex-col gap-10 sm:gap-12">
 					<PageHeader
 						lede="What I’m building now, followed by earlier products, client work, and experiments. Every project stays listed."
 						title="Projects"

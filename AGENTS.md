@@ -476,10 +476,13 @@ UTC-midnight strings, which can shift the calendar day and year group.
 passes a field through without `frontMatterFields` fails `type-check`.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
 
-High-value sensors not yet built, in rough priority order: raw-color and
-arbitrary-radius/shadow detection, `transition: all` and parallel-easing checks,
-visual regression for the four Showcase routes, and accessibility regression for
-navigation, reading a post, and submitting the contact form.
+`tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
+blur, `transition: all`, routes without a declared profile, the Tailwind default
+type ramp, pixel font sizes, and weights above 500. High-value
+sensors not yet built, in rough priority order: arbitrary-radius/shadow and
+parallel-easing checks, visual regression for the four Showcase routes, and
+accessibility regression for navigation, reading a post, and submitting the
+contact form.
 
 For existing debt: record a baseline, block new violations, reduce the baseline
 when the code is touched, and tighten only after false positives are controlled.

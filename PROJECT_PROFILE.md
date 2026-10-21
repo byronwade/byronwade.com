@@ -57,10 +57,16 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Profile | Used? | Owners or routes | Notes |
 | --- | --- | --- | --- |
 | Workbench | No | - | No authenticated or repeat-use operational surface exists |
-| Guided | Yes | `/contact`, the inline contact sheet | Single focused task, interruption- and failure-aware |
-| Evidence | Yes | `/resume`, `/projects/[slug]` | Reader has a specific question; supports an executive and an audit read |
+| Guided | Yes | `/contact`, `/search`, the inline contact sheet | Single focused task, interruption- and failure-aware |
+| Evidence | Yes | `/resume`, `/projects/[slug]`, `/blog/[slug]`, `/portfolio/figma/[key]`, `/privacy`, `/terms` | Reader has a specific question; supports an executive and an audit read |
 | Showcase | Yes | `/`, `/projects`, `/portfolio`, `/blog` | The dominant profile for this site |
-| Shared primitives | Yes | `components/ui/`, `app/globals.css` | One token system and one primitive set across all profiles |
+| Shared | Yes | 404, route error, `components/ui/`, `app/globals.css` | System pages, plus one token system and one primitive set across all profiles |
+
+Every route declares its profile through `SiteShell`'s required `profile` prop,
+which renders `data-profile` on the page container. `tests/design-system.test.mjs`
+fails when a route entry does not declare one. `SiteShell` keeps one 42rem
+measure shared with the header and footer; `width="wide"` is reserved for the
+homepage composition and live artifacts (project preview, Figma file).
 
 ## Repository ownership
 
@@ -130,7 +136,9 @@ from the profile and makes first-visit clarity the dominant design concern.
   index built by `lib/search-index.ts`
 - **Filters and saved views:** none, no surface needs them yet
 - **Tables/lists:** none, no tabular data on this site
-- **Cards/panels:** `components/ui/card.tsx`
+- **Cards/panels:** `components/layout/sheet.tsx`, the Thorbis specimen frame for
+  real work (a live artifact, a product outline). There is no card primitive: counts
+  and sections are type and space, never boxes
 - **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`. There is no dialog primitive; the one modal
   (fullscreen preview) is a portal in `full-width-project-preview.tsx`.
 - **Inspectors:** `components/project/project-toc.tsx`
@@ -223,7 +231,10 @@ use them correctly.
   Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
   checks remain outside these, so manual keyboard passes are still required for
   critical flows.
-- **UI consistency:** no visual regression suite. Recorded as debt below.
+- **UI consistency:** `tests/design-system.test.mjs` (in `npm test`) fails on raw colour
+  literals, gradients, decorative blur, `transition-all`, a route without a profile, a
+  loss of the reduced-motion block, Tailwind default type sizes, pixel font sizes, or
+  weights above 500. No visual regression suite yet. Recorded as debt below.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
 - **Bundle/performance:** `npm run build:analyze`, `npm run perf:budget`

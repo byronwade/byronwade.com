@@ -4,6 +4,7 @@ import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
+import { StatusPill } from "@/components/ui/status-pill";
 import { ExternalLink, GitFork, Github, RefreshCw, Star } from "@/lib/icons";
 import { getGitHubRepositories } from "@/lib/portfolio-data";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
@@ -83,7 +84,7 @@ function RefreshLink({ label }: { label: string }) {
 				</a>
 			}
 			size="lg"
-			variant="outline"
+			variant="secondary"
 		/>
 	);
 }
@@ -92,7 +93,7 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
 	return (
 		<EmptyState
 			action={
-				<div className="flex flex-wrap items-center justify-center gap-3">
+				<div className="flex flex-wrap items-center gap-3">
 					<RefreshLink label="Try again" />
 					<Button
 						role="link"
@@ -103,23 +104,29 @@ function PortfolioUnavailable({ failed }: { failed: boolean }) {
 							</a>
 						}
 						size="lg"
-						variant="outline"
+						variant="secondary"
 					/>
 				</div>
 			}
 			description={
 				failed
-					? "GitHub is slow or unavailable right now. Retry here, or open the profile directly."
+					? "GitHub is slow or unavailable right now. Nothing here is lost; retry, or open the profile directly."
 					: "Public repositories will show up here once they’re available."
 			}
 			icon={Github}
-			title={failed ? "Couldn't load repositories" : "No repositories yet"}
+			title={failed ? "Couldn’t load repositories" : "No repositories yet"}
 		/>
 	);
 }
 
 /**
- * One repository row. Star count leads so the sort order is visible as structure.
+ * One repository row: Showcase profile.
+ *
+ * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
+ * activity sorted by signal. Signal leads in the tabular column, stars and the
+ * last push, the same column the writing and resume rows use for dates, so
+ * the sort order is visible as structure. Language and forks follow the
+ * description on every width instead of disappearing on phones.
  */
 function RepoRow({ repo }: { repo: GitHubRepo }) {
 	return (
@@ -130,54 +137,58 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 				rel="noopener noreferrer"
 				target="_blank"
 			>
-				<div className="flex items-baseline gap-4">
-					<span
-						className={`flex w-12 shrink-0 items-center gap-1 font-mono text-muted-foreground text-xs tabular-nums ${indexRowAccentClass}`}
-					>
-						<Star aria-hidden="true" className="size-3" />
-						{repo.stargazers_count}
-					</span>
-
-					<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
-						<span
-							className={`wrap-anywhere min-w-0 font-medium text-foreground ${indexRowAccentClass}`}
-						>
-							{titleize(repo.name)}
+				<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
+					<p className="flex gap-3 text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
+						<span className="inline-flex items-center gap-1">
+							<Star aria-hidden="true" className="size-3" />
+							{repo.stargazers_count}
+							<span className="sr-only"> stars</span>
 						</span>
-						{repo.archived && (
-							<span className="shrink-0 text-copy-12 text-muted-foreground">Archived</span>
-						)}
-					</span>
-
-					<span className="hidden shrink-0 items-center gap-3 font-mono text-muted-foreground text-xs tabular-nums sm:flex">
-						{repo.language && (
-							<span className="inline-flex items-center gap-1.5">
-								<span className={`size-2 rounded-full ${languageTone(repo.language)}`} />
-								{repo.language}
-							</span>
-						)}
-						{repo.forks_count > 0 && (
-							<span className="inline-flex items-center gap-1">
-								<GitFork aria-hidden="true" className="size-3" />
-								{repo.forks_count}
-							</span>
-						)}
 						{repo.pushed_at && (
 							<time dateTime={repo.pushed_at}>
 								{pushedAtFormat.format(new Date(repo.pushed_at))}
 							</time>
 						)}
-					</span>
-
-					<ExternalLink
-						aria-hidden="true"
-						className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
-					/>
+					</p>
+					<div className="flex min-w-0 flex-1 flex-col gap-1">
+						<span className="flex items-center gap-2">
+							<span
+								className={`wrap-anywhere font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
+							>
+								{titleize(repo.name)}
+							</span>
+							{repo.archived && <StatusPill className="shrink-0">Archived</StatusPill>}
+							<ExternalLink
+								aria-hidden="true"
+								className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
+							/>
+						</span>
+						{repo.description && (
+							<p className="text-body text-copy-14 leading-relaxed">{repo.description}</p>
+						)}
+						{(repo.language || repo.forks_count > 0) && (
+							<p className="flex flex-wrap items-center gap-x-4 text-copy-12 text-muted-foreground tabular-nums">
+								{repo.language && (
+									<span className="inline-flex items-center gap-1.5">
+										<span
+											aria-hidden="true"
+											className={`size-2 rounded-full ${languageTone(repo.language)}`}
+										/>
+										{repo.language}
+									</span>
+								)}
+								{repo.forks_count > 0 && (
+									<span className="inline-flex items-center gap-1">
+										<GitFork aria-hidden="true" className="size-3" />
+										{repo.forks_count}
+										<span className="sr-only"> forks</span>
+									</span>
+								)}
+							</p>
+						)}
+					</div>
 				</div>
-
-				{repo.description && (
-					<p className="max-w-2xl text-body text-sm leading-relaxed sm:pl-16">{repo.description}</p>
-				)}
+				<span className="sr-only"> (opens in a new tab)</span>
 			</a>
 		</li>
 	);
@@ -196,7 +207,7 @@ export default async function PortfolioPage() {
 	}
 
 	return (
-		<SiteShell width="wide">
+		<SiteShell profile="showcase">
 			<div className="flex flex-col gap-10 sm:gap-12">
 				<PageHeader
 					aside={<RefreshLink label="Refresh" />}

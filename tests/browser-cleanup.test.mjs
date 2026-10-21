@@ -4,11 +4,13 @@ import { EventEmitter, once } from "node:events";
 import { syncBuiltinESMExports } from "node:module";
 import { test } from "node:test";
 import { setImmediate as nextTurn } from "node:timers/promises";
-import { closeBrowser } from "./fixtures/browser.mjs";
+import puppeteer from "puppeteer-core";
+import { closeBrowser, withBrowser } from "./fixtures/browser.mjs";
 
 const NO_OWNED_PROCESS = /no owned process/i;
 const PROCESS_DID_NOT_EXIT = /owned.*process.*exit/i;
 const SIGNAL_FAILED = /could not signal owned browser process 123/i;
+const LOST_BROWSER = /exited before cleanup.*"pid":456.*"code":4294967295/;
 
 function stalledClose() {
 	return new Promise(() => {
@@ -208,6 +210,9 @@ test("a timed-out cleanup command records that it never reported an exit code", 
 	const check = assert.rejects(result, (error) => error.cause === timeout);
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.ok(diagnostics.join("\n").includes('"commandCode":null'));
 	assert.ok(diagnostics.join("\n").includes('"commandSignal":"SIGTERM"'));
@@ -259,6 +264,9 @@ test("a failed cleanup command also rejects after a stalled close", async (t) =>
 	});
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.equal(child.listenerCount("exit"), 0);
 });
@@ -289,6 +297,38 @@ test("a tree that exited before taskkill reached it is not a failed cleanup", as
 	assert.ok(diagnostics.join("\n").includes("no running instance"));
 	assert.equal(child.listenerCount("exit"), 0);
 });
+
+// Observed on Windows: taskkill stopped a renderer, then found the root already gone because the
+// browser was finishing its own shutdown, and reported before that root's exit event arrived.
+const ROOT_EXITING = [
+	"ERROR: The process with PID 123 (child process of PID 99) could not be terminated.",
+	"Reason: There is no running instance of the task.",
+	"",
+].join("\r\n");
+
+for (const exitCode of [0, 1]) {
+	test(`a failed taskkill followed by the owned exit (code ${exitCode}) passes only a clean exit`, async (t) => {
+		const { child, context } = stubChild(t);
+		const killError = Object.assign(new Error("taskkill failed"), { code: 255, signal: null });
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			callback(killError, "SUCCESS: The process with PID 456 has been terminated.", ROOT_EXITING);
+			setImmediate(() => {
+				child.exitCode = exitCode;
+				child.emit("exit", exitCode, null);
+			});
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check =
+			exitCode === 0
+				? assert.doesNotReject(result)
+				: assert.rejects(result, (error) => error.cause === killError);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await check;
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
 
 test("an already-gone report cannot hide an owned process that never exits", async (t) => {
 	const { child, context } = stubChild(t);
@@ -363,9 +403,83 @@ test("failed forced cleanup retains command output and the original close error"
 	});
 	await nextTurn();
 	t.mock.timers.tick(10_000);
+	// A failed command still waits for the exit that would prove a clean shutdown.
+	await nextTurn();
+	t.mock.timers.tick(15_000);
 	await check;
 	assert.ok(diagnostics.join("\n").includes("123"));
 	assert.ok(diagnostics.join("\n").includes("synthetic access denied"));
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+function stubLaunch(t, close) {
+	// No owned child: closeBrowser settles on the close promise alone.
+	const browser = { process: () => null, close: t.mock.fn(close) };
+	const launch = t.mock.method(puppeteer, "launch", () => Promise.resolve(browser));
+	return { browser, launch };
+}
+
+test("withBrowser returns the test's value after closing its browser", async (t) => {
+	const { browser, launch } = stubLaunch(t, () => Promise.resolve());
+	assert.equal(await withBrowser(t, { protocolTimeout: 15_000 }, () => "checked"), "checked");
+	assert.equal(browser.close.mock.callCount(), 1);
+	const [options] = launch.mock.calls[0].arguments;
+	assert.equal(options.headless, true);
+	assert.equal(options.protocolTimeout, 15_000);
+	assert.ok(options.executablePath);
+});
+
+test("withBrowser keeps the test failure when cleanup also fails", async (t) => {
+	const failure = new Error("assertion failed in the page");
+	const cleanup = new Error("browser close failed");
+	const { browser } = stubLaunch(t, () => Promise.reject(cleanup));
+	await assert.rejects(
+		withBrowser(t, {}, () => Promise.reject(failure)),
+		(error) => {
+			assert.ok(error instanceof AggregateError);
+			assert.deepEqual(error.errors, [failure, cleanup]);
+			assert.equal(error.cause, cleanup);
+			return true;
+		}
+	);
+	assert.equal(browser.close.mock.callCount(), 1);
+});
+
+test("withBrowser reports a cleanup failure after a passing test", async (t) => {
+	const cleanup = new Error("browser close failed");
+	stubLaunch(t, () => Promise.reject(cleanup));
+	await assert.rejects(
+		withBrowser(t, {}, () => "passed"),
+		(error) => error === cleanup
+	);
+});
+
+test("withBrowser closes the browser and rethrows a lone test failure", async (t) => {
+	const failure = new Error("assertion failed in the page");
+	const { browser } = stubLaunch(t, () => Promise.resolve());
+	await assert.rejects(
+		withBrowser(t, {}, () => Promise.reject(failure)),
+		(error) => error === failure
+	);
+	assert.equal(browser.close.mock.callCount(), 1);
+});
+
+test("withBrowser reports an owned browser that exits before cleanup", async (t) => {
+	const child = Object.assign(new EventEmitter(), { pid: 456, exitCode: null, signalCode: null });
+	const browser = { process: () => child, close: () => Promise.resolve() };
+	t.mock.method(puppeteer, "launch", () => Promise.resolve(browser));
+	const diagnostics = [];
+	const context = { diagnostic: (message) => diagnostics.push(message) };
+	const lost = new Error("Target closed");
+	await assert.rejects(
+		withBrowser(context, {}, () => {
+			child.exitCode = 4_294_967_295;
+			child.emit("exit", 4_294_967_295, null);
+			return Promise.reject(lost);
+		}),
+		(error) => error === lost
+	);
+	assert.match(diagnostics.join("\n"), LOST_BROWSER);
 	assert.equal(child.listenerCount("exit"), 0);
 });
 

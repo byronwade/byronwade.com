@@ -212,16 +212,19 @@ interface PreviewFallbackProps {
 // scripts notice sits in <noscript>, so visitors with JavaScript never see it flash.
 function PreviewFallback({ href, onRetry, url }: PreviewFallbackProps) {
 	const icon = <ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />;
-	const noticeClass = "max-w-xs text-muted-foreground text-xs";
+	const noticeClass = "max-w-xs text-copy-13 text-muted-foreground";
 	return (
 		<div className="flex min-w-0 flex-col items-center justify-center gap-2 self-stretch p-4 text-center">
 			{onRetry ? icon : <noscript>{icon}</noscript>}
-			<div className="space-y-1">
-				<p className="font-medium text-foreground text-sm">
+			<div className="flex flex-col gap-1">
+				<p className="font-medium text-copy-14 text-foreground">
 					{onRetry ? "Preview unavailable" : "Screenshot preview"}
 				</p>
 				{onRetry ? (
-					<p className={noticeClass}>We couldn’t capture this site right now.</p>
+					<p className={noticeClass}>
+						The capture service didn’t return this site just now. The site itself may be fine; open
+						it directly or try the capture again.
+					</p>
 				) : (
 					<noscript>
 						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>
@@ -311,7 +314,7 @@ function PreviewViewport({
 								<div className="absolute inset-0 rounded-full border-2 border-border" />
 								<div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-foreground" />
 							</div>
-							<p className="relative font-medium text-muted-foreground text-xs" role="status">
+							<p className="relative font-medium text-copy-13 text-muted-foreground" role="status">
 								Loading preview…
 							</p>
 						</div>

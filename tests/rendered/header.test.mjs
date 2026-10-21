@@ -1,14 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const MENU = "[data-site-menu]";
 const PANEL = "[data-header-menu]";
 const SEARCH = "[data-header-search]";
 const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
 const HYDRATION_ERROR = /hydration|hydrating|did not match|Minified React error/i;
+
+/** Let queued animation-frame work finish, e.g. Base UI moving focus off a modal edge guard. */
+function settleFrames(page) {
+	return page.evaluate(
+		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+	);
+}
+
+/** Each subtest states the menu it starts from, so one failure cannot cascade into the next. */
+async function setMenuOpen(page, open) {
+	if ((await page.$eval(MENU, (button) => button.getAttribute("aria-expanded"))) !== String(open)) {
+		await page.tap(MENU);
+	}
+	await page.waitForSelector(PANEL, { hidden: !open });
+}
 
 async function assertHeaderFits(page, width) {
 	const layout = await page.$eval("[data-site-header]", (header) => ({
@@ -34,7 +48,10 @@ async function assertHeaderFits(page, width) {
 	assert.equal(layout.client, width);
 	assert.ok(layout.scroll <= width, `horizontal document overflow: ${JSON.stringify(layout)}`);
 	assert.ok(layout.header.left >= 0 && layout.header.right <= width);
-	assert.ok(layout.mainTop >= layout.header.bottom, "the header must reserve content clearance");
+	assert.ok(
+		layout.mainTop >= layout.header.bottom,
+		`the header must reserve content clearance: ${JSON.stringify(layout)}`
+	);
 	assert.ok(layout.controls.length >= 4, "identity, search, theme and navigation must be present");
 	const overlaps = layout.controls.flatMap((control, index) =>
 		layout.controls
@@ -70,7 +87,11 @@ async function assertPanelFits(page, selector, width) {
 		client: element.clientWidth,
 		scroll: element.scrollWidth,
 		containsFocus: element.contains(document.activeElement),
+		// An unsized panel once widened the mobile layout viewport past the screen.
+		layoutViewport: innerWidth,
+		positioner: element.parentElement.getAttribute("style"),
 	}));
+	assert.equal(panel.layoutViewport, width, `the panel widened the page: ${JSON.stringify(panel)}`);
 	assert.ok(panel.box.left >= 0 && panel.box.right <= width, JSON.stringify(panel));
 	assert.ok(panel.scroll <= panel.client, `horizontal panel overflow: ${JSON.stringify(panel)}`);
 	assert.ok(panel.containsFocus, "opening the panel must move focus inside it");
@@ -98,8 +119,23 @@ async function exerciseHeaderPanel(page, trigger, panel, width) {
 	await assertHeaderFits(page, width);
 }
 
-async function checkResponsiveHeader(page, { width, theme, textSize }) {
+/** Every case loads fresh at its viewport and text size, so no state carries between cases. */
+async function checkResponsiveHeader(page, client, url, { width, theme, textSize }) {
 	await page.setViewport({ width, height: 844, isMobile: true, hasTouch: true });
+	// Larger text arrives as the reader's default font size, before the first style pass.
+	// Rewriting the root size under a laid-out page left container-query styles stale in
+	// Chrome on Linux: one size-11 button measured 44px while two others measured 88px.
+	await client.send("Page.setFontSizes", {
+		fontSizes: { standard: (16 * Number.parseFloat(textSize)) / 100 },
+	});
+	await page.goto(url, { waitUntil: "networkidle0" });
+	await page.waitForFunction(
+		() => document.querySelector("[data-site-menu]")?.getAttribute("aria-expanded") === "false"
+	);
+	// Isolate shared chrome from page-specific reflow while retaining its real CSS and shell.
+	await page.$eval("main", (main) => {
+		main.textContent = "Header geometry fixture.";
+	});
 	if (
 		(await page.evaluate(() => document.documentElement.classList.contains("dark"))) !==
 		(theme === "dark")
@@ -111,12 +147,7 @@ async function checkResponsiveHeader(page, { width, theme, textSize }) {
 			theme === "dark"
 		);
 	}
-	await page.evaluate((size) => {
-		document.documentElement.style.fontSize = size;
-	}, textSize);
-	await page.evaluate(
-		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
-	);
+	await settleFrames(page);
 	await assertHeaderFits(page, width);
 	const hasMenu = await page.$eval(MENU, (button) => getComputedStyle(button).display !== "none");
 	if (hasMenu) {
@@ -126,13 +157,8 @@ async function checkResponsiveHeader(page, { width, theme, textSize }) {
 }
 
 test("site header preserves layout and accessible navigation", { timeout: 180_000 }, async (t) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(t, {}, async (browser) => {
 			const page = await browser.newPage();
 			const hydrationErrors = [];
 			page.on("console", (message) => {
@@ -146,7 +172,18 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				new PerformanceObserver((entries) => {
 					for (const entry of entries.getEntries()) {
 						if (entry.sources?.some((source) => source.node?.closest?.("header"))) {
-							window.headerShifts.push(entry.value);
+							// Enough to name the cause: a late font swap once moved header text 3.7px.
+							window.headerShifts.push({
+								value: entry.value,
+								hadRecentInput: entry.hadRecentInput,
+								startTime: Math.round(entry.startTime),
+								path: location.pathname,
+								sources: entry.sources.map((source) => ({
+									node: `${source.node?.nodeName}.${source.node?.className?.baseVal ?? source.node?.className}`,
+									previous: source.previousRect.toJSON(),
+									current: source.currentRect.toJSON(),
+								})),
+							});
 						}
 					}
 				}).observe({ type: "layout-shift", buffered: true });
@@ -220,16 +257,8 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"touch open moves focus, locks scrolling and preserves header geometry",
 				async () => {
-					try {
-						await page.tap(MENU);
-					} catch (error) {
-						// Loaded panel code can replace the fallback trigger between lookup and tap;
-						// Puppeteer rejects before dispatching the touch, so tap the current trigger.
-						if (!error.message.includes("detached")) {
-							throw error;
-						}
-						await page.tap(MENU);
-					}
+					await setMenuOpen(page, false);
+					await page.tap(MENU);
 					await page.waitForSelector(PANEL);
 					await page.waitForFunction(() =>
 						document.querySelector("[data-header-menu]")?.contains(document.activeElement)
@@ -264,6 +293,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			);
 
 			await t.test("Tab and Shift+Tab stay inside the panel; Escape returns focus", async () => {
+				await setMenuOpen(page, true);
 				// The modal focus guard returns focus a frame after the key press, so wait for it
 				// to settle before the next key. A wrap that never lands in the panel still fails.
 				const focusSettlesInPanel = () =>
@@ -297,6 +327,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("outside press and the X both dismiss", async () => {
+				await setMenuOpen(page, false);
 				await page.tap(MENU);
 				await page.waitForSelector(PANEL);
 				await page.touchscreen.tap(4, 500);
@@ -308,6 +339,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("route changes close navigation and update the active row", async () => {
+				await setMenuOpen(page, false);
 				await page.tap(MENU);
 				await page.waitForSelector(PANEL);
 				await page.click(`${PANEL} a[href="/blog"]`);
@@ -322,6 +354,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("search shortcut replaces an open mobile menu", async () => {
+				await setMenuOpen(page, true);
 				await page.keyboard.down("Control");
 				await page.keyboard.press("k");
 				await page.keyboard.up("Control");
@@ -345,6 +378,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"desktop resize releases the menu and keeps 44px navigation targets",
 				async () => {
+					await setMenuOpen(page, true);
 					await page.setViewport({ width: 1440, height: 900 });
 					await page.waitForSelector(PANEL, { hidden: true });
 					assert.equal(
@@ -408,6 +442,8 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.type('input[role="combobox"]', "zz-no-matching-destination");
 					assert.equal(await page.$$eval('[role="option"]', (options) => options.length), 0);
 					await page.keyboard.press("Escape");
+					// Otherwise the reopened wait can match the closing input and type into it.
+					await page.waitForSelector('input[role="combobox"]', { hidden: true });
 					await page.keyboard.down("Control");
 					await page.keyboard.press("k");
 					await page.keyboard.up("Control");
@@ -421,8 +457,10 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				}
 			);
 
-			assert.deepEqual(hydrationErrors, []);
-			assert.deepEqual(await page.evaluate(() => window.headerShifts), []);
+			// Snapshot before the 200% case rewrites the root size, but assert after it, so a
+			// failure here never drops that subtest from the run.
+			const loadErrors = [...hydrationErrors];
+			const headerShifts = await page.evaluate(() => window.headerShifts);
 			await t.test(
 				"200% text keeps every header control inside the header and reserves clearance",
 				async () => {
@@ -449,56 +487,45 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					);
 				}
 			);
-		} finally {
-			await closeBrowser(browser, t);
-		}
-	});
+			assert.deepEqual(loadErrors, []);
+			assert.deepEqual(
+				headerShifts.map((shift) => shift.value),
+				[],
+				`header layout shift: ${JSON.stringify(headerShifts)}`
+			);
+		})
+	);
 });
 
 test("header controls and panels fit real responsive viewports", {
 	timeout: 180_000,
 }, async (t) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(t, {}, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(10_000);
 			page.setDefaultNavigationTimeout(30_000);
 			const runtimeErrors = [];
 			page.on("pageerror", (error) => runtimeErrors.push(error.message));
-			await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
 			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
-			await page.goto(url, { waitUntil: "networkidle0" });
-			await page.waitForFunction(
-				() => document.querySelector("[data-site-menu]")?.getAttribute("aria-expanded") === "false"
-			);
-			// Isolate shared chrome from page-specific reflow while retaining its real CSS and shell.
-			await page.$eval("main", (main) => {
-				main.textContent = "Header geometry fixture.";
-			});
+			const client = await page.createCDPSession();
 			// Include both sides of viewport and header-container breakpoints.
 			const cases = ["light", "dark"].flatMap((theme) =>
 				["100%", "200%"].flatMap((textSize) =>
 					[320, 390, 639, 640, 679, 680, 768, 1440].map((width) => ({ width, theme, textSize }))
 				)
 			);
-			// Viewports and modal states share one page and must run sequentially.
+			// Cases share one browser page and must run sequentially.
 			await cases.reduce(
 				(steps, scenario) =>
 					steps.then(() =>
 						t.test(`${scenario.width}px, ${scenario.theme}, ${scenario.textSize} text`, () =>
-							checkResponsiveHeader(page, scenario)
+							checkResponsiveHeader(page, client, url, scenario)
 						)
 					),
 				Promise.resolve()
 			);
 			assert.deepEqual(runtimeErrors, []);
-		} finally {
-			await closeBrowser(browser, t);
-		}
-	});
+		})
+	);
 });

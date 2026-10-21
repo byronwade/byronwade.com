@@ -90,9 +90,9 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	}
 
 	return (
-		<nav aria-label="On this page" className="flex flex-col gap-3 text-sm">
-			<p className="text-muted-foreground text-xs">On this page</p>
-			<ul className="flex flex-col gap-1">
+		<nav aria-label="On this page" className="flex flex-col gap-2 text-copy-13">
+			<p className="px-3 text-copy-12 text-muted-foreground">On this page</p>
+			<ul className="flex flex-col">
 				{items.map((item) => {
 					const isActive = activeId === item.id;
 					return (
@@ -102,13 +102,21 @@ export function ProjectToc({ items }: ProjectTocProps) {
 								onClick={(event) => handleClick(event, item.id)}
 								aria-current={isActive ? "location" : undefined}
 								className={cn(
-									"focus-ring flex min-h-11 items-center rounded-md py-2 pr-3 leading-snug transition-colors",
+									"focus-ring flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
 									item.depth === 3 ? "pl-6" : "pl-3",
 									isActive
-										? "bg-secondary font-medium text-foreground"
+										? "bg-muted font-medium text-foreground"
 										: "text-muted-foreground hover:text-foreground"
 								)}
 							>
+								{/* The place mark (Thorbis header menu): an accent dot, never a rule on the edge. */}
+								<span
+									aria-hidden="true"
+									className={cn(
+										"size-1.5 shrink-0 rounded-full",
+										isActive ? "bg-brand" : "bg-transparent"
+									)}
+								/>
 								{item.text}
 							</a>
 						</li>

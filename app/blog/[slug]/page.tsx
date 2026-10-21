@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
 import { getAdjacentPosts, getAllBlogSlugs, getBlogPost } from "@/lib/blog";
+import { ArrowLeft } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateArticleStructuredData,
@@ -118,13 +119,15 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    Sharing is something a reader does after reading, and having it in
 			    both places meant the same control competed with itself. */}
 				<header className="flex w-full flex-col gap-3">
-					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 leading-normal tracking-tight">
+					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
 						{post.title}
 					</h1>
 					{post.excerpt && (
-						<p className="max-w-2xl text-pretty text-body leading-relaxed">{post.excerpt}</p>
+						<p className="max-w-2xl text-pretty text-body text-copy-16 leading-relaxed">
+							{post.excerpt}
+						</p>
 					)}
-					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-muted-foreground text-xs tabular-nums">
+					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-copy-12 text-muted-foreground tabular-nums">
 						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
 						{post.updated && post.updated !== post.date && (
 							<>
@@ -135,9 +138,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 						<span aria-hidden="true">·</span>
 						<span>{post.readingTime} min read</span>
 					</p>
-					{post.tags && post.tags.length > 0 && (
-						<TagList itemClassName="px-2.5 py-1 text-xs" tags={post.tags} />
-					)}
+					{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
 				</header>
 
 				{/* Blog Post Content */}
@@ -158,13 +159,12 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 				{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}
-				<div className="flex w-full flex-col gap-4">
+				<div className="flex w-full flex-col gap-3">
+					<p className="text-copy-13 text-muted-foreground">Share this post</p>
 					<SocialShare description={post.excerpt} title={post.title} url={url} />
-					<Link
-						className="link-underline inline-flex min-h-11 w-fit items-center text-sm"
-						href="/blog"
-					>
-						← Back to writing
+					<Link className="link-action w-fit" href="/blog">
+						<ArrowLeft aria-hidden="true" className="size-4" />
+						Back to writing
 					</Link>
 				</div>
 			</div>
@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	return (
 		<>
 			<ReadingProgress />
-			<SiteShell>
+			<SiteShell profile="evidence">
 				<BlogPostContent slug={slug} />
 			</SiteShell>
 		</>

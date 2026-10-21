@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { once } from "node:events";
+import puppeteer from "puppeteer-core";
 
 const ALREADY_GONE = /not found|no running instance of the task/i;
 
@@ -19,11 +20,9 @@ function isRunning(child) {
 	return child.exitCode === null && child.signalCode === null;
 }
 
-function combinedFailure(closeError, cleanupError) {
+function combinedFailure(firstError, cleanupError, message) {
 	// Retain both failures; cleanup is the immediate cause of incomplete shutdown.
-	return new AggregateError([closeError, cleanupError], "Browser close and cleanup failed", {
-		cause: cleanupError,
-	});
+	return new AggregateError([firstError, cleanupError], message, { cause: cleanupError });
 }
 
 async function settlesWithin(promise, milliseconds) {
@@ -68,10 +67,7 @@ function killTree(child, context, signal) {
 					stderr,
 				});
 				context.diagnostic(`Owned browser cleanup: ${evidence}`);
-				// taskkill can lose a race with a normal exit. The exact launched
-				// child's observed exit, rather than a missing PID, proves shutdown.
-				const alreadyExited = error?.code === 128 && child.exitCode === 0;
-				if (error && !(alreadyExited || onlyAlreadyGone(error, stderr))) {
+				if (error && !onlyAlreadyGone(error, stderr)) {
 					reject(
 						new Error(`Could not stop owned browser process tree: ${evidence}`, { cause: error })
 					);
@@ -101,25 +97,36 @@ export async function closeBrowser(browser, context) {
 		const closed = await settlesWithin(Promise.all([closing, exited]), 10_000);
 		try {
 			if (child && isRunning(child)) {
-				const forced = killTree(child, context, controller.signal);
-				// Under load taskkill can outlast the deadline after the exact launched
-				// child has already exited cleanly. Exit code 0 means the browser shut
-				// itself down (a forced kill exits 1), so it proves shutdown without the
-				// command's result; any other exit still waits for the tree kill.
+				let commandError;
+				const forced = killTree(child, context, controller.signal).catch((error) => {
+					commandError = error;
+				});
+				// Under load the browser can finish shutting itself down while taskkill walks
+				// its tree: the command outlasts the deadline, or fails on the root it was
+				// about to kill. Exit code 0 means the browser shut itself down (a forced kill
+				// exits 1), so it proves shutdown whatever the command reports; any other exit
+				// needs the tree kill to have succeeded.
 				const stopped = await settlesWithin(
-					Promise.race([
-						Promise.all([forced, exited]),
-						exited.then(() => (child.exitCode === 0 ? undefined : forced)),
-					]),
+					exited.then(async () => {
+						if (child.exitCode !== 0) {
+							await forced;
+							if (commandError) {
+								throw commandError;
+							}
+						}
+					}),
 					15_000
 				);
+				if (!stopped && commandError) {
+					throw commandError;
+				}
 				assert.ok(stopped, `Owned browser process ${child.pid} did not exit after forced cleanup`);
 			} else if (!(child || closed)) {
 				throw new Error("Browser close timed out and no owned process is available for cleanup");
 			}
 		} catch (cleanupError) {
 			if (closeFailure) {
-				throw combinedFailure(closeFailure.error, cleanupError);
+				throw combinedFailure(closeFailure.error, cleanupError, "Browser close and cleanup failed");
 			}
 			throw cleanupError;
 		}
@@ -129,4 +136,43 @@ export async function closeBrowser(browser, context) {
 	} finally {
 		controller.abort();
 	}
+}
+
+/** Runs a test against an owned browser; a failed shutdown never hides the test's own failure. */
+export async function withBrowser(context, options, use) {
+	const browser = await puppeteer.launch({
+		executablePath:
+			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+		headless: true,
+		...options,
+	});
+	const child = browser.process();
+	let lostBrowser;
+	const recordLoss = (code, signal) => {
+		lostBrowser = { pid: child.pid, code, signal };
+	};
+	child?.once("exit", recordLoss);
+	let outcome;
+	try {
+		outcome = { value: await use(browser) };
+	} catch (error) {
+		outcome = { error };
+	}
+	child?.off("exit", recordLoss);
+	if (lostBrowser) {
+		// "Target closed" alone cannot tell a crash or an outside kill from a test fault.
+		context.diagnostic(`Owned browser exited before cleanup: ${JSON.stringify(lostBrowser)}`);
+	}
+	try {
+		await closeBrowser(browser, context);
+	} catch (cleanupError) {
+		if ("error" in outcome) {
+			throw combinedFailure(outcome.error, cleanupError, "Browser test and cleanup failed");
+		}
+		throw cleanupError;
+	}
+	if ("error" in outcome) {
+		throw outcome.error;
+	}
+	return outcome.value;
 }
