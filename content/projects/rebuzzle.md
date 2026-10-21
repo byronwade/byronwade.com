@@ -3,7 +3,7 @@ title: "Rebuzzle: Hard Puzzles Everyday Built by AI"
 url: "https://rebuzzle.byronwade.com"
 category: "Product"
 date: 2024-12-01
-excerpt: "Building Rebuzzle: Engineering an AI system that actually understands humor and logic through multi-agent orchestration and continuous learning."
+excerpt: "Building Rebuzzle: a staged AI pipeline that plans, checks, and scores each daily puzzle before it's published."
 status: "Archived"
 featured: false
 ---
@@ -12,67 +12,58 @@ Large Language Models (LLMs) are excellent at generating text, but asking them t
 
 With **Rebuzzle**, I set out to build more than just a wrapper around OpenAI or Anthropic. I wanted to create a self-correcting, learning system capable of generating high-quality puzzles, from Rebus visual wordplay to complex Logic Grids, that are actually solvable and fun.
 
-Here is a technical deep dive into how Rebuzzle works, moving beyond simple prompts to a sophisticated multi-agent orchestration system.
+Here is a technical deep dive into how Rebuzzle worked as of December 2025, moving beyond simple prompts to a multi-step generation pipeline.
 
 ## The Architecture: Serverless & Event-Driven
 
-Rebuzzle is built on a modern, production-ready stack designed for modularity and scale. At its core, it utilizes **Next.js 15** and the **Vercel AI SDK**, backed by **MongoDB** for vector storage and analytics.
+Rebuzzle was built on **Next.js 16** and the **Vercel AI SDK**, backed by **MongoDB**, which stored the puzzles, their vector embeddings, and play history.
 
-The system isn't static. It operates on a serverless, event-driven model. This allows the infrastructure to scale automatically, handling the rigorous computational demands of vector embeddings and multi-step AI reasoning without maintaining expensive, idle servers.
+There's no puzzle server sitting idle. Once a day at midnight UTC, a Vercel cron job calls a workflow route that generates the day's puzzle and writes a blog post about the previous one.
 
 ## The Core: Multi-Agent Orchestration
 
-The secret sauce of Rebuzzle isn't a single prompt. It's a team of four specialized AI agents working in concert. Using the Vercel AI SDK, we orchestrate these agents to mimic a human editorial team:
+The daily puzzle doesn't come from a single prompt. Generation, quality review, and difficulty calibration are separate AI steps, each with its own instructions, a bit like a small editorial team:
 
-1.  **The Generator Agent:** Uses Chain-of-Thought (CoT) reasoning to conceptualize the puzzle. It doesn't just "guess"; it plans a visual strategy, considers phonetic relationships, and drafts the content.
+1.  **The Generator:** Uses Chain-of-Thought (CoT) reasoning to conceptualize the puzzle. It doesn't just "guess"; it plans a visual strategy, considers phonetic relationships, and drafts the content.
 
-2.  **The Quality Evaluator:** Acts as the harsh critic. It scores puzzles on seven dimensions (including clarity, creativity, and cultural sensitivity). If a puzzle scores below 70, it is sent back for revision.
+2.  **The Quality Evaluator:** Acts as the harsh critic. It scores puzzles from 0 to 100 on seven dimensions: clarity, creativity, solvability, appropriateness, visual appeal, educational value, and fun. The daily run asks for a score of at least 70 and makes up to three attempts.
 
-3.  **The Difficulty Calibrator:** AI is notoriously bad at judging how hard a puzzle is for humans. This agent analyzes visual ambiguity and cognitive steps to assign a weighted difficulty score (1-10), ensuring we hit that "sweet spot" of challenge.
+3.  **The Difficulty Calibrator:** AI is notoriously bad at judging how hard a puzzle is for humans. This step rates factors like visual ambiguity, cognitive steps, and cultural knowledge on 1-10 scales and combines them into a weighted difficulty score.
 
-4.  **The Personalization Agent:** Tailors the experience to the specific user, adjusting generation based on their skill level and past performance.
+I also built a true multi-agent mode on the Vercel AI SDK, where generator, evaluator, and calibrator agents work with database tools, plus a fourth **Personalization Agent** that tailors puzzles to a signed-in player's skill level and history. It sat behind an experimental feature flag that was on in development and off in production unless explicitly enabled, so the steps above are what the default daily run used.
 
 ## The Generation Pipeline: Quality by Design
 
-Every puzzle you see on Rebuzzle has survived a rigorous **six-stage pipeline**. We don't publish raw AI output.
+Every daily puzzle goes through a **five-stage pipeline** before it's saved. We don't publish raw AI output.
 
 *   **Stage 1: Chain-of-Thought:** The AI maps out the logic and potential pitfalls before generating a single pixel or word.
 
-*   **Stage 2: Uniqueness Validation:** We use semantic fingerprinting to prevent duplicates. If a new puzzle is >80% similar to an existing one (determined via vector cosine similarity), it is rejected.
+*   **Stage 2: Uniqueness Validation:** Each rebus is compared with existing puzzles using a similarity score that blends how close the answers are with how many emoji they share. Above 0.8, it's rejected and regenerated. Other puzzle types skip this check.
 
-*   **Stage 3 & 4: Calibration & QA:** The puzzle is scored and difficulty-rated.
+*   **Stage 3: Difficulty Calibration:** The puzzle gets its weighted difficulty rating.
 
-*   **Stage 5: Adversarial Testing:** The system attempts to "break" the puzzle, looking for multiple valid answers or unintended ambiguity.
+*   **Stage 4: Quality Assurance:** The evaluator scores it. On retries, an adversarial test also tries to "break" the puzzle, looking for multiple valid answers or unintended ambiguity. The first attempt skips that test to save API calls.
 
-*   **Stage 6: Final Validation:** Metadata, hints, and explanations are verified and indexed.
+*   **Stage 5: Decision:** The puzzle is accepted for publishing or sent back for another attempt.
 
 ## Semantic Understanding & Vector Embeddings
 
-Rebuzzle understands the *meaning* of its content, not just the text.
+Once a puzzle is saved, it gets a vector embedding, stored alongside it in MongoDB.
 
-Every puzzle is converted into a high-dimensional vector embedding stored in MongoDB. This powers our **Semantic Search Engine**. It allows users to search for "puzzles about cats" and find puzzles containing the 🐱 emoji, even if the word "cat" never appears.
-
-This also enables **Semantic Caching**. Before generating a new puzzle, the system checks if a semantically similar request was recently processed. If so, it serves the cached result. This significantly reduces API costs and latency while ensuring variety.
+An API route could use those embeddings to find puzzles by meaning, ranking them by cosine similarity, but no page in the app called it yet. I also wrote a similarity-based cache for AI responses, meant to reuse results for near-identical requests and cut API costs, but nothing in the generation path used it.
 
 ## Continuous Learning
 
-The system gets smarter the more people play. We track solve rates, time-to-solve, and hint usage.
+Each attempt record has room for whether the player solved it, how long it took, and how many hints they used.
 
-If a puzzle is marked as "Medium" difficulty but has a 90% abandonment rate, the system learns from this data. It auto-calibrates the difficulty rating for future users and feeds this data back into the generation engine to avoid creating similar "unsolvable" logic in the future.
+From those, Rebuzzle could compute a puzzle's actual difficulty and flag problem puzzles, for example a "Medium" puzzle with a low solve rate. That analysis was available through an API route and as a tool for the experimental agents. It didn't yet write corrected difficulty back to puzzles or feed the daily generation run, so closing that loop was still ahead.
 
 ## Conclusion
 
-Rebuzzle represents a shift from simple generative AI to **agentic AI workflows**. By combining chain-of-thought reasoning, adversarial testing, and vector search, we've created a system that does does more than generate content. It thinks, evaluates, and learns.
+Rebuzzle was my move from single prompts to **multi-step AI workflows**. By combining chain-of-thought generation, uniqueness checks, scored quality review, and difficulty calibration, I built a system that does more than generate content: it plans, checks, and scores what it makes before anything is published.
 
 Visit [rebuzzle.byronwade.com](https://rebuzzle.byronwade.com) to start solving today's puzzle.
 
 ---
 
 **Note:** I'm a huge vibecoder, and Claude Code is my AI of choice currently. This project was built with a lot of joy, experimentation, and collaboration with AI tools that understand the craft of coding.
-
-
-
-
-
-
-
