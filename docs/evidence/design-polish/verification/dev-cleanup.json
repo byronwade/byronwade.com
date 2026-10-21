@@ -1,0 +1,6 @@
+{
+  "cases": [
+    { "port": 64327, "closed": true, "code": "ECONNREFUSED" },
+    { "port": 53070, "closed": true, "code": "ECONNREFUSED" }
+  ]
+}

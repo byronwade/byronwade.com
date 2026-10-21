@@ -214,7 +214,16 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"touch open moves focus, locks scrolling and preserves header geometry",
 				async () => {
-					await page.tap(MENU);
+					try {
+						await page.tap(MENU);
+					} catch (error) {
+						// Loaded panel code can replace the fallback trigger between lookup and tap;
+						// Puppeteer rejects before dispatching the touch, so tap the current trigger.
+						if (!error.message.includes("detached")) {
+							throw error;
+						}
+						await page.tap(MENU);
+					}
 					await page.waitForSelector(PANEL);
 					await page.waitForFunction(() =>
 						document.querySelector("[data-header-menu]")?.contains(document.activeElement)
@@ -249,18 +258,26 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			);
 
 			await t.test("Tab and Shift+Tab stay inside the panel; Escape returns focus", async () => {
+				// The modal focus guard returns focus a frame after the key press, so wait for it
+				// to settle before the next key. A wrap that never lands in the panel still fails.
+				const focusSettlesInPanel = () =>
+					page.waitForFunction(
+						(selector) => document.querySelector(selector)?.contains(document.activeElement),
+						{ timeout: 2000 },
+						PANEL
+					);
 				await Array.from({ length: 12 }).reduce(
 					(steps) =>
 						steps.then(async () => {
 							await page.keyboard.press("Tab");
-							assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
+							await focusSettlesInPanel();
 						}),
 					Promise.resolve()
 				);
 				await page.keyboard.down("Shift");
 				await page.keyboard.press("Tab");
 				await page.keyboard.up("Shift");
-				assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
+				await focusSettlesInPanel();
 				await page.keyboard.press("Escape");
 				await page.waitForSelector(PANEL, { hidden: true });
 				await page.waitForFunction(
@@ -309,6 +326,12 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				);
 				await page.keyboard.press("Escape");
 				await page.waitForSelector('input[role="combobox"]', { hidden: true });
+				// The menu link that had focus closed with the menu, so focus falls back to search.
+				await page.waitForFunction(
+					(selector) => document.activeElement === document.querySelector(selector),
+					{ timeout: 2000 },
+					SEARCH_TRIGGER
+				);
 				await page.tap(MENU);
 				await page.waitForSelector(PANEL);
 			});
@@ -338,6 +361,26 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					);
 				}
 			);
+
+			await t.test("closing shortcut search returns focus to where it was opened", async () => {
+				const origin = 'footer a[href="/privacy"]';
+				await page.focus(origin);
+				await page.keyboard.down("Control");
+				await page.keyboard.press("k");
+				await page.keyboard.up("Control");
+				await page.waitForFunction(
+					() => document.activeElement?.getAttribute("role") === "combobox"
+				);
+				await page.keyboard.press("Escape");
+				await page.waitForSelector('input[role="combobox"]', { hidden: true });
+				await page.waitForFunction(
+					(selector) => document.activeElement === document.querySelector(selector),
+					{ timeout: 2000 },
+					origin
+				);
+				// Focusing the footer scrolled the page; later geometry checks start from the top.
+				await page.evaluate(() => window.scrollTo(0, 0));
+			});
 
 			await t.test(
 				"search retains keyboard navigation, empty results and a 16px input",

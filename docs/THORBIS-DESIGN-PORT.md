@@ -30,9 +30,9 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
 | lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
 | app/globals.css font block; public/fonts/UcCo*, UcC53*, or3n*; app/layout.tsx | src/styles.css Inter/Geist Mono @font-face blocks; public/fonts (Inter/Geist Mono subsets and OFL licenses); src/stylex/tokens.stylex.ts | Exact font files/faces and licenses copied; Latin Inter explicitly preloaded; Mono deferred; existing signature face retained only for resume |
-| components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Lifted neutral commit and electric-blue action, compact/comfortable/touch sizes, source radii, source shadows; existing Base UI render/nativeButton contract preserved |
+| components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Neutral commit, compact/comfortable/touch sizes, source radii and shadows; Base UI render/nativeButton adapter preserves destination link semantics. The later checklist pass removes the unused electric-blue variant. |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
-| components/ui/card.tsx | src/components/ui/card.tsx | Panel tone, source large radius and panel elevation; existing slots and size contract |
+| components/ui/card.tsx | src/components/ui/card.tsx | Panel tone and source large radius; existing slots and size contract. Persistent regions stay planar under the later rules checklist. |
 | components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
 | components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
 | components/layout/nav-dock.tsx; site-header.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/navLink/menu/menuLink | Fixed 52px row, 42rem measure, 8px top/16px mobile side insets, 13px nav and 12px descriptions, active pill/dot, 44px targets; Base UI modal focus and dismissal |
@@ -48,6 +48,16 @@ Every row is pinned to the full commit above. An unlisted source is not authorit
 for introducing a new visual choice.
 
 ## Intentional site adaptations
+
+- The October 19 polish pass applies docs/THORBIS-DESIGN-RULES.md to the
+  existing port without changing its token/font pin. Lists and persistent
+  regions group by space and tone; media and fields keep their real rims.
+  Reading titles use the 32px role, with comfortable leading for long object
+  titles. The homepage commit uses neutral ink; its unused blue Button variant
+  is removed. Secondary buttons use the existing on-panel fill. Native selects
+  share the input material and focus recipe. Preview controls reuse Button,
+  keep 44px geometry, and change dimensions immediately; loading/fullscreen
+  surfaces use neutral fills. No motion library or parallel token set is added.
 
 - Public portfolio Showcase, Evidence and Guided surfaces; no trades Workbench.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.
@@ -121,5 +131,8 @@ for introducing a new visual choice.
 
 ## Evidence
 
-See docs/evidence/thorbis/ and RESULT.md for measured acceptance results. Do not
-infer visual parity or accessibility from the token generator alone.
+See docs/evidence/thorbis/ and its [PR #56 result](evidence/thorbis/PR-56-RESULT.md)
+for the original acceptance record. The later polish evidence lives in
+[docs/evidence/design-polish/](evidence/design-polish/README.md). Root RESULT.md
+is a local task handoff. Do not infer visual parity or accessibility from the
+token generator alone.

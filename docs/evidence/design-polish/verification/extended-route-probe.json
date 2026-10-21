@@ -1,0 +1,78 @@
+{
+  "phase": "probe",
+  "head": "2e2cd5457825991fcc232790c34c127f4fb0a11f",
+  "cases": [
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 1440,
+      "theme": "light",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 3656,
+        "footerBottom": 3656.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "ui.byronwade.com", "width": 139.203125, "height": 20 },
+          { "label": "The Morph Panel", "width": 240, "height": 27.25 },
+          { "label": "How It's Built", "width": 240, "height": 27.25 },
+          { "label": "Why It Exists", "width": 240, "height": 27.25 }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3656
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": ["aria-valid-attr-value", "color-contrast"]
+      },
+      "errors": [],
+      "file": "toc-before-1440-light.png"
+    },
+    {
+      "name": "project-evidence",
+      "route": "/projects/byronwade-ui",
+      "width": 1440,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "documentHeight": 3656,
+        "footerBottom": 3656.25,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "byronwade/ui: The Design System Behind Everything",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [
+          { "label": "ui.byronwade.com", "width": 139.203125, "height": 20 },
+          { "label": "The Morph Panel", "width": 240, "height": 27.25 },
+          { "label": "How It's Built", "width": 240, "height": 27.25 },
+          { "label": "Why It Exists", "width": 240, "height": 27.25 }
+        ],
+        "inputs": [],
+        "screenshotHeight": 3656
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "toc-before-1440-dark.png"
+    }
+  ]
+}

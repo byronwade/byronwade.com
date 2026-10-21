@@ -118,11 +118,11 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    Sharing is something a reader does after reading, and having it in
 			    both places meant the same control competed with itself. */}
 				<header className="flex w-full flex-col gap-3">
-					<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
+					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 leading-normal tracking-tight">
 						{post.title}
 					</h1>
 					{post.excerpt && (
-						<p className="max-w-2xl text-muted-foreground leading-relaxed">{post.excerpt}</p>
+						<p className="max-w-2xl text-pretty text-body leading-relaxed">{post.excerpt}</p>
 					)}
 					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-muted-foreground text-xs tabular-nums">
 						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
@@ -150,9 +150,12 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 				{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}
-				<div className="flex w-full flex-col gap-4 border-border border-t pt-8">
+				<div className="flex w-full flex-col gap-4">
 					<SocialShare description={post.excerpt} title={post.title} url={url} />
-					<Link className="link-underline w-fit text-sm" href="/blog">
+					<Link
+						className="link-underline inline-flex min-h-11 w-fit items-center text-sm"
+						href="/blog"
+					>
 						← Back to writing
 					</Link>
 				</div>

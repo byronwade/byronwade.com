@@ -40,4 +40,4 @@ material and the final LCP margin is only 10.483ms; no real-user production clai
 
 Use Node 24 and Chrome (CHROME_PATH can select another installation). From the worktree: npm ci; npm test; npm run check; npm run perf:budget; npm run test:rendered; node scripts/verify-thorbis-browser.mjs; npm run lint; git diff --check. The performance command builds once and owns an isolated production server/browser; the browser command uses that build with its own server. No GitHub Actions or deployment is part of verification.
 
-Physical-device, Safari and screen-reader validation were not run. Empty home content arrays were not forced; empty search and invalid contact states were exercised. RESULT.md records final local verification, status and merge receipts.
+Physical-device, Safari and screen-reader validation were not run. Empty home content arrays were not forced; empty search and invalid contact states were exercised. [PR-56-RESULT.md](PR-56-RESULT.md) preserves that task's final local verification, status and merge receipts.
