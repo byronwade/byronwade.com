@@ -1,9 +1,26 @@
 import type React from "react";
-import ReactMarkdown from "react-markdown";
+import type { ElementType } from "react";
+import ReactMarkdown, { type Components, type ExtraProps, type Options } from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import { markdownOptions } from "@/lib/markdown";
 import { childrenToText, createSlugger } from "@/lib/markdown-utils";
 import { cn } from "@/lib/utils";
+
+/**
+ * react-markdown hands every override below the hast `node` it is rendering. The
+ * overrides spread their props onto DOM elements, so each tag printed
+ * node="[object Object]" and the page payload repeated the element's whole
+ * subtree, source positions included. This drops the prop before they run.
+ */
+function MarkdownWithoutNode({ components, ...options }: Options) {
+	const overrides: Components = Object.fromEntries(
+		Object.entries(components ?? {}).map(([tag, Override]) => {
+			const Component = Override as ElementType;
+			return [tag, ({ node: _node, ...props }: ExtraProps) => <Component {...props} />];
+		})
+	);
+	return <ReactMarkdown {...options} components={overrides} />;
+}
 
 interface MarkdownProps {
 	className?: string;
@@ -29,7 +46,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 				className
 			)}
 		>
-			<ReactMarkdown
+			<MarkdownWithoutNode
 				{...markdownOptions}
 				rehypePlugins={[rehypeHighlight]}
 				components={{
@@ -163,7 +180,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 				}}
 			>
 				{content}
-			</ReactMarkdown>
+			</MarkdownWithoutNode>
 		</div>
 	);
 }

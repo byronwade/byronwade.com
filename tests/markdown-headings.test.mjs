@@ -37,6 +37,7 @@ const { Markdown } = await import(markdownUrl);
 const { extractToc } = await import("../lib/markdown.ts");
 const HEADING_ID = /<h[1-4]\b[^>]*\bid="([^"]+)"/g;
 const CODE_CHIP = /thorbis-code-bg/;
+const NODE_ATTRIBUTE = /\snode="/;
 
 const cases = [
 	{
@@ -258,6 +259,29 @@ test("fenced code without a language is a block, not an inline chip inside the w
 	assert.match(inline ?? "", CODE_CHIP, "a code span keeps its chip");
 });
 
+test("rendered elements never carry react-markdown's node prop as an attribute", () => {
+	// One document that reaches every element the renderer overrides.
+	const content = [
+		"# One",
+		"## Two",
+		"### Three",
+		"#### Four",
+		"A **strong**, *em*, [link](https://example.com) and `code` paragraph.",
+		"- item",
+		"1. step",
+		"> quote",
+		"---",
+		"```\nplain\n```",
+		"```js\nconst a = 1;\n```",
+	].join("\n\n");
+	const html = renderToStaticMarkup(createElement(Markdown, { content }));
+	const tags = ["h1", "h2", "h3", "h4", "p", "strong", "em", "a", "code", "pre", "ul", "ol", "li"];
+	for (const tag of [...tags, "blockquote", "hr"]) {
+		assert.match(html, new RegExp(`<${tag}[\\s>/]`), `the sample renders <${tag}>`);
+	}
+	assert.doesNotMatch(html, NODE_ATTRIBUTE);
+});
+
 for (const directory of ["blog", "projects"]) {
 	for (const filename of readdirSync(new URL(`../content/${directory}/`, import.meta.url))) {
 		if (!filename.endsWith(".md")) {
@@ -275,6 +299,7 @@ for (const directory of ["blog", "projects"]) {
 				extractToc(content).map((item) => item.id),
 				ids
 			);
+			assert.doesNotMatch(html, NODE_ATTRIBUTE, "no element carries a node attribute");
 		});
 	}
 }
