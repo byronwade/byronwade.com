@@ -211,3 +211,64 @@ labels, and heading anchors are unchanged. The dated article
 `content/blog/design-systems-that-earn-their-keep.md` (July 12, updated August 7)
 was reviewed and left as written: it describes the Morph Panel as a pattern and
 says the launcher and dock "can share" its material, which was true when published.
+
+## Memoria install and capability claims, October 21, 2026
+
+`content/projects/memoria.md` was added in `ce21f0c` (2025-12-08). Its Claude
+Desktop install line, `npx @anthropic/claude-code mcp add …`, could not work, and
+three capability claims were stronger than the source. Checked against the
+package `npx -y @byronwade/memoria` installs today, version 1.0.32 (npm `latest`,
+published 2025-12-04 to 2025-12-08), unpacked and read without running it, and
+the [byronwade/memoria](https://github.com/byronwade/memoria) repository at
+`main` [`f6c5244`](https://github.com/byronwade/memoria/commit/f6c5244abe66c31330ef7c569b43f89e2814f615)
+(2026-08-09):
+
+| Claim | Source | Correction |
+| --- | --- | --- |
+| Claude Desktop: `npx @anthropic/claude-code mcp add memoria …` | npm returns 404 for `@anthropic/claude-code`; the CLI is `@anthropic-ai/claude-code`, and its `mcp add` registers a server with Claude Code, not Claude Desktop. Memoria's README configures Claude Desktop through `claude_desktop_config.json`. | Replaced with merging the same `mcpServers` entry into `claude_desktop_config.json` (macOS and Windows paths). The Claude Code line was already correct. The broken command is copied from Memoria's own README, which this site does not edit. |
+| "Sub-100ms analysis" | [`benchmarks/RESULTS.md`](https://github.com/byronwade/memoria/blob/f6c5244abe66c31330ef7c569b43f89e2814f615/benchmarks/RESULTS.md) (2025-12-04, one darwin arm64 machine, one repository): full analysis averaged 114.12 ms (p95 134.88 ms); its own badge line says "<200ms". Cached coupling lookups averaged 0.02 ms. | Now "about a tenth of a second". The cache claim stays. One machine and one repository do not establish speed on other repositories. |
+| "Runs 100% locally. No API keys, no cloud upload" | 1.0.32 `dist/index.js` and `dist/auth.js`: analysis runs on the local `.git` folder; an unlinked install makes no network request at startup and runs in offline mode. A linked device checks its status with `memoria.byronwade.com/api` at startup and syncs optional cloud memories. | Local analysis, no account/API key/code upload and offline use are kept; sign-in is described as optional and limited to cloud-synced memories. What those memories contain was not audited. |
+| ">15% of the time", ">7 days" | `getAdaptiveThresholds` in 1.0.32: base 15% coupling / 7-day drift, adjusted to 10–25% and 3–14 days by commit pace and files per commit, overridable in `.memoria.json`. Drift compares file modification times on disk. | Both are now stated as adaptive, configurable defaults, and drift is described by modification time. |
+| "One-line install for every major AI client" | Memoria's README lists Windsurf as manual config and Cline as a settings UI. | Reworded to one config entry per client. The Cursor one-liner gets a note that it replaces an existing `.cursor/mcp.json`. |
+
+Also confirmed in 1.0.32: importers come from `git grep`; default panic keywords
+include `revert` and `hotfix` with weights; the `memoria` binary starts the MCP
+server when launched without a terminal, so the global-install line works.
+Repository HEAD declares `@byronwade/memoria` 1.1.1, which is not on npm, so
+the write-up describes the published 1.0.32. [memoria.byronwade.com](https://memoria.byronwade.com),
+accessed October 21, 2026, now presents an MCP server plus GitHub App for
+pull-request risk reports; the closing paragraph says so without describing
+those products. Title, date, URL, archived grouping, front matter and headings
+are unchanged. No package code was executed, no account was created and no
+production setting was touched.
+
+## Rebuzzle AI pipeline claims, October 21, 2026
+
+`content/projects/rebuzzle.md` was added in `584c39b` (2025-12-01), though its
+front matter says 2024-12-01. Its claims were checked against
+[byronwade/rebuzzle.byronwade.com](https://github.com/byronwade/rebuzzle.byronwade.com)
+at [`a16c141`](https://github.com/byronwade/rebuzzle.byronwade.com/commit/a16c1412488379a0c7f6af2033139cda535eb998)
+(2025-12-01 14:33 ET, the last commit before the write-up was added), tracing
+the daily path: `vercel.json` cron (`0 0 * * *`) →
+`src/app/api/cron/generate-puzzles` → `src/app/api/workflows/daily-content` →
+`generateNextPuzzle` → `generateMasterPuzzle({ qualityThreshold: 70, maxAttempts: 3 })`
+in `src/ai/services/master-puzzle-orchestrator.ts`.
+
+| Claim | Source at `a16c141` | Correction |
+| --- | --- | --- |
+| Next.js 15 | `package.json`: `next ^16.0.0`, `ai ^5.0.76`, `mongodb ^6.0.0`; that day's commits fix "Next.js 16 Cache Components". | Next.js 16, dated December 2025. Current `main` (`ed3ff19`, 2026-08-27) is a monorepo on Next.js 16.3.1 and AI SDK 7; it was not re-audited. |
+| A team of four agents generates every puzzle | `src/ai/agents/orchestrator.ts` has generator, quality, difficulty and personalized-generator agents, but `master-puzzle-orchestrator.ts` uses them only when `featureFlags.agentOrchestration` is set. `src/ai/config/feature-flags.ts` labels it experimental: on in development, off in production unless `AI_ENABLE_AGENT_ORCHESTRATION` is `true`/`1`. | The default daily run is described as separate generation, quality and difficulty AI steps; the four-agent mode is described as experimental and off in production by default. Production environment variables were not checked. |
+| Seven dimensions "including … cultural sensitivity"; below 70 sent back | `quality-assurance.ts` schema: clarity, creativity, solvability, appropriateness, visualAppeal, educationalValue, funFactor (plus overall), 0–100. The daily call passes `qualityThreshold: 70, maxAttempts: 3`. | The seven named dimensions replace "cultural sensitivity" (cultural bias is an adversarial-test prompt, not a score). Retry limit stated. |
+| Six-stage pipeline with adversarial testing as stage 5 and "final validation" as stage 6 | The orchestrator labels five stages: generation, uniqueness, difficulty calibration, quality assurance, decision. Adversarial testing is inside stage 4 with `skipAdversarial = attempt === 1`. After acceptance the puzzle is saved and an embedding generated. | Now five stages; adversarial testing runs on retries only. |
+| >80% similar "determined via vector cosine similarity" is rejected | `uniqueness-tracker.ts` `calculateSimilarity`: 0.6 × answer Levenshtein similarity + 0.4 × emoji Jaccard; stage 2 rejects above 0.8 and runs for rebus only. | Described as answer/emoji similarity, rebus only. |
+| Semantic search powers "puzzles about cats" → 🐱 | Embeddings are stored on puzzles; `src/app/api/puzzles/semantic-search` ranks by cosine similarity. No page or client code in `src` requested that route. | Kept as an API route not yet used by the app; the cats example was not reproduced and is removed. |
+| Semantic caching serves similar requests and "significantly reduces API costs" | `src/ai/cache.ts` `getBySimilarity` is reached only through `withCache`, and nothing outside `cache.ts`/`ai/index.ts` calls `withCache` or its wrappers. | Described as written but unused; no cost claim. |
+| Learns from play and auto-calibrates difficulty; 90% abandonment example | `puzzle-learning.ts` computes solve/abandonment rates, estimated actual difficulty and problem puzzles, but has no database write; neither do its callers (`src/app/api/puzzles/performance`, the agent tools). It reads `abandoned` from `puzzleAttempts`, where no app code sets it; abandonment is recorded separately as `analyticsEvents` via `src/app/api/analytics/completion`. | Analysis described as available but not written back or used by the daily run; the 90% figure (illustrative, never measured) is removed. |
+
+Also fixed the "does does" typo. The intro's "self-correcting, learning system" is
+kept as what Byron set out to build. Title, URL, archived grouping, front-matter
+keys and headings are unchanged; the excerpt now matches the corrected body.
+The 2024-12-01 date is left as-is: the repository was created 2024-07-11, so it
+may be the project date rather than the write-up date (question for Byron).
+No Rebuzzle code was run, no account was used and production configuration was
+not inspected.

@@ -37,6 +37,7 @@ for (const kind of ["blog", "projects"]) {
 					}
 				});
 				// One page, serial visits: navigation cannot overlap on a shared browser page.
+				let previewCount = 0;
 				await [`/${kind}`, ...published].reduce(async (previous, path) => {
 					await previous;
 					const response = await page.goto(url + path, { waitUntil: "networkidle0" });
@@ -50,13 +51,30 @@ for (const kind of ["blog", "projects"]) {
 							paragraphs: [...document.querySelectorAll("main article p")].filter((paragraph) =>
 								paragraph.checkVisibility(visibility)
 							).length,
-							// Preview widgets load independently; the reading surface must be complete.
+							// Reading status is separate from screenshot capture status.
 							loading: [...document.querySelectorAll('main [role="status"]')].some((status) =>
 								loadingMessages.includes(status.textContent.trim())
 							),
 							links: [...document.querySelectorAll("main a[href]")]
 								.filter((link) => link.checkVisibility(visibility))
 								.map((link) => link.getAttribute("href")),
+							previews: [...document.querySelectorAll('main a[aria-label^="Visit "]')].map(
+								(visit) => {
+									const preview = visit.closest('section[aria-label$=" site preview"]');
+									const open = [...(preview?.querySelectorAll("a") ?? [])].find(
+										(link) => link.textContent.trim() === "Open site"
+									);
+									return {
+										explained: preview?.innerText.includes("Enable JavaScript"),
+										loading: preview?.innerText.includes("Loading preview"),
+										busy: preview?.querySelector('[aria-busy="true"]') !== null,
+										buttons: preview?.querySelectorAll("button").length,
+										link: open?.checkVisibility(visibility) ? open.href : null,
+										linkRole: open?.getAttribute("role") ?? "link",
+										target: visit.href,
+									};
+								}
+							),
 						};
 					}, CONTENT_LOADING);
 					assert.equal(visible.title.length, 1, `${path} exposes one title without scripts`);
@@ -71,7 +89,18 @@ for (const kind of ["blog", "projects"]) {
 						assert.ok(visible.paragraphs > 0, `${path} exposes the prose without scripts`);
 					}
 					assert.equal(visible.loading, false, `${path} does not leave a loading skeleton`);
+					for (const preview of visible.previews) {
+						previewCount += 1;
+						assert.equal(preview.explained, true, `${path} explains the preview needs scripts`);
+						assert.equal(preview.loading, false, `${path} does not leave a preview spinner`);
+						assert.equal(preview.busy, false, `${path} does not announce a pending capture`);
+						assert.equal(preview.buttons, 0, `${path} has no inactive preview controls`);
+						assert.equal(preview.link, preview.target, `${path} offers the native site link`);
+						assert.equal(preview.linkRole, "link", `${path} preserves link semantics`);
+					}
 				}, Promise.resolve());
+				assert.ok(kind !== "projects" || previewCount > 0, "Project previews were exercised");
+				context.diagnostic(`Checked ${previewCount} screenshot preview fallbacks`);
 			})
 		);
 		context.diagnostic(
