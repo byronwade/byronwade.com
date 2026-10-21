@@ -87,7 +87,11 @@ async function assertPanelFits(page, selector, width) {
 		client: element.clientWidth,
 		scroll: element.scrollWidth,
 		containsFocus: element.contains(document.activeElement),
+		// An unsized panel once widened the mobile layout viewport past the screen.
+		layoutViewport: innerWidth,
+		positioner: element.parentElement.getAttribute("style"),
 	}));
+	assert.equal(panel.layoutViewport, width, `the panel widened the page: ${JSON.stringify(panel)}`);
 	assert.ok(panel.box.left >= 0 && panel.box.right <= width, JSON.stringify(panel));
 	assert.ok(panel.scroll <= panel.client, `horizontal panel overflow: ${JSON.stringify(panel)}`);
 	assert.ok(panel.containsFocus, "opening the panel must move focus inside it");

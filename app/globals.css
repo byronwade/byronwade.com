@@ -658,6 +658,18 @@
     --muted: var(--header-on-panel);
   }
 
+  /* The header's width (max-w-2xl inside nav-dock's px-4 / sm:px-5 wrapper), resolved
+     against the viewport. Header panels size from it until Base UI first measures the
+     header, so their first computed position is already their final one. */
+  :root {
+    --site-header-width: min(var(--container-2xl), 100% - 2rem);
+  }
+  @media (min-width: 640px) {
+    :root {
+      --site-header-width: min(var(--container-2xl), 100% - 2.5rem);
+    }
+  }
+
   /* Base UI intentionally permits touch scrolling outside inset popovers.
      Site navigation is modal on touch too; retain the gutter for fixed chrome. */
   html:has(:is([data-header-menu], [data-header-search])[data-open]) {
