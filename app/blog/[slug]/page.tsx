@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
+import { PostPager, ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
-import { getAllBlogSlugs, getBlogPost } from "@/lib/blog";
+import { getAdjacentPosts, getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateArticleStructuredData,
@@ -68,7 +68,7 @@ export async function generateMetadata({
 }
 
 async function BlogPostContent({ slug }: { slug: string }) {
-	const post = await getBlogPost(slug);
+	const [post, adjacent] = await Promise.all([getBlogPost(slug), getAdjacentPosts(slug)]);
 
 	if (!post) {
 		notFound();
@@ -145,8 +145,16 @@ async function BlogPostContent({ slug }: { slug: string }) {
 					<Markdown content={post.content} />
 				</article>
 
+				<PostPager newer={adjacent.newer} older={adjacent.older} />
+
 				{/* Related Posts */}
-				<RelatedPosts currentSlug={post.slug} limit={3} />
+				<RelatedPosts
+					currentSlug={post.slug}
+					exclude={[adjacent.newer, adjacent.older].flatMap((neighbour) =>
+						neighbour ? [neighbour.slug] : []
+					)}
+					limit={3}
+				/>
 
 				{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}

@@ -101,6 +101,18 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
 	}
 }
 
+/** The posts either side of `slug` in the writing index's chronology (newest first). */
+export async function getAdjacentPosts(
+	slug: string
+): Promise<{ newer?: BlogPost; older?: BlogPost }> {
+	const posts = await getBlogPosts();
+	const index = posts.findIndex((post) => post.slug === slug);
+	if (index === -1) {
+		return {};
+	}
+	return { newer: posts[index - 1], older: posts[index + 1] };
+}
+
 export async function getAllBlogSlugs(): Promise<string[]> {
 	const posts = await getBlogPosts();
 	return posts.map((post) => post.slug);
