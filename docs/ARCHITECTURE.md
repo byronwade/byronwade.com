@@ -44,6 +44,11 @@ asserting visible titles, prose, index entries, and no article/list loading stat
 Slug enumeration still owns which URLs exist; missing content keeps the real 404
 contract below.
 
+Project screenshots are optional progressive enhancement. `FullWidthProjectPreview`
+renders a native site link and explains the JavaScript requirement before hydration;
+capture controls and loading status appear only after mount. The same rendered
+reading test checks these fallbacks on every published project with a preview.
+
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |
