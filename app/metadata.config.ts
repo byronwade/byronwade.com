@@ -35,14 +35,10 @@ export const metadata: Metadata = {
 		telephone: false,
 	},
 	category: "technology",
+	// Index/follow are crawler defaults. Inheriting them here would contradict
+	// Next's automatic noindex on 404s; only preview limits belong at the root.
 	robots: {
-		index: true,
-		follow: true,
-		nocache: true,
 		googleBot: {
-			index: true,
-			follow: true,
-			noimageindex: false,
 			"max-video-preview": -1,
 			"max-image-preview": "large",
 			"max-snippet": -1,

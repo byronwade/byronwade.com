@@ -44,6 +44,25 @@ asserting visible titles, prose, index entries, and no article/list loading stat
 Slug enumeration still owns which URLs exist; missing content keeps the real 404
 contract below.
 
+Project screenshots are optional progressive enhancement. `FullWidthProjectPreview`
+renders a native site link before hydration and explains the JavaScript requirement
+inside `<noscript>`, so visitors with scripts never see that notice flash; capture
+controls and loading status appear only after mount. The same rendered reading test
+checks these fallbacks on every published project with a preview, and
+`project-preview.test.mjs` holds a script-enabled page before hydration to check the
+notice stays hidden.
+Recovery content can grow beyond the capture dimensions; `project-preview.test.mjs`
+checks that both actions fit at 320px with 100% and 200% root text sizing.
+
+Root metadata (`app/metadata.config.ts`) sets only Googlebot preview limits,
+so it cannot add an indexing directive to Next's automatic `noindex` on 404s.
+Public pages without a page-level policy use the crawler defaults, `index, follow`;
+the root no longer adds `nocache`. Page-specific policies remain in `lib/seo.ts`,
+including `/search`'s `noindex`. The missing-content regression checks one generic
+robots tag on 404s, no contradictory Googlebot `index`, published-page indexing,
+and preserved preview limits. See [Next's notFound contract](https://nextjs.org/docs/app/api-reference/functions/not-found)
+and [Google's robots defaults](https://developers.google.com/search/docs/crawling-indexing/special-tags).
+
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |

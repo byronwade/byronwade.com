@@ -118,7 +118,7 @@ browser matrix in `docs/evidence/thorbis/`. This audit's matrix, screenshots and
 homepage budget live in `docs/evidence/a11y-perf/`. The evidence README identifies
 the measurement environment, results, source pin and reproduction commands. They
 are local lab results, not a real-user or production latency claim. Report machine
-contention and failed runs honestly.
+contention and failed runs honestly; do not relax a budget to obtain a pass.
 
 The baseline homepage at commit `73496a0`, measured on 2026-10-16, recorded LCP
 3243.91 ms and TBT 707.70 ms with CLS 0. It failed the existing LCP and

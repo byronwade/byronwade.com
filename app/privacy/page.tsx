@@ -22,7 +22,7 @@ export default function PrivacyPage() {
 			<article className="flex flex-col gap-8">
 				<PageHeader lede={`Last updated ${LAST_UPDATED}`} title="Privacy policy" />
 
-				<Prose className="reveal reveal-delay-1">
+				<Prose>
 					<p>
 						This Privacy Policy describes how Byron Wade (&ldquo;we&rdquo;, &ldquo;us&rdquo;, or
 						&ldquo;our&rdquo;), including the Wade&rsquo;s Plumbing &amp; Septic brand, collects,

@@ -112,7 +112,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 			<SiteShell width="wide">
 				<div className="flex flex-col gap-10 sm:gap-12">
 					{/* Header */}
-					<header className="reveal flex w-full max-w-2xl flex-col gap-4">
+					<header className="flex w-full max-w-2xl flex-col gap-4">
 						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground text-sm">
 							<Badge variant={projectType ? typeBadgeVariant[projectType] : "outline"}>
 								{projectTypeLabel}
@@ -209,13 +209,13 @@ export function ProjectContent({ project }: ProjectContentProps) {
 
 					{/* Live preview */}
 					{project.url && domain && (
-						<div className="reveal reveal-delay-1 w-full">
+						<div className="w-full">
 							<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
 						</div>
 					)}
 
 					{/* Body + table of contents */}
-					<div className="reveal reveal-delay-2 grid w-full grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(0,1fr)_15rem]">
+					<div className="grid w-full grid-cols-1 gap-x-12 gap-y-10 xl:grid-cols-[minmax(0,1fr)_15rem]">
 						<article className="w-full max-w-2xl">
 							{hasContent ? (
 								<Markdown content={body} />
@@ -236,7 +236,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					</div>
 
 					{/* Footer nav */}
-					<div className="reveal reveal-delay-3 flex w-full flex-col gap-4 border-border border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex w-full flex-col gap-4 border-border border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
 						<Link
 							className="inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
 							href="/projects"

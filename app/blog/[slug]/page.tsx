@@ -117,7 +117,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    wrapper were removed with it, and the share row moved to the foot.
 			    Sharing is something a reader does after reading, and having it in
 			    both places meant the same control competed with itself. */}
-				<header className="reveal flex w-full flex-col gap-3">
+				<header className="flex w-full flex-col gap-3">
 					<h1 className="font-heading font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
 						{post.title}
 					</h1>
@@ -141,7 +141,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				</header>
 
 				{/* Blog Post Content */}
-				<article className="reveal reveal-delay-1 w-full">
+				<article className="w-full">
 					<Markdown content={post.content} />
 				</article>
 
@@ -150,7 +150,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 				{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}
-				<div className="reveal reveal-delay-2 flex w-full flex-col gap-4 border-border border-t pt-8">
+				<div className="flex w-full flex-col gap-4 border-border border-t pt-8">
 					<SocialShare description={post.excerpt} title={post.title} url={url} />
 					<Link className="link-underline w-fit text-sm" href="/blog">
 						← Back to writing
