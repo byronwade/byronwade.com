@@ -158,7 +158,7 @@ from the profile and makes first-visit clarity the dominant design concern.
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
 | Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
-| Content front matter | `gray-matter` and `js-yaml` 3.14.2 | 3.14.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not import knip's nested js-yaml 4 in app code, and do not hand-roll a YAML parser |
+| Content front matter | `gray-matter` and `js-yaml` 3.15.2 | 3.15.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not import knip's nested js-yaml 4 in app code, and do not hand-roll a YAML parser |
 
 ## Design tokens and defaults
 
