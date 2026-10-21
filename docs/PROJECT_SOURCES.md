@@ -304,3 +304,36 @@ grouping, front-matter keys and headings are unchanged. The front matter's
 2024-01-01 date is left as-is: the repository was created 2023-03-04 and most
 work landed in March and October 2023, October 2024 and June 2025, so the right
 date is a question for Byron.
+
+## Content Management System prototype claims, October 21, 2026
+
+`content/projects/content-management-system.md` was added as a short entry in
+`584c39b` (2025-12-01) and expanded into the current write-up in `ef54a5a`
+(2025-12-02). Its claims were checked against
+[byronwade/cms.byronwade.com](https://github.com/byronwade/cms.byronwade.com)
+at `main` [`8353417`](https://github.com/byronwade/cms.byronwade.com/commit/8353417acc1264355b73177cd6882c98d1a122e6)
+(2025-12-02 03:08 UTC), the latest of its 16 commits and four minutes older than
+`584c39b`. The previous commit, `8b7a050`, moved it from Next.js 15 to 16; the 22
+files that changed between the two are formatting and lint fixes. Nothing was
+installed or run, so interactive behavior comes from reading the code. The
+repository README at that commit calls the project "entirely a design-only demo"
+in which "All data is fake".
+
+| Claim | Source at `8353417` | Correction |
+| --- | --- | --- |
+| "Visit cms.byronwade.com"; front-matter `url` `https://cms.byronwade.com/cms/build` | On October 21, 2026, `/`, `/cms/build` and four other paths returned 404 with `X-Vercel-Error: DEPLOYMENT_NOT_FOUND`. | `url` removed, so the page no longer shows a dead Visit link or live preview. The body links the repository instead, which gives the page a Source button. |
+| "Currently in active development" | No commits after 2025-12-02; most of the work landed 2024-12-20 to 12-29. | Front-end prototype, stopped December 2025. |
+| Zero JavaScript by default; data fetched in Server Components "without exposing API endpoints" | `app/cms/layout.tsx` and every working `app/cms/**` screen start with `"use client"`. The content editor (`app/cms/content/[...slug]/page.tsx`) calls `fetch('/api/content/…')`, and `app/api/content/[...slug]/route.ts` reads and writes JSON files. Server-rendered pages: landing, `analytics/overview` and three redirects. | Kept as the plan, with a statement that the prototype did not get there. |
+| Schema builder: create tables by drag and drop; export schemas | `app/cms/build/page.tsx` (ReactFlow): tables come from hard-coded `initialNodes`. The drop handler adds AI nodes for `application/aiflow` data, which is all the sidebar sets. `components/build/header.tsx`'s Add Table button is not rendered anywhere, and nothing dispatches `build:addTable`. No export or SQL generation exists. Add Field, data types and `onConnect` relationships exist. | Lists what works; adding tables and export are named as not wired up. |
+| Media management, analytics dashboard, publishing as working features (Phase 1 checklist) | Upload progress is simulated with `setTimeout` (`components/media/upload-dialog.tsx`); analytics use `Math.random()` (`lib/nodes/analytics/MetricsNode.ts`); the publish board is filled with hard-coded items. | Checklist and FMS mappings say these run on sample data. "Performance optimizations" removed from the checklist (no measurement). |
+| Radix "ensuring WCAG compliance" | No audit or accessibility tests; no tests at all. | Described as a starting point that was never audited. |
+| "Easy dark/light mode switching"; Zustand "DevTools support" | `<html className="dark">` is hard-coded; `next-themes` is installed but no ThemeProvider is mounted. The three Zustand stores do not use the devtools middleware. | Dark by default with no switch; DevTools bullet removed. |
+| Next.js 16 throughout | `next ^16.0.0` only from `8b7a050` (2025-12-01); Next.js 15 before that. | Next.js 16 since December 2025, started on 15. |
+| "Built on a foundation that's already proven its worth" | Prototype on sample data, deployment gone. | Now "built on what this prototype taught me". |
+
+Byron's reasons, the FMS mappings, the agriculture context, the roadmap and the
+lessons are kept as intent. Title, category, archived grouping and headings are
+unchanged; the excerpt now matches the corrected body. The front matter's
+2023-08-01 date is left as-is, but the repository was created 2024-12-20 and the
+write-up's own heading asks "Why Build a CMS in 2024?", so the right date is a
+question for Byron. The repository has no license file.
