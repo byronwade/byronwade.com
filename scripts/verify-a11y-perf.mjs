@@ -262,7 +262,7 @@ async function auditPage(url, route, width, theme) {
 			result.keyboard = await checkKeyboard(page);
 			result.states = await checkRouteStates(page, route, width);
 			if (width === 1280 && route !== "/") {
-				result.states.push(...(await checkBreadcrumbStates(page)));
+				result.states.push(...(await checkShellBreadcrumb(page, route)));
 			}
 			result.states.push(await checkReducedStyles(page));
 			if (
@@ -360,6 +360,17 @@ async function checkRouteStates(page, route, width) {
 		return states;
 	}
 	return [];
+}
+
+async function checkShellBreadcrumb(page, route) {
+	if (route !== "/audit-not-found") {
+		return await checkBreadcrumbStates(page);
+	}
+	// An unknown URL is not a page, so the shell shows no trail for it.
+	if (await page.$('nav[aria-label="Breadcrumb"]')) {
+		throw new Error("An unknown URL must not show a breadcrumb trail");
+	}
+	return [{ name: "Unknown URL shows no breadcrumb", passed: true }];
 }
 
 async function checkBreadcrumbStates(page) {
