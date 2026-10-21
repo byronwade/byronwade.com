@@ -85,9 +85,37 @@ it was not edited.
 
 `content/projects/wades-plumbing-and-septic.md` said 80% of local-service traffic
 comes from phones and called mobile speed a "massive ranking factor". Neither had
-a source, so the figure is removed and the sentence now says page experience is
-one Google ranking signal. The front-matter outcome "ranks in two markets" is
-also unsourced and is left for Byron to confirm.
+a source. The earlier correction removed the traffic figure and qualified the
+ranking wording. The follow-up below addresses the unsourced
+front-matter outcome "ranks in two markets" and the related speed assertions.
+
+## Wade's Plumbing ranking and speed claims, October 20, 2026
+
+The archived case study now distinguishes the owner's historical two-state
+project account from current service coverage and from measured outcomes.
+The summary no longer claims rankings in two markets; the body no longer
+guarantees faster loading than competitors or implies measured traffic or
+conversion gains from Tailwind, local pages, or structured data.
+
+| Primary source | Supports | Limits |
+| --- | --- | --- |
+| [Current service areas](https://www.wadesplumbingandseptic.com/service-areas), accessed October 20, 2026 | The current public page describes Santa Cruz County and selected Santa Clara County coverage in California. | It does not establish the historical California/Georgia navigation, rankings, performance, or conversions. Today's coverage does not disprove the owner's earlier two-state account. |
+| [Google: page experience](https://developers.google.com/search/docs/appearance/page-experience), accessed October 20, 2026 | Google uses Core Web Vitals in ranking systems; good scores do not guarantee top placement. | General guidance is not a ranking report or a benchmark for this project. |
+| [Google: Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals) and [Chrome: INP becomes a Core Web Vital](https://web.dev/blog/inp-cwv-march-12) | Current metrics are LCP, INP, and CLS. INP replaced FID on March 12, 2024. | The historical project date stays October 2023; the updated paragraph explicitly describes current terminology, not measurements from that date. |
+| [Tailwind: detecting classes](https://tailwindcss.com/docs/detecting-classes-in-source-files), accessed October 20, 2026 | Tailwind generates CSS for detected utility classes. | The documentation establishes a framework capability, not this site's loading time, field scores, or speed relative to page-builder sites. |
+
+Repository history (`ef54a5a0`, `54a153a`, `20d8527`) and the source ledger did
+not supply a dated search report, before/after speed comparison, or conversion
+study for the assertions. Absence of that evidence is not evidence that the
+project had no effect. Restoring measured claims requires the query and market,
+measurement period, workload/device, comparison method, and supporting record.
+
+The project URL, publication date, heading anchors, archived grouping,
+front-matter keys, owner-reported $2.4M year-two revenue, and CA + GA project
+context are preserved. Revenue is not attributed to the website. The remaining
+psychology passages describe the owner's design rationale; they are not a
+validated study of customer behavior. No private business records, current
+signed-in service flows, or live performance tests were consulted.
 
 ## Nexstar article evidence and worked examples, October 20, 2026
 
@@ -155,5 +183,5 @@ route, front-matter shape, heading anchors, and earlier-work grouping are
 preserved. Archived is this portfolio's editorial group, not proof that Goodmarks
 has shut down. Reinstating native-release, adoption, or revenue claims requires
 identifiable release records or owner-supplied business evidence with a period
-and source. The separate Wade's Plumbing front-matter claim remains an owner
-follow-up; it is outside this correction.
+and source. That review left the separate Wade's Plumbing ranking claim for
+follow-up; the dated Wade's Plumbing section above records its correction.
