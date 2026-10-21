@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { Person, WithContext } from "schema-dts";
-import { IndexList, IndexRow } from "@/components/common";
+import { IndexList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -222,8 +222,9 @@ export default function ResumePage() {
 								looking for full time work in software development or technical leadership, or
 								anywhere that both the engineering side and the running-a-business side are useful.
 							</p>
-							<div className="flex flex-wrap items-center gap-2 pt-1 print:hidden">
+							<div className="flex flex-wrap items-center gap-3 pt-1 print:hidden">
 								<Button
+									size="lg"
 									render={
 										<Link href="/contact">
 											Start a conversation
@@ -266,7 +267,7 @@ export default function ResumePage() {
 												href={job.companyUrl}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="link-underline inline-flex items-center gap-1 font-medium"
+												className="link-underline inline-flex min-h-11 items-center gap-1 font-medium print:min-h-0"
 											>
 												{job.company}
 												<ExternalLink className="size-3 print:hidden" aria-hidden="true" />
@@ -324,13 +325,13 @@ export default function ResumePage() {
 						<h2 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight print:mb-2">
 							Licenses and certifications
 						</h2>
-						{/* Hairlines, not a bordered card. §13 rejects both the card wrapper
+						{/* Open rows, not a bordered card. §13 rejects both the card wrapper
 						    and a border around every row; the site already has one index
 						    grammar and this is a list like any other. `pending` is stated in
 						    words rather than tinted, so it survives print and colour blindness. */}
 						<IndexList>
 							{certifications.map((cert) => (
-								<IndexRow key={`${cert.name}-${cert.year}`}>
+								<li key={`${cert.name}-${cert.year}`}>
 									<div className="flex items-center justify-between gap-4 py-3 print:py-1">
 										<span className="text-foreground">{cert.name}</span>
 										<span className="shrink-0 text-muted-foreground text-sm tabular-nums">
@@ -338,12 +339,12 @@ export default function ResumePage() {
 											{cert.pending && " · in progress"}
 										</span>
 									</div>
-								</IndexRow>
+								</li>
 							))}
 						</IndexList>
 					</section>
 
-					<section className="w-full border-border border-t pt-10 print:hidden">
+					<section className="w-full print:hidden">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex flex-col gap-1">
 								<h2 className="font-heading font-semibold text-lg tracking-tight">
@@ -354,6 +355,7 @@ export default function ResumePage() {
 								</p>
 							</div>
 							<Button
+								size="lg"
 								render={
 									<Link href="/contact">
 										Contact Byron

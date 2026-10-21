@@ -1,0 +1,444 @@
+{
+  "cases": [
+    {
+      "name": "portfolio-empty",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-empty-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-error-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-populated-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-loading-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 375,
+      "theme": "light",
+      "file": "portfolio-timeout-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-invalid-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-pending-375-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 375,
+      "theme": "light",
+      "file": "contact-failed-375-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-empty-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-error-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-populated-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-loading-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 375,
+      "theme": "dark",
+      "file": "portfolio-timeout-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-invalid-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-pending-375-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 375,
+      "theme": "dark",
+      "file": "contact-failed-375-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-empty-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-error-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-populated-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-loading-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 768,
+      "theme": "light",
+      "file": "portfolio-timeout-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-invalid-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-pending-768-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 768,
+      "theme": "light",
+      "file": "contact-failed-768-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-empty-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-error-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-populated-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-loading-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 768,
+      "theme": "dark",
+      "file": "portfolio-timeout-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-invalid-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-pending-768-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 768,
+      "theme": "dark",
+      "file": "contact-failed-768-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-empty-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-error-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-populated-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-loading-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 1440,
+      "theme": "light",
+      "file": "portfolio-timeout-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-invalid-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-pending-1440-light.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 1440,
+      "theme": "light",
+      "file": "contact-failed-1440-light.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "portfolio-empty",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-empty-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.No repositories yetPublic repositories will show up here once they’re available.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-error",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-error-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Couldn't load repositoriesGitHub is slow or unavailable right now. Retry here, or open the profile directly.Try againOpen GitHub"
+    },
+    {
+      "name": "portfolio-populated",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-populated-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "PortfolioRefreshOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.0Thorbis Design With A Long Repository Name For Reflow VerificationArchivedTypeScriptOct 2026Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen."
+    },
+    {
+      "name": "portfolio-loading",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-loading-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "portfolio-timeout",
+      "width": 1440,
+      "theme": "dark",
+      "file": "portfolio-timeout-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "PortfolioOpen-source work and experiments. Pulled live from GitHub. For in-depth case studies, see projects.Loading repositories…"
+    },
+    {
+      "name": "contact-invalid",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-invalid-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEnter a name of 1–120 characters on one line.EmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageSend messageCheck the highlighted field.Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-pending",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-pending-1440-dark.png",
+      "overflow": false,
+      "busy": true,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageSending your message…Prefer email? Click to reveal email · Jasper, GA"
+    },
+    {
+      "name": "contact-failed",
+      "width": 1440,
+      "theme": "dark",
+      "file": "contact-failed-1440-dark.png",
+      "overflow": false,
+      "busy": false,
+      "text": "Get in touchProduct engineering, software for service businesses, and design systems that have to ship. Tell me what you're working on and I usually reply within a day or two.NameEmailWhat is this about?Product / engineering helpSoftware for a service businessDesign system / UIJust a conversationMessageA local browser verification draft. No message is sent.Send messageCouldn't send your message. Your draft is still here. Please try again.Prefer email? Click to reveal email · Jasper, GA"
+    }
+  ],
+  "failures": [
+    "Portfolio remains loading after timeout at 375 light",
+    "Portfolio remains loading after timeout at 375 dark",
+    "Portfolio remains loading after timeout at 768 light",
+    "Portfolio remains loading after timeout at 768 dark",
+    "Portfolio remains loading after timeout at 1440 light",
+    "Portfolio remains loading after timeout at 1440 dark"
+  ]
+}

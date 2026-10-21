@@ -3,6 +3,19 @@ import { execFile } from "node:child_process";
 import { once } from "node:events";
 import puppeteer from "puppeteer-core";
 
+const ALREADY_GONE = /not found|no running instance of the task/i;
+
+// taskkill exits 128 when processes in the tree exited before it reached them. That is not a
+// failed cleanup; the caller still requires the owned process itself to exit.
+function onlyAlreadyGone(error, stderr) {
+	const failures = String(stderr).split("ERROR:").slice(1);
+	return (
+		error.code === 128 &&
+		failures.length > 0 &&
+		failures.every((failure) => ALREADY_GONE.test(failure))
+	);
+}
+
 function isRunning(child) {
 	return child.exitCode === null && child.signalCode === null;
 }
@@ -57,7 +70,7 @@ function killTree(child, context, signal) {
 				// taskkill can lose a race with a normal exit. The exact launched
 				// child's observed exit, rather than a missing PID, proves shutdown.
 				const alreadyExited = error?.code === 128 && child.exitCode === 0;
-				if (error && !alreadyExited) {
+				if (error && !(alreadyExited || onlyAlreadyGone(error, stderr))) {
 					reject(
 						new Error(`Could not stop owned browser process tree: ${evidence}`, { cause: error })
 					);

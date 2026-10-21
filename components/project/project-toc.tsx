@@ -66,13 +66,19 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	}, [items]);
 
 	const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+			return;
+		}
 		event.preventDefault();
 		const el = document.getElementById(id);
 		if (!el) {
 			return;
 		}
 		setActiveId(id);
-		el.scrollIntoView({ behavior: "smooth", block: "start" });
+		el.scrollIntoView({
+			behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+			block: "start",
+		});
 		// Update the hash without jumping (smooth scroll handles position).
 		if (typeof history !== "undefined") {
 			history.replaceState(null, "", `#${id}`);
@@ -88,7 +94,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	return (
 		<nav aria-label="On this page" className="flex flex-col gap-3 text-sm">
 			<p className="text-muted-foreground text-xs">On this page</p>
-			<ul className="flex flex-col gap-0.5 border-border border-l">
+			<ul className="flex flex-col gap-1">
 				{items.map((item) => {
 					const isActive = activeId === item.id;
 					return (
@@ -98,11 +104,11 @@ export function ProjectToc({ items }: ProjectTocProps) {
 								onClick={(event) => handleClick(event, item.id)}
 								aria-current={isActive ? "location" : undefined}
 								className={cn(
-									"-ml-px block border-l-2 py-1 leading-snug transition-colors",
-									item.depth === 3 ? "pl-6" : "pl-4",
+									"focus-ring flex min-h-11 items-center rounded-md py-2 pr-3 leading-snug transition-colors",
+									item.depth === 3 ? "pl-6" : "pl-3",
 									isActive
-										? "border-brand font-medium text-foreground"
-										: "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+										? "bg-secondary font-medium text-foreground"
+										: "text-muted-foreground hover:text-foreground"
 								)}
 							>
 								{item.text}

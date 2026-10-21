@@ -38,14 +38,14 @@ export default function ContactClient() {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="name">Name</Label>
 							<Input
-								className="h-11"
+								className="h-11 sm:h-11"
 								autoComplete="name"
 								aria-invalid={fieldError?.field === "name"}
 								aria-describedby={fieldError?.field === "name" ? "name-error" : undefined}
 								id="name"
 								name="name"
 								onChange={(e) => handleChange("name", e.target.value)}
-								placeholder="Your name"
+								placeholder="Alex Rivera…"
 								required
 								value={formData.name}
 							/>
@@ -58,7 +58,7 @@ export default function ContactClient() {
 						<div className="flex flex-col gap-2">
 							<Label htmlFor="email">Email</Label>
 							<Input
-								className="h-11"
+								className="h-11 sm:h-11"
 								autoComplete="email"
 								inputMode="email"
 								spellCheck={false}
@@ -85,7 +85,7 @@ export default function ContactClient() {
 						{/* Matches Input's height, radius, and focus treatment exactly. A
 						    native select styled as a peer rather than as its own control. */}
 						<select
-							className="h-11 w-full rounded-lg border border-input bg-transparent px-2.5 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive md:text-sm dark:bg-input/30"
+							className="h-11 w-full rounded-lg border border-muted-foreground bg-field px-3 text-base shadow-(--shadow-field) outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:aria-invalid:ring-destructive/40"
 							aria-invalid={fieldError?.field === "topic"}
 							aria-describedby={fieldError?.field === "topic" ? "topic-error" : undefined}
 							id="topic"
@@ -123,7 +123,7 @@ export default function ContactClient() {
 									e.currentTarget.form?.requestSubmit();
 								}
 							}}
-							placeholder="Tell me a little about what you're working on…"
+							placeholder="I’d like to talk about a project…"
 							required
 							rows={8}
 							value={formData.message}
@@ -138,16 +138,11 @@ export default function ContactClient() {
 					<div className="flex flex-wrap items-center gap-4">
 						<Button className="h-11 gap-2" disabled={isSubmitting} type="submit">
 							{isSubmitting ? (
-								<>
-									<Loader2 aria-hidden="true" className="size-4 animate-spin" />
-									Send message
-								</>
+								<Loader2 aria-hidden="true" className="size-4 animate-spin" />
 							) : (
-								<>
-									<Send aria-hidden="true" className="size-4" />
-									Send message
-								</>
+								<Send aria-hidden="true" className="size-4" />
 							)}
+							Send message
 						</Button>
 
 						{/* Persistent outcome, announced. The toast is the echo, not the record. */}
@@ -167,7 +162,7 @@ export default function ContactClient() {
 				</form>
 
 				{/* The fallback, not a second column. */}
-				<p className="border-border border-t pt-6 text-muted-foreground text-sm">
+				<p className="text-muted-foreground text-sm">
 					Prefer email?{" "}
 					<ObfuscatedEmail
 						className="text-foreground hover:text-brand [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"
