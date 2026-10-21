@@ -38,11 +38,20 @@ const pushedAtFormat = new Intl.DateTimeFormat("en-US", {
 	year: "numeric",
 });
 
+/**
+ * A repository named for its web address keeps that address's spelling:
+ * "rebuzzle.byronwade.com", not "Rebuzzle.byronwade.com". Capitalizing a
+ * domain makes it read as a misspelled title and no longer as the address.
+ */
+const WEB_ADDRESS = /\.[a-z]{2,}$/i;
+
 const titleize = (name: string) =>
-	name
-		.split(WORD_SEPARATORS)
-		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-		.join(" ");
+	WEB_ADDRESS.test(name)
+		? name
+		: name
+				.split(WORD_SEPARATORS)
+				.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+				.join(" ");
 
 const portfolioDescription =
 	"Open-source work and experiments, pulled live from GitHub and sorted by stars.";

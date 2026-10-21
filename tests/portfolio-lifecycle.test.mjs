@@ -36,7 +36,13 @@ const functions = new Set([
 	"RepoRow",
 	"PortfolioPage",
 ]);
-const constants = new Set(["LANGUAGE_TONES", "WORD_SEPARATORS", "pushedAtFormat", "titleize"]);
+const constants = new Set([
+	"LANGUAGE_TONES",
+	"WORD_SEPARATORS",
+	"WEB_ADDRESS",
+	"pushedAtFormat",
+	"titleize",
+]);
 const statements = page.statements.filter(
 	(node) =>
 		(ts.isFunctionDeclaration(node) && functions.has(node.name?.text)) ||
@@ -136,4 +142,16 @@ test("retry can succeed after failure and renders every eligible repository in r
 	assert.ok(output.indexOf("project-12") < output.indexOf('project-1"'));
 	assert.doesNotMatch(output, EXCLUDED);
 	assert.deepEqual(errors, []);
+});
+
+test("repository names read as titles, but web addresses keep their spelling", async () => {
+	const { html } = renderPage(async () => [
+		{ ...repository(1, 3), name: "drone-pi" },
+		{ ...repository(2, 2), name: "rebuzzle.byronwade.com" },
+		{ ...repository(3, 1), name: "wadesplumbingandseptic.com" },
+	]);
+	const output = await html;
+	assert.ok(output.includes(">Drone Pi<"), "slugs become titles");
+	assert.ok(output.includes(">rebuzzle.byronwade.com<"), "a subdomain is not capitalized");
+	assert.ok(output.includes(">wadesplumbingandseptic.com<"), "a domain is not capitalized");
 });
