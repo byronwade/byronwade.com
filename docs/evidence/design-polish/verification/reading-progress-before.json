@@ -1,0 +1,77 @@
+{
+  "phase": "probe",
+  "head": "027e21985a476fd4607531b1c2dd159342900dd1",
+  "exitCode": 1,
+  "cases": [
+    {
+      "name": "post-technical",
+      "route": "/blog/design-systems-that-earn-their-keep",
+      "width": 768,
+      "theme": "dark",
+      "status": 200,
+      "geometry": {
+        "breadcrumb": "Home/Blog/A Design System Has to Be Enforceable or It Is Just DocumentationA Design System Has to Be Enforceable or It Is Just DocumentationHome/Blog/A Design System Has to Be Enforceable or It Is Just Documentation",
+        "documentHeight": 12491,
+        "footerBottom": 12490.75,
+        "overflow": false,
+        "headings": [
+          {
+            "text": "A Design System Has to Be Enforceable or It Is Just Documentation",
+            "size": "32px"
+          }
+        ],
+        "truncated": [],
+        "smallTargets": [
+          {
+            "label": "byronwade/ui",
+            "width": 103.109375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "WCAG 2.2",
+            "width": 77.578125,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "Target Size Enhanced",
+            "width": 162.84375,
+            "height": 20,
+            "inlineText": true
+          },
+          {
+            "label": "prefers-reduced-motion",
+            "width": 194.703125,
+            "height": 20,
+            "inlineText": true
+          }
+        ],
+        "inputs": [],
+        "screenshotHeight": 12491
+      },
+      "accessibility": {
+        "version": "4.10.3",
+        "violations": [
+          {
+            "id": "aria-valid-attr-value",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [".fixed"],
+                "failureSummary": "Fix all of the following:\n  Invalid ARIA attribute value: aria-valuenow=\"NaN\""
+              }
+            ]
+          }
+        ],
+        "incomplete": [
+          "aria-valid-attr-value",
+          "color-contrast",
+          "link-in-text-block"
+        ]
+      },
+      "errors": [],
+      "file": "reading-progress-before-768-dark.png"
+    }
+  ]
+}

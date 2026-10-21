@@ -26,13 +26,7 @@ export function HomeActions() {
 
 			{!contactOpen && (
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-					<Button
-						className="gap-2"
-						onClick={() => setContactState("open")}
-						size="lg"
-						type="button"
-						variant="brand"
-					>
+					<Button className="gap-2" onClick={() => setContactState("open")} size="lg" type="button">
 						Start a conversation
 						<ArrowRight aria-hidden="true" className="size-4" />
 					</Button>
