@@ -54,7 +54,10 @@ function killTree(child, context, signal) {
 					stderr,
 				});
 				context.diagnostic(`Owned browser cleanup: ${evidence}`);
-				if (error) {
+				// taskkill can lose a race with a normal exit. The exact launched
+				// child's observed exit, rather than a missing PID, proves shutdown.
+				const alreadyExited = error?.code === 128 && child.exitCode === 0;
+				if (error && !alreadyExited) {
 					reject(
 						new Error(`Could not stop owned browser process tree: ${evidence}`, { cause: error })
 					);
