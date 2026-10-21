@@ -127,6 +127,16 @@ measurement is whatever `home-budget.json` records for the committed source.
 Timing variation on a shared machine is large; a pass close to a limit is not a
 comfortable regression margin.
 
+Budget exception, recorded rather than relaxed: on source `84d9b5c` (after main
+through `ceb89d9` was merged), `home-budget.json` recorded LCP 3182 ms, TBT 476
+ms and CLS 0, failing the LCP and blocking-time limits. Earlier homepage samples
+on this branch, other than the overlapped-build and eager-dialog probes, ranged
+from LCP 2936 to 3256 ms and TBT 226 to 455 ms; only the 2936 ms and 2986 ms
+samples passed. Most content routes also exceed the
+LCP limit under the mobile simulation, on main and on this branch; per-route
+reports are in `docs/evidence/a11y-perf/`. `lighthouse-budget.json` is
+unchanged.
+
 The rebuilt header from main (#80) replaced the launcher and morph capsule with
 anchored popovers. Probes recorded before merge commit `9c2953c` measured the
 previous header; only the release matrix and `home-budget.json` describe the
