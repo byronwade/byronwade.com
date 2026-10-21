@@ -83,7 +83,7 @@ async function BlogList() {
 				<section aria-labelledby={`year-${year}`} className="flex flex-col gap-2" key={year}>
 					{/* The year is the only thing that needs saying between groups. */}
 					<h2
-						className="font-mono text-copy-12 text-muted-foreground tabular-nums"
+						className="text-copy-12 text-muted-foreground tabular-nums"
 						id={`year-${year}`}
 					>
 						{year}

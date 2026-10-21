@@ -127,7 +127,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 							{post.excerpt}
 						</p>
 					)}
-					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-copy-12 text-muted-foreground tabular-nums">
+					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-copy-12 text-muted-foreground tabular-nums">
 						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
 						{post.updated && post.updated !== post.date && (
 							<>

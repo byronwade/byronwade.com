@@ -7,7 +7,7 @@ import { safeFormatDate } from "@/lib/markdown-utils";
 /**
  * One post in any writing index: the home preview, /blog, and related posts.
  *
- * The date and reading time lead in a mono column so a list of posts reads as
+ * The date and reading time lead in a tabular column so a list of posts reads as
  * a chronology (DESIGN.md §7.1, /blog). `excerpt="full"` keeps the whole lede
  * where scanning is the reading; previews clamp it to two lines.
  */
@@ -27,7 +27,7 @@ export function PostRow({
 		<IndexRow>
 			<Link className={indexRowLinkClass} href={`/blog/${post.slug}`} prefetch={false}>
 				<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
-					<p className="flex gap-3 font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
+					<p className="flex gap-3 text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
 						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date, dateFormat)}</time>}
 						<span>{post.readingTime} min read</span>
 					</p>
