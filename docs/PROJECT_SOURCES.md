@@ -492,3 +492,42 @@ It does not establish release-binary health, platform support, media-format
 coverage, private history, or fitness for production. The review was started by
 job 174945 (codex), which stopped before committing; job 175946 re-checked each
 claim against a fresh clone at the same commit.
+
+## Wormhole mount and signaling claims, October 21, 2026
+
+The Wormhole case study now follows public main at
+[`60151d94`](https://github.com/byronwade/Wormhole/tree/60151d94a1e4eadc5ca483bb35c7d45a056cceb0)
+(August 27, 2026, a WinFSP dependency bump). Its December 9, 2025 date is kept:
+the article was added in site commit
+[`f3cd5e62`](https://github.com/byronwade/byronwade.com/commit/f3cd5e6265d0d5a3b5c76316e8629e9ba5b064a5),
+and the public repository was created the same calendar day
+(2025-12-09T04:45:24Z). GitHub does not mark the repository archived. Every
+other branch returned by the branches API is a `dependabot/*` bump. Those
+subjects were listed. None of that unmerged dependency work is described as
+current product behavior.
+
+The newest release tag is
+[v0.2.0](https://github.com/byronwade/Wormhole/releases/tag/v0.2.0)
+(August 3, 2026). That tag is older than `60151d94`, so release assets are not
+this tree. The crates declare `MIT OR Apache-2.0` in the workspace manifest.
+The repository root has no `LICENSE` file, and the GitHub license field is
+empty.
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Join code `MARS-WIND` and a 16-character code | [`JOIN_CODE_LENGTH`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-core/src/crypto.rs#L13) is 6. [`make_share_link`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-core/src/crypto.rs#L128-L132) builds `https://wormhole.byronwade.com/j/` plus `ABC-XYZ`. `MARS-WIND` normalizes to eight letters and fails validation. |
+| Axum signal server with SQLx persistence, Fly-ready NAT help | [`teleport-signal`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-signal/Cargo.toml) depends on tokio-tungstenite and rusqlite, not Axum or SQLx. [`SignalServer::serve`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-signal/src/server.rs#L34-L44) keeps rooms in memory. [`wormhole-signal --db`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-signal/src/bin/signal.rs#L61-L85) opens SQLite and then constructs a server that does not receive it. [`wormhole signal`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/bin/wormhole.rs#L2347-L2359) prints STUN and TURN flags and does not pass them in. The default URL `wss://wormhole-signal.fly.dev` is a CLI default, not a checked deployment. |
+| Writes are only a later roadmap phase | [`handle_write_chunk`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/host.rs#L1069-L1164) checks a lock and a BLAKE3 checksum, rejects a path outside the share, and writes the file. The FUSE mount [starts read-only](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/fuse.rs#L86). Host write access is [`--allow-write`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/bin/wormhole.rs#L252-L254). |
+| RAM cache is 128KB | [`CHUNK_SIZE`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-core/src/lib.rs#L42) is 128 KiB. The mount cache holds [`DEFAULT_CHUNK_CACHE_ENTRIES`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/cache.rs#L28) (4,000) chunks, and [`with_capacity`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/cache.rs#L187-L193) sets the byte cap to entries times the chunk size (500 MiB). [`MAX_CACHE_BYTES`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/gc.rs#L22) is 10 GiB, and [`wormhole-mount`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/src/bin/wormhole-mount.rs#L196-L198) starts that collector. |
+| Desktop is React 18, and only bincode is on the wire | Desktop [`package.json`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/apps/desktop/package.json#L46) depends on React 19.1.0, and [`tailwindcss`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/apps/desktop/package.json#L64) is 4.x. [`codec.rs`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-core/src/codec.rs#L1-L52) prefers postcard when both peers advertise it and otherwise uses bincode. The comment at the top of `protocol.rs` still says bincode only. |
+| No accounts and zero monthly fees, with a $50 and 50GB illustration | [`apps/web` pricing](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/apps/web/src/app/pricing/page.tsx#L19-L53) lists Free, Pro at $8, and Team at $15, and labels the paid tiers as coming after launch. The optional [`cloud`](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/crates/teleport-daemon/Cargo.toml#L16-L19) feature is not the default share path. The $50-a-month and 50GB timing lines were illustrations, not measurements, and they are gone. |
+| The seven-phase list is the shipping schedule | Those phase notes live under `docs/development/` and as comments on code that is already in this tree, including FUSE reads, caches, prefetch, and the write handler above. The page no longer presents them as a future schedule. CI does run desktop `pnpm install`, `pnpm typecheck`, and `pnpm test:run` ([workflow](https://github.com/byronwade/Wormhole/blob/60151d94a1e4eadc5ca483bb35c7d45a056cceb0/.github/workflows/ci.yml#L232-L241)). |
+
+The repository root is still the first GitHub link in the body, so the Source
+button opens it. Route, title, URL, date, category, type, archived status, and
+non-featured setting are unchanged. No Wormhole code, site code, dependency,
+account, service, or setting was changed.
+
+This was source reading, not a build, test run, installer run, or mount. It
+does not establish release-binary health, that `wss://wormhole-signal.fly.dev`
+answers, or that two machines on different networks can connect.
