@@ -1,16 +1,15 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { once } from "node:events";
+import puppeteer from "puppeteer-core";
 
 function isRunning(child) {
 	return child.exitCode === null && child.signalCode === null;
 }
 
-function combinedFailure(closeError, cleanupError) {
+function combinedFailure(firstError, cleanupError, message) {
 	// Retain both failures; cleanup is the immediate cause of incomplete shutdown.
-	return new AggregateError([closeError, cleanupError], "Browser close and cleanup failed", {
-		cause: cleanupError,
-	});
+	return new AggregateError([firstError, cleanupError], message, { cause: cleanupError });
 }
 
 async function settlesWithin(promise, milliseconds) {
@@ -97,7 +96,7 @@ export async function closeBrowser(browser, context) {
 			}
 		} catch (cleanupError) {
 			if (closeFailure) {
-				throw combinedFailure(closeFailure.error, cleanupError);
+				throw combinedFailure(closeFailure.error, cleanupError, "Browser close and cleanup failed");
 			}
 			throw cleanupError;
 		}
@@ -107,4 +106,43 @@ export async function closeBrowser(browser, context) {
 	} finally {
 		controller.abort();
 	}
+}
+
+/** Runs a test against an owned browser; a failed shutdown never hides the test's own failure. */
+export async function withBrowser(context, options, use) {
+	const browser = await puppeteer.launch({
+		executablePath:
+			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+		headless: true,
+		...options,
+	});
+	const child = browser.process();
+	let lostBrowser;
+	const recordLoss = (code, signal) => {
+		lostBrowser = { pid: child.pid, code, signal };
+	};
+	child?.once("exit", recordLoss);
+	let outcome;
+	try {
+		outcome = { value: await use(browser) };
+	} catch (error) {
+		outcome = { error };
+	}
+	child?.off("exit", recordLoss);
+	if (lostBrowser) {
+		// "Target closed" alone cannot tell a crash or an outside kill from a test fault.
+		context.diagnostic(`Owned browser exited before cleanup: ${JSON.stringify(lostBrowser)}`);
+	}
+	try {
+		await closeBrowser(browser, context);
+	} catch (cleanupError) {
+		if ("error" in outcome) {
+			throw combinedFailure(outcome.error, cleanupError, "Browser test and cleanup failed");
+		}
+		throw cleanupError;
+	}
+	if ("error" in outcome) {
+		throw outcome.error;
+	}
+	return outcome.value;
 }

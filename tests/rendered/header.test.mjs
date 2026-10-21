@@ -1,14 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const MENU = "[data-site-menu]";
 const PANEL = "[data-header-menu]";
 const SEARCH = "[data-header-search]";
 const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
 const HYDRATION_ERROR = /hydration|hydrating|did not match|Minified React error/i;
+
+/** Let queued animation-frame work finish, e.g. Base UI moving focus off a modal edge guard. */
+function settleFrames(page) {
+	return page.evaluate(
+		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+	);
+}
+
+/** Each subtest states the menu it starts from, so one failure cannot cascade into the next. */
+async function setMenuOpen(page, open) {
+	if ((await page.$eval(MENU, (button) => button.getAttribute("aria-expanded"))) !== String(open)) {
+		await page.tap(MENU);
+	}
+	await page.waitForSelector(PANEL, { hidden: !open });
+}
 
 async function assertHeaderFits(page, width) {
 	const layout = await page.$eval("[data-site-header]", (header) => ({
@@ -34,7 +48,10 @@ async function assertHeaderFits(page, width) {
 	assert.equal(layout.client, width);
 	assert.ok(layout.scroll <= width, `horizontal document overflow: ${JSON.stringify(layout)}`);
 	assert.ok(layout.header.left >= 0 && layout.header.right <= width);
-	assert.ok(layout.mainTop >= layout.header.bottom, "the header must reserve content clearance");
+	assert.ok(
+		layout.mainTop >= layout.header.bottom,
+		`the header must reserve content clearance: ${JSON.stringify(layout)}`
+	);
 	assert.ok(layout.controls.length >= 4, "identity, search, theme and navigation must be present");
 	const overlaps = layout.controls.flatMap((control, index) =>
 		layout.controls
@@ -98,8 +115,23 @@ async function exerciseHeaderPanel(page, trigger, panel, width) {
 	await assertHeaderFits(page, width);
 }
 
-async function checkResponsiveHeader(page, { width, theme, textSize }) {
+/** Every case loads fresh at its viewport and text size, so no state carries between cases. */
+async function checkResponsiveHeader(page, client, url, { width, theme, textSize }) {
 	await page.setViewport({ width, height: 844, isMobile: true, hasTouch: true });
+	// Larger text arrives as the reader's default font size, before the first style pass.
+	// Rewriting the root size under a laid-out page left container-query styles stale in
+	// Chrome on Linux: one size-11 button measured 44px while two others measured 88px.
+	await client.send("Page.setFontSizes", {
+		fontSizes: { standard: (16 * Number.parseFloat(textSize)) / 100 },
+	});
+	await page.goto(url, { waitUntil: "networkidle0" });
+	await page.waitForFunction(
+		() => document.querySelector("[data-site-menu]")?.getAttribute("aria-expanded") === "false"
+	);
+	// Isolate shared chrome from page-specific reflow while retaining its real CSS and shell.
+	await page.$eval("main", (main) => {
+		main.textContent = "Header geometry fixture.";
+	});
 	if (
 		(await page.evaluate(() => document.documentElement.classList.contains("dark"))) !==
 		(theme === "dark")
@@ -111,12 +143,7 @@ async function checkResponsiveHeader(page, { width, theme, textSize }) {
 			theme === "dark"
 		);
 	}
-	await page.evaluate((size) => {
-		document.documentElement.style.fontSize = size;
-	}, textSize);
-	await page.evaluate(
-		() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
-	);
+	await settleFrames(page);
 	await assertHeaderFits(page, width);
 	const hasMenu = await page.$eval(MENU, (button) => getComputedStyle(button).display !== "none");
 	if (hasMenu) {
@@ -126,13 +153,8 @@ async function checkResponsiveHeader(page, { width, theme, textSize }) {
 }
 
 test("site header preserves layout and accessible navigation", { timeout: 180_000 }, async (t) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(t, {}, async (browser) => {
 			const page = await browser.newPage();
 			const hydrationErrors = [];
 			page.on("console", (message) => {
@@ -188,11 +210,10 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				};
 				await page.setRequestInterception(true);
 				page.on("request", intercept);
+				let fallback;
 				try {
 					await page.tap(MENU);
-					await page.waitForFunction(
-						() => document.querySelector("[data-site-menu]")?.getAttribute("aria-busy") === "true"
-					);
+					fallback = await page.waitForSelector(`${MENU}[aria-busy="true"]`);
 					await page.focus(MENU);
 					await page.keyboard.press("Escape");
 					assert.equal(
@@ -204,7 +225,9 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					page.off("request", intercept);
 					await page.setRequestInterception(false);
 				}
-				await page.waitForNetworkIdle({ idleTime: 100 });
+				// The loaded panel code replaces the fallback trigger; focus must reach the replacement.
+				await page.waitForFunction((button) => !button.isConnected, {}, fallback);
+				await fallback.dispose();
 				await page.waitForFunction(
 					() => document.querySelector("[data-site-menu]") === document.activeElement
 				);
@@ -214,6 +237,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"touch open moves focus, locks scrolling and preserves header geometry",
 				async () => {
+					await setMenuOpen(page, false);
 					await page.tap(MENU);
 					await page.waitForSelector(PANEL);
 					await page.waitForFunction(() =>
@@ -249,10 +273,13 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			);
 
 			await t.test("Tab and Shift+Tab stay inside the panel; Escape returns focus", async () => {
+				await setMenuOpen(page, true);
+				// Wrapping past either end lands on Base UI's focus guard, which redirects next frame.
 				await Array.from({ length: 12 }).reduce(
 					(steps) =>
 						steps.then(async () => {
 							await page.keyboard.press("Tab");
+							await settleFrames(page);
 							assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
 						}),
 					Promise.resolve()
@@ -260,6 +287,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				await page.keyboard.down("Shift");
 				await page.keyboard.press("Tab");
 				await page.keyboard.up("Shift");
+				await settleFrames(page);
 				assert.ok(await page.$eval(PANEL, (panel) => panel.contains(document.activeElement)));
 				await page.keyboard.press("Escape");
 				await page.waitForSelector(PANEL, { hidden: true });
@@ -274,6 +302,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("outside press and the X both dismiss", async () => {
+				await setMenuOpen(page, false);
 				await page.tap(MENU);
 				await page.waitForSelector(PANEL);
 				await page.touchscreen.tap(4, 500);
@@ -285,6 +314,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("route changes close navigation and update the active row", async () => {
+				await setMenuOpen(page, false);
 				await page.tap(MENU);
 				await page.waitForSelector(PANEL);
 				await page.click(`${PANEL} a[href="/blog"]`);
@@ -299,6 +329,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			});
 
 			await t.test("search shortcut replaces an open mobile menu", async () => {
+				await setMenuOpen(page, true);
 				await page.keyboard.down("Control");
 				await page.keyboard.press("k");
 				await page.keyboard.up("Control");
@@ -316,6 +347,7 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 			await t.test(
 				"desktop resize releases the menu and keeps 44px navigation targets",
 				async () => {
+					await setMenuOpen(page, true);
 					await page.setViewport({ width: 1440, height: 900 });
 					await page.waitForSelector(PANEL, { hidden: true });
 					assert.equal(
@@ -359,6 +391,8 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.type('input[role="combobox"]', "zz-no-matching-destination");
 					assert.equal(await page.$$eval('[role="option"]', (options) => options.length), 0);
 					await page.keyboard.press("Escape");
+					// Otherwise the reopened wait can match the closing input and type into it.
+					await page.waitForSelector('input[role="combobox"]', { hidden: true });
 					await page.keyboard.down("Control");
 					await page.keyboard.press("k");
 					await page.keyboard.up("Control");
@@ -400,56 +434,39 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					);
 				}
 			);
-		} finally {
-			await closeBrowser(browser, t);
-		}
-	});
+		})
+	);
 });
 
 test("header controls and panels fit real responsive viewports", {
 	timeout: 180_000,
 }, async (t) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(t, {}, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(10_000);
 			page.setDefaultNavigationTimeout(30_000);
 			const runtimeErrors = [];
 			page.on("pageerror", (error) => runtimeErrors.push(error.message));
-			await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
 			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
-			await page.goto(url, { waitUntil: "networkidle0" });
-			await page.waitForFunction(
-				() => document.querySelector("[data-site-menu]")?.getAttribute("aria-expanded") === "false"
-			);
-			// Isolate shared chrome from page-specific reflow while retaining its real CSS and shell.
-			await page.$eval("main", (main) => {
-				main.textContent = "Header geometry fixture.";
-			});
+			const client = await page.createCDPSession();
 			// Include both sides of viewport and header-container breakpoints.
 			const cases = ["light", "dark"].flatMap((theme) =>
 				["100%", "200%"].flatMap((textSize) =>
 					[320, 390, 639, 640, 679, 680, 768, 1440].map((width) => ({ width, theme, textSize }))
 				)
 			);
-			// Viewports and modal states share one page and must run sequentially.
+			// Cases share one browser page and must run sequentially.
 			await cases.reduce(
 				(steps, scenario) =>
 					steps.then(() =>
 						t.test(`${scenario.width}px, ${scenario.theme}, ${scenario.textSize} text`, () =>
-							checkResponsiveHeader(page, scenario)
+							checkResponsiveHeader(page, client, url, scenario)
 						)
 					),
 				Promise.resolve()
 			);
 			assert.deepEqual(runtimeErrors, []);
-		} finally {
-			await closeBrowser(browser, t);
-		}
-	});
+		})
+	);
 });

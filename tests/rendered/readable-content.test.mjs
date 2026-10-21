@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const CONTENT_LOADING = [
 	"Loading post…",
@@ -23,15 +22,8 @@ for (const kind of ["blog", "projects"]) {
 		const published = Object.keys(manifest.routes).filter((path) => path.startsWith(`/${kind}/`));
 		assert.ok(published.length > 0, `${kind} has published content to check`);
 
-		await withProductionServer(async (url) => {
-			const browser = await puppeteer.launch({
-				executablePath:
-					process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-				headless: true,
-				timeout: 30_000,
-				protocolTimeout: 15_000,
-			});
-			try {
+		await withProductionServer((url) =>
+			withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 				const page = await browser.newPage();
 				page.setDefaultTimeout(20_000);
 				await page.setJavaScriptEnabled(false);
@@ -80,10 +72,8 @@ for (const kind of ["blog", "projects"]) {
 					}
 					assert.equal(visible.loading, false, `${path} does not leave a loading skeleton`);
 				}, Promise.resolve());
-			} finally {
-				await closeBrowser(browser, context);
-			}
-		});
+			})
+		);
 		context.diagnostic(
 			`Checked the ${kind} index and ${published.length} published pages with JavaScript disabled`
 		);

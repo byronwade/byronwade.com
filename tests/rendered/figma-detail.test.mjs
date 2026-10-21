@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
 
 test("synthetic Figma details preserve reflow, keyboard access and breadcrumb landmarks", {
@@ -18,15 +17,8 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 	).join("\n");
 	const content = await renderFigmaDetail({ name: "LongUnbrokenDesignName".repeat(8) });
 	const breadcrumbs = await renderFigmaDetail({}, { includeSiteBreadcrumb: true });
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-			timeout: 30_000,
-			protocolTimeout: 15_000,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultNavigationTimeout(20_000);
 			await page.setCacheEnabled(false);
@@ -145,8 +137,6 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 			} finally {
 				await client.detach();
 			}
-		} finally {
-			await closeBrowser(browser, context);
-		}
-	});
+		})
+	);
 });
