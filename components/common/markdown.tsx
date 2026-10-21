@@ -77,7 +77,10 @@ export function Markdown({ content, className }: MarkdownProps) {
 						className: codeClassName,
 						...props
 					}: React.HTMLAttributes<HTMLElement>) => {
-						const isInline = !codeClassName;
+						// A fenced block without a language has no class either, but its text always
+						// ends in the newline mdast-util-to-hast appends; a code span's never does.
+						// Without this check those blocks drew an inline chip inside the code well.
+						const isInline = !(codeClassName || String(children).endsWith("\n"));
 						if (isInline) {
 							return (
 								<code

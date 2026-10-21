@@ -36,6 +36,7 @@ registerHooks({
 const { Markdown } = await import(markdownUrl);
 const { extractToc } = await import("../lib/markdown.ts");
 const HEADING_ID = /<h[1-4]\b[^>]*\bid="([^"]+)"/g;
+const CODE_CHIP = /thorbis-code-bg/;
 
 const cases = [
 	{
@@ -246,6 +247,15 @@ test("empty and heading-free documents do not invent contents entries", () => {
 	for (const content of ["", " \n", "A paragraph", "```\n## Code\n```", "#### Detail only"]) {
 		assert.deepEqual(extractToc(content), []);
 	}
+});
+
+test("fenced code without a language is a block, not an inline chip inside the well", () => {
+	const content = '```\n"Analyze src/api/route.ts"\n```\n\nRun `npm test` first.';
+	const html = renderToStaticMarkup(createElement(Markdown, { content }));
+	const [block, inline] = [...html.matchAll(/<code\b([^>]*)>/g)].map((match) => match[1]);
+	assert.ok(html.includes("<pre"), "the fence renders a code well");
+	assert.doesNotMatch(block ?? "", CODE_CHIP, "the fenced code carries no chip");
+	assert.match(inline ?? "", CODE_CHIP, "a code span keeps its chip");
 });
 
 for (const directory of ["blog", "projects"]) {
