@@ -85,61 +85,60 @@ test("synthetic Figma details preserve reflow, keyboard access and breadcrumb la
 					.flatMap((theme) => [390, 1440].map((width) => ({ theme, width })))
 					.reduce(async (previous, { theme, width }) => {
 						await previous;
-						await context.test(
-							`${theme}/${width}: breadcrumb landmarks are distinguishable`,
-							async () => {
-								fixture = `<!doctype html><html lang="en" class="${theme}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${breadcrumbs}</body></html>`;
-								await page.setViewport({
-									width,
-									height: 900,
-									isMobile: width === 390,
-									hasTouch: width === 390,
-								});
-								await page.goto(`${url}/portfolio/figma/ExampleKey`, { waitUntil: "networkidle0" });
-								const { nodes } = await client.send("Accessibility.getFullAXTree");
-								const navigationNames = nodes
-									.filter((node) => !node.ignored && node.role?.value === "navigation")
-									.map((node) => node.name?.value);
-								assert.deepEqual(
-									navigationNames.sort(),
-									width === 1440
-										? ["Breadcrumb", "Design file breadcrumb"]
-										: ["Design file breadcrumb"]
-								);
-								assert.equal(new Set(navigationNames).size, navigationNames.length);
-								const trail = 'main nav[aria-label="Design file breadcrumb"]';
-								assert.equal(
-									await page.$eval(
-										`${trail} [aria-current="page"]`,
-										(element) => element.textContent
-									),
-									"Example design"
-								);
-								assert.equal(
-									await page.$eval(`${trail} a`, (link) => link.getAttribute("href")),
-									"/portfolio"
-								);
-								await page.focus(`${trail} a`);
-								assert.equal(
-									await page.$eval(`${trail} a`, (link) => link === document.activeElement),
-									true
-								);
-								// The page's primary action comes next, then the viewer toggle.
-								await page.keyboard.press("Tab");
-								assert.equal(
-									await page.$eval(
-										'main a[href="https://www.figma.com/file/ExampleKey"]',
-										(link) => link === document.activeElement
-									),
-									true
-								);
-								await page.keyboard.press("Tab");
-								assert.equal(
-									await page.$eval("main button", (button) => button === document.activeElement),
-									true
-								);
+						await context.test(`${theme}/${width}: one breadcrumb trail per viewport`, async () => {
+							fixture = `<!doctype html><html lang="en" class="${theme}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${breadcrumbs}</body></html>`;
+							await page.setViewport({
+								width,
+								height: 900,
+								isMobile: width === 390,
+								hasTouch: width === 390,
+							});
+							await page.goto(`${url}/portfolio/figma/ExampleKey`, { waitUntil: "networkidle0" });
+							const { nodes } = await client.send("Accessibility.getFullAXTree");
+							const navigationNames = nodes
+								.filter((node) => !node.ignored && node.role?.value === "navigation")
+								.map((node) => node.name?.value);
+							// The site's floating trail takes over at xl; the page's own trail
+							// covers narrower screens. Never both, never neither.
+							assert.deepEqual(
+								navigationNames,
+								width === 1440 ? ["Breadcrumb"] : ["Design file breadcrumb"]
+							);
+							if (width === 1440) {
+								return;
 							}
-						);
+							const trail = 'main nav[aria-label="Design file breadcrumb"]';
+							assert.equal(
+								await page.$eval(
+									`${trail} [aria-current="page"]`,
+									(element) => element.textContent
+								),
+								"Example design"
+							);
+							assert.equal(
+								await page.$eval(`${trail} a`, (link) => link.getAttribute("href")),
+								"/portfolio"
+							);
+							await page.focus(`${trail} a`);
+							assert.equal(
+								await page.$eval(`${trail} a`, (link) => link === document.activeElement),
+								true
+							);
+							// The page's primary action comes next, then the viewer toggle.
+							await page.keyboard.press("Tab");
+							assert.equal(
+								await page.$eval(
+									'main a[href="https://www.figma.com/file/ExampleKey"]',
+									(link) => link === document.activeElement
+								),
+								true
+							);
+							await page.keyboard.press("Tab");
+							assert.equal(
+								await page.$eval("main button", (button) => button === document.activeElement),
+								true
+							);
+						});
 					}, Promise.resolve());
 			} finally {
 				await client.detach();

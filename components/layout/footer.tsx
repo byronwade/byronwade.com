@@ -15,19 +15,22 @@ export default function Footer() {
 						Plumber first. Product engineer today. Building software for the service businesses I
 						know firsthand.
 					</p>
-					<ObfuscatedEmail
-						className="min-h-11 text-copy-14 text-foreground"
-						showIcon={false}
-						variant="link"
-					/>
-					<a
-						className="link-underline inline-flex min-h-11 items-center text-copy-13"
-						href="https://design.thorbis.com"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						Built with Thorbis Design<span className="sr-only"> (opens in a new tab)</span>
-					</a>
+					{/* Two 44px targets stacked flush: the boxes already space them. */}
+					<div className="flex flex-col items-start">
+						<ObfuscatedEmail
+							className="min-h-11 text-copy-14 text-foreground"
+							showIcon={false}
+							variant="link"
+						/>
+						<a
+							className="link-underline inline-flex min-h-11 items-center text-copy-13"
+							href="https://design.thorbis.com"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							Built with Thorbis Design<span className="sr-only"> (opens in a new tab)</span>
+						</a>
+					</div>
 				</div>
 				<nav aria-label="Footer" className="grid grid-cols-2 content-start gap-x-4">
 					{navItems.map((item) => (

@@ -55,7 +55,9 @@ for introducing a new visual choice.
   Reading titles use the 32px role, with comfortable leading for long object
   titles. The homepage commit uses neutral ink; its unused blue Button variant
   is removed. Secondary buttons use the existing on-panel fill. Native selects
-  share the input material and focus recipe. Preview controls reuse Button,
+  share the input material and focus recipe; unlike the source they set
+  `appearance: none` with a Phosphor caret, because WebKit otherwise paints the
+  select as a light system button instead of the field well. Preview controls reuse Button,
   keep 44px geometry, and change dimensions immediately; loading/fullscreen
   surfaces use neutral fills. No motion library or parallel token set is added.
 

@@ -63,8 +63,9 @@ export function PageHeader({
  * explicitly, and this is that same scale for static JSX.
  */
 export function Prose({ children, className }: { children: ReactNode; className?: string }) {
+	// The document body is the article; its title sits above it in PageHeader.
 	return (
-		<div
+		<article
 			className={cn(
 				"flex max-w-2xl flex-col gap-5 text-body text-copy-16 leading-relaxed",
 				"[&_h2]:mt-5 [&_h2]:font-heading [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:text-heading-20 [&_h2]:tracking-tight",
@@ -75,7 +76,7 @@ export function Prose({ children, className }: { children: ReactNode; className?
 			)}
 		>
 			{children}
-		</div>
+		</article>
 	);
 }
 

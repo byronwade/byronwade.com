@@ -5,6 +5,8 @@ import { renderFigmaDetail, renderMissingFigmaDetail } from "./fixtures/figma-de
 
 const BREADCRUMB = /<nav\b[^>]*aria-label="Design file breadcrumb"[^>]*>(.*?)<\/nav>/s;
 const CURRENT_FILE = /aria-current="page"[^>]*>Design &lt;draft&gt; &amp; review<\/span>/;
+const SITE_TRAIL_CLASS = /^<div class="([^"]+)">/;
+const PAGE_TRAIL_CLASS = /<nav [^>]*aria-label="Design file breadcrumb"[^>]*class="([^"]+)"/;
 const DESIGN_HEADING = /<h2\b[^>]*>Design file<\/h2>/;
 const COMPONENT_HEADING = /<h3\b[^>]*>Primary button<\/h3>/;
 const INFORMATION_HEADING = /<h2\b[^>]*>File information<\/h2>/;
@@ -63,6 +65,14 @@ test("site and design file breadcrumbs have distinct landmark names", async () =
 	assert.equal(names.length, 2, "the shared trail and the page trail must both be present");
 	assert.equal(new Set(names).size, names.length, "different trails need different landmark names");
 	assert.ok(names.includes("Design file breadcrumb"));
+});
+
+test("the page trail steps aside where the site trail shows, so xl never has two", async () => {
+	const html = await renderFigmaDetail({}, { includeSiteBreadcrumb: true });
+	const site = html.match(SITE_TRAIL_CLASS)?.[1].split(" ") ?? [];
+	const pageClasses = (html.match(PAGE_TRAIL_CLASS)?.[1] ?? "").split(" ");
+	assert.ok(site.includes("xl:block"), "the site trail is the xl trail");
+	assert.ok(pageClasses.includes("xl:hidden"), "the page trail must hide at xl");
 });
 
 test("populated file has one title and sequential section/component headings", async () => {

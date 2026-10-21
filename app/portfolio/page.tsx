@@ -208,40 +208,38 @@ export default async function PortfolioPage() {
 
 	return (
 		<SiteShell profile="showcase">
-			<div className="flex flex-col gap-10 sm:gap-12">
-				<PageHeader
-					aside={<RefreshLink label="Refresh" />}
-					lede={
-						<>
-							Open-source work and experiments. Pulled live from{" "}
-							<a
-								className="link-underline font-medium"
-								href="https://github.com/byronwade"
-								rel="noopener noreferrer"
-								target="_blank"
-							>
-								GitHub
-							</a>
-							. For in-depth case studies, see{" "}
-							<a className="link-underline font-medium" href="/projects">
-								projects
-							</a>
-							.
-						</>
-					}
-					title="Portfolio"
-				/>
+			<PageHeader
+				aside={<RefreshLink label="Refresh" />}
+				lede={
+					<>
+						Open-source work and experiments. Pulled live from{" "}
+						<a
+							className="link-underline font-medium"
+							href="https://github.com/byronwade"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							GitHub
+						</a>
+						. For in-depth case studies, see{" "}
+						<a className="link-underline font-medium" href="/projects">
+							projects
+						</a>
+						.
+					</>
+				}
+				title="Portfolio"
+			/>
 
-				{failed || repos.length === 0 ? (
-					<PortfolioUnavailable failed={failed} />
-				) : (
-					<IndexList as="ol">
-						{repos.map((repo) => (
-							<RepoRow key={repo.id} repo={repo} />
-						))}
-					</IndexList>
-				)}
-			</div>
+			{failed || repos.length === 0 ? (
+				<PortfolioUnavailable failed={failed} />
+			) : (
+				<IndexList as="ol">
+					{repos.map((repo) => (
+						<RepoRow key={repo.id} repo={repo} />
+					))}
+				</IndexList>
+			)}
 		</SiteShell>
 	);
 }

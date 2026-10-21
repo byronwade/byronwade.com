@@ -287,8 +287,25 @@ than restyling them.
 
 - **Measure.** `SiteShell` keeps the header's 42rem measure with the gutter
   outside it, so title, header and footer share an edge. `width="wide"` is
-  only for the homepage composition and live artifacts (project preview,
-  Figma file). Every route passes its `profile`.
+  only for the homepage composition and pages with a live artifact (project
+  preview, Figma file). On an artifact page only the artifact spans: the
+  title, prose, details and foot sit in `measureClass`, centred on the
+  header's axis, and the case-study outline docks in the right gutter at xl
+  so it never moves the text's edge. Every route passes its `profile`.
+- **Rhythm.** `SiteShell` owns the step between a page's regions (identity,
+  body, foot): 40px on phones, 48px from `sm`. Its direct children are those
+  regions; routes do not wrap them in their own gap. Inside a region, groups
+  sit closer than regions do (Thorbis: the gap between groups is at least
+  twice the gap within one).
+- **Detail identity.** Case studies and posts open the same way: a 13px
+  muted facts line (type or date, then reading time), the 32px title, the
+  16px lede, then the evidence (problem and outcome, or tags).
+- **Pager.** A post ends with `PostPager` (`components/blog/post-pager.tsx`):
+  the older post on the reading edge, the newer opposite it, in the writing
+  index's published order, so drafts never appear. Each side is an index row
+  (`indexRowLinkClass`), with the same hover fill, focus ring and accent as
+  every other list of posts. Related posts exclude the two pager posts, so no
+  title repeats at the foot of a post.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
@@ -296,7 +313,14 @@ than restyling them.
   says what it is. It bleeds to the phone edge. It is not a card for counts or
   sections, and there is no card primitive.
 - **Standalone links.** Back, next and open links use `link-action`: 14px,
-  underlined, 44px target. Inline prose links use `link-underline`.
+  underlined, 44px target. Links inside a sentence use `link-underline` and
+  stay inline on the sentence's baseline, so they wrap with the text and never
+  stretch the line (WCAG 2.5.8's inline exception). A `link-underline` that
+  stands alone, like the footer's, adds its own 44px box. The `Link`
+  primitive sets focus only; the recipe sets the size.
+- **Fields.** Inputs, the textarea and the native select are one recessed
+  well. The select drops the platform paint (WebKit drew it as a light system
+  button) and carries a caret, while its options stay the platform picker.
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
   illustration.

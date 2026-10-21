@@ -110,63 +110,55 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			<JsonLd data={articleStructuredData} />
 			<JsonLd data={breadcrumbStructuredData} />
 
-			{/* One owner for the vertical rhythm (§5.3). These four blocks were
-			    siblings of a fragment with no gap between them, so the tag row sat
-			    flush against the article's first paragraph. */}
-			<div className="flex w-full flex-col gap-10">
-				{/* The article's own identity block. Three levels of single-child <div>
-			    wrapper were removed with it, and the share row moved to the foot.
-			    Sharing is something a reader does after reading, and having it in
-			    both places meant the same control competed with itself. */}
-				<header className="flex w-full flex-col gap-3">
-					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
-						{post.title}
-					</h1>
-					{post.excerpt && (
-						<p className="max-w-2xl text-pretty text-body text-copy-16 leading-relaxed">
-							{post.excerpt}
-						</p>
+			{/* SiteShell owns the rhythm between these blocks (DESIGN.md §7.4).
+			    The identity block matches the case study's: the facts line, then
+			    the title and lede. Sharing sits at the foot, after reading. */}
+			<header className="flex w-full flex-col gap-4">
+				<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground tabular-nums">
+					{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
+					{post.updated && post.updated !== post.date && (
+						<>
+							<span aria-hidden="true">·</span>
+							<time dateTime={post.updated}>Updated {safeFormatDate(post.updated)}</time>
+						</>
 					)}
-					<p className="flex flex-wrap items-center gap-x-3 gap-y-2 text-copy-12 text-muted-foreground tabular-nums">
-						{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
-						{post.updated && post.updated !== post.date && (
-							<>
-								<span aria-hidden="true">·</span>
-								<time dateTime={post.updated}>Updated {safeFormatDate(post.updated)}</time>
-							</>
-						)}
-						<span aria-hidden="true">·</span>
-						<span>{post.readingTime} min read</span>
-					</p>
-					{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
-				</header>
+					<span aria-hidden="true">·</span>
+					<span>{post.readingTime} min read</span>
+				</p>
+				<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
+					{post.title}
+				</h1>
+				{post.excerpt && (
+					<p className="text-pretty text-body text-copy-16 leading-relaxed">{post.excerpt}</p>
+				)}
+				{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
+			</header>
 
-				{/* Blog Post Content */}
-				<article className="w-full">
-					<Markdown content={post.content} />
-				</article>
+			{/* Blog Post Content */}
+			<article className="w-full">
+				<Markdown content={post.content} />
+			</article>
 
-				<PostPager newer={adjacent.newer} older={adjacent.older} />
+			<PostPager newer={adjacent.newer} older={adjacent.older} />
 
-				{/* Related Posts */}
-				<RelatedPosts
-					currentSlug={post.slug}
-					exclude={[adjacent.newer, adjacent.older].flatMap((neighbour) =>
-						neighbour ? [neighbour.slug] : []
-					)}
-					limit={3}
-				/>
+			{/* Related Posts */}
+			<RelatedPosts
+				currentSlug={post.slug}
+				exclude={[adjacent.newer, adjacent.older].flatMap((neighbour) =>
+					neighbour ? [neighbour.slug] : []
+				)}
+				limit={3}
+			/>
 
-				{/* Left-aligned like everything else on the page. Centring these two was
+			{/* Left-aligned like everything else on the page. Centring these two was
 			    the only place the site abandoned its left edge. */}
-				<div className="flex w-full flex-col gap-3">
-					<p className="text-copy-13 text-muted-foreground">Share this post</p>
-					<SocialShare description={post.excerpt} title={post.title} url={url} />
-					<Link className="link-action w-fit" href="/blog">
-						<ArrowLeft aria-hidden="true" className="size-4" />
-						Back to writing
-					</Link>
-				</div>
+			<div className="flex w-full flex-col gap-3">
+				<p className="text-copy-13 text-muted-foreground">Share this post</p>
+				<SocialShare description={post.excerpt} title={post.title} url={url} />
+				<Link className="link-action w-fit" href="/blog">
+					<ArrowLeft aria-hidden="true" className="size-4" />
+					Back to writing
+				</Link>
 			</div>
 		</>
 	);
