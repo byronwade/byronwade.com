@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/layout/site-shell";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 /**
  * The one failure surface (DESIGN.md §8): what failed, what is still safe, and
@@ -27,9 +27,11 @@ export function ErrorNotice({
 					<p className="font-mono text-copy-12 text-muted-foreground">Reference {reference}</p>
 				)}
 				<p className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3">
-					<Button onClick={onRetry} type="button">
+					{/* A native button with the commit recipe: Next loads this boundary on
+					    every route, so it stays off the Base UI button code. */}
+					<button className={buttonVariants()} onClick={onRetry} type="button">
 						Try again
-					</Button>
+					</button>
 					{/* A full navigation, so a broken client bundle cannot trap the visitor. */}
 					<a className="link-action" href="/">
 						Go to the homepage
