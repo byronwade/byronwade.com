@@ -9,7 +9,7 @@ const phase = process.argv[2];
 if (!["before", "after"].includes(phase)) {
 	throw new Error("Choose before or after evidence");
 }
-const destination = `docs/evidence/design-polish/${phase}`;
+const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-polish"}/${phase}`;
 mkdirSync(destination, { recursive: true });
 let axeSource;
 if (phase === "after") {

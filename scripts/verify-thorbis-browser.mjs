@@ -5,7 +5,7 @@ import sharp from "sharp";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
-const destination = "docs/evidence/thorbis";
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
 mkdirSync(destination, { recursive: true });
 const axeResponse = await fetch(
 	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js"

@@ -7,7 +7,7 @@ import { withProductionServer } from "./production-session.mjs";
 
 const phase = process.argv[2];
 assert.ok(["before", "after"].includes(phase), "Choose before or after");
-const destination = `docs/evidence/design-polish/${phase}/states`;
+const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-polish"}/${phase}/states`;
 mkdirSync(destination, { recursive: true });
 let axeSource;
 if (phase === "after") {
