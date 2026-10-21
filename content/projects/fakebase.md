@@ -5,61 +5,67 @@ category: "Product"
 status: "Archived"
 tagline: "a Supabase you throw away"
 date: 2026-05-30
-excerpt: "My open-source flagship, maintained for free: a Supabase-shaped backend that runs entirely in-process with zero setup, so you can prototype at production-API speed and export to a real Supabase project when you're ready."
+excerpt: "An MIT-licensed local development backend with a Supabase-shaped query API, SQL and type exports, and compatibility gaps to check before moving a prototype to real Supabase."
 featured: false
 ---
 
-# Fakebase: Prototype at Production Speed, Without the Setup Tax
+# Fakebase: A Local Backend for Prototypes
 
-**Fakebase** is the project I maintain for free because I think it should exist. It's an open-source (MIT) development platform that mimics Supabase's developer API, so `createClient`, `from().select()`, auth, storage, realtime, and `rpc`, but it runs entirely in-process with no Docker, no Postgres, and no setup. You write code against the API you'd use in production, and when the prototype graduates, you export to a real Supabase project.
+I built **Fakebase** to prototype against a familiar query API without starting a database stack. It is an MIT-licensed tool for local development: `createClient`, `from().select()`, auth and storage flows backed by a Node.js kernel. The memory adapter needs no running Postgres server or Docker.
+
+The aim is to carry schema, data and types into a real Supabase project when the prototype is ready. The API shape is familiar, but the implementation is partial. Switching imports alone does not establish production compatibility.
+
+This account describes the June 2026 public source, reviewed in October 2026. Fakebase's auth and policy checks are development approximations, not a production security boundary.
 
 ---
 
 ## The Problem
 
-Supabase is excellent in production. But the moment you want to *prototype* something against it, you hit the setup tax: spin up Docker, run a local Postgres stack, manage migrations and seeds, keep the whole apparatus alive, all before you have written a line of the feature you actually care about. For a quick Next.js MVP or a throwaway experiment, that overhead is wildly out of proportion to the goal.
+When I prototype against a local Supabase stack, I have to start Docker, manage migrations and seeds, and keep the services running before I can work on the feature. For a quick Next.js experiment, I wanted a smaller starting point.
 
-So people cut corners. They mock the database with hand-rolled stubs that don't match the real API, then have to rewrite everything when it's time to ship. The prototype teaches you nothing transferable, and the "port to real Supabase" step is a rewrite instead of a migration.
+Hand-written mocks solve the immediate problem, but their interfaces can drift from the backend the application will eventually use. Fakebase is my attempt to keep the query shape and schema work useful beyond the prototype.
 
-Fakebase removes that tax without lying to you about what it is.
+It trades service setup for local approximations. Those limits need to stay visible.
 
 ---
 
 ## What Fakebase Does
 
-Fakebase gives you a **Supabase-compatible client** that just works, instantly, in memory:
+The in-process client implements part of the Supabase API:
 
-- **Database.** CRUD, filters, and RPC through the same query builder shape you already know.
-- **Auth.** password and OTP flows, sessions, and the basics of admin user management.
-- **Storage.** buckets, upload and list, signed URLs.
-- **Realtime.** broadcast, Postgres-change streams, and presence.
-- **Migrations & types.** author SQL migrations and generate TypeScript types, with a first-class **export path** that emits Supabase-compatible `migrations/*.sql`, `seed.sql`, and `database.types.ts`.
+- **Database.** CRUD, filtering, ordering and pagination through a chainable query builder. The kernel has a registry for local JavaScript functions, but `createClient()` does not expose `rpc()`.
+- **Auth.** Password and OTP flows, local sessions and basic user administration. OTPs go to a local inbox, not email or SMS; session tokens are local identifiers, not signed production JWTs.
+- **Storage.** Buckets, upload, download and listing backed by local files. Signed URLs use locally verified tokens, not a hosted storage service.
+- **Realtime.** Mutation events come from the kernel. Client broadcast calls listeners on the same channel object; presence callbacks can be registered, but that client has no `track()`, `untrack()` or `presenceState()` methods. A separate realtime package contains presence logic; it is not exposed through this client.
+- **Migrations & types.** Schema diffs can generate SQL. `fakebase migrate export --supabase` copies authored SQL files into `supabase/migrations/`; separate commands export `seed.sql` and generate `database.types.ts`. PGLite has no snapshot export for the seed command, and type generation falls back to example types when no schema is loaded. These are migration inputs to review and test, not a completed production migration.
 
-Crucially, Fakebase is **honest about its limits.** The features it does not faithfully reproduce, like OAuth, SSO, MFA, passkeys, vector search, and point-in-time recovery, do not fail silently or pretend to work. They throw a structured `CapabilityError`. The whole philosophy is *no silent faking*: you always know exactly how close to production you are.
+The capability registry records supported, partial, stub and unsupported features. Error handling depends on the entry point: unsupported auth methods such as OAuth, SSO, MFA and passkeys return a `CapabilityError` in the result's `error` field; registry assertions throw. Vector search and point-in-time recovery are not implemented production services. A capability label is a description of the local implementation, not proof of Supabase parity.
 
-It's also **AI-first**: a `fakebase ai init` command generates rules and schema scaffolding, so the tool fits naturally into agent-driven and LLM-assisted workflows.
+For AI-assisted work, `fakebase ai init` writes starter rules and documentation templates. Its schema summary contains an example `profiles` table; the command does not inspect the project's schema to generate that summary. The AI package also has schema-aware generators, but this command does not call them.
 
 ---
 
 ## How It's Built
 
-Fakebase is a TypeScript **monorepo** (pnpm + Turborepo, Node 20+, ES modules) with around eighteen packages. A core kernel, storage adapters, and per-domain packages for auth, storage, realtime, functions, migrations, types, a CLI, and the AI tooling, plus the marketing and docs site and an admin UI.
+Fakebase is a TypeScript workspace using pnpm, Node 20+ and ES modules. It separates the kernel, client, adapters, auth, storage, realtime, functions, migrations, type generation, CLI and AI tooling. The root also contains the Next.js documentation site and playground. Turborepo configuration and a separate apps workspace described in the README are absent from the reviewed main branch.
 
-The most interesting design decision is the **tiered storage adapters**, which let you dial fidelity up or down to match the job:
+The adapters offer different persistence models:
 
-- **In-memory.** zero setup, instant, perfect for tests and quick spikes.
-- **JSON file-backed.** durable snapshots you can inspect and commit.
-- **SQLite.** a single durable file for longer-lived local work.
-- **PGLite (Postgres-in-WASM).** the highest-fidelity tier, running real Postgres semantics in WebAssembly.
+- **In-memory.** Rows held in maps for disposable test data and experiments. The attached file-storage service still writes uploaded objects to disk.
+- **JSON file-backed.** Local snapshots for persistence between runs.
+- **SQLite.** Database persistence through `better-sqlite3`.
+- **PGLite.** A real Postgres-in-WebAssembly engine through `@electric-sql/pglite`, with some filters and defaults still evaluated in JavaScript. Generated tables omit foreign-key constraints, and policies use the shared JavaScript engine rather than Postgres roles.
 
-Underneath sits a query compiler, a schema intermediate representation, and a policy engine that approximates Row-Level Security in JavaScript. Because the kernel uses Node's `fs`, `path`, and `crypto`, Fakebase runs on the server. It is a development backend and explicitly *not* a security boundary, and the docs say so plainly.
+Underneath sits a schema representation, query handling and the shared policy engine. The in-process kernel uses Node APIs and belongs on the server; browser writes need an application endpoint. The repository also has a separate local HTTP/WebSocket server for real Supabase clients, so not every usage mode is entirely in-process.
 
 ---
 
 ## Why It's a Flagship, and Why It's Free
 
-Fakebase is the kind of project that earns trust precisely because of what it *refuses* to do. It does not try to replace Supabase. It is designed to be thrown away, with the export path as a short, documented, first-class step. Being honest about scope, labeling the things it does not support instead of faking them, and optimizing for "delete me later" is the engineering value I most want my work to stand for.
+Fakebase is work I chose to make available under MIT because I wanted a reusable starting point for experiments. Designing a backend to be replaced gives it a useful constraint: the export path matters as much as the local API.
 
-I maintain it for free under MIT because tooling that lowers the activation energy for building should be a commons, not a product. It is built with the same seriousness I would give anything commercial. Turborepo, Changesets-driven releases, Vitest and Playwright coverage, and CI. It is just pointed at developers instead of customers.
+The repository contains Vitest and Playwright tests. Its initial monorepo also had CI and Changesets release workflows, but those workflows are absent from the reviewed main branch. Test files alone do not establish a passing release or production compatibility. The `verify supabase` harness covers twelve database-query scenarios; without a real Supabase connection it reports partial results, and partial comparisons do not make the command fail. It does not certify auth, storage, realtime or the exported migration.
 
-Explore it at [fakebase.byronwade.com](https://fakebase.byronwade.com) or on [GitHub](https://github.com/byronwade/fakebase).
+Before moving a prototype, the remaining work is to apply and test the exports against real Supabase and check the application's actual queries, auth and access policies. I have not measured a speed advantage or verified a production migration for this write-up.
+
+The source is on [GitHub](https://github.com/byronwade/fakebase.byronwade.com). This review follows [main at `2f60fe6`](https://github.com/byronwade/fakebase.byronwade.com/tree/2f60fe695ca0cac03e18f954a231ca446fb3479c); the supporting file references are in the [project source notes](https://github.com/byronwade/byronwade.com/blob/main/docs/PROJECT_SOURCES.md#fakebase-api-and-export-claims-october-21-2026).
