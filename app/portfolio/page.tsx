@@ -216,7 +216,7 @@ function RepoSkeletonList() {
  * One repository row: Showcase profile.
  *
  * The organizing move for /portfolio (DESIGN.md §7.1) is raw open-source
- * activity sorted by signal. Signal leads in the mono column, stars and the
+ * activity sorted by signal. Signal leads in the tabular column, stars and the
  * last push, the same column the writing and resume rows use for dates, so
  * the sort order is visible as structure. Language and forks follow the
  * description on every width instead of disappearing on phones.
