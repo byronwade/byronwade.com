@@ -188,11 +188,14 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				};
 				await page.setRequestInterception(true);
 				page.on("request", intercept);
+				let fallbackTrigger;
 				try {
 					await page.tap(MENU);
 					await page.waitForFunction(
 						() => document.querySelector("[data-site-menu]")?.getAttribute("aria-busy") === "true"
 					);
+					// While the panel code loads, this busy button is a stand-in that React replaces.
+					fallbackTrigger = await page.$(MENU);
 					await page.focus(MENU);
 					await page.keyboard.press("Escape");
 					assert.equal(
@@ -205,6 +208,9 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.setRequestInterception(false);
 				}
 				await page.waitForNetworkIdle({ idleTime: 100 });
+				// Later steps tap the loaded trigger, so wait for the swap rather than racing it.
+				await page.waitForFunction((trigger) => !trigger.isConnected, {}, fallbackTrigger);
+				await fallbackTrigger.dispose();
 				await page.waitForFunction(
 					() => document.querySelector("[data-site-menu]") === document.activeElement
 				);
