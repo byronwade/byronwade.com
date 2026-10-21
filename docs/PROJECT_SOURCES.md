@@ -441,3 +441,54 @@ section headings are retained. The redundant leading Markdown title no longer
 implies an unmeasured speed advantage. The excerpt follows the corrected body and flows
 through the existing metadata/search owners. No project code, dependencies,
 production environment, accounts or services were changed.
+
+## Dits local engine and roadmap claims, October 21, 2026
+
+The Dits case study now follows public main at
+[`cc30c403`](https://github.com/byronwade/dits/tree/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147)
+(August 13, 2026). Its December 9, 2025 date is kept: the article was added in
+site commit
+[`f3cd5e62`](https://github.com/byronwade/byronwade.com/commit/f3cd5e6265d0d5a3b5c76316e8629e9ba5b064a5).
+The public Dits repository was created December 13, 2025, and its earliest
+visible commit is
+[`4d80c8d2`](https://github.com/byronwade/dits/commit/4d80c8d28d5ff9e67e29fa40a8d77b2247d7e667)
+from that day. That shows when the article was published, not what worked on
+that date, and it does not rule out earlier private work, so the article dates
+its capability review instead. Archived is this site's editorial grouping;
+GitHub does not mark the Dits repository archived. All seven other branches
+(`agent/align-product-docs-marketing`, `agent/deep-research-foundations`,
+`alert-autofix-13`, `claude/dits-open-source-launch-4d4t77`,
+`claude/tender-cori-1zi8s6`, `imgbot`, `perf/systemic-fast-paths`) have
+diverged from main; their commit lists were read, and none of their unmerged
+work is described as current.
+
+The upstream
+[implementation status](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/docs/STATUS.md)
+separates current local behavior, experiments, designs and historical backend
+code. The CLI parser, dispatch and handlers were read to confirm it rather than
+treating a README, dependency, command name or design document as proof.
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Every file goes through the same chunk store | The [workspace](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/Cargo.toml) builds `dits-core` and the CLI. [Repository ingest](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/repository.rs#L1152-L1218) sends supported text to embedded Git blobs and binaries to chunks, with a separate MP4 path. Streaming applies to binary files at or above 1 MiB (`STREAMING_INGEST_THRESHOLD`); text and MP4 can buffer the whole file. |
+| FastCDC, BLAKE3, manifests and checkout | Implemented: [shared chunker](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/packages/dits-core/src/chunk.rs), [BLAKE3 hasher](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/packages/dits-core/src/hash.rs), [commit and checkout](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/repository.rs#L2028-L2245). [Chunk reads](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/objects.rs#L248-L311) rehash and reject mismatches; [manifest and commit reads](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/objects.rs#L385-L462) check their content hashes. Text goes through libgit2, so the copy does not claim BLAKE3 on every read. Reuse is limited to byte-identical content, not re-encoded media. |
+| Journal recovery, automatic corruption repair and deleting GC | [Commit](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/repository.rs#L2028-L2155) publishes objects, ref and index in separate steps; the [ref store](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/refs.rs) writes refs directly with no journal. Upstream status limits reflog coverage to commit and checkout and disables destructive GC ([guard](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/repo/gc.rs)). Copy keeps the integrity checks and tells readers to keep backups. |
+| QUIC resumable sync, remote clone, hosted deployment, REST/webhooks | [Push](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/repo/push.rs), [pull](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/repo/pull.rs), [fetch](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/repo/fetch.rs) and [sync](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/repo/sync.rs) return errors for every remote type, including local paths. The [HTTP object server](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/remote_server.rs) has no authentication and binds to 127.0.0.1 by default. QUIC exists only as an in-process demo. Local-folder clone is described separately from remote exchange. |
+| Mounted remote drive, Windows support and enforced team locks | [Mount commands](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/main.rs#L310-L328) need the optional `fuser` feature and a mount point. The [FUSE mount](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/vfs/fuse.rs#L465-L495) is read-only and local, with no WinFSP or remote hydration. The [lock store](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/store/locks.rs) keeps local records; status lists remote lock leases as not current. |
+| Repository encryption and official SDKs | [Encryption handlers](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/commands/advanced/security.rs) refuse init, login and password changes; status explains the experiment did not cover the embedded Git store. The [SDK pages](https://github.com/byronwade/dits/tree/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/docs/sdks) describe designs, not published packages. |
+| `checkout -b`, bare `mount`, curl installer, email and Discord contacts | The [parser](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/apps/cli/src/main.rs#L35-L95) has no `checkout -b`; branch and checkout are separate. The [README](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/README.md) and [getting-started guide](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/docs/user-guide/getting-started.md) say there is no `curl \| sh` installer, so the old `install.sh` line was removed. The old dev@dits.io address and Discord channel had no source support and were removed. Install scripts and release binaries were not run. |
+| Chunking, LAN upload, clone and status speed figures | [Benchmark data](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/benchmarks/latest.json) records August 4, 2026, Dits commit `15a8bda2`, one Linux x64 Xeon machine, component throughput and local timings on a 32 MiB synthetic file. The [method notes](https://github.com/byronwade/dits/blob/cc30c403f1c81d8c5e6ebdf8e568d61e0bd6a147/docs/performance/benchmarks.md) do not cover real media or network use. The copy links the data without quoting targets as measurements. |
+
+The long glossary, roadmap, operations, deployment, business and FAQ sections
+were replaced by one account of the local engine and its limits (754 lines to
+144). The repository root is still the first GitHub link in the body, so the
+Source button opens it. The new excerpt flows through the existing listing,
+metadata and search. Route, title, URL, date, category, type, archived status
+and non-featured setting are unchanged. No Dits code, site code, dependency,
+account, service or setting was changed.
+
+This was source reading, not a run of Dits's build, tests, CLI or benchmarks.
+It does not establish release-binary health, platform support, media-format
+coverage, private history, or fitness for production. The review was started by
+job 174945 (codex), which stopped before committing; job 175946 re-checked each
+claim against a fresh clone at the same commit.
