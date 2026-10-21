@@ -72,10 +72,11 @@ compact targets; the current header's rendered tests require 44px targets.
 The legacy verifier's desktop minimum is 24px, so its pass alone does not
 establish the current header contract.
 
-`verify-design-polish-states.mjs after` exercises 19 controlled states at all
+`verify-design-polish-states.mjs after` exercises 21 controlled states at all
 six width/theme combinations: portfolio empty, error, populated, partial, unrelated-provider failure, failed refresh,
 degraded empty refresh, loading and timeout; contact invalid, pending and failed; preview loading,
-loaded, keyboard resize, fullscreen and error; and the open homepage contact
+loaded, mobile preset, keyboard resize, fullscreen and error; keyboard focus on a
+case-study contents link clearing the header; and the open homepage contact
 form and copy confirmation with a distinct, 44px control and stable label/width.
 Clipboard delivery is stubbed; no contact address is written to the OS clipboard.
 Fixtures stay in the browser.
