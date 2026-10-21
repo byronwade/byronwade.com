@@ -243,7 +243,7 @@ export default function ResumePage() {
 						<h2 className="mb-6 font-heading font-medium text-foreground text-heading-20 tracking-tight print:mb-3">
 							Experience
 						</h2>
-						{/* The site's chronology grammar: the period leads in a mono column,
+						{/* The site's chronology grammar: the period leads in a tabular column,
 						    the record sits beside it. Paper keeps the same two columns. */}
 						<div className="flex flex-col gap-8 print:gap-4">
 							{workExperience.map((job) => (
@@ -251,7 +251,7 @@ export default function ResumePage() {
 									key={`${job.company}-${job.role}`}
 									className="flex flex-col gap-x-6 gap-y-1 sm:flex-row print:break-inside-avoid"
 								>
-									<p className="font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
+									<p className="text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
 										{job.period}
 									</p>
 									<div className="flex min-w-0 flex-1 flex-col gap-1 print:gap-0.5">
@@ -330,7 +330,7 @@ export default function ResumePage() {
 								<IndexRow key={`${cert.name}-${cert.year}`}>
 									<div className="flex items-baseline justify-between gap-4 py-2 print:py-0.5">
 										<span className="text-copy-14 text-foreground">{cert.name}</span>
-										<span className="shrink-0 font-mono text-copy-12 text-muted-foreground tabular-nums">
+										<span className="shrink-0 text-copy-12 text-muted-foreground tabular-nums">
 											{cert.year}
 											{cert.pending && " · in progress"}
 										</span>

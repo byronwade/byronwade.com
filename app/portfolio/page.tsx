@@ -231,7 +231,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 				target="_blank"
 			>
 				<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
-					<p className="flex gap-3 font-mono text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
+					<p className="flex gap-3 text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
 						<span className="inline-flex items-center gap-1">
 							<Star aria-hidden="true" className="size-3" />
 							{repo.stargazers_count}
@@ -258,7 +258,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 							<p className="text-body text-copy-14 leading-relaxed">{repo.description}</p>
 						)}
 						{(repo.language || repo.forks_count > 0) && (
-							<p className="flex flex-wrap items-center gap-x-4 font-mono text-copy-12 text-muted-foreground tabular-nums">
+							<p className="flex flex-wrap items-center gap-x-4 text-copy-12 text-muted-foreground tabular-nums">
 								{repo.language && (
 									<span className="inline-flex items-center gap-1.5">
 										<span
