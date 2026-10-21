@@ -60,8 +60,6 @@ const BASELINE = {
 	"app/contact/contact-client.tsx": { type: 9 },
 	"app/not-found.tsx": { type: 4, weight: 1 },
 	"app/portfolio/page.tsx": { type: 5, arbitrary: 1 },
-	"app/projects/[slug]/project-content.tsx": { type: 13, weight: 2 },
-	"app/projects/page.tsx": { type: 1 },
 	"app/resume/page.tsx": { type: 14, weight: 4 },
 	"app/resume/resume-actions.tsx": { type: 2 },
 	"app/search/page.tsx": { type: 1 },
@@ -69,9 +67,6 @@ const BASELINE = {
 	"components/common/empty-state.tsx": { type: 2, weight: 1 },
 	"components/common/markdown.tsx": { type: 8, weight: 5 },
 	"components/home/inline-contact.tsx": { type: 11 },
-	"components/project/full-width-project-preview.tsx": { type: 7, arbitrary: 3 },
-	"components/project/project-toc.tsx": { type: 2 },
-	"components/project/projects-index.tsx": { type: 5 },
 	"components/ui/pill.tsx": { type: 1 },
 };
 

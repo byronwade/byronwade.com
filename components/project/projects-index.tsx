@@ -43,7 +43,7 @@ function TypeMark({ type }: { type?: string }) {
 	}
 	return (
 		<span
-			className={`hidden shrink-0 font-medium text-xs capitalize sm:inline ${TYPE_TONE[type] ?? "text-muted-foreground"}`}
+			className={`hidden shrink-0 font-medium text-copy-12 capitalize sm:inline ${TYPE_TONE[type] ?? "text-muted-foreground"}`}
 		>
 			{type}
 		</span>
@@ -58,14 +58,16 @@ function RowMarker({ project }: { project: Project }) {
 	const tone = statusTone(project.status);
 	if (tone) {
 		return (
-			<StatusPill className="shrink-0 capitalize" pulse={tone.pulse} tone={tone.tone}>
+			<StatusPill className="shrink-0 capitalize" tone={tone.tone}>
 				{project.status}
 			</StatusPill>
 		);
 	}
 	const year = safeFormatDate(project.date, "yyyy");
 	return year ? (
-		<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">{year}</span>
+		<span className="shrink-0 font-mono text-copy-12 text-muted-foreground tabular-nums">
+			{year}
+		</span>
 	) : null;
 }
 
@@ -85,7 +87,9 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 						>
 							<div className="flex items-center gap-4">
 								<span className="flex min-w-0 flex-1 items-baseline gap-2.5">
-									<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
+									<span
+										className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
+									>
 										{project.title.split(":")[0]}
 									</span>
 									{project.flagship && (
@@ -95,7 +99,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 										/>
 									)}
 									{project.tagline && (
-										<span className="hidden truncate text-muted-foreground text-sm sm:inline">
+										<span className="hidden truncate text-copy-14 text-muted-foreground sm:inline">
 											{project.tagline}
 										</span>
 									)}
@@ -106,19 +110,17 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 								<ArrowUpRight
 									aria-hidden="true"
-									className="size-4 shrink-0 text-muted-foreground/50 transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
+									className="size-4 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
 								/>
 							</div>
 
 							{carriesEvidence && (proof || leadMetric) && (
 								<div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
 									{proof && (
-										<p className="max-w-2xl text-muted-foreground text-sm leading-relaxed">
-											{proof}
-										</p>
+										<p className="max-w-2xl text-body text-copy-14 leading-relaxed">{proof}</p>
 									)}
 									{leadMetric && (
-										<span className="shrink-0 font-mono text-muted-foreground text-xs tabular-nums">
+										<span className="shrink-0 font-mono text-copy-12 text-muted-foreground tabular-nums">
 											<span className="font-medium text-foreground">{leadMetric.value}</span>
 											{" · "}
 											{leadMetric.label}

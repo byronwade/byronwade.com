@@ -72,7 +72,10 @@ export function ProjectToc({ items }: ProjectTocProps) {
 			return;
 		}
 		setActiveId(id);
-		el.scrollIntoView({ behavior: "smooth", block: "start" });
+		// CSS `scroll-behavior` overrides do not reach scrollIntoView, so the
+		// reduced-motion preference is honoured here explicitly.
+		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
 		// Update the hash without jumping (smooth scroll handles position).
 		if (typeof history !== "undefined") {
 			history.replaceState(null, "", `#${id}`);
@@ -86,9 +89,9 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	}
 
 	return (
-		<nav aria-label="On this page" className="flex flex-col gap-3 text-sm">
-			<p className="text-muted-foreground text-xs">On this page</p>
-			<ul className="flex flex-col gap-0.5 border-border border-l">
+		<nav aria-label="On this page" className="flex flex-col gap-2 text-copy-13">
+			<p className="px-3 text-copy-12 text-muted-foreground">On this page</p>
+			<ul className="flex flex-col">
 				{items.map((item) => {
 					const isActive = activeId === item.id;
 					return (
@@ -98,13 +101,21 @@ export function ProjectToc({ items }: ProjectTocProps) {
 								onClick={(event) => handleClick(event, item.id)}
 								aria-current={isActive ? "location" : undefined}
 								className={cn(
-									"-ml-px block border-l-2 py-1 leading-snug transition-colors",
-									item.depth === 3 ? "pl-6" : "pl-4",
+									"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
+									item.depth === 3 ? "pl-6" : "pl-3",
 									isActive
-										? "border-brand font-medium text-foreground"
-										: "border-transparent text-muted-foreground hover:border-border hover:text-foreground"
+										? "bg-muted font-medium text-foreground"
+										: "text-muted-foreground hover:text-foreground"
 								)}
 							>
+								{/* The place mark (Thorbis header menu): an accent dot, never a rule on the edge. */}
+								<span
+									aria-hidden="true"
+									className={cn(
+										"size-1.5 shrink-0 rounded-full",
+										isActive ? "bg-brand" : "bg-transparent"
+									)}
+								/>
 								{item.text}
 							</a>
 						</li>
