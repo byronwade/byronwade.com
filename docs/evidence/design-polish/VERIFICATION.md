@@ -111,9 +111,11 @@ matches this verified source.
 
 ## Final production evidence
 
-- Second review follow-up, after merging main through `0bf3bd8` (#100). The
-  reports record code head `ea0a592`; later commits change only test fixtures,
-  not the application or these runners.
+- Second review follow-up, after merging main through `8284a3c` (#108) as
+  `87fb464`. The reports record that head. Main #103 removed the `reveal`
+  classes so pages read without JavaScript; the merge keeps that and this
+  pass's borderless spacing and type roles. Earlier runs on `ea0a592` (main
+  through #100) had the same counts.
   - `node scripts/capture-design-polish.mjs after`: exit 0, 96 cases, 0 page
     errors, 0 overflow and 0 axe A/AA violations. The six 404 cases return 404
     with no error, so the React #418 exemption is gone and any page error fails.
@@ -129,7 +131,15 @@ matches this verified source.
     checks after Escape wait up to 2s for focus to return. Below 640px the no-JS
     check uses the footer navigation, because the header menu needs JavaScript.
     Closing a Ctrl/⌘K search now returns focus to where it was opened (`7e1a701`).
-  - Rendered and native gates are listed in the PR body with every attempt.
+  - `npm run lint`, `npm run type-check`, `npm run knip` and `npm run build`
+    exit 0. `npm test`: 879 passed, 0 failed, 0 cancelled.
+  - `node --test --test-concurrency=1 tests/rendered/*.test.mjs`: three
+    consecutive runs, 70 passed and 0 failed each. Before each run the machine
+    was below 70% CPU (67–69%). Earlier attempts under 90–100% load failed only
+    in Chrome start/stop plumbing; the PR body lists them.
+  - `npm run perf:budget` (budgets unchanged), first sample at 68% CPU: FCP
+    948.7ms, LCP 2970.5ms, CLS 0, TBT 237ms, Speed Index 1797.6ms. 15 requests /
+    264,572 bytes, 9 scripts / 168,146 bytes, no third-party requests.
 - Review follow-up: `node scripts/capture-design-polish.mjs after` exit 0 on
   `8fb6741`, then again on `3ee3365` after merging main #81. Both runs had 96
   cases. The run now fails on any page error. The only recorded errors are the
