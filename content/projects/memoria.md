@@ -23,9 +23,9 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 ### The Requirements
 
 - **Local-first**: Analyze the repo without sending code to any server.
-- **Low friction**: One-line install for every major AI client (Cursor, Claude, Windsurf, Cline).
+- **Low friction**: One small config entry for the common MCP clients (Claude Code, Claude Desktop, Cursor, Windsurf, Cline).
 - **Actionable**: Return coupled files, risk scores, and a checklist the AI can follow immediately.
-- **Fast**: Sub-100ms analysis and cached results for iterative work.
+- **Fast**: About a tenth of a second for a full analysis, and cached results for iterative work.
 
 ---
 
@@ -35,7 +35,7 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 **Assigns a risk score** so you and the AI know when to slow down.
 **Surfaces static dependents** using git grep to catch direct importers.
 **Builds a pre-flight checklist** of files to verify or update before the change is "done."
-**Runs 100% locally.** No API keys, no cloud upload, and it works offline.
+**Runs the analysis locally.** It reads your repo's `.git` history on your machine, with no account, no API key and no code upload, and it works offline. Signing in is optional and only adds cloud-synced project memories.
 
 ---
 
@@ -45,10 +45,10 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 Scans commit history with time-decayed weighting for panic keywords (fix, bug, revert, hotfix) to flag historically brittle files and who usually touches them.
 
 ### Entanglement Engine
-Calculates coupling frequency to surface files that change together >15% of the time, uncovering implicit dependencies that imports miss.
+Calculates coupling frequency to surface files that change together more often than a threshold, uncovering implicit dependencies that imports miss. The default is 15% of recent commits, adjusted between 10% and 25% for the project's commit pace and commit size, and you can override it in `.memoria.json`.
 
 ### Sentinel Engine
-Detects drift when coupled files haven't been updated together in >7 days, prompting a sanity check before shipping.
+Detects drift when a coupled file was last modified more than a week before the file you're changing (3 to 14 days depending on commit pace, also configurable), prompting a sanity check before shipping.
 
 ### Static Import Engine
 Runs lightweight git grep to enumerate importers so new or low-history files still get coverage.
@@ -57,14 +57,15 @@ Runs lightweight git grep to enumerate importers so new or low-history files sti
 
 ## Installing in Minutes
 
-Memoria is distributed as an **MCP server**. Pick your client and drop in a single config line:
+Memoria is distributed as an **MCP server**. Every client gets the same server entry, `{"mcpServers":{"memoria":{"command":"npx","args":["-y","@byronwade/memoria"]}}}`:
 
-- Cursor: `mkdir -p .cursor && echo '{"mcpServers":{"memoria":{"command":"npx","args":["-y","@byronwade/memoria"]}}}' > .cursor/mcp.json`
 - Claude Code (CLI): `claude mcp add memoria -- npx -y @byronwade/memoria`
-- Claude Desktop: `npx @anthropic/claude-code mcp add memoria -- npx -y @byronwade/memoria`
+- Claude Desktop: merge the entry into `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/`, Windows: `%APPDATA%\Claude\`)
+- Cursor: `mkdir -p .cursor && echo '{"mcpServers":{"memoria":{"command":"npx","args":["-y","@byronwade/memoria"]}}}' > .cursor/mcp.json` (this replaces an existing `.cursor/mcp.json`, so merge by hand if you have one)
+- Windsurf and Cline: add the entry in their MCP server settings
 - Global npm: `npm install -g @byronwade/memoria` then point your MCP config to `memoria`
 
-Restart your AI tool and Memoria is available immediately, no API keys needed.
+Restart your AI tool and the analysis tools are available, with no account or API key needed.
 
 ---
 
@@ -100,7 +101,7 @@ Repeat the analysis during refactors, the cache returns results in milliseconds.
 
 Memoria keeps your codebase private, accelerates AI-driven work, and reduces the risk of shipping regressions caused by unseen dependencies. If you want your AI to be both fast *and* safe, give it the memory it’s missing.
 
-Visit [memoria.byronwade.com](https://memoria.byronwade.com) to install or learn more.
+This write-up describes the MCP server as published on npm in December 2025 (version 1.0.32). [memoria.byronwade.com](https://memoria.byronwade.com) now presents Memoria as an MCP server and GitHub App with risk reports for pull requests.
 
 
 
