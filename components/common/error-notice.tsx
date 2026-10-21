@@ -1,5 +1,5 @@
 import { SiteShell } from "@/components/layout/site-shell";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 
 /**
  * The one failure surface (DESIGN.md §8): what failed, what is still safe, and
