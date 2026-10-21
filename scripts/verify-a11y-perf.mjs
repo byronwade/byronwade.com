@@ -10,6 +10,8 @@ import { serializeEvidence, writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
+const PORTFOLIO_FAILED = /Couldn['’]t load repositories/;
+
 // Extend the design-port audit to every public page template. Keep browser work
 // serial: concurrent Lighthouse runs would measure our own resource contention.
 const destination = "docs/evidence/a11y-perf";
@@ -420,9 +422,7 @@ async function checkPortfolioStates(page) {
 	}
 	const hasRepositories = await page.$("main a[href*='github.com']");
 	const settled =
-		hasRepositories ||
-		text.includes("No repositories yet") ||
-		/Couldn['’]t load repositories/.test(text);
+		hasRepositories || text.includes("No repositories yet") || PORTFOLIO_FAILED.test(text);
 	if (!settled) {
 		throw new Error("Portfolio must show repositories, an empty profile, or a load error");
 	}
