@@ -82,10 +82,7 @@ async function BlogList() {
 			{[...byYear.entries()].map(([year, yearPosts]) => (
 				<section aria-labelledby={`year-${year}`} className="flex flex-col gap-2" key={year}>
 					{/* The year is the only thing that needs saying between groups. */}
-					<h2
-						className="text-copy-12 text-muted-foreground tabular-nums"
-						id={`year-${year}`}
-					>
+					<h2 className="text-copy-12 text-muted-foreground tabular-nums" id={`year-${year}`}>
 						{year}
 					</h2>
 					<IndexList as="ol">
