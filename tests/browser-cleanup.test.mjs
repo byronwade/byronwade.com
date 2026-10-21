@@ -193,6 +193,50 @@ for (const rejectsClose of [false, true]) {
 	});
 }
 
+test("an observed owned exit ends cleanup while taskkill is still running", async (t) => {
+	const { child, context, exit } = stubChild(t);
+	let aborted = false;
+	// A loaded machine can hold taskkill past the child's exit; only the abort ends it.
+	t.mock.method(childProcess, "execFile", (_file, _args, options, callback) => {
+		exit();
+		options.signal.addEventListener("abort", () => {
+			aborted = true;
+			callback(Object.assign(new Error("aborted"), { name: "AbortError" }), "", "");
+		});
+	});
+	syncBuiltinESMExports();
+	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+	const check = assert.doesNotReject(result);
+	await nextTurn();
+	t.mock.timers.tick(10_000);
+	await nextTurn();
+	t.mock.timers.tick(15_000);
+	await check;
+	assert.equal(child.exitCode, 0);
+	assert.equal(aborted, true, "the outstanding cleanup command is cancelled");
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+test("a timed-out cleanup command records that it never reported an exit code", async (t) => {
+	const { child, context, diagnostics } = stubChild(t);
+	const timeout = Object.assign(new Error("taskkill timed out"), {
+		code: null,
+		killed: true,
+		signal: "SIGTERM",
+	});
+	t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+		callback(timeout, "", "");
+	});
+	syncBuiltinESMExports();
+	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+	const check = assert.rejects(result, (error) => error.cause === timeout);
+	await nextTurn();
+	t.mock.timers.tick(10_000);
+	await check;
+	assert.ok(diagnostics.join("\n").includes('"commandCode":null'));
+	assert.ok(diagnostics.join("\n").includes('"commandSignal":"SIGTERM"'));
+});
+
 test("a failed cleanup command also rejects after a stalled close", async (t) => {
 	const { child, context } = stubChild(t);
 	const error = Object.assign(new Error("could not launch taskkill"), { code: "ENOENT" });
