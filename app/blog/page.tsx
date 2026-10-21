@@ -150,7 +150,7 @@ export default function BlogPage() {
 						title="Writing"
 					/>
 
-					<div className="reveal reveal-delay-1 w-full">
+					<div className="w-full">
 						<BlogList />
 					</div>
 				</div>
