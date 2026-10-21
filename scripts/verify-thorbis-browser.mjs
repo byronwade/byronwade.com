@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { mkdirSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import sharp from "sharp";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
-const destination = "docs/evidence/thorbis";
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
 mkdirSync(destination, { recursive: true });
 const axeResponse = await fetch(
-	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js"
+	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
+	{ signal: AbortSignal.timeout(30_000) }
 );
 assert.ok(axeResponse.ok, "axe must load; a missing audit cannot pass");
 const axeSource = await axeResponse.text();
@@ -475,28 +477,27 @@ async function checkInteractions(url) {
 	await page.close();
 }
 
-async function checkSlowMotion(page) {
-	const duration = await page.evaluate(() => {
-		const root = document.documentElement;
-		const token = getComputedStyle(root).getPropertyValue("--motion-base").trim();
-		const value = Number.parseFloat(token) * (token.endsWith("ms") ? 1 : 1000) * 4;
-		root.style.setProperty("--motion-base", `${value}ms`);
-		return value;
-	});
+async function checkSearchInterruption(page) {
+	// The current header has no entrance animation; its retired capsule's duration
+	// override cannot slow this panel. Inspect actual styles and exercise interruption.
 	await page.click(SEARCH_TRIGGER);
-	await page.screenshot({ path: `${destination}/motion-open-start-768.png` });
-	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms / 2)), duration);
-	await page.screenshot({ path: `${destination}/motion-open-middle-768.png` });
-	await page.evaluate((ms) => new Promise((resolve) => setTimeout(resolve, ms)), duration);
-	await page.screenshot({ path: `${destination}/motion-open-end-768.png` });
+	await page.waitForSelector("[data-header-search]", { visible: true });
+	const styles = await page.$eval("[data-header-search]", (panel) => {
+		const computed = getComputedStyle(panel);
+		return {
+			transitionDuration: computed.transitionDuration,
+			animationDuration: computed.animationDuration,
+		};
+	});
+	await page.screenshot({ path: `${destination}/search-open-768.png` });
 	await page.keyboard.press("Escape");
 	await focusSettlesOn(page, SEARCH_TRIGGER);
+	await page.screenshot({ path: `${destination}/search-closed-768.png` });
 	// Interrupt an open immediately; focus must still return to the trigger.
 	await page.click(SEARCH_TRIGGER);
 	await page.keyboard.press("Escape");
 	await focusSettlesOn(page, SEARCH_TRIGGER);
-	await page.evaluate(() => document.documentElement.style.removeProperty("--motion-base"));
-	report.motion = { slowFactor: 4, duration, interruptedOpenClose: true, focusReturned: true };
+	report.searchInterruption = { styles, interruptedOpenClose: true, focusReturned: true };
 }
 
 try {
@@ -515,7 +516,7 @@ try {
 				}
 				await checkShellStates(page, width, theme);
 				if (width === 768 && theme === "light") {
-					await checkSlowMotion(page);
+					await checkSearchInterruption(page);
 				}
 				await page.close();
 			}
@@ -591,6 +592,6 @@ try {
 	try {
 		writeEvidenceJson(`${destination}/browser.json`, report);
 	} finally {
-		await browser.close();
+		await closeBrowser(browser, { diagnostic: console.log });
 	}
 }
