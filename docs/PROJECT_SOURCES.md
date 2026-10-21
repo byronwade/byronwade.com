@@ -185,3 +185,29 @@ has shut down. Reinstating native-release, adoption, or revenue claims requires
 identifiable release records or owner-supplied business evidence with a period
 and source. That review left the separate Wade's Plumbing ranking claim for
 follow-up; the dated Wade's Plumbing section above records its correction.
+
+## byronwade/ui chrome and availability claims, October 20, 2026
+
+`content/projects/byronwade-ui.md` told readers "You're looking at it right now":
+a top-left launcher that morphed into a product switcher, a floating `--dock`
+toolbar capsule, and a breadcrumb in the same material, plus a gold accent
+"that runs through everything" and a "Used on: This site" metric. This site's
+own history shows that chrome is gone:
+
+| Source | Supports | Limits / correction |
+| --- | --- | --- |
+| Commit `6411efc` (2026-06-02, "Add byronwade/ui design system to projects and launcher") | The case study and its launcher entry were added together. | Does not establish when the morph chrome first shipped, so the write-up gives no start date. |
+| [#56](https://github.com/byronwade/byronwade.com/pull/56) (`73496a0`, 2026-10-16) and [#80](https://github.com/byronwade/byronwade.com/pull/80) (`ad83258`, 2026-10-20) | #56 moved the site to the Thorbis Design port; `docs/THORBIS-DESIGN-PORT.md` records the capsule width/height morph as removed. #80 deleted `components/layout/app-launcher*.tsx` and `hooks/use-capsule-morph.ts`. | The chrome claims are now past tense, "until October 2026". |
+| Current source at `7ec5eed` | The header (`components/layout/site-header.tsx`, `nav-dock.tsx`) is fixed; its menu is a Base UI `Popover` anchored below it (`header-popover-content.tsx`). Remaining lineage: `components/ui/pill.tsx`, the `--brand`/`--dock` token names (now aliases of `--thorbis-*`), and the theme toggle's circular View Transitions wipe (`hooks/use-theme-toggle.ts`, used by `dock-toolbar-client.tsx`). | `--thorbis-accent` is blue (`oklch(… 264.4)`), so the gold accent is described as former. |
+| [ui.byronwade.com](https://ui.byronwade.com), accessed October 20, 2026 | Live; presents "Design systems that install as MCP" (design contracts). It does not mention the Morph Panel, launcher, or dock. | The closing link now says what the address hosts today. Its listed products are not described here. `/r/registry.json` returned 404; `components.json` resolves per-item `/r/{name}.json`, so that is not evidence the registry is gone. |
+| [byronwade/ui.byronwade.com](https://github.com/byronwade/ui.byronwade.com) repository, `main` `package.json`, accessed October 20, 2026 | Depends on `radix-ui`, so "Radix primitives" stays for byronwade/ui itself. Repository API: created 2026-06-03, not archived. | `github.com/byronwade/ui` returned 404; that does not rule out a private repository. This site uses `@base-ui/react`, which the body now states. |
+
+Byron's account that byronwade/ui was made to sit under GoodMarks, SignalRoute,
+Thorbis, and this site is kept as design intent. No source here shows those
+products currently ship on it, and "battle-tested", "reused everywhere I build",
+and "in continuous development" had no supporting record, so they were reworded
+or removed. The title, date, URL, archived grouping, front-matter keys, metric
+labels, and heading anchors are unchanged. The dated article
+`content/blog/design-systems-that-earn-their-keep.md` (July 12, updated August 7)
+was reviewed and left as written: it describes the Morph Panel as a pattern and
+says the launcher and dock "can share" its material, which was true when published.
