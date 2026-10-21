@@ -9,7 +9,6 @@ export { ArrowUpRight } from "./icons/arrow-up-right";
 export { Box } from "./icons/box";
 export { Check } from "./icons/check";
 export { CircleCheckIcon } from "./icons/circle-check-icon";
-export { Clock } from "./icons/clock";
 export { Copy } from "./icons/copy";
 export { Download } from "./icons/download";
 export { ExternalLink } from "./icons/external-link";

@@ -1,15 +1,10 @@
 import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
-import { TagList } from "@/components/common/tag-list";
+import { PostRow } from "@/components/blog/post-row";
+import { IndexList } from "@/components/common";
 import { Section } from "@/components/layout/page";
 import { getBlogPosts } from "@/lib/blog";
-import { safeFormatDate } from "@/lib/markdown-utils";
 
-/**
- * Thorbis chronological rows; dates and excerpts remain server-rendered.
- * The date leads in a tabular column, as on /blog, so the two indexes read as
- * one pattern. Reading time sits in that column instead of a badge rack.
- */
+// Thorbis chronological rows; dates and excerpts remain server-rendered.
 async function BlogList() {
 	const posts = await getBlogPosts();
 	const recentPosts = posts.slice(0, 3);
@@ -25,31 +20,7 @@ async function BlogList() {
 	return (
 		<IndexList>
 			{recentPosts.map((post) => (
-				<IndexRow key={post.slug}>
-					<Link prefetch={false} className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-						<div className="flex flex-col gap-x-6 gap-y-1 sm:flex-row">
-							<p className="flex gap-3 text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:flex-col sm:gap-0.5 sm:pt-1">
-								{post.date && (
-									<time dateTime={post.date}>{safeFormatDate(post.date, "MMM d, yyyy")}</time>
-								)}
-								<span>{post.readingTime} min read</span>
-							</p>
-							<div className="flex min-w-0 flex-col gap-1">
-								<span className={`font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}>
-									{post.title}
-								</span>
-								{post.excerpt && (
-									<p className="line-clamp-2 text-body text-copy-14 leading-relaxed">
-										{post.excerpt}
-									</p>
-								)}
-								{post.tags && post.tags.length > 0 && (
-									<TagList className="pt-1" limit={3} tags={post.tags} />
-								)}
-							</div>
-						</div>
-					</Link>
-				</IndexRow>
+				<PostRow key={post.slug} post={post} tagLimit={3} />
 			))}
 		</IndexList>
 	);

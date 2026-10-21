@@ -1,9 +1,6 @@
-import Link from "next/link";
-import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
-import { Badge } from "@/components/ui/badge";
+import { IndexList } from "@/components/common/index-list";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
-import { Clock } from "@/lib/icons";
-import { safeFormatDate } from "@/lib/markdown-utils";
+import { PostRow } from "./post-row";
 
 interface RelatedPostsProps {
 	currentSlug: string;
@@ -46,42 +43,19 @@ export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps
 	}
 
 	return (
-		<div className="mt-12 w-full border-border border-t pt-8">
-			<h3 className="mb-6 font-heading font-semibold text-foreground text-xl tracking-tight">
+		<section aria-labelledby="related-posts" className="flex w-full flex-col gap-4">
+			<h2
+				className="font-heading font-medium text-foreground text-heading-20 tracking-tight"
+				id="related-posts"
+			>
 				Related posts
-			</h3>
-			{/* The site's index grammar, not a bordered card with a tinted fill and a
-			    hover background. §13 rejects the card wrapper and the border-per-row;
-			    this is the same list the blog index uses, three rows long. */}
+			</h2>
+			{/* The same row as the writing index: shared tags first, then recency. */}
 			<IndexList>
 				{relatedPosts.map((post) => (
-					<IndexRow key={post.slug}>
-						<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-							<div className="flex items-start justify-between gap-4">
-								<span className={`truncate font-medium text-foreground ${indexRowAccentClass}`}>
-									{post.title}
-								</span>
-								<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
-									<Badge variant="muted">
-										<Clock />
-										{post.readingTime} min
-									</Badge>
-									{post.date && (
-										<time className="hidden sm:inline" dateTime={post.date}>
-											{safeFormatDate(post.date, "MMM d, yyyy")}
-										</time>
-									)}
-								</div>
-							</div>
-							{post.excerpt && (
-								<p className="line-clamp-2 text-muted-foreground text-sm leading-relaxed">
-									{post.excerpt}
-								</p>
-							)}
-						</Link>
-					</IndexRow>
+					<PostRow key={post.slug} post={post} />
 				))}
 			</IndexList>
-		</div>
+		</section>
 	);
 }

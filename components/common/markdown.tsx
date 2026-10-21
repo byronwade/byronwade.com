@@ -12,6 +12,11 @@ interface MarkdownProps {
 
 /**
  * Shared markdown renderer used by blog posts and project case studies.
+ *
+ * Thorbis reading roles: body colour at 16px for prose, foreground at weight
+ * 500 for headings and emphasis, more space above a heading than below it,
+ * code in the source code well. A quote is set off by indent and voice, never
+ * by a coloured edge rule (Thorbis D-018).
  * Adds stable, deduplicated heading ids (with scroll offset) so tables of
  * contents and deep links work consistently across the site.
  */
@@ -25,7 +30,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 	return (
 		<div
 			className={cn(
-				"relative flex min-w-full shrink-0 flex-col gap-5 font-normal text-[var(--foreground)] text-base",
+				"relative flex min-w-full shrink-0 flex-col gap-5 font-normal text-body text-copy-16",
 				className
 			)}
 		>
@@ -50,7 +55,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 								href={linkHref}
 								target={isExternal ? "_blank" : undefined}
 								rel={isExternal ? "noopener noreferrer" : undefined}
-								className="font-medium text-[var(--foreground)] underline decoration-[var(--muted-foreground)]/40 underline-offset-[3px] transition-colors duration-200 hover:decoration-[var(--foreground)]"
+								className="link-underline font-medium"
 								{...props}
 							>
 								{children}
@@ -58,7 +63,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						);
 					},
 					strong: ({ children, ...props }) => (
-						<strong className="font-semibold text-[var(--foreground)]" {...props}>
+						<strong className="font-medium text-foreground" {...props}>
 							{children}
 						</strong>
 					),
@@ -76,7 +81,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 						if (isInline) {
 							return (
 								<code
-									className="rounded bg-[var(--muted)] px-1.5 py-0.5 font-mono text-brand text-sm"
+									className="wrap-anywhere rounded-sm bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-copy-14"
 									{...props}
 								>
 									{children}
@@ -91,7 +96,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					},
 					pre: ({ children, ...props }) => (
 						<pre
-							className="my-4 overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--muted)] p-4 text-sm"
+							className="my-2 overflow-x-auto rounded-lg border border-border bg-muted p-4 text-copy-13"
 							{...props}
 						>
 							{children}
@@ -108,14 +113,14 @@ export function Markdown({ content, className }: MarkdownProps) {
 						</ol>
 					),
 					li: ({ children, ...props }) => (
-						<li className="pl-1 text-base leading-relaxed" {...props}>
+						<li className="pl-1" {...props}>
 							{children}
 						</li>
 					),
 					h1: ({ children, ...props }) => (
 						<h1
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 font-semibold text-2xl text-[var(--foreground)]"
+							className="mt-8 scroll-mt-24 text-balance font-medium text-foreground text-heading-20 tracking-tight"
 							{...props}
 						>
 							{children}
@@ -124,7 +129,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h2: ({ children, ...props }) => (
 						<h2
 							id={headingId(children)}
-							className="mt-8 mb-4 scroll-mt-24 font-semibold text-[var(--foreground)] text-xl"
+							className="mt-8 scroll-mt-24 text-balance font-medium text-foreground text-heading-20 tracking-tight"
 							{...props}
 						>
 							{children}
@@ -133,7 +138,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h3: ({ children, ...props }) => (
 						<h3
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-lg"
+							className="mt-5 scroll-mt-24 text-balance font-medium text-foreground text-heading-16"
 							{...props}
 						>
 							{children}
@@ -142,21 +147,18 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h4: ({ children, ...props }) => (
 						<h4
 							id={headingId(children)}
-							className="mt-6 mb-3 scroll-mt-24 font-semibold text-[var(--foreground)] text-base"
+							className="mt-4 scroll-mt-24 font-medium text-copy-16 text-foreground"
 							{...props}
 						>
 							{children}
 						</h4>
 					),
 					blockquote: ({ children, ...props }) => (
-						<blockquote
-							className="my-4 border-brand border-l-2 py-1 pl-4 text-[var(--muted-foreground)] italic"
-							{...props}
-						>
+						<blockquote className="my-2 pl-5 text-foreground italic" {...props}>
 							{children}
 						</blockquote>
 					),
-					hr: ({ ...props }) => <hr className="my-6 border-[var(--border)]" {...props} />,
+					hr: ({ ...props }) => <hr className="my-4 border-border" {...props} />,
 				}}
 			>
 				{content}

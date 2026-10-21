@@ -55,19 +55,14 @@ const HEAVY_WEIGHT = /\bfont-(?:semibold|bold|extrabold|black)\b/g;
 
 /** Remaining allowance per file. Lower it as files are migrated; never raise it. */
 const BASELINE = {
-	"app/blog/[slug]/page.tsx": { type: 5, weight: 1 },
-	"app/blog/page.tsx": { type: 5 },
 	"app/contact/contact-client.tsx": { type: 9 },
 	"app/not-found.tsx": { type: 4, weight: 1 },
 	"app/portfolio/page.tsx": { type: 5, arbitrary: 1 },
 	"app/resume/page.tsx": { type: 14, weight: 4 },
 	"app/resume/resume-actions.tsx": { type: 2 },
 	"app/search/page.tsx": { type: 1 },
-	"components/blog/related-posts.tsx": { type: 3, weight: 1 },
 	"components/common/empty-state.tsx": { type: 2, weight: 1 },
-	"components/common/markdown.tsx": { type: 8, weight: 5 },
 	"components/home/inline-contact.tsx": { type: 11 },
-	"components/ui/pill.tsx": { type: 1 },
 };
 
 test("type scale and weights only shrink (ratchet against BASELINE)", () => {
