@@ -7,6 +7,8 @@ import { safeFormatDate } from "@/lib/markdown-utils";
 
 interface RelatedPostsProps {
 	currentSlug: string;
+	/** Slugs already offered elsewhere on the page, such as the older/newer pager. */
+	exclude?: readonly string[];
 	limit?: number;
 }
 
@@ -24,13 +26,15 @@ function tagOverlapScore(current: BlogPost, candidate: BlogPost): number {
 /**
  * Related posts: prefer shared tags, then fall back to recent writing.
  */
-export async function RelatedPosts({ currentSlug, limit = 3 }: RelatedPostsProps) {
+export async function RelatedPosts({ currentSlug, limit = 3, exclude = [] }: RelatedPostsProps) {
 	const [current, allPosts] = await Promise.all([getBlogPost(currentSlug), getBlogPosts()]);
 	if (!current) {
 		return null;
 	}
 
-	const otherPosts = allPosts.filter((post) => post.slug !== currentSlug);
+	const otherPosts = allPosts.filter(
+		(post) => post.slug !== currentSlug && !exclude.includes(post.slug)
+	);
 	const relatedPosts = [...otherPosts]
 		.sort((a, b) => {
 			const scoreDiff = tagOverlapScore(current, b) - tagOverlapScore(current, a);
