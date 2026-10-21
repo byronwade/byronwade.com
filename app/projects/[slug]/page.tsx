@@ -14,6 +14,9 @@ interface ProjectPageProps {
 	params: Promise<{ slug: string }>;
 }
 
+/** Only the loader's slugs are pages; see the blog route for why this is not left to `notFound()`. */
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
 	const slugs = await getAllProjectSlugs();
 	return slugs.map((slug) => ({

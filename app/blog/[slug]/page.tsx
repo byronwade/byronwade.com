@@ -18,6 +18,14 @@ interface BlogPostPageProps {
 	params: Promise<{ slug: string }>;
 }
 
+/**
+ * Only the loader's slugs are pages, so other URLs get a real 404 before any
+ * response is sent. The `notFound()` below runs inside Suspense, after the 200
+ * status and the skeleton are already streamed, and then gets cached as a page.
+ * Development regenerates this list on every request, so drafts still preview.
+ */
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
 	const slugs = await getAllBlogSlugs();
 	return slugs.map((slug) => ({

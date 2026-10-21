@@ -88,14 +88,12 @@ test("indexed pages keep their real titles", () => {
 	assert.deepEqual(resolveTrail("/", labels), [{ label: "Home", href: "/" }]);
 });
 
-test("unknown paths still name the current page without linking to missing parents", () => {
-	assert.deepEqual(resolveTrail("/blog/not-a-post", labels), [
-		{ label: "Home", href: "/" },
-		{ label: "Blog", href: "/blog" },
-		{ label: "Not A Post", href: "/blog/not-a-post" },
-	]);
-	assert.deepEqual(resolveTrail("/old/section/page", labels), [
-		{ label: "Home", href: "/" },
-		{ label: "Page", href: "/old/section/page" },
-	]);
+test("unknown paths get no trail, matching the prerendered /_not-found page they hydrate", () => {
+	// The static 404 renders at /_not-found on the server and at the visitor's URL
+	// in the browser. Any difference between the two trails is a hydration error.
+	const prerendered = resolveTrail("/_not-found", labels);
+	assert.deepEqual(prerendered, [{ label: "Home", href: "/" }]);
+	for (const url of ["/does-not-exist", "/a/b/c", "/blog/not-a-post", "/projects/nope/extra"]) {
+		assert.deepEqual(resolveTrail(url, labels), prerendered, url);
+	}
 });
