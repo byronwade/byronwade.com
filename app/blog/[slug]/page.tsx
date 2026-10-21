@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
@@ -20,9 +19,8 @@ interface BlogPostPageProps {
 }
 
 /**
- * Only the loader's slugs are pages, so other URLs get a real 404 before any
- * response is sent. The `notFound()` below runs inside Suspense, after the 200
- * status and the skeleton are already streamed, and then gets cached as a page.
+ * Only the loader's published slugs are pages, so other URLs get a real 404
+ * before any response is sent and cannot become cached pages on demand.
  * Development regenerates this list on every request, so drafts still preview.
  */
 export const dynamicParams = false;
@@ -163,22 +161,6 @@ async function BlogPostContent({ slug }: { slug: string }) {
 	);
 }
 
-/** Mirrors the article's real rhythm so the swap does not shift the page. */
-function PostFallback() {
-	return (
-		<div aria-busy="true" className="flex w-full animate-pulse flex-col gap-4">
-			<p className="sr-only" role="status">
-				Loading post…
-			</p>
-			<div className="h-9 w-3/4 rounded bg-muted" />
-			<div className="h-4 w-1/2 rounded bg-muted/70" />
-			<div className="mt-4 h-4 w-full rounded bg-muted/70" />
-			<div className="h-4 w-full rounded bg-muted/70" />
-			<div className="h-4 w-2/3 rounded bg-muted/70" />
-		</div>
-	);
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
 	const { slug } = await params;
 
@@ -186,9 +168,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 		<>
 			<ReadingProgress />
 			<SiteShell>
-				<Suspense fallback={<PostFallback />}>
-					<BlogPostContent slug={slug} />
-				</Suspense>
+				<BlogPostContent slug={slug} />
 			</SiteShell>
 		</>
 	);
