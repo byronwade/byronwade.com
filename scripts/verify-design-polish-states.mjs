@@ -236,7 +236,8 @@ async function verifyCase(url, width, theme) {
 				if (previewMode !== "loading") {
 					// The real API returns a distinct image URL for each capture size.
 					const capture = new URL(request.url()).searchParams;
-					const image = new URL("/images/portfolio/thorbis-preview.jpg", url);
+					// Main #88 removed the portfolio images; any committed local JPEG serves the frame.
+					const image = new URL("/images/analysis/figma-analysis.jpg", url);
 					image.searchParams.set("width", capture.get("width"));
 					image.searchParams.set("height", capture.get("height"));
 					await request.respond({
