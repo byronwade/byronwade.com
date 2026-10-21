@@ -113,7 +113,15 @@ feedback without delivering a message or certifying a live provider.
   the root used it. No-JS defaults and measured focus clearance are retained.
 - The site header and toolbar render static SVGs on the server and pass them as
   ReactNode slots to their client interaction leaves, so glyph-definition
-  JavaScript stays out of the client bundle.
+  JavaScript stays out of the client bundle. The project site preview does the
+  same (`components/project/full-width-project-preview.tsx` wraps the client
+  file). Each Phosphor icon module carries path data for all six weights; the
+  preview's twelve glyphs were 29,405 bytes of the project page chunk. Moving
+  them cut that chunk from 92,188 to 59,880 bytes (29,997 to 21,773 gzipped)
+  and added the rendered SVG to the page payload instead (`/projects/dits`
+  HTML 62,389 to 64,471 bytes gzipped). Lighthouse's script transfer for a
+  project page went from 209,005 to 200,663 bytes. This is a byte reduction;
+  it did not measurably change LCP.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.
@@ -139,15 +147,31 @@ measurement is whatever `home-budget.json` records for the committed source.
 Timing variation on a shared machine is large; a pass close to a limit is not a
 comfortable regression margin.
 
-Budget exception, recorded rather than relaxed: on source `84d9b5c` (after main
-through `ceb89d9` was merged), `home-budget.json` recorded LCP 3182 ms, TBT 476
-ms and CLS 0, failing the LCP and blocking-time limits. Earlier homepage samples
-on this branch, other than the overlapped-build and eager-dialog probes, ranged
-from LCP 2936 to 3256 ms and TBT 226 to 455 ms; only the 2936 ms and 2986 ms
-samples passed. Most content routes also exceed the
-LCP limit under the mobile simulation, on main and on this branch; per-route
-reports are in `docs/evidence/a11y-perf/`. `lighthouse-budget.json` is
-unchanged.
+Earlier budget exception: on source `84d9b5c` (after main through `ceb89d9`
+was merged), the homepage recorded LCP 3182 ms, TBT 476 ms and CLS 0, failing
+the LCP and blocking-time limits. Earlier homepage samples on that branch, other
+than the overlapped-build and eager-dialog probes, ranged from LCP 2936 to 3256
+ms and TBT 226 to 455 ms; only the 2936 ms and 2986 ms samples passed.
+
+On main at `4b1202f` (2026-10-21, same runner, clean tree), the indexes pass
+every limit: the homepage in three samples at LCP 2916 to 2940 ms and TBT 112 to
+127 ms, `/blog` at 2961 ms and `/projects` at 2948 ms, all with CLS 0. That is
+1 to 3 percent under the LCP limit, so it is not regression margin, and no
+single change is credited for the movement since `84d9b5c`. Detail pages still
+exceed the LCP limit, which remains a recorded budget exception:
+`/projects/dits` 3293 to 3470 ms, `/projects/thorbis` 3226 to 3309 ms (both
+before and after the preview icon change above, which did not move LCP beyond
+run-to-run variation) and `/blog/nexstar-win-invoice-lose-customer` 3277 ms.
+`lighthouse-budget.json` is unchanged.
+
+Lighthouse simulates this LCP. On the homepage the observed paint happens about
+300 ms after navigation, but the simulation counts every request that started before it, and
+the async scripts start within 80 ms. The simulated LCP therefore tracks the
+bytes of the document, the preloaded font and all initial scripts, of which
+about 132 KB is the React and Next framework. Detail pages add a larger document
+(Dits 65 KB gzipped, much of it the RSC payload repeating the article) and, on
+posts, italic and mono fonts discovered from the stylesheet. Preloading the mono
+face was tried and rejected (see the evidence README).
 
 The rebuilt header from main (#80) replaced the launcher and morph capsule with
 anchored popovers. Probes recorded before merge commit `9c2953c` measured the
