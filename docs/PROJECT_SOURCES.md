@@ -449,7 +449,7 @@ The Dits case study now follows public main at
 (August 13, 2026). Its December 9, 2025 date is kept: the article was added in
 site commit
 [`f3cd5e62`](https://github.com/byronwade/byronwade.com/commit/f3cd5e6265d0d5a3b5c76316e8629e9ba5b064a5).
-The public Dits repository was created December 13, 2025, and its earliest
+The public Dits repository was created December 13, 2025 (UTC), and its earliest
 visible commit is
 [`4d80c8d2`](https://github.com/byronwade/dits/commit/4d80c8d28d5ff9e67e29fa40a8d77b2247d7e667)
 from that day. That shows when the article was published, not what worked on
