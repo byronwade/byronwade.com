@@ -1,6 +1,5 @@
 ---
 title: "Ciel: Hosting You Can Actually Read"
-url: "https://ciel.byronwade.com"
 category: "Concept"
 tagline: "hosting you can read"
 date: 2026-06-01
@@ -63,4 +62,4 @@ Ciel is in active development, and right now it's a **frontend-first prototype**
 
 I work this way on purpose. Designing the full interface against realistic mock data first lets me pressure-test the hard product questions. How do you make cost legible? What does a *good* failure screen look like? And I get to answer those without committing to backend choices too early. The shell is real and considered. The engine room is what's next.
 
-See the current build at [ciel.byronwade.com](https://ciel.byronwade.com).
+As checked on October 21, 2026, the hosted demo is no longer available. You can browse the prototype's [source on GitHub](https://github.com/byronwade/ciel.byronwade.com).
