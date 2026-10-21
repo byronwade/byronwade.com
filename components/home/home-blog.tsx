@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import { TagList } from "@/components/common/tag-list";
 import { Section } from "@/components/layout/page";
 import { getBlogPosts } from "@/lib/blog";
 import { safeFormatDate } from "@/lib/markdown-utils";
@@ -41,6 +42,9 @@ async function BlogList() {
 									<p className="line-clamp-2 text-body text-copy-14 leading-relaxed">
 										{post.excerpt}
 									</p>
+								)}
+								{post.tags && post.tags.length > 0 && (
+									<TagList className="pt-1" limit={3} tags={post.tags} />
 								)}
 							</div>
 						</div>
