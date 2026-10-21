@@ -98,6 +98,9 @@ resizing. Frame size follows input immediately. Existing color transitions and
 progress glyphs communicate state without changing labels. Global reduced-motion
 tokens supply the snapped path. No animation library or new motion scale is
 introduced; the existing verifier provides a separate header-popover interruption check.
+The current header has no entrance animation. Its verifier records the actual
+panel durations and interruption/focus behavior rather than overriding the
+retired capsule's motion token or claiming slow-motion evidence.
 
 ## Checklist applicability
 

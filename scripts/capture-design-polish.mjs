@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -13,7 +14,12 @@ const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-
 mkdirSync(destination, { recursive: true });
 let axeSource;
 if (phase === "after") {
-	const response = await fetch("https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js");
+	const response = await fetch(
+		"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
+		{
+			signal: AbortSignal.timeout(30_000),
+		}
+	);
 	assert.ok(response.ok, "the pinned accessibility audit must load");
 	axeSource = await response.text();
 }
@@ -261,7 +267,7 @@ await withProductionServer(async (url) => {
 				await capture(page, url, name, route, width, theme);
 			}, Promise.resolve());
 		} finally {
-			await browser.close();
+			await closeBrowser(browser, { diagnostic: console.log });
 			writeEvidenceJson(`${destination}/matrix.json`, report);
 		}
 	}, Promise.resolve());

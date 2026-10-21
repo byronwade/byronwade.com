@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync } from "node:fs";
 import lighthouse from "lighthouse";
 import puppeteer from "puppeteer-core";
+import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -68,6 +69,6 @@ await withProductionServer(async (url) => {
 			throw new Error("Performance budget exceeded");
 		}
 	} finally {
-		await browser.close();
+		await closeBrowser(browser, { diagnostic: console.log });
 	}
 });
