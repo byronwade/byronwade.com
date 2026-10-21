@@ -8,9 +8,10 @@
  */
 
 /**
- * Interactive pill for sharing and copy actions. The secondary surface keeps
- * it distinct from its parent, like the outlined Button. Height and focus
- * treatment belong here rather than in each caller.
+ * Interactive Thorbis chip: share and copy actions. A chip is a pill with a
+ * short lift on the secondary surface, so it reads as pressable without a
+ * coloured outline; hover is a quieter fill, never a lift. The 44px height is
+ * the touch target (DESIGN.md §3.3).
  */
 export const pillLinkClass =
-	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full border border-border bg-secondary px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:bg-muted hover:text-foreground focus-ring";
+	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full bg-secondary px-3.5 font-medium text-copy-13 text-foreground shadow-(--shadow-button) transition-colors hover:bg-muted focus-ring";

@@ -74,10 +74,10 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 		// the header's left edge at every xl width.
 		<nav
 			aria-label="Breadcrumb"
-			className="pointer-events-auto relative z-0 hidden h-[40px] max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-3xl border border-dock-border bg-dock px-4 text-[13px] shadow-float lg:flex"
+			className="pointer-events-auto relative z-0 hidden min-h-13 max-w-[calc(50vw-24rem)] items-center overflow-hidden rounded-lg border border-border bg-card px-1.5 text-copy-13 shadow-(--header-shadow-panel) lg:flex"
 		>
 			{/* DESKTOP, full trail, collapsing to root / … / current. */}
-			<ol ref={rootRef} className="flex min-w-0 flex-1 items-center gap-1.5">
+			<ol ref={rootRef} className="flex min-w-0 flex-1 items-center">
 				{collapsed ? (
 					<>
 						<CrumbLink crumb={first} />
@@ -106,12 +106,12 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 			<ol
 				ref={twinRef}
 				aria-hidden="true"
-				className="pointer-events-none invisible absolute flex items-center gap-1.5"
+				className="pointer-events-none invisible absolute flex items-center"
 			>
 				{crumbs.map((c, i) => (
 					<React.Fragment key={c.href}>
 						{i > 0 && <Sep />}
-						<span className={cn("shrink-0", i === crumbs.length - 1 ? "font-semibold" : "")}>
+						<span className={cn("shrink-0 px-2.5", i === crumbs.length - 1 && "font-medium")}>
 							{c.label}
 						</span>
 					</React.Fragment>
@@ -132,18 +132,16 @@ function CrumbLink({
 }) {
 	return (
 		<li className={cn("flex items-center", truncate ? "min-w-0" : "shrink-0")}>
+			{/* Same pill target as the header's nav links: 44px, quiet until hovered. */}
 			<Link
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
 				className={cn(
-					"min-h-6 min-w-6 whitespace-nowrap rounded-sm leading-6 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring",
-					truncate && "truncate",
-					current
-						? "font-semibold text-dock-active-foreground"
-						: "text-dock-foreground hover:text-dock-active-foreground"
+					"inline-flex min-h-11 min-w-11 max-w-full items-center justify-center whitespace-nowrap rounded-full px-2.5 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+					current ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"
 				)}
 			>
-				{crumb.label}
+				<span className={cn(truncate && "truncate")}>{crumb.label}</span>
 			</Link>
 		</li>
 	);
@@ -151,7 +149,7 @@ function CrumbLink({
 
 function Sep() {
 	return (
-		<li aria-hidden="true" className="shrink-0 text-dock-foreground/50">
+		<li aria-hidden="true" className="shrink-0 text-muted-foreground">
 			/
 		</li>
 	);

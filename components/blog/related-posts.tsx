@@ -1,9 +1,6 @@
-import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "@/components/ui/link";
+import { IndexList } from "@/components/common/index-list";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
-import { Clock } from "@/lib/icons";
-import { safeFormatDate } from "@/lib/markdown-utils";
+import { PostRow } from "./post-row";
 
 interface RelatedPostsProps {
 	currentSlug: string;
@@ -50,33 +47,17 @@ export async function RelatedPosts({ currentSlug, limit = 3, exclude = [] }: Rel
 	}
 
 	return (
-		<section className="w-full">
-			<h2 className="mb-4 font-heading font-medium text-foreground text-heading-20 tracking-tight">
+		<section aria-labelledby="related-posts" className="flex w-full flex-col gap-4">
+			<h2
+				className="font-heading font-medium text-foreground text-heading-20 tracking-tight"
+				id="related-posts"
+			>
 				Related posts
 			</h2>
+			{/* The same row as the writing index: shared tags first, then recency. */}
 			<IndexList>
 				{relatedPosts.map((post) => (
-					<li key={post.slug}>
-						<Link className={indexRowLinkClass} href={`/blog/${post.slug}`}>
-							<div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-								<span className={`min-w-0 font-medium text-foreground ${indexRowAccentClass}`}>
-									{post.title}
-								</span>
-								<div className="flex shrink-0 items-center gap-2.5 text-muted-foreground text-xs">
-									<Badge variant="muted">
-										<Clock />
-										{post.readingTime} min
-									</Badge>
-									{post.date && (
-										<time className="hidden sm:inline" dateTime={post.date}>
-											{safeFormatDate(post.date, "MMM d, yyyy")}
-										</time>
-									)}
-								</div>
-							</div>
-							{post.excerpt && <p className="text-body text-sm leading-relaxed">{post.excerpt}</p>}
-						</Link>
-					</li>
+					<PostRow key={post.slug} post={post} />
 				))}
 			</IndexList>
 		</section>

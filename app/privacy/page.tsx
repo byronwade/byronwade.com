@@ -18,7 +18,7 @@ const LAST_UPDATED = "June 1, 2026";
 
 export default function PrivacyPage() {
 	return (
-		<SiteShell>
+		<SiteShell profile="evidence">
 			<article className="flex flex-col gap-8">
 				<PageHeader lede={`Last updated ${LAST_UPDATED}`} title="Privacy policy" />
 

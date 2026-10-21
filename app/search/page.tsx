@@ -34,7 +34,7 @@ export default async function SearchPage({
 	const count = groups.reduce((total, group) => total + group.items.length, 0);
 
 	return (
-		<SiteShell width="wide">
+		<SiteShell profile="guided">
 			<div className="flex flex-col gap-10">
 				<PageHeader
 					lede="Pages, plus the titles, summaries, tags, and text of the projects and writing."
@@ -47,23 +47,20 @@ export default async function SearchPage({
 						method="get"
 					>
 						<div className="flex min-w-0 flex-1 flex-col gap-2">
-							<label className="text-copy-13 text-muted-foreground" htmlFor="site-search">
+							<label className="font-medium text-copy-14 text-foreground" htmlFor="site-search">
 								Search this site
 							</label>
 							<Input
 								autoComplete="off"
-								className="h-11 sm:h-11"
 								defaultValue={query}
 								id="site-search"
 								maxLength={SEARCH_QUERY_MAX}
 								name="q"
-								placeholder="Projects, writing, pages…"
+								placeholder="Thorbis, dispatch, design systems…"
 								type="search"
 							/>
 						</div>
-						<Button size="lg" type="submit">
-							Search
-						</Button>
+						<Button type="submit">Search</Button>
 					</form>
 				</search>
 
@@ -78,7 +75,7 @@ export default async function SearchPage({
 							groups.map((group) => (
 								<section aria-labelledby={`search-${group.kind}`} key={group.kind}>
 									<h2
-										className="mb-2 text-copy-13 text-muted-foreground"
+										className="mb-1 text-copy-12 text-muted-foreground"
 										id={`search-${group.kind}`}
 									>
 										{group.label}
@@ -88,11 +85,13 @@ export default async function SearchPage({
 											<li key={entry.href}>
 												<Link className={indexRowLinkClass} href={entry.href} prefetch={false}>
 													<span className="flex items-baseline justify-between gap-4">
-														<span className={`font-medium text-foreground ${indexRowAccentClass}`}>
+														<span
+															className={`font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
+														>
 															{entry.label}
 														</span>
 														{entry.meta ? (
-															<span className="shrink-0 text-muted-foreground text-xs">
+															<span className="shrink-0 text-copy-12 text-muted-foreground">
 																{entry.meta}
 															</span>
 														) : null}

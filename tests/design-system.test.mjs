@@ -1,0 +1,106 @@
+import assert from "node:assert/strict";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
+import { test } from "node:test";
+import { fileURLToPath } from "node:url";
+
+/**
+ * Thorbis token and profile sensors (DESIGN.md §5, §13; AGENTS.md "Mechanical
+ * prevention"). Every rule here is hard: one type scale, token colours only,
+ * no gradients or decorative blur, a reduced-motion path, and a declared
+ * surface profile on every route.
+ */
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const SOURCE_DIRS = ["app", "components"];
+const PROFILES = ["showcase", "evidence", "guided", "shared"];
+const SOURCE_FILE = /\.(tsx|ts)$/;
+const TSX_FILE = /\.tsx$/;
+const LOCAL_IMPORT = /from "((?:\.|@\/)[^"]+)"/g;
+const PROFILE_PROP = new RegExp(`\\bprofile="(?:${PROFILES.join("|")})"`);
+const ROUTE_ENTRY = /^app\/(?:.*\/)?(?:page|not-found|error)\.tsx$/;
+const RAW_COLOUR =
+	/-\[(?:#[0-9a-f]{3,8}|(?:rgb|rgba|hsl|hsla|oklch|oklab)\()|(?:color|background|fill|stroke)\s*:\s*["'`]?(?:#[0-9a-f]{3,8}\b|(?:rgb|hsl|oklch)\()/i;
+const BANNED_EFFECT =
+	/\b(?:bg-gradient-|bg-linear-|bg-radial-|bg-conic-|backdrop-blur|blur-(?:xs|sm|md|lg|xl|2xl|3xl|none|\[)|transition-all)\b|(?:linear|radial|conic)-gradient\(|transition:\s*all\b/;
+const CSS_EFFECT = /(?:linear|radial|conic)-gradient\(|backdrop-filter/;
+const REDUCED_MOTION_BLOCK = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n {2}\}/;
+const REDUCED_ANIMATION = /animation-duration:\s*0\.01ms !important/;
+const REDUCED_TRANSITION = /transition-duration:\s*0\.01ms !important/;
+
+function sourceFiles(dir = "") {
+	const absolute = join(ROOT, dir);
+	return readdirSync(absolute, { withFileTypes: true }).flatMap((entry) => {
+		const path = join(dir, entry.name);
+		if (entry.isDirectory()) {
+			return path === join("app", "api") ? [] : sourceFiles(path);
+		}
+		return SOURCE_FILE.test(entry.name) ? [path.replaceAll("\\", "/")] : [];
+	});
+}
+
+const files = SOURCE_DIRS.flatMap((dir) => sourceFiles(dir));
+const read = (path) => readFileSync(join(ROOT, path), "utf8");
+
+// Tailwind's default type ramp and pixel font sizes bypass the Thorbis roles
+// (text-copy-12/13/14/16, text-heading-16/20/32); Thorbis sets every heading
+// and emphasis at weight 500.
+const OFF_SCALE_TYPE =
+	/\btext-(?:xs|sm|base|lg|xl|[2-9]xl)\b|\btext-\[\d+(?:\.\d+)?(?:px|rem|em)\]|\bfont-(?:semibold|bold|extrabold|black)\b/;
+
+test("type uses only the Thorbis copy and heading roles at weight 500", () => {
+	const offenders = files.filter((path) => OFF_SCALE_TYPE.test(read(path)));
+	assert.deepEqual(offenders, [], "Use text-copy-*/text-heading-* and font-medium.");
+});
+
+test("no raw colour literals in class names or inline styles", () => {
+	const offenders = files.filter((path) => RAW_COLOUR.test(read(path)));
+	assert.deepEqual(offenders, [], "Colours come from app/globals.css tokens.");
+});
+
+test("no gradients, decorative blur, or transition-all", () => {
+	const offenders = files.filter((path) => BANNED_EFFECT.test(read(path)));
+	assert.deepEqual(offenders, []);
+	assert.doesNotMatch(read("app/globals.css"), CSS_EFFECT);
+});
+
+test("reduced motion collapses every animation and transition", () => {
+	const css = read("app/globals.css");
+	const block = css.match(REDUCED_MOTION_BLOCK)?.[1] ?? "";
+	assert.match(block, REDUCED_ANIMATION);
+	assert.match(block, REDUCED_TRANSITION);
+});
+
+/**
+ * Each route entry declares one surface profile, either itself or through the
+ * one local module it renders (ContactClient, ErrorNotice).
+ */
+function declaresProfile(path, depth = 0) {
+	const source = read(path);
+	if (PROFILE_PROP.test(source)) {
+		return true;
+	}
+	if (depth > 1) {
+		return false;
+	}
+	const imports = [...source.matchAll(LOCAL_IMPORT)].map(([, specifier]) =>
+		specifier.startsWith("@/")
+			? specifier.slice(2)
+			: relative(ROOT, resolve(ROOT, dirname(path), specifier)).replaceAll("\\", "/")
+	);
+	return imports.some((base) => {
+		const candidate = [".tsx", ".ts"]
+			.map((ext) => base + ext)
+			.find((p) => existsSync(join(ROOT, p)));
+		return (
+			candidate !== undefined && TSX_FILE.test(candidate) && declaresProfile(candidate, depth + 1)
+		);
+	});
+}
+
+test("every route declares a surface profile", () => {
+	const routes = files.filter((path) => ROUTE_ENTRY.test(path));
+	assert.ok(routes.length >= 14, `expected every route entry, found ${routes.length}`);
+	const missing = routes.filter((path) => !declaresProfile(path));
+	assert.deepEqual(missing, [], "Render SiteShell with a profile (DESIGN.md §3).");
+});

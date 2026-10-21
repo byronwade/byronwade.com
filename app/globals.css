@@ -771,6 +771,26 @@ pre code.hljs {
   }
 }
 
+/* Link recipes sit in the components layer, beneath utilities, so a caller's
+   utility (`text-copy-13`, `font-normal`, `min-h-11`) always overrides them. */
+@layer components {
+  .link-underline,
+  .link-action {
+    @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
+  }
+
+  /* Target defaults preserve larger sizes already set by a caller. */
+  :where(.link-underline) {
+    @apply inline-flex min-h-6 min-w-6 items-center max-sm:min-h-11 max-sm:min-w-11;
+  }
+
+  /* Thorbis rule-content `action`: a standalone text link (back, next, open).
+     The 44px box is the target; the type stays at the 14px content role. */
+  .link-action {
+    @apply inline-flex min-h-11 items-center gap-1.5 font-medium text-copy-14;
+  }
+}
+
 @layer utilities {
   /* ── Motion utilities (DESIGN.md §6.3) ──
      Hover-driven *motion* is gated to fine pointers. On touch, hover is
@@ -796,13 +816,6 @@ pre code.hljs {
   }
 
   /* ── Site utilities ── */
-  .link-underline {
-    @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
-  }
-  /* Target defaults preserve larger sizes already set by a caller. */
-  :where(.link-underline) {
-    @apply inline-flex min-h-6 min-w-6 items-center max-sm:min-h-11 max-sm:min-w-11;
-  }
   .skip-link {
     @apply inline-flex min-h-11 items-center rounded-md bg-card px-3 shadow-card;
     position: absolute;

@@ -17,13 +17,13 @@ export function BreadcrumbOverflow({ crumbs }: { crumbs: Crumb[] }) {
 			<PopoverTrigger render={<BreadcrumbOverflowTrigger ref={triggerRef} />} />
 			<PopoverContent
 				align="start"
-				className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-dock-border bg-dock p-1.5 text-dock-foreground ring-0"
+				className="flex w-auto min-w-44 flex-col gap-0.5 rounded-xl border border-border bg-popover p-1.5 text-popover-foreground ring-0"
 				finalFocus={triggerRef}
 				sideOffset={8}
 			>
 				{crumbs.map((crumb) => (
 					<Link
-						className="truncate rounded-lg px-2.5 py-1.5 text-[13px] text-dock-active-foreground/85 transition-colors hover:bg-dock-active hover:text-dock-active-foreground"
+						className="flex min-h-11 items-center truncate rounded-lg px-2.5 text-body text-copy-13 transition-colors hover:bg-muted hover:text-foreground"
 						href={crumb.href}
 						key={crumb.href}
 					>
