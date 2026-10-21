@@ -1,20 +1,19 @@
 ---
 title: "Content Management System"
-url: "https://cms.byronwade.com/cms/build"
 category: "Hobby Project"
 date: 2023-08-01
-excerpt: "A carefully architected CMS foundation for building complex, domain-specific applications, specifically, a comprehensive Field Management System for modern agriculture."
+excerpt: "A front-end CMS prototype with a visual database schema builder, built as groundwork for a Field Management System for modern agriculture."
 status: "Archived"
 featured: false
 ---
 
 # Building a Modern CMS: The Foundation for Next-Generation Field Management Systems
 
-Over the past several months, I've been working on a project that might seem like just another content management system at first glance. But `cms.byronwade.com` represents something far more significant: a carefully architected foundation for building complex, domain-specific applications, specifically, a comprehensive Field Management System (FMS) for modern agriculture.
+I built a project that might seem like just another content management system at first glance. But `cms.byronwade.com` was meant as something more: the groundwork for building complex, domain-specific applications, specifically, a Field Management System (FMS) for modern agriculture.
 
 This article explores why I decided to build this CMS, the architectural decisions that make it unique, and why I believe it's a critical stepping stone for the field management system I'm planning to develop.
 
-> **Note**: This project is currently in active development. Features and architecture are evolving as I continue to build and refine the system.
+> **Note**: This is a front-end prototype. Its own README calls it a design-only demo: most screens run on sample data, and only the content editor saves anything. Work stopped in December 2025, and the cms.byronwade.com deployment is no longer online. The source is public on [GitHub](https://github.com/byronwade/cms.byronwade.com).
 
 ---
 
@@ -40,7 +39,7 @@ Instead of starting directly with the FMS, I decided to build a modern CMS that 
 
 - **Reusable patterns**: The patterns and components I develop here will directly translate to the FMS
 
-- **Performance-first mindset**: Starting with Next.js 16's Server Components ensures we're building with performance as a first-class concern
+- **Performance-first mindset**: Starting with Next.js Server Components keeps performance a first-class concern
 
 - **Modern development practices**: This project lets me experiment with cutting-edge React patterns and Next.js features
 
@@ -50,27 +49,29 @@ Instead of starting directly with the FMS, I decided to build a modern CMS that 
 
 ### Server-First Architecture
 
-This is not a normal React application. The whole system is built on Next.js 16's Server Components architecture, which means:
+The plan was a server-first system built on Next.js Server Components (the project started on Next.js 15 and moved to 16 in December 2025), which means:
 
-- **Zero JavaScript by default**: Most pages render entirely on the server, sending minimal JavaScript to the client
+- **Little JavaScript by default**: Pages render on the server, sending minimal JavaScript to the client
 
-- **Optimal performance**: Server Components allow us to fetch data directly in components without exposing API endpoints
+- **Data fetching in components**: Server Components can read data directly without exposing API endpoints
 
-- **Better SEO**: Since content is rendered on the server, search engines can index everything properly
+- **Better SEO**: Since content is rendered on the server, search engines can index it properly
 
 - **Reduced client bundle size**: Only interactive components require client-side JavaScript
 
+The prototype did not get there. The CMS layout and nearly every admin screen are client components, and the content editor loads and saves through an API route. Only the landing page, the analytics overview and a few redirects render on the server.
+
 ### Visual Database Schema Builder
 
-One of the most unique features of this CMS is the visual database schema builder built with ReactFlow. This tool allows users to:
+The most distinctive part of this CMS is the visual database schema builder, built with ReactFlow. It opens with a sample schema and lets you:
 
-- Create database tables visually by dragging and dropping nodes
-
-- Define fields with different data types (VARCHAR, INTEGER, BOOLEAN, DATE, etc.)
+- Add fields with different data types (VARCHAR, INTEGER, BOOLEAN, DATE, etc.)
 
 - Establish relationships between tables through visual connections
 
-- Export schemas for implementation
+- Drop AI transformation steps onto a connection
+
+Two planned pieces were never wired up: adding new tables (the Add Table button and dragging tables onto the canvas) and exporting the schema for implementation.
 
 This feature is particularly important for the FMS because agricultural data has complex relationships:
 
@@ -86,11 +87,11 @@ Having a visual tool to model these relationships before implementation is inval
 
 ### Component Isolation and Modularity
 
-Every component in this CMS is built with isolation in mind. This means:
+The aim was to build every component in isolation. That means:
 
 - **Reusability**: Components can be easily extracted and reused in the FMS
 
-- **Testability**: Isolated components are easier to test and debug
+- **Testability**: Isolated components are easier to test and debug (the prototype has no tests yet)
 
 - **Maintainability**: Changes to one component don't cascade through the entire system
 
@@ -102,13 +103,15 @@ The CMS uses shadcn/ui components with Tailwind CSS, providing:
 
 - **Dark mode by default**: Better for extended use in agricultural settings (often used in low-light conditions)
 
-- **Accessible components**: Built on Radix UI primitives, ensuring WCAG compliance
+- **Accessible starting point**: Radix UI primitives bring keyboard and screen-reader behavior (the CMS itself was never audited)
 
 - **Consistent design language**: A cohesive visual system that will translate well to the FMS interface
 
 ---
 
 ## Key Features That Translate to FMS
+
+These are mappings, not shipped features. In the prototype, media, analytics and the publishing board all run on sample data.
 
 ### 1. Content Management → Field Data Management
 
@@ -184,7 +187,7 @@ Every farm is different:
 
 - Different equipment requires different integrations
 
-A CMS-based architecture allows for:
+A CMS-based architecture would allow for:
 
 - **Flexible content modeling**: Define custom data structures for each farm
 
@@ -196,9 +199,9 @@ A CMS-based architecture allows for:
 
 ### Performance at Scale
 
-Agricultural operations don't stop for slow software. A farmer checking field conditions on a tablet in the middle of a field needs instant responses. The server-first architecture ensures:
+Agricultural operations don't stop for slow software. A farmer checking field conditions on a tablet in the middle of a field needs instant responses. A server-first architecture is meant to provide the following; none of it was measured in the prototype:
 
-- **Fast initial loads**: Server-rendered pages appear instantly
+- **Fast initial loads**: Server-rendered pages show content before JavaScript loads
 
 - **Progressive enhancement**: Works even with poor connectivity
 
@@ -212,9 +215,9 @@ Agricultural operations don't stop for slow software. A farmer checking field co
 
 ### Next.js 16 with App Router
 
-The entire application uses Next.js 16's App Router, which provides:
+The application uses the Next.js App Router (on Next.js 16 since December 2025), which provides:
 
-- **Server Components by default**: Every component starts as a server component
+- **Server Components by default**: Components are server components unless marked otherwise
 
 - **Client Components only when needed**: Interactive elements are explicitly marked
 
@@ -244,19 +247,17 @@ For client-side state, I chose Zustand for its simplicity:
 
 - **Performance**: Only re-renders components that use changed state
 
-- **DevTools support**: Easy debugging and state inspection
-
 ### Component Library: shadcn/ui
 
 The UI is built on shadcn/ui, which provides:
 
 - **Copy-paste components**: Own the code, customize freely
 
-- **Accessibility built-in**: Radix UI primitives ensure WCAG compliance
+- **Radix UI primitives**: Keyboard and screen-reader behavior to build on
 
 - **Tailwind CSS**: Utility-first styling for rapid development
 
-- **Theme support**: Easy dark/light mode switching
+- **Theme support**: Dark mode by default; a light/dark switch was never wired up
 
 ---
 
@@ -264,14 +265,12 @@ The UI is built on shadcn/ui, which provides:
 
 ### Phase 1: CMS Foundation (Current)
 
-The current CMS provides:
+The prototype has:
 
-✅ Content modeling and management
-✅ Visual database schema builder
-✅ Media management
-✅ Analytics dashboard
+✅ Content editing with a block editor, saved as JSON files
+✅ Visual database schema builder (fields and relationships; adding tables and export not wired up)
 ✅ User interface patterns
-✅ Performance optimizations
+🚧 Media management and analytics: interface only, on sample data
 
 ### Phase 2: FMS-Specific Features (Next)
 
@@ -335,17 +334,17 @@ By building a frontend-only CMS first, I've learned to:
 
 ## Conclusion
 
-`cms.byronwade.com` is more than just a content management system, it's a carefully designed foundation for building domain-specific applications. By starting with a CMS, I've created:
+`cms.byronwade.com` was more than a content management system to me. It was groundwork for building domain-specific applications. By starting with a CMS, I've created:
 
 1. **A learning platform**: Understanding how to build complex, data-driven applications
 
 2. **A component library**: Reusable UI components and patterns
 
-3. **An architectural blueprint**: Server-first, performance-optimized patterns
+3. **An architectural blueprint**: The server-first patterns I want, and a clear view of where this prototype fell short of them
 
 4. **A development workflow**: Tools and processes for building scalable applications
 
-The Field Management System I'm planning will benefit enormously from this foundation. The visual schema builder will help model agricultural data relationships. The content management patterns will translate to field data management. The analytics system will become farm performance dashboards. And the entire architecture will ensure the FMS is fast, scalable, and maintainable.
+The Field Management System I'm planning will benefit enormously from this foundation. The visual schema builder will help model agricultural data relationships. The content management patterns will translate to field data management. The analytics system will become farm performance dashboards. And the architecture is meant to keep the FMS fast, scalable, and maintainable.
 
 But perhaps most importantly, building the CMS first has forced me to think deeply about:
 
@@ -357,11 +356,11 @@ But perhaps most importantly, building the CMS first has forced me to think deep
 
 - How to create software that truly serves its users
 
-The Field Management System will be more than a database of fields and crops. It will be a comprehensive tool that helps farmers make better decisions, increase yields, reduce costs, and manage their operations more effectively. And it will be built on a foundation that's already proven its worth.
+The Field Management System will be more than a database of fields and crops. It will be a comprehensive tool that helps farmers make better decisions, increase yields, reduce costs, and manage their operations more effectively. And it will be built on what this prototype taught me.
 
 ---
 
 *This CMS represents the first step in a larger journey toward building software that truly serves the agricultural community. The lessons learned here, the patterns established, and the architecture created will all contribute to a Field Management System that farmers actually want to use.*
 
-Visit [cms.byronwade.com](https://cms.byronwade.com) to see the project.
+The cms.byronwade.com deployment is no longer online. The source is public on [GitHub](https://github.com/byronwade/cms.byronwade.com); the repository has no license file.
 
