@@ -20,6 +20,7 @@ const { sendEmail } = await import("@/lib/actions/send-email");
 const { CONTACT_ENCODED, decodeContact } = await import("@/lib/contact");
 const { CONTACT_TOPICS, validateContactSubmission } = await import("@/lib/contact-form");
 const ownerEmail = decodeContact(CONTACT_ENCODED.email);
+const SUBMISSION_ID = "6a19a7fe-5504-4262-8bbf-ecad29e40522";
 const valid = {
 	name: "Test Visitor",
 	email: "visitor@example.com",
@@ -30,19 +31,20 @@ const valid = {
 beforeEach(() => delivery.reset());
 
 test("the submitted address is Reply-To only, never an automatic recipient", async () => {
-	assert.deepEqual(await sendEmail(valid), { success: true });
+	assert.deepEqual(await sendEmail(valid, SUBMISSION_ID), { success: true });
 	assert.equal(delivery.requests.length, 1);
 	const [request] = delivery.requests;
 	assert.ok(request.to === ownerEmail);
 	assert.equal(request.replyTo, valid.email);
 	assert.equal(request.cc, undefined);
 	assert.equal(request.bcc, undefined);
+	assert.equal(delivery.options[0].idempotencyKey, `contact/${SUBMISSION_ID}`);
 });
 
 test("repeated submissions cannot relay messages to different visitor addresses", async () => {
 	const results = await Promise.all(
 		["first@example.com", "second@example.com", "third@example.com"].map((email) =>
-			sendEmail({ ...valid, email })
+			sendEmail({ ...valid, email }, SUBMISSION_ID)
 		)
 	);
 	for (const result of results) {
@@ -53,14 +55,14 @@ test("repeated submissions cannot relay messages to different visitor addresses"
 });
 
 test("blank messages are rejected before contacting the email service", async () => {
-	const result = await sendEmail({ ...valid, message: " \n\t " });
+	const result = await sendEmail({ ...valid, message: " \n\t " }, SUBMISSION_ID);
 	assert.equal(result.success, false);
 	assert.equal(delivery.requests.length, 0);
 });
 
 test("visitor HTML is delivered as literal plain text", async () => {
 	const message = '<a href="https://example.com">This is a message, not a link</a>';
-	const result = await sendEmail({ ...valid, message });
+	const result = await sendEmail({ ...valid, message }, SUBMISSION_ID);
 	assert.equal(result.success, true);
 	assert.equal(delivery.requests.length, 1);
 	for (const request of delivery.requests) {
@@ -70,13 +72,13 @@ test("visitor HTML is delivered as literal plain text", async () => {
 });
 
 test("provider response details stay on the server", async () => {
-	const result = await sendEmail(valid);
+	const result = await sendEmail(valid, SUBMISSION_ID);
 	assert.deepEqual(result, { success: true });
 });
 
 test("a failed owner delivery returns a failure without another send", async () => {
 	delivery.results.push({ data: null, error: { message: "Fixture failure" } });
-	const result = await sendEmail(valid);
+	const result = await sendEmail(valid, SUBMISSION_ID);
 	assert.equal(result.success, false);
 	assert.equal(delivery.requests.length, 1);
 });
@@ -105,7 +107,7 @@ const invalidSubmissions = [
 
 for (const [label, input] of invalidSubmissions) {
 	test(`rejects ${label} without delivering email`, async () => {
-		const result = await sendEmail(input);
+		const result = await sendEmail(input, SUBMISSION_ID);
 		assert.equal(result.success, false);
 		assert.equal(typeof result.error, "string");
 		assert.equal(delivery.requests.length, 0);
@@ -114,7 +116,9 @@ for (const [label, input] of invalidSubmissions) {
 
 for (const topic of CONTACT_TOPICS) {
 	test(`delivers the canonical ${topic.value} topic`, async () => {
-		assert.deepEqual(await sendEmail({ ...valid, topic: topic.value }), { success: true });
+		assert.deepEqual(await sendEmail({ ...valid, topic: topic.value }, SUBMISSION_ID), {
+			success: true,
+		});
 		assert.equal(delivery.requests.length, 1);
 		assert.ok(delivery.requests[0].to === ownerEmail);
 		assert.ok(delivery.requests[0].text.includes(`Topic: ${topic.label}`));
@@ -122,12 +126,15 @@ for (const topic of CONTACT_TOPICS) {
 }
 
 test("trims boundary whitespace while preserving message paragraphs", async () => {
-	await sendEmail({
-		...valid,
-		name: "  Visitor  ",
-		email: "  visitor+project@sub.example.com  ",
-		message: "  First paragraph.\n\nSecond paragraph.  ",
-	});
+	await sendEmail(
+		{
+			...valid,
+			name: "  Visitor  ",
+			email: "  visitor+project@sub.example.com  ",
+			message: "  First paragraph.\n\nSecond paragraph.  ",
+		},
+		SUBMISSION_ID
+	);
 	assert.equal(delivery.requests[0].replyTo, "visitor+project@sub.example.com");
 	assert.ok(delivery.requests[0].text.startsWith("Name: Visitor\n"));
 	assert.ok(delivery.requests[0].text.endsWith("First paragraph.\n\nSecond paragraph."));
@@ -135,26 +142,32 @@ test("trims boundary whitespace while preserving message paragraphs", async () =
 
 test("accepts names and messages at the exact length limit", async () => {
 	assert.deepEqual(
-		await sendEmail({
-			...valid,
-			name: "a".repeat(120),
-			message: "a".repeat(10_000),
-		}),
+		await sendEmail(
+			{
+				...valid,
+				name: "a".repeat(120),
+				message: "a".repeat(10_000),
+			},
+			SUBMISSION_ID
+		),
 		{ success: true }
 	);
 });
 
 test("ignores forged recipients, attachments and legacy project labels", async () => {
-	await sendEmail({
-		...valid,
-		to: "other@example.com",
-		cc: "copy@example.com",
-		bcc: "hidden@example.com",
-		from: "forged@example.com",
-		replyTo: "forged@example.com",
-		attachments: [{ name: "unexpected.html", data: "not supported" }],
-		projectType: ["untrusted topic"],
-	});
+	await sendEmail(
+		{
+			...valid,
+			to: "other@example.com",
+			cc: "copy@example.com",
+			bcc: "hidden@example.com",
+			from: "forged@example.com",
+			replyTo: "forged@example.com",
+			attachments: [{ name: "unexpected.html", data: "not supported" }],
+			projectType: ["untrusted topic"],
+		},
+		SUBMISSION_ID
+	);
 	assert.equal(delivery.requests.length, 1);
 	assert.ok(delivery.requests[0].to === ownerEmail);
 	assert.ok(delivery.requests[0].from.includes(ownerEmail));
@@ -169,7 +182,7 @@ test("ignores forged recipients, attachments and legacy project labels", async (
 
 test("provider exceptions return a generic error without request details", async () => {
 	delivery.results.push(new Error("private provider detail"));
-	const result = await sendEmail(valid);
+	const result = await sendEmail(valid, SUBMISSION_ID);
 	assert.equal(result.success, false);
 	assert.ok(!result.error.includes("private provider detail"));
 	assert.equal(delivery.requests.length, 1);
@@ -177,13 +190,13 @@ test("provider exceptions return a generic error without request details", async
 
 test("an empty provider acknowledgement is a delivery failure", async () => {
 	delivery.results.push({ data: null, error: null });
-	assert.equal((await sendEmail(valid)).success, false);
+	assert.equal((await sendEmail(valid, SUBMISSION_ID)).success, false);
 	assert.equal(delivery.requests.length, 1);
 });
 
 for (const field of ["name", "email", "topic", "message"]) {
 	test(`invalid ${field} identifies the control to focus without delivering email`, async () => {
-		const result = await sendEmail({ ...valid, [field]: " " });
+		const result = await sendEmail({ ...valid, [field]: " " }, SUBMISSION_ID);
 		assert.equal(result.success, false);
 		assert.equal(result.field, field);
 		assert.equal(delivery.requests.length, 0);
@@ -197,4 +210,24 @@ test("validation reports the first invalid field in form order", () => {
 		input[field] = valid[field];
 	}
 	assert.equal(delivery.requests.length, 0);
+});
+
+for (const id of [undefined, null, 123, "", "a".repeat(257), "invalid\r\nheader", "not-a-uuid"]) {
+	test(`rejects an invalid submission identity (${JSON.stringify(id)}) before delivery`, async () => {
+		const result = await sendEmail(valid, id);
+		assert.equal(result.success, false);
+		assert.equal(delivery.requests.length, 0);
+	});
+}
+
+test("unchanged retries keep their provider identity and another send can have its own", async () => {
+	delivery.results.push({ data: null, error: { message: "Unknown outcome" } });
+	assert.equal((await sendEmail(valid, SUBMISSION_ID)).success, false);
+	assert.equal((await sendEmail(valid, SUBMISSION_ID)).success, true);
+	const anotherId = "61211665-57d4-473f-a801-82015e6d405a";
+	assert.equal((await sendEmail(valid, anotherId)).success, true);
+	assert.deepEqual(
+		delivery.options.map((options) => options.idempotencyKey),
+		[`contact/${SUBMISSION_ID}`, `contact/${SUBMISSION_ID}`, `contact/${anotherId}`]
+	);
 });

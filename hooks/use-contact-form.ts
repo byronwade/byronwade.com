@@ -3,6 +3,7 @@
 import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { sendEmail } from "@/lib/actions/send-email";
 import {
+	CONTACT_DELIVERY_ERROR,
 	type ContactField,
 	DEFAULT_CONTACT_TOPIC,
 	validateContactSubmission,
@@ -29,6 +30,8 @@ export function useContactForm() {
 	// State renders feedback; the ref also prevents a second submit before that render.
 	const submitting = useRef(false);
 	const submittedForm = useRef<HTMLFormElement | null>(null);
+	// Keep retry identity only for the last submitted snapshot, never in storage.
+	const delivery = useRef<{ snapshot: string; id: string } | null>(null);
 
 	// Move focus after the error and its accessible description have committed.
 	useEffect(() => {
@@ -70,17 +73,22 @@ export function useContactForm() {
 			setFieldError(null);
 			setStatus({ kind: "idle" });
 			try {
-				const result = await sendEmail(formData);
+				const snapshot = JSON.stringify(validation.data);
+				if (delivery.current?.snapshot !== snapshot) {
+					delivery.current = { snapshot, id: crypto.randomUUID() };
+				}
+				const result = await sendEmail(formData, delivery.current.id);
 				if (!result.success) {
 					showFailure(result.error, result.field);
 					return false;
 				}
+				delivery.current = null;
 				setStatus({ kind: "sent" });
 				// Preserve edits made while the submitted snapshot was being delivered.
 				setFormData((current) => (current === formData ? EMPTY_FORM : current));
 				return true;
 			} catch {
-				showFailure("Couldn't send your message. Your draft is still here. Please try again.");
+				showFailure(CONTACT_DELIVERY_ERROR);
 				return false;
 			} finally {
 				submitting.current = false;

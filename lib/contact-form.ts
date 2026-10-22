@@ -9,6 +9,8 @@ type ContactTopicValue = (typeof CONTACT_TOPICS)[number]["value"];
 export type ContactField = "name" | "email" | "message" | "topic";
 
 export const DEFAULT_CONTACT_TOPIC: ContactTopicValue = "conversation";
+export const CONTACT_DELIVERY_ERROR =
+	"Couldn't confirm your message was sent. Your draft is still here. Try again, or email me directly.";
 
 const CONTACT_LIMITS = { name: 120, email: 254, message: 10_000 } as const;
 
