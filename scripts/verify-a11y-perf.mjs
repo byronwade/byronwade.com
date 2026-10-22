@@ -167,8 +167,7 @@ async function closeBrowser() {
 }
 
 async function auditPage(url, route, width, theme) {
-	const expectedStatus =
-		route === "/audit-not-found" || route === "/portfolio/figma/audit-unavailable" ? 404 : 200;
+	const expectedStatus = route === "/audit-not-found" ? 404 : 200;
 	await openBrowser(measure && expectedStatus === 200);
 	const context = await browser.createBrowserContext();
 	const page = await context.newPage();
@@ -310,6 +309,30 @@ async function checkRouteStates(page, route, width) {
 		const states = [await readState(page, "Missing static preview")];
 		await page.click('button[aria-pressed="false"]');
 		return states;
+	}
+	if (route === "/portfolio/figma/audit-unavailable") {
+		const recovery = await page.evaluate(() => ({
+			heading: document.querySelector("main h1")?.textContent,
+			noindex: [...document.querySelectorAll('meta[name="robots"]')].some((meta) =>
+				meta.content.split(",").some((directive) => directive.trim() === "noindex")
+			),
+			portfolio: Boolean(document.querySelector('main a[href="/portfolio"]')),
+			figma: Boolean(
+				document.querySelector('main a[href="https://www.figma.com/file/audit-unavailable"]')
+			),
+		}));
+		return [
+			{
+				...(await readState(page, "Unavailable Figma file recovery")),
+				failures: [
+					...(recovery.heading === "Design file unavailable"
+						? []
+						: ["Unavailable heading missing"]),
+					...(recovery.noindex ? [] : ["Unavailable file must stay noindex"]),
+					...(recovery.portfolio && recovery.figma ? [] : ["Unavailable recovery links missing"]),
+				],
+			},
+		];
 	}
 	return [];
 }

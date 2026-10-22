@@ -44,6 +44,10 @@ templates require explicit representatives. Each URL covers 390, 768 and 1280 CS
 pixels in light and dark. The same
 budget assessor checks each route. Intentional HTTP errors use an accessibility
 snapshot because navigation-mode Lighthouse rejects them.
+The unavailable Figma fixture is a 200 recovery page for a valid key, matching
+the detail route's contract; it must show its unavailable heading, `noindex`,
+and links back to the portfolio and to Figma. The unknown-route fixture remains
+an HTTP 404.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
 Both capture runners explicitly disable the screenshot provider in their owned
