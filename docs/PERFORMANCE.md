@@ -47,6 +47,39 @@ snapshot because navigation-mode Lighthouse rejects them.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
 
+## Search corpus reuse, October 22, 2026
+
+At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
+30 local documents. A separate unbundled native profile identified Markdown
+extraction as the dominant work: seven warm samples averaged 418ms parsing,
+11ms loading and 0.54ms matching. Those native timings are diagnostic, not the
+compiled server's request timings.
+
+`buildPageSearchIndex` now uses the existing Next Data Cache for that computed
+corpus, with the complete validated loader output as its arguments. It still
+reads content on each request; edits and publication changes select a new key.
+Development bypasses caching, and the header still gets no body text. See the
+cache revision and invalidation contract in [ARCHITECTURE.md](ARCHITECTURE.md).
+
+The same local production HTTP harness measured three fresh server sessions,
+each with one priming request then seven samples per query in alternating order.
+Timers cover `fetch` through reading the complete HTML response. The table shows
+21 warm samples per query on the same shared Windows host, without throttling.
+
+| Query | Before median / p95 | After median / p95 |
+| --- | --- | --- |
+| Empty form | 22 / 29ms | 21 / 34ms |
+| `Thorbis` | 274 / 326ms | 27 / 39ms |
+| `claude_desktop_config.json` | 277 / 389ms | 26 / 43ms |
+| No-match query | 274 / 404ms | 30 / 41ms |
+
+Warm nonempty ranges were 215–454ms before and 22–47ms after. These samples
+support avoiding repeated parsing; they do not measure real-user Web Vitals,
+production cache latency, throughput, or the first uncached corpus computation.
+The rendered search regression checks real local cache entries and immediate
+freshness through edits, draft transitions, malformed-file recovery and removal;
+it deliberately makes no timing assertion on a shared machine.
+
 ## Current ownership
 
 - Server Components own content loading and static homepage composition. External
@@ -76,7 +109,7 @@ feedback without delivering a message or certifying a live provider.
   stays inside the 100KiB font limit. The full
   `Modelistasignature-ownAV.otf` remains for server-side OG rendering and is not
   referenced by the page stylesheet.
-- Markdown blockquotes and emphasis are italic. Inter, Geist Mono and the full
+- With the earlier italic blockquotes, Inter, Geist Mono and the full
   Latin italic face together measured 103,933 bytes on a post with a quote,
   over the 100KiB font limit. `public/fonts/inter-italic-latin-core.woff2` is a
   Basic Latin and typographic-punctuation subset of that pinned italic face,

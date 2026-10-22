@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { test } from "node:test";
+import { setTimeout as delay } from "node:timers/promises";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
 
@@ -59,5 +63,84 @@ test("production search finds readable inline identifiers and keeps native GET s
 			}, Promise.resolve());
 			assert.deepEqual(errors, []);
 		});
+	});
+});
+
+// Read the actual local Next Data Cache, rather than replacing the cache API with a mock.
+async function cachedCorpora(marker) {
+	const directory = join(process.cwd(), ".next", "cache", "fetch-cache");
+	const files = await readdir(directory);
+	const entries = await Promise.all(
+		files.map(async (file) => JSON.parse(await readFile(join(directory, file), "utf8")))
+	);
+	return entries
+		.filter((entry) => typeof entry.data?.body === "string" && entry.data.body.includes(marker))
+		.map((entry) => entry.data.body);
+}
+
+async function expectCachedCorpora(marker, count, deadline = Date.now() + 5000) {
+	const entries = await cachedCorpora(marker);
+	if (entries.length !== count && Date.now() < deadline) {
+		await delay(25);
+		return expectCachedCorpora(marker, count, deadline);
+	}
+	assert.equal(entries.length, count, "computed corpora in the real Next cache");
+}
+
+test("production search reuses its corpus and immediately follows authored content changes", {
+	timeout: 60_000,
+}, async (context) => {
+	const marker = `searchcache${randomUUID().replaceAll("-", "")}`;
+	const projectPath = join(process.cwd(), "content", "projects", `${marker}.md`);
+	const postPath = join(process.cwd(), "content", "blog", `${marker}.md`);
+	context.after(async () => {
+		await rm(projectPath, { force: true });
+		await rm(postPath, { force: true });
+	});
+	const project = (title, body) => `---\ntitle: ${title}\n---\n${marker} ${body}\n`;
+	const post = (draft) =>
+		`---\ntitle: ${marker} post\ndate: 2026-10-22\ndraft: ${draft}\n---\n${marker} draftbody\n`;
+	await writeFile(projectPath, project("Original corpus fixture", "alphabody"));
+	await writeFile(postPath, post(true));
+	await mkdir(join(process.cwd(), ".next", "cache", "fetch-cache"), { recursive: true });
+
+	await withProductionServer(async (origin) => {
+		async function search(query) {
+			const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
+				signal: AbortSignal.timeout(15_000),
+			});
+			assert.equal(response.status, 200);
+			return response.text();
+		}
+		const projectLink = `href="/projects/${marker}"`;
+		const postLink = `href="/blog/${marker}"`;
+		assert.ok((await search(`${marker} alphabody`)).includes(projectLink));
+		await expectCachedCorpora(marker, 1);
+		assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
+		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
+		await expectCachedCorpora(marker, 1);
+
+		await writeFile(projectPath, project("Updated corpus fixture", "alphabody"));
+		assert.ok((await search(`${marker} Updated`)).includes(projectLink));
+		await expectCachedCorpora(marker, 2);
+		await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
+		assert.ok((await search(`${marker} betabody`)).includes(projectLink));
+		assert.ok(!(await search(`${marker} alphabody`)).includes(projectLink));
+		await expectCachedCorpora(marker, 3);
+
+		await writeFile(postPath, post(false));
+		assert.ok((await search(`${marker} draftbody`)).includes(postLink));
+		await expectCachedCorpora(marker, 4);
+		await writeFile(postPath, post(true));
+		assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
+		await expectCachedCorpora(marker, 4);
+
+		await writeFile(projectPath, "---\ntitle: [broken\n---\n");
+		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
+		await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
+		assert.ok((await search(`${marker} betabody`)).includes(projectLink));
+		await expectCachedCorpora(marker, 4);
+		await rm(projectPath);
+		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
 	});
 });
