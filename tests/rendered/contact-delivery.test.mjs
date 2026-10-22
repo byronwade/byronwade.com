@@ -26,6 +26,53 @@ async function submitWithKeyboard(page) {
 	await page.keyboard.press("Enter");
 }
 
+async function submitForRecovery(page, origin, scenario, delivery, before) {
+	if (scenario.stage !== "acknowledgement") {
+		await submitWithKeyboard(page);
+		await page.waitForSelector('form[aria-busy="true"]');
+		if (scenario.edit) {
+			await page.type('textarea[name="message"]', " Edited while sending.");
+		}
+		return;
+	}
+	const session = await page.createCDPSession();
+	let deadline;
+	try {
+		// Pause the real action response, after the server has contacted the fixture.
+		await session.send("Fetch.enable", {
+			patterns: [{ urlPattern: origin + scenario.route, requestStage: "Response" }],
+		});
+		const paused = new Promise((resolve, reject) => {
+			session.once("Fetch.requestPaused", resolve);
+			deadline = setTimeout(() => reject(new Error("Action response did not pause")), 15_000);
+		});
+		const [response] = await Promise.all([paused, submitWithKeyboard(page)]);
+		assert.equal(response.request.method, "POST");
+		assert.ok(
+			Object.keys(response.request.headers).some((name) => name.toLowerCase() === "next-action"),
+			"The interrupted response belongs to a real Server Action"
+		);
+		assert.equal(response.responseStatusCode, 200);
+		assert.equal(delivery.keys.length, before + 1, "The provider accepted the first request");
+		assert.equal(await page.$eval("form", (form) => form.getAttribute("aria-busy")), "true");
+		assert.equal(await page.$eval('button[type="submit"]', (button) => button.disabled), true);
+		assert.equal(await page.$eval(STATUS, (status) => status.textContent), "Sending your message…");
+		assert.equal(await page.$('[data-sonner-toast][data-type="success"]'), null);
+		if (scenario.edit) {
+			await page.type('textarea[name="message"]', " Edited while sending.");
+		}
+		await session.send("Fetch.failRequest", {
+			requestId: response.requestId,
+			errorReason: "ConnectionClosed",
+		});
+		await session.send("Fetch.disable");
+	} finally {
+		clearTimeout(deadline);
+		session.off("Fetch.requestPaused");
+		await session.detach();
+	}
+}
+
 async function verifyRecovery(page, scenario) {
 	await page.waitForFunction(
 		(selector) => document.querySelector(selector)?.textContent.includes("Couldn't confirm"),
@@ -51,7 +98,10 @@ async function verifyRecovery(page, scenario) {
 	);
 	if (process.env.CONTACT_PROOF_DIR) {
 		await page.screenshot({
-			path: join(process.env.CONTACT_PROOF_DIR, `${scenario.width}-${scenario.theme}.png`),
+			path: join(
+				process.env.CONTACT_PROOF_DIR,
+				`${scenario.width}-${scenario.theme}-${scenario.stage}.png`
+			),
 			fullPage: true,
 		});
 	}
@@ -81,13 +131,21 @@ async function verifyScenario(browser, origin, scenario, delivery) {
 			await page.locator("button::-p-text(Start a conversation)").click();
 		}
 		await fillDraft(page);
-		await submitWithKeyboard(page);
-		await page.waitForSelector('form[aria-busy="true"]');
-		if (scenario.edit) {
-			await page.type('textarea[name="message"]', " Edited while sending.");
-		}
+		await page.evaluate((selector) => {
+			window.contactAcknowledged = false;
+			new MutationObserver(() => {
+				if (
+					document.querySelector(selector)?.textContent.includes("Sent.") ||
+					document.querySelector('[data-sonner-toast][data-type="success"]')
+				) {
+					window.contactAcknowledged = true;
+				}
+			}).observe(document.body, { childList: true, characterData: true, subtree: true });
+		}, STATUS);
+		await submitForRecovery(page, origin, scenario, delivery, before);
 		await verifyRecovery(page, scenario);
-		assert.equal(delivery.keys.length, before + 1, "No automatic retry after timeout");
+		assert.equal(delivery.keys.length, before + 1, "No automatic retry after an uncertain send");
+		assert.equal(await page.evaluate(() => window.contactAcknowledged), false);
 		const reveal = await page.waitForSelector("main button::-p-text(Click to reveal email)");
 		await reveal.focus();
 		await page.keyboard.press("Enter");
@@ -112,6 +170,8 @@ async function verifyScenario(browser, origin, scenario, delivery) {
 		assert.match(original, IDEMPOTENCY_KEY);
 		assert.equal(original === retry, !scenario.edit, "Only unchanged drafts reuse a key");
 		assert.equal(await page.$eval('textarea[name="message"]', (field) => field.value), "");
+		await page.waitForSelector('[data-sonner-toast][data-type="success"]');
+		assert.equal(await page.evaluate(() => window.contactAcknowledged), true);
 		await fillDraft(page);
 		await submitWithKeyboard(page);
 		await page.waitForFunction(
@@ -127,9 +187,7 @@ async function verifyScenario(browser, origin, scenario, delivery) {
 	}
 }
 
-test("both contact forms recover from stalled delivery without losing the draft", {
-	timeout: 120_000,
-}, async (context) => {
+async function verifyContactRecovery(context, cases) {
 	const delivery = { stage: undefined, keys: [] };
 	await withResendFixture(
 		(env) =>
@@ -137,7 +195,7 @@ test("both contact forms recover from stalled delivery without losing the draft"
 				(origin) =>
 					withBrowser(context, { timeout: 30_000 }, (browser) =>
 						// Each scenario owns the fixture state; browser work stays serial.
-						scenarios.reduce(
+						cases.reduce(
 							(pending, scenario) =>
 								pending.then(() =>
 									context.test(
@@ -166,4 +224,24 @@ test("both contact forms recover from stalled delivery without losing the draft"
 			},
 		}
 	);
-});
+}
+
+test(
+	"both contact forms recover from stalled delivery without losing the draft",
+	{
+		timeout: 120_000,
+	},
+	(context) => verifyContactRecovery(context, scenarios)
+);
+
+test(
+	"both contact forms recover from lost action acknowledgements without claiming success",
+	{
+		timeout: 90_000,
+	},
+	(context) =>
+		verifyContactRecovery(
+			context,
+			scenarios.map((scenario) => ({ ...scenario, stage: "acknowledgement" }))
+		)
+);
