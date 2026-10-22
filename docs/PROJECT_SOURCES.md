@@ -44,6 +44,8 @@ approaches; it does not establish measured results for them. Restoring metrics
 requires a source and a reproducible before/after comparison.
 This correction does not independently verify the inherited feature list,
 production usage, scaling capacity, or field-management roadmap.
+The feature list and the field-management roadmap were checked on October 22,
+2026; see Zugzology storefront claims below.
 
 ## Zugzology AI claims, October 20, 2026
 
@@ -733,3 +735,46 @@ release state and dates for Byron. The page still has no `url`, so it shows a
 Source action and no Visit action. Adding `https://movies.byronwade.com` as the
 Visit link is an owner decision, because that site runs the private code, not
 the export this page describes.
+
+## Zugzology storefront claims, October 22, 2026
+
+`content/projects/mushroom-cultivation-supplier.md` still described Zugzology as
+the foundation of a field-management system: products as equipment, accounts as
+grower profiles, orders as harvest records, then sensors and yield forecasts.
+The October 20 notes above removed invented performance figures and the current
+AI claim, and said the inherited feature list had not been checked on its own.
+This pass checks that list against the public repository
+[byronwade/zugzology.com](https://github.com/byronwade/zugzology.com) at
+[`5b7f80d8`](https://github.com/byronwade/zugzology.com/tree/5b7f80d81b4819f9d38f51da89bf3247763077ed)
+(July 31, 2026), which is still the head of `main`. The repository is public,
+not archived, and has no license file. A shallow clone was read locally. The
+project's own lint, type-check, and build were not run. The live shop was not
+signed into, and no traffic, revenue, or inventory figures were read.
+
+The page date `2023-09-01`, the URL, the title, the client-work category, and
+the archived grouping are unchanged. Nothing in this commit dates the shop's
+launch, so the date stays an owner question. The first GitHub link in the body
+is the repository root, so the Source action opens the repository.
+
+| What the page now says | Where it is in `5b7f80d8` |
+| --- | --- |
+| README says Next.js 15; the package depends on Next.js 16, React 19, NextAuth 4, and Tailwind CSS 3 | [README](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/README.md) opening line; [`package.json`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/package.json) has `next` `^16.0.6`, `react` `^19.2.0`, `next-auth` `^4.24.11`, `tailwindcss` `^3.3.5`. |
+| Catalog uses Storefront API 2024-01; default sort is best-selling | Endpoint in [`client.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/client.ts#L104); default branch in [`getProducts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/actions/shopify/index.ts#L158-L161) sets `BEST_SELLING`. |
+| Missing credentials or a failed live call serve Mock.shop | [`shopifyFetch`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/client.ts#L116-L137) and [`MOCK_SHOP_ENDPOINT`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/demo-mode.ts#L6). |
+| An unreachable shop can show a panel with Home, Products, and Help | [`ShopifyUnavailable`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/ui/shopify-unavailable.tsx#L16-L47). Demo mode counts as available. |
+| Search re-orders with stock, mid-range price, recency, and `custom.featured_rank`; the catalog does not | [`rankProducts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/ranking/product-ranker.ts#L43-L191) is called only from [`realtime-products-content.tsx`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/features/products/realtime-products-content.tsx#L132), which only [`/search`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/(products)/search/page.tsx) imports. Featured rank 1 scores 100 points. [`searchProducts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/ranking/product-ranker.ts#L255-L264) matches title, description, and tags. |
+| Wishlist handles live in local storage, then one batch load | [`useSyncedLocalStorage`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/providers/wishlist-provider.tsx#L29-L63); [`fetchWishlistProducts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/actions/wishlist-actions.ts#L10-L24). |
+| Nine product groups under a product, each in its own Suspense boundary | [`sectionConfigs`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/features/products/sections/progressive-sections-manager.tsx#L17-L27) and the [Suspense wrapper](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/features/products/sections/progressive-section-loader.tsx#L185-L195). |
+| Five section types render; others show a not-implemented box | [`SectionRenderer`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/features/pages/section-renderer.tsx#L50-L76). Metaobject fields are parsed in [`parseMetaobjectToSection`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/page-actions.ts#L10-L46). |
+| Blogs index uses the expert-guides title; posts come from Shopify | [`generateMetadata`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/(content)/blogs/page.tsx#L23-L27) and `getPaginatedBlogPosts`. |
+| Google Merchant XML and Facebook catalog CSV, both `no-store` | [`google-merchant/route.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/api/feeds/google-merchant/route.ts#L21-L26) and [`facebook/route.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/api/feeds/facebook/route.ts#L17-L23). |
+| Sign-in is Shopify customer-account OAuth when three secrets exist; register uses Storefront `customerCreate` | [`hasShopifyCredentials`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/auth.ts#L16-L38); the button label in [`next-auth-buttons.tsx`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/components/features/auth/next-auth-buttons.tsx#L63); [`customerCreate`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/api/auth/register/route.ts#L85-L86). Neither path was exercised on the live shop. |
+| Five-minute default cache; `cache: "no-store"` on the product list is ignored; 24-hour product window is unused by that list | [`postGraphql`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/client.ts#L31-L35) always sets `revalidate` to 300 when the caller omits it, and never reads `cache`. [`getProducts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/actions/shopify/index.ts#L273-L275) passes `cache: "no-store"` only. [`CACHE_TIMES.PRODUCTS`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/api/shopify/cache-config.ts#L3) is 24 hours. |
+| Vitals route keeps 1,000 samples in memory; custom analytics events need a paid Vercel plan | [`vitals/route.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/app/api/analytics/vitals/route.ts#L13-L31); the plan note is the header of [`tracker.ts`](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/src/lib/analytics/tracker.ts#L1-L9). |
+| AI routes were deleted in October 2025; stale docs remain | Same commits as the October 20 section above (`a509ce9d`, `b7a6d695`). `docs/ENTERPRISE_AI_SYSTEM.md` is still in the tree at this pin. |
+| No field equipment, grower profiles, harvest records, sensors, or yield forecasts | A search of `src` for field-management, IoT, and sensor names hit product FAQ copy and a recipes menu label only. Those phrases are not a field system. |
+
+The old phase list, the "real customer data" and "community trust" advantages,
+and the claim that every architectural choice was made for field management are
+removed because this commit does not contain them. No reason for the AI removal
+was added, because the deletion commit still does not state one.

@@ -3,297 +3,57 @@ title: "Mushroom Cultivation Supplier"
 url: "https://zugz.byronwade.com"
 category: "Client Work"
 date: 2023-09-01
-excerpt: "Zugzology: A premium e-commerce platform that serves as the foundation for the future of agricultural field management technology."
+excerpt: "Zugzology is a Next.js storefront for a mushroom-supplies shop. Shopify holds the catalog. Search results use a plain score. This repository has no field-management system."
 status: "Archived"
 featured: false
 ---
 
-# Building Zugzology: Why a Mushroom Supply Store is the Foundation for the Future of Agricultural Field Management
+# Zugzology
 
-Zugzology started as an e-commerce store for mushroom cultivation supplies, but I built it as a way to work out the harder problem underneath. Growers need something to track and monitor a cultivation run, and a store that already handles their inventory and their orders is a reasonable place to start learning what that would take.
+Zugzology is the storefront for a mushroom-supplies shop. Products, collections, the cart, and custom pages come from Shopify. This repository is that storefront.
 
-What follows is why it exists, how it is built, and where I think it goes.
+The code is in the [Zugzology repository](https://github.com/byronwade/zugzology.com). Everything below was checked against [main at `5b7f80d8`](https://github.com/byronwade/zugzology.com/tree/5b7f80d81b4819f9d38f51da89bf3247763077ed), committed on July 31, 2026. That commit is still the head of `main`. The README on that commit says Next.js 15. The [package manifest](https://github.com/byronwade/zugzology.com/blob/5b7f80d81b4819f9d38f51da89bf3247763077ed/package.json) depends on Next.js 16, React 19, NextAuth 4, and Tailwind CSS 3.
 
----
+Visit [zugz.byronwade.com](https://zugz.byronwade.com). I did not sign in there, and I did not measure traffic or sales.
 
-## What is Zugzology?
+## Catalog, search, and cart
 
-Zugzology is an e-commerce platform for mushroom cultivation supplies. It is a real application rather than a template on a hosted cart, and most of the engineering went into the parts a shop actually feels: search, inventory accuracy, and how fast a page comes back.
+The product list asks Shopify's Storefront API (version 2024-01) for a page of products. The default sort is Shopify's best-selling order. Price, title, and date are the other sorts. If the live shop cannot be reached, or the storefront token is missing, the same helper serves Shopify's public Mock.shop demo catalog instead of an empty page. A separate panel can tell the visitor the store is unreachable and still offer links home, to products, and to help.
 
-### The Technical Foundation
+Search loads matches and then re-orders them in the browser. The score uses stock, a bonus for prices in the middle of the set, how recently the product was published, and a featured rank stored on the Shopify metafield `custom.featured_rank`. A featured rank of 1 adds more points than the other factors combined, so a featured product can sit above a well-stocked one. The match itself is a case-insensitive check of the title, description, and tags. The main catalog does not run this score.
 
-Built on **Next.js 16** with **React 19** and **TypeScript**, Zugzology represents a modern approach to e-commerce:
+The wishlist keeps product handles in the browser's local storage. Opening the wishlist page loads those products in one request. It is not a Shopify wishlist.
 
-**Server Components by Default**: React Server Components run on the server without shipping their component code to the browser. Loading still depends on the data requests, assets, and client components each page needs.
+Product pages put nine more product groups under the main product, each in its own loading boundary: related products, best sellers, sale items, latest, the same category, the same collection, featured collections, similar tags, and a random set.
 
-**Shopify Storefront API Integration**: Seamless connection to Shopify's powerful e-commerce infrastructure. I get the benefits of Shopify's payment processing, inventory management, and order fulfillment without being locked into their templates.
+## Pages, writing, and feeds
 
-**Rule-Based Product Ranking**: Product lists are ordered by a simple, transparent score built from stock, price tier, recency, and a featured flag. An earlier version of the store had an experimental AI layer (OpenAI, Anthropic Claude, Groq) for recommendations and behavior analysis. I removed it in an October 2025 restructure, and the current store does not depend on any AI provider.
+A Shopify page can carry a list of section metaobjects. The storefront renders five kinds: hero, content, product carousel, call to action, and feature grid. Any other type shows a dashed box that says the section is not implemented yet.
 
-**Dynamic Page Builder**: A flexible, metaobject-based system that allows merchants to create custom pages without touching code. This extensibility is built into the architecture from day one.
+Blog posts are Shopify articles. The blogs index titles itself "Expert Mushroom Cultivation Blog". Those posts are store content. They are not written in this repository, and this page does not grade them.
 
-**Progressive Loading Architecture**: Sections stream independently, so the page shell can render while other content is still loading. Streaming alone does not guarantee when a page becomes interactive.
+Two routes publish the catalog for ads. `/api/feeds/google-merchant` returns Google Merchant XML. `/api/feeds/facebook` returns a Facebook catalog CSV. Both are built from the product list and are sent with `Cache-Control: no-store`.
 
-**Advanced Caching Strategy**: Multi-layer caching reuses product data between requests. This case study does not include a reproducible benchmark for query reductions or load-time improvements, so I describe the approach without assigning it a percentage gain.
+Home, a product, a collection, and a blog post each have an Open Graph image route.
 
-### Key Features
+## Accounts
 
-**For Customers:**
-- Product browsing with search
-- Product lists that favor in-stock, recent, and featured items
-- Authentication through Shopify Customer Accounts
-- Wishlist functionality with batch loading
-- Real-time inventory and pricing
-- Expert growing guides and educational content
+The sign-in button is "Sign in with Shopify". It starts NextAuth's Shopify provider, which sends the visitor to Shopify's customer-account authorize URL, and only when the shop id, client id, and client secret are all set. Without those three, the provider refuses to sign anyone in.
 
-**For Business:**
-- Typed analytics events and a Web Vitals reporting route
-- SEO-optimized with dynamic Open Graph images
-- Product feeds for Google Merchant Center and Facebook
-- A degraded mode that keeps navigation working when Shopify is unreachable
+A separate register form creates a customer through the Storefront `customerCreate` mutation and then a classic customer access token. That is a second account path in the same app. I did not try either path on the live shop.
 
----
+Account pages in the app include profile details and order history. Those screens read Shopify. They are not a grower profile.
 
-## Why I Decided to Build Zugzology
+## How fresh the prices are
 
-### 1. The Gap in Agricultural Technology
+The shared Storefront helper caches a response for five minutes unless the caller passes a different window. The product-list function passes `cache: "no-store"`, and a comment there says that is for fresh data, but the helper never reads that argument. A settings file also lists a 24-hour product window and a 12-hour collection window. The product list does not pass those windows either.
 
-The agricultural industry, particularly specialized sectors like mushroom cultivation, has been underserved by modern technology. While farmers and cultivators have sophisticated needs, tracking growth cycles, monitoring environmental conditions, managing inventory, and optimizing yields, most existing solutions are either:
+So a price or a stock count on a list is the value Shopify returned on the cached response, not a live socket.
 
-- **Too generic**: Built for traditional row crops, not specialized cultivation
-- **Too expensive**: Enterprise solutions that small-to-medium operations can't afford
-- **Too complex**: Requiring extensive training and technical expertise
-- **Too disconnected**: Separate systems for inventory, sales, and operations that don't communicate
+A Web Vitals route accepts a POST and keeps the last 1,000 samples in the server process's memory. The file says a production store should use a database. Typed shopping events call Vercel Analytics, and that file says custom events need a paid Vercel plan. Whether the live shop records them was not checked.
 
-I saw an opportunity to build something different, a platform that starts with the customer experience (e-commerce) and naturally evolves into operational management.
+## What I removed, and what was never here
 
-### 2. Learning from Real Customer Behavior
+In October 2025 this repository deleted recommendation, forecasting, sentiment, and segmentation routes that called OpenAI, Anthropic, or Groq. Product order since then is Shopify's sort, plus the search score above. Docs in the repository still describe the deleted system. Those docs are stale.
 
-E-commerce provides something invaluable that pure software development doesn't: **real customer data and behavior patterns**. By building Zugzology as a store first, I'm able to:
-
-- Understand what products cultivators actually need
-- Track purchasing patterns and seasonal trends
-- Identify pain points in the customer journey
-- Collect feedback on what features would be most valuable
-- Build relationships with the community I'm ultimately serving
-
-This customer-first approach ensures that when I build the field management system, it will solve real problems for real people, not theoretical ones.
-
-### 3. Building the Technical Infrastructure
-
-Every feature in Zugzology is designed with extensibility in mind. The architecture I've built provides:
-
-**Data Collection & Analytics:**
-- User behavior tracking
-- Product performance metrics
-- Purchase history and preferences
-
-**Product Ranking:**
-- A transparent score (stock, price tier, recency, featured) that decides product order
-- Plain rules in place of the AI recommendations an earlier version experimented with
-
-**Real-time Processing:**
-- Streaming data architecture
-- Progressive loading systems
-- Edge computing capabilities
-- Real-time inventory management
-
-Parts of this could carry over to field management. The analytics that track shopping could be extended to cultivation activity, and the real-time architecture that updates inventory could update field conditions. Predicting harvest times or yields would be new work, because the store has no prediction system today.
-
-### 4. Establishing Market Presence and Trust
-
-Before asking cultivators to trust a field management system with their operations, I need to establish credibility. Zugzology serves as:
-
-- **Proof of technical capability**: Demonstrating I can build enterprise-grade software
-- **Community building**: Creating a trusted brand in the mushroom cultivation space
-- **Data collection**: Understanding the market before building the solution
-- **Revenue generation**: Funding further development through e-commerce sales
-
----
-
-## Why Zugzology is a Critical Stepping Stone for Field Management
-
-### 1. Shared Data Models
-
-The product catalog in Zugzology already contains the seeds of field management data:
-
-- **Products → Equipment & Supplies**: The same inventory system can track field equipment
-- **Collections → Crop Types**: Product categories map directly to crop varieties
-- **Customer Accounts → Grower Profiles**: User accounts can evolve into comprehensive grower management
-- **Order History → Harvest Records**: Purchase patterns inform harvest scheduling
-
-The data structures are already there, they just need to be extended with field-specific attributes.
-
-### 2. Designed to Scale
-
-Zugzology is designed for:
-- A growing product catalog
-- Real-time inventory updates
-- Complex filtering and search
-- Many visitors at once
-- Concurrent user sessions
-
-This write-up doesn't include load-test results, so the list describes what the design is meant to handle, not a measured capacity. These same capabilities are essential for field management:
-- Multiple field locations
-- Real-time sensor data
-- Complex querying of historical data
-- Multiple users accessing the same data
-- High-frequency data updates from IoT devices
-
-### 3. The AI Experiment I Removed
-
-An earlier version of Zugzology had an experimental AI layer. It had routes for product recommendations, behavior analysis, demand forecasting, sentiment analysis, and user segmentation, backed by OpenAI, Anthropic Claude, or Groq, with a statistical fallback when no provider key was set.
-
-I removed that code in an October 2025 restructure, and the current store ranks products with plain rules instead. Predicting yields or harvest windows for field management would need to be designed and validated on its own, not retrained from something the store already runs.
-
-### 4. User Experience Patterns
-
-The UX patterns established in Zugzology translate directly to field management:
-
-- **Dashboard Views**: Product analytics dashboards → Field performance dashboards
-- **Filtering Systems**: Product filters → Field condition filters
-- **Search Functionality**: Product search → Historical data search
-- **Progressive Loading**: Product sections → Field data sections
-- **Real-time Updates**: Inventory updates → Sensor data updates
-
-Users already familiar with Zugzology's interface will find the field management system intuitive.
-
-### 5. Integration Points
-
-Zugzology's Shopify integration demonstrates the ability to:
-- Connect to external APIs
-- Handle authentication and authorization
-- Manage complex data relationships
-- Sync data in real-time
-- Handle webhooks and events
-
-These same skills are needed for field management integrations:
-- IoT sensor APIs
-- Weather service APIs
-- Equipment manufacturer APIs
-- Government agricultural data APIs
-- Third-party analytics platforms
-
----
-
-## The Vision: From Store to Ecosystem
-
-### Phase 1: E-Commerce (Current)
-
-✅ Product catalog and sales
-✅ Customer accounts and authentication
-✅ Rule-based product ranking
-✅ Analytics and insights
-✅ Educational content
-
-### Phase 2: Inventory & Operations (Next)
-
-🔄 Connect inventory to field operations
-🔄 Track supply usage per field
-🔄 Automated reordering based on field needs
-🔄 Equipment maintenance scheduling
-
-### Phase 3: Field Management (Future)
-
-⏳ Real-time sensor data integration
-⏳ Growth tracking and analytics
-⏳ Environmental condition monitoring
-⏳ Predictive yield forecasting
-⏳ Automated alerts and recommendations
-⏳ Historical data analysis and insights
-
-### Phase 4: Complete Ecosystem (Ultimate Goal)
-
-⏳ Unified platform: E-commerce + Operations + Field Management
-⏳ Data-driven decision making across all aspects
-⏳ AI-powered optimization recommendations
-⏳ Community features and knowledge sharing
-⏳ Integration marketplace for third-party tools
-
----
-
-## Technical Architecture: Built for Evolution
-
-Every architectural decision in Zugzology was made with extensibility in mind:
-
-### Modular Component System
-
-The sections-based architecture allows new features to be added without disrupting existing functionality. Field management modules can be added as new "sections" in the same system.
-
-### API-First Design
-
-All functionality is exposed through well-defined APIs, making it easy to add new interfaces (mobile apps, IoT devices, third-party integrations) without rebuilding core functionality.
-
-### Type-Safe Data Layer
-
-TypeScript ensures that as the data model evolves, all code remains type-safe. Adding field-specific data types is straightforward and safe.
-
-### Caching & Performance
-
-Caching field data, sensor readings, or analytics results would require decisions about freshness, invalidation, and data volume. The store's caching approach is a starting point to evaluate, rather than evidence of how a field management system would perform.
-
-### Real-time Capabilities
-
-Streaming page content and ingesting sensor updates have different requirements. Sensor data would need its own ingestion, storage, and delivery design, with testing under representative update rates.
-
----
-
-## Lessons Learned and Challenges Overcome
-
-Building Zugzology has taught me invaluable lessons that will directly benefit the field management system:
-
-### Performance at Scale
-
-- **Challenge**: Waiting for product data delayed the initial page content
-- **Solution**: Implemented progressive loading and intelligent caching
-- **Application**: Field data will load progressively, with critical metrics first
-
-### Data Management
-
-- **Challenge**: Product data needed to be split into smaller cache entries
-- **Solution**: Segmented caching and data pagination
-- **Application**: Field sensor data will be segmented by location and time period
-
-### User Experience
-
-- **Challenge**: Complex filtering and search needed to be intuitive
-- **Solution**: Progressive disclosure and smart defaults
-- **Application**: Field data queries will use similar UX patterns
-
-### AI Integration
-
-- **Challenge**: Multiple AI providers with different capabilities
-- **Solution**: Fallback systems and provider abstraction, then removing the AI layer in October 2025 in favor of a transparent rule-based ranker
-- **Application**: Field predictions will need their own design and validation
-
----
-
-## The Competitive Advantage
-
-By building Zugzology first, the eventual field management system will have unique advantages:
-
-1. **Real Customer Data**: Not theoretical use cases, but actual patterns from real cultivators
-2. **Working Technology**: A storefront architecture that is already built and deployed
-3. **Integrated Ecosystem**: E-commerce and operations in one platform, not separate systems
-4. **Community Trust**: Established brand and relationships in the cultivation community
-5. **Revenue Model**: Meant to fund development through e-commerce sales rather than venture funding
-
----
-
-## Conclusion
-
-Zugzology is more than a store, it's a proof of concept, a data collection platform, a technical foundation, and a community builder. Every line of code, every feature, every architectural decision is made with the future field management system in mind.
-
-The agricultural industry needs better technology. But building that technology in isolation, without understanding the real needs of cultivators, would be a mistake. Zugzology bridges that gap, connecting me directly with the community I'm building for, collecting the data I need to make intelligent decisions, and establishing the technical foundation that will make the field management system not just possible, but exceptional.
-
-From spore to harvest, from store to field, Zugzology is the foundation for the future of agricultural technology.
-
-Visit [zugz.byronwade.com](https://zugz.byronwade.com) to see the site.
-
-
-
-
-
-
-
-
+An earlier version of this page mapped products to field equipment, accounts to grower profiles, and orders to harvest records, then listed sensors and yield forecasts as later phases. None of that is in this commit. The public code is a shop. I'll describe field tools here if they are actually built.
