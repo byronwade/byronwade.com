@@ -3,7 +3,7 @@ import type { SearchEntry, SearchKind } from "@/lib/search-types";
 /** Header search and /search share this limit so a pasted paragraph cannot become the query. */
 export const SEARCH_QUERY_MAX = 120;
 
-const WHITESPACE = /\s+/;
+const WHITESPACE = /\s+/g;
 
 const SEARCH_KIND_ORDER: readonly SearchKind[] = ["Page", "Project", "Writing"];
 

@@ -1,24 +1,36 @@
-/** Hoisted so each compiles once rather than per page. */
-const HTML_COMMENT = /<!--[\s\S]*?-->/g;
-const FENCE = /```[\s\S]*?```/g;
-const IMAGE = /!\[[^\]]*]\([^)]*\)/g;
-const LINK = /\[([^\]]*)]\([^)]*\)/g;
-const URL = /https?:\/\/\S+/g;
-const MARKDOWN = /[#>*~`|[\]()_]/g;
-const WHITESPACE = /\s+/;
+import { Children, isValidElement, type ReactNode } from "react";
+import ReactMarkdown from "react-markdown";
+import { markdownOptions } from "@/lib/markdown";
+
+const BLOCK_ELEMENT = /^(?:h[1-6]|p|blockquote|ul|ol|li|table|thead|tbody|tr|th|td|hr|br|section)$/;
+const WHITESPACE = /\s+/g;
+
+function visibleText(nodes: ReactNode): string {
+	let text = "";
+	Children.forEach(nodes, (node) => {
+		if (typeof node === "string" || typeof node === "number") {
+			text += node;
+		} else if (isValidElement<{ children?: ReactNode }>(node)) {
+			if (node.type === "pre" || node.type === "img") {
+				text += " ";
+				return;
+			}
+			const children = visibleText(node.props.children);
+			// Inline markup can split one word; only block boundaries separate words.
+			text +=
+				typeof node.type === "string" && BLOCK_ELEMENT.test(node.type) ? ` ${children} ` : children;
+		}
+	});
+	return text;
+}
 
 /**
- * Words a visitor can read. Markup, fenced samples, and comments are removed
- * so a code identifier or an author note is not treated as page text.
+ * Read the same grammar as the article and TOC, including GFM and skipHtml.
+ * Code blocks, images, comments and link destinations do not contribute text;
+ * inline code and visible URLs do, because they are part of the prose.
  */
 export function searchPlainText(markdown: string): string {
-	return markdown
-		.replace(HTML_COMMENT, " ")
-		.replace(FENCE, " ")
-		.replace(IMAGE, " ")
-		.replace(LINK, " $1 ")
-		.replace(URL, " ")
-		.replace(MARKDOWN, " ")
+	return visibleText(ReactMarkdown({ ...markdownOptions, children: markdown }))
 		.replace(WHITESPACE, " ")
 		.trim();
 }
