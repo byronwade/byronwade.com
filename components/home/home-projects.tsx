@@ -39,7 +39,7 @@ function FeaturedProject({ project }: { project: Project }) {
 				</div>
 
 				{(project.outcome || project.problem) && (
-					<p className="max-w-2xl text-body text-copy-14 leading-relaxed">
+					<p className="max-w-2xl text-pretty text-body text-copy-14">
 						{project.outcome || project.problem}
 					</p>
 				)}

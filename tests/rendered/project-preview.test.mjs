@@ -15,7 +15,11 @@ async function withLoadedPreview(context, viewport, verify) {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(10_000);
 			page.setDefaultNavigationTimeout(20_000);
-			await page.setViewport({ width: viewport.width, height: 844 });
+			await page.setViewport({
+				width: viewport.width,
+				height: 844,
+				hasTouch: viewport.hasTouch ?? false,
+			});
 			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 			await page.evaluateOnNewDocument((theme) => {
 				localStorage.setItem("theme", theme);
@@ -94,6 +98,218 @@ async function pressWithShift(page, key) {
 		await page.keyboard.up("Shift");
 	}
 }
+
+test("Project preview touch cancellation releases resizing and ignores later touches", {
+	timeout: 120_000,
+}, async (context) => {
+	await withLoadedPreview(context, { theme: "dark", width: 390, hasTouch: true }, async (page) => {
+		const handle = await page.$(`${RESIZE}:last-child`);
+		await handle.scrollIntoView();
+		const box = await handle.boundingBox();
+		const client = await page.createCDPSession();
+		const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+		await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+		await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+		await client.send("Input.dispatchTouchEvent", {
+			type: "touchMove",
+			touchPoints: [{ ...point, x: point.x - 20 }],
+		});
+		await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`);
+		await client.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+		await page.waitForFunction(() => document.body.style.cursor !== "ew-resize");
+		const cancelledWidth = await frameWidth(page);
+		assert.equal(await page.evaluate(() => document.body.style.userSelect), "");
+		await client.send("Input.dispatchTouchEvent", {
+			type: "touchStart",
+			touchPoints: [{ x: 190, y: 700 }],
+		});
+		await client.send("Input.dispatchTouchEvent", {
+			type: "touchMove",
+			touchPoints: [{ x: 250, y: 700 }],
+		});
+		await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+		assert.equal(
+			await frameWidth(page),
+			cancelledWidth,
+			"A later page gesture cannot resize the preview"
+		);
+	});
+});
+
+test("Project preview window blur ends a mouse drag", { timeout: 120_000 }, async (context) => {
+	await withLoadedPreview(context, { theme: "light", width: 1280 }, async (page) => {
+		const handle = await page.$(`${RESIZE}:last-child`);
+		await handle.scrollIntoView();
+		const box = await handle.boundingBox();
+		await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+		await page.mouse.down();
+		await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+		// OS/window deactivation has no CDP input primitive; dispatch only that lifecycle boundary.
+		await page.evaluate(() => window.dispatchEvent(new Event("blur")));
+		await page.waitForFunction(() => document.body.style.cursor !== "ew-resize");
+		await page.mouse.up();
+		assert.equal(await page.evaluate(() => document.body.style.userSelect), "");
+	});
+});
+
+test("Project preview touch resize keeps its owning finger until that finger releases", {
+	timeout: 120_000,
+}, async (context) => {
+	await withLoadedPreview(context, { theme: "dark", width: 1280, hasTouch: true }, async (page) => {
+		const handle = await page.$(`${RESIZE}:last-child`);
+		await handle.scrollIntoView();
+		const box = await handle.boundingBox();
+		const client = await page.createCDPSession();
+		const centre = await page.$eval(PREVIEW, (preview) => {
+			const rect = preview.getBoundingClientRect();
+			return rect.left + rect.width / 2;
+		});
+		let primary = { id: 11, x: box.x + box.width / 2, y: box.y + box.height / 2 };
+		const other = { id: 22, x: centre - 400, y: primary.y };
+		await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [primary] });
+		primary = { ...primary, x: centre + 250 };
+		await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [primary] });
+		await waitForWidth(page, 498);
+		await client.send("Input.dispatchTouchEvent", {
+			type: "touchStart",
+			touchPoints: [primary, other],
+		});
+		await client.send("Input.dispatchTouchEvent", {
+			type: "touchMove",
+			touchPoints: [primary, { ...other, x: centre - 450 }],
+		});
+		await waitForWidth(page, 498);
+		// CDP lists the contacts being released, rather than the contacts remaining.
+		await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [other] });
+		assert.equal(
+			await page.evaluate(() => document.body.style.cursor),
+			"ew-resize",
+			"Releasing a different finger does not end the owning gesture"
+		);
+		primary = { ...primary, x: centre + 200 };
+		await client.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [primary] });
+		await waitForWidth(page, 398);
+		await client.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+		await page.waitForFunction(() => document.body.style.cursor === "");
+		assert.equal(await page.evaluate(() => document.body.style.userSelect), "");
+	});
+});
+
+test("Project preview minimum width preserves its aspect ratio on a narrow screen", {
+	timeout: 120_000,
+}, async (context) => {
+	await withLoadedPreview(context, { theme: "light", width: 320 }, async (page) => {
+		const initial = await page.$eval(`${PREVIEW} [aria-busy]`, (frame) => ({
+			width: frame.getBoundingClientRect().width,
+			height: frame.getBoundingClientRect().height,
+		}));
+		await page.focus(RESIZE);
+		await page.keyboard.press("ArrowLeft");
+		await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`);
+		const resized = await page.$eval(`${PREVIEW} [aria-busy]`, (frame) => ({
+			width: frame.getBoundingClientRect().width,
+			height: frame.getBoundingClientRect().height,
+		}));
+		assert.deepEqual(
+			resized,
+			initial,
+			"A minimum larger than the container cannot stretch the image"
+		);
+		assert.equal(
+			await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+			true,
+			"The minimum cannot cause sideways page scrolling"
+		);
+	});
+});
+
+test("Project preview mouse capture bounds both handles and restores page styles", {
+	timeout: 180_000,
+}, async (context) => {
+	await ["light", "dark"].reduce(async (previous, theme) => {
+		await previous;
+		await context.test(theme, async (scenario) => {
+			await withLoadedPreview(scenario, { theme, width: 1280 }, async (page, requests) => {
+				const initial = await frameWidth(page);
+				await page.evaluate(() => {
+					document.body.style.cursor = "crosshair";
+					document.body.style.userSelect = "text";
+				});
+				await ["first", "last"].reduce(async (prior, side) => {
+					await prior;
+					const handle = await page.$(`${RESIZE}:${side}-of-type`);
+					await handle.scrollIntoView();
+					let box = await handle.boundingBox();
+					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+					await page.mouse.down({ button: "right" });
+					assert.equal(await page.evaluate(() => document.body.style.cursor), "crosshair");
+					await page.mouse.up({ button: "right" });
+					await page.mouse.down();
+					await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+					const container = await page.$eval(PREVIEW, (preview) => {
+						const rect = preview.getBoundingClientRect();
+						return { centre: rect.left + rect.width / 2, left: rect.left, right: rect.right };
+					});
+					const y = box.y + box.height / 2;
+					await page.mouse.move(container.centre, y);
+					await waitForWidth(page, 318);
+					await page.mouse.move(side === "first" ? container.left - 10 : container.right + 10, y);
+					await waitForWidth(page, initial);
+					await page.mouse.up();
+					await page.waitForFunction(() => document.body.style.cursor === "crosshair");
+					assert.equal(await page.evaluate(() => document.body.style.userSelect), "text");
+					await page.mouse.move(container.centre, y);
+					assert.equal(await frameWidth(page), initial, "Released movement cannot resize");
+					box = await handle.boundingBox();
+					await handle.evaluate((node) => {
+						node.addEventListener(
+							"pointerdown",
+							(event) => {
+								node.dataset.pointerId = String(event.pointerId);
+							},
+							{ once: true }
+						);
+					});
+					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+					await page.mouse.down();
+					await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+					await page.mouse.move(container.centre + 250, y);
+					await waitForWidth(page, 498);
+					await handle.evaluate((node) =>
+						node.releasePointerCapture(Number(node.dataset.pointerId))
+					);
+					await page.mouse.move(container.centre + 240, y);
+					await page.waitForFunction(() => document.body.style.cursor === "crosshair");
+					await page.mouse.up();
+					await waitForWidth(page, 498);
+					await page.focus(RESIZE);
+					await page.keyboard.press("Home");
+					await waitForWidth(page, initial);
+				}, Promise.resolve());
+				assert.deepEqual(requests, ["1920"], "Display resizing reuses the existing capture");
+				const handle = await page.$(`${RESIZE}:last-child`);
+				await handle.scrollIntoView();
+				const box = await handle.boundingBox();
+				await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+				await page.mouse.down();
+				await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+				await page.focus(RESIZE);
+				await page.keyboard.press("Home");
+				await page.waitForFunction(() => document.body.style.cursor === "crosshair");
+				await page.mouse.up();
+				await waitForWidth(page, initial);
+				await page.mouse.down();
+				await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+				await page.focus('[data-site-header] a[href="/projects"]');
+				await page.keyboard.press("Enter");
+				await page.waitForFunction(() => location.pathname === "/projects");
+				await page.waitForFunction(() => document.body.style.cursor === "crosshair");
+				assert.equal(await page.evaluate(() => document.body.style.userSelect), "text");
+				await page.mouse.up();
+			});
+		});
+	}, Promise.resolve());
+});
 
 test("Project preview fullscreen contains focus and restores it on Escape and button exit", {
 	timeout: 180_000,

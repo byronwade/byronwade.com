@@ -30,12 +30,12 @@ export function PostRow({
 						<span>{post.readingTime} min read</span>
 					</p>
 					<div className="flex min-w-0 flex-col gap-1">
-						<span className={`font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}>
+						<h3
+							className={`text-pretty font-medium text-foreground text-heading-16 ${indexRowAccentClass}`}
+						>
 							{post.title}
-						</span>
-						{post.excerpt && (
-							<p className="text-body text-copy-14 leading-relaxed">{post.excerpt}</p>
-						)}
+						</h3>
+						{post.excerpt && <p className="text-pretty text-body text-copy-14">{post.excerpt}</p>}
 						{tagLimit > 0 && post.tags && post.tags.length > 0 && (
 							<TagList className="pt-1" limit={tagLimit} tags={post.tags} />
 						)}

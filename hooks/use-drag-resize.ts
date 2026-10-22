@@ -1,6 +1,6 @@
 "use client";
 
-import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { type PointerEvent, type RefObject, useCallback, useEffect, useRef, useState } from "react";
 
 const KEYBOARD_STEP = 24;
 const KEYBOARD_STEP_LARGE = 80;
@@ -12,66 +12,131 @@ interface DragResizeOptions {
 	minWidth: number;
 }
 
+interface ResizeSession {
+	clientX: number;
+	cursor: string;
+	handle: HTMLButtonElement;
+	moved: boolean;
+	pointerId: number;
+	userSelect: string;
+}
+
 /**
  * Pointer- and keyboard-driven width control for the preview frame.
  *
  * A `null` width means "let layout decide" rather than a pinned pixel value, so
  * resetting is distinguishable from dragging back to the default. Pointer moves
- * are coalesced into one measurement per animation frame, since mousemove fires
- * far more often than the browser can paint.
+ * are coalesced into one measurement per animation frame using the latest
+ * position. One captured pointer owns the gesture until release or cancellation.
  */
 export function useDragResize({ containerRef, minWidth }: DragResizeOptions) {
 	const [width, setWidth] = useState<number | null>(null);
 	const [isResizing, setIsResizing] = useState(false);
 	const frameRef = useRef<number | null>(null);
+	const sessionRef = useRef<ResizeSession | null>(null);
 
 	const adjustFromPointer = useCallback(
 		(clientX: number) => {
 			const node = containerRef.current;
-			if (!node || frameRef.current !== null) {
+			if (!node) {
 				return;
 			}
-			frameRef.current = window.requestAnimationFrame(() => {
-				const rect = node.getBoundingClientRect();
-				const centre = rect.left + rect.width / 2;
-				const next = Math.abs(clientX - centre) * 2;
-				setWidth(Math.max(minWidth, Math.min(rect.width, next)));
-				frameRef.current = null;
-			});
+			const rect = node.getBoundingClientRect();
+			const centre = rect.left + rect.width / 2;
+			const next = Math.abs(clientX - centre) * 2;
+			setWidth(Math.min(rect.width, Math.max(minWidth, next)));
 		},
 		[containerRef, minWidth]
 	);
 
-	useEffect(() => {
-		if (!isResizing) {
+	const endResize = useCallback(() => {
+		if (frameRef.current !== null) {
+			window.cancelAnimationFrame(frameRef.current);
+			frameRef.current = null;
+		}
+		const session = sessionRef.current;
+		if (!session) {
 			return;
 		}
+		// Clear ownership before releasing capture: lostpointercapture may fire next.
+		sessionRef.current = null;
+		if (session.handle.hasPointerCapture(session.pointerId)) {
+			session.handle.releasePointerCapture(session.pointerId);
+		}
+		document.body.style.cursor = session.cursor;
+		document.body.style.userSelect = session.userSelect;
+		setIsResizing(false);
+	}, []);
 
-		const onMouseMove = (event: MouseEvent) => adjustFromPointer(event.clientX);
-		const onTouchMove = (event: TouchEvent) => {
-			const touch = event.touches[0];
-			if (touch) {
-				adjustFromPointer(touch.clientX);
-			}
+	const onPointerDown = useCallback((event: PointerEvent<HTMLButtonElement>) => {
+		if (!event.isPrimary || event.button !== 0 || sessionRef.current) {
+			return;
+		}
+		event.preventDefault();
+		event.currentTarget.setPointerCapture(event.pointerId);
+		sessionRef.current = {
+			clientX: event.clientX,
+			cursor: document.body.style.cursor,
+			handle: event.currentTarget,
+			moved: false,
+			pointerId: event.pointerId,
+			userSelect: document.body.style.userSelect,
 		};
-		const onEnd = () => setIsResizing(false);
-
-		document.addEventListener("mousemove", onMouseMove);
-		document.addEventListener("mouseup", onEnd);
-		document.addEventListener("touchmove", onTouchMove, { passive: false });
-		document.addEventListener("touchend", onEnd);
 		document.body.style.cursor = "ew-resize";
 		document.body.style.userSelect = "none";
+		setIsResizing(true);
+	}, []);
 
+	const onPointerMove = useCallback(
+		(event: PointerEvent<HTMLButtonElement>) => {
+			const session = sessionRef.current;
+			if (!session || session.pointerId !== event.pointerId) {
+				return;
+			}
+			session.clientX = event.clientX;
+			session.moved = true;
+			if (frameRef.current === null) {
+				frameRef.current = window.requestAnimationFrame(() => {
+					frameRef.current = null;
+					if (sessionRef.current) {
+						adjustFromPointer(sessionRef.current.clientX);
+					}
+				});
+			}
+		},
+		[adjustFromPointer]
+	);
+
+	const onPointerUp = useCallback(
+		(event: PointerEvent<HTMLButtonElement>) => {
+			if (sessionRef.current?.pointerId !== event.pointerId) {
+				return;
+			}
+			// Commit the release position even when its last move is still queued.
+			if (sessionRef.current.moved) {
+				adjustFromPointer(event.clientX);
+			}
+			endResize();
+		},
+		[adjustFromPointer, endResize]
+	);
+
+	const onPointerCancel = useCallback(
+		(event: PointerEvent<HTMLButtonElement>) => {
+			if (sessionRef.current?.pointerId === event.pointerId) {
+				endResize();
+			}
+		},
+		[endResize]
+	);
+
+	useEffect(() => {
+		window.addEventListener("blur", endResize);
 		return () => {
-			document.removeEventListener("mousemove", onMouseMove);
-			document.removeEventListener("mouseup", onEnd);
-			document.removeEventListener("touchmove", onTouchMove);
-			document.removeEventListener("touchend", onEnd);
-			document.body.style.cursor = "";
-			document.body.style.userSelect = "";
+			window.removeEventListener("blur", endResize);
+			endResize();
 		};
-	}, [isResizing, adjustFromPointer]);
+	}, [endResize]);
 
 	/**
 	 * Bounds are passed per event rather than captured: both are derived from
@@ -84,19 +149,32 @@ export function useDragResize({ containerRef, minWidth }: DragResizeOptions) {
 
 			if (event.key === "ArrowLeft") {
 				event.preventDefault();
-				setWidth(Math.max(minWidth, currentWidth - step));
+				setWidth(Math.min(maxWidth, Math.max(minWidth, currentWidth - step)));
 			} else if (event.key === "ArrowRight") {
 				event.preventDefault();
 				setWidth(Math.min(maxWidth, currentWidth + step));
 			} else if (event.key === "Home") {
 				event.preventDefault();
+				endResize();
 				setWidth(null);
 			}
 		},
-		[minWidth]
+		[endResize, minWidth]
 	);
 
-	const reset = useCallback(() => setWidth(null), []);
+	const reset = useCallback(() => {
+		endResize();
+		setWidth(null);
+	}, [endResize]);
 
-	return { width, setWidth, isResizing, startResize: () => setIsResizing(true), onKeyDown, reset };
+	return {
+		width,
+		isResizing,
+		onPointerDown,
+		onPointerMove,
+		onPointerUp,
+		onPointerCancel,
+		onKeyDown,
+		reset,
+	};
 }
