@@ -391,6 +391,57 @@ Impact Marine's challenge was not treated as evidence of a dead site. Its
 web reader, still presents the dealership. No bypass was attempted and its link
 was retained.
 
+## Ciel and Stream prototype claims, October 21, 2026
+
+Both case studies now follow their public repositories' `main`, the only branch
+in each: Ciel at
+[`9493ede`](https://github.com/byronwade/ciel.byronwade.com/tree/9493ede6f2c03d510c77171dc84244680323115a)
+and Stream at
+[`5d9cbcc`](https://github.com/byronwade/stream.byronwade.com/tree/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d).
+Every commit in both histories (five for Ciel, three for Stream) is dated
+June 1, 2026 in its author's time zone, so the `2026-06-01` front-matter dates
+and the Archived grouping are kept. Neither repository is marked archived on
+GitHub, and neither has a license file. Both READMEs describe frontend-only
+prototypes with mock data. The Stream demo at `stream.byronwade.com` returned
+200 with the title "Stream — Live Platform Concept"; Ciel's demo is covered by
+the availability section above.
+
+The Stream page gained a link to its repository, so it now has a Source action
+next to Visit. Titles, routes, categories, taglines, dates and featured flags
+are unchanged. The Ciel title still contains "Actually" and its body still names
+Netlify, which `tests/search.test.mjs` relies on.
+
+### Stream
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Discovery boosts small communities and ranks on chat health, creator response rate and newcomer friendliness | The default [discover sort](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/lib/data/index.ts#L139-L177) orders by `discovery.fitScore`, a number stored in the seed JSON. [`smallCommunityBoost`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/lib/types/index.ts#L64) and [`creatorResponseRate`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/lib/types/index.ts#L40) are declared and seeded, but nothing reads them. The [rising-creators rail](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/lib/data/index.ts#L126-L130) sorts by `newViewerResponseRate`. The thesis section now states the goal, and a new paragraph says what is shown today and that no formula combines the signals yet. |
+| Base UI primitives and a command palette | [`package.json`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/package.json) has no Base UI or cmdk dependency, and no palette component or Cmd/Ctrl+K handler exists in `src`. Both claims removed; the page says the components are hand-built. |
+| Bloom panels use shared-element transitions | [`BloomLayer`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/components/bloom/bloom-layer.tsx#L91-L120) accepts a `layoutId`, and so does `StreamCard`, but no caller passes one. The panels fade and scale with Motion, honor reduced motion and trap focus. They are [driven by `?panel=`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/app/live/%5BstreamSlug%5D/watch-client.tsx#L60-L129); nine are listed, including the discovery-preferences panel the old list missed. The README still says "shared-element"; this page does not. |
+| Structured chat with sentiment and moderation flags | Chat has four tabs. [The filter](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/components/chat/chat-panel.tsx#L155-L161) hides deleted messages, shows questions in Questions and pinned messages in Highlights. `sentiment` is stored on each message and never displayed. Copy names the tabs and the pinned and deleted behavior. |
+| Catch Me Up and Join Late | Kept. [`shouldShowJoinLate`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/lib/utils/catch-up.ts#L17-L21) shows the prompt once a live stream is more than 45 seconds old, and its button opens the catch-up panel. |
+| A complete creator studio with monetization "fully modeled" | All [studio routes](https://github.com/byronwade/stream.byronwade.com/tree/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/app/studio) exist. The [restream page](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/src/app/studio/restream/restream-client.tsx#L20) calls its destinations mock with fake keys, and the monetization page calls its figures mock data. Copy says so. Only one seeded stream has replay chapters. |
+| 30-plus routes, static export, `localStorage` with `useSyncExternalStore`, JSON seeds, Vitest, Playwright and Storybook | Kept and made exact: 33 `page.tsx` templates, [`output: "export"`](https://github.com/byronwade/stream.byronwade.com/blob/5d9cbcca5bb6ce2c02b24896d238adc1bf854a5d/next.config.ts#L4), twelve JSON seed files, stores under `src/lib/stores`, three Vitest unit files, four Playwright specs (flows, stream, axe accessibility, visual) and 14 stories. None of these were run for this review. |
+| "In active development" | The last commit is June 1, 2026 and the page is Archived. Now "I built it in June 2026". |
+
+### Ciel
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Hierarchical budgets at workspace, project and environment level, with budget-pause logic | [`BudgetMode`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/types/index.ts#L3) has four modes, and caps exist on the workspace and each project only. A project shows as paused because its [mock `status` is `"paused"`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/app/app/projects/%5Bproject%5D/overview/page.tsx#L43-L45), not from spend reaching the cap. The [budget meter](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/components/ciel/budget-meter.tsx#L22-L24) does compare spend to the cap and turns to warning at 75% and critical at 100%. "Environment" appears only in the banner's wording. Copy names the four modes and the paused sample project. |
+| Step-up reauthentication on sensitive actions | [`reauthRequired`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/lib/dialog-registry.ts#L9-L18) is set on dialogs such as reveal and rotate secret, but [the dialog host](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/components/dialogs/dialog-host.tsx#L72-L75) never reads it; both dialog footers call the same handler, which shows a success toast and closes. The reveal dialog only says identity will be verified. A separate `/auth/re-auth` screen exists. Copy says the flag is not enforced yet. |
+| Every modal state is linkable | The [registry](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/lib/dialog-registry.ts) holds 29 dialogs and 4 side panels, all driven by `?dialog=` and `?panel=`. The command palette and app launcher use local state. Copy counts the registered overlays and says submitting saves nothing. |
+| Anonymous actors get a hashed animal name and a matching OKLCH gradient | [`animalName`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/lib/identity.ts#L23-L26) has no caller. [`gradientFor`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/lib/identity.ts#L29-L37) drives `GradientAvatar`, seeded by email on the team page and by author on the marketing page. Copy describes avatars and says the name helper is unused. |
+| One-click recovery on every failure; DNS tracked like a package in transit | Parsed issues in the deployment mocks each carry a fix link, and there are rollback, redeploy and resume actions. A DNS record card shows found, missing, mismatched or pending with a copy button. Copy describes those. |
+| Auth flows "built out properly" | Each listed step has its own route under [`app/auth`](https://github.com/byronwade/ciel.byronwade.com/tree/9493ede6f2c03d510c77171dc84244680323115a/app/auth). Sign-in and passkey buttons only [set a demo session cookie](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/lib/auth/mock-session.ts#L14-L16), and `middleware.ts` checks that the cookie exists. Copy says so. |
+| Polished first-run setup flow | `?welcome=1` shows one card asking for a workspace name and goal, then links to the six-step new-project wizard. Copy describes exactly that. |
+| Next.js 16, React 19, Tailwind 4, shadcn on Base UI, Recharts, cmdk, next-themes | Kept. [`package.json`](https://github.com/byronwade/ciel.byronwade.com/blob/9493ede6f2c03d510c77171dc84244680323115a/package.json) lists each; `components.json` uses the `base-nova` style; Recharts draws the traffic-attribution chart. |
+| "In active development" | Last commit June 1, 2026 (Pacific). Now "built in June 2026". |
+
+This was source reading only. Neither prototype was built, tested or clicked
+through, and no code, dependency, account, service or setting was changed in
+either repository.
+
 ## Fakebase API and export claims, October 21, 2026
 
 `content/projects/fakebase.md` was added in `801a940` (June 2, 2026,
@@ -531,3 +582,41 @@ account, service, or setting was changed.
 This was source reading, not a build, test run, installer run, or mount. It
 does not establish release-binary health, that `wss://wormhole-signal.fly.dev`
 answers, or that two machines on different networks can connect.
+
+## SignalRoute phone and texting claims, October 21, 2026
+
+The SignalRoute case study now follows private main at
+[`31d30be`](https://github.com/byronwade/signalroute/tree/31d30be205e516ce3336d4470155d25a9ea84aaf)
+(August 3, 2026, commit message "chore: trigger production redeploy"). The
+repository is private, so those links open only for someone signed in with
+access. GitHub does not mark it archived. The branches API returned only
+`main`. The GitHub license field is empty. The repository was created
+2026-06-03T01:30:58Z. The page date stays 2026-06-01.
+
+`https://getsignalroute.com` returned HTTP 200 on October 21, 2026. The
+response title was "SignalRoute - A business phone that runs itself". That
+check does not prove the host is serving `31d30be`. The case study does not
+link the private repository, so the page's Source button stays absent and
+Visit still opens the public site.
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Actively building, and the spine is live call operations | The newest commit on `main` is August 3, 2026. [`placeCall`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/actions/voice.ts#L10-L38) stores a completed call with `duration_seconds: 0` after the adapter returns. [`api_create_call`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0003_api_templates_webhooks.sql#L156-L158) inserts `status` `completed` with `answered_at` and `ended_at` both `now()`. |
+| Telnyx swaps in with a key change, and development uses the mock | [`getTelecomProvider`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/telecom/index.ts#L9-L22) defaults to the mock and constructs `TelnyxAdapter` when `TELECOM_PROVIDER=telnyx`. [`notImplemented`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/telecom/real-adapter.ts#L24-L28) throws from every method, including `placeCall` and `sendMessage`. |
+| Visual editor runs ring groups, queues, and fallbacks | [`FlowNodeType`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/types/call-flow.ts#L11-L36) includes `ring_group`, `queue`, `transfer`, and `voicemail`. [`layoutFlow`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/flow/layout.ts#L14-L15) uses dagre. [`saveCallFlow`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/services/call-flows.ts#L46-L55) writes `localStorage` key `sr.callflow.<numberId>`. The type file says the graph is not stored in the database. No runner executes it. |
+| Dialer does warm and cold transfers, conference, DTMF, and ring-out on the line | [`transferCall`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L292-L314) renames the line and removes it after 1600 ms. [`sendDtmf`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L431-L434) is an empty function. [`sendToVoicemail`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L285-L290) ends the local line and toasts. The keypad does capture the physical keyboard. |
+| Claude summarizes calls and transcripts | [`summarizeMessages`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/ai/summarize.ts#L5-L21) summarizes SMS threads, and without `ANTHROPIC_API_KEY` it returns a template from the last inbound text. |
+| SMS templates, scheduled sends, and STOP/START | Templates are rows. [`deliver_scheduled_messages`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0016_scheduled_send.sql#L9-L31) marks due rows `delivered` and does not call a provider. The same migration tries `pg_cron` and continues if it fails. STOP and START are handled in [`ingest_inbound_message`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0008_inbound_suppressions_flags.sql#L82-L87). |
+| Spam-score tracking shows how carriers see the numbers | [`reputation_scores`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0001_init.sql#L258-L266) is inserted with defaults (trust 80, delivery 99.00). The spam-score page reads that row. This tree has no writer that recomputes it from traffic. |
+| `/api/v1` places calls and sends messages | The routes exist. [`api_send_message`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0008_inbound_suppressions_flags.sql#L232-L234) inserts `status` `delivered`. [`api_create_call`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0003_api_templates_webhooks.sql#L134-L163) ignores `p_say` and inserts a completed call. |
+| Webhook auth is a shared secret, with Ed25519 on the roadmap | [`verifyWebhookSignature`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/app/api/telnyx/webhook/route.ts#L21-L38) checks HMAC-SHA256. The `telnyx-signature-ed25519` header is passed into that HMAC check. There is no Ed25519 verify. |
+| Next.js 16, React 19, Tailwind 4, Supabase, and a landing preference | [`package.json`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/package.json#L21-L54) pins Next 16.2.6, React 19.2.4, Tailwind 4, Base UI, and Supabase. [`setLandingPanel`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/actions/preferences.ts#L35-L44) writes `members.preferences.landing_panel`, except the demo path, which returns success without writing. |
+
+Route, title, URL, date, category, archived status, and non-featured setting
+are unchanged. `flagship` stays false. The three proof chips now say Mock,
+This browser, and Writes rows. No SignalRoute application code, site code,
+dependency, account, service, or setting was changed.
+
+This was source reading, not a build, test run, or sign-in. It does not
+establish that getsignalroute.com serves `31d30be`, that an active billing
+workspace can dial, or that a production Telnyx webhook verifies.
