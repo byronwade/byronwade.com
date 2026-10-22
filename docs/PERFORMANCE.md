@@ -26,8 +26,9 @@ The authoritative limits remain in the JSON file: FCP 2000ms, LCP 3000ms, TBT
 `docs/evidence/a11y-perf/home-budget.json`. Earlier project lane reports remain
 at `docs/evidence/projects-refresh/` and `docs/evidence/thorbis/`.
 A Lighthouse score alone cannot pass a failed resource or timing limit.
-Lighthouse 12 removed built-in budget enforcement; this runner checks the JSON
-limits itself instead of relying on an ignored CLI/config flag.
+Lighthouse 12 removed built-in budget enforcement, and Lighthouse 13 does not
+restore it. This runner checks the JSON limits itself instead of relying on an
+ignored CLI/config flag.
 
 `npm run build:analyze` enables the existing Next bundle analyzer. Development
 uses Turbopack; production uses Next webpack. Any splitting changes must satisfy
