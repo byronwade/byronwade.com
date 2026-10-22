@@ -1,10 +1,9 @@
 "use client";
 
-import { type MouseEvent, useEffect, useRef, useState } from "react";
+import { type MouseEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
 import { analytics } from "@/lib/analytics";
-import { Check, Download, Mail } from "@/lib/icons";
 import { fetchResumePdf, RESUME_PDF_FILENAME, shouldHandleResumeDownload } from "@/lib/resume-pdf";
 
 type CopyStatus = "idle" | "copied" | "failed";
@@ -18,9 +17,10 @@ const STATUS_TEXT: Record<CopyStatus, string> = {
 /**
  * The résumé's email line. The address is decoded after mount, so prerendered
  * HTML never contains it; the PDF route waits for `data-resume-email` before
- * printing so the downloaded copy does.
+ * printing so the downloaded copy does. The page passes its glyphs in, so their
+ * definitions stay out of the résumé's JavaScript.
  */
-export function CopyEmailButton() {
+export function CopyEmailButton({ icons }: { icons: { email: ReactNode; copied: ReactNode } }) {
 	const email = useRevealedEmail();
 	const [status, setStatus] = useState<CopyStatus>("idle");
 
@@ -49,11 +49,7 @@ export function CopyEmailButton() {
 				disabled={!email}
 				className="inline-flex min-h-11 cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand disabled:cursor-default"
 			>
-				{status === "copied" ? (
-					<Check className="size-4 text-brand" aria-hidden="true" />
-				) : (
-					<Mail className="size-4" aria-hidden="true" />
-				)}
+				{status === "copied" ? icons.copied : icons.email}
 				{email ? <span data-resume-email="">{email}</span> : <span>Email</span>}
 				<span className="sr-only">, copy to clipboard</span>
 			</button>
@@ -88,7 +84,7 @@ function saveResumePdf(blob: Blob) {
  * as a PDF. Without JavaScript, or with a modified click, the link still opens
  * the route and the server's Content-Disposition names a real PDF.
  */
-export function DownloadResumeButton() {
+export function DownloadResumeButton({ icon }: { icon: ReactNode }) {
 	const [phase, setPhase] = useState<DownloadPhase>("idle");
 	const pending = useRef<AbortController | null>(null);
 
@@ -127,7 +123,7 @@ export function DownloadResumeButton() {
 				variant="outline"
 				render={
 					<a aria-busy={phase === "pending"} href="/api/resume-pdf" onClick={onClick}>
-						<Download className="size-3.5" aria-hidden="true" />
+						{icon}
 						Download PDF
 					</a>
 				}

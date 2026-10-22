@@ -35,18 +35,17 @@ Features:
 - Client-side only rendering with hydration delay
 - Click-to-reveal functionality
 - Multiple display variants (link, text)
-- Icon support
 - Automatic mailto/tel link generation
 
 Usage:
 ```tsx
 import { ObfuscatedEmail, ObfuscatedPhone } from "@/components/ui/obfuscated-contact";
 
-// Email with icon
-<ObfuscatedEmail showIcon={true} variant="link" />
+// Email link
+<ObfuscatedEmail variant="link" />
 
 // Phone number
-<ObfuscatedPhone showIcon={false} variant="text" displayFormat={true} />
+<ObfuscatedPhone variant="text" displayFormat={true} />
 ```
 
 ### 3. Utility Functions

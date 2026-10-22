@@ -103,7 +103,10 @@ feedback without delivering a message or certifying a live provider.
   modules and Next's existing import optimizer resolve each consumer to its
   requested glyphs; this bounded sharing keeps route dependencies deferred
   without changing public imports or weights. The rendered home contract checks
-  the actual initial scripts for preview glyphs. React Compiler owns routine
+  the actual initial scripts for preview glyphs. The same kind of check covers every
+  published post, the résumé, and the contact page, so the share, envelope, download,
+  send, and spinner glyph definitions cannot drift back into those routes' initial
+  scripts (`tests/rendered/glyph-boundary.test.mjs`). React Compiler owns routine
   memoization; do not add manual memoization without a measured need.
 - The same import optimizer keeps unused common-barrel clients out of server-only
   homepage lists. The bounded sharing group also deduplicates Next link helpers
@@ -123,6 +126,51 @@ feedback without delivering a message or certifying a live provider.
   payload instead (`/projects/dits` HTML 62,389 to 64,471 bytes gzipped). Lighthouse's script transfer for a
   project page went from 209,005 to 200,663 bytes. This is a byte reduction;
   it did not measurably change LCP.
+- Client leaves elsewhere follow the same rule. The footer's email reveal no
+  longer imports glyphs for an icon option no caller used, so the envelope left
+  every page's layout chunk. The homepage contact button, the résumé's copy-email
+  and download buttons, and the contact submit button receive their glyphs from
+  server parents. Post share links to X and LinkedIn are server anchors; only
+  native share and copy link are client code. The lazily loaded inline contact
+  form, the success toast, and the Figma viewer still import glyphs
+  directly. The breadcrumb overflow dots are a server slot; see the measurement
+  below. Measured on production builds of `08b11de` and this change, initial
+  scripts and HTML summed per route and gzipped at level 9 (script counts
+  unchanged):
+
+  | Route | Initial scripts, gzip | HTML, gzip |
+  | --- | --- | --- |
+  | `/` | 212,473 → 211,079 (−1,394) | 20,256 → 20,341 (+85) |
+  | `/blog/nexstar-win-invoice-lose-customer` | 219,802 → 215,159 (−4,643) | 44,254 → 45,261 (+1,007) |
+  | `/resume` | 229,879 → 226,589 (−3,290) | 21,677 → 21,835 (+158) |
+  | `/contact` | 229,916 → 225,765 (−4,151) | 17,492 → 17,793 (+301) |
+  | `/projects/dits` | 235,033 → 234,185 (−848) | 30,131 → 29,828 (−303) |
+  | `/projects` | 213,707 → 212,859 (−848) | 22,188 → 22,171 (−17) |
+
+  This is a byte reduction only; LCP was not measured for it. Every rendered
+  glyph is now also in the page's HTML and RSC payload, so a toggled pair (copy
+  and copied, send and sending) costs HTML bytes even when one half is never
+  shown. Check the net before slotting a glyph into a route.
+  The breadcrumb overflow dots were the remaining glyph in the layout chunk.
+  The trigger now receives that glyph from the server layout, and the popover
+  loads with `React.lazy` so the fallback can draw the same slot. `next/dynamic`'s
+  loading option could not take one. Measured on production builds of `74a7678`
+  and this change, gzip level 9. Script counts did not change: home, the résumé,
+  the projects index, Dits, and the Nexstar post stay at 9; contact stays at 10.
+
+  | Route | Initial scripts, gzip | HTML, gzip |
+  | --- | --- | --- |
+  | `/` | 211,085 → 210,498 (−587) | 20,363 → 20,619 (+256) |
+  | `/blog/nexstar-win-invoice-lose-customer` | 215,165 → 213,459 (−1,706) | 45,284 → 45,384 (+100) |
+  | `/resume` | 226,594 → 226,007 (−587) | 21,860 → 21,971 (+111) |
+  | `/contact` | 225,776 → 225,189 (−587) | 17,818 → 17,923 (+105) |
+  | `/projects` | 212,857 → 211,151 (−1,706) | 22,205 → 22,310 (+105) |
+  | `/projects/dits` | 234,180 → 232,474 (−1,706) | 29,847 → 29,949 (+102) |
+
+  The sum of those two columns fell on every route. `DotsThreeIcon` left client
+  chunks entirely (one chunk, then none) and remains in the server build. The
+  larger script drop on the writing and project routes was measured and not
+  isolated to the glyph module alone. This is a byte reduction only.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.

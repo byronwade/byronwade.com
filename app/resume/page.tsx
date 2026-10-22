@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { getContactForStructuredData } from "@/lib/contact";
-import { ArrowRight, ExternalLink, MapPin } from "@/lib/icons";
+import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
@@ -213,7 +213,12 @@ export default function ResumePage() {
 						</div>
 
 						<div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-copy-14 text-muted-foreground">
-							<CopyEmailButton />
+							<CopyEmailButton
+								icons={{
+									email: <Mail className="size-4" aria-hidden="true" />,
+									copied: <Check className="size-4 text-brand" aria-hidden="true" />,
+								}}
+							/>
 							<span className="flex items-center gap-2">
 								<MapPin className="size-4" aria-hidden="true" />
 								Jasper, GA
@@ -255,7 +260,7 @@ export default function ResumePage() {
 									</Link>
 								}
 							/>
-							<DownloadResumeButton />
+							<DownloadResumeButton icon={<Download className="size-3.5" aria-hidden="true" />} />
 						</div>
 					</div>
 				</section>

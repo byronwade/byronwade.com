@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { CONTACT_ENCODED, decodeContact } from "@/lib/contact";
-import { Mail, Phone } from "@/lib/icons";
 
 // Component that only renders after client-side hydration
 const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
@@ -23,15 +22,10 @@ const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
 
 interface ObfuscatedEmailProps {
 	className?: string;
-	showIcon?: boolean;
 	variant?: "link" | "text";
 }
 
-export const ObfuscatedEmail = ({
-	className = "",
-	showIcon = false,
-	variant = "link",
-}: ObfuscatedEmailProps) => {
+export const ObfuscatedEmail = ({ className = "", variant = "link" }: ObfuscatedEmailProps) => {
 	// The decoded value is derived from `revealed`, so it does not need its own
 	// state or an effect to keep the two in sync. Rendering happens inside
 	// ClientOnlyContact, so `atob` always has a browser to run in.
@@ -46,7 +40,6 @@ export const ObfuscatedEmail = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						email
 					) : (
@@ -66,7 +59,6 @@ export const ObfuscatedEmail = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Mail className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
@@ -96,14 +88,12 @@ export const ObfuscatedEmail = ({
 interface ObfuscatedPhoneProps {
 	className?: string;
 	displayFormat?: boolean;
-	showIcon?: boolean;
 	variant?: "link" | "text";
 }
 
 /** @public Documented in docs/SPAM_PROTECTION.md. */
 export const ObfuscatedPhone = ({
 	className = "",
-	showIcon = false,
 	variant = "link",
 	displayFormat = true,
 }: ObfuscatedPhoneProps) => {
@@ -123,7 +113,6 @@ export const ObfuscatedPhone = ({
 		return (
 			<ClientOnlyContact>
 				<span className={className}>
-					{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 					{revealed ? (
 						displayPhone
 					) : (
@@ -143,7 +132,6 @@ export const ObfuscatedPhone = ({
 	return (
 		<ClientOnlyContact>
 			<span className={className}>
-				{showIcon && <Phone className="mr-2 inline h-4 w-4" />}
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}

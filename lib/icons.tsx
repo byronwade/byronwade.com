@@ -37,7 +37,6 @@ export { Moon } from "./icons/moon";
 export { MoreHorizontal } from "./icons/more-horizontal";
 export { OctagonXIcon } from "./icons/octagon-x-icon";
 export { PenLine } from "./icons/pen-line";
-export { Phone } from "./icons/phone";
 export { RefreshCw } from "./icons/refresh-cw";
 export { RotateCcw } from "./icons/rotate-ccw";
 export { Search } from "./icons/search";

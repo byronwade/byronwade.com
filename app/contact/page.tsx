@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Loader2, Send } from "@/lib/icons";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import ContactClient from "./contact-client";
@@ -21,7 +22,12 @@ export const metadata: Metadata = generateSEOMetadata({
 export default function ContactPage() {
 	return (
 		<Suspense fallback={null}>
-			<ContactClient />
+			<ContactClient
+				icons={{
+					send: <Send aria-hidden="true" className="size-4" />,
+					sending: <Loader2 aria-hidden="true" className="size-4 animate-spin" />,
+				}}
+			/>
 		</Suspense>
 	);
 }

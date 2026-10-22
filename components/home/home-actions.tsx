@@ -2,18 +2,18 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRevealedEmail } from "@/hooks/use-revealed-email";
-import { ArrowRight } from "@/lib/icons";
 
 const InlineContact = dynamic(
 	() => import("@/components/home/inline-contact").then((module) => module.InlineContact),
 	{ loading: () => <p role="status">Opening contact form…</p> }
 );
 
-// Existing contact flow retained within the Thorbis Showcase opening.
-export function HomeActions() {
+// Existing contact flow retained within the Thorbis Showcase opening. The arrow is
+// rendered by the server parent so its glyph definition stays out of home's JavaScript.
+export function HomeActions({ arrow }: { arrow: ReactNode }) {
 	const [contactState, setContactState] = useState<"idle" | "open" | "closed">("idle");
 	const contactOpen = contactState === "open";
 	const email = useRevealedEmail();
@@ -40,7 +40,7 @@ export function HomeActions() {
 						type="button"
 					>
 						Start a conversation
-						<ArrowRight aria-hidden="true" className="size-4" />
+						{arrow}
 					</Button>
 					<Link prefetch={false} className="link-action" href="/projects">
 						See selected work
