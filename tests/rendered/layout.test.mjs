@@ -39,11 +39,10 @@ async function localOnly(page, url) {
 	});
 }
 
+// Fonts change line breaks; reading a box afterwards forces a synchronous layout. No
+// animation frame: one of the two tabs is always in the background, where none fire.
 function settled(page) {
-	return page.evaluate(async () => {
-		await document.fonts.ready;
-		await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-	});
+	return page.evaluate(() => document.fonts.ready.then(() => undefined));
 }
 
 function measure(page) {
