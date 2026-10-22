@@ -4,10 +4,72 @@ import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
+import { SEARCH_QUERY_MAX } from "../../lib/search-match.ts";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
 
 const NO_MATCHES = /No matches/;
+
+test("search query summaries reflow at 200% text without losing results or native input", {
+	timeout: 120_000,
+}, async (context) => {
+	await withProductionServer(async (origin) => {
+		await withBrowser(context, { timeout: 15_000, protocolTimeout: 15_000 }, async (browser) => {
+			const page = await browser.newPage();
+			page.setDefaultTimeout(10_000);
+			page.setDefaultNavigationTimeout(20_000);
+			const client = await page.createCDPSession();
+			await client.send("Page.setFontSizes", { fontSizes: { standard: 32 } });
+			const cases = [320, 390, 1280].flatMap((width) =>
+				["light", "dark"].map((theme) => ({ width, theme }))
+			);
+			await cases.reduce(async (previous, { width, theme }) => {
+				await previous;
+				await context.test(`${width}px ${theme}: filename and unbroken query`, async () => {
+					await page.setViewport({ width, height: 900 });
+					const themeScript = await page.evaluateOnNewDocument((value) => {
+						localStorage.setItem("theme", value);
+					}, theme);
+					try {
+						await page.goto(`${origin}/search?q=claude_desktop_config.json`);
+						assert.equal(
+							await page.$eval("html", (html) => getComputedStyle(html).fontSize),
+							"32px"
+						);
+						assert.equal(
+							await page.$eval("html", (html) => html.classList.contains("dark")),
+							theme === "dark"
+						);
+						assert.ok(await page.$('main a[href="/projects/memoria"]'));
+						await page.evaluate(() => document.fonts.ready);
+						const measure = () =>
+							page.evaluate(() => ({
+								viewport: document.documentElement.clientWidth,
+								content: document.documentElement.scrollWidth,
+							}));
+						let geometry = await measure();
+						assert.ok(geometry.content <= geometry.viewport, JSON.stringify(geometry));
+						await page.focus("#site-search");
+						await page.keyboard.down("Control");
+						await page.keyboard.press("a");
+						await page.keyboard.up("Control");
+						const longQuery = "z".repeat(SEARCH_QUERY_MAX);
+						await page.keyboard.type(longQuery);
+						await Promise.all([page.waitForNavigation(), page.keyboard.press("Enter")]);
+						assert.equal(new URL(page.url()).searchParams.get("q"), longQuery);
+						assert.equal(await page.$eval("#site-search", (input) => input.value), longQuery);
+						assert.match(await page.$eval("main", (main) => main.textContent), NO_MATCHES);
+						await page.evaluate(() => document.fonts.ready);
+						geometry = await measure();
+						assert.ok(geometry.content <= geometry.viewport, JSON.stringify(geometry));
+					} finally {
+						await page.removeScriptToEvaluateOnNewDocument(themeScript.identifier);
+					}
+				});
+			}, Promise.resolve());
+		});
+	});
+});
 
 test("production search finds readable inline identifiers and keeps native GET submission", {
 	timeout: 120_000,
