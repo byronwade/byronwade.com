@@ -1,13 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "highlight.js/styles/github-dark.css";
-
-/* The highlight theme made code.hljs a nested horizontal scroller that keyboard
-   users could not reach. The focusable <pre> in components/common/markdown.tsx
-   owns scrolling instead. Unlayered, like the imported theme, so it overrides it. */
-pre code.hljs {
-  overflow-x: visible;
-}
 
 /* thorbis-fonts:start */
 
@@ -690,6 +682,22 @@ pre code.hljs {
   --motion-base: var(--motion-overlay);
   --motion-slow: var(--motion-overlay);
   --motion-drawer: var(--motion-overlay);
+
+  /* Code well palette. Thorbis's code well is one colour; these roles add only
+     what reading code needs, each from an existing Thorbis token, and each holds
+     WCAG AA (4.5:1) on --thorbis-code-bg in both themes
+     (tests/code-palette.test.mjs). */
+  --code-comment: var(--thorbis-marker);
+  --code-keyword: var(--thorbis-accent);
+  --code-string: var(--thorbis-forest);
+  --code-constant: var(--thorbis-burnt);
+}
+
+/* Forest and burnt are light-theme inks; on the dark well green is the success
+   token and burnt is lifted toward the foreground, keeping each role's hue. */
+.dark {
+  --code-string: var(--thorbis-success);
+  --code-constant: color-mix(in oklab, var(--thorbis-burnt) 60%, var(--thorbis-fg));
 }
 
 @layer base {
@@ -788,6 +796,61 @@ pre code.hljs {
      The 44px box is the target; the type stays at the 14px content role. */
   .link-action {
     @apply inline-flex min-h-11 items-center gap-1.5 font-medium text-copy-14;
+  }
+
+  /* Syntax roles inside the markdown code well (rehype-highlight classes). The
+     well itself, and the default code colour, live on the <pre>. No bold, no
+     italic: Geist Mono ships 400/500 upright only, and weight above 500 is out. */
+  .hljs-comment,
+  .hljs-code,
+  .hljs-formula,
+  .hljs-meta,
+  .hljs-quote {
+    color: var(--code-comment);
+  }
+
+  .hljs-keyword,
+  .hljs-doctag,
+  .hljs-template-tag,
+  .hljs-type,
+  .hljs-built_in,
+  .hljs-selector-tag,
+  .hljs-name,
+  .hljs-section,
+  .hljs-bullet,
+  .hljs-variable.language_,
+  .hljs-meta .hljs-keyword {
+    color: var(--code-keyword);
+  }
+
+  .hljs-string,
+  .hljs-regexp,
+  .hljs-addition,
+  .hljs-meta .hljs-string {
+    color: var(--code-string);
+  }
+
+  .hljs-number,
+  .hljs-literal,
+  .hljs-symbol,
+  .hljs-attr,
+  .hljs-attribute,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-selector-attr,
+  .hljs-selector-class,
+  .hljs-selector-id,
+  .hljs-selector-pseudo,
+  .hljs-deletion {
+    color: var(--code-constant);
+  }
+
+  .hljs-title,
+  .hljs-title.class_,
+  .hljs-title.function_,
+  .hljs-strong,
+  .hljs-section {
+    font-weight: 500;
   }
 }
 
