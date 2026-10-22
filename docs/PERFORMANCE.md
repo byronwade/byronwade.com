@@ -132,9 +132,8 @@ feedback without delivering a message or certifying a live provider.
   and download buttons, and the contact submit button receive their glyphs from
   server parents. Post share links to X and LinkedIn are server anchors; only
   native share and copy link are client code. The lazily loaded inline contact
-  form, the success toast, and the Figma viewer still import glyphs
-  directly. The breadcrumb overflow dots are a server slot; see the measurement
-  below. Measured on production builds of `08b11de` and this change, initial
+  form and the success toast still import glyphs directly. The Figma viewer
+  and the breadcrumb overflow dots are server slots; see the measurements below. Measured on production builds of `08b11de` and this change, initial
   scripts and HTML summed per route and gzipped at level 9 (script counts
   unchanged):
 
@@ -171,6 +170,27 @@ feedback without delivering a message or certifying a live provider.
   chunks entirely (one chunk, then none) and remains in the server build. The
   larger script drop on the writing and project routes was measured and not
   isolated to the glyph module alone. This is a byte reduction only.
+  Home's prerender still carries that dots graphic in the layout payload, because
+  the trail is hidden in the client and the layout is shared. Removing the graphic
+  from the saved homepage HTML and gzipping again at level 9 saved 90 bytes
+  (20,456 to 20,366) on the build of `b7900cf`. Splitting the shared layout to
+  omit it would not put the glyph back into client JavaScript, and it is not
+  worth that split for 90 bytes.
+- The Figma file page's client chunk imported the monitor and image glyphs.
+  On `b7900cf` that chunk was 45,155 bytes, 16,538 gzipped at level 9. The icon
+  definition modules alone are 648 and 992 bytes gzipped, and each carries all
+  six weights. The viewer now receives those two glyphs as server slots, same as
+  the project preview. The same chunk is 39,581 bytes, 14,701 gzipped (−1,837).
+  Homepage, contact, résumé, projects, Dits, and the Nexstar post kept 9 scripts
+  (contact 10) and the same summed script gzip. Their HTML gzip moved by at most
+  5 bytes, the new chunk hash in the script URL. `MonitorIcon` and `ImageIcon`
+  left client chunks and remain in the server build. The success toast was
+  measured and left alone: its five
+  glyphs live in the chunks downloaded after a successful send (two dynamic
+  copies, about 13 KB and 14 KB gzipped, not in the homepage or contact initial
+  scripts). Slotting them would add the graphics to the homepage payload, and
+  the homepage is the page sitting on the loading limit. The contact form's send
+  glyph stays in the chunk that loads when the form opens.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.

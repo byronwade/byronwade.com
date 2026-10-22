@@ -12,6 +12,8 @@ const POST_GLYPHS =
 	/(?<![A-Za-z0-9])(?:XLogo|LinkedinLogo|ShareNetwork|Copy|Check)Icon(?![A-Za-z0-9])/;
 const RESUME_GLYPHS = /(?<![A-Za-z0-9])(?:Envelope|DownloadSimple)Icon(?![A-Za-z0-9])/;
 const CONTACT_GLYPHS = /(?<![A-Za-z0-9])(?:PaperPlaneTilt|SpinnerGap)Icon(?![A-Za-z0-9])/;
+const FIGMA_GLYPHS = /(?<![A-Za-z0-9])(?:Monitor|Image)Icon(?![A-Za-z0-9])/;
+const DESIGN_VIEWER = "Design viewer";
 const SHARE_ON_X = /Share on X/;
 const SHARE_ON_LINKEDIN = /Share on LinkedIn/;
 const COPY_LINK = /Copy link/;
@@ -85,11 +87,39 @@ test("the contact page keeps its send and spinner glyphs out of its initial scri
 	);
 });
 
+test("the Figma viewer keeps its monitor and image glyphs out of client chunks", async () => {
+	const chunkDirectory = new URL("../../.next/static/chunks/", import.meta.url);
+	const files = (await readdir(chunkDirectory, { recursive: true })).filter((file) =>
+		file.endsWith(".js")
+	);
+	assert.ok(files.length > 0, "Run npm run build before checking client chunks");
+	const leaks = [];
+	let viewerText = false;
+	for (const file of files) {
+		// One chunk at a time so a large client graph is not held all at once.
+		// biome-ignore lint/performance/noAwaitInLoops: sequential reads bound memory on the shared machine
+		const source = await readFile(new URL(file, chunkDirectory), "utf8");
+		if (FIGMA_GLYPHS.test(source)) {
+			leaks.push(file);
+		}
+		if (source.includes(DESIGN_VIEWER)) {
+			viewerText = true;
+		}
+	}
+	assert.equal(viewerText, true, "The design viewer text stays in the client bundle");
+	assert.deepEqual(
+		leaks,
+		[],
+		"Monitor and image glyph definitions belong on the server slot, not in a client chunk"
+	);
+});
+
 test("slotted glyph names remain in the server build, so a client leak stays detectable", async () => {
 	const patterns = [
 		["post share glyphs", POST_GLYPHS],
 		["résumé glyphs", RESUME_GLYPHS],
 		["contact glyphs", CONTACT_GLYPHS],
+		["Figma viewer glyphs", FIGMA_GLYPHS],
 	];
 	const found = new Set();
 	const files = (await readdir(SERVER, { recursive: true })).filter((file) => file.endsWith(".js"));
