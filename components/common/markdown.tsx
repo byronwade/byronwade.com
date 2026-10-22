@@ -115,13 +115,12 @@ export function Markdown({ content, className }: MarkdownProps) {
 							</code>
 						);
 					},
+					// Thorbis markdownPre: the code well wraps long lines instead of scrolling, so
+					// it never becomes a scroll container that needs its own tab stop.
 					pre: ({ children, ...props }) => (
-						// https://www.w3.org/WAI/standards-guidelines/act/rules/0ssw9k/
 						<pre
-							className="my-2 overflow-x-auto rounded-lg border border-border bg-muted p-4 text-copy-13"
+							className="wrap-anywhere my-2 whitespace-pre-wrap rounded-2xl border border-border bg-(--thorbis-code-bg) px-4 py-3.5 font-mono text-(--thorbis-code-fg) text-copy-14"
 							{...props}
-							// biome-ignore lint/a11y/noNoninteractiveTabindex: Native scroll containers require keyboard focus.
-							tabIndex={0}
 						>
 							{children}
 						</pre>

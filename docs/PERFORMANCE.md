@@ -132,9 +132,9 @@ feedback without delivering a message or certifying a live provider.
   and download buttons, and the contact submit button receive their glyphs from
   server parents. Post share links to X and LinkedIn are server anchors; only
   native share and copy link are client code. The lazily loaded inline contact
-  form, the success toast, the breadcrumb overflow trigger (its `next/dynamic`
-  loading fallback cannot take a slot) and the Figma viewer still import glyphs
-  directly. Measured on production builds of `08b11de` and this change, initial
+  form, the success toast, and the Figma viewer still import glyphs
+  directly. The breadcrumb overflow dots are a server slot; see the measurement
+  below. Measured on production builds of `08b11de` and this change, initial
   scripts and HTML summed per route and gzipped at level 9 (script counts
   unchanged):
 
@@ -151,6 +151,26 @@ feedback without delivering a message or certifying a live provider.
   glyph is now also in the page's HTML and RSC payload, so a toggled pair (copy
   and copied, send and sending) costs HTML bytes even when one half is never
   shown. Check the net before slotting a glyph into a route.
+  The breadcrumb overflow dots were the remaining glyph in the layout chunk.
+  The trigger now receives that glyph from the server layout, and the popover
+  loads with `React.lazy` so the fallback can draw the same slot. `next/dynamic`'s
+  loading option could not take one. Measured on production builds of `74a7678`
+  and this change, gzip level 9. Script counts did not change: home, the résumé,
+  the projects index, Dits, and the Nexstar post stay at 9; contact stays at 10.
+
+  | Route | Initial scripts, gzip | HTML, gzip |
+  | --- | --- | --- |
+  | `/` | 211,085 → 210,498 (−587) | 20,363 → 20,619 (+256) |
+  | `/blog/nexstar-win-invoice-lose-customer` | 215,165 → 213,459 (−1,706) | 45,284 → 45,384 (+100) |
+  | `/resume` | 226,594 → 226,007 (−587) | 21,860 → 21,971 (+111) |
+  | `/contact` | 225,776 → 225,189 (−587) | 17,818 → 17,923 (+105) |
+  | `/projects` | 212,857 → 211,151 (−1,706) | 22,205 → 22,310 (+105) |
+  | `/projects/dits` | 234,180 → 232,474 (−1,706) | 29,847 → 29,949 (+102) |
+
+  The sum of those two columns fell on every route. `DotsThreeIcon` left client
+  chunks entirely (one chunk, then none) and remains in the server build. The
+  larger script drop on the writing and project routes was measured and not
+  isolated to the glyph module alone. This is a byte reduction only.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.

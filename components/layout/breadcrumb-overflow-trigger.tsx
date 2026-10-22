@@ -1,12 +1,16 @@
-import type { ComponentProps } from "react";
-import { MoreHorizontal } from "@/lib/icons";
+import type { ComponentProps, ReactNode } from "react";
 
 /**
  * The collapsed-trail control. It renders alone until its first activation, so
  * a long trail does not download the popover graph on page load. The loaded
  * popover reuses it as its trigger, keeping one appearance and one name.
+ * The dots glyph arrives as a server slot, so its definition stays out of the
+ * layout chunk. The loading fallback can render the same slot.
  */
-export function BreadcrumbOverflowTrigger(props: ComponentProps<"button">) {
+export function BreadcrumbOverflowTrigger({
+	icon,
+	...props
+}: ComponentProps<"button"> & { icon: ReactNode }) {
 	return (
 		<button
 			aria-label="Show hidden breadcrumb levels"
@@ -14,7 +18,7 @@ export function BreadcrumbOverflowTrigger(props: ComponentProps<"button">) {
 			type="button"
 			{...props}
 		>
-			<MoreHorizontal className="size-4" />
+			{icon}
 		</button>
 	);
 }

@@ -330,6 +330,14 @@ than restyling them.
   quote: upright body text set in 16px from a 2px rule in the neutral
   border colour, on the body's own rhythm. Never italic, and never an accent
   edge (the rules reject a coloured border on a quote).
+- **Code.** A fenced block is Thorbis's markdown code well: the `code-bg`
+  surface, a 1px neutral border, the large radius, 16px by 14px padding and
+  Geist Mono at the 14px role. Long lines wrap rather than scroll, so the well
+  is never a separate scroll stop. Syntax colour is four quiet roles built from
+  Thorbis tokens (`--code-comment`, `--code-keyword`, `--code-string`,
+  `--code-constant` in `app/globals.css`) plus weight 500 for titles; no bold,
+  no italic, no token backgrounds. Every role must hold 4.5:1 on the well in
+  both themes, and `tests/code-palette.test.mjs` fails the build if one stops.
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
   illustration.
