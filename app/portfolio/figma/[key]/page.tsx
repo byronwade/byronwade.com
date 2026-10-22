@@ -64,7 +64,7 @@ function DesignFileBreadcrumb({ current }: { current: string }) {
 			<ol className="flex flex-wrap items-center gap-x-2">
 				<li>
 					<Link
-						className="inline-flex min-h-11 items-center hover:text-foreground"
+						className="inline-flex min-h-11 items-center transition-colors hover:text-foreground"
 						href="/portfolio"
 					>
 						Portfolio

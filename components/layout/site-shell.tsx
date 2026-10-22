@@ -13,10 +13,10 @@ interface SiteShellProps {
 	profile: PageProfile;
 	/**
 	 * `narrow` is the Thorbis document measure (42rem), shared with the header
-	 * and the footer. `wide` is reserved for work that needs the room: the
-	 * homepage's experience-beside-product composition, and pages with a live
-	 * artifact. On an artifact page only the artifact spans; its text sits in
-	 * `measureClass` so it keeps the header's edge.
+	 * and the footer, and every route sits on it, the homepage included. `wide`
+	 * is reserved for pages with a live artifact (project preview, Figma file):
+	 * only the artifact spans, and its text sits in `measureClass` so it keeps
+	 * the header's edge.
 	 */
 	width?: "narrow" | "wide";
 }

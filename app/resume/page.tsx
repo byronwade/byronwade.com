@@ -160,6 +160,24 @@ const certifications: { name: string; year: string; pending?: boolean }[] = [
 	{ name: "Project Management", year: "2019" },
 ];
 
+/**
+ * A date range in the narrow period column. Each end stays whole, so a long
+ * range breaks after the dash ("Apr 2025 –" / "Nov 2025") instead of
+ * stranding a lone year; the text itself is unchanged.
+ */
+function Period({ value }: { value: string }) {
+	const [start, end] = value.split(" – ");
+	if (end === undefined) {
+		return value;
+	}
+	return (
+		<>
+			<span className="whitespace-nowrap">{start} –</span>{" "}
+			<span className="whitespace-nowrap">{end}</span>
+		</>
+	);
+}
+
 export default function ResumePage() {
 	return (
 		<>
@@ -250,9 +268,12 @@ export default function ResumePage() {
 								className="flex flex-col gap-x-6 gap-y-1 sm:flex-row print:break-inside-avoid"
 							>
 								<p className="text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
-									{job.period}
+									<Period value={job.period} />
 								</p>
-								<div className="flex min-w-0 flex-1 flex-col gap-1 print:gap-0.5">
+								{/* No column gap: the company line's own 44px row (the link's target,
+								    kept in flow so it never covers the role or the summary) already
+								    spaces the three lines 12px apart on every role, linked or not. */}
+								<div className="flex min-w-0 flex-1 flex-col print:gap-0.5">
 									<h3 className="flex flex-wrap items-center gap-2 font-medium text-copy-16 text-foreground">
 										{job.role}
 										{job.current && <StatusPill tone="success">Current</StatusPill>}

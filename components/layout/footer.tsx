@@ -4,6 +4,9 @@ import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { publicProfiles } from "@/lib/site";
 import { navItems } from "./nav-config";
 
+const signOffLinkClass =
+	"inline-flex min-h-11 min-w-11 items-center justify-center px-4 transition-colors hover:text-foreground";
+
 export default function Footer() {
 	return (
 		<footer className="w-full px-4 pb-10 sm:px-5 print:hidden">
@@ -35,7 +38,7 @@ export default function Footer() {
 				<nav aria-label="Footer" className="grid grid-cols-2 content-start gap-x-4">
 					{navItems.map((item) => (
 						<Link
-							className="flex min-h-11 items-center text-copy-14 text-muted-foreground hover:text-foreground"
+							className="flex min-h-11 items-center text-copy-14 text-muted-foreground transition-colors hover:text-foreground"
 							href={item.href}
 							key={item.href}
 						>
@@ -43,7 +46,7 @@ export default function Footer() {
 						</Link>
 					))}
 					<Link
-						className="flex min-h-11 items-center text-copy-14 text-muted-foreground hover:text-foreground"
+						className="flex min-h-11 items-center text-copy-14 text-muted-foreground transition-colors hover:text-foreground"
 						href="/contact"
 					>
 						Contact
@@ -52,11 +55,15 @@ export default function Footer() {
 			</div>
 			<div className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-between gap-x-6 gap-y-3 text-copy-12 text-muted-foreground">
 				<p>© {new Date().getFullYear()} Byron Wade</p>
-				<div className="flex flex-wrap items-center gap-x-5">
+				{/* Every label gets the same inline padding and nothing else spaces them,
+				    so the gaps read equal; 44px is only a floor ("X" alone needs it).
+				    The group's matching negative margin puts the first and last label
+				    text on the measure's edges. */}
+				<div className="-mx-4 flex flex-wrap items-center">
 					{publicProfiles.map((item) => (
 						<a
 							key={item.href}
-							className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
+							className={signOffLinkClass}
 							href={item.href}
 							rel="noopener noreferrer"
 							target="_blank"
@@ -65,16 +72,10 @@ export default function Footer() {
 							<span className="sr-only"> (opens in a new tab)</span>
 						</a>
 					))}
-					<Link
-						className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
-						href="/privacy"
-					>
+					<Link className={signOffLinkClass} href="/privacy">
 						Privacy
 					</Link>
-					<Link
-						className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-foreground"
-						href="/terms"
-					>
+					<Link className={signOffLinkClass} href="/terms">
 						Terms
 					</Link>
 				</div>

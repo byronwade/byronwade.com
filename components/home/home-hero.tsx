@@ -54,18 +54,20 @@ function ThorbisSpecimen() {
 					system, grounded in the work of a service business.
 				</p>
 			</div>
+			{/* On the measure each stage reads as one ledger line: number, stage, what it
+			    carries. Phones stack the detail under the stage. */}
 			<ol className="flex flex-col gap-0.5">
 				{CHAIN.map(({ stage, detail }, index) => (
 					<li
-						className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 odd:bg-muted"
+						className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 odd:bg-muted sm:grid-cols-[auto_5.5rem_minmax(0,1fr)]"
 						key={stage}
 					>
 						<span className="text-copy-12 text-muted-foreground tabular-nums">
 							{String(index + 1).padStart(2, "0")}
 						</span>
-						<span className="flex min-w-0 flex-col">
-							<span className="font-medium text-copy-14 text-foreground">{stage}</span>
-							<span className="text-copy-13 text-muted-foreground">{detail}</span>
+						<span className="font-medium text-copy-14 text-foreground">{stage}</span>
+						<span className="col-start-2 text-copy-13 text-muted-foreground sm:col-start-auto">
+							{detail}
 						</span>
 					</li>
 				))}
@@ -77,36 +79,34 @@ function ThorbisSpecimen() {
 export async function HomeHero() {
 	const projects = await getProjects();
 	return (
-		<section aria-labelledby="home-title" className="flex flex-col gap-10">
-			<div className="grid items-start gap-10 md:grid-cols-5 md:gap-12">
-				<div className="flex flex-col items-start gap-5 md:col-span-3">
-					<p className="text-copy-13 text-muted-foreground">
-						Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
-					</p>
-					<h1
-						className="max-w-xl text-balance font-medium text-heading-32 tracking-tight"
-						id="home-title"
-					>
-						I ran the service business. Now I build the software it needed.
-					</h1>
-					<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
-						I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
-						reputation: I learned the problems firsthand. Today I turn those lessons into products
-						for the trades.
-					</p>
-					<HomeActions />
-					<Link
-						prefetch={false}
-						className="link-action font-normal text-copy-13"
-						href="/blog/scaling-plumbing-business"
-					>
-						Read what went wrong, and what I learned
-					</Link>
-				</div>
-				<div className="md:col-span-2">
-					<ThorbisSpecimen />
-				</div>
+		// Claim, then the product it led to, then the facts behind the claim: one
+		// column on the shared measure, so the title keeps the header's edge.
+		<section aria-labelledby="home-title" className="flex flex-col gap-8">
+			<div className="flex flex-col items-start gap-5">
+				<p className="text-copy-13 text-muted-foreground">
+					Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
+				</p>
+				<h1
+					className="max-w-xl text-balance font-medium text-heading-32 tracking-tight"
+					id="home-title"
+				>
+					I ran the service business. Now I build the software it needed.
+				</h1>
+				<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
+					I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
+					reputation: I learned the problems firsthand. Today I turn those lessons into products for
+					the trades.
+				</p>
+				<HomeActions />
+				<Link
+					prefetch={false}
+					className="link-action font-normal text-copy-13"
+					href="/blog/scaling-plumbing-business"
+				>
+					Read what went wrong, and what I learned
+				</Link>
 			</div>
+			<ThorbisSpecimen />
 			<dl className="grid grid-cols-3 gap-4">
 				<Fact label="Year-two revenue, before closing" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
