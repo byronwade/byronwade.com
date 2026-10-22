@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { ReactNode } from "react";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,6 @@ import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
-import { Loader2, Send } from "@/lib/icons";
 
 const ContactSentToast = dynamic(
 	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
@@ -19,7 +19,12 @@ const ContactSentToast = dynamic(
 );
 
 // Guided profile: one focused task, with persistent feedback and recoverable drafts.
-export default function ContactClient() {
+// The page renders the submit glyphs, so their definitions stay out of this form's JavaScript.
+export default function ContactClient({
+	icons,
+}: {
+	icons: { send: ReactNode; sending: ReactNode };
+}) {
 	const { formData, isSubmitting, status, fieldError, handleChange, handleSubmit } =
 		useContactForm();
 
@@ -137,11 +142,7 @@ export default function ContactClient() {
 
 				<div className="flex flex-wrap items-center gap-4">
 					<Button className="gap-2" disabled={isSubmitting} type="submit">
-						{isSubmitting ? (
-							<Loader2 aria-hidden="true" className="size-4 animate-spin" />
-						) : (
-							<Send aria-hidden="true" className="size-4" />
-						)}
+						{isSubmitting ? icons.sending : icons.send}
 						Send message
 					</Button>
 

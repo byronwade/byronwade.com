@@ -25,10 +25,7 @@ interface ObfuscatedEmailProps {
 	variant?: "link" | "text";
 }
 
-export const ObfuscatedEmail = ({
-	className = "",
-	variant = "link",
-}: ObfuscatedEmailProps) => {
+export const ObfuscatedEmail = ({ className = "", variant = "link" }: ObfuscatedEmailProps) => {
 	// The decoded value is derived from `revealed`, so it does not need its own
 	// state or an effect to keep the two in sync. Rendering happens inside
 	// ClientOnlyContact, so `atob` always has a browser to run in.
