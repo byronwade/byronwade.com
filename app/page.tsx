@@ -3,7 +3,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 
 export default function HomePage() {
 	return (
-		<SiteShell profile="showcase" width="wide">
+		<SiteShell profile="showcase">
 			<HomeHero />
 			<HomeProjects />
 			<HomeBlog />

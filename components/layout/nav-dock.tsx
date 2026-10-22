@@ -122,7 +122,7 @@ export function NavDock({
 									aria-expanded={open}
 									aria-controls={menuId}
 									aria-label={open ? "Close menu" : "Open menu"}
-									className="group inline-flex @min-[40rem]/site-header:hidden size-11 items-center justify-center rounded-full text-muted-foreground outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+									className="group inline-flex @min-[40rem]/site-header:hidden size-11 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
 								>
 									<span
 										aria-hidden="true"
@@ -178,7 +178,7 @@ export function NavDock({
 										href={profile.href}
 										target="_blank"
 										rel="noreferrer"
-										className="inline-flex min-h-11 min-w-11 items-center rounded-lg px-2.5 text-copy-13 text-muted-foreground hover:bg-muted hover:text-foreground"
+										className="inline-flex min-h-11 min-w-11 items-center rounded-lg px-2.5 text-copy-13 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 									>
 										{profile.name}
 										<span className="sr-only"> (opens in a new tab)</span>

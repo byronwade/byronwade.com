@@ -51,8 +51,9 @@ touch. Use plain first-person language. Keep claims qualified: the plumbing
 company’s revenue does not erase its closure. Do not copy the trades product’s
 workflow vocabulary into unrelated personal content.
 
-The homepage is compact claim-and-proof: experience beside the current product,
-then documented work and writing. Content renders immediately, including with
+The homepage is compact claim-and-proof: the experience, then the current
+product as a framed specimen, then documented work and writing, all on the
+shared 42rem measure. Content renders immediately, including with
 JavaScript disabled. No viewport-height spacer, bottom-aligned hero, opacity-zero
 entrance or scroll reveal may hide that content. The header follows Thorbis's fixed,
 52px single row, with space reserved before hydration. Narrow screens use a
@@ -257,7 +258,7 @@ states its move, and the move does not transplant to another route:
 
 | Route | Organizing move |
 | --- | --- |
-| `/` | Experience beside the current product, then qualified proof, documented work and recent writing; no viewport-height preamble |
+| `/` | Experience, then the current product it led to, then qualified proof, documented work and recent writing, in one column on the measure; no viewport-height preamble |
 | `/projects` | A ranked index where each row carries its own evidence: problem, outcome, status |
 | `/projects/[slug]` | The live artifact beside the story, the reader can see the thing while reading about it |
 | `/portfolio` | Raw open-source activity, pulled live, sorted by signal |
@@ -286,8 +287,12 @@ These are the site's one way of doing each thing; routes compose them rather
 than restyling them.
 
 - **Measure.** `SiteShell` keeps the header's 42rem measure with the gutter
-  outside it, so title, header and footer share an edge. `width="wide"` is
-  only for the homepage composition and pages with a live artifact (project
+  outside it, so title, header and footer share an edge on every route,
+  the homepage included. Thorbis keeps its chrome at 42rem everywhere and
+  sets its own homepage on that measure; it widens only for a gallery of
+  work. So the home hero is one column (claim, product specimen, facts)
+  rather than a 64rem split whose title sat 176px left of the header at
+  1440. `width="wide"` is only for pages with a live artifact (project
   preview, Figma file). On an artifact page only the artifact spans: the
   title, prose, details and foot sit in `measureClass`, centred on the
   header's axis, and the case-study outline docks in the right gutter at xl
