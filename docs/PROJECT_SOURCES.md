@@ -778,3 +778,35 @@ The old phase list, the "real customer data" and "community trust" advantages,
 and the claim that every architectural choice was made for field management are
 removed because this commit does not contain them. No reason for the AI removal
 was added, because the deletion commit still does not state one.
+
+## Thorbis published company price, October 22, 2026
+
+`content/blog/building-thorbis.md` said Thorbis currently publishes a base price
+of $299 per company per month with unlimited users, then computed
+`$299 × 12 = $3,588` and a `$18,012` gap against a hypothetical
+`$150` per user. Those two results are arithmetic on the old base price. The
+`$150` example stays labeled hypothetical.
+
+The public pages below were read in full on October 22, 2026. Each one that
+states a company price states **$99 per company per month**, unlimited people,
+and a **$15** monthly credit toward metered usage. A web index still quoted
+$299 from older copies of the contact, press, and ServiceM8 pages. Those three
+pages were opened again and do not say $299. This pass did not open every URL
+on the site.
+
+| Page | What it posted |
+| --- | --- |
+| [thorbis.com](https://thorbis.com) | "$99 / company · unlimited people." Usage is billed on top for phone, AI, payroll delivery, sites, and fleet, with $15 included. The competitor row is dated "Month-to-month prices as of August 2026" and says "$99 per company is our published price." The call to action is a waitlist. |
+| [thorbis.com/pricing](https://thorbis.com/pricing) | Title "Thorbis Pricing: $99 Per Company, Unlimited People." Core is $99 per company per month. The $15 credit covers phone, AI, payroll delivery, sites, and fleet, then each rate is listed. A sample month for two people and four receipts a day, with the shop number, texts, recording, vision, OCR, and Brain on, and the website and fleet off, totals $194.45 after the $15 credit. Enterprise is "From $100,000" per parent per year. Implementation is "From $2,500" and quoted. Signup is a waitlist. |
+| [thorbis.com/press](https://thorbis.com/press) | Fast facts: $99 / company / month, unlimited people, $15 usage credit. |
+| [thorbis.com/vs/servicem8](https://thorbis.com/vs/servicem8) | Thorbis posted at $99 per company, plus metered usage with $15 included. |
+| [thorbis.com/industries](https://thorbis.com/industries) | "$99 per company, per month. Unlimited people." Same usage sentence as the homepage. |
+| [thorbis.com/contact](https://thorbis.com/contact) | No price. Email contacts only. |
+
+The post now uses $99, recomputes `$99 × 12 = $1,188` and
+`$21,600 - $1,188 = $20,412`, names the $15 credit, the waitlist, and the
+$194.45 sample month, and links the pricing page. The publication date stays
+2025-11-18. `updated` moves from 2026-08-07 to 2026-10-22. The ServiceTitan
+filing figures elsewhere in the post were not re-checked. The spacing example
+"$299 / month" in `docs/THORBIS-DESIGN-RULES.md` is a non-breaking-space
+illustration, not a price, and was left as written.
