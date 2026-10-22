@@ -26,6 +26,19 @@ For the same reason `NavDock` marks no section current when the root segment is
 Theme is light/dark via `next-themes` (light default) with a toggle in
 the header.
 
+### Local browser verification
+
+Rendered browser tests use `withBrowser` in `tests/fixtures/browser.mjs` to own
+launch, unexpected process exit and cleanup. An owned browser that exits before
+cleanup fails the test even if its page assertions passed; an exit already
+observed when launch resolves prevents the page callback from running. The
+fixture records the PID, exit code and signal, preserves an existing page
+failure, and combines it with any cleanup failure instead of replacing it.
+Exit during requested cleanup is expected. The existing bounded shutdown and
+owned-tree fallback remain separate from page assertions and must not be
+replaced with retries or ignored errors. `tests/browser-cleanup.test.mjs`
+protects these outcomes without launching Chrome.
+
 ## Homepage
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
