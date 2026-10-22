@@ -138,7 +138,7 @@ export async function closeBrowser(browser, context) {
 	}
 }
 
-/** Runs a test against an owned browser; a failed shutdown never hides the test's own failure. */
+/** Owns the browser lifetime; unexpected exit and cleanup cannot silently pass a test. */
 export async function withBrowser(context, options, use) {
 	const browser = await puppeteer.launch({
 		executablePath:
@@ -149,11 +149,19 @@ export async function withBrowser(context, options, use) {
 	const child = browser.process();
 	let lostBrowser;
 	const recordLoss = (code, signal) => {
-		lostBrowser = { pid: child.pid, code, signal };
+		lostBrowser = new Error(
+			`Owned browser exited before cleanup: ${JSON.stringify({ pid: child.pid, code, signal })}`
+		);
 	};
 	child?.once("exit", recordLoss);
+	if (child && !isRunning(child)) {
+		recordLoss(child.exitCode, child.signalCode);
+	}
 	let outcome;
 	try {
+		if (lostBrowser) {
+			throw lostBrowser;
+		}
 		outcome = { value: await use(browser) };
 	} catch (error) {
 		outcome = { error };
@@ -161,7 +169,10 @@ export async function withBrowser(context, options, use) {
 	child?.off("exit", recordLoss);
 	if (lostBrowser) {
 		// "Target closed" alone cannot tell a crash or an outside kill from a test fault.
-		context.diagnostic(`Owned browser exited before cleanup: ${JSON.stringify(lostBrowser)}`);
+		context.diagnostic(lostBrowser.message);
+		if (!("error" in outcome)) {
+			outcome = { error: lostBrowser };
+		}
 	}
 	try {
 		await closeBrowser(browser, context);

@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser, withBrowser } from "../fixtures/browser.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const PREVIEW = 'section[aria-label$=" site preview"]';
 const RESIZE = `${PREVIEW} button[aria-label="Resize preview width"]`;
@@ -595,15 +594,8 @@ test("A stalled project preview offers recovery and keyboard Retry loads the ima
 test("Project preview recovery actions fit the narrow viewport", {
 	timeout: 120_000,
 }, async (context) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-			timeout: 30_000,
-			protocolTimeout: 15_000,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(20_000);
 			await page.setViewport({ width: 320, height: 844, isMobile: true, hasTouch: true });
@@ -662,24 +654,15 @@ test("Project preview recovery actions fit the narrow viewport", {
 				}
 			}, Promise.resolve());
 			assert.deepEqual(interceptionErrors, [], "Every intercepted request settled successfully");
-		} finally {
-			await closeBrowser(browser, context);
-		}
-	});
+		})
+	);
 });
 
 test("Project preview does not ask script-enabled visitors to enable JavaScript before hydration", {
 	timeout: 120_000,
 }, async (context) => {
-	await withProductionServer(async (url) => {
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-			timeout: 30_000,
-			protocolTimeout: 15_000,
-		});
-		try {
+	await withProductionServer((url) =>
+		withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
 			const page = await browser.newPage();
 			page.setDefaultTimeout(20_000);
 			await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
@@ -722,8 +705,6 @@ test("Project preview does not ask script-enabled visitors to enable JavaScript 
 			assert.ok(!preview.text.includes("Enable JavaScript"), "The no-script notice stays hidden");
 			assert.ok(preview.link, "The native site link is visible before hydration");
 			assert.deepEqual(interceptionErrors, [], "Every intercepted request settled successfully");
-		} finally {
-			await closeBrowser(browser, context);
-		}
-	});
+		})
+	);
 });

@@ -11,6 +11,7 @@ const NO_OWNED_PROCESS = /no owned process/i;
 const PROCESS_DID_NOT_EXIT = /owned.*process.*exit/i;
 const SIGNAL_FAILED = /could not signal owned browser process 123/i;
 const LOST_BROWSER = /exited before cleanup.*"pid":456.*"code":4294967295/;
+const BROWSER_EXITED = /Owned browser exited before cleanup/;
 
 function stalledClose() {
 	return new Promise(() => {
@@ -481,6 +482,150 @@ test("withBrowser reports an owned browser that exits before cleanup", async (t)
 	);
 	assert.match(diagnostics.join("\n"), LOST_BROWSER);
 	assert.equal(child.listenerCount("exit"), 0);
+});
+
+for (const [code, signal] of [
+	[0, null],
+	[1, null],
+	[null, "SIGKILL"],
+]) {
+	test(`withBrowser fails if the browser exits before a passing callback finishes (${code}/${signal})`, async (t) => {
+		const child = Object.assign(new EventEmitter(), {
+			pid: 456,
+			exitCode: null,
+			signalCode: null,
+		});
+		const close = t.mock.fn(() => Promise.resolve());
+		t.mock.method(puppeteer, "launch", () => Promise.resolve({ process: () => child, close }));
+		await assert.rejects(
+			withBrowser(t, {}, () => {
+				child.exitCode = code;
+				child.signalCode = signal;
+				child.emit("exit", code, signal);
+				return "page assertions passed";
+			}),
+			(error) => {
+				assert.match(error.message, BROWSER_EXITED);
+				assert.ok(error.message.includes(JSON.stringify({ pid: 456, code, signal })));
+				return true;
+			}
+		);
+		assert.equal(close.mock.callCount(), 1);
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
+
+test("withBrowser rejects a process that already exited when launch resolves", async (t) => {
+	const child = Object.assign(new EventEmitter(), { pid: 456, exitCode: 1, signalCode: null });
+	const close = t.mock.fn(() => Promise.resolve());
+	t.mock.method(puppeteer, "launch", () => Promise.resolve({ process: () => child, close }));
+	const use = t.mock.fn(() => "passed");
+	await assert.rejects(withBrowser(t, {}, use), BROWSER_EXITED);
+	assert.equal(use.mock.callCount(), 0, "do not exercise a browser that already exited");
+	assert.equal(close.mock.callCount(), 1);
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+test("withBrowser retains unexpected browser exit and cleanup failures together", async (t) => {
+	const child = Object.assign(new EventEmitter(), { pid: 456, exitCode: null, signalCode: null });
+	const cleanup = new Error("profile cleanup rejected");
+	t.mock.method(puppeteer, "launch", () =>
+		Promise.resolve({
+			process: () => child,
+			close: () => Promise.reject(cleanup),
+		})
+	);
+	await assert.rejects(
+		withBrowser(t, {}, () => {
+			child.exitCode = 1;
+			child.emit("exit", 1, null);
+			return "passed";
+		}),
+		(error) => {
+			assert.ok(error instanceof AggregateError);
+			assert.match(error.errors[0].message, BROWSER_EXITED);
+			assert.equal(error.errors[1], cleanup);
+			assert.equal(error.cause, cleanup);
+			return true;
+		}
+	);
+});
+
+test("withBrowser accepts the owned exit during requested cleanup", async (t) => {
+	const child = Object.assign(new EventEmitter(), { pid: 456, exitCode: null, signalCode: null });
+	t.mock.method(puppeteer, "launch", () =>
+		Promise.resolve({
+			process: () => child,
+			close: () => {
+				child.exitCode = 0;
+				child.emit("exit", 0, null);
+				return Promise.resolve();
+			},
+		})
+	);
+	assert.equal(await withBrowser(t, {}, () => "passed"), "passed");
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+test("withBrowser keeps the page failure when unexpected exit and cleanup also fail", async (t) => {
+	const child = Object.assign(new EventEmitter(), { pid: 456, exitCode: null, signalCode: null });
+	const failure = new Error("page assertion failed before Chrome exited");
+	const cleanup = new Error("profile cleanup failed");
+	t.mock.method(puppeteer, "launch", () =>
+		Promise.resolve({ process: () => child, close: () => Promise.reject(cleanup) })
+	);
+	const diagnostics = [];
+	await assert.rejects(
+		withBrowser({ diagnostic: (message) => diagnostics.push(message) }, {}, () => {
+			child.exitCode = 1;
+			child.emit("exit", 1, null);
+			return Promise.reject(failure);
+		}),
+		(error) => {
+			assert.ok(error instanceof AggregateError);
+			assert.deepEqual(error.errors, [failure, cleanup]);
+			assert.equal(error.cause, cleanup);
+			return true;
+		}
+	);
+	assert.match(diagnostics.join("\n"), BROWSER_EXITED);
+	assert.equal(child.listenerCount("exit"), 0);
+});
+
+test("a real owned child exit cannot pass withBrowser after its assertions finish", {
+	timeout: 30_000,
+}, async (t) => {
+	const child = childProcess.spawn(
+		process.execPath,
+		["-e", "process.send('ready'); process.on('message', () => process.exit(0))"],
+		{
+			windowsHide: true,
+			stdio: ["ignore", "ignore", "ignore", "ipc"],
+			timeout: 20_000,
+			killSignal: "SIGKILL",
+		}
+	);
+	const exited = once(child, "exit");
+	try {
+		await once(child, "message", { signal: t.signal });
+		t.mock.method(puppeteer, "launch", () =>
+			Promise.resolve({ process: () => child, close: () => Promise.resolve() })
+		);
+		await assert.rejects(
+			withBrowser(t, {}, async () => {
+				child.send("finish");
+				await exited;
+				return "assertions passed";
+			}),
+			BROWSER_EXITED
+		);
+		assert.equal(child.exitCode, 0);
+	} finally {
+		if (child.exitCode === null && child.signalCode === null) {
+			child.kill();
+		}
+		await exited;
+	}
 });
 
 test("a real owned child can exit during a rejected browser close", {
