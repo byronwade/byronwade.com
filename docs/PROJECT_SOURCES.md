@@ -838,3 +838,21 @@ Setup." The article headings match. Routes, categories, dates, and statuses are
 unchanged. `tests/project-taglines.test.mjs` and
 `tests/rendered/projects-index.test.mjs` fail if a project loses its tagline or
 puts a subtitle after a comma.
+
+## ServiceTitan fiscal 2026 metrics, October 22, 2026
+
+The earlier price review left these figures unchecked. The
+[fiscal 2026 Form 10-K](https://www.sec.gov/Archives/edgar/data/1638826/000163882626000028/ttan-20260131.htm)
+now supports the clarified paragraph in `content/blog/building-thorbis.md`:
+
+- **Our Customers, p.14:** approximately 10,800 Active Customers at January 31, 2026;
+  parent organizations billed within three months, above $10,000 annualized.
+- **Overview, p.64:** $82.1 billion GTV during the year ended January 31, 2026;
+  customer invoice dollars, distinct from collected payments or vendor revenue.
+
+Printed page references were checked in the
+[company-hosted filing PDF](https://investors.servicetitan.com/static-files/84e016f3-9a75-4199-ad42-b3babe1bb3dd).
+The values stay unchanged. The article separates the dated customer count from
+annual volume and defines both. Publication and update dates stay unchanged;
+the article already records today's update. No newer-period figures are mixed
+into this historical comparison.
