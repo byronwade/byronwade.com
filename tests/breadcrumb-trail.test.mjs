@@ -5,6 +5,9 @@ import { test } from "node:test";
 
 registerHooks({
 	resolve(specifier, context, nextResolve) {
+		if (specifier === "next/cache") {
+			return nextResolve("next/cache.js", context);
+		}
 		if (specifier.startsWith("@/lib/")) {
 			return nextResolve(new URL(`../${specifier.slice(2)}.ts`, import.meta.url).href, context);
 		}

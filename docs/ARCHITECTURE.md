@@ -98,6 +98,18 @@ link destinations stay out; inline code and visible URLs remain searchable.
 `lib/search-match.ts` collapses every whitespace run before applying the shared
 120-character query limit. `tests/search.test.mjs` protects these boundaries.
 
+In production, `buildPageSearchIndex` caches the computed corpus with Next's
+existing Data Cache. It reads and validates the files first, then passes the
+complete project and published-post values as cache arguments. Bodies, metadata,
+additions, removals, draft changes and repaired files therefore select their
+current corpus without waiting for a timer or manual invalidation. Development
+bypasses this cache, including draft previews. The header keeps its compact,
+body-free index. The `page-search-corpus-v1` key is a format revision, not a cache
+tag; bump it when the mapping, static page entries or shared Markdown grammar
+changes, because the Data Cache can survive deployments. No external cache tag
+or refresh endpoint is involved. The rendered search regression checks reuse
+in the real local cache and content freshness through production HTTP requests.
+
 ### Resume PDF export
 
 `/api/resume-pdf` prints `/resume` only after a successful HTTP navigation.

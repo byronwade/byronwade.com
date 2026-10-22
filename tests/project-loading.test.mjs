@@ -16,6 +16,9 @@ after(async () => {
 
 registerHooks({
 	resolve(specifier, context, nextResolve) {
+		if (specifier === "next/cache") {
+			return nextResolve("next/cache.js", context);
+		}
 		if (specifier === "server-only") {
 			return nextResolve(new URL("./fixtures/server-only.mjs", import.meta.url).href, context);
 		}
@@ -60,6 +63,46 @@ const { resolveCapture } = await import("../lib/screenshot-capture.ts");
 const { default: sitemap } = await import("../app/sitemap.ts");
 const healthy = ["newer", "older", "undated"];
 const invalid = ["broken-yaml", "scalar-yaml", "sequence-yaml", "unreadable"];
+
+test("development search follows draft body and metadata edits immediately", async (context) => {
+	const originalEnvironment = process.env.NODE_ENV;
+	const postPath = join(directory, "content", "blog", "local-draft.md");
+	const errors = [];
+	context.mock.method(console, "error", (...args) => errors.push(args));
+	process.env.NODE_ENV = "development";
+	try {
+		await writeFile(
+			postPath,
+			"---\ntitle: Local draft\ndate: 2026-10-22\ndraft: true\n---\nfirstDraftToken\n"
+		);
+		const first = (await buildPageSearchIndex()).find(
+			(entry) => entry.href === "/blog/local-draft"
+		);
+		assert.equal(first?.label, "Local draft");
+		assert.ok(first?.keywords.includes("firstDraftToken"));
+		await writeFile(
+			postPath,
+			"---\ntitle: Edited draft\ndate: 2026-10-22\ndraft: true\n---\nsecondDraftToken\n"
+		);
+		const second = (await buildPageSearchIndex()).find(
+			(entry) => entry.href === "/blog/local-draft"
+		);
+		assert.equal(second?.label, "Edited draft");
+		assert.ok(second?.keywords.includes("secondDraftToken"));
+		assert.ok(!second?.keywords.includes("firstDraftToken"));
+		const header = (await buildSearchIndex()).find((entry) => entry.href === "/blog/local-draft");
+		assert.equal(header?.label, "Edited draft");
+		assert.ok(!header?.keywords.includes("secondDraftToken"));
+		assert.ok(errors.length > 0, "unrelated malformed project fixtures remain isolated");
+	} finally {
+		await rm(postPath, { force: true });
+		if (originalEnvironment === undefined) {
+			delete process.env.NODE_ENV;
+		} else {
+			process.env.NODE_ENV = originalEnvironment;
+		}
+	}
+});
 
 test("a failed project does not remove healthy siblings or their date ordering", async (context) => {
 	const errors = [];

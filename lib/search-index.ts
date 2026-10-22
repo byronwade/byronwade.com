@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { type BlogPost, getBlogPosts } from "@/lib/blog";
 import { getProjects, type Project } from "@/lib/projects";
 import { searchPlainText } from "@/lib/search-text";
@@ -80,6 +81,16 @@ function fromCorpus(projects: Project[], posts: BlogPost[], includeBody: boolean
 	];
 }
 
+// Loader results key every body, metadata and publication change; keep file reads
+// outside the cache so a repaired or newly published document is visible immediately.
+// Bump this revision when the mapping, PAGES or shared Markdown grammar changes:
+// Next's Data Cache can survive deployments as well as individual requests.
+const cachedPageCorpus = unstable_cache(
+	async (projects: Project[], posts: BlogPost[]) => fromCorpus(projects, posts, true),
+	["page-search-corpus-v1"],
+	{ revalidate: false }
+);
+
 /**
  * Names, summaries, and tags for the header palette.
  * Every page ships this list, so it does not include article text.
@@ -96,5 +107,7 @@ export async function buildSearchIndex(): Promise<SearchEntry[]> {
  */
 export async function buildPageSearchIndex(): Promise<SearchEntry[]> {
 	const [projects, posts] = await Promise.all([getProjects(), getBlogPosts()]);
-	return fromCorpus(projects, posts, true);
+	return process.env.NODE_ENV === "production"
+		? cachedPageCorpus(projects, posts)
+		: fromCorpus(projects, posts, true);
 }
