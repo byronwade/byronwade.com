@@ -2,7 +2,7 @@
 // Showcase adaptation; provenance and sync: docs/THORBIS-DESIGN-PORT.md.
 import Link from "next/link";
 import { Sheet } from "@/components/layout/sheet";
-import { ArrowUpRight } from "@/lib/icons";
+import { ArrowRight, ArrowUpRight } from "@/lib/icons";
 import { getProjects } from "@/lib/projects";
 import { HomeActions } from "./home-actions";
 
@@ -97,7 +97,7 @@ export async function HomeHero() {
 					reputation: I learned the problems firsthand. Today I turn those lessons into products for
 					the trades.
 				</p>
-				<HomeActions />
+				<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
 				<Link
 					prefetch={false}
 					className="link-action font-normal text-copy-13"

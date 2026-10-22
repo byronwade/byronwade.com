@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 const HOME_HEADING = /<h1[^>]*>I ran the service business/;
@@ -13,7 +13,9 @@ const INTER_PRELOAD =
 	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/UcCo3FwrK3iLTcviYwY\.woff2")[^>]*>/;
 const INITIAL_SCRIPT = /<script[^>]+src="\/_next\/([^"]+)"/g;
 const NON_CLIENT_GLYPHS =
-	/(?:DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
+	/(?:ArrowRight|Envelope|DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
+// The send glyph stays in the contact form chunk, which loads only when the form opens.
+const LAZY_CLIENT_GLYPH = "PaperPlaneTiltIcon";
 const DEFERRED_DIALOG = /trap-focus/;
 
 test("homepage content and navigation are present before hydration", async () => {
@@ -47,9 +49,23 @@ test("homepage initial scripts exclude shell glyphs, preview glyphs and closed d
 			source: await readFile(new URL(`../../.next/${file}`, import.meta.url), "utf8"),
 		}))
 	);
+	const chunkDirectory = new URL("../../.next/static/chunks/", import.meta.url);
+	const allChunks = (await readdir(chunkDirectory, { recursive: true })).filter((file) =>
+		file.endsWith(".js")
+	);
+	const lazyGlyphFound = await Promise.all(
+		allChunks.map(async (file) =>
+			(await readFile(new URL(file, chunkDirectory), "utf8")).includes(LAZY_CLIENT_GLYPH)
+		)
+	);
 	assert.ok(
-		chunks.some(({ source }) => source.includes("ArrowRightIcon")),
-		"The client contact-action glyph must remain detectable for this boundary check"
+		lazyGlyphFound.includes(true),
+		"The contact form's send glyph must remain detectable for this boundary check"
+	);
+	assert.deepEqual(
+		chunks.filter(({ source }) => source.includes(LAZY_CLIENT_GLYPH)).map(({ file }) => file),
+		[],
+		"The contact form and its glyphs load when the form opens, not with the homepage"
 	);
 	assert.deepEqual(
 		chunks.filter(({ source }) => NON_CLIENT_GLYPHS.test(source)).map(({ file }) => file),

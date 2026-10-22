@@ -20,11 +20,7 @@ export default function Footer() {
 					</p>
 					{/* Two 44px targets stacked flush: the boxes already space them. */}
 					<div className="flex flex-col items-start">
-						<ObfuscatedEmail
-							className="min-h-11 text-copy-14 text-foreground"
-							showIcon={false}
-							variant="link"
-						/>
+						<ObfuscatedEmail className="min-h-11 text-copy-14 text-foreground" variant="link" />
 						<a
 							className="link-underline inline-flex min-h-11 items-center text-copy-13"
 							href="https://design.thorbis.com"
