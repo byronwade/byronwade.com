@@ -569,3 +569,49 @@ dependency, account, service, or setting was changed.
 This was source reading, not a build, test run, or sign-in. It does not
 establish that getsignalroute.com serves `31d30be`, that an active billing
 workspace can dial, or that a production Telnyx webhook verifies.
+
+## Impact Marine Group site claims, October 21, 2026
+
+The Impact Marine Group case study now describes the WordPress site that the
+live domain serves under a custom theme named `impact`, whose footer reads
+"Designed & Developed by Byron Wade". The live site answered every request on
+October 21, 2026 with a Cloudflare challenge (HTTP 403), including a separate
+web reader. The challenge was not bypassed, so the claims below are dated to
+Internet Archive captures, not to the site today. The theme source is not
+public, so none of this is a source-level claim.
+
+| Capture | What it shows |
+| --- | --- |
+| [Home, 2025-03-23](https://web.archive.org/web/20250323182202/https://impactmarinegroup.com/) | The earlier dealer-website platform (`/clients/` and `/sms-chat/` assets), no credit to Byron. Captures from October 2024 to this date look the same. |
+| [Home, 2025-04-09](https://web.archive.org/web/20250409034254/https://impactmarinegroup.com/) | First capture of the WordPress `impact` theme, with the footer credit. The switch happened between these two captures. |
+| [Home, 2026-02-12](https://web.archive.org/web/20260212210915/https://impactmarinegroup.com/) | Full-width looping video (`impactlogo.mp4`) behind the white "Make an Impact!" headline; blue primary buttons; Viaggio Pontoons, MB Sports, Tige and ATX named; used boats described as inspected; footer line about "impactful memories". |
+| [About, 2026-01-15](https://web.archive.org/web/20260115151103/http://impactmarinegroup.com/about/) | "We are boaters." and "From one boater to another"; over 10,000 sq ft of shop space; factory-certified technicians and the engine list (Indmar, Ilmor, PCM, Yamaha, Suzuki, Mercury, Mercruiser, Volvo Penta); fourteen Georgia lakes served. |
+| [Services, 2026-02-12](https://web.archive.org/web/20260212211905/https://impactmarinegroup.com/services/) | Nine services, each linking to its own page (winterization, fiberglass repair, engine repair and others). |
+| [Tige brand page, 2026-01-15](https://web.archive.org/web/20260115135753/https://impactmarinegroup.com/boat-manufacturer/tige/) and [a boat page, 2026-02-12](https://web.archive.org/web/20260212215548/https://impactmarinegroup.com/boat/2023-tige-24rzx-208-hours/) | Manufacturer pages list that brand's boats. Each boat has its own page in the site template with stock number, specs, price and status. |
+
+| Earlier claim | Correction |
+| --- | --- |
+| Pages optimized for Lake Lanier, Lake Allatoona and Lake Burton | No lake pages appear in the archived captures. The lakes are a list on the About page. The article now says that. |
+| Deep "mini-sites" for Tige, ATX, Viaggio and MB Sports, ranking for specific models | Archived manufacturer pages are inventory listings. Keyword pages such as `/tige-boats-georgia` and `/winterization-boats-georgia` exist only in [March 2025 captures](https://web.archive.org/web/20250323181519/https://impactmarinegroup.com/tige-boats-georgia) of the earlier platform, with no credit to Byron, so they are not attributed to this build. No ranking claim remains. |
+| An inventory "feed" in place of a DMS iframe | Captures show each boat as a page in the site's own template, with no listing iframe. They cannot show how listings get into WordPress, so the word "feed" is gone. |
+| "10,000 sq ft service center", "certified Mercury mechanics" | Now the About page's wording: over 10,000 sq ft of shop space, factory-certified technicians, Mercury among the engines listed. |
+| "Emotional connection happens in the first 2 seconds", "infinitely more valuable", traffic that converts, longer visits, sales closed before a visit | No measurement supports these. They are removed or stated as reasoning, following the Wade's Plumbing correction above. The psychology sections are marked as design rationale. |
+
+The public repository
+[byronwade/impactmarinegroup.com](https://github.com/byronwade/impactmarinegroup.com)
+(created 2024-10-11, not archived, no license) holds a separate Next.js rebuild:
+Sanity and then Payload CMS on `main` at
+[`6063c85`](https://github.com/byronwade/impactmarinegroup.com/tree/6063c85234a4ee93e783199f57a66f3ff9f85dbd)
+(2025-01-30), and a `payload` branch six commits ahead at
+[`e129e43`](https://github.com/byronwade/impactmarinegroup.com/tree/e129e430e20e7de729638201e29a2615a5fa8930)
+(2025-02-07). No archived capture shows that build on the domain. The article
+does not link the repository, so the project page shows no Source button that
+would point readers at code the live site does not run.
+
+Route, title, URL, date, category, archived grouping and non-featured setting
+are unchanged. The 2023-11-01 date is not supported by anything found: the
+first archived home page capture (August 2024) was a 404, the repository was
+created in October 2024, the WordPress theme appeared in spring 2025, and the
+article was added to this site on 2025-12-01. It stays as an owner question.
+This was archive and source reading only; no sign-in, search ranking, traffic
+or sales data was consulted.
