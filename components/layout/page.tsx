@@ -71,7 +71,9 @@ export function Prose({ children, className }: { children: ReactNode; className?
 				"[&_h2]:mt-5 [&_h2]:font-heading [&_h2]:font-medium [&_h2]:text-foreground [&_h2]:text-heading-20 [&_h2]:tracking-tight",
 				"[&_strong]:font-medium [&_strong]:text-foreground",
 				"[&_ul]:flex [&_ul]:list-disc [&_ul]:flex-col [&_ul]:gap-2 [&_ul]:pl-5",
-				"[&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:decoration-muted-foreground/40 [&_a]:underline-offset-[3px] [&_a]:transition-colors hover:[&_a]:decoration-foreground",
+				// The link-underline recipe for links in static JSX prose; hover belongs to each link,
+				// not to the article, or hovering anywhere in the text would darken every underline.
+				"[&_a:hover]:decoration-foreground [&_a]:font-medium [&_a]:text-foreground [&_a]:underline [&_a]:decoration-(--thorbis-link-decoration) [&_a]:decoration-from-font [&_a]:underline-offset-2 [&_a]:transition-colors",
 				className
 			)}
 		>

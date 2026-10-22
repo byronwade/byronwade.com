@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, content-date, and front-matter regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -469,7 +469,12 @@ required locally before publishing. Contact changes also run `npm test`; after a
 production build, `npm run test:rendered` checks native contact submit semantics
 and the portfolio client bundle boundary, visible writing dates against their
 machine-readable values, and that `/resume` is prerendered without contact details
-and keeps its controls and the footer out of print. Content dates use the existing `safeFormatDate` /
+and keeps its controls and the footer out of print. `tests/rendered/layout.test.mjs`
+loads every prerendered route plus search results, the 404 and a Figma file, and
+fails if the `main h1`, header and footer left edges differ by more than 1px at
+1280 and 1440, or if any route scrolls sideways at 320, 360 or 390.
+`tests/code-palette.test.mjs` resolves `app/globals.css` in both themes and fails
+when any syntax colour drops below 4.5:1 on the code well. Content dates use the existing `safeFormatDate` /
 `safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw
 UTC-midnight strings, which can shift the calendar day and year group.
 `readContentMatter` returns front matter as `unknown` values, so a loader that

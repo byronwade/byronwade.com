@@ -14,4 +14,4 @@
  * the touch target (DESIGN.md §3.3).
  */
 export const pillLinkClass =
-	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full bg-secondary px-3.5 font-medium text-copy-13 text-foreground shadow-(--shadow-button) transition-colors hover:bg-muted focus-ring";
+	"inline-flex min-h-11 min-w-11 items-center gap-1.5 rounded-full bg-secondary px-3.5 font-medium text-copy-13 text-foreground shadow-(--shadow-button) transition-colors hover:bg-muted";

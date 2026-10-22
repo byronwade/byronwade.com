@@ -784,7 +784,7 @@
 @layer components {
   .link-underline,
   .link-action {
-    @apply text-foreground underline decoration-muted-foreground/40 underline-offset-[3px] transition-colors hover:decoration-foreground;
+    @apply text-foreground underline decoration-(--thorbis-link-decoration) decoration-from-font underline-offset-2 transition-colors hover:decoration-foreground;
   }
 
   /* A link inside a sentence stays inline on the sentence's baseline (Thorbis
@@ -895,9 +895,6 @@
     left: 1rem;
     top: 1rem;
   }
-  .focus-ring {
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
-  }
 
 }
 
@@ -923,10 +920,12 @@
 /* Dark action label uses the source canvas to meet AA on the lifted blue. */
 .dark { --brand-foreground: var(--thorbis-bg); }
 
-/* Thorbis focus contract outranks reset utilities such as outline-none. */
+/* Thorbis focus contract, the only focus indicator: a 2px outline in the focus
+   token, 2px off the control, following its radius. Unlayered, so it outranks
+   reset utilities such as outline-none; components add no ring of their own. */
 :focus-visible {
   outline: 2px solid var(--ring);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 @media (forced-colors: active) {
   :focus-visible { outline-color: Highlight; }

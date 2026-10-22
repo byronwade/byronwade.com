@@ -11,7 +11,10 @@ export default function Footer() {
 	return (
 		<footer className="w-full px-4 pb-10 sm:px-5 print:hidden">
 			{/* The sign-off keeps the header's 42rem measure (Thorbis site-footer). */}
-			<div className="mx-auto grid max-w-2xl gap-8 border-border border-t pt-10 sm:grid-cols-[1.5fr_1fr]">
+			<div
+				className="mx-auto grid max-w-2xl gap-8 border-border border-t pt-10 sm:grid-cols-[1.5fr_1fr]"
+				data-site-footer
+			>
 				<div className="flex max-w-sm flex-col items-start gap-3">
 					<p className="font-medium text-heading-16">Byron Wade</p>
 					<p className="text-body text-copy-14">

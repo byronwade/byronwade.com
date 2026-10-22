@@ -45,7 +45,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 					) : (
 						<button
 							onClick={handleReveal}
-							className="inline-flex min-h-11 items-center underline hover:no-underline"
+							className="link-underline inline-flex min-h-11 items-center"
 							type="button"
 						>
 							Click to reveal email
@@ -62,7 +62,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
-						className="inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-primary"
+						className="link-underline inline-flex min-h-11 items-center"
 						// Additional protection: use JavaScript to build the href
 						onClick={(e) => {
 							e.preventDefault();
@@ -74,7 +74,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 				) : (
 					<button
 						onClick={handleReveal}
-						className="inline-flex min-h-11 items-center text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
+						className="link-underline inline-flex min-h-11 items-center"
 						type="button"
 					>
 						Click to reveal email
@@ -118,7 +118,7 @@ export const ObfuscatedPhone = ({
 					) : (
 						<button
 							onClick={handleReveal}
-							className="inline-flex min-h-11 items-center underline hover:no-underline"
+							className="link-underline inline-flex min-h-11 items-center"
 							type="button"
 						>
 							Click to reveal phone
@@ -135,7 +135,7 @@ export const ObfuscatedPhone = ({
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}
-						className="inline-flex min-h-11 items-center underline underline-offset-4 transition-colors hover:text-primary"
+						className="link-underline inline-flex min-h-11 items-center"
 						onClick={(e) => {
 							e.preventDefault();
 							window.location.href = `tel:${phone}`;
@@ -146,7 +146,7 @@ export const ObfuscatedPhone = ({
 				) : (
 					<button
 						onClick={handleReveal}
-						className="inline-flex min-h-11 items-center text-primary underline transition-colors hover:text-primary/80 hover:no-underline"
+						className="link-underline inline-flex min-h-11 items-center"
 						type="button"
 					>
 						Click to reveal phone

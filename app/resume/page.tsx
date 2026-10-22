@@ -187,7 +187,19 @@ export default function ResumePage() {
 			<SiteShell className="print:max-w-none print:gap-6 print:p-0" profile="evidence">
 				<header className="w-full">
 					<div className="flex w-full flex-col gap-6 print:gap-3">
-						<div className="flex items-start gap-5">
+						{/* The name starts the measure like every other page title; the portrait
+						    closes the row instead of pushing the h1 off the shared left edge. */}
+						<div className="flex items-start justify-between gap-5">
+							<div className="flex flex-col gap-1 pt-1">
+								<h1 className="font-medium font-signature text-foreground text-heading-32">
+									Byron Wade
+								</h1>
+								{/* Each role stays whole, so a narrow screen breaks at the dot, not inside a title. */}
+								<p className="text-body text-copy-16">
+									<span className="whitespace-nowrap">Founder at Thorbis</span> ·{" "}
+									<span className="whitespace-nowrap">Full Stack Developer</span>
+								</p>
+							</div>
 							<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
 								<Image
 									alt="Byron Wade"
@@ -197,12 +209,6 @@ export default function ResumePage() {
 									height={64}
 									priority
 								/>
-							</div>
-							<div className="flex flex-col gap-1 pt-1">
-								<h1 className="font-medium font-signature text-foreground text-heading-32">
-									Byron Wade
-								</h1>
-								<p className="text-body text-copy-16">Founder at Thorbis · Full Stack Developer</p>
 							</div>
 						</div>
 
