@@ -1,15 +1,16 @@
 ---
-title: "Dits, Media-First Version Control"
+title: "Dits: Media-First Version Control"
 url: "https://dits.byronwade.com"
 category: "Hobby"
 type: "hobby"
 date: 2025-12-09
 excerpt: "A local-first Rust version-control alpha for code and large media: Git-backed text history plus content-addressed binary chunks. Remote sync is still planned."
 status: "Archived"
+tagline: "media-first version control"
 featured: false
 ---
 
-# Dits, Media-First Version Control
+# Dits: Media-First Version Control
 
 Dits is my experiment in versioning projects that mix code with large media
 files. The working part is local history: text goes into an embedded Git store,

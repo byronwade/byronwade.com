@@ -810,3 +810,31 @@ $194.45 sample month, and links the pricing page. The publication date stays
 filing figures elsewhere in the post were not re-checked. The spacing example
 "$299 / month" in `docs/THORBIS-DESIGN-RULES.md` is a non-breaking-space
 illustration, not a price, and was left as written.
+
+## Project list names and taglines, October 22, 2026
+
+The `/projects` list shows each title up to its first colon, then the
+tagline. Eight earlier-work pages had no tagline, and Dits and Wormhole used a
+comma instead of a colon, so their whole title showed as the name in the list,
+the breadcrumb, and search. No source was re-checked for this change. Each new
+tagline only rewords the page's own excerpt or opening, which the sections
+above already checked, and adds no claim.
+
+| Page | New tagline | Wording it comes from |
+| --- | --- | --- |
+| Memoria | hidden coupling, from git history | Article: "Reveals hidden coupling by mining git history". |
+| Rebuzzle | AI-made daily puzzles | Excerpt: "a staged AI pipeline that plans, checks, and scores each daily puzzle". |
+| ReactPress | the WordPress admin, in React | Excerpt: "The WordPress admin screens rebuilt as React pages". The field-management aim is left out because it was never built. |
+| Impact Marine Group | a boat dealership website | Excerpt: "A marine dealership website"; opening: "a custom WordPress theme … for the dealership". |
+| Mushroom Cultivation Supplier | a Shopify storefront | Excerpt: "a Next.js storefront … Shopify holds the catalog". No field-management wording, as the excerpt rules it out. |
+| Content Management System | a front-end CMS prototype | Excerpt: "A front-end CMS prototype". |
+| Dits | media-first version control | The existing title, "Media-First Version Control". |
+| Wormhole | a peer-to-peer folder mount | Excerpt: "A Rust peer-to-peer folder mount". |
+
+Titles changed only in punctuation: "Dits, Media-First Version Control" is now
+"Dits: Media-First Version Control", and "Wormhole, Mount Any Folder. Any
+Computer. No Setup." is now "Wormhole: Mount Any Folder. Any Computer. No
+Setup." The article headings match. Routes, categories, dates, and statuses are
+unchanged. `tests/project-taglines.test.mjs` and
+`tests/rendered/projects-index.test.mjs` fail if a project loses its tagline or
+puts a subtitle after a comma.

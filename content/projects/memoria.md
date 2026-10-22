@@ -5,6 +5,7 @@ category: "Product"
 date: 2025-12-04
 excerpt: "An MCP server that keeps AI from breaking your code by exposing hidden file dependencies through fast, local git forensics."
 status: "Archived"
+tagline: "hidden coupling, from git history"
 featured: false
 ---
 

@@ -5,6 +5,7 @@ category: "Product"
 date: 2024-12-01
 excerpt: "Building Rebuzzle: a staged AI pipeline that plans, checks, and scores each daily puzzle before it's published."
 status: "Archived"
+tagline: "AI-made daily puzzles"
 featured: false
 ---
 

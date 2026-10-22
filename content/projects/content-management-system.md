@@ -4,6 +4,7 @@ category: "Hobby Project"
 date: 2023-08-01
 excerpt: "A front-end CMS prototype with a visual database schema builder, built as groundwork for a Field Management System for modern agriculture."
 status: "Archived"
+tagline: "a front-end CMS prototype"
 featured: false
 ---
 
