@@ -54,6 +54,14 @@ checks these fallbacks on every published project with a preview, and
 notice stays hidden.
 Recovery content can grow beyond the capture dimensions; `project-preview.test.mjs`
 checks that both actions fit at 320px with 100% and 200% root text sizing.
+The browser's URL-resolution request has a ten-second deadline covering headers
+and the JSON body, so a stalled response reaches the existing Retry and Open site
+fallback. This request only reads local metadata; the separate image route retains
+the provider's longer capture deadline. Concurrent requests for one target and size
+share a resolution, successful URLs are cached, and failures release the pending
+entry so Retry starts a fresh request. `tests/screenshot-client.test.mjs` checks
+stalled headers and streamed bodies against a local server, plus cache reuse,
+concurrency, malformed responses and recovery without calling the provider.
 
 Root metadata (`app/metadata.config.ts`) sets only Googlebot preview limits,
 so it cannot add an indexing directive to Next's automatic `noindex` on 404s.
