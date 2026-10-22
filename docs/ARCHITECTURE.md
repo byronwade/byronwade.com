@@ -69,6 +69,14 @@ focus return in both themes. Reset returns focus to the next toolbar control
 before its own button disappears. Native dialog navigation may include browser
 chrome, as allowed by [W3C H102](https://www.w3.org/WAI/WCAG22/Techniques/html/H102);
 background page controls remain inert.
+The width handle uses one captured primary pointer for mouse, touch and pen.
+Release commits the final position; cancellation, lost capture, window blur,
+reset and unmount discard pending frame work and restore the previous cursor
+and text-selection styles. Pointer moves keep the latest position per frame.
+The container takes precedence when it is narrower than the 320px resize
+minimum, so manual sizing preserves the screenshot's aspect ratio on phones.
+The rendered preview checks cover touch cancellation, window blur and this
+narrow-screen sizing boundary with local captures.
 
 Root metadata (`app/metadata.config.ts`) sets only Googlebot preview limits,
 so it cannot add an indexing directive to Next's automatic `noindex` on 404s.

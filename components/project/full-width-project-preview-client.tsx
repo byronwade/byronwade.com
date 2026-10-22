@@ -373,7 +373,10 @@ export function FullWidthProjectPreviewClient({
 	const {
 		width: manualWidth,
 		isResizing,
-		startResize,
+		onPointerDown,
+		onPointerMove,
+		onPointerUp,
+		onPointerCancel,
 		onKeyDown: handleResizeKey,
 		reset: resetWidth,
 	} = useDragResize({ containerRef: wrapperRef, minWidth: MIN_WIDTH });
@@ -507,7 +510,7 @@ export function FullWidthProjectPreviewClient({
 						</span>
 						<span aria-hidden="true">•</span>
 						<span>{Math.round(scale * 100)}%</span>
-						{isResizing && <span className="animate-pulse text-brand">Release to apply</span>}
+						{isResizing && <span className="text-brand">Resizing</span>}
 					</div>
 
 					{isFullscreen ? (
@@ -532,19 +535,16 @@ export function FullWidthProjectPreviewClient({
 						key={side}
 						type="button"
 						aria-label="Resize preview width"
-						onMouseDown={(e) => {
-							e.preventDefault();
-							startResize();
-						}}
-						onTouchStart={(e) => {
-							e.preventDefault();
-							startResize();
-						}}
+						onPointerDown={onPointerDown}
+						onPointerMove={onPointerMove}
+						onPointerUp={onPointerUp}
+						onPointerCancel={onPointerCancel}
+						onLostPointerCapture={onPointerCancel}
 						onKeyDown={(event) =>
 							handleResizeKey(event, frameWidth, containerWidth || MAX_NORMAL_WIDTH)
 						}
 						className={cn(
-							"group absolute top-1/2 z-40 flex size-11 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center focus-visible:outline-none",
+							"group absolute top-1/2 z-40 flex size-11 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center",
 							side === "right" ? "-right-2" : "-left-2"
 						)}
 					>

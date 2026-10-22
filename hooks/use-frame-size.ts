@@ -84,7 +84,7 @@ export function useFrameSize({
 		const available = containerWidth || maxWidth;
 		const ceiling = Math.min(available, maxWidth, captureWidth);
 		let width =
-			manualWidth === null ? ceiling : Math.max(minWidth, Math.min(manualWidth, available));
+			manualWidth === null ? ceiling : Math.min(available, Math.max(minWidth, manualWidth));
 		let height = width / aspect;
 		if (height > maxHeight) {
 			height = maxHeight;
