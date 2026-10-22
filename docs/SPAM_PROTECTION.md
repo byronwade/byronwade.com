@@ -94,6 +94,11 @@ formatDetection: {
   consumption. Failure says that sending was not confirmed: cancellation cannot
   prove the provider rejected a message. Both forms leave the draft editable,
   restore submission, and never retry automatically.
+- A lost Server Action response is also an unconfirmed send, even if the provider
+  already accepted the request. The browser keeps the draft and retry identity;
+  neither the persistent success status nor the success toast appears until the
+  action acknowledgement reaches the form. An explicit retry of an unchanged
+  draft reuses its identity; a changed normalized draft starts a new submission.
 - Each submitted snapshot gets a browser-generated UUID, validated again by the
   server and passed as a `contact/`-scoped Resend idempotency key. Retrying the
   same normalized draft reuses the key. Changed drafts and a new send after
@@ -125,8 +130,11 @@ formatDetection: {
   omitting `signal` from its request-options declaration; the action types both
   contracts without a cast. `tests/rendered/contact-delivery.test.mjs` protects
   both forms' ten-second recovery, retained edits, keyboard retry and identity
-  rotation in light/dark at phone/desktop widths. These fixtures cannot verify
-  the live provider's deduplication or inbox behavior.
+  rotation in light/dark at phone/desktop widths. It also pauses the real action
+  response after loopback provider acceptance, verifies pending feedback without
+  success, then interrupts that response to exercise the browser transport
+  failure and explicit retry. These fixtures cannot verify the live provider's
+  deduplication or inbox behavior, or recovery across reloads and separate forms.
 - The browser audit uses an owned loopback Resend base URL and a synthetic
   credential to check success feedback and notification lifecycle without live
   delivery. It does not verify inbox delivery or the provider integration.
