@@ -808,6 +808,7 @@
   .hljs-quote {
     color: var(--code-comment);
   }
+
   .hljs-keyword,
   .hljs-doctag,
   .hljs-template-tag,
@@ -821,12 +822,14 @@
   .hljs-meta .hljs-keyword {
     color: var(--code-keyword);
   }
+
   .hljs-string,
   .hljs-regexp,
   .hljs-addition,
   .hljs-meta .hljs-string {
     color: var(--code-string);
   }
+
   .hljs-number,
   .hljs-literal,
   .hljs-symbol,
@@ -841,6 +844,7 @@
   .hljs-deletion {
     color: var(--code-constant);
   }
+
   .hljs-title,
   .hljs-title.class_,
   .hljs-title.function_,
