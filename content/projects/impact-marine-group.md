@@ -5,6 +5,7 @@ category: "Client Work"
 date: 2023-11-01
 excerpt: "A marine dealership website that sells the feeling of being out on the water rather than the boats themselves."
 status: "Archived"
+tagline: "a boat dealership website"
 featured: false
 ---
 

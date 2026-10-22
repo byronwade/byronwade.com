@@ -1,15 +1,16 @@
 ---
-title: "Wormhole, Mount Any Folder. Any Computer. No Setup."
+title: "Wormhole: Mount Any Folder. Any Computer. No Setup."
 url: "https://wormhole.byronwade.com"
 category: "Product"
 type: "product"
 date: 2025-12-09
 excerpt: "A Rust peer-to-peer folder mount. Share a directory with a six-character join code and open it through FUSE or WinFSP. Writes are off unless you ask, and the signal server does not punch through NAT."
 status: "Archived"
+tagline: "a peer-to-peer folder mount"
 featured: false
 ---
 
-# Wormhole, Mount Any Folder. Any Computer. No Setup.
+# Wormhole: Mount Any Folder. Any Computer. No Setup.
 
 Wormhole shares a folder from one computer and mounts it on another. The host
 listens with QUIC. A guest uses a short join code, or a direct address, and the

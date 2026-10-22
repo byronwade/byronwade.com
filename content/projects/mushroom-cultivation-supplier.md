@@ -5,6 +5,7 @@ category: "Client Work"
 date: 2023-09-01
 excerpt: "Zugzology is a Next.js storefront for a mushroom-supplies shop. Shopify holds the catalog. Search results use a plain score. This repository has no field-management system."
 status: "Archived"
+tagline: "a Shopify storefront"
 featured: false
 ---
 
