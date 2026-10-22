@@ -181,6 +181,31 @@ article), a 22 KB gzipped page chunk on project pages and, on posts, italic and 
 fonts discovered from the stylesheet. Preloading the mono
 face was tried and rejected (see the evidence README).
 
+On 2026-10-22 the committed production build of `fea7eda` was measured once
+per route before any probe, with Chrome 155 and Lighthouse 12.8.2. Thorbis
+recorded LCP 3432 ms and TBT 365 ms (two fonts, 65,886 bytes, including Geist
+Mono; 10 scripts, 200,605 bytes). Dits recorded LCP 3323 ms and TBT 217 ms
+with the same script and font totals. The Nexstar post recorded LCP 3228 ms
+and TBT 180 ms (three fonts, 88,141 bytes: Inter, Inter italic, and Geist
+Mono). The LCP element was the excerpt or a body paragraph already in the
+HTML. A following dirty-tree rebuild deferred the project preview's
+interactive chrome until after first paint and stopped that chrome, inline
+code, and fenced code from requesting Geist Mono. It also set
+`content-visibility` on emphasis and quotes. Thorbis, twice, then recorded
+LCP 3150 ms and 3213 ms with TBT 162 ms and 204 ms, one font (Inter, 49,991
+bytes), and 10 scripts at 201,627 bytes. Dits once recorded LCP 3130 ms.
+Nexstar once recorded LCP 3119 ms and still downloaded Inter italic (22,255
+bytes); the opening quote is inside the first screen, so
+`content-visibility` did not skip that face. Every sample still failed the
+3000 ms LCP limit. Two Thorbis samples are not enough to call a roughly
+200 ms drop more than the 127 ms spread already seen on identical homepage
+bytes, and the earlier detail-page floor was already 3214 to 3226 ms. The
+probe also changed when the screenshot appears. It was reverted and is not
+in this tree. Home was not remeasured on that build. Later commits changed
+the shared shell, so these figures are not a measurement of current main.
+Do not add an eleventh script on these routes, do not preload Geist Mono,
+and do not raise `lighthouse-budget.json` to turn this miss into a pass.
+
 The rebuilt header from main (#80) replaced the launcher and morph capsule with
 anchored popovers. Probes recorded before merge commit `9c2953c` measured the
 previous header; only the release matrix and `home-budget.json` describe the
