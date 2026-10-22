@@ -169,7 +169,11 @@ function PreviewToolbar({
 						size="lg"
 						variant="ghost"
 						type="button"
-						onClick={resetWidth}
+						onClick={() => {
+							resetWidth();
+							// Reset removes this button; keep focus on the next toolbar control.
+							triggerRef.current?.focus();
+						}}
 						aria-label="Reset preview width"
 						title="Reset width"
 						className="size-11 rounded-full p-0 text-muted-foreground"

@@ -4,6 +4,279 @@ import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { closeBrowser, withBrowser } from "../fixtures/browser.mjs";
 
+const PREVIEW = 'section[aria-label$=" site preview"]';
+const RESIZE = `${PREVIEW} button[aria-label="Resize preview width"]`;
+const FULLSCREEN = `${PREVIEW} button[aria-label="Enter fullscreen"]`;
+
+/** Successful local captures keep these control checks independent of the paid provider. */
+async function withLoadedPreview(context, viewport, verify) {
+	await withProductionServer((url) =>
+		withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
+			const page = await browser.newPage();
+			page.setDefaultTimeout(10_000);
+			page.setDefaultNavigationTimeout(20_000);
+			await page.setViewport({ width: viewport.width, height: 844 });
+			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			await page.evaluateOnNewDocument((theme) => {
+				localStorage.setItem("theme", theme);
+			}, viewport.theme);
+			const requests = [];
+			const errors = [];
+			page.on("pageerror", (error) => errors.push(error.message));
+			await page.setRequestInterception(true);
+			page.on("request", (request) => {
+				const target = new URL(request.url());
+				let response;
+				if (target.pathname === "/api/screenshot") {
+					requests.push(target.searchParams.get("width"));
+					response = request.respond({
+						status: 200,
+						contentType: "application/json",
+						body: JSON.stringify({ url: `/api/screenshot/image${target.search}`, mode: "static" }),
+					});
+				} else if (target.pathname === "/api/screenshot/image") {
+					response = request.respond({
+						status: 200,
+						contentType: "image/svg+xml",
+						body: `<svg xmlns="http://www.w3.org/2000/svg" width="${target.searchParams.get("width")}" height="${target.searchParams.get("height")}"><rect width="100%" height="100%" fill="gray"/></svg>`,
+					});
+				} else {
+					response = request.url().startsWith(url)
+						? request.continue()
+						: request.respond({ status: 204, body: "" });
+				}
+				response.catch((error) => errors.push(error.message));
+			});
+			await page.goto(`${url}/projects/thorbis`, { waitUntil: "networkidle0" });
+			await waitForCapture(page, PREVIEW, 1920);
+			await verify(page, requests);
+			assert.deepEqual(errors, [], "No uncaught page errors or failed interceptions");
+		})
+	);
+}
+
+function waitForCapture(page, root, width) {
+	return page.waitForFunction(
+		(selector, expectedWidth) => {
+			const preview = document.querySelector(selector);
+			const image = preview?.querySelector("img");
+			return (
+				image?.complete &&
+				image.naturalWidth === expectedWidth &&
+				preview.querySelector("[aria-busy]").getAttribute("aria-busy") === "false"
+			);
+		},
+		{},
+		root,
+		width
+	);
+}
+
+function frameWidth(page) {
+	return page.$eval(`${PREVIEW} [aria-busy]`, (frame) => frame.getBoundingClientRect().width);
+}
+
+function waitForWidth(page, width) {
+	return page.waitForFunction(
+		(selector, expected) =>
+			Math.abs(document.querySelector(selector).getBoundingClientRect().width - expected) <= 1,
+		{},
+		`${PREVIEW} [aria-busy]`,
+		width
+	);
+}
+
+async function pressWithShift(page, key) {
+	await page.keyboard.down("Shift");
+	try {
+		await page.keyboard.press(key);
+	} finally {
+		await page.keyboard.up("Shift");
+	}
+}
+
+test("Project preview fullscreen contains focus and restores it on Escape and button exit", {
+	timeout: 180_000,
+}, async (context) => {
+	await ["light", "dark"]
+		.flatMap((theme) => [390, 1280].map((width) => ({ theme, width })))
+		.reduce(async (previous, viewport) => {
+			await previous;
+			await context.test(`${viewport.theme}/${viewport.width}`, async (scenario) => {
+				await withLoadedPreview(scenario, viewport, async (page) => {
+					const originalOverflow = await page.evaluate(() => document.body.style.overflow);
+					await page.focus(FULLSCREEN);
+					await page.keyboard.press("Enter");
+					await page.waitForSelector("dialog[open]");
+					await waitForCapture(page, "dialog", 1920);
+					assert.equal(
+						await page.$eval("dialog", (dialog) => dialog.matches(":modal")),
+						true,
+						"The preview uses the native modal top layer"
+					);
+					assert.equal(
+						await page.evaluate(() => document.activeElement.getAttribute("aria-label")),
+						"Exit fullscreen",
+						"Initial focus offers an immediate way out"
+					);
+					await page.focus("[data-site-header] a");
+					assert.equal(
+						await page.$eval("dialog", (dialog) => dialog.contains(document.activeElement)),
+						true,
+						"Background controls are inert even when asked to take focus"
+					);
+					await page.keyboard.press("Tab");
+					assert.equal(
+						await page.$eval("dialog a", (link) => link === document.activeElement),
+						true,
+						"Tab reaches the site's native link"
+					);
+					await pressWithShift(page, "Tab");
+					assert.equal(
+						await page.evaluate(() => document.activeElement.getAttribute("aria-label")),
+						"Exit fullscreen",
+						"Shift+Tab returns to the exit control"
+					);
+					await [false, false, false, false, true, true, true, true].reduce(
+						async (prior, shift) => {
+							await prior;
+							if (shift) {
+								await pressWithShift(page, "Tab");
+							} else {
+								await page.keyboard.press("Tab");
+							}
+							// Native dialogs permit browser chrome in the Tab cycle (W3C H102).
+							// Chrome reports body as active there; background controls must never receive focus.
+							assert.equal(
+								await page.$eval(
+									"dialog",
+									(dialog) =>
+										dialog.contains(document.activeElement) ||
+										document.activeElement === document.body
+								),
+								true,
+								"Tab navigation never reaches a background page control"
+							);
+						},
+						Promise.resolve()
+					);
+					await page.focus('dialog button[aria-label="Exit fullscreen"]');
+					await page.keyboard.press("Escape");
+					await page.waitForSelector("dialog", { hidden: true });
+					assert.equal(
+						await page.$eval(FULLSCREEN, (trigger) => trigger === document.activeElement),
+						true,
+						"Escape returns focus to the inline trigger"
+					);
+					assert.equal(
+						await page.evaluate(() => document.body.style.overflow),
+						originalOverflow,
+						"Escape restores the page's scroll behavior"
+					);
+					await page.keyboard.press("Enter");
+					await page.waitForSelector("dialog[open]");
+					await page.keyboard.press("Space");
+					await page.waitForSelector("dialog", { hidden: true });
+					assert.equal(
+						await page.$eval(FULLSCREEN, (trigger) => trigger === document.activeElement),
+						true,
+						"The visible exit button also returns focus"
+					);
+				});
+			});
+		}, Promise.resolve());
+});
+
+test("Project preview keyboard width, reset and preset controls keep the capture in sync", {
+	timeout: 180_000,
+}, async (context) => {
+	await ["light", "dark"].reduce(async (previous, theme) => {
+		await previous;
+		await context.test(theme, async (scenario) => {
+			await withLoadedPreview(scenario, { theme, width: 1280 }, async (page, requests) => {
+				const initial = await frameWidth(page);
+				await page.focus(RESIZE);
+				await page.keyboard.press("ArrowLeft");
+				await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`);
+				await waitForWidth(page, initial - 24);
+				await pressWithShift(page, "ArrowLeft");
+				await waitForWidth(page, initial - 104);
+				await page.keyboard.press("ArrowRight");
+				await waitForWidth(page, initial - 80);
+				await page.keyboard.press("Home");
+				await waitForWidth(page, initial);
+				await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`, {
+					hidden: true,
+				});
+				await page.keyboard.press("ArrowLeft");
+				await page.focus(`${PREVIEW} button[aria-label="Reset preview width"]`);
+				await page.keyboard.press("Enter");
+				await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`, {
+					hidden: true,
+				});
+				await waitForWidth(page, initial);
+				assert.equal(
+					await page.$eval(FULLSCREEN, (trigger) => trigger === document.activeElement),
+					true,
+					"Removing the reset button moves focus to the next toolbar control"
+				);
+				assert.deepEqual(requests, ["1920"], "Resizing the display never requests another capture");
+				await [
+					{ label: "Mobile", width: 375 },
+					{ label: "Tablet", width: 768 },
+					{ label: "Laptop", width: 1440 },
+					{ label: "Desktop", width: 1920 },
+				].reduce(async (prior, { label, width }) => {
+					await prior;
+					await page.focus(RESIZE);
+					await page.keyboard.press("ArrowLeft");
+					await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`);
+					const button = `${PREVIEW} button[aria-label^="${label} ("]`;
+					await page.focus(button);
+					await page.keyboard.press("Enter");
+					await waitForCapture(page, PREVIEW, width);
+					await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`, {
+						hidden: true,
+					});
+					assert.equal(
+						await page.$eval(button, (control) => control.getAttribute("aria-pressed")),
+						"true"
+					);
+					assert.equal(
+						await page.$$eval(`${PREVIEW} [aria-pressed="true"]`, (controls) => controls.length),
+						1
+					);
+					assert.equal(
+						await page.$eval(button, (control) => control === document.activeElement),
+						true
+					);
+				}, Promise.resolve());
+				await page.focus(`${PREVIEW} button[aria-label^="Mobile ("]`);
+				await page.keyboard.press("Enter");
+				await waitForCapture(page, PREVIEW, 375);
+				await page.focus(FULLSCREEN);
+				await page.keyboard.press("Enter");
+				await page.waitForSelector("dialog[open]");
+				await waitForCapture(page, "dialog", 1920);
+				await page.keyboard.press("Escape");
+				await page.waitForSelector("dialog", { hidden: true });
+				assert.equal(
+					await page.$eval(`${PREVIEW} button[aria-label^="Desktop ("]`, (button) =>
+						button.getAttribute("aria-pressed")
+					),
+					"true",
+					"Fullscreen resets a narrow capture to desktop"
+				);
+				assert.deepEqual(
+					requests,
+					["1920", "375", "768", "1440"],
+					"Returning to desktop reuses its capture URL"
+				);
+			});
+		});
+	}, Promise.resolve());
+});
+
 test("A stalled project preview offers recovery and keyboard Retry loads the image", {
 	timeout: 120_000,
 }, async (context) => {

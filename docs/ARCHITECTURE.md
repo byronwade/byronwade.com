@@ -62,6 +62,13 @@ share a resolution, successful URLs are cached, and failures release the pending
 entry so Retry starts a fresh request. `tests/screenshot-client.test.mjs` checks
 stalled headers and streamed bodies against a local server, plus cache reuse,
 concurrency, malformed responses and recovery without calling the provider.
+The preview's rendered control checks use local images at each offered capture
+size. They cover keyboard width adjustment, reset, preset selection and capture
+reuse, plus native fullscreen focus, background inertness, Escape and exit-button
+focus return in both themes. Reset returns focus to the next toolbar control
+before its own button disappears. Native dialog navigation may include browser
+chrome, as allowed by [W3C H102](https://www.w3.org/WAI/WCAG22/Techniques/html/H102);
+background page controls remain inert.
 
 Root metadata (`app/metadata.config.ts`) sets only Googlebot preview limits,
 so it cannot add an indexing directive to Next's automatic `noindex` on 404s.
