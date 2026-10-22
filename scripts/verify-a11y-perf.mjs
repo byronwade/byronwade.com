@@ -6,6 +6,7 @@ import lighthouse, { snapshot } from "lighthouse";
 import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
 import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
 import { launchAuditBrowser } from "./audit-browser.mjs";
+import { readGeometry } from "./audit-geometry.mjs";
 import { serializeEvidence, writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -14,7 +15,7 @@ const PORTFOLIO_FAILED = /Couldn['’]t load repositories/;
 
 // Extend the design-port audit to every public page template. Keep browser work
 // serial: concurrent Lighthouse runs would measure our own resource contention.
-const destination = "docs/evidence/a11y-perf";
+const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/a11y-perf";
 const phase = process.argv.includes("--baseline") ? "baseline" : "final";
 const measure = process.argv.includes("--lighthouse");
 const selectedRoute = process.argv.find((arg) => arg.startsWith("--route="))?.slice(8);
@@ -53,7 +54,9 @@ if (selectedRoute && !routes.includes(selectedRoute)) {
 	throw new Error(`Unknown audit route ${selectedRoute}`);
 }
 mkdirSync(destination, { recursive: true });
-const response = await fetch("https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js");
+const response = await fetch("https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js", {
+	signal: AbortSignal.timeout(30_000),
+});
 if (!response.ok) {
 	throw new Error("axe must load; a missing audit cannot pass");
 }
@@ -69,6 +72,7 @@ const report = {
 		.update(readFileSync(import.meta.filename))
 		.update(readFileSync("scripts/lighthouse-budget.mjs"))
 		.update(readFileSync("scripts/audit-browser.mjs"))
+		.update(readFileSync("scripts/audit-geometry.mjs"))
 		.update(readFileSync("scripts/evidence-json.mjs"))
 		.update(readFileSync("scripts/production-session.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser.mjs"))
@@ -99,65 +103,6 @@ if (process.argv.includes("--resume")) {
 	report.checkedAt = previous.checkedAt;
 }
 let browser = null;
-
-function readGeometry() {
-	const visible = (element) =>
-		element.getClientRects().length &&
-		!element.closest('[inert], [aria-hidden="true"], .sr-only') &&
-		!element.matches(":disabled, .skip-link") &&
-		getComputedStyle(element).visibility === "visible";
-	const label = (element) =>
-		element.getAttribute("aria-label") ||
-		element.getAttribute("name") ||
-		(element.querySelector("[data-resume-email]")
-			? "Copy email"
-			: element.textContent.trim().slice(0, 70));
-	const targets = [
-		...document.querySelectorAll("a[href], button, input, select, textarea, [tabindex='0']"),
-	]
-		.filter(visible)
-		.map((element) => {
-			const rect = element.getBoundingClientRect();
-			return {
-				label: label(element),
-				tag: element.tagName,
-				width: rect.width,
-				height: rect.height,
-			};
-		});
-	const header = document.querySelector("[data-site-header]");
-	const nav = header.querySelector('nav[aria-label="Primary"]');
-	const intersects = (element, bounds) => {
-		const rect = element.getBoundingClientRect();
-		return (
-			rect.left < bounds.right &&
-			rect.right > bounds.left &&
-			rect.top < bounds.bottom &&
-			rect.bottom > bounds.top
-		);
-	};
-	// Header controls must clear the primary links; the separately fixed
-	// breadcrumb must clear the whole header surface.
-	const overlaps = [
-		...[...header.querySelectorAll("button, a[href]")]
-			.filter(visible)
-			.filter((element) => !nav.contains(element))
-			.filter((element) => intersects(element, nav.getBoundingClientRect())),
-		...[...document.querySelectorAll('nav[aria-label="Breadcrumb"]')]
-			.filter(visible)
-			.filter((element) => intersects(element, header.getBoundingClientRect())),
-	];
-	return {
-		actualTheme: document.documentElement.classList.contains("dark") ? "dark" : "light",
-		overflow: document.documentElement.scrollWidth > innerWidth,
-		h1Count: document.querySelectorAll("h1").length,
-		navOverlap: overlaps.map(label),
-		targetFailures: targets.filter(
-			({ width, height }) =>
-				width < (innerWidth < 640 ? 44 : 24) - 0.1 || height < (innerWidth < 640 ? 44 : 24) - 0.1
-		),
-	};
-}
 
 async function loadAuditedPage(page, url, route, width, theme, expectedStatus) {
 	// A prior hydration leaves the chip warm, and simulated throttling then
@@ -241,7 +186,7 @@ async function auditPage(url, route, width, theme) {
 		const lighthouseResult = loaded.lighthouseResult;
 		await page.addScriptTag({ content: axeSource });
 		const violations = await page.evaluate(readAxe);
-		const geometry = await page.evaluate(readGeometry);
+		const geometry = await readGeometry(page);
 		const result = {
 			route,
 			width,
@@ -352,6 +297,9 @@ async function checkRouteStates(page, route, width) {
 	if (route === "/contact") {
 		return await checkContactStates(page);
 	}
+	if (route === "/search") {
+		return await checkSearchStates(page);
+	}
 	if (route === "/portfolio") {
 		return await checkPortfolioStates(page);
 	}
@@ -362,6 +310,60 @@ async function checkRouteStates(page, route, width) {
 		return states;
 	}
 	return [];
+}
+
+async function checkSearchStates(page) {
+	const client = await page.createCDPSession();
+	try {
+		// Match the header regression's real browser font preference, before a new
+		// document lays out. Rewriting the root size can leave container queries stale.
+		await client.send("Page.setFontSizes", { fontSizes: { standard: 32 } });
+		return await ["claude_desktop_config.json", "zzzz-no-matching-entry"].reduce(
+			async (previous, query) => [...(await previous), await checkSearchState(page, query)],
+			Promise.resolve([])
+		);
+	} finally {
+		await client.send("Page.setFontSizes", { fontSizes: { standard: 16 } });
+		await client.detach();
+		await page.reload({ waitUntil: "networkidle2", timeout: 30_000 });
+		await page.addScriptTag({ content: axeSource });
+	}
+}
+
+async function checkSearchState(page, query) {
+	await page.focus("#site-search");
+	await page.keyboard.down("Control");
+	await page.keyboard.press("a");
+	await page.keyboard.up("Control");
+	await page.keyboard.type(query);
+	await Promise.all([
+		page.waitForNavigation({ waitUntil: "networkidle2", timeout: 30_000 }),
+		page.keyboard.press("Enter"),
+	]);
+	if (new URL(page.url()).searchParams.get("q") !== query) {
+		throw new Error("Search must preserve native GET submission");
+	}
+	const found = await page.$('main a[href="/projects/memoria"]');
+	const noMatches = await page.$eval("main", (main) => main.textContent.includes("No matches"));
+	if (query === "claude_desktop_config.json" ? !found : !noMatches) {
+		throw new Error(`Search did not render the expected state for ${query}`);
+	}
+	await page.addScriptTag({ content: axeSource });
+	await page.evaluate(() => document.fonts.ready);
+	const state = await readState(
+		page,
+		found ? "Search results at 200% text" : "No matches at 200% text"
+	);
+	const geometry = await readGeometry(page);
+	const keyboard = await checkKeyboard(page);
+	return {
+		...state,
+		keyboard,
+		failures: [
+			...(geometry.overflow ? ["Search overflows at 200% text"] : []),
+			...keyboard.failures.map((step) => `Search focus: ${step.label}`),
+		],
+	};
 }
 
 async function checkShellBreadcrumb(page, route) {
@@ -407,7 +409,7 @@ async function checkBreadcrumbStates(page) {
 	);
 	await page.setViewport(viewport);
 	await page.waitForSelector(nav, { visible: true });
-	const geometry = await page.evaluate(readGeometry);
+	const geometry = await readGeometry(page);
 	if (geometry.overflow || geometry.navOverlap.length) {
 		throw new Error("Breadcrumb resize overlaps the navigation");
 	}
@@ -473,10 +475,12 @@ async function waitForMotion(page) {
 
 async function readState(page, name) {
 	await waitForMotion(page);
+	const { targetFailures, inlineTargetExceptions } = await readGeometry(page);
 	return {
 		name,
 		violations: await page.evaluate(readAxe),
-		targetFailures: (await page.evaluate(readGeometry)).targetFailures,
+		targetFailures,
+		inlineTargetExceptions,
 	};
 }
 

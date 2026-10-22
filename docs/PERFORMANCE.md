@@ -46,6 +46,27 @@ budget assessor checks each route. Intentional HTTP errors use an accessibility
 snapshot because navigation-mode Lighthouse rejects them.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
+Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
+in an external job folder instead of replacing the checked-in evidence. Omit
+`--lighthouse` for accessibility and interaction checks without timing samples;
+`--route=/search` limits a run to that route's six viewport/theme combinations.
+
+Both the full audit and `capture-design-polish.mjs` use `audit-geometry.mjs` for
+target-size decisions. It records sentence-link exceptions with their dimensions,
+following [WCAG 2.5.8's inline exception](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html)
+and `DESIGN.md` §7.4. A standalone link, button, field, or icon-only link still
+needs its target box; adjacent links or hidden text cannot supply prose. The
+capture runner retains its 44px minimum at desktop widths too. Its `--resume`
+also checks the build ID and audit hash, so prior outcomes cannot mask a changed
+detector. Browser fixtures protect both valid exceptions and undersized controls.
+
+Search interaction checks submit a filename and a no-match query with Enter at
+200% browser text size, then inspect axe, targets, overflow and keyboard focus.
+The browser font preference is set before navigation, matching the header tests;
+changing the root size on a laid-out page can leave container-query styles stale.
+The rendered search regression also uses the maximum allowed unbroken query at
+320, 390 and 1280px in both themes. Query summaries use the existing
+`wrap-anywhere` utility so long identifiers reflow without changing the query.
 
 ## Search corpus reuse, October 22, 2026
 

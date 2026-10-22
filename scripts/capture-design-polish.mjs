@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { readGeometry } from "./audit-geometry.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -47,7 +49,15 @@ if (phase === "after") {
 }
 const initialReport = {
 	phase,
-	head: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+	harnessHash: createHash("sha256")
+		.update(readFileSync(import.meta.filename))
+		.update(readFileSync("scripts/audit-geometry.mjs"))
+		.digest("hex"),
+	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
+	head: execFileSync("git", ["rev-parse", "HEAD"], {
+		encoding: "utf8",
+		windowsHide: true,
+	}).trim(),
 	serverNotFoundBreadcrumb:
 		phase === "after"
 			? readFileSync(".next/server/app/_not-found.html", "utf8")
@@ -63,6 +73,8 @@ const report = resume
 	? JSON.parse(readFileSync(`${destination}/matrix.json`, "utf8"))
 	: initialReport;
 assert.equal(report.head, initialReport.head, "resume must use the same source revision");
+assert.equal(report.harnessHash, initialReport.harnessHash, "resume must use the same audit logic");
+assert.equal(report.buildId, initialReport.buildId, "resume must use the same production build");
 const captured = (name, width, theme) =>
 	resume &&
 	report.cases.some(
@@ -73,7 +85,7 @@ const captured = (name, width, theme) =>
 			existsSync(`${destination}/${entry.file}`)
 	);
 
-function readGeometry() {
+function readCaptureGeometry() {
 	const visible = (element) =>
 		element.getClientRects().length && getComputedStyle(element).visibility === "visible";
 	const label = (element) =>
@@ -96,10 +108,6 @@ function readGeometry() {
 				role: element.getAttribute("role"),
 				width: rect.width,
 				height: rect.height,
-				inlineText:
-					element.matches("a") &&
-					getComputedStyle(element).display === "inline" &&
-					Boolean(element.closest("p, li")),
 			};
 		});
 	return {
@@ -162,7 +170,11 @@ async function settleLayout(page) {
 async function screenshot(page, file, attempt = 0) {
 	await settleLayout(page);
 	const buffer = await page.screenshot({ path: file, fullPage: true });
-	const geometry = await page.evaluate(readGeometry);
+	const geometry = {
+		...(await page.evaluate(readCaptureGeometry)),
+		// Preserve this capture's stronger 44px policy at desktop widths too.
+		...(await readGeometry(page, 44)),
+	};
 	const screenshotHeight = Buffer.from(buffer).readUInt32BE(20);
 	// DOM rectangles retain subpixels; PNG bounds and scrollHeight are integer pixels.
 	if (
@@ -281,7 +293,7 @@ if (phase === "after") {
 			entry.geometry.headings.length !== 1 ||
 			entry.geometry.truncated.length > 0 ||
 			entry.geometry.buttonLinks.length > 0 ||
-			entry.geometry.smallTargets.some((target) => !target.inlineText) ||
+			entry.geometry.targetFailures.length > 0 ||
 			entry.accessibility.violations.length > 0 ||
 			entry.errors.length > 0 ||
 			entry.status !== (entry.name === "not-found" ? 404 : 200)
