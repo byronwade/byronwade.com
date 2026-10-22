@@ -250,9 +250,9 @@ use them correctly.
 
 From `lighthouse-budget.json`, applied to `/*`.
 
-Lighthouse 12 removed its built-in budget flag. This design change restores
-local enforcement in scripts/perf-budget.mjs by comparing timing, byte and
-request-count values directly. A Lighthouse CLI exit code is not a budget pass.
+Lighthouse 12 removed its built-in budget flag, and Lighthouse 13 does not
+restore it. Local enforcement in scripts/perf-budget.mjs compares timing, byte
+and request-count values directly. A Lighthouse CLI exit code is not a budget pass.
 Earlier project-lane reports remain in docs/evidence/projects-refresh/.
 
 | Surface | Metric | Budget | Measurement method | Environment |
@@ -286,7 +286,7 @@ the user's instruction each time.
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
-| `npm audit` advisories | 31 entries, 11 from production dependencies, none critical (2026-10-21). All trace to three roots. (1) `puppeteer-core` 24's browser-download code: `extract-zip`, and `basic-ftp` (one `Client.list` DoS advisory left) behind `proxy-agent`. `/api/resume-pdf` passes `executablePath` and sets no proxy, so neither runs. (2) The pinned `js-yaml` 3.15.2 (`argparse`/`sprintf-js`), used only by its command-line tool, not the parser gray-matter calls. (3) Lighthouse 12's Sentry/OpenTelemetry, dev-only | No | Move `puppeteer-core` to 25 together with a matching `@sparticuz/chromium` and Lighthouse 13 (Lighthouse 13 alone leaves an invalid `proxy-agent` peer). Prove `/api/resume-pdf` returns a PDF on a Vercel preview before merging. Never apply npm's `--force` suggestion for gray-matter (a downgrade to 2.0.1) | This table |
+| `npm audit` advisories | 4 moderate entries, 0 high or critical (2026-10-22, after puppeteer-core 25.15.0, @sparticuz/chromium 153.0.0, and Lighthouse 13.5.0). All four are the pinned `js-yaml` 3.15.2 tree (`gray-matter`, `js-yaml`, `argparse`, `sprintf-js`), used only by js-yaml's command-line tool, not the parser gray-matter calls. The puppeteer 24 download tree and Lighthouse 12's OpenTelemetry tree are gone. `npm ls` shows one `puppeteer-core@25.15.0`. | No | Never apply npm's `--force` suggestion for gray-matter (a downgrade to 2.0.1). A resume PDF change still has to prove `/api/resume-pdf` returns a PDF on a Vercel preview before merging, because the unit test mocks the browser. | This table |
 | React Compiler bailouts | 7, all `try`/`catch` around `await` | No | Leave unless the surrounding code is being rewritten anyway | `AGENTS.md` § Audit tooling |
 
 ## Explicit exceptions

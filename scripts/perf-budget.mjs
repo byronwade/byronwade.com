@@ -18,7 +18,7 @@ await withProductionServer(async (url) => {
 	const browser = await launchAuditBrowser({ lighthouse: true });
 	try {
 		const port = Number(new URL(browser.wsEndpoint()).port);
-		// Lighthouse 12 removed built-in budgets; assertions below own enforcement.
+		// Lighthouse 12 removed built-in budgets and 13 did not restore them.
 		const result = await lighthouse(`${url}${route}`, {
 			port,
 			output: "json",
@@ -63,7 +63,8 @@ await withProductionServer(async (url) => {
 						"network-requests",
 						"bootup-time",
 						"mainthread-work-breakdown",
-						"largest-contentful-paint-element",
+						// Lighthouse 13 removed largest-contentful-paint-element.
+						// lcp-breakdown-insight is the audit that still names the element.
 						"lcp-breakdown-insight",
 					].map((name) => [name, lhr.audits[name]?.details])
 				),
