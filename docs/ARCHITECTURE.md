@@ -83,6 +83,14 @@ and [Google's robots defaults](https://developers.google.com/search/docs/crawlin
 | `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
 | `/privacy`, `/terms` | Legal |
 
+Search body text follows the same `markdownOptions` grammar as the article and
+its table of contents. `lib/search-text.ts` reads the renderer's element tree,
+preserving words across inline markup and decoding character references. Block
+boundaries separate words. Code blocks, images, raw HTML, comments and hidden
+link destinations stay out; inline code and visible URLs remain searchable.
+`lib/search-match.ts` collapses every whitespace run before applying the shared
+120-character query limit. `tests/search.test.mjs` protects these boundaries.
+
 ### Resume PDF export
 
 `/api/resume-pdf` prints `/resume` only after a successful HTTP navigation.
