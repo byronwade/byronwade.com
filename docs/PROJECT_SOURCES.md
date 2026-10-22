@@ -531,3 +531,41 @@ account, service, or setting was changed.
 This was source reading, not a build, test run, installer run, or mount. It
 does not establish release-binary health, that `wss://wormhole-signal.fly.dev`
 answers, or that two machines on different networks can connect.
+
+## SignalRoute phone and texting claims, October 21, 2026
+
+The SignalRoute case study now follows private main at
+[`31d30be`](https://github.com/byronwade/signalroute/tree/31d30be205e516ce3336d4470155d25a9ea84aaf)
+(August 3, 2026, commit message "chore: trigger production redeploy"). The
+repository is private, so those links open only for someone signed in with
+access. GitHub does not mark it archived. The branches API returned only
+`main`. The GitHub license field is empty. The repository was created
+2026-06-03T01:30:58Z. The page date stays 2026-06-01.
+
+`https://getsignalroute.com` returned HTTP 200 on October 21, 2026. The
+response title was "SignalRoute - A business phone that runs itself". That
+check does not prove the host is serving `31d30be`. The case study does not
+link the private repository, so the page's Source button stays absent and
+Visit still opens the public site.
+
+| Earlier claim | Source evidence and resulting correction |
+| --- | --- |
+| Actively building, and the spine is live call operations | The newest commit on `main` is August 3, 2026. [`placeCall`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/actions/voice.ts#L10-L38) stores a completed call with `duration_seconds: 0` after the adapter returns. [`api_create_call`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0003_api_templates_webhooks.sql#L156-L158) inserts `status` `completed` with `answered_at` and `ended_at` both `now()`. |
+| Telnyx swaps in with a key change, and development uses the mock | [`getTelecomProvider`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/telecom/index.ts#L9-L22) defaults to the mock and constructs `TelnyxAdapter` when `TELECOM_PROVIDER=telnyx`. [`notImplemented`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/telecom/real-adapter.ts#L24-L28) throws from every method, including `placeCall` and `sendMessage`. |
+| Visual editor runs ring groups, queues, and fallbacks | [`FlowNodeType`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/types/call-flow.ts#L11-L36) includes `ring_group`, `queue`, `transfer`, and `voicemail`. [`layoutFlow`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/flow/layout.ts#L14-L15) uses dagre. [`saveCallFlow`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/services/call-flows.ts#L46-L55) writes `localStorage` key `sr.callflow.<numberId>`. The type file says the graph is not stored in the database. No runner executes it. |
+| Dialer does warm and cold transfers, conference, DTMF, and ring-out on the line | [`transferCall`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L292-L314) renames the line and removes it after 1600 ms. [`sendDtmf`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L431-L434) is an empty function. [`sendToVoicemail`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/components/dashboard/use-comm-controls-state.ts#L285-L290) ends the local line and toasts. The keypad does capture the physical keyboard. |
+| Claude summarizes calls and transcripts | [`summarizeMessages`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/ai/summarize.ts#L5-L21) summarizes SMS threads, and without `ANTHROPIC_API_KEY` it returns a template from the last inbound text. |
+| SMS templates, scheduled sends, and STOP/START | Templates are rows. [`deliver_scheduled_messages`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0016_scheduled_send.sql#L9-L31) marks due rows `delivered` and does not call a provider. The same migration tries `pg_cron` and continues if it fails. STOP and START are handled in [`ingest_inbound_message`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0008_inbound_suppressions_flags.sql#L82-L87). |
+| Spam-score tracking shows how carriers see the numbers | [`reputation_scores`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0001_init.sql#L258-L266) is inserted with defaults (trust 80, delivery 99.00). The spam-score page reads that row. This tree has no writer that recomputes it from traffic. |
+| `/api/v1` places calls and sends messages | The routes exist. [`api_send_message`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0008_inbound_suppressions_flags.sql#L232-L234) inserts `status` `delivered`. [`api_create_call`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/supabase/migrations/0003_api_templates_webhooks.sql#L134-L163) ignores `p_say` and inserts a completed call. |
+| Webhook auth is a shared secret, with Ed25519 on the roadmap | [`verifyWebhookSignature`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/app/api/telnyx/webhook/route.ts#L21-L38) checks HMAC-SHA256. The `telnyx-signature-ed25519` header is passed into that HMAC check. There is no Ed25519 verify. |
+| Next.js 16, React 19, Tailwind 4, Supabase, and a landing preference | [`package.json`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/package.json#L21-L54) pins Next 16.2.6, React 19.2.4, Tailwind 4, Base UI, and Supabase. [`setLandingPanel`](https://github.com/byronwade/signalroute/blob/31d30be205e516ce3336d4470155d25a9ea84aaf/lib/actions/preferences.ts#L35-L44) writes `members.preferences.landing_panel`, except the demo path, which returns success without writing. |
+
+Route, title, URL, date, category, archived status, and non-featured setting
+are unchanged. `flagship` stays false. The three proof chips now say Mock,
+This browser, and Writes rows. No SignalRoute application code, site code,
+dependency, account, service, or setting was changed.
+
+This was source reading, not a build, test run, or sign-in. It does not
+establish that getsignalroute.com serves `31d30be`, that an active billing
+workspace can dial, or that a production Telnyx webhook verifies.
