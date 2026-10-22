@@ -177,8 +177,13 @@ export function Markdown({ content, className }: MarkdownProps) {
 							{children}
 						</h4>
 					),
+					// Thorbis markdown quote: upright body text set in from a 2px rule in the
+					// neutral border colour (never an accent), on the body's own rhythm.
 					blockquote: ({ children, ...props }) => (
-						<blockquote className="my-2 pl-5 text-foreground italic" {...props}>
+						<blockquote
+							className="flex flex-col gap-5 text-pretty border-border border-s-2 ps-4"
+							{...props}
+						>
 							{children}
 						</blockquote>
 					),

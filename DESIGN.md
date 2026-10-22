@@ -326,6 +326,10 @@ than restyling them.
 - **Fields.** Inputs, the textarea and the native select are one recessed
   well. The select drops the platform paint (WebKit drew it as a light system
   button) and carries a caret, while its options stay the platform picker.
+- **Quotes.** A quote in a post or case study follows Thorbis's markdown
+  quote: upright body text set in 16px from a 2px rule in the neutral
+  border colour, on the body's own rhythm. Never italic, and never an accent
+  edge (the rules reject a coloured border on a quote).
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
   illustration.
