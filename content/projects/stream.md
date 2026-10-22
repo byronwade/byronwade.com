@@ -4,7 +4,7 @@ url: "https://stream.byronwade.com"
 category: "Concept"
 tagline: "live, built for belonging"
 date: 2026-06-01
-excerpt: "A live-streaming platform I'm prototyping around a contrarian thesis: rank streams by discovery fit and community health instead of raw viewer counts, with features like Catch Me Up and mood-based discovery that the incumbents have no reason to build."
+excerpt: "A live-streaming platform I prototyped around a contrarian thesis: find streams by mood and fit instead of raw viewer counts, with features like Catch Me Up and Join Late that the incumbents have no reason to build. Frontend only, on seeded data."
 status: "Archived"
 featured: false
 ---
@@ -21,33 +21,36 @@ The dominant streaming platforms run a winner-take-all algorithm. Rank by concur
 
 Stream is built on three principles that fall out of rejecting that:
 
-**Discovery fit over popularity.** Streams are organized by *mood*, so chill, learn, laugh, competitive, small-community, creative, background, and deep-focus, instead of only by category. You find something that fits your current headspace, and the discovery logic deliberately boosts small communities and weighs how welcoming a stream is to new viewers, not just how big it is.
+**Discovery fit over popularity.** Streams are organized by *mood* (chill, learn, laugh, competitive, small communities, creative, background, and deep focus) instead of only by category. You find something that fits your current headspace. The goal is discovery that lifts small communities and rewards rooms that welcome new viewers, not just big ones.
 
 **Context for people with lives.** Real viewers don't arrive at minute zero. **Catch Me Up** gives late arrivals a headline, the current topic, a summary, and timeline moments so they can orient in seconds. **Join Late** turns "I missed the start" from a barrier into a one-tap action.
 
-**Community health as a first-class metric.** A stream is not ranked purely on peak viewers. It factors in chat health, creator response rate, and how friendly the room is to newcomers. The platform measures belonging, not just attention.
+**Community health as a first-class metric.** A stream shouldn't be judged on peak viewers alone. Chat health, how often the creator responds, and how friendly the room is to newcomers should count too. The platform should measure belonging, not just attention.
 
 ---
 
 ## What's Built
 
-Stream is a full-featured product surface, not a landing page with three screenshots. It spans 30-plus routes:
+Stream is a full product surface, not a landing page with three screenshots. It has 33 page templates:
 
-- **Discovery & watch.** a mood-driven home, a filterable discover page, the watch experience with a player and live chat, creator channels, and category browsing.
-- **Structured chat.** organized into live, questions, polls, and highlights, with sentiment and moderation flags, rather than one undifferentiated firehose.
-- **"Bloom" panels.** shareable, URL-addressable overlays on the watch page (catch-up, clip, report, creator profile, analytics, subscribe, predictions, rewards) with shared-element transitions.
-- **Clips & VODs.** create clips from a stream, browse popular clips, and seek replays via VOD chapters.
-- **A complete creator studio.** go-live setup, stream manager, analytics with retention curves, clip management, community and moderation queues, monetization, alert-box configuration, and multi-platform restreaming.
-- **Monetization & engagement systems.** tiered subscriptions, channel points, predictions, and rewards, all fully modeled.
+- **Discovery and watch.** A mood-driven home, a discover page you can filter by mood and audience size, the watch page with a player and live chat, creator channels, and category browsing.
+- **Structured chat.** Four tabs (live, questions, polls, and highlights) instead of one undifferentiated firehose. Pinned messages are marked and deleted ones drop out.
+- **Catch Me Up and Join Late.** Once a live stream is more than 45 seconds old, a Join Late prompt opens the Catch Me Up panel with its headline, topic, summary, and the moments you missed.
+- **"Bloom" panels.** Overlays on the watch page (catch-up, clip, report, creator profile, discovery preferences, analytics, subscribe, predictions, and channel points) live in the URL as `?panel=`, so each one can be linked and the back button closes it. They animate open with Motion, respect reduced motion, and keep keyboard focus inside the panel.
+- **Clips and replays.** Create a clip from a stream, browse clips, and jump around a replay using its chapter list.
+- **A creator studio.** Go-live setup, stream manager, analytics with a retention curve, clip management, community and moderation queues, alert-box settings, and a restream page. The money and restreaming screens are labeled as mock data.
+- **Engagement systems.** Subscription tiers, channel points, predictions, and rewards, all on seeded data.
+
+The thesis is in the data, but the ranking isn't finished. Each seeded stream carries a chat health score, a creator response rate, a new-viewer score, a small-community boost, and a fit score with a one-line reason. The discover page sorts by that precomputed fit score and shows the reason on each card. The watch page shows chat health, and the "rising creators" rail sorts by how often creators answer new viewers. Nothing yet combines those signals into a ranking. A real formula is the next step, and this prototype is how I'd test whether it feels right.
 
 ---
 
 ## How It's Built
 
-Stream is built with **Next.js 16** and **React 19** as a **statically exported** site, styled with **Tailwind CSS v4** on a semantic-token design system with Base UI primitives, Motion for the Bloom panel transitions, and a command palette for navigation. It ships with real engineering hygiene around it: Vitest unit tests, Playwright end-to-end tests, and Storybook for component development.
+Stream is built with **Next.js 16** and **React 19** as a **statically exported** site. It's styled with **Tailwind CSS v4** on a semantic-token design system with its own hand-built components, and it uses Motion for the panel transitions. It has real engineering hygiene around it: Vitest unit tests, Playwright end-to-end, accessibility, and visual tests, and Storybook stories for the main components.
 
-The defining constraint: **it's a front-end-only build.** There is no real ingest and no live backend. State lives in `localStorage` via `useSyncExternalStore`, and the world is seeded from static JSON (streams, creators, clips, chat personas, polls, predictions, rewards, analytics). Every *system* a real platform needs is present and interactive. What's deliberately absent is the broadcast infrastructure.
+The defining constraint: **it's a front-end-only build.** There is no real ingest and no live backend. State lives in `localStorage` via `useSyncExternalStore`, and the world is seeded from static JSON (streams, creators, clips, chat personas, polls, predictions, rewards, analytics). The screens a real platform needs are there and you can click through them. What's deliberately absent is the broadcast infrastructure, real accounts, and real money.
 
-I built it this way because the thesis is a *product* argument, not an infrastructure one. To know whether "rank by community health" and "Catch Me Up" actually feel better, you have to build the whole experience and live in it. That is exactly what a complete, seed-driven prototype lets me do before committing to the hard, expensive real-time stack. It's in active development, and it's the most opinionated thing in my portfolio.
+I built it this way because the thesis is a *product* argument, not an infrastructure one. To know whether discovery by mood and fit and "Catch Me Up" actually feel better, you have to build the whole experience and live in it. That is exactly what a complete, seed-driven prototype lets me do before committing to the hard, expensive real-time stack. I built it in June 2026, and it's the most opinionated thing in my portfolio.
 
-Try it at [stream.byronwade.com](https://stream.byronwade.com).
+Try it at [stream.byronwade.com](https://stream.byronwade.com), or read the [source on GitHub](https://github.com/byronwade/stream.byronwade.com).
