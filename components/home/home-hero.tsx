@@ -31,7 +31,7 @@ function ThorbisSpecimen() {
 	return (
 		<Sheet caption="The chain Thorbis organizes. An outline of the product’s scope, not live data.">
 			<div className="flex flex-col gap-1.5 px-1.5 pt-1 pb-3">
-				<div className="flex items-baseline justify-between gap-4">
+				<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
 					<h2 className="font-medium text-copy-14 text-foreground">
 						What I’m building <span className="text-muted-foreground">·</span> Thorbis
 					</h2>
@@ -46,10 +46,10 @@ function ThorbisSpecimen() {
 						<span className="sr-only"> (opens in a new tab)</span>
 					</a>
 				</div>
-				<p className="font-medium text-copy-13 text-foreground">
+				<p className="font-medium text-copy-14 text-foreground">
 					Software for the people who keep things running.
 				</p>
-				<p className="text-body text-copy-13 leading-relaxed">
+				<p className="text-pretty text-body text-copy-14">
 					From the first customer call to the last invoice. Product engineering and a shared design
 					system, grounded in the work of a service business.
 				</p>
@@ -66,7 +66,7 @@ function ThorbisSpecimen() {
 							{String(index + 1).padStart(2, "0")}
 						</span>
 						<span className="font-medium text-copy-14 text-foreground">{stage}</span>
-						<span className="col-start-2 text-copy-13 text-muted-foreground sm:col-start-auto">
+						<span className="col-start-2 text-pretty text-body text-copy-14 sm:col-start-auto">
 							{detail}
 						</span>
 					</li>
