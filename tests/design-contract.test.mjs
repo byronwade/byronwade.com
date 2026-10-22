@@ -84,6 +84,7 @@ test("Thorbis tokens remain the only color values in the migrated surface", asyn
 		"app/metadata.config.ts",
 		"components/home/home-hero.tsx",
 		"components/portfolio/figma-viewer.tsx",
+		"components/portfolio/figma-viewer-client.tsx",
 		"components/layout/footer.tsx",
 		"components/layout/nav-dock.tsx",
 		"components/layout/site-header.tsx",

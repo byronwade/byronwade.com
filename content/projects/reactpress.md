@@ -5,6 +5,7 @@ category: "Hobby Project"
 date: 2024-01-01
 excerpt: "The WordPress admin screens rebuilt as React pages in Next.js 14 and React 18, as a starting point for modern field management systems."
 status: "Archived"
+tagline: "the WordPress admin, in React"
 featured: false
 ---
 
