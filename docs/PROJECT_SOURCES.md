@@ -574,15 +574,15 @@ workspace can dial, or that a production Telnyx webhook verifies.
 
 The Impact Marine Group case study now describes the WordPress site that the
 live domain serves under a custom theme named `impact`, whose footer reads
-"Designed & Developed by Byron Wade". The live site answered every request on
-October 21, 2026 with a Cloudflare challenge (HTTP 403), including a separate
-web reader. The challenge was not bypassed, so the claims below are dated to
-Internet Archive captures, not to the site today. The theme source is not
+"Designed & Developed by Byron Wade". On October 21, 2026 a direct request got
+a Cloudflare challenge (HTTP 403, `cf-mitigated: challenge`), and a separate
+web reader also got HTTP 403. Neither was bypassed, so the claims below are
+dated to Internet Archive captures, not to the site today. The theme source is not
 public, so none of this is a source-level claim.
 
 | Capture | What it shows |
 | --- | --- |
-| [Home, 2025-03-23](https://web.archive.org/web/20250323182202/https://impactmarinegroup.com/) | The earlier dealer-website platform (`/clients/` and `/sms-chat/` assets), no credit to Byron. Captures from October 2024 to this date look the same. |
+| [Home, 2025-03-23](https://web.archive.org/web/20250323182202/https://impactmarinegroup.com/) | The earlier dealer-website platform (`/clients/` and `/sms-chat/` assets), no credit to Byron. Captures from October 2024 to this date use the same platform, though brands and navigation changed. |
 | [Home, 2025-04-09](https://web.archive.org/web/20250409034254/https://impactmarinegroup.com/) | First capture of the WordPress `impact` theme, with the footer credit. The switch happened between these two captures. |
 | [Home, 2026-02-12](https://web.archive.org/web/20260212210915/https://impactmarinegroup.com/) | Full-width looping video (`impactlogo.mp4`) behind the white "Make an Impact!" headline; blue primary buttons; Viaggio Pontoons, MB Sports, Tige and ATX named; used boats described as inspected; footer line about "impactful memories". |
 | [About, 2026-01-15](https://web.archive.org/web/20260115151103/http://impactmarinegroup.com/about/) | "We are boaters." and "From one boater to another"; over 10,000 sq ft of shop space; factory-certified technicians and the engine list (Indmar, Ilmor, PCM, Yamaha, Suzuki, Mercury, Mercruiser, Volvo Penta); fourteen Georgia lakes served. |

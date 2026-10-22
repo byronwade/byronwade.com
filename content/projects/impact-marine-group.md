@@ -100,8 +100,8 @@ I built the site this way to solve the biggest problem in the marine industry: *
 
 ## The Result
 
-The site does not open with a sale. It opens with the water, the people in the shop and the work they stand behind, and the inventory sits inside that same experience.
+The site does not open with a sale. It opens with the "Make an Impact!" headline over the video, then a way to reach sales and a way to reach service, and only then the boats, which sit inside that same experience.
 
-In an industry where most sites feel transactional, I wanted Impact Marine's to feel relational. It is designed for people who want to join a lifestyle, not only buy a boat. I don't have traffic, ranking or sales figures for it, so this page doesn't claim any.
+In an industry where most sites feel transactional, I wanted Impact Marine's to feel relational. It is designed for people who want to join a lifestyle, not only buy a boat. This page doesn't claim traffic, ranking or sales figures.
 
 Visit [impactmarinegroup.com](https://impactmarinegroup.com) to see the site.
