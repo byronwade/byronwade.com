@@ -315,9 +315,16 @@ than restyling them.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
+  Index descriptions use the 14px content role with its own 1.5 line height
+  and pretty wrapping, rather than the long-form leading override. Writing
+  row titles are level-three headings below each section or year heading.
 - **Sheet.** `components/layout/sheet.tsx` frames real work with a caption that
   says what it is. It bleeds to the phone edge. It is not a card for counts or
   sections, and there is no card primitive.
+  Wide project previews keep their caption on `measureClass`: the artifact
+  spans, while its explanation shares the article's reading edge. In the home
+  specimen, explanatory sentences and stage descriptions use 14px body text;
+  the 12px marker role is reserved for numbers and the figure caption.
 - **Standalone links.** Back, next and open links use `link-action`: 14px,
   underlined, 44px target. Links inside a sentence use `link-underline` and
   stay inline on the sentence's baseline, so they wrap with the text and never

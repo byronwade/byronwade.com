@@ -173,7 +173,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 							/>
 						</span>
 						{repo.description && (
-							<p className="text-body text-copy-14 leading-relaxed">{repo.description}</p>
+							<p className="text-pretty text-body text-copy-14">{repo.description}</p>
 						)}
 						{(repo.language || repo.forks_count > 0) && (
 							<p className="flex flex-wrap items-center gap-x-4 text-copy-12 text-muted-foreground tabular-nums">

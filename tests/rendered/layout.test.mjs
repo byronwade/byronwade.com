@@ -58,6 +58,9 @@ function measure(page) {
 			title: left(title),
 			header: left(document.querySelector("[data-site-header]")),
 			footer: left(document.querySelector("[data-site-footer]")),
+			captions: [
+				...document.querySelectorAll('[data-profile="evidence"] > figure > figcaption'),
+			].map(left),
 		};
 	});
 }
@@ -78,12 +81,12 @@ async function misalignedEdges(page, url, route) {
 		// Same mobile flags, so resizing reflows the page instead of reloading it.
 		await page.setViewport({ width, height: 900 });
 		await settled(page);
-		const { title, header, footer } = await measure(page);
-		const edges = [title, header, footer];
+		const { title, header, footer, captions } = await measure(page);
+		const edges = [title, header, footer, ...captions];
 		const aligned =
 			edges.every((edge) => typeof edge === "number") &&
 			Math.max(...edges) - Math.min(...edges) <= TOLERANCE;
-		return aligned ? [] : [{ route, width, title, header, footer }];
+		return aligned ? [] : [{ route, width, title, header, footer, captions }];
 	});
 }
 
