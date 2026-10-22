@@ -1,16 +1,22 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useSyncExternalStore } from "react";
+import { type ReactNode, useSyncExternalStore } from "react";
 import { BreadcrumbTrail } from "./breadcrumb-trail-view";
 
 // The trail itself is small and ships with the layout: a separate chunk made
-// every xl page exceed the 10-script budget. Its popover/positioning graph stays
-// lazy in BreadcrumbOverflow and loads only when a long trail collapses.
+// every xl page exceed the 10-script budget. Its popover graph stays lazy and
+// loads on the first open. The dots glyph is a server slot on this boundary.
 
-export function AppBreadcrumb({ labels }: { labels: Record<string, string> }) {
+export function AppBreadcrumb({
+	labels,
+	overflowIcon,
+}: {
+	labels: Record<string, string>;
+	overflowIcon: ReactNode;
+}) {
 	const pathname = usePathname();
-	return pathname === "/" ? null : <WideBreadcrumb labels={labels} />;
+	return pathname === "/" ? null : <WideBreadcrumb labels={labels} overflowIcon={overflowIcon} />;
 }
 
 // Match the shell's xl visibility before downloading the optional popover graph.
@@ -21,11 +27,17 @@ function subscribeToHeader(onChange: () => void) {
 	return () => media.removeEventListener("change", onChange);
 }
 
-function WideBreadcrumb({ labels }: { labels: Record<string, string> }) {
+function WideBreadcrumb({
+	labels,
+	overflowIcon,
+}: {
+	labels: Record<string, string>;
+	overflowIcon: ReactNode;
+}) {
 	const wide = useSyncExternalStore(
 		subscribeToHeader,
 		() => window.matchMedia(WIDE_HEADER).matches,
 		() => false
 	);
-	return wide ? <BreadcrumbTrail labels={labels} /> : null;
+	return wide ? <BreadcrumbTrail labels={labels} overflowIcon={overflowIcon} /> : null;
 }

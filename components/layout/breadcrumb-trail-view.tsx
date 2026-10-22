@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import { Link } from "@/components/ui/link";
@@ -8,21 +7,24 @@ import { cn } from "@/lib/utils";
 import { BreadcrumbOverflowTrigger } from "./breadcrumb-overflow-trigger";
 import { type Crumb, resolveTrail } from "./breadcrumb-trail";
 
-const BreadcrumbOverflow = dynamic(
-	() => import("./breadcrumb-overflow").then((module) => module.BreadcrumbOverflow),
-	{ ssr: false, loading: () => <BreadcrumbOverflowTrigger aria-busy="true" /> }
+const BreadcrumbOverflow = React.lazy(() =>
+	import("./breadcrumb-overflow").then((module) => ({ default: module.BreadcrumbOverflow }))
 );
 
 // A long trail collapses on load; its popover graph loads on the first open.
-// Loading it with the collapse put an eleventh script on every long-titled xl page.
-function CollapsedLevels({ crumbs }: { crumbs: Crumb[] }) {
+// Loading that graph with the collapse put an eleventh script on every long
+// titled xl page. Suspense keeps the same dots slot visible while the graph loads.
+function CollapsedLevels({ crumbs, icon }: { crumbs: Crumb[]; icon: React.ReactNode }) {
 	const [requested, setRequested] = React.useState(false);
 	return requested ? (
-		<BreadcrumbOverflow crumbs={crumbs} />
+		<React.Suspense fallback={<BreadcrumbOverflowTrigger aria-busy="true" icon={icon} />}>
+			<BreadcrumbOverflow crumbs={crumbs} icon={icon} />
+		</React.Suspense>
 	) : (
 		<BreadcrumbOverflowTrigger
 			aria-expanded={false}
 			aria-haspopup="dialog"
+			icon={icon}
 			onClick={() => setRequested(true)}
 		/>
 	);
@@ -31,7 +33,13 @@ function CollapsedLevels({ crumbs }: { crumbs: Crumb[] }) {
 const useIsoLayoutEffect = typeof window === "undefined" ? React.useEffect : React.useLayoutEffect;
 
 /** Desktop breadcrumb beside the shared header; long trails collapse to a popover. */
-export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) {
+export function BreadcrumbTrail({
+	labels,
+	overflowIcon,
+}: {
+	labels: Record<string, string>;
+	overflowIcon: React.ReactNode;
+}) {
 	const pathname = usePathname();
 	const crumbs = resolveTrail(pathname, labels);
 	const trailKey = crumbs.map((c) => `${c.href}|${c.label}`).join(">");
@@ -83,7 +91,7 @@ export function BreadcrumbTrail({ labels }: { labels: Record<string, string> }) 
 						<CrumbLink crumb={first} />
 						<Sep />
 						<li className="flex shrink-0 items-center">
-							<CollapsedLevels crumbs={middle} />
+							<CollapsedLevels crumbs={middle} icon={overflowIcon} />
 						</li>
 						<Sep />
 						<CrumbLink crumb={last} current truncate />

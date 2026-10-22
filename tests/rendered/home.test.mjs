@@ -13,7 +13,7 @@ const INTER_PRELOAD =
 	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/UcCo3FwrK3iLTcviYwY\.woff2")[^>]*>/;
 const INITIAL_SCRIPT = /<script[^>]+src="\/_next\/([^"]+)"/g;
 const NON_CLIENT_GLYPHS =
-	/(?:ArrowRight|Envelope|DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
+	/(?:ArrowRight|Envelope|DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsThree|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
 // The send glyph stays in the contact form chunk, which loads only when the form opens.
 const LAZY_CLIENT_GLYPH = "PaperPlaneTiltIcon";
 const DEFERRED_DIALOG = /trap-focus/;
@@ -72,6 +72,30 @@ test("homepage initial scripts exclude shell glyphs, preview glyphs and closed d
 		[],
 		"Server-shell and preview glyph definitions belong outside the homepage JavaScript"
 	);
+	const clientDots = (
+		await Promise.all(
+			allChunks.map(async (file) =>
+				(await readFile(new URL(file, chunkDirectory), "utf8")).includes("DotsThreeIcon")
+					? file
+					: ""
+			)
+		)
+	).filter(Boolean);
+	assert.deepEqual(
+		clientDots,
+		[],
+		"The breadcrumb dots glyph loads with the server slot, not a client chunk"
+	);
+	const serverDirectory = new URL("../../.next/server/", import.meta.url);
+	const serverFiles = (await readdir(serverDirectory, { recursive: true })).filter((file) =>
+		file.endsWith(".js")
+	);
+	const serverDots = await Promise.all(
+		serverFiles.map(async (file) =>
+			(await readFile(new URL(file, serverDirectory), "utf8")).includes("DotsThreeIcon")
+		)
+	);
+	assert.ok(serverDots.includes(true), "The breadcrumb dots glyph must remain in the server build");
 	assert.deepEqual(
 		chunks.filter(({ source }) => DEFERRED_DIALOG.test(source)).map(({ file }) => file),
 		[],
