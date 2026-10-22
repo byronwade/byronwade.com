@@ -35,7 +35,7 @@ Stream is a full product surface, not a landing page with three screenshots. It 
 
 - **Discovery and watch.** A mood-driven home, a discover page you can filter by mood and audience size, the watch page with a player and live chat, creator channels, and category browsing.
 - **Structured chat.** Four tabs (live, questions, polls, and highlights) instead of one undifferentiated firehose. Pinned messages are marked and deleted ones drop out.
-- **Catch Me Up and Join Late.** Once a live stream is more than 45 seconds old, a Join Late prompt opens the Catch Me Up panel with its headline, topic, summary, and the moments you missed.
+- **Catch Me Up and Join Late.** Once a live stream is more than 45 seconds old, a Join Late prompt offers a one-tap Catch Me Up with its headline, topic, summary, and the moments you missed.
 - **"Bloom" panels.** Overlays on the watch page (catch-up, clip, report, creator profile, discovery preferences, analytics, subscribe, predictions, and channel points) live in the URL as `?panel=`, so each one can be linked and the back button closes it. They animate open with Motion, respect reduced motion, and keep keyboard focus inside the panel.
 - **Clips and replays.** Create a clip from a stream, browse clips, and jump around a replay using its chapter list.
 - **A creator studio.** Go-live setup, stream manager, analytics with a retention curve, clip management, community and moderation queues, alert-box settings, and a restream page. The money and restreaming screens are labeled as mock data.
