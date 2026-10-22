@@ -38,6 +38,11 @@ test("search queries collapse whitespace and stop at the shared limit", () => {
 	assert.equal(normalizeSearchQuery(undefined), "");
 	assert.equal(normalizeSearchQuery("   "), "");
 	assert.equal(normalizeSearchQuery("  thorbis   design "), "thorbis design");
+	assert.equal(normalizeSearchQuery("  thorbis \t design \n systems   "), "thorbis design systems");
+	assert.equal(
+		normalizeSearchQuery(`thorbis   design${" ".repeat(SEARCH_QUERY_MAX)}systems`),
+		"thorbis design systems"
+	);
 	assert.equal(normalizeSearchQuery("a".repeat(SEARCH_QUERY_MAX + 40)).length, SEARCH_QUERY_MAX);
 });
 
@@ -87,20 +92,86 @@ A readable sentence about legibility.
 	assert.equal(text.includes("hiddenAuthorNote"), false);
 });
 
+test("search text preserves words across inline formatting and decodes visible characters", () => {
+	assert.equal(
+		searchPlainText("A **search**able [leg](https://hidden.example)ibility &amp; caf&#233;."),
+		"A searchable legibility & café."
+	);
+	assert.equal(
+		searchPlainText("Keep \\_signal\\_ and `inline_code` readable."),
+		"Keep _signal_ and inline_code readable."
+	);
+});
+
+test("reference links contribute their label, while destinations, images, and comments stay out", () => {
+	assert.equal(
+		searchPlainText(
+			[
+				"See [the guide][guide].",
+				"",
+				'[guide]: https://hiddenDestination.example "hiddenTitle"',
+				"",
+				"![hiddenImageLabel](https://hiddenImage.example)",
+				"",
+				"<!-- hiddenNote -->",
+			].join("\n")
+		),
+		"See the guide."
+	);
+});
+
+test("visible URLs stay searchable while raw HTML follows the article's skipHtml policy", () => {
+	assert.equal(
+		searchPlainText("See <https://visible.example/docs>."),
+		"See https://visible.example/docs."
+	);
+	assert.equal(
+		searchPlainText("Before.\n\n<script>hiddenScript</script>\n\nAfter."),
+		"Before. After."
+	);
+});
+
+for (const [name, markdown] of [
+	["tilde fence", "~~~text\nhiddenCode\n~~~"],
+	["long fence containing shorter fences", "````text\n```\nhiddenCode\n```\n````"],
+	["indented sample", "    hiddenCode"],
+	["quoted sample", "> ~~~text\n> hiddenCode\n> ~~~"],
+	["unclosed fence", "```text\nhiddenCode"],
+]) {
+	test(`search excludes code: ${name}`, () => {
+		assert.equal(searchPlainText(`Visible prose.\n\n${markdown}`), "Visible prose.");
+	});
+}
+
+test("search keeps table cells, list items, and paragraphs as separate words", () => {
+	assert.equal(
+		searchPlainText(
+			"| First | Second |\n| --- | --- |\n| Third | Fourth |\n\n- Fifth\n- Sixth\n\nSeventh\n\nEighth"
+		),
+		"First Second Third Fourth Fifth Sixth Seventh Eighth"
+	);
+});
+
 test("the header finds tags and legal pages, and the search page also finds article text", async () => {
 	const header = await buildSearchIndex();
 	const page = await buildPageSearchIndex();
 	const scaling = header.find((entry) => entry.href === "/blog/scaling-plumbing-business");
 	const cielHeader = header.find((entry) => entry.href === "/projects/ciel");
 	const cielPage = page.find((entry) => entry.href === "/projects/ciel");
+	const memoriaHeader = header.find((entry) => entry.href === "/projects/memoria");
+	const memoriaPage = page.find((entry) => entry.href === "/projects/memoria");
 	assert.ok(scaling);
 	assert.ok(cielHeader);
 	assert.ok(cielPage);
+	assert.ok(memoriaHeader);
+	assert.ok(memoriaPage);
 	assert.equal(entryMatchesQuery(scaling, "entrepreneurship"), true);
 	assert.equal(entryMatchesQuery(cielHeader, "actually"), true);
 	assert.equal(cielHeader.label.startsWith("Ciel"), true);
 	assert.equal(entryMatchesQuery(cielHeader, "netlify"), false);
 	assert.equal(entryMatchesQuery(cielPage, "netlify"), true);
+	assert.equal(entryMatchesQuery(memoriaHeader, "claude_desktop_config.json"), false);
+	assert.equal(entryMatchesQuery(memoriaPage, "claude_desktop_config.json"), true);
 	assert.equal(
 		header.some((entry) => entry.href === "/privacy"),
 		true
