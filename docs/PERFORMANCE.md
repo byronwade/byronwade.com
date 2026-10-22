@@ -103,7 +103,10 @@ feedback without delivering a message or certifying a live provider.
   modules and Next's existing import optimizer resolve each consumer to its
   requested glyphs; this bounded sharing keeps route dependencies deferred
   without changing public imports or weights. The rendered home contract checks
-  the actual initial scripts for preview glyphs. React Compiler owns routine
+  the actual initial scripts for preview glyphs. The same kind of check covers every
+  published post, the résumé, and the contact page, so the share, envelope, download,
+  send, and spinner glyph definitions cannot drift back into those routes' initial
+  scripts (`tests/rendered/glyph-boundary.test.mjs`). React Compiler owns routine
   memoization; do not add manual memoization without a measured need.
 - The same import optimizer keeps unused common-barrel clients out of server-only
   homepage lists. The bounded sharing group also deduplicates Next link helpers
