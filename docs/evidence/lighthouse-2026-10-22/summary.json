@@ -1,0 +1,445 @@
+{
+  "applicationCommit": "8df8549a6045d258d573839d21af6020ba662aa3",
+  "buildId": "udHVh-x5gMf5aQbKSc58H",
+  "chrome": "Chrome/155.0.8059.85",
+  "lighthouseVersion": "13.5.0",
+  "profile": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "method": {
+    "samplesPerRoute": 3,
+    "serial": true,
+    "order": [
+      "lighthouse-home-1",
+      "lighthouse-thorbis-1",
+      "lighthouse-dits-1",
+      "lighthouse-nexstar-1",
+      "lighthouse-home-2",
+      "lighthouse-thorbis-2",
+      "lighthouse-dits-2",
+      "lighthouse-nexstar-2",
+      "lighthouse-home-3",
+      "lighthouse-thorbis-3",
+      "lighthouse-dits-3",
+      "lighthouse-nexstar-3"
+    ],
+    "server": "Fresh Next production process; helper requests / once before launch",
+    "browser": "Fresh Chrome per measurement, 45s before launch, 5s on about:blank",
+    "screenshotProvider": "Disabled in child environment",
+    "minimumAvailableRamBytes": 24784715776,
+    "externalWorkloads": "Shared host; other jobs were not paused"
+  },
+  "benchmarkIndex": { "min": 1332, "median": 2621, "max": 2640 },
+  "measured": 12,
+  "budgetPassed": 3,
+  "budgetFailed": 9,
+  "routes": [
+    {
+      "route": "/",
+      "samples": 3,
+      "passed": 3,
+      "timings": {
+        "first-contentful-paint": {
+          "min": 912.7524000000001,
+          "median": 913.3814,
+          "max": 925.2881
+        },
+        "largest-contentful-paint": {
+          "min": 2901.5048,
+          "median": 2902.7628000000004,
+          "max": 2972.5761999999995
+        },
+        "cumulative-layout-shift": { "min": 0, "median": 0, "max": 0 },
+        "total-blocking-time": {
+          "min": 101,
+          "median": 186.3559499999999,
+          "max": 203.62380000000007
+        },
+        "speed-index": {
+          "min": 912.7524000000001,
+          "median": 913.3814,
+          "max": 925.2881
+        }
+      },
+      "resources": {
+        "total": {
+          "bytes": { "min": 271790, "median": 271790, "max": 271790 },
+          "requests": { "min": 16, "median": 16, "max": 16 }
+        },
+        "script": {
+          "bytes": { "min": 176138, "median": 176138, "max": 176138 },
+          "requests": { "min": 10, "median": 10, "max": 10 }
+        },
+        "font": {
+          "bytes": { "min": 49991, "median": 49991, "max": 49991 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "document": {
+          "bytes": { "min": 21770, "median": 21770, "max": 21770 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "stylesheet": {
+          "bytes": { "min": 16555, "median": 16555, "max": 16555 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "other": {
+          "bytes": { "min": 4084, "median": 4084, "max": 4084 },
+          "requests": { "min": 2, "median": 2, "max": 2 }
+        },
+        "image": {
+          "bytes": { "min": 3252, "median": 3252, "max": 3252 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "media": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        },
+        "third-party": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        }
+      }
+    },
+    {
+      "route": "/projects/thorbis",
+      "samples": 3,
+      "passed": 0,
+      "timings": {
+        "first-contentful-paint": {
+          "min": 1078.5151825584965,
+          "median": 1079.6827500000002,
+          "max": 1080.7282500000001
+        },
+        "largest-contentful-paint": {
+          "min": 3219.9709999999995,
+          "median": 3222.020243411329,
+          "max": 3230.5769999999998
+        },
+        "cumulative-layout-shift": {
+          "min": 0.0009824999788217244,
+          "median": 0.0009824999788217244,
+          "max": 0.0009824999788217244
+        },
+        "total-blocking-time": { "min": 106, "median": 109, "max": 118 },
+        "speed-index": {
+          "min": 1078.5151825584965,
+          "median": 1079.6827500000002,
+          "max": 1080.7282500000001
+        }
+      },
+      "resources": {
+        "total": {
+          "bytes": { "min": 310744, "median": 310744, "max": 310744 },
+          "requests": { "min": 18, "median": 18, "max": 18 }
+        },
+        "script": {
+          "bytes": { "min": 198258, "median": 198258, "max": 198258 },
+          "requests": { "min": 10, "median": 10, "max": 10 }
+        },
+        "font": {
+          "bytes": { "min": 65886, "median": 65886, "max": 65886 },
+          "requests": { "min": 2, "median": 2, "max": 2 }
+        },
+        "document": {
+          "bytes": { "min": 22298, "median": 22298, "max": 22298 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "stylesheet": {
+          "bytes": { "min": 16555, "median": 16555, "max": 16555 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "other": {
+          "bytes": { "min": 4495, "median": 4495, "max": 4495 },
+          "requests": { "min": 3, "median": 3, "max": 3 }
+        },
+        "image": {
+          "bytes": { "min": 3252, "median": 3252, "max": 3252 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "media": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        },
+        "third-party": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        }
+      }
+    },
+    {
+      "route": "/projects/dits",
+      "samples": 3,
+      "passed": 0,
+      "timings": {
+        "first-contentful-paint": {
+          "min": 1078.33125,
+          "median": 1079.0343,
+          "max": 1091.68875
+        },
+        "largest-contentful-paint": {
+          "min": 3212.7124000000003,
+          "median": 3220.7749999999996,
+          "max": 3253.584999999999
+        },
+        "cumulative-layout-shift": {
+          "min": 0,
+          "median": 0.0009824999788217244,
+          "max": 0.0009824999788217244
+        },
+        "total-blocking-time": { "min": 100, "median": 109, "max": 220 },
+        "speed-index": {
+          "min": 1078.33125,
+          "median": 1079.0343,
+          "max": 1101.9436577770894
+        }
+      },
+      "resources": {
+        "total": {
+          "bytes": { "min": 319006, "median": 319006, "max": 319006 },
+          "requests": { "min": 18, "median": 18, "max": 18 }
+        },
+        "script": {
+          "bytes": { "min": 198258, "median": 198258, "max": 198258 },
+          "requests": { "min": 10, "median": 10, "max": 10 }
+        },
+        "font": {
+          "bytes": { "min": 65886, "median": 65886, "max": 65886 },
+          "requests": { "min": 2, "median": 2, "max": 2 }
+        },
+        "document": {
+          "bytes": { "min": 30560, "median": 30560, "max": 30560 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "stylesheet": {
+          "bytes": { "min": 16555, "median": 16555, "max": 16555 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "other": {
+          "bytes": { "min": 4495, "median": 4495, "max": 4495 },
+          "requests": { "min": 3, "median": 3, "max": 3 }
+        },
+        "image": {
+          "bytes": { "min": 3252, "median": 3252, "max": 3252 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "media": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        },
+        "third-party": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        }
+      }
+    },
+    {
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "samples": 3,
+      "passed": 0,
+      "timings": {
+        "first-contentful-paint": {
+          "min": 1520.6076,
+          "median": 1521.47145,
+          "max": 1530.58815
+        },
+        "largest-contentful-paint": {
+          "min": 3174.6076000000007,
+          "median": 3179.47145,
+          "max": 3186.3921
+        },
+        "cumulative-layout-shift": { "min": 0, "median": 0, "max": 0 },
+        "total-blocking-time": { "min": 98.901975, "median": 104, "max": 108 },
+        "speed-index": {
+          "min": 1520.6076,
+          "median": 1521.47145,
+          "max": 1530.58815
+        }
+      },
+      "resources": {
+        "total": {
+          "bytes": { "min": 337878, "median": 337878, "max": 337878 },
+          "requests": { "min": 18, "median": 18, "max": 18 }
+        },
+        "script": {
+          "bytes": { "min": 179192, "median": 179192, "max": 179192 },
+          "requests": { "min": 10, "median": 10, "max": 10 }
+        },
+        "font": {
+          "bytes": { "min": 88141, "median": 88141, "max": 88141 },
+          "requests": { "min": 3, "median": 3, "max": 3 }
+        },
+        "document": {
+          "bytes": { "min": 46654, "median": 46654, "max": 46654 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "stylesheet": {
+          "bytes": { "min": 16555, "median": 16555, "max": 16555 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "other": {
+          "bytes": { "min": 4084, "median": 4084, "max": 4084 },
+          "requests": { "min": 2, "median": 2, "max": 2 }
+        },
+        "image": {
+          "bytes": { "min": 3252, "median": 3252, "max": 3252 },
+          "requests": { "min": 1, "median": 1, "max": 1 }
+        },
+        "media": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        },
+        "third-party": {
+          "bytes": { "min": 0, "median": 0, "max": 0 },
+          "requests": { "min": 0, "median": 0, "max": 0 }
+        }
+      }
+    }
+  ],
+  "runners": {
+    "scripts/perf-budget.mjs": "0336d9599e9a57a20ad0d83a9f03ba2e47d45b4d1565ba20fa36171e554b5e4e",
+    "scripts/audit-browser.mjs": "7ac8040ed1481ad87cd5ceac16a222f9b3f55231774f69e6d1ce456466c6e625",
+    "scripts/lighthouse-budget.mjs": "45d484f405c863b4f2094eaf9a1becc36a56a39e6d29e12af75c16e61bef0c42",
+    "scripts/production-session.mjs": "abf90587c1d614447a4764a9a017af7c1511c9be2aef143e96aff794f8dcc5dc",
+    "scripts/evidence-json.mjs": "8879ba27cf22baa9443979d290351148a5398bb216866d0c5a65f7afabbbd8e4",
+    "tests/fixtures/browser.mjs": "eb0967ae420d4875cb5b41878e9dec6847f201d2e6d8b7541d83d670c2182699",
+    "lighthouse-budget.json": "1f06cb7a7b5cb2339d80a212b0e375a68b68b50836ba6795d2eb3e29787eddd4"
+  },
+  "reports": [
+    {
+      "name": "lighthouse-home-1",
+      "route": "/",
+      "sample": 1,
+      "report": "docs/evidence/lighthouse-2026-10-22/home-1/home-budget.json",
+      "exit_code": 0,
+      "available_ram_bytes": 25706217472,
+      "failures": [],
+      "sha256": "ec73612e7e2b2cdfc4850394fa6e540c0efffafb1eb12a26b75c343c2dfce679"
+    },
+    {
+      "name": "lighthouse-thorbis-1",
+      "route": "/projects/thorbis",
+      "sample": 1,
+      "report": "docs/evidence/lighthouse-2026-10-22/thorbis-1/route-budget_projects_thorbis.json",
+      "exit_code": 1,
+      "available_ram_bytes": 25819934720,
+      "failures": ["largest-contentful-paint: 3230.5769999999998 > 3000"],
+      "sha256": "a2f90451fd0a547872f54b4a703bd057b5d8d5ea59424caba7f75664bc265338"
+    },
+    {
+      "name": "lighthouse-dits-1",
+      "route": "/projects/dits",
+      "sample": 1,
+      "report": "docs/evidence/lighthouse-2026-10-22/dits-1/route-budget_projects_dits.json",
+      "exit_code": 1,
+      "available_ram_bytes": 25684844544,
+      "failures": ["largest-contentful-paint: 3212.7124000000003 > 3000"],
+      "sha256": "f1ba7f8b7f5e2bef76d5cd1ad0c0ec8eb06780997dd3fb628e8227bbae5d353f"
+    },
+    {
+      "name": "lighthouse-nexstar-1",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "sample": 1,
+      "report": "docs/evidence/lighthouse-2026-10-22/nexstar-1/route-budget_blog_nexstar-win-invoice-lose-customer.json",
+      "exit_code": 1,
+      "available_ram_bytes": 26518028288,
+      "failures": ["largest-contentful-paint: 3179.47145 > 3000"],
+      "sha256": "63d52ba6faafafbcab5356fefb145aa0fff083635639659d64b117125b446efa"
+    },
+    {
+      "name": "lighthouse-home-2",
+      "route": "/",
+      "sample": 2,
+      "report": "docs/evidence/lighthouse-2026-10-22/home-2/home-budget.json",
+      "exit_code": 0,
+      "available_ram_bytes": 27640750080,
+      "failures": [],
+      "sha256": "4b8f0cdd77920d98c3b390e2e64b33f2f93881fd62e79af3223b1b4dedb2f861"
+    },
+    {
+      "name": "lighthouse-thorbis-2",
+      "route": "/projects/thorbis",
+      "sample": 2,
+      "report": "docs/evidence/lighthouse-2026-10-22/thorbis-2/route-budget_projects_thorbis.json",
+      "exit_code": 1,
+      "available_ram_bytes": 28066004992,
+      "failures": ["largest-contentful-paint: 3222.020243411329 > 3000"],
+      "sha256": "d6a6951804c3f0dffebd737d8a81d6bb6a92616fdbb62749a66f5a0fc100a789"
+    },
+    {
+      "name": "lighthouse-dits-2",
+      "route": "/projects/dits",
+      "sample": 2,
+      "report": "docs/evidence/lighthouse-2026-10-22/dits-2/route-budget_projects_dits.json",
+      "exit_code": 1,
+      "available_ram_bytes": 25866719232,
+      "failures": ["largest-contentful-paint: 3253.584999999999 > 3000"],
+      "sha256": "135db7f826570d722b85a03b8d4b3253eade49bf2611ae8d16cc91624a30c61b"
+    },
+    {
+      "name": "lighthouse-nexstar-2",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "sample": 2,
+      "report": "docs/evidence/lighthouse-2026-10-22/nexstar-2/route-budget_blog_nexstar-win-invoice-lose-customer.json",
+      "exit_code": 1,
+      "available_ram_bytes": 24858992640,
+      "failures": ["largest-contentful-paint: 3186.3921 > 3000"],
+      "sha256": "848b90d839ffbf5858c151ad5967a2662defdcdf51c0876fc40c876946adb09f"
+    },
+    {
+      "name": "lighthouse-home-3",
+      "route": "/",
+      "sample": 3,
+      "report": "docs/evidence/lighthouse-2026-10-22/home-3/home-budget.json",
+      "exit_code": 0,
+      "available_ram_bytes": 24784715776,
+      "failures": [],
+      "sha256": "5add6f4ca2c1a0950407c5762c28f1e6acde4c7cc0cca6de1c2a1a287ab43490"
+    },
+    {
+      "name": "lighthouse-thorbis-3",
+      "route": "/projects/thorbis",
+      "sample": 3,
+      "report": "docs/evidence/lighthouse-2026-10-22/thorbis-3/route-budget_projects_thorbis.json",
+      "exit_code": 1,
+      "available_ram_bytes": 26282147840,
+      "failures": ["largest-contentful-paint: 3219.9709999999995 > 3000"],
+      "sha256": "f2446207a151337c124356c0f253971a899a73ecf4db251989337d986c03c9da"
+    },
+    {
+      "name": "lighthouse-dits-3",
+      "route": "/projects/dits",
+      "sample": 3,
+      "report": "docs/evidence/lighthouse-2026-10-22/dits-3/route-budget_projects_dits.json",
+      "exit_code": 1,
+      "available_ram_bytes": 26966450176,
+      "failures": ["largest-contentful-paint: 3220.7749999999996 > 3000"],
+      "sha256": "ccdfa3045d50418682c0041ce367f2b8d8984256ecebbbd4f2635da9c1db16e8"
+    },
+    {
+      "name": "lighthouse-nexstar-3",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "sample": 3,
+      "report": "docs/evidence/lighthouse-2026-10-22/nexstar-3/route-budget_blog_nexstar-win-invoice-lose-customer.json",
+      "exit_code": 1,
+      "available_ram_bytes": 25534803968,
+      "failures": ["largest-contentful-paint: 3174.6076000000007 > 3000"],
+      "sha256": "56ef09ec16a7218e2d15cfd5d388dcf134740a7f44a54ed105450cc8b659b168"
+    }
+  ]
+}

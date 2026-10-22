@@ -26,6 +26,9 @@ The authoritative limits remain in the JSON file: FCP 2000ms, LCP 3000ms, TBT
 `docs/evidence/a11y-perf/home-budget.json`. Earlier project lane reports remain
 at `docs/evidence/projects-refresh/` and `docs/evidence/thorbis/`.
 A Lighthouse score alone cannot pass a failed resource or timing limit.
+The [repeated October 22 template baseline](evidence/lighthouse-2026-10-22/README.md)
+keeps twelve later measurements separately, with their exact source/build pins
+and all budget failures; `home-budget.json` is an earlier snapshot.
 Lighthouse 12 removed built-in budget enforcement, and Lighthouse 13 does not
 restore it. This runner checks the JSON limits itself instead of relying on an
 ignored CLI/config flag.
@@ -75,6 +78,24 @@ changing the root size on a laid-out page can leave container-query styles stale
 The rendered search regression also uses the maximum allowed unbroken query at
 320, 390 and 1280px in both themes. Query summaries use the existing
 `wrap-anywhere` utility so long identifiers reflow without changing the query.
+
+## Repeated template baseline, October 22, 2026
+
+On source `8df8549`, three cold-browser samples each for home, Thorbis, Dits and
+the Nexstar post recorded three budget passes and nine LCP failures. Home passed
+all three times but its worst LCP was only 27ms below the limit. Every detail-page
+sample exceeded 3000ms LCP; every other timing, byte and request limit passed.
+All four routes used the full ten-script allowance. The limits are unchanged.
+
+The [reports and investigation plan](evidence/lighthouse-2026-10-22/README.md)
+include each measurement, full-precision aggregates, source/build/browser pins,
+CPU calibration variation, resource totals and reproduction instructions. This
+is a repeated baseline after the shell changes, not a before/after experiment.
+Contact PR #162 merged while collection ran; these timings remain pinned to
+`8df8549`, not that later main or the documentation PR's release build. Before a
+loading change, repeat the baseline on the then-current source and isolate the
+responsible work. Do not infer a speedup from older reports using another
+Lighthouse version or from one low sample.
 
 ## Search corpus reuse, October 22, 2026
 
@@ -274,7 +295,9 @@ contention and failed runs honestly; do not relax a budget to obtain a pass.
 The baseline homepage at commit `73496a0`, measured on 2026-10-16, recorded LCP
 3243.91 ms and TBT 707.70 ms with CLS 0. It failed the existing LCP and
 blocking-time limits. That run is `home-budget-baseline.json`. The release
-measurement is whatever `home-budget.json` records for the committed source.
+measurement in that directory is the snapshot pinned by `home-budget.json`;
+the later repeated template baseline is linked above. Neither is an unpinned
+measurement of current main.
 Timing variation on a shared machine is large; a pass close to a limit is not a
 comfortable regression margin.
 
