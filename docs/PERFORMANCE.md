@@ -122,6 +122,31 @@ feedback without delivering a message or certifying a live provider.
   payload instead (`/projects/dits` HTML 62,389 to 64,471 bytes gzipped). Lighthouse's script transfer for a
   project page went from 209,005 to 200,663 bytes. This is a byte reduction;
   it did not measurably change LCP.
+- Client leaves elsewhere follow the same rule. The footer's email reveal no
+  longer imports glyphs for an icon option no caller used, so the envelope left
+  every page's layout chunk. The homepage contact button, the résumé's copy-email
+  and download buttons, and the contact submit button receive their glyphs from
+  server parents. Post share links to X and LinkedIn are server anchors; only
+  native share and copy link are client code. The lazily loaded inline contact
+  form, the success toast, the breadcrumb overflow trigger (its `next/dynamic`
+  loading fallback cannot take a slot) and the Figma viewer still import glyphs
+  directly. Measured on production builds of `08b11de` and this change, initial
+  scripts and HTML summed per route and gzipped at level 9 (script counts
+  unchanged):
+
+  | Route | Initial scripts, gzip | HTML, gzip |
+  | --- | --- | --- |
+  | `/` | 212,473 → 211,079 (−1,394) | 20,256 → 20,341 (+85) |
+  | `/blog/nexstar-win-invoice-lose-customer` | 219,802 → 215,159 (−4,643) | 44,254 → 45,261 (+1,007) |
+  | `/resume` | 229,879 → 226,589 (−3,290) | 21,677 → 21,835 (+158) |
+  | `/contact` | 229,916 → 225,765 (−4,151) | 17,492 → 17,793 (+301) |
+  | `/projects/dits` | 235,033 → 234,185 (−848) | 30,131 → 29,828 (−303) |
+  | `/projects` | 213,707 → 212,859 (−848) | 22,188 → 22,171 (−17) |
+
+  This is a byte reduction only; LCP was not measured for it. Every rendered
+  glyph is now also in the page's HTML and RSC payload, so a toggled pair (copy
+  and copied, send and sending) costs HTML bytes even when one half is never
+  shown. Check the net before slotting a glyph into a route.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.
