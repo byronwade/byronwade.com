@@ -34,7 +34,7 @@ The typography choices, spacing, and color palette all work together to say "pre
 
 ### Inventory that feels like part of the site
 
-I built the inventory into the site itself instead of handing it to a clunky iframe from a third-party DMS (Dealer Management System). Every boat has its own page in the same template as the rest of the site, with year, make, model, length, engine, hours, stock number, price and status. Visitors can browse by manufacturer, by condition (new, used or demo) and by status, from available and on consignment through sale pending and sold.
+I built the inventory into the site itself instead of handing it to a clunky iframe from a third-party DMS (Dealer Management System). Every boat has its own page in the same template as the rest of the site, with year, make, model, length, engine, hours, stock number, price and status. Visitors can open a manufacturer list, a condition list (new, used, or demo), and a status list (available, on consignment, or sold).
 
 When inventory loads, it should feel like part of the site, not like you've been redirected to a different platform. Every boat listing carries the brand, not the software vendor's.
 
@@ -44,7 +44,7 @@ When inventory loads, it should feel like part of the site, not like you've been
 
 ### Water-Body Targeting (Not Just Cities)
 
-Boaters don't think in zip codes. They think in water. The About page names the water the shop serves instead of stopping at the town: fourteen Georgia lakes, from **Lake Lanier**, **Lake Allatoona** and **Lake Burton** to Lake Hartwell and West Point Lake. The same page sums it up as serving Lake Lanier and all Georgia lakes.
+Boaters don't think in zip codes. They think in water. The About page names the water the shop serves instead of stopping at the town: fourteen Georgia lakes, including **Lake Lanier**, **Lake Allatoona**, **Lake Burton**, Lake Hartwell, and West Point Lake. The same page says the shop is serving Lake Lanier and all Georgia lakes, with nationwide shipping, and that it is proudly serving all North Georgia lakes.
 
 My reasoning was that someone searching for a lake is already in the mindset of being on the water. They are not looking for a dealer. They are looking for their next weekend. The lakes are a list on the About page, not separate pages for each lake.
 
