@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { readGeometry } from "./audit-geometry.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -47,7 +49,15 @@ if (phase === "after") {
 }
 const initialReport = {
 	phase,
-	head: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+	harnessHash: createHash("sha256")
+		.update(readFileSync(import.meta.filename))
+		.update(readFileSync("scripts/audit-geometry.mjs"))
+		.digest("hex"),
+	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
+	head: execFileSync("git", ["rev-parse", "HEAD"], {
+		encoding: "utf8",
+		windowsHide: true,
+	}).trim(),
 	serverNotFoundBreadcrumb:
 		phase === "after"
 			? readFileSync(".next/server/app/_not-found.html", "utf8")
@@ -63,6 +73,8 @@ const report = resume
 	? JSON.parse(readFileSync(`${destination}/matrix.json`, "utf8"))
 	: initialReport;
 assert.equal(report.head, initialReport.head, "resume must use the same source revision");
+assert.equal(report.harnessHash, initialReport.harnessHash, "resume must use the same audit logic");
+assert.equal(report.buildId, initialReport.buildId, "resume must use the same production build");
 const captured = (name, width, theme) =>
 	resume &&
 	report.cases.some(
@@ -73,7 +85,7 @@ const captured = (name, width, theme) =>
 			existsSync(`${destination}/${entry.file}`)
 	);
 
-function readGeometry() {
+function readCaptureGeometry() {
 	const visible = (element) =>
 		element.getClientRects().length && getComputedStyle(element).visibility === "visible";
 	const label = (element) =>
@@ -96,10 +108,6 @@ function readGeometry() {
 				role: element.getAttribute("role"),
 				width: rect.width,
 				height: rect.height,
-				inlineText:
-					element.matches("a") &&
-					getComputedStyle(element).display === "inline" &&
-					Boolean(element.closest("p, li")),
 			};
 		});
 	return {
@@ -162,7 +170,11 @@ async function settleLayout(page) {
 async function screenshot(page, file, attempt = 0) {
 	await settleLayout(page);
 	const buffer = await page.screenshot({ path: file, fullPage: true });
-	const geometry = await page.evaluate(readGeometry);
+	const geometry = {
+		...(await page.evaluate(readCaptureGeometry)),
+		// Preserve this capture's stronger 44px policy at desktop widths too.
+		...(await readGeometry(page, 44)),
+	};
 	const screenshotHeight = Buffer.from(buffer).readUInt32BE(20);
 	// DOM rectangles retain subpixels; PNG bounds and scrollHeight are integer pixels.
 	if (
@@ -234,44 +246,47 @@ async function capture(page, url, name, route, width, theme) {
 	console.log(`${phase}: ${name} ${width} ${theme}; overflow=${geometry.overflow}`);
 }
 
-await withProductionServer(async (url) => {
-	// One browser per viewport; serial navigation avoids adding measurement contention.
-	const cases = [375, 768, 1440].flatMap((width) =>
-		["light", "dark"].map((theme) => ({ width, theme }))
-	);
-	await cases.reduce(async (previous, { width, theme }) => {
-		await previous;
-		if (routes.every(([name]) => captured(name, width, theme))) {
-			return;
-		}
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
-			report.chrome = await browser.version();
-			const page = await browser.newPage();
-			page.setDefaultNavigationTimeout(60_000);
-			await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
-			await page.emulateMediaFeatures([
-				{ name: "prefers-color-scheme", value: theme },
-				{ name: "prefers-reduced-motion", value: "reduce" },
-			]);
-			await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
-			await routes.reduce(async (prior, [name, route]) => {
-				await prior;
-				if (captured(name, width, theme)) {
-					return;
-				}
-				await capture(page, url, name, route, width, theme);
-			}, Promise.resolve());
-		} finally {
-			await closeBrowser(browser, { diagnostic: console.log });
-			writeEvidenceJson(`${destination}/matrix.json`, report);
-		}
-	}, Promise.resolve());
-});
+await withProductionServer(
+	async (url) => {
+		// One browser per viewport; serial navigation avoids adding measurement contention.
+		const cases = [375, 768, 1440].flatMap((width) =>
+			["light", "dark"].map((theme) => ({ width, theme }))
+		);
+		await cases.reduce(async (previous, { width, theme }) => {
+			await previous;
+			if (routes.every(([name]) => captured(name, width, theme))) {
+				return;
+			}
+			const browser = await puppeteer.launch({
+				executablePath:
+					process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+				headless: true,
+			});
+			try {
+				report.chrome = await browser.version();
+				const page = await browser.newPage();
+				page.setDefaultNavigationTimeout(60_000);
+				await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+				await page.emulateMediaFeatures([
+					{ name: "prefers-color-scheme", value: theme },
+					{ name: "prefers-reduced-motion", value: "reduce" },
+				]);
+				await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
+				await routes.reduce(async (prior, [name, route]) => {
+					await prior;
+					if (captured(name, width, theme)) {
+						return;
+					}
+					await capture(page, url, name, route, width, theme);
+				}, Promise.resolve());
+			} finally {
+				await closeBrowser(browser, { diagnostic: console.log });
+				writeEvidenceJson(`${destination}/matrix.json`, report);
+			}
+		}, Promise.resolve());
+	},
+	{ env: { SCREENSHOTONE_ACCESS_KEY: "" } }
+);
 // Every page error fails, including on the 404 route: main #98 fixed its hydration mismatch.
 if (phase === "after") {
 	assert.equal(report.cases.length, routes.length * 6, "complete route/viewport/theme matrix");
@@ -281,7 +296,7 @@ if (phase === "after") {
 			entry.geometry.headings.length !== 1 ||
 			entry.geometry.truncated.length > 0 ||
 			entry.geometry.buttonLinks.length > 0 ||
-			entry.geometry.smallTargets.some((target) => !target.inlineText) ||
+			entry.geometry.targetFailures.length > 0 ||
 			entry.accessibility.violations.length > 0 ||
 			entry.errors.length > 0 ||
 			entry.status !== (entry.name === "not-found" ? 404 : 200)

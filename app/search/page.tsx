@@ -65,7 +65,7 @@ export default async function SearchPage({
 
 			{query ? (
 				<div className="flex flex-col gap-8">
-					<p className="text-copy-14 text-muted-foreground">
+					<p className="wrap-anywhere text-copy-14 text-muted-foreground">
 						{count === 1 ? "1 result" : `${count} results`} for “{query}”.
 					</p>
 					{count === 0 ? (
