@@ -1,7 +1,7 @@
 ---
 title: "Why I’m Building Thorbis: Field-Service Software Should Understand the Whole Business"
 date: 2025-11-18
-updated: 2026-08-07
+updated: 2026-10-22
 excerpt: "Thorbis did not start as a feature list. It started with the operational failures I lived through in plumbing: lost context, weak job costing, missed calls, expensive seats, and software that never sees the whole company."
 tags:
   - Thorbis
@@ -135,17 +135,17 @@ That is:
 
 `$1,800 × 12 = $21,600 per year`
 
-Thorbis currently publishes a base price of **$299 per company per month with unlimited users**, plus transparent usage for utilities such as calls, texts, and AI after an included allowance.
+The [Thorbis pricing page](https://thorbis.com/pricing), read on October 22, 2026, posts a base price of **$99 per company per month with unlimited people**. It includes $15 a month toward phone, AI, payroll delivery, sites, and fleet, then meters use past that credit. Signup on that page is a waitlist, so this is the posted company price, not a bill for a signed account.
 
 The base subscription is:
 
-`$299 × 12 = $3,588 per year`
+`$99 × 12 = $1,188 per year`
 
 The difference between the two base-price models is:
 
-`$21,600 - $3,588 = $18,012 per year`
+`$21,600 - $1,188 = $20,412 per year`
 
-That is an illustrative comparison, not a quotation from a specific competitor. Usage, implementation, add-ons, support, and actual vendor pricing can change the result.
+That is an illustrative comparison, not a quotation from a specific competitor. On the same pricing page, a sample month for two people and four receipts a day, with the shop number, texts, recording, vision, OCR, and Brain turned on, totals $194.45 after the $15 credit. Usage, implementation, add-ons, support, and actual vendor pricing can change the result.
 
 The point is the incentive.
 
