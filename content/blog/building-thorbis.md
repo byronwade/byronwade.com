@@ -31,7 +31,11 @@ That sounds like a product statement. For me, it is a lesson paid for through re
 
 I am not pretending that nobody has tried to solve this.
 
-ServiceTitan deserves credit for proving that contractors will adopt a deep, end-to-end platform. In its [fiscal 2026 annual filing](https://www.sec.gov/Archives/edgar/data/1638826/000163882626000028/ttan-20260131.htm), ServiceTitan described a product spanning call tracking, scheduling, dispatch, customer communication, marketing, estimating, sales, payments, inventory, and payroll integration. It reported approximately 10,800 active customers and $82.1 billion in gross transaction volume processed through the platform during that fiscal year.
+ServiceTitan deserves credit for proving that contractors will adopt a deep, end-to-end platform. In its [fiscal 2026 annual filing](https://www.sec.gov/Archives/edgar/data/1638826/000163882626000028/ttan-20260131.htm), ServiceTitan described a product spanning call tracking, scheduling, dispatch, customer communication, marketing, estimating, sales, payments, inventory, and payroll integration.
+
+It reported approximately 10,800 Active Customers **as of January 31, 2026**. That measure counts parent organizations billed in the preceding three months with more than $10,000 in annualized billings. One organization can include several locations, brands, or subsidiaries.
+
+For **fiscal 2026, the year ended January 31, 2026**, it reported $82.1 billion in gross transaction volume (GTV): the dollars its customers invoiced through the platform. GTV measures invoicing, not payments collected or ServiceTitan’s revenue.
 
 Those numbers do not prove that every contractor is happy, that every workflow is solved, or that a smaller company should copy ServiceTitan. They prove something more important:
 
