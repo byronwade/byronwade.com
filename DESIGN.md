@@ -226,7 +226,8 @@ motion disables nonessential transitions and the theme wipe.
 
 ### 6.3 Physicality
 
-- Press feedback is immediate.
+- Press feedback is immediate: a button settles 1px (`translate-y-px`) only
+  when motion is allowed; under reduced motion a press changes colour only.
 - Entrances start from `0.95–0.98`, never `scale(0)`.
 - Trigger-anchored surfaces animate from their trigger; centered things stay
   centered.
@@ -322,7 +323,13 @@ than restyling them.
   stay inline on the sentence's baseline, so they wrap with the text and never
   stretch the line (WCAG 2.5.8's inline exception). A `link-underline` that
   stands alone, like the footer's, adds its own 44px box. The `Link`
-  primitive sets focus only; the recipe sets the size.
+  primitive sets focus only; the recipe sets the size. Underlines use
+  Thorbis's link decoration token at from-font thickness, 2px below the text,
+  and turn to the foreground on hover.
+- **Focus.** One indicator everywhere: the global `:focus-visible` outline,
+  2px in the focus token, 2px off the control and following its radius
+  (Thorbis `focusRing`). Buttons, fields and badges add no ring of their own;
+  a row inside a panel may inset it (`-outline-offset-2`).
 - **Fields.** Inputs, the textarea and the native select are one recessed
   well. The select drops the platform paint (WebKit drew it as a light system
   button) and carries a caret, while its options stay the platform picker.

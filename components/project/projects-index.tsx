@@ -5,7 +5,6 @@ import { ArrowUpRight, Sparkle } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
-import { cn } from "@/lib/utils";
 
 /**
  * The `/projects` index: a ranked list where each row carries its own evidence
@@ -81,10 +80,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 				return (
 					<li key={project.slug}>
-						<Link
-							className={cn(indexRowLinkClass, "focus-ring")}
-							href={`/projects/${project.slug}`}
-						>
+						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
 							<div className="flex items-center gap-4">
 								<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
 									<span

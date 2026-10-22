@@ -102,7 +102,7 @@ export function ProjectToc({ items }: ProjectTocProps) {
 								onClick={(event) => handleClick(event, item.id)}
 								aria-current={isActive ? "location" : undefined}
 								className={cn(
-									"focus-ring flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
+									"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
 									item.depth === 3 ? "pl-6" : "pl-3",
 									isActive
 										? "bg-muted font-medium text-foreground"
