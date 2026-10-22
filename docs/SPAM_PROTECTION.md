@@ -90,6 +90,18 @@ formatDetection: {
   rendering. Server validation still runs for every submission.
 - Validation and delivery failures preserve the draft. The form keeps a persistent
   delivery status, and successful delivery does not erase edits made while sending.
+- Provider requests have a ten-second deadline through headers and response-body
+  consumption. Failure says that sending was not confirmed: cancellation cannot
+  prove the provider rejected a message. Both forms leave the draft editable,
+  restore submission, and never retry automatically.
+- Each submitted snapshot gets a browser-generated UUID, validated again by the
+  server and passed as a `contact/`-scoped Resend idempotency key. Retrying the
+  same normalized draft reuses the key. Changed drafts and a new send after
+  confirmed success get new keys. Identity stays in the mounted form, without
+  browser storage or a database; reloading or another form starts a new identity.
+  Resend documents a [24-hour deduplication window](https://resend.com/docs/dashboard/emails/idempotency-keys).
+  This limits duplicate retries within that window, not intentional new sends or
+  inbox delivery. It is not a rate limit.
 - The server validates unknown input, trims fields, enforces shared length limits,
   rejects control characters in names, validates a single email address, and
   accepts only the canonical contact topics in `lib/contact-form.ts`.
@@ -107,6 +119,14 @@ formatDetection: {
   only success or an actionable, generic error.
 - `npm test` exercises the actual server action with a fixture transport. It
   cannot send real email. There is no added test dependency.
+- `tests/contact-delivery.test.mjs` also exercises the installed Resend SDK and
+  native fetch against a loopback server, including stalled headers and streamed
+  JSON, cancellation and retry headers. [Resend 4.8 forwards fetch options](https://github.com/resend/resend-node/blob/v4.8.0/src/resend.ts) despite
+  omitting `signal` from its request-options declaration; the action types both
+  contracts without a cast. `tests/rendered/contact-delivery.test.mjs` protects
+  both forms' ten-second recovery, retained edits, keyboard retry and identity
+  rotation in light/dark at phone/desktop widths. These fixtures cannot verify
+  the live provider's deduplication or inbox behavior.
 - The browser audit uses an owned loopback Resend base URL and a synthetic
   credential to check success feedback and notification lifecycle without live
   delivery. It does not verify inbox delivery or the provider integration.
