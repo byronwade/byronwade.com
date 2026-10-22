@@ -162,9 +162,11 @@ for (const [theme, scope] of [
 			.map(([selectors, color]) => ({
 				selectors,
 				color,
-				ratio: Number(contrast(resolve(color, scope), well).toFixed(2)),
+				ratio: contrast(resolve(color, scope), well),
 			}))
-			.filter(({ ratio }) => ratio < AA);
+			// Compare at full precision; 4.496 must fail even though it prints as 4.50.
+			.filter(({ ratio }) => ratio < AA)
+			.map((failure) => ({ ...failure, ratio: failure.ratio.toFixed(3) }));
 		assert.deepEqual(failures, [], `code colours below ${AA}:1 in the ${theme} theme`);
 	});
 }
