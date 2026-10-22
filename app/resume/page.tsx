@@ -270,21 +270,21 @@ export default function ResumePage() {
 								<p className="text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
 									<Period value={job.period} />
 								</p>
-								<div className="flex min-w-0 flex-1 flex-col gap-1 print:gap-0.5">
+								{/* No column gap: the company line's own 44px row (the link's target,
+								    kept in flow so it never covers the role or the summary) already
+								    spaces the three lines 12px apart on every role, linked or not. */}
+								<div className="flex min-w-0 flex-1 flex-col print:gap-0.5">
 									<h3 className="flex flex-wrap items-center gap-2 font-medium text-copy-16 text-foreground">
 										{job.role}
 										{job.current && <StatusPill tone="success">Current</StatusPill>}
 									</h3>
-									{/* The company link keeps its 44px target, but its negative block
-									    margin gives the line back its text height, so the role, the
-									    company and the summary read as one group (as a post row does). */}
-									<p className="flex flex-wrap items-center gap-x-1.5 text-copy-14 text-muted-foreground">
+									<p className="flex min-h-11 flex-wrap items-center gap-x-1.5 text-copy-14 text-muted-foreground print:min-h-0">
 										{job.companyUrl ? (
 											<a
 												href={job.companyUrl}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="link-underline -my-3 inline-flex min-h-11 items-center gap-1 font-medium print:my-0 print:min-h-0"
+												className="link-underline inline-flex min-h-11 items-center gap-1 font-medium print:min-h-0"
 											>
 												{job.company}
 												<ExternalLink className="size-3 print:hidden" aria-hidden="true" />
