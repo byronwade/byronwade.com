@@ -4,6 +4,9 @@
 
 const previewCache = new Map<string, string>();
 const inflight = new Map<string, Promise<string>>();
+// Resolution only reads local project metadata; the slower provider capture
+// happens in the separate image request. A stalled resolution must offer retry.
+const RESOLUTION_TIMEOUT_MS = 10_000;
 
 /**
  * Resolve the same-origin screenshot URL for `href` at the given viewport size.
@@ -31,12 +34,20 @@ export async function fetchScreenshot(
 			width: String(width),
 			height: String(height),
 		});
-		const resp = await fetch(`/api/screenshot?${params.toString()}`);
+		const resp = await fetch(`/api/screenshot?${params.toString()}`, {
+			signal: AbortSignal.timeout(RESOLUTION_TIMEOUT_MS),
+		});
 		if (!resp.ok) {
 			throw new Error(`screenshot request failed (${resp.status})`);
 		}
-		const data = (await resp.json()) as { url?: unknown };
-		if (typeof data?.url !== "string" || data.url.trim() === "") {
+		const data: unknown = await resp.json();
+		if (
+			typeof data !== "object" ||
+			data === null ||
+			!("url" in data) ||
+			typeof data.url !== "string" ||
+			data.url.trim() === ""
+		) {
 			throw new Error("screenshot response missing url");
 		}
 		previewCache.set(key, data.url);

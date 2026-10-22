@@ -2,7 +2,106 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import puppeteer from "puppeteer-core";
 import { withProductionServer } from "../../scripts/production-session.mjs";
-import { closeBrowser } from "../fixtures/browser.mjs";
+import { closeBrowser, withBrowser } from "../fixtures/browser.mjs";
+
+test("A stalled project preview offers recovery and keyboard Retry loads the image", {
+	timeout: 120_000,
+}, async (context) => {
+	await withProductionServer(async (url) => {
+		await withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
+			// Separate pages prevent a cached capture from bypassing the stalled request.
+			await [
+				{ width: 390, theme: "light" },
+				{ width: 1280, theme: "dark" },
+			].reduce(async (previous, { width, theme }) => {
+				await previous;
+				const page = await browser.newPage();
+				page.setDefaultTimeout(10_000);
+				await page.setViewport({ width, height: 844 });
+				await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+				await page.evaluateOnNewDocument((nextTheme) => {
+					localStorage.setItem("theme", nextTheme);
+				}, theme);
+				let resolutions = 0;
+				const interceptionErrors = [];
+				const pageErrors = [];
+				page.on("pageerror", (error) => pageErrors.push(error.message));
+				await page.setRequestInterception(true);
+				page.on("request", (request) => {
+					let response;
+					switch (new URL(request.url()).pathname) {
+						case "/api/screenshot":
+							resolutions += 1;
+							if (resolutions === 1) {
+								// Deliberately withhold headers. The application's real ten-second
+								// deadline must end the fetch and reveal its existing recovery UI.
+								return;
+							}
+							response = request.respond({
+								status: 200,
+								contentType: "application/json",
+								body: JSON.stringify({
+									url: "/api/screenshot/image?fixture=recovered",
+									mode: "static",
+								}),
+							});
+							break;
+						case "/api/screenshot/image":
+							response = request.respond({
+								status: 200,
+								contentType: "image/svg+xml",
+								body: '<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><rect width="1920" height="1080" fill="gray"/></svg>',
+							});
+							break;
+						default:
+							response = request.url().startsWith(url)
+								? request.continue()
+								: request.respond({ status: 204, body: "" });
+					}
+					response.catch((error) => interceptionErrors.push(error.message));
+				});
+				await page.goto(`${url}/projects/thorbis`, { waitUntil: "domcontentloaded" });
+				await page.waitForSelector('section[aria-label$=" site preview"] [role="status"]');
+				await page.waitForFunction(
+					() => {
+						const preview = document.querySelector('section[aria-label$=" site preview"]');
+						return preview?.innerText.includes("Preview unavailable");
+					},
+					{ timeout: 20_000 }
+				);
+				const recovery = await page.$eval('section[aria-label$=" site preview"]', (preview) => {
+					const retry = [...preview.querySelectorAll("button")].find(
+						(button) => button.textContent.trim() === "Retry"
+					);
+					retry.focus();
+					return {
+						busy: preview.querySelector("[aria-busy]").getAttribute("aria-busy"),
+						hasSiteLink: [...preview.querySelectorAll("a")].some(
+							(link) => link.textContent.trim() === "Open site"
+						),
+						focused: document.activeElement === retry,
+					};
+				});
+				assert.deepEqual(recovery, { busy: "false", hasSiteLink: true, focused: true });
+				await page.keyboard.press("Enter");
+				await page.waitForFunction(() => {
+					const preview = document.querySelector('section[aria-label$=" site preview"]');
+					const image = preview?.querySelector("img");
+					return (
+						image?.complete &&
+						image.naturalWidth > 0 &&
+						preview.querySelector("[aria-busy]").getAttribute("aria-busy") === "false"
+					);
+				});
+				assert.equal(resolutions, 2, "Retry starts a fresh resolution after the deadline");
+				assert.deepEqual(pageErrors, [], "No uncaught browser errors");
+				assert.deepEqual(interceptionErrors, [], "All handled interceptions settle");
+				context.diagnostic(JSON.stringify({ width, theme, resolutions, recovered: true }));
+				await page.close();
+			}, Promise.resolve());
+		});
+	});
+});
 
 test("Project preview recovery actions fit the narrow viewport", {
 	timeout: 120_000,
