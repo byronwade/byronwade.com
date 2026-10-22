@@ -246,44 +246,47 @@ async function capture(page, url, name, route, width, theme) {
 	console.log(`${phase}: ${name} ${width} ${theme}; overflow=${geometry.overflow}`);
 }
 
-await withProductionServer(async (url) => {
-	// One browser per viewport; serial navigation avoids adding measurement contention.
-	const cases = [375, 768, 1440].flatMap((width) =>
-		["light", "dark"].map((theme) => ({ width, theme }))
-	);
-	await cases.reduce(async (previous, { width, theme }) => {
-		await previous;
-		if (routes.every(([name]) => captured(name, width, theme))) {
-			return;
-		}
-		const browser = await puppeteer.launch({
-			executablePath:
-				process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-			headless: true,
-		});
-		try {
-			report.chrome = await browser.version();
-			const page = await browser.newPage();
-			page.setDefaultNavigationTimeout(60_000);
-			await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
-			await page.emulateMediaFeatures([
-				{ name: "prefers-color-scheme", value: theme },
-				{ name: "prefers-reduced-motion", value: "reduce" },
-			]);
-			await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
-			await routes.reduce(async (prior, [name, route]) => {
-				await prior;
-				if (captured(name, width, theme)) {
-					return;
-				}
-				await capture(page, url, name, route, width, theme);
-			}, Promise.resolve());
-		} finally {
-			await closeBrowser(browser, { diagnostic: console.log });
-			writeEvidenceJson(`${destination}/matrix.json`, report);
-		}
-	}, Promise.resolve());
-});
+await withProductionServer(
+	async (url) => {
+		// One browser per viewport; serial navigation avoids adding measurement contention.
+		const cases = [375, 768, 1440].flatMap((width) =>
+			["light", "dark"].map((theme) => ({ width, theme }))
+		);
+		await cases.reduce(async (previous, { width, theme }) => {
+			await previous;
+			if (routes.every(([name]) => captured(name, width, theme))) {
+				return;
+			}
+			const browser = await puppeteer.launch({
+				executablePath:
+					process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
+				headless: true,
+			});
+			try {
+				report.chrome = await browser.version();
+				const page = await browser.newPage();
+				page.setDefaultNavigationTimeout(60_000);
+				await page.setViewport({ width, height: 1000, deviceScaleFactor: 1 });
+				await page.emulateMediaFeatures([
+					{ name: "prefers-color-scheme", value: theme },
+					{ name: "prefers-reduced-motion", value: "reduce" },
+				]);
+				await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
+				await routes.reduce(async (prior, [name, route]) => {
+					await prior;
+					if (captured(name, width, theme)) {
+						return;
+					}
+					await capture(page, url, name, route, width, theme);
+				}, Promise.resolve());
+			} finally {
+				await closeBrowser(browser, { diagnostic: console.log });
+				writeEvidenceJson(`${destination}/matrix.json`, report);
+			}
+		}, Promise.resolve());
+	},
+	{ env: { SCREENSHOTONE_ACCESS_KEY: "" } }
+);
 // Every page error fails, including on the 404 route: main #98 fixed its hydration mismatch.
 if (phase === "after") {
 	assert.equal(report.cases.length, routes.length * 6, "complete route/viewport/theme matrix");

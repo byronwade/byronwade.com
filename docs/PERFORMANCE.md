@@ -46,6 +46,10 @@ budget assessor checks each route. Intentional HTTP errors use an accessibility
 snapshot because navigation-mode Lighthouse rejects them.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
+Both capture runners explicitly disable the screenshot provider in their owned
+server environment. Project pages therefore exercise the unavailable-preview
+fallback; successful image capture and recovery use the rendered suite's local
+image fixtures, without issuing a provider request.
 Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
 in an external job folder instead of replacing the checked-in evidence. Omit
 `--lighthouse` for accessibility and interaction checks without timing samples;

@@ -82,6 +82,8 @@ const report = {
 		.digest("hex"),
 	figma: "Local API and embed fixtures; live provider integration is outside this audit",
 	email: "Local Resend HTTP fixture; no message is delivered",
+	screenshots:
+		"Provider disabled; project preview fallback only, successful captures use rendered fixtures",
 	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
 	chrome: "",
 	axe: "4.10.3",
@@ -1085,7 +1087,7 @@ try {
 						Promise.resolve()
 					);
 				},
-				{ env: { ...env, ...emailEnv } }
+				{ env: { ...env, ...emailEnv, SCREENSHOTONE_ACCESS_KEY: "" } }
 			)
 		)
 	);
