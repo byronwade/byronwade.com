@@ -22,7 +22,6 @@ export default function Footer() {
 					<div className="flex flex-col items-start">
 						<ObfuscatedEmail
 							className="min-h-11 text-copy-14 text-foreground"
-							showIcon={false}
 							variant="link"
 						/>
 						<a

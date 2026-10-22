@@ -168,7 +168,6 @@ export default function ContactClient() {
 				Prefer email?{" "}
 				<ObfuscatedEmail
 					className="text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"
-					showIcon={false}
 					variant="link"
 				/>
 				{" · "}
