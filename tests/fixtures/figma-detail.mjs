@@ -92,7 +92,10 @@ export async function renderFigmaDetail(overrides = {}, { includeSiteBreadcrumb 
 						createElement(
 							PathnameContext.Provider,
 							{ value: "/portfolio/figma/ExampleKey" },
-							createElement(BreadcrumbTrail, { labels: { "/": "Home", "/portfolio": "Portfolio" } })
+							createElement(BreadcrumbTrail, {
+								labels: { "/": "Home", "/portfolio": "Portfolio" },
+								overflowIcon: createElement("span", { "aria-hidden": "true", className: "size-4" }),
+							})
 						)
 					),
 					createElement("main", null, page)
