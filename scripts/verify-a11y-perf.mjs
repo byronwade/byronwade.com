@@ -7,6 +7,7 @@ import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
 import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
 import { launchAuditBrowser } from "./audit-browser.mjs";
 import { readGeometry } from "./audit-geometry.mjs";
+import { readAxe } from "./axe-audit.mjs";
 import { serializeEvidence, writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -73,6 +74,7 @@ const report = {
 		.update(readFileSync("scripts/lighthouse-budget.mjs"))
 		.update(readFileSync("scripts/audit-browser.mjs"))
 		.update(readFileSync("scripts/audit-geometry.mjs"))
+		.update(readFileSync("scripts/axe-audit.mjs"))
 		.update(readFileSync("scripts/evidence-json.mjs"))
 		.update(readFileSync("scripts/production-session.mjs"))
 		.update(readFileSync("tests/fixtures/figma-browser.mjs"))
@@ -469,21 +471,6 @@ async function checkPortfolioStates(page) {
 		throw new Error("Portfolio recovery navigation must retain link semantics");
 	}
 	return [await readState(page, "Portfolio settled")];
-}
-
-async function readAxe() {
-	const results = await window.axe.run(document, {
-		runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
-	});
-	const errors = results.incomplete.filter((result) => result.error);
-	if (errors.length) {
-		throw new Error(`axe could not evaluate ${errors.map((result) => result.id).join(", ")}`);
-	}
-	return results.violations.map(({ id, impact, nodes }) => ({
-		id,
-		impact,
-		nodes: nodes.map(({ target, failureSummary }) => ({ target, failureSummary })),
-	}));
 }
 
 async function waitForMotion(page) {
