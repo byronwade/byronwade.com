@@ -78,6 +78,8 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
 - **Architecture decisions:** `docs/ARCHITECTURE.md`
 - **Runtime token owner:** `app/globals.css`, `:root` and `.dark` blocks, surfaced
   to Tailwind through `@theme inline`. The only place a design value is defined.
+  The one derived copy is the share card (`app/api/og/route.tsx`), which needs sRGB
+  hex values; `tests/share-card.test.mjs` fails when they drift from these tokens.
 - **Component/primitives owner:** `components/ui/`
 - **Recipes/patterns owner:** feature folders, `components/home/`, `blog/`,
   `project/`, `portfolio/`, `layout/`, `common/`. Each folder's `index.ts` is its
@@ -93,6 +95,8 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
   the existing resume signature (`--font-signature`). The root layout preloads
   only Latin Inter. Other subsets, Mono and the signature load when used. All
   faces use swap; the token port script copies source assets and OFL licenses.
+  Share cards render static TrueType instances of the same Latin Inter from
+  `assets/og/`, built by `scripts/build-og-fonts.py` (`docs/PERFORMANCE.md`).
 - **Motion token owner:** `app/globals.css` (`--motion-*`). Established as part of
   adopting this standard; before that the curve was copy-pasted in four files.
 - **Theme owner:** `next-themes`, light default, system aware, toggled from the

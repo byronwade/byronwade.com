@@ -11,7 +11,7 @@ export const runtime = "nodejs";
 const siteName = "Byron Wade";
 
 // Satori cannot read oklch, so these are the sRGB values of the light Thorbis
-// tokens in app/globals.css. Regenerate them if those tokens change.
+// tokens in app/globals.css; tests/share-card.test.mjs fails when they drift.
 const palette = {
 	background: "#f7f4ee", // --thorbis-bg
 	foreground: "#201b14", // --thorbis-fg
