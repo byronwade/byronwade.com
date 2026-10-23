@@ -193,8 +193,8 @@ used an incorrect slug, returned 404 and are excluded.
 The Nexstar post was the only post that requested
 `inter-italic-latin-core.woff2` (22,255 bytes). Its only italic text was three
 publication titles, each already inside its underlined source link and far
-below the first screen. Layout requests the face about 40ms after navigation,
-well before the observed paint (about 240ms locally), so the simulated LCP
+below the first screen. In these Lighthouse runs layout requested the face at
+about 133ms, before the observed paint at about 240ms, so the simulated LCP
 counted it. Those titles are now upright, and the post no longer loads the
 italic face. Italic emphasis elsewhere is unchanged; eight project case studies
 still use it, and any `*emphasis*` added to a post brings this request back.
@@ -202,8 +202,9 @@ still use it, and any `*emphasis*` added to a post brings this request back.
 Builds `mm1p802-FV8jvscznC6DY` (main `6e685b5`) and `q_3dGacpsBpWH1r9foljU`
 (the edit) ran three interleaved rounds, alternating which build went first,
 with `perf-budget.mjs`'s browser settle, default simulated mobile, Chrome 155
-and Lighthouse 13.5. The Building Thorbis post has no italic and was unchanged,
-so it is the control:
+and Lighthouse 13.5. The Building Thorbis post has no italic and the same
+rendered content in both builds, so it is the control. Only chunk hashes and
+the streaming order of its RSC rows differ, about 330 bytes gzipped:
 
 | Route | Before LCP (ms) | After LCP (ms) |
 | --- | --- | --- |
@@ -216,6 +217,15 @@ medians differ by 1ms. FCP fell from 1373-1380 to 1222-1231ms. Page transfer
 fell from 311,736 to 289,423 bytes with the same ten scripts. This is a
 simulated-LCP and byte result. The observed paint stayed about 240ms in both
 builds, so it does not claim a faster paint for real readers.
+
+`perf-budget.mjs` itself, which checks every timing, byte and request limit,
+then ran three more interleaved rounds on the post. Before: 3053, 3011 and
+3134ms, each failing only LCP. After: 2886, 2866 and 2907ms, passing every
+limit. One earlier single run of the edit recorded 3094ms while the shared host
+was busy (benchmark index 1827, against 2298-2591 for the six runner samples, and
+445ms of style and layout instead of about 300ms). It is kept as a failure. The
+post passes on an uncontended host, but its margin of 93-134ms does not cover
+heavy contention.
 
 Two other leads were measured and ruled out. The document is not it:
 Building Thorbis has a 42KB document and passes, and the Nexstar post's RSC
