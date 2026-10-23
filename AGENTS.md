@@ -556,6 +556,18 @@ removed from production builds, so it never reaches the client bundle. Do not
 replace it with the CDN `<script>` that `react-scan init` writes: that adds an
 unpinned third-party origin at runtime.
 
+Render highlighting stays enabled, with `showToolbar: false`: React Scan 0.5.7's
+toolbar contains an unnamed button. Use its supported option rather than patching
+the shadow DOM or excluding it from axe. This deliberately removes the diagnostic
+toolbar's inspector and pause controls; it does not disable render highlighting.
+After changing this integration, start your own dev server on an available port,
+set `DEVELOPMENT_ORIGIN` to its URL, and run `npm run test:development`. This
+separate browser check requires active scanning and observed React renders,
+exercises keyboard search at phone/desktop widths in both themes, and audits the
+whole page with the canonical axe helper. Production bundle checks also reject
+React Scan's runtime symbols. Keep these checks separate from React Scan's
+performance diagnostics, which remain advisory.
+
 `audit:deploy` needs a linked Vercel project (`vercel link`, then `vercel pull`)
 and will refuse to run without one.
 

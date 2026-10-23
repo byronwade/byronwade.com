@@ -207,6 +207,14 @@ use them correctly.
   overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev` (Turbopack); production uses Next webpack to
   keep requests within the existing Lighthouse budget.
+- **Development diagnostics:** React Scan highlights renders without its upstream
+  toolbar, whose 0.5.7 controls include an unnamed button. With your dev server
+  running, set `DEVELOPMENT_ORIGIN` to its URL and run `npm run test:development`:
+  active scanning, actual renders, keyboard search and whole-page axe at 390/1280
+  in both themes. This is separate from the production rendered suite; production
+  client checks reject React Scan's runtime symbols. The hidden toolbar's
+  inspector and pause controls are deliberately unavailable; previously saved
+  React Scan enabled/paused preferences still apply.
 - **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
   fixture operations, content-date regressions across five timezones, and Thorbis
   class merging/token/favicon contracts
