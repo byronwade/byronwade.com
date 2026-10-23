@@ -62,6 +62,8 @@ async function localOnly(page, origin) {
 
 /** Fonts loaded and no transition mid-flight, so every value read is the resting one. */
 async function settle(page) {
+	// Contact mounts after hydration plus a short delay; load and fonts can finish first.
+	await page.waitForSelector("[data-site-footer] button", { visible: true });
 	await page.evaluate(() => document.fonts.ready);
 	await page.waitForFunction(() =>
 		document
