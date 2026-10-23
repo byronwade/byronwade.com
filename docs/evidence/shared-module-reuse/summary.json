@@ -1,0 +1,4247 @@
+{
+  "method": {
+    "serial": true,
+    "samplesPerRoutePerPhase": 3,
+    "orderPerRound": [
+      "/",
+      "/projects/thorbis",
+      "/projects/dits",
+      "/blog/nexstar-win-invoice-lose-customer"
+    ],
+    "profile": {
+      "output": "json",
+      "maxWaitForFcp": 30000,
+      "maxWaitForLoad": 45000,
+      "pauseAfterFcpMs": 1000,
+      "pauseAfterLoadMs": 1000,
+      "networkQuietThresholdMs": 1000,
+      "cpuQuietThresholdMs": 1000,
+      "formFactor": "mobile",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "throttlingMethod": "simulate",
+      "screenEmulation": {
+        "mobile": true,
+        "width": 412,
+        "height": 823,
+        "deviceScaleFactor": 1.75,
+        "disabled": false
+      },
+      "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+      "auditMode": false,
+      "gatherMode": false,
+      "clearStorageTypes": [
+        "file_systems",
+        "shader_cache",
+        "service_workers",
+        "cache_storage"
+      ],
+      "disableStorageReset": false,
+      "debugNavigation": false,
+      "channel": "node",
+      "usePassiveGathering": false,
+      "disableFullPageScreenshot": false,
+      "skipAboutBlank": false,
+      "blankPage": "about:blank",
+      "ignoreStatusCode": false,
+      "locale": "en-US",
+      "blockedUrlPatterns": null,
+      "additionalTraceCategories": null,
+      "extraHeaders": null,
+      "precomputedLanternData": null,
+      "onlyAudits": null,
+      "onlyCategories": ["performance"],
+      "skipAudits": null
+    },
+    "server": "Fresh local production process per sample; readiness primes home",
+    "browser": "Fresh Chrome per sample; unchanged 45-second launch settle plus 5 seconds on blank",
+    "screenshotProvider": "Disabled in child server environment",
+    "scope": "Local simulated mobile/light; observed trace timings are diagnostic, not budget substitutions",
+    "publicStaticInspection": "HTML and static JS only; no hosted page JS, capture or live email executed",
+    "artifactLocation": "Scheduler job byronwade-com-hobby-1022-1939; hashes refer to retained job artifacts"
+  },
+  "pins": {
+    "baseline": {
+      "commit": "6531bdf215515ca37280fbf9cc3a946b2c4121ff",
+      "buildId": "SVIfDvnzTIJYMt_bM44CY",
+      "chrome": "Chrome/155.0.8059.85",
+      "lighthouse": "13.5.0"
+    },
+    "after": {
+      "commit": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+      "buildId": "jpHY8X6aTt9Ohh2Q8SAi9",
+      "chrome": "Chrome/155.0.8059.85",
+      "lighthouse": "13.5.0"
+    }
+  },
+  "harnessHashes": {
+    "trace-run.mjs": "8b3b32cdb93e137c6ce237e944f42d8339b547ac98e71d4ab453f1135c58894c",
+    "scripts/audit-browser.mjs": "7ac8040ed1481ad87cd5ceac16a222f9b3f55231774f69e6d1ce456466c6e625",
+    "scripts/production-session.mjs": "abf90587c1d614447a4764a9a017af7c1511c9be2aef143e96aff794f8dcc5dc",
+    "scripts/lighthouse-budget.mjs": "45d484f405c863b4f2094eaf9a1becc36a56a39e6d29e12af75c16e61bef0c42",
+    "lighthouse-budget.json": "1f06cb7a7b5cb2339d80a212b0e375a68b68b50836ba6795d2eb3e29787eddd4"
+  },
+  "aggregate": [
+    {
+      "label": "home",
+      "route": "/",
+      "baseline": {
+        "samples": 3,
+        "passed": 3,
+        "lcpMs": {
+          "min": 2877.7931499999995,
+          "median": 2899.1106,
+          "max": 2950.8882
+        },
+        "tbtMs": {
+          "min": 99,
+          "median": 141,
+          "max": 143.0689500000001
+        },
+        "maximumCls": 0,
+        "scriptBytes": {
+          "min": 176111,
+          "median": 176111,
+          "max": 176111
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "after": {
+        "samples": 3,
+        "passed": 3,
+        "lcpMs": {
+          "min": 2034.353211009962,
+          "median": 2903.8644000000004,
+          "max": 2913.0807999999997
+        },
+        "tbtMs": {
+          "min": 62.91169724750944,
+          "median": 100,
+          "max": 103
+        },
+        "maximumCls": 0,
+        "scriptBytes": {
+          "min": 176038,
+          "median": 176038,
+          "max": 176038
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "medianLcpChangeMs": 4.75380000000041
+    },
+    {
+      "label": "thorbis",
+      "route": "/projects/thorbis",
+      "baseline": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3210.2054000000003,
+          "median": 3214.472,
+          "max": 3217.4498000000003
+        },
+        "tbtMs": {
+          "min": 103,
+          "median": 105,
+          "max": 112
+        },
+        "maximumCls": 0.0009824999788217244,
+        "scriptBytes": {
+          "min": 198234,
+          "median": 198234,
+          "max": 198234
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "after": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3072.6592,
+          "median": 3074.4058000000005,
+          "max": 3083.8402000000006
+        },
+        "tbtMs": {
+          "min": 106,
+          "median": 111,
+          "max": 121
+        },
+        "maximumCls": 0.0009824999788217244,
+        "scriptBytes": {
+          "min": 188481,
+          "median": 188481,
+          "max": 188481
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "medianLcpChangeMs": -140.06619999999975
+    },
+    {
+      "label": "dits",
+      "route": "/projects/dits",
+      "baseline": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3195.295,
+          "median": 3217.0733999999998,
+          "max": 3217.337895977198
+        },
+        "tbtMs": {
+          "min": 86,
+          "median": 106,
+          "max": 108
+        },
+        "maximumCls": 0.0009824999788217244,
+        "scriptBytes": {
+          "min": 198234,
+          "median": 198234,
+          "max": 198234
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "after": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3043.753075202119,
+          "median": 3060.3644000000004,
+          "max": 3120.7866000000004
+        },
+        "tbtMs": {
+          "min": 104,
+          "median": 104,
+          "max": 1471.1234623989405
+        },
+        "maximumCls": 0.0010504117274460717,
+        "scriptBytes": {
+          "min": 188481,
+          "median": 188481,
+          "max": 188481
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "medianLcpChangeMs": -156.70899999999938
+    },
+    {
+      "label": "nexstar",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "baseline": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3184.970800000001,
+          "median": 3197.7207,
+          "max": 3205.520299999999
+        },
+        "tbtMs": {
+          "min": 100.99999999999977,
+          "median": 114.69482500000004,
+          "max": 118
+        },
+        "maximumCls": 0,
+        "scriptBytes": {
+          "min": 179160,
+          "median": 179160,
+          "max": 179160
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "after": {
+        "samples": 3,
+        "passed": 0,
+        "lcpMs": {
+          "min": 3199.9674499999987,
+          "median": 3214.687850000001,
+          "max": 3302.7187999999987
+        },
+        "tbtMs": {
+          "min": 113,
+          "median": 124,
+          "max": 209
+        },
+        "maximumCls": 0,
+        "scriptBytes": {
+          "min": 175812,
+          "median": 175812,
+          "max": 175812
+        },
+        "scriptRequests": {
+          "min": 10,
+          "median": 10,
+          "max": 10
+        }
+      },
+      "medianLcpChangeMs": 16.96715000000131
+    }
+  ],
+  "samples": [
+    {
+      "phase": "baseline",
+      "label": "home",
+      "sample": 1,
+      "route": "/",
+      "checkedAt": "2026-10-22T23:43:49.584Z",
+      "exitCode": 0,
+      "score": 0.94,
+      "timings": {
+        "first-contentful-paint": 911.8621,
+        "largest-contentful-paint": 2877.7931499999995,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 143.0689500000001,
+        "speed-index": 911.8621
+      },
+      "observedLcpMs": 293,
+      "benchmarkIndex": 2644,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271773
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176111
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21780
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "fa157b7014fe531083cfe7cc196a213ffafeaa23ef738567790c079c18508563",
+        "lhr": "b1fc1c60ab0a0891d435f30545ce4cd45340c2f6730f5109001c5efab947d1cb",
+        "trace": "1ecf60d3aff3e9d28a0d0d38f8708c35b131d16a07fbacb6d3a33dce39bbfbfe",
+        "devtoolslog": "643760d1aba072a9555275c3f13f7c14747cdc6ae17b22005842e1650643bfb1",
+        "simulation": "1bf9be774bce1303bbc30cceeb9de9ee194c824874d80a5129dee3ee65ae2d0b"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "thorbis",
+      "sample": 1,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-22T23:44:53.817Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1075.6540499999999,
+        "largest-contentful-paint": 3210.2054000000003,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 103,
+        "speed-index": 1075.6540499999999
+      },
+      "observedLcpMs": 309,
+      "benchmarkIndex": 2653,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 310724
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22302
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3210.2054000000003 > 3000"],
+      "artifacts": {
+        "budget": "7f2d630c5166c53ad0b9cef70e60dac655c2384cbef45e0c4c3f437e1dd68ed2",
+        "lhr": "9870a40f5afdce2a1ca705cda10fe847101b3d8290e04afa134403cad00c4635",
+        "trace": "297a6bd29333ec8c83c2dd01fcbacb6b89d2cb83325153896840b72586486618",
+        "devtoolslog": "b44e2cc1b9e28210c84eabb88f7537cdd451da1841bdcd3f9fb96f2c048a8922",
+        "simulation": "b3cc00fa332e7aaa7ddb16e0aa1adb2798bd77d8929b3dacec2c92d2a52872b4"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "dits",
+      "sample": 1,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-22T23:45:59.259Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1077.253421982898,
+        "largest-contentful-paint": 3217.337895977198,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 108,
+        "speed-index": 1077.253421982898
+      },
+      "observedLcpMs": 295,
+      "benchmarkIndex": 2629.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 318988
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30566
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3217.337895977198 > 3000"],
+      "artifacts": {
+        "budget": "dcbee77f93d12ab8199449f88fbf0413704ae25fbc178928457be0ee8e0a77da",
+        "lhr": "c143a44c4aab698722c2218e8cfe7efa6090c9cfd13a5ff5d3d32b266e544dcf",
+        "trace": "f96e47981beb77a52cffe639c05f8afc79d0ae3715828303995dd2e7e9600998",
+        "devtoolslog": "b19f94cbffbf1eb280dfabc9803cb293a1bbddac9c9af5c15cb1ec97e8046be4",
+        "simulation": "979fca969a86ac038c06b9fc1ff6d552614a27896f68eef94e3293b4a2ea9ad0"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "nexstar",
+      "sample": 1,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-22T23:47:04.065Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1523.4708,
+        "largest-contentful-paint": 3184.970800000001,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 100.99999999999977,
+        "speed-index": 1523.4708
+      },
+      "observedLcpMs": 230,
+      "benchmarkIndex": 2646.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 337857
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 179160
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46665
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3184.970800000001 > 3000"],
+      "artifacts": {
+        "budget": "10b2d1bc6e238d90293b52665a64b97e9e4ad7ed390fea30566d093efb36b792",
+        "lhr": "ecf2cec2892ba06dca0487e1e2199da6b2384bb0d1f654b22849da12348a386f",
+        "trace": "4962d7bc19399751f1ed7de09dd383d9f3219f91bf08e0deb92133faf5efca44",
+        "devtoolslog": "b76d832ae2e7a63960117b60bc92f503c806a002f2eeca0d99197a518c1853a2",
+        "simulation": "ea2b2e697d585e2fb7a2ddd836d38b1f608bea1fa9dc7ebf4cc654bc27e664bc"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "home",
+      "sample": 2,
+      "route": "/",
+      "checkedAt": "2026-10-22T23:48:07.682Z",
+      "exitCode": 0,
+      "score": 0.94,
+      "timings": {
+        "first-contentful-paint": 913.0553,
+        "largest-contentful-paint": 2899.1106,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 99,
+        "speed-index": 913.0553
+      },
+      "observedLcpMs": 219,
+      "benchmarkIndex": 2644,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271773
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176111
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21780
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "ed2b56d37d1b63c9e6a33cc5995115121a702c3238f1c59669b915c93b67d22d",
+        "lhr": "f9d90b32ac8cf61f1e09b5f7ad4b5de29e1c36ed768da5738ce79de493dc6710",
+        "trace": "f8049766419d55867b893183c7593fcf6e6f52159846788d9223bcfb0303bac5",
+        "devtoolslog": "c6676135c0f43e382f5637ef694600c4b88df8077d0bf68e914609d8c4371d42",
+        "simulation": "beac5b19167f8ee8c676a284b561f011efabe63abc1c4ee95df9e9d0100a7bb1"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "thorbis",
+      "sample": 2,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-22T23:49:12.057Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1077.354,
+        "largest-contentful-paint": 3214.472,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 105,
+        "speed-index": 1077.354
+      },
+      "observedLcpMs": 314,
+      "benchmarkIndex": 2641,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 310724
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22302
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3214.472 > 3000"],
+      "artifacts": {
+        "budget": "71fe1bb51dd8501cc9692fba917606a5ee36278ea7698d51446438117c2d6b42",
+        "lhr": "28f041b2f60eb5e585cb3d1d273f9c2bf01c73b7463c399072c9284bca8a2a20",
+        "trace": "1114289604386d93634194fd6730c323246322200f1c47fd175736bb25b4b063",
+        "devtoolslog": "6f89ae0586cb793bce7747a3e836081b8a26c1c607d0eaa539ee5be631278b5d",
+        "simulation": "711d4aa5a2303e24cc6bd1a1155c3b1cbc2265b0449e8a0f902be1e50b39ed0c"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "dits",
+      "sample": 2,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-22T23:50:17.051Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1076.47125,
+        "largest-contentful-paint": 3195.295,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 86,
+        "speed-index": 1076.47125
+      },
+      "observedLcpMs": 290,
+      "benchmarkIndex": 2583.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 318988
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30566
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3195.295 > 3000"],
+      "artifacts": {
+        "budget": "a2212213e02648f413c8782028a430bb6e60115e1cc254004177a36ef392d5e2",
+        "lhr": "097c88a1db2f5ede8fdfd80a5a213f7e17cd7dccf83acf89e480d62b5d9291d7",
+        "trace": "229ff36aad96e8c24bc673bc98ffe2d4f37f3777d6c1dae47a86109cfcc62dab",
+        "devtoolslog": "54c16a2616f4d4fdd0c93eb25835cd3f676c882ef4ee6572ce3bb28479d721ef",
+        "simulation": "15d09eef0d9fae6b1cda2df4c6cc17616571fd8adbb23a34a9c0fb7181af9570"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "nexstar",
+      "sample": 2,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-22T23:51:22.024Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1525.8310499999998,
+        "largest-contentful-paint": 3197.7207,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 114.69482500000004,
+        "speed-index": 1525.8310499999998
+      },
+      "observedLcpMs": 242,
+      "benchmarkIndex": 2604.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 337857
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 179160
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46665
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3197.7207 > 3000"],
+      "artifacts": {
+        "budget": "3ae872774cc8c2a0a3b6b63d3380cab3d73e82d66ecc723f57ddd9b2ed33d940",
+        "lhr": "87c765fa8b6c13cd3220275b04be1f10a9a5e0fcc6ee71d26c23858aa32b93d3",
+        "trace": "77b1d7741103689dc75ec2908f65b22e4b912fb24ec06cbc476577f6bf56674f",
+        "devtoolslog": "77f6b4ebfff7252eab13cc5e306750e6bfc6166d49ddcde2ce493c48a11ebb8f",
+        "simulation": "8e95ec47013d911fe632ffbcac88187b48441f95d7382343daddacdbd28424b2"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "home",
+      "sample": 3,
+      "route": "/",
+      "checkedAt": "2026-10-22T23:52:29.121Z",
+      "exitCode": 0,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 916.9440999999999,
+        "largest-contentful-paint": 2950.8882,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 141,
+        "speed-index": 916.9440999999999
+      },
+      "observedLcpMs": 266,
+      "benchmarkIndex": 2380,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271773
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176111
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21780
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "b2e6e144201a7a6f68155cf35bc652fe3d5d7f83a32fba3b798f2de14a9fc7ee",
+        "lhr": "8a99cd012e1fecae03c5253b52de2aaa70aec65dccaf43da4d28dc7298ba1c54",
+        "trace": "45991c971f2c0b6866133fffa5b75788a9073858338f8f44701a68fbc4f14a04",
+        "devtoolslog": "2ce67c04157c06dfb800a5ec6507774877c362f8fb26f710ffe9621f74bb7a1a",
+        "simulation": "520401598109ae51bf0c7acf6f5dc6ef2c980f7acd5901d15132e4c3c538f245"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "thorbis",
+      "sample": 3,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-22T23:53:33.456Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1072.08735,
+        "largest-contentful-paint": 3217.4498000000003,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 112,
+        "speed-index": 1072.08735
+      },
+      "observedLcpMs": 290,
+      "benchmarkIndex": 2515,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 310724
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 22302
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3217.4498000000003 > 3000"],
+      "artifacts": {
+        "budget": "c750686d808e098c41b52b33424f4f6b2f653d5259415e1852cd93491d8e69f5",
+        "lhr": "ff37a7397a470371dcfb4c4f8d2a9ef0cf62dd1fb3203bfdf19450ba6e4b84c2",
+        "trace": "b7445729de0502e9a9a4a4bcd21fb6cad4f3ec8ed29fc244f1f3f208a75e6ca7",
+        "devtoolslog": "abfd25132262467891794b230174548c6fcd05b3e7273a7c0579b91670fad0c4",
+        "simulation": "8d3581bf9b55a30445bd0a842f627953e50498c0d3e6768c99370c6849343bfa"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "dits",
+      "sample": 3,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-22T23:54:37.909Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1077.0550500000002,
+        "largest-contentful-paint": 3217.0733999999998,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 106,
+        "speed-index": 1077.0550500000002
+      },
+      "observedLcpMs": 276,
+      "benchmarkIndex": 2586,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 318988
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 198234
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30566
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3217.0733999999998 > 3000"],
+      "artifacts": {
+        "budget": "59891639bb5a2ae11b72d7b65372041e2959efbb9983d39eece88d103f49b739",
+        "lhr": "fa66968394f7aa3c4f4139c2ed22939dcc5e00d08bfdec6bec8a1a6587a0ce77",
+        "trace": "26074d5793ab025750d074434e3cba21692ad0dee337d608a6e3b500dcb006f6",
+        "devtoolslog": "e27f3582cdcc734b9947bb7ec7d0a5be5d41eb3a15baea8915ac0049671e4abc",
+        "simulation": "2ce0f8db3d09e516920be3a821162d6de2d26176fee01a789c69bccfa88d79ea"
+      }
+    },
+    {
+      "phase": "baseline",
+      "label": "nexstar",
+      "sample": 3,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-22T23:55:44.120Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1526.5202999999997,
+        "largest-contentful-paint": 3205.520299999999,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 118,
+        "speed-index": 1526.5202999999997
+      },
+      "observedLcpMs": 225,
+      "benchmarkIndex": 2168.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 337857
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 179160
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46665
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3205.520299999999 > 3000"],
+      "artifacts": {
+        "budget": "c570d55d6a104a22f02f6b223efd331a233fb2f5bbe731ed69c9c733f3b5fda5",
+        "lhr": "5fff514f764ba34ab437c3895e5af4a21c2df8aec9a7fd9eb028a0c5d69fe786",
+        "trace": "fa15b6b7b5abec79a811aef775042f6d795ca6ef09a01f4fa1d617544d3b0cbf",
+        "devtoolslog": "142149b13d92f6744d2a10b09d73833350a8f062513f86b674f2904ca31b356f",
+        "simulation": "292714f9b1398a16ffafa4770c493c5148f7704b413c77db3a399fc277d9459c"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "home",
+      "sample": 1,
+      "route": "/",
+      "checkedAt": "2026-10-23T00:04:15.650Z",
+      "exitCode": 0,
+      "score": 0.94,
+      "timings": {
+        "first-contentful-paint": 917.0404000000001,
+        "largest-contentful-paint": 2913.0807999999997,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 100,
+        "speed-index": 917.0404000000001
+      },
+      "observedLcpMs": 271,
+      "benchmarkIndex": 2584.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271584
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176038
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21664
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "009ff4318d9ae237c80370b148858ddf0438e5c5bd1ac22a4d3140cc9be17223",
+        "lhr": "8ec58f890cf06419d2464c5c97fa12098590517c08e4781b258a978c02907dfa",
+        "trace": "e4952ab40c61c018f8057333c52da9312649bbe0c34e1352e2466f53e51d5fd0",
+        "devtoolslog": "984b2ae627cf6fac9a25d06500f114dd5534d121ac1844576ef93d5ac508c2f1",
+        "simulation": "5bbf51c1e5de3a68328a797d6454a437dc68208b36e5f21ff72cd079ee4f20f6"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "thorbis",
+      "sample": 1,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-23T00:05:19.974Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1079.88015,
+        "largest-contentful-paint": 3083.8402000000006,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 121,
+        "speed-index": 1079.88015
+      },
+      "observedLcpMs": 315,
+      "benchmarkIndex": 2536.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 300654
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21985
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3083.8402000000006 > 3000"],
+      "artifacts": {
+        "budget": "f48aef84f37bc459cdda614c141490dab2aaca45c45e9d6ffc8bd4a1b6ff8b60",
+        "lhr": "6f8e288bbb79ec686f24be826e290e68c146692277fafd308c293f5c31bd2ffb",
+        "trace": "6b4ee8da32833a5298d4ff8794a5d3d16416fcb864567d1f16c54fdbd71d2455",
+        "devtoolslog": "d5dc468e44b0ecc3cc5180568a3f8600f9e15f4d37db1f94a4da5e0da7ad7acc",
+        "simulation": "d500a731301422c293c23c1794f16fb22e9733ad7bec49d1c0251d5bc6d98ee1"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "dits",
+      "sample": 1,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-23T00:06:36.831Z",
+      "exitCode": 1,
+      "score": 0.68,
+      "timings": {
+        "first-contentful-paint": 938.7530752021189,
+        "largest-contentful-paint": 3043.753075202119,
+        "cumulative-layout-shift": 0.0010504117274460717,
+        "total-blocking-time": 1471.1234623989405,
+        "speed-index": 2770.7998606842866
+      },
+      "observedLcpMs": 1663,
+      "benchmarkIndex": 1130,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 309231
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30562
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [
+        "largest-contentful-paint: 3043.753075202119 > 3000",
+        "total-blocking-time: 1471.1234623989405 > 300"
+      ],
+      "artifacts": {
+        "budget": "b4b3e57206ad09fa3b5950dc1d01f5c867e9f4b08183589e171fe2022d5a19c4",
+        "lhr": "c4c5c3bda33a9e202d65f1449c65b27550d16c76799e014b0f83657fd5366026",
+        "trace": "7cd06ec2a49800c5d0ab69a9fa29c0b7811aead8ed3614d1c7ee5153a2dfd639",
+        "devtoolslog": "5202c375574ec8e7b62646c693cbcf5b388e598001386e26a76f228f66a2e78a",
+        "simulation": "0ca9304af709f26919494865b813b3b976fc36eb52aca06472b77f3dd927177b"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "nexstar",
+      "sample": 1,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-23T00:07:42.093Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1528.1878499999998,
+        "largest-contentful-paint": 3214.687850000001,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 124,
+        "speed-index": 1528.1878499999998
+      },
+      "observedLcpMs": 300,
+      "benchmarkIndex": 2449,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 334506
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 175812
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46662
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3214.687850000001 > 3000"],
+      "artifacts": {
+        "budget": "56e912028f68d9d0006806cf7aba603f4f90118b62677766ff00b15681d09562",
+        "lhr": "c3c2468cf1bca3a99eda43f5046f994e21e303b7cc88cdccf8c00207706f7367",
+        "trace": "1920c3a31bf3baf2fb913b12c699a47355c82e85c4ea991dbb2116af94d8fb47",
+        "devtoolslog": "b6ce922c886deec00c32ccdcbf147806704c46d497dd9dbd53fa4662ab24b69f",
+        "simulation": "facf41a6f7567adb7b93222c9005b211ec243e94a259bf566b4e05a0b2b861c2"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "home",
+      "sample": 2,
+      "route": "/",
+      "checkedAt": "2026-10-23T00:08:46.672Z",
+      "exitCode": 0,
+      "score": 0.94,
+      "timings": {
+        "first-contentful-paint": 912.9322,
+        "largest-contentful-paint": 2903.8644000000004,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 103,
+        "speed-index": 912.9322
+      },
+      "observedLcpMs": 237,
+      "benchmarkIndex": 2595,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271584
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176038
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21664
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "b98f12993d73f13e601d0c43075f3c2934092cd225ccae848ed5ce999b475f0f",
+        "lhr": "a292ced541e7302445e77a56ffeb4ba66bd60c42da9b8f7fa3e816f0a12c0dda",
+        "trace": "d58e553167eb53392abdd2833beae04bed37ec6129b4a248cca7c690ef30f0d3",
+        "devtoolslog": "ffa82ad3fa1d2599feb620412c80102d510dadc5ed7369c55b6b81a640dd39b1",
+        "simulation": "650df86fcf42ddd64f113197baf1bcfa6f9abd2251ca88254cbbd526d77c2ce1"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "thorbis",
+      "sample": 2,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-23T00:09:51.388Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1076.7444,
+        "largest-contentful-paint": 3072.6592,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 111,
+        "speed-index": 1076.7444
+      },
+      "observedLcpMs": 306,
+      "benchmarkIndex": 2567.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 300654
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21985
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3072.6592 > 3000"],
+      "artifacts": {
+        "budget": "0f133416dfba7e20bc28de1b628ea08a40bd389891df73763f6a8fb2a7cbd911",
+        "lhr": "ba2aecf53a2d745880bc30be0df36c70e7636e5c980f66e30bcc72c09581b329",
+        "trace": "cc88a58544706a08ced303365c76517633e5f3660a716423f49fd69c30d38659",
+        "devtoolslog": "1ef47baf8846da3b7efcd3f7d12d693af0900a432e36db2c49b25a3f29d77e2d",
+        "simulation": "dd0a02d55f05ebc8c594dcd4399b4887d4d2b831baf49f26b15ca958f32121e9"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "dits",
+      "sample": 2,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-23T00:10:55.897Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1074.2732999999998,
+        "largest-contentful-paint": 3060.3644000000004,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 104,
+        "speed-index": 1074.2732999999998
+      },
+      "observedLcpMs": 277,
+      "benchmarkIndex": 2594.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 309231
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30562
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3060.3644000000004 > 3000"],
+      "artifacts": {
+        "budget": "3aaa42e1b090dde24f2908f456cb079a91bbb531a0c1889144c94eb57bc2c270",
+        "lhr": "2cbf4acd9b41461b2644457e5fbb4406cadc80bc8e2827a12837284811c43a2c",
+        "trace": "deaaaba27f97858e1ae0c37dd9bf503efdf42a0daec61954cd4502d944205508",
+        "devtoolslog": "4ffdc260a9920614850cfe048ac2d31543d91145f27985aded9eb7c2157910ca",
+        "simulation": "831577db39092e5f0243c2ad6baa8e592eea2409e61e80b142c2cefbf1bf3964"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "nexstar",
+      "sample": 2,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-23T00:12:02.170Z",
+      "exitCode": 1,
+      "score": 0.88,
+      "timings": {
+        "first-contentful-paint": 1524.7187999999999,
+        "largest-contentful-paint": 3302.7187999999987,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 209,
+        "speed-index": 1524.7187999999999
+      },
+      "observedLcpMs": 402,
+      "benchmarkIndex": 1759.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 334506
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 175812
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46662
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3302.7187999999987 > 3000"],
+      "artifacts": {
+        "budget": "c90b7f55fd683fa4a99116272e8ec1c0ce577805e439225aba8d4767957b7642",
+        "lhr": "1d4e51cc3b47ff59ef411db178d83fa2802d16052955cb5d8b5931b112687855",
+        "trace": "7185d7725c1877f862f5a2e34eb001153927567916c08a95351a647e7d746dfe",
+        "devtoolslog": "bd5b20e7895d690576cda582e5b7678b4bbbcc5853ce49c6229c7e793b613c23",
+        "simulation": "b5dd16281f5c5c73a8afb552445859be0103d63bb32a2f436b5e64a88d11ddfa"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "home",
+      "sample": 3,
+      "route": "/",
+      "checkedAt": "2026-10-23T00:13:10.336Z",
+      "exitCode": 0,
+      "score": 0.99,
+      "timings": {
+        "first-contentful-paint": 984.353211009962,
+        "largest-contentful-paint": 2034.353211009962,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 62.91169724750944,
+        "speed-index": 984.353211009962
+      },
+      "observedLcpMs": 355,
+      "benchmarkIndex": 2544,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 16,
+          "transferSize": 271584
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 176038
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 1,
+          "transferSize": 49991
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21664
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": [],
+      "artifacts": {
+        "budget": "6f622f36c6e214cd7202f5e71347b2e986550c278d426ec7ebd12660ceb4e667",
+        "lhr": "98fe6d259580c5c558b3bae1ab3de80f27c0aa3a0bd90d75ba819eccbaef61b4",
+        "trace": "9578367d90ebf6bcaa9d72b49e52aaba41397bfea98634bc2c03f8df92a6d56c",
+        "devtoolslog": "d64f4d8a99e87bb133afe2b407bca495aa9fa76bff6a243764416c7007c8eaca",
+        "simulation": "4a57d8a1064a66a4e79b9567dc97ce133e0d0ae152b869fbe263802173ccff5f"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "thorbis",
+      "sample": 3,
+      "route": "/projects/thorbis",
+      "checkedAt": "2026-10-23T00:14:14.520Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1083.3043499999999,
+        "largest-contentful-paint": 3074.4058000000005,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 106,
+        "speed-index": 1083.3043499999999
+      },
+      "observedLcpMs": 282,
+      "benchmarkIndex": 2524.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 300654
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 21985
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3074.4058000000005 > 3000"],
+      "artifacts": {
+        "budget": "e98e20ed87ff3fb54f4a91da954cd379511dd354e32b9d063b46dd8b63579161",
+        "lhr": "fc8f6015c59535bcb1cc89dda6b08afa3ab8a74775a9e1acb93ecf6eebb60550",
+        "trace": "f3ae83e80c8392b6b6deb86f730211197e9c4e072e9a7f26bac823c7a31b630b",
+        "devtoolslog": "fdaba27092715e33b3ef83b502fcad014e533b31ef54a396cb70c266497c20b4",
+        "simulation": "71dee859f82161a7339864e896a04af93f77563961c0029212eb66fc782699b6"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "dits",
+      "sample": 3,
+      "route": "/projects/dits",
+      "checkedAt": "2026-10-23T00:15:20.139Z",
+      "exitCode": 1,
+      "score": 0.93,
+      "timings": {
+        "first-contentful-paint": 1117.33995,
+        "largest-contentful-paint": 3120.7866000000004,
+        "cumulative-layout-shift": 0.0009824999788217244,
+        "total-blocking-time": 104,
+        "speed-index": 1117.33995
+      },
+      "observedLcpMs": 411,
+      "benchmarkIndex": 2460,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 309231
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 188481
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 2,
+          "transferSize": 65886
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 30562
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 3,
+          "transferSize": 4495
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3120.7866000000004 > 3000"],
+      "artifacts": {
+        "budget": "21c1f8231c004ce42423c27176d1e4bfa2563a4f793b8243714a42b07580fabc",
+        "lhr": "a1f7cc8cc8abc9973e331bf3cd80907054a9982df79f9597244484eddf06935c",
+        "trace": "4d14967d6be7143a1d225b58ec0db8f9dd42ecfc38a4d1dcb2c653acaa2441fb",
+        "devtoolslog": "d888834415f1407e54ecddc543e63dca237e5f69bec5f66f6c284918ff56312d",
+        "simulation": "b5b27eef5b64e1d926fe3779d0f6daa2cc363f2f55c1de5e6d5453f665768797"
+      }
+    },
+    {
+      "phase": "after",
+      "label": "nexstar",
+      "sample": 3,
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "checkedAt": "2026-10-23T00:16:25.556Z",
+      "exitCode": 1,
+      "score": 0.92,
+      "timings": {
+        "first-contentful-paint": 1525.4674499999996,
+        "largest-contentful-paint": 3199.9674499999987,
+        "cumulative-layout-shift": 0,
+        "total-blocking-time": 113,
+        "speed-index": 1525.4674499999996
+      },
+      "observedLcpMs": 231,
+      "benchmarkIndex": 2526.5,
+      "resources": [
+        {
+          "resourceType": "total",
+          "label": "Total",
+          "requestCount": 18,
+          "transferSize": 334506
+        },
+        {
+          "resourceType": "script",
+          "label": "Script",
+          "requestCount": 10,
+          "transferSize": 175812
+        },
+        {
+          "resourceType": "font",
+          "label": "Font",
+          "requestCount": 3,
+          "transferSize": 88141
+        },
+        {
+          "resourceType": "document",
+          "label": "Document",
+          "requestCount": 1,
+          "transferSize": 46662
+        },
+        {
+          "resourceType": "stylesheet",
+          "label": "Stylesheet",
+          "requestCount": 1,
+          "transferSize": 16555
+        },
+        {
+          "resourceType": "other",
+          "label": "Other",
+          "requestCount": 2,
+          "transferSize": 4084
+        },
+        {
+          "resourceType": "image",
+          "label": "Image",
+          "requestCount": 1,
+          "transferSize": 3252
+        },
+        {
+          "resourceType": "media",
+          "label": "Media",
+          "requestCount": 0,
+          "transferSize": 0
+        },
+        {
+          "resourceType": "third-party",
+          "label": "Third-party",
+          "requestCount": 0,
+          "transferSize": 0
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3199.9674499999987 > 3000"],
+      "artifacts": {
+        "budget": "4cad35106e6e1a4d41206e7c90ac532941dd76b8f8df637dcde2a1e9bc1da36e",
+        "lhr": "c71dc77b4722b59a4fe6f57c2bcfd59404865c03ff6a682ddf62d13ae53c7d6c",
+        "trace": "a428ad4a6f0d1663f64d27b842b0048a2bc495735465b0ec662bc41b269f5880",
+        "devtoolslog": "d632d329e999e23665825d2fde1a06c36ad5e2f745a88a06854cb9361b9cc497",
+        "simulation": "8c4de70b6ad10b5d5e841dcc235683d408eb2d1fa39004f945d1b0e8186cfb79"
+      }
+    }
+  ],
+  "compiledPayload": {
+    "compression": "gzip level 9; sum per external script, exclude nomodule; separate from Lighthouse transfer sizes",
+    "pages": [
+      {
+        "page": "blog.html",
+        "beforeScriptGzip": 171516,
+        "afterScriptGzip": 168068,
+        "savedScriptGzip": 3448,
+        "beforeScriptBytes": 557656,
+        "afterScriptBytes": 549324,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 20141,
+        "afterHtmlGzip": 20139,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "contact.html",
+        "beforeScriptGzip": 185501,
+        "afterScriptGzip": 181426,
+        "savedScriptGzip": 4075,
+        "beforeScriptBytes": 596824,
+        "afterScriptBytes": 585987,
+        "beforeScriptRequests": 9,
+        "afterScriptRequests": 9,
+        "beforeHtmlGzip": 17942,
+        "afterHtmlGzip": 17945,
+        "remainingNonsharedRegistrations": 18
+      },
+      {
+        "page": "index.html",
+        "beforeScriptGzip": 170814,
+        "afterScriptGzip": 170742,
+        "savedScriptGzip": 72,
+        "beforeScriptBytes": 556904,
+        "afterScriptBytes": 556791,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 21127,
+        "afterHtmlGzip": 21001,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "privacy.html",
+        "beforeScriptGzip": 174615,
+        "afterScriptGzip": 171214,
+        "savedScriptGzip": 3401,
+        "beforeScriptBytes": 565702,
+        "afterScriptBytes": 557528,
+        "beforeScriptRequests": 9,
+        "afterScriptRequests": 9,
+        "beforeHtmlGzip": 16563,
+        "afterHtmlGzip": 16562,
+        "remainingNonsharedRegistrations": 6
+      },
+      {
+        "page": "projects.html",
+        "beforeScriptGzip": 171516,
+        "afterScriptGzip": 168068,
+        "savedScriptGzip": 3448,
+        "beforeScriptBytes": 557656,
+        "afterScriptBytes": 549324,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 22499,
+        "afterHtmlGzip": 22496,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "resume.html",
+        "beforeScriptGzip": 186290,
+        "afterScriptGzip": 179528,
+        "savedScriptGzip": 6762,
+        "beforeScriptBytes": 598661,
+        "afterScriptBytes": 580188,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 22080,
+        "afterHtmlGzip": 22076,
+        "remainingNonsharedRegistrations": 19
+      },
+      {
+        "page": "terms.html",
+        "beforeScriptGzip": 174615,
+        "afterScriptGzip": 171214,
+        "savedScriptGzip": 3401,
+        "beforeScriptBytes": 565702,
+        "afterScriptBytes": 557528,
+        "beforeScriptRequests": 9,
+        "afterScriptRequests": 9,
+        "beforeHtmlGzip": 16508,
+        "afterHtmlGzip": 16506,
+        "remainingNonsharedRegistrations": 6
+      },
+      {
+        "page": "_global-error.html",
+        "beforeScriptGzip": 167652,
+        "afterScriptGzip": 167579,
+        "savedScriptGzip": 73,
+        "beforeScriptBytes": 548617,
+        "afterScriptBytes": 548504,
+        "beforeScriptRequests": 7,
+        "afterScriptRequests": 7,
+        "beforeHtmlGzip": 3569,
+        "afterHtmlGzip": 3564,
+        "remainingNonsharedRegistrations": 4
+      },
+      {
+        "page": "_not-found.html",
+        "beforeScriptGzip": 170814,
+        "afterScriptGzip": 170742,
+        "savedScriptGzip": 72,
+        "beforeScriptBytes": 556904,
+        "afterScriptBytes": 556791,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 15374,
+        "afterHtmlGzip": 15372,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/building-thorbis.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 40911,
+        "afterHtmlGzip": 40909,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/design-systems-that-earn-their-keep.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 39044,
+        "afterHtmlGzip": 39041,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/lessons-building-service-software.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 37893,
+        "afterHtmlGzip": 37910,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/nexstar-win-invoice-lose-customer.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 45829,
+        "afterHtmlGzip": 45826,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/scaling-plumbing-business.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 40238,
+        "afterHtmlGzip": 40235,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "blog/what-service-businesses-actually-need.html",
+        "beforeScriptGzip": 173860,
+        "afterScriptGzip": 170516,
+        "savedScriptGzip": 3344,
+        "beforeScriptBytes": 563661,
+        "afterScriptBytes": 555329,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 39962,
+        "afterHtmlGzip": 39959,
+        "remainingNonsharedRegistrations": 5
+      },
+      {
+        "page": "projects/byronwade-ui.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 26948,
+        "afterHtmlGzip": 26945,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/ciel.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 23403,
+        "afterHtmlGzip": 23396,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/content-management-system.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 35749,
+        "afterHtmlGzip": 35740,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/dits.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 29858,
+        "afterHtmlGzip": 29854,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/drone-pi.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16544,
+        "afterHtmlGzip": 16541,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/fakebase.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 29204,
+        "afterHtmlGzip": 29121,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/goodmarks.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 26561,
+        "afterHtmlGzip": 26557,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/hollowveil.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16534,
+        "afterHtmlGzip": 16353,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/impact-marine-group.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 31009,
+        "afterHtmlGzip": 31003,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/memoria.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 28397,
+        "afterHtmlGzip": 28391,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/movies.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 24452,
+        "afterHtmlGzip": 24447,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/mushroom-cultivation-supplier.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 27967,
+        "afterHtmlGzip": 27975,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/odb2.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16506,
+        "afterHtmlGzip": 16344,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/plumbing-code-playbook.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16801,
+        "afterHtmlGzip": 16807,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/reactpress.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 34276,
+        "afterHtmlGzip": 34273,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/realistic-face.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16577,
+        "afterHtmlGzip": 16577,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/rebuzzle.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 27383,
+        "afterHtmlGzip": 27378,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/signalroute.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 27609,
+        "afterHtmlGzip": 27606,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/stream.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 28378,
+        "afterHtmlGzip": 28374,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/subfield.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 16589,
+        "afterHtmlGzip": 16585,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/thorbis-design.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 20998,
+        "afterHtmlGzip": 20996,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/thorbis.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 21654,
+        "afterHtmlGzip": 21329,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/wades-plumbing-and-septic.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 30292,
+        "afterHtmlGzip": 30315,
+        "remainingNonsharedRegistrations": 17
+      },
+      {
+        "page": "projects/wormhole.html",
+        "beforeScriptGzip": 193157,
+        "afterScriptGzip": 183146,
+        "savedScriptGzip": 10011,
+        "beforeScriptBytes": 617479,
+        "afterScriptBytes": 591002,
+        "beforeScriptRequests": 8,
+        "afterScriptRequests": 8,
+        "beforeHtmlGzip": 28746,
+        "afterHtmlGzip": 28742,
+        "remainingNonsharedRegistrations": 17
+      }
+    ],
+    "beforeSha256": "69b3f3cb44d79511b48e367214e8efd8dda8078b832ffdd48e73e381880936b2",
+    "afterSha256": "12cf2d5a6746f50d091037e0302823554dfba5123ebb35a824e32995feba7799",
+    "sharedRegistrations": {
+      "baseline": {
+        "factories": 26,
+        "repeatedSharedRegistrations": 951
+      },
+      "after": {
+        "factories": 25,
+        "repeatedSharedRegistrations": 0
+      }
+    }
+  },
+  "diagnosis": [
+    {
+      "phase": "baseline",
+      "route": "/projects/thorbis",
+      "sample": 1,
+      "simulatedLcpMs": 3210.2054000000003,
+      "fontNodes": [
+        {
+          "url": "/fonts/or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2",
+          "startMs": 1367.1027,
+          "endMs": 1975.6540499999999,
+          "transferSize": 15895
+        },
+        {
+          "url": "/fonts/UcCo3FwrK3iLTcviYwY.woff2",
+          "startMs": 758.55135,
+          "endMs": 2567.1027,
+          "transferSize": 49991
+        }
+      ],
+      "terminalNodes": [
+        {
+          "id": "30540.6",
+          "type": "network",
+          "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+          "resourceType": "Script",
+          "transferSize": 67847,
+          "observedStart": 118957769279,
+          "observedEnd": 118957795199.99998,
+          "dependencies": ["BC258DC48D0852D187966C601CF03CB5"],
+          "startTime": 1067.1027,
+          "endTime": 2875.65405,
+          "duration": 1808.5513500000002
+        },
+        {
+          "id": "65616.118957847144",
+          "type": "cpu",
+          "event": "RunTask",
+          "observedStart": 118957847144,
+          "observedEnd": 118957885372,
+          "dependencies": [
+            "BC258DC48D0852D187966C601CF03CB5",
+            "30540.6",
+            "30540.4",
+            "30540.5"
+          ],
+          "startTime": 2875.65405,
+          "endTime": 3028.65405,
+          "duration": 153
+        },
+        {
+          "id": "30540.67",
+          "type": "network",
+          "url": "/_vercel/speed-insights/script.js",
+          "resourceType": "Script",
+          "transferSize": 363,
+          "observedStart": 118957930502,
+          "observedEnd": 118957939699,
+          "dependencies": [
+            "30540.8",
+            "30540.5",
+            "30540.6",
+            "BC258DC48D0852D187966C601CF03CB5"
+          ],
+          "startTime": 2875.65405,
+          "endTime": 3034.2054000000003,
+          "duration": 158.55135000000018
+        },
+        {
+          "id": "65616.118957916201",
+          "type": "cpu",
+          "event": "RunTask",
+          "observedStart": 118957916201,
+          "observedEnd": 118957921897,
+          "dependencies": [
+            "BC258DC48D0852D187966C601CF03CB5",
+            "30540.6",
+            "30540.8",
+            "30540.5",
+            "30540.9"
+          ],
+          "startTime": 3028.65405,
+          "endTime": 3051.65405,
+          "duration": 23
+        },
+        {
+          "id": "30540.65",
+          "type": "network",
+          "url": "/api/screenshot?url=https%3A%2F%2Fthorbis.com&width=1920&height=1080",
+          "resourceType": "Fetch",
+          "transferSize": 411,
+          "observedStart": 118957918380.00002,
+          "observedEnd": 118957951037,
+          "dependencies": [
+            "30540.9",
+            "30540.5",
+            "30540.6",
+            "65616.118957916201"
+          ],
+          "startTime": 3051.65405,
+          "endTime": 3210.2054000000003,
+          "duration": 158.55135000000018
+        },
+        {
+          "id": "30540.66",
+          "type": "network",
+          "url": "/_vercel/insights/script.js",
+          "resourceType": "Script",
+          "transferSize": 363,
+          "observedStart": 118957920603,
+          "observedEnd": 118957939505,
+          "dependencies": [
+            "30540.8",
+            "30540.5",
+            "30540.6",
+            "65616.118957916201"
+          ],
+          "startTime": 3051.65405,
+          "endTime": 3210.2054000000003,
+          "duration": 158.55135000000018
+        }
+      ],
+      "terminalCpuTasks": [
+        {
+          "simulatedStartMs": 2875.65405,
+          "simulatedEndMs": 3028.65405,
+          "observedDurationMs": 38.228,
+          "children": [
+            {
+              "event": "EvaluateScript",
+              "observedDurationMs": 37.421,
+              "url": "/_next/static/chunks/main-app-98d234778761ba8f.js"
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.399,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.686,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            }
+          ]
+        },
+        {
+          "simulatedStartMs": 3028.65405,
+          "simulatedEndMs": 3051.65405,
+          "observedDurationMs": 5.696,
+          "children": [
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 5.354,
+              "url": "/_next/static/chunks/main-app-98d234778761ba8f.js"
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "observedDurationMs": 0.492,
+              "url": ""
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.017,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "after",
+      "route": "/projects/thorbis",
+      "sample": 1,
+      "simulatedLcpMs": 3083.8402000000006,
+      "fontNodes": [
+        {
+          "url": "/fonts/or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2",
+          "startMs": 1369.9201,
+          "endMs": 1979.88015,
+          "transferSize": 15895
+        },
+        {
+          "url": "/fonts/UcCo3FwrK3iLTcviYwY.woff2",
+          "startMs": 759.96005,
+          "endMs": 2569.9201000000003,
+          "transferSize": 49991
+        }
+      ],
+      "terminalNodes": [
+        {
+          "id": "31048.6",
+          "type": "network",
+          "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+          "resourceType": "Script",
+          "transferSize": 67847,
+          "observedStart": 120183836919,
+          "observedEnd": 120183867041.00002,
+          "dependencies": ["5BC7D5BF5A49D6BFE3FCE19CA8C7FC5C"],
+          "startTime": 1069.9201,
+          "endTime": 2729.8801500000004,
+          "duration": 1659.9600500000004
+        },
+        {
+          "id": "31048.67",
+          "type": "network",
+          "url": "/_vercel/speed-insights/script.js",
+          "resourceType": "Script",
+          "transferSize": 363,
+          "observedStart": 120184013026,
+          "observedEnd": 120184025008,
+          "dependencies": [
+            "31048.8",
+            "31048.5",
+            "31048.6",
+            "5BC7D5BF5A49D6BFE3FCE19CA8C7FC5C"
+          ],
+          "startTime": 2729.8801500000004,
+          "endTime": 2889.8402000000006,
+          "duration": 159.96005000000014
+        },
+        {
+          "id": "6932.120183922124",
+          "type": "cpu",
+          "event": "RunTask",
+          "observedStart": 120183922124,
+          "observedEnd": 120183964769,
+          "dependencies": [
+            "5BC7D5BF5A49D6BFE3FCE19CA8C7FC5C",
+            "31048.6",
+            "31048.4",
+            "31048.5"
+          ],
+          "startTime": 2729.8801500000004,
+          "endTime": 2900.8801500000004,
+          "duration": 171
+        },
+        {
+          "id": "6932.120183996937",
+          "type": "cpu",
+          "event": "RunTask",
+          "observedStart": 120183996937,
+          "observedEnd": 120184002696,
+          "dependencies": [
+            "5BC7D5BF5A49D6BFE3FCE19CA8C7FC5C",
+            "31048.6",
+            "31048.8",
+            "31048.5",
+            "31048.9"
+          ],
+          "startTime": 2900.8801500000004,
+          "endTime": 2923.8801500000004,
+          "duration": 23
+        },
+        {
+          "id": "31048.65",
+          "type": "network",
+          "url": "/api/screenshot?url=https%3A%2F%2Fthorbis.com&width=1920&height=1080",
+          "resourceType": "Fetch",
+          "transferSize": 411,
+          "observedStart": 120183999173.00002,
+          "observedEnd": 120184038806,
+          "dependencies": [
+            "31048.9",
+            "31048.5",
+            "31048.6",
+            "6932.120183996937"
+          ],
+          "startTime": 2923.8801500000004,
+          "endTime": 3083.8402000000006,
+          "duration": 159.96005000000014
+        },
+        {
+          "id": "31048.66",
+          "type": "network",
+          "url": "/_vercel/insights/script.js",
+          "resourceType": "Script",
+          "transferSize": 363,
+          "observedStart": 120184001314,
+          "observedEnd": 120184024342,
+          "dependencies": [
+            "31048.8",
+            "31048.5",
+            "31048.6",
+            "6932.120183996937"
+          ],
+          "startTime": 2923.8801500000004,
+          "endTime": 3083.8402000000006,
+          "duration": 159.96005000000014
+        }
+      ],
+      "terminalCpuTasks": [
+        {
+          "simulatedStartMs": 2729.8801500000004,
+          "simulatedEndMs": 2900.8801500000004,
+          "observedDurationMs": 42.645,
+          "children": [
+            {
+              "event": "EvaluateScript",
+              "observedDurationMs": 41.783,
+              "url": "/_next/static/chunks/main-app-98d234778761ba8f.js"
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.396,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.72,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            }
+          ]
+        },
+        {
+          "simulatedStartMs": 2900.8801500000004,
+          "simulatedEndMs": 2923.8801500000004,
+          "observedDurationMs": 5.759,
+          "children": [
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 5.375,
+              "url": "/_next/static/chunks/main-app-98d234778761ba8f.js"
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "observedDurationMs": 0.503,
+              "url": ""
+            },
+            {
+              "event": "FunctionCall",
+              "observedDurationMs": 0.02,
+              "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "rejectedProbe": {
+    "ownership": "At least one root entry",
+    "reason": "Expanded shared factory set and increased standalone global-error script gzip",
+    "globalErrorBeforeGzip": 167652,
+    "globalErrorProbeGzip": 168933,
+    "increaseBytes": 1281,
+    "payloadSha256": "afa65b28a20ca60f117bd5ceab0aae1b9851137d2482084d46d80164cdc74988",
+    "timingSamples": 0
+  },
+  "hostedStaticInspection": {
+    "deploymentId": "dpl_8YCASVTbhKmLiGecWabVfn3UXREV",
+    "applicationCommit": "6531bdf215515ca37280fbf9cc3a946b2c4121ff",
+    "duplicateSharedFactories": 33,
+    "artifactSha256": "dddc096aa986ddc4caf7a28a1f7e7f399e909475d400241f5d3f962564f03cc1",
+    "assetManifestSha256": "0c2771027898fbd891b3ffd7690a632795c86f5deb1a6852e4c34dd9f94ccd20"
+  },
+  "benchmarkIndex": {
+    "baseline": {
+      "min": 2168.5,
+      "median": 2617.0,
+      "max": 2653
+    },
+    "after": {
+      "min": 1130,
+      "median": 2531.5,
+      "max": 2595
+    }
+  },
+  "additionalBudgetFailures": [
+    {
+      "phase": "after",
+      "label": "dits",
+      "sample": 1,
+      "benchmarkIndex": 1130,
+      "failures": [
+        "largest-contentful-paint: 3043.753075202119 > 3000",
+        "total-blocking-time: 1471.1234623989405 > 300"
+      ],
+      "details": {
+        "long-tasks": [
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 529,
+            "startTime": 2793.7530752021185
+          },
+          {
+            "url": "/projects/dits",
+            "duration": 293,
+            "startTime": 1158.3765376010595
+          },
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 252,
+            "startTime": 3322.7530752021185
+          },
+          {
+            "url": "Unattributable",
+            "duration": 236,
+            "startTime": 815.3765376010595
+          },
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 221,
+            "startTime": 4140.753075202118
+          },
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 214,
+            "startTime": 3723.7530752021185
+          },
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 164,
+            "startTime": 3976.7530752021185
+          },
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "duration": 102,
+            "startTime": 3621.7530752021185
+          },
+          {
+            "url": "Unattributable",
+            "duration": 73,
+            "startTime": 1051.3765376010595
+          },
+          {
+            "url": "/projects/dits",
+            "duration": 57,
+            "startTime": 1480.3765376010595
+          }
+        ],
+        "mainthread-work-breakdown": [
+          {
+            "group": "scriptEvaluation",
+            "groupLabel": "Script Evaluation",
+            "duration": 1811.8679999999933
+          },
+          {
+            "group": "other",
+            "groupLabel": "Other",
+            "duration": 697.075999999998
+          },
+          {
+            "group": "styleLayout",
+            "groupLabel": "Style & Layout",
+            "duration": 587.6359999999999
+          },
+          {
+            "group": "paintCompositeRender",
+            "groupLabel": "Rendering",
+            "duration": 250.00399999999988
+          },
+          {
+            "group": "scriptParseCompile",
+            "groupLabel": "Script Parsing & Compilation",
+            "duration": 92.21600000000001
+          },
+          {
+            "group": "parseHTML",
+            "groupLabel": "Parse HTML & CSS",
+            "duration": 33.092000000000006
+          },
+          {
+            "group": "garbageCollection",
+            "groupLabel": "Garbage Collection",
+            "duration": 22.024000000000004
+          }
+        ],
+        "bootup-time": [
+          {
+            "url": "/_next/static/chunks/main-app-98d234778761ba8f.js",
+            "total": 1757.415999999994,
+            "scripting": 1707.3959999999938,
+            "scriptParseCompile": 28.768
+          },
+          {
+            "url": "/projects/dits",
+            "total": 1047.0399999999997,
+            "scripting": 45.563999999999986,
+            "scriptParseCompile": 17.039999999999996
+          },
+          {
+            "url": "Unattributable",
+            "total": 555.9200000000002,
+            "scripting": 8.171999999999999,
+            "scriptParseCompile": 0
+          },
+          {
+            "url": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+            "total": 68.14399999999998,
+            "scripting": 33.40399999999999,
+            "scriptParseCompile": 25.892
+          }
+        ]
+      },
+      "cause": "Unproven; retained as a budget failure, not discarded or replaced"
+    }
+  ],
+  "blockingTimeFollowUp": {
+    "reason": "Investigate the retained after/dits-1 blocking-time failure; declared once, all samples retained",
+    "method": "Three serial Dits samples on original product configuration, then three on exact restored candidate; same profile and settle protocol; source hashes and dirty original probe explicit",
+    "applicationSourceAssertion": "Original product tree equals base6531bdf except the added test; restored candidate equals checkpointcd2e1fd",
+    "compiledScriptAssertion": "Every initial script hash matches the corresponding original or candidate measurement build",
+    "samples": [
+      {
+        "phase": "control-original",
+        "sample": 1,
+        "applicationCommit": "6531bdf215515ca37280fbf9cc3a946b2c4121ff",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": true,
+        "configSha256": "3de711e314198a7718d0fd04716110fa29989c08891e7bfe6688d930ed491e38",
+        "buildId": "sj6bMA5xrF1EZNeq-_wz5",
+        "benchmarkIndex": 1531,
+        "timings": {
+          "first-contentful-paint": 1097.77815,
+          "largest-contentful-paint": 3165.7042,
+          "cumulative-layout-shift": 0.0009824999788217244,
+          "total-blocking-time": 165,
+          "speed-index": 1097.77815
+        },
+        "failures": ["largest-contentful-paint: 3165.7042 > 3000"],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 318985
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 198234
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30563
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "470e911290bce5bfcd2ad3ddab22616a94b62e01b3a4018ea6fefbfaac98c5af",
+        "artifacts": {
+          "budget": "470e911290bce5bfcd2ad3ddab22616a94b62e01b3a4018ea6fefbfaac98c5af",
+          "lhr": "7838620bb4442de4813eb2da13f037052d3815e437818df8902e333c1703650e",
+          "trace": "a8189c920a97bf0bd3b637793d2a337fbde7dce83d84dc1704d22c6c2229e51f",
+          "devtoolslog": "a73794c0d3776400ab36225bc3339a576001644d82beb9b05294c7bc3c8e464f",
+          "simulation": "1111e14db2a4916c00f6ef0cb710e7e011201354b2c1ff99b9fa165852390998"
+        }
+      },
+      {
+        "phase": "control-original",
+        "sample": 2,
+        "applicationCommit": "6531bdf215515ca37280fbf9cc3a946b2c4121ff",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": true,
+        "configSha256": "3de711e314198a7718d0fd04716110fa29989c08891e7bfe6688d930ed491e38",
+        "buildId": "sj6bMA5xrF1EZNeq-_wz5",
+        "benchmarkIndex": 1471.5,
+        "timings": {
+          "first-contentful-paint": 1106.9883,
+          "largest-contentful-paint": 3154.9844000000003,
+          "cumulative-layout-shift": 0.0009824999788217244,
+          "total-blocking-time": 139,
+          "speed-index": 1121.1925532671746
+        },
+        "failures": ["largest-contentful-paint: 3154.9844000000003 > 3000"],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 318985
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 198234
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30563
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "c79e258d167a0f1cd0af38666e231f2bdda305a4cb35298b0d086544938b2ac8",
+        "artifacts": {
+          "budget": "c79e258d167a0f1cd0af38666e231f2bdda305a4cb35298b0d086544938b2ac8",
+          "lhr": "a1e0850b2d156d615f25f75ae2d4129fe381e7a960ee4e14417277fd43893505",
+          "trace": "67bcc7c4a16965c2640c9d02505a6c64ae11bcb9c1dad61c89f601c2bfb79ff2",
+          "devtoolslog": "315a900f7a11eb3105299ded28c5f2139f35d01a351cf62389644d965ebee140",
+          "simulation": "6a3717134a6bd465a63065f5d52e833af691e085192f4ac1111b367598e2dc13"
+        }
+      },
+      {
+        "phase": "control-original",
+        "sample": 3,
+        "applicationCommit": "6531bdf215515ca37280fbf9cc3a946b2c4121ff",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": true,
+        "configSha256": "3de711e314198a7718d0fd04716110fa29989c08891e7bfe6688d930ed491e38",
+        "buildId": "sj6bMA5xrF1EZNeq-_wz5",
+        "benchmarkIndex": 2078.5,
+        "timings": {
+          "first-contentful-paint": 968.2929902996282,
+          "largest-contentful-paint": 2736.292990299628,
+          "cumulative-layout-shift": 0,
+          "total-blocking-time": 221.78025727527893,
+          "speed-index": 1087.6335294209048
+        },
+        "failures": [],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 318985
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 198234
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30563
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "1b780755dccd77493bcc0c07d32485b84fa7fe09396fdde79aea5f3e5ac82eed",
+        "artifacts": {
+          "budget": "1b780755dccd77493bcc0c07d32485b84fa7fe09396fdde79aea5f3e5ac82eed",
+          "lhr": "6ac9e12a606db20719e0c47ad91d1893dc5eb33b78907b85068b7eba21a2d99a",
+          "trace": "76d29849af5368ea57c86938a51230b8f783aa84be0463f43a3bc1754a2b3abc",
+          "devtoolslog": "30c4e74f19cf7dda36baf2a7441a7cc147761340615505058eb688c74be76248",
+          "simulation": "5bb06c03bcae063e185e4ba62d3653cc783db2c3af7b3c3de12334210b5335d2"
+        }
+      },
+      {
+        "phase": "control-restored",
+        "sample": 1,
+        "applicationCommit": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": false,
+        "configSha256": "b334ef77d39f7045867981b27bafa431c16f96826ad3dc537a255dc3cba1ba80",
+        "buildId": "ymVjnmg9ljnziWpFwgn8f",
+        "benchmarkIndex": 2247,
+        "timings": {
+          "first-contentful-paint": 1078.8492,
+          "largest-contentful-paint": 3079.4655999999995,
+          "cumulative-layout-shift": 0.0009824999788217244,
+          "total-blocking-time": 112,
+          "speed-index": 1078.8492
+        },
+        "failures": ["largest-contentful-paint: 3079.4655999999995 > 3000"],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 309230
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 188481
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30561
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "a275a9adc9ec3e62e79b7b787559b286b5105ab1e08f293c28c302c56071a249",
+        "artifacts": {
+          "budget": "a275a9adc9ec3e62e79b7b787559b286b5105ab1e08f293c28c302c56071a249",
+          "lhr": "5944f55f90f3b2ef76b362487bd7d53e645624489b0f3ffb5dace92227678968",
+          "trace": "dabfab6e94960434d455e5890587a2de3e7d77f04dcbb3893a5f3ae7f08e1d64",
+          "devtoolslog": "24233a8280abe0839634459d02ed60021cb7672002257ee0877bc70788dcd0a2",
+          "simulation": "05244b6df030a5ee875b4ca25423e137bda1782af5a48f356cf2d178c1117b43"
+        }
+      },
+      {
+        "phase": "control-restored",
+        "sample": 2,
+        "applicationCommit": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": false,
+        "configSha256": "b334ef77d39f7045867981b27bafa431c16f96826ad3dc537a255dc3cba1ba80",
+        "buildId": "ymVjnmg9ljnziWpFwgn8f",
+        "benchmarkIndex": 1539,
+        "timings": {
+          "first-contentful-paint": 1061.2620407767718,
+          "largest-contentful-paint": 2573.2620407767718,
+          "cumulative-layout-shift": 0,
+          "total-blocking-time": 112,
+          "speed-index": 1300.6739527287266
+        },
+        "failures": [],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 309230
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 188481
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30561
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "e9c4cad01ea835312510ba1a3a01d98fc7d59169ddf35b9ca7f5faa75b48efd6",
+        "artifacts": {
+          "budget": "e9c4cad01ea835312510ba1a3a01d98fc7d59169ddf35b9ca7f5faa75b48efd6",
+          "lhr": "62f18be4abde8d118190f7f8b6623e3fdf8872dc5131c54f30373bed5e32cc25",
+          "trace": "68e7e2cebb2a8a4f3df3de1778546129f7cc4b26aaf99ad1a0388ef8eedc7eac",
+          "devtoolslog": "b3e3d5ebfc246d4ca57c312bcaa45e25af5062b76ac44728e4525a1fc890a388",
+          "simulation": "8227b03ab168f7c44a36eaaafc2c1c022b4476c836c6963df899bf3443377302"
+        }
+      },
+      {
+        "phase": "control-restored",
+        "sample": 3,
+        "applicationCommit": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "gitHead": "cd2e1fd06c968f3db5ec9d873f3d4ff8a56f81af",
+        "workingTreeDirty": false,
+        "configSha256": "b334ef77d39f7045867981b27bafa431c16f96826ad3dc537a255dc3cba1ba80",
+        "buildId": "ymVjnmg9ljnziWpFwgn8f",
+        "benchmarkIndex": 2262,
+        "timings": {
+          "first-contentful-paint": 1088.1153,
+          "largest-contentful-paint": 3148.8203999999996,
+          "cumulative-layout-shift": 0.0009824999788217244,
+          "total-blocking-time": 171,
+          "speed-index": 1088.1153
+        },
+        "failures": ["largest-contentful-paint: 3148.8203999999996 > 3000"],
+        "resources": [
+          {
+            "resourceType": "total",
+            "label": "Total",
+            "requestCount": 18,
+            "transferSize": 309230
+          },
+          {
+            "resourceType": "script",
+            "label": "Script",
+            "requestCount": 10,
+            "transferSize": 188481
+          },
+          {
+            "resourceType": "font",
+            "label": "Font",
+            "requestCount": 2,
+            "transferSize": 65886
+          },
+          {
+            "resourceType": "document",
+            "label": "Document",
+            "requestCount": 1,
+            "transferSize": 30561
+          },
+          {
+            "resourceType": "stylesheet",
+            "label": "Stylesheet",
+            "requestCount": 1,
+            "transferSize": 16555
+          },
+          {
+            "resourceType": "other",
+            "label": "Other",
+            "requestCount": 3,
+            "transferSize": 4495
+          },
+          {
+            "resourceType": "image",
+            "label": "Image",
+            "requestCount": 1,
+            "transferSize": 3252
+          },
+          {
+            "resourceType": "media",
+            "label": "Media",
+            "requestCount": 0,
+            "transferSize": 0
+          },
+          {
+            "resourceType": "third-party",
+            "label": "Third-party",
+            "requestCount": 0,
+            "transferSize": 0
+          }
+        ],
+        "budgetSha256": "e3d6f9643f357c88a40385e274cfa3d3f2c34357470e74815040447b317e4d45",
+        "artifacts": {
+          "budget": "e3d6f9643f357c88a40385e274cfa3d3f2c34357470e74815040447b317e4d45",
+          "lhr": "8d69023e459e74d04d467bfa66488bbb41de9ce6ec99500cde2a54f4c4585ad9",
+          "trace": "fc4a14202287f7e4f5ea242b22d078426967f8c592f26e3955473f2b2ec0457b",
+          "devtoolslog": "b13864a023935c783e2d24509296699c382ce689d56ff55c49af626da79fcc76",
+          "simulation": "459a7ffca2d93fdab888031097a79d63e0c5c78cafac3804d93ca4485541b274"
+        }
+      }
+    ],
+    "aggregate": {
+      "control-original": {
+        "largest-contentful-paint": {
+          "min": 2736.292990299628,
+          "median": 3154.9844000000003,
+          "max": 3165.7042
+        },
+        "total-blocking-time": {
+          "min": 139,
+          "median": 165,
+          "max": 221.78025727527893
+        }
+      },
+      "control-restored": {
+        "largest-contentful-paint": {
+          "min": 2573.2620407767718,
+          "median": 3079.4655999999995,
+          "max": 3148.8203999999996
+        },
+        "total-blocking-time": {
+          "min": 112,
+          "median": 112,
+          "max": 171
+        }
+      }
+    },
+    "harnessSha256": "127533f6c8a3b48391957d02ed7fecf009e797501d38079ff3aca797cbe0f587"
+  },
+  "releasePayloadComparison": {
+    "baselineCommit": "cf37b247cfcbf4551d66646b89b620c43cfa9790",
+    "candidateCommit": "58bc2d28bb026a9a5b76d343b3fe2217c78505a6",
+    "originalConfigSha256": "3de711e314198a7718d0fd04716110fa29989c08891e7bfe6688d930ed491e38",
+    "candidateConfigSha256": "b334ef77d39f7045867981b27bafa431c16f96826ad3dc537a255dc3cba1ba80",
+    "assertion": "Original product tree equals latest main except the added test; candidate restored exactly; final candidate build required",
+    "baselineBuildId": "p6Qs64resRq9-gAlmDBy-",
+    "candidateBuildId": "EvZmf0vKoQuwDSFXSGJL8",
+    "compression": "Sum of gzip level 9 per initial modern script; nomodule excluded",
+    "sourceScope": "Final product inputs equal main cf37b24 plus the shared-module configuration; new test and evidence do not alter page behavior",
+    "pages": [
+      {
+        "page": "blog.html",
+        "beforeGzip": 171518,
+        "afterGzip": 168069,
+        "savedGzip": 3449,
+        "beforeBytes": 557656,
+        "afterBytes": 549324,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "contact.html",
+        "beforeGzip": 185503,
+        "afterGzip": 181427,
+        "savedGzip": 4076,
+        "beforeBytes": 596824,
+        "afterBytes": 585987,
+        "beforeRequests": 9,
+        "afterRequests": 9
+      },
+      {
+        "page": "index.html",
+        "beforeGzip": 170816,
+        "afterGzip": 170743,
+        "savedGzip": 73,
+        "beforeBytes": 556904,
+        "afterBytes": 556791,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "privacy.html",
+        "beforeGzip": 174617,
+        "afterGzip": 171215,
+        "savedGzip": 3402,
+        "beforeBytes": 565702,
+        "afterBytes": 557528,
+        "beforeRequests": 9,
+        "afterRequests": 9
+      },
+      {
+        "page": "projects.html",
+        "beforeGzip": 171518,
+        "afterGzip": 168069,
+        "savedGzip": 3449,
+        "beforeBytes": 557656,
+        "afterBytes": 549324,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "resume.html",
+        "beforeGzip": 186292,
+        "afterGzip": 179529,
+        "savedGzip": 6763,
+        "beforeBytes": 598661,
+        "afterBytes": 580188,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "terms.html",
+        "beforeGzip": 174617,
+        "afterGzip": 171215,
+        "savedGzip": 3402,
+        "beforeBytes": 565702,
+        "afterBytes": 557528,
+        "beforeRequests": 9,
+        "afterRequests": 9
+      },
+      {
+        "page": "_global-error.html",
+        "beforeGzip": 167654,
+        "afterGzip": 167580,
+        "savedGzip": 74,
+        "beforeBytes": 548617,
+        "afterBytes": 548504,
+        "beforeRequests": 7,
+        "afterRequests": 7
+      },
+      {
+        "page": "_not-found.html",
+        "beforeGzip": 170816,
+        "afterGzip": 170743,
+        "savedGzip": 73,
+        "beforeBytes": 556904,
+        "afterBytes": 556791,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/building-thorbis.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/design-systems-that-earn-their-keep.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/lessons-building-service-software.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/nexstar-win-invoice-lose-customer.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/scaling-plumbing-business.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "blog/what-service-businesses-actually-need.html",
+        "beforeGzip": 174159,
+        "afterGzip": 170830,
+        "savedGzip": 3329,
+        "beforeBytes": 564298,
+        "afterBytes": 555966,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/byronwade-ui.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/ciel.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/content-management-system.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/dits.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/drone-pi.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/fakebase.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/goodmarks.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/hollowveil.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/impact-marine-group.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/memoria.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/movies.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/mushroom-cultivation-supplier.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/odb2.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/plumbing-code-playbook.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/reactpress.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/realistic-face.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/rebuzzle.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/signalroute.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/stream.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/subfield.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/thorbis-design.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/thorbis.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/wades-plumbing-and-septic.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      },
+      {
+        "page": "projects/wormhole.html",
+        "beforeGzip": 193159,
+        "afterGzip": 183147,
+        "savedGzip": 10012,
+        "beforeBytes": 617479,
+        "afterBytes": 591002,
+        "beforeRequests": 8,
+        "afterRequests": 8
+      }
+    ],
+    "sharedRegistrations": {
+      "before": {
+        "factories": 26,
+        "repeatedRegistrations": 951
+      },
+      "after": {
+        "factories": 25,
+        "repeatedRegistrations": 0
+      }
+    },
+    "beforeArtifactSha256": "e006b88376e9114937dd1e3bfe23b801187bc89f2a91752cc4280dcec18012f2",
+    "afterArtifactSha256": "b54399573fd054adc55c8c05e9639acae20a7a2a0eecefccd52ec70fab62e60d"
+  }
+}
