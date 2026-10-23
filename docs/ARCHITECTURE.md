@@ -301,7 +301,14 @@ components/
   The `/portfolio/figma/[key]` detail loader accepts only a single plain path
   segment (`[A-Za-z0-9_-]`, at most 128 characters) as the file key, because the
   SDK concatenates it into the authenticated request path. Any other key returns
-  `null` (the page's 404) before a cache entry or request exists. The file response
+  `null` before a cache entry or request exists, and the segment's `layout.tsx`
+  answers it with a real HTTP 404. That check must stay above `loading.tsx`: the
+  loading boundary streams a 200 shell before the page renders, so a page-level
+  `notFound()` only produced a soft 404 (checked by
+  `tests/rendered/figma-detail.test.mjs`). The page's `generateMetadata` also
+  returns nothing for such a key: the client applies page metadata after
+  hydration, so without that bail-out the 404 would be titled "Design file
+  unavailable". The file response
   is read as `unknown` and projected onto what the page renders: name, last
   modified, optional version, `CANVAS` page count, components (id, optional name
   and description) and style count. The document tree itself is never cached. A
