@@ -11,10 +11,10 @@ import { publicProfiles } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
- * The brand link renders here rather than as a server slot. A client module the
- * root layout's server tree references must not also be referenced by a page
- * entry: Next merges the parent manifests and the last entry's chunks win, so a
- * server-rendered `next/link` here made project pages download the /projects
+ * The brand link renders here rather than as a server slot. Next merges parent
+ * client manifests and the last entry's chunks win, so a client module the root
+ * layout's server tree renders can resolve to a page entry that also imports it:
+ * a server-rendered `next/link` here made project pages download the /projects
  * page chunk and contact, résumé and legal pages the homepage chunk.
  */
 export function NavDock({

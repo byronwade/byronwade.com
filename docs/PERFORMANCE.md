@@ -146,9 +146,13 @@ import it itself. Two did:
 `NavDock`, a client component only the layout renders, now draws the brand link and
 mark. The 404's "Return home" wears the button recipe (`buttonVariants`) on the
 shared `Link`, as the error boundary already does: same classes, native link
-semantics. Do not render a client module from the root layout's or the root
-not-found's server tree when a page entry also imports it; draw it inside a
-layout-only client component instead.
+semantics. The rule: a client module the root layout's or root not-found's server
+tree renders must resolve to a chunk every page already loads. The shared `Link`
+does today, because the layout's own reference wins in the root group and the
+homepage does not import it; moving the homepage's raw `next/link` uses onto the
+shared `Link` would likely send the 404's links to the homepage chunk. The safest
+home for such a module is a layout-only client component, and
+`tests/rendered/route-chunks.test.mjs` is the arbiter: run it before moving any.
 
 Measured on production builds of `ca7bd78` and this change, initial scripts summed
 per route and gzipped at level 9 (polyfills excluded; `noModule`), plus the HTML:
@@ -164,6 +168,9 @@ per route and gzipped at level 9 (polyfills excluded; `noModule`), plus the HTML
 | `/privacy` (and `/terms`) | 9 → 7 | 171,206 → 164,003 (−7,203) | 16,374 → 16,114 (−260) |
 | 404 | 8 → 6 | 170,737 → 163,531 (−7,206) | 15,237 → 14,953 (−284) |
 
+The release build, with main through #184 merged, has the same initial scripts on
+every prerendered route and HTML within 23 bytes of these figures; #184 changed
+only the Figma file route. The timing build below predates that merge.
 The shared-primitives chunk fell from 15,474 to 11,694 bytes gzipped; routes that
 render the Button (home, contact, the résumé, project pages) now carry it in their
 own chunk. `/portfolio` and Figma file pages no longer reference the homepage or
