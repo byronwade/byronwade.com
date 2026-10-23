@@ -61,6 +61,11 @@ test("built sitemap dates reflect authored content rather than the build clock",
 		url: entry.match(SITEMAP_LOCATION)?.[1],
 		modified: entry.match(SITEMAP_MODIFIED)?.[1],
 	}));
+	const staticEntries = entries.filter(({ url }) => new URL(url).pathname.split("/").length <= 2);
+	assert.equal(staticEntries.length, 8, "all static sitemap pages should remain discoverable");
+	for (const entry of staticEntries) {
+		assert.equal(entry.modified, undefined, `${entry.url} must not advertise the build date`);
+	}
 	const counts = await Promise.all(
 		["blog", "projects"].map(async (kind) => {
 			const directory = new URL(`../../content/${kind}/`, import.meta.url);
@@ -84,5 +89,7 @@ test("built sitemap dates reflect authored content rather than the build clock",
 	);
 	const checked = counts.reduce((sum, count) => sum + count, 0);
 	assert.ok(checked > 0);
-	context.diagnostic(`Checked authored modification dates for ${checked} content URLs`);
+	context.diagnostic(
+		`Checked authored modification dates for ${checked} content URLs and no dates for ${staticEntries.length} static URLs`
+	);
 });
