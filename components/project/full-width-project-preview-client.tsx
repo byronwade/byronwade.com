@@ -248,9 +248,7 @@ function PreviewFallback({ href, icons, onRetry, url }: PreviewFallbackProps) {
 						Retry
 					</Button>
 				)}
-				{/* Base UI defaults to button semantics even when rendering an anchor. */}
 				<Button
-					role="link"
 					size="lg"
 					render={
 						<a
