@@ -396,6 +396,20 @@ it deliberately makes no timing assertion on a shared machine.
   and keep both faces' `unicode-range` equal to that list.
   `tests/rendered/font-subset.test.mjs` loads every prerendered page and checks
   that only the subset is requested.
+- The root layout preloads the subset with `preload()` from `react-dom`, not a
+  `<link rel="preload">` element. React's server renderer turns such an element
+  into a preload hint and still renders the element, so every page carried two
+  identical tags for the font, and every RSC payload carried the element again.
+  Prerendered pages now carry one tag, ahead of the stylesheet. Pages rendered per
+  request (`/portfolio`, Figma files, search) get React's font preload as an HTTP
+  `Link` header instead of a tag; before, they also had the late element.
+  Chrome fetched the file once either way, so this removes markup only and makes
+  no timing claim. The layout also no longer hints DNS lookups for
+  `api.github.com`, `api.dribbble.com` and `api.figma.com`: only server code
+  (`lib/portfolio-data.ts`, `app/api/github`) calls them, so the browser resolved
+  three hosts it never contacts. `tests/rendered/head-hints.test.mjs` fails if a
+  page repeats a resource hint, hints a cross-origin host, or preloads the font
+  after the stylesheet or not at all.
 - Geist Mono remains deferred. `public/fonts/geist-mono-latin-core.woff2` is a
   10,148-byte subset of the pinned 15,524-byte
   `or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2`, using the same 119-character core as upright
