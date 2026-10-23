@@ -47,6 +47,14 @@ owned-tree fallback remain separate from page assertions and must not be
 replaced with retries or ignored errors. `tests/browser-cleanup.test.mjs`
 protects these outcomes without launching Chrome.
 
+On Windows, `taskkill /t /f` can return either 128 or 255 when a descendant
+exits before the command reaches it, even after the command terminates the root.
+For a forced root exit, cleanup accepts these statuses only when every process failure says
+"not found" or "no running instance", and still waits for the owned root's
+actual exit event. Mixed failures (for example, an already-exited child plus
+access denied on another) still fail forced cleanup. The native regressions
+cover both statuses with a forced root exit and reject a root that never exits.
+
 ## Homepage
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
