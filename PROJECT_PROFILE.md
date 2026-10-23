@@ -226,7 +226,13 @@ use them correctly.
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
   production client chunks, plus visible writing dates matching their machine dates,
   resume print/PDF contracts, header browser checks, axe on navigation, a
-  post and the contact form, and the Showcase visual baseline
+  post and the contact form, and the Showcase visual baseline.
+  `tests/rendered/contact.test.mjs` also opens the home form by keyboard and pointer,
+  requires actual Name focus before typing, walks the fields in both directions,
+  and checks focus return and the unsent draft on reopening. It covers both themes,
+  phone and desktop widths, reduced motion and 320px with enlarged text without
+  sending a message. Physical keyboards, screen readers and mobile keyboards
+  remain separate checks.
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Rendered readiness:** layout measurements wait for a visible page title and fonts;
   search cache assertions poll for complete JSON and exact corpus counts within one
