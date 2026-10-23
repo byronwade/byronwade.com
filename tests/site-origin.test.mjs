@@ -11,11 +11,9 @@ const SERVED_ORIGIN = "https://www.byronwade.com";
 // An absolute URL on this site itself. `://` directly before the host keeps
 // project subdomains such as rebuzzle.byronwade.com out of it.
 const SITE_URL = /https?:\/\/(?:www\.)?byronwade\.com(?![\w.-])/g;
-const SITEMAP_LINE = /^Sitemap:\s*(\S+)/m;
 const SCANNED = ["app", "components", "content", "hooks", "lib", "public"];
 const TEXT_FILE = /\.(?:css|json|md|mdx|mjs|ts|tsx|txt|xml)$/;
 const OWNER = "lib/site.ts";
-const ROBOTS = "public/robots.txt";
 
 async function fallbackSiteUrl() {
 	const configured = process.env.NEXT_PUBLIC_BASE_URL;
@@ -36,11 +34,6 @@ test("without an override the site origin is the host production serves", async 
 	assert.equal(await fallbackSiteUrl(), SERVED_ORIGIN);
 });
 
-test("robots.txt points crawlers at the sitemap on the site origin", async () => {
-	const robots = await readFile(new URL(`../${ROBOTS}`, import.meta.url), "utf8");
-	assert.equal(robots.match(SITEMAP_LINE)?.[1], `${await fallbackSiteUrl()}/sitemap.xml`);
-});
-
 test("only lib/site.ts spells out the site's own origin", async () => {
 	const root = fileURLToPath(new URL("../", import.meta.url));
 	const entries = (
@@ -53,7 +46,7 @@ test("only lib/site.ts spells out the site's own origin", async () => {
 	const paths = entries
 		.filter((entry) => entry.isFile())
 		.map((entry) => relative(root, join(entry.parentPath, entry.name)).replaceAll("\\", "/"))
-		.filter((path) => TEXT_FILE.test(path) && path !== OWNER && path !== ROBOTS);
+		.filter((path) => TEXT_FILE.test(path) && path !== OWNER);
 	const found = (
 		await Promise.all(
 			paths.map(async (path) =>

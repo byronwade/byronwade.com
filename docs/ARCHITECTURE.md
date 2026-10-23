@@ -163,13 +163,22 @@ and [Google's robots defaults](https://developers.google.com/search/docs/crawlin
 Every absolute address the site publishes (canonical links, `og:url`, JSON-LD,
 the sitemap, the feed and share-card URLs) derives from `siteUrl` in
 `lib/site.ts`. It defaults to `https://www.byronwade.com` because production
-answers the apex with a permanent redirect to www. `public/robots.txt` is static
-and repeats that origin on its `Sitemap:` line. Most pages get their canonical
-and `og:url` from `generateMetadata` in `lib/seo.ts`; the Figma detail page sets
+answers the apex with a permanent redirect to www. `app/robots.ts` builds
+robots.txt, including its `Sitemap:` line, from the same value. Most pages get
+their canonical and `og:url` from `generateMetadata` in `lib/seo.ts`; the Figma detail page sets
 both itself. A page that sets neither inherits the home page's from the root. `tests/site-origin.test.mjs` rejects a hardcoded site address
 outside `lib/site.ts`; `tests/rendered/site-origin.test.mjs` checks that every
 built page, sitemap entry and feed link uses the origin and that each indexable
 page names itself.
+
+Crawlers obey only the most specific robots.txt group that names them
+([RFC 9309](https://www.rfc-editor.org/rfc/rfc9309)), so `app/robots.ts` keeps every
+shared rule in the `*` group and gives no search engine a group of its own. Pages
+and share cards (`/api/og`) are crawlable; the other `/api/` routes are not, since
+they are data or server work (the resume PDF launches a browser, project previews
+spend screenshot quota). A short list of SEO scrapers is turned away entirely.
+`tests/robots.test.mjs` and `tests/rendered/robots.test.mjs` evaluate the policy
+the way a crawler reads it, against the source and the built file.
 
 | Route | Purpose |
 |-------|---------|
