@@ -176,7 +176,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-wrap items-center gap-2">
-							<ObfuscatedEmail className="[&_a]:wrap-anywhere min-w-0 max-w-full font-medium text-copy-14 text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:max-w-full [&_a]:items-center [&_button]:min-h-11" />
+							<ObfuscatedEmail className="min-w-0 max-w-full font-medium text-copy-14 text-foreground" />
 							{/* Both words share one cell so the chip never changes width. */}
 							<button
 								type="button"
