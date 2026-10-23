@@ -188,6 +188,45 @@ The raw reports are in hobby job `byronwade-com-hobby-1023-0409`, directories
 `baseline-valid-1` through `3` and `candidate-1` through `3`. Three earlier probes
 used an incorrect slug, returned 404 and are excluded.
 
+## Nexstar post without the italic face, October 23, 2026
+
+The Nexstar post was the only post that requested
+`inter-italic-latin-core.woff2` (22,255 bytes). Its only italic text was three
+publication titles, each already inside its underlined source link and far
+below the first screen. Layout requests the face about 40ms after navigation,
+well before the observed paint (about 240ms locally), so the simulated LCP
+counted it. Those titles are now upright, and the post no longer loads the
+italic face. Italic emphasis elsewhere is unchanged; eight project case studies
+still use it, and any `*emphasis*` added to a post brings this request back.
+
+Builds `mm1p802-FV8jvscznC6DY` (main `6e685b5`) and `q_3dGacpsBpWH1r9foljU`
+(the edit) ran three interleaved rounds, alternating which build went first,
+with `perf-budget.mjs`'s browser settle, default simulated mobile, Chrome 155
+and Lighthouse 13.5. The Building Thorbis post has no italic and was unchanged,
+so it is the control:
+
+| Route | Before LCP (ms) | After LCP (ms) |
+| --- | --- | --- |
+| Nexstar post | 3041, 3018, 3004 | 2879, 2897, 2897 |
+| Building Thorbis (control) | 2708, 2714, 2787 | 2716, 2708, 2713 |
+
+The post's median falls 121ms, every after sample is below every before
+sample, and each is at least 103ms under the 3000ms limit. The control's
+medians differ by 1ms. FCP fell from 1373-1380 to 1222-1231ms. Page transfer
+fell from 311,736 to 289,423 bytes with the same ten scripts. This is a
+simulated-LCP and byte result. The observed paint stayed about 240ms in both
+builds, so it does not claim a faster paint for real readers.
+
+Two other leads were measured and ruled out. The document is not it:
+Building Thorbis has a 42KB document and passes, and the Nexstar post's RSC
+payload mostly repeats the article for hydration. The first layout takes about
+50ms on this post against 28ms on home, but it scales with the article's
+length: hiding the article halved it. Overriding `text-rendering`, letter
+spacing, `text-wrap`, font features, `overflow-wrap` or the font family changed
+its median by at most 4ms. Only `content-visibility` would cut it,
+which hides reading content and stays rejected. Raw reports are in hobby job
+`byronwade-com-hobby-1023-0459`.
+
 ## Search corpus reuse, October 22, 2026
 
 At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
