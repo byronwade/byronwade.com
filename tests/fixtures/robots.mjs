@@ -6,7 +6,15 @@ import assert from "node:assert/strict";
 
 const SEARCH_ENGINES = ["Googlebot", "Bingbot", "Slurp", "YandexBot", "DuckDuckBot"];
 const SHARE_PREVIEWS = ["Twitterbot", "facebookexternalhit", "LinkedInBot", "Slackbot"];
-const TURNED_AWAY = ["SemrushBot", "AhrefsBot", "MJ12bot", "DotBot", "BLEXBot", "DataForSeoBot"];
+const TURNED_AWAY = [
+	"SemrushBot",
+	"AhrefsBot",
+	"MJ12bot",
+	"DotBot",
+	"BLEXBot",
+	"DataForSeoBot",
+	"PetalBot",
+];
 
 const PAGES = ["/", "/blog/building-thorbis", "/projects/thorbis", "/resume", "/sitemap.xml"];
 const SHARE_CARD = "/api/og?title=Byron%20Wade&type=website";
