@@ -17,7 +17,8 @@ const PNG_SIGNATURE = "89504e470d0a1a0a";
 const WHITESPACE = /\s/;
 
 function decode(value) {
-	return value.replaceAll("&amp;", "&").replaceAll("&quot;", '"').replaceAll("&#x27;", "'");
+	// &amp; last, so an escaped entity such as &amp;quot; is not decoded twice.
+	return value.replaceAll("&quot;", '"').replaceAll("&#x27;", "'").replaceAll("&amp;", "&");
 }
 
 function prerenderedCards() {

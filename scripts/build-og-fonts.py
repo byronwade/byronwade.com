@@ -1,4 +1,5 @@
-"""Build the static Inter faces that app/api/og renders share cards with.
+"""
+Build the static Inter faces that app/api/og renders share cards with.
 
 Satori reads TrueType but not the variable WOFF2 the pages load, so this pins
 each instance's axes and saves plain TTF. It also drops GPOS: Satori places
@@ -21,7 +22,7 @@ INSTANCES = {
 }
 
 for path, axes in INSTANCES.items():
-    font = instantiateVariableFont(TTFont(SOURCE), axes, updateFontNames=False)
+    font = instantiateVariableFont(TTFont(SOURCE, recalcTimestamp=False), axes, updateFontNames=False)
     font.flavor = None
     del font["GPOS"]
     font.save(path)
