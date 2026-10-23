@@ -104,8 +104,8 @@ export function Section({
 }) {
 	return (
 		<section className={cn("flex w-full flex-col gap-5", className)}>
-			<div className="flex items-baseline justify-between gap-4">
-				<div className="flex flex-col gap-1">
+			<div className="flex flex-wrap items-baseline justify-between gap-4">
+				<div className="flex min-w-0 grow basis-40 flex-col gap-1">
 					<h2 className="text-balance font-heading font-medium text-heading-20 tracking-tight">
 						{title}
 					</h2>

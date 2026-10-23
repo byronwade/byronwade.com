@@ -87,7 +87,7 @@ export async function HomeHero() {
 					Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
 				</p>
 				<h1
-					className="max-w-xl text-balance font-medium text-heading-32 tracking-tight"
+					className="wrap-anywhere max-w-xl text-balance font-medium text-heading-32 tracking-tight"
 					id="home-title"
 				>
 					I ran the service business. Now I build the software it needed.
@@ -107,7 +107,7 @@ export async function HomeHero() {
 				</Link>
 			</div>
 			<ThorbisSpecimen />
-			<dl className="grid grid-cols-3 gap-4">
+			<dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,5rem),1fr))] gap-4">
 				<Fact label="Year-two revenue, before closing" value="$2.4M" />
 				<Fact label="Years shipping software" value="8+" />
 				<Fact label="Projects documented here" value={String(projects.length)} />
