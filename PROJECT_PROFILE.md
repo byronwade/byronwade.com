@@ -232,6 +232,12 @@ use them correctly.
   search cache assertions poll for complete JSON and exact corpus counts within one
   deadline. Native filesystem regressions preserve failures for corrupt entries,
   incorrect counts and read errors; a browser regression preserves the hidden-title timeout.
+- **Native deadline fixtures:** contact delivery and screenshot resolution share
+  `tests/fixtures/request-deadline.mjs`. It holds the first deadline until the
+  local server receives the request, and for body stalls until the client starts
+  reading JSON, then propagates a native timeout reason through real sockets.
+  Both attempts assert the production deadline; successful retries keep its real
+  ten-second clock. The test runner bounds failures without a competing late response.
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
