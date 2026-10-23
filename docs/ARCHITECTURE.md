@@ -74,6 +74,17 @@ asserting visible titles, prose, index entries, and no article/list loading stat
 Slug enumeration still owns which URLs exist; missing content keeps the real 404
 contract below.
 
+Both Markdown loaders use `lib/content-path.ts` to resolve a slug to one `.md`
+filename in their own collection. Empty names, dot segments, either path separator,
+colons (including Windows drive and alternate-stream syntax), and NUL are rejected
+before file access. Names are not sanitized or decoded into different names; dots,
+spaces, underscores and Unicode text remain valid. This keeps direct loader calls
+from reading a sibling collection, independently of the routes' `dynamicParams`
+policy. `tests/content-paths.test.mjs` covers real sibling/nested files and asserts
+that invalid segments cause no file read. This follows
+[Node's platform-specific path behavior](https://nodejs.org/api/path.html#windows-vs-posix)
+and [OWASP's input-validation guidance](https://owasp.org/www-community/attacks/Path_Traversal).
+
 Project screenshots are optional progressive enhancement. `FullWidthProjectPreview`
 renders a native site link before hydration and explains the JavaScript requirement
 inside `<noscript>`, so visitors with scripts never see that notice flash; capture
