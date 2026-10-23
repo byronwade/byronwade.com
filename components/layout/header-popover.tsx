@@ -16,7 +16,6 @@ export function HeaderPopover(props: HeaderPopoverProps & { closedLabel: string 
 	}, [props.open]);
 	const fallback = cloneElement(props.trigger, {
 		id: `${props.id}-trigger`,
-		"aria-controls": props.id,
 		"aria-haspopup": "dialog",
 		"aria-expanded": false,
 		"aria-busy": props.open || undefined,

@@ -233,7 +233,10 @@ use them correctly.
   cover keyboard operation, focus, touch targets and layout at 100%/200% text, and
   `tests/rendered/accessibility.test.mjs` runs axe in both themes on navigation,
   a post and the contact form's error and sent states, using Lighthouse's own
-  axe-core (no separate package). Every browser audit, including the full-route
+  axe-core (no separate package). Direct Chrome accessibility-tree assertions
+  protect the menu/search dialog names; DOM checks protect their mounted target
+  references on first open, close and reopen, including search with no results.
+  Every browser audit, including the full-route
   audit and the design-polish and Thorbis scripts, loads that same copy through
   `scripts/axe-audit.mjs`, offline. Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
   checks remain outside these, so manual keyboard passes are still required for

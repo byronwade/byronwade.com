@@ -120,7 +120,6 @@ export function NavDock({
 									ref={menuButtonRef}
 									data-site-menu
 									aria-expanded={open}
-									aria-controls={menuId}
 									aria-label={open ? "Close menu" : "Open menu"}
 									className="group inline-flex @min-[40rem]/site-header:hidden size-11 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
 								>

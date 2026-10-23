@@ -11,6 +11,13 @@ which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
 clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
 with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
 search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
+Header panel relationships follow their lazy mount lifecycle: the fallback trigger
+does not reference a panel before it exists, and Base UI supplies `aria-controls`
+for the open popup. Do not override that attribute on the trigger or its rendered
+button. The rendered accessibility checks resolve those references before opening,
+with results and empty search, after closing, and on reopening. They also read
+Chrome's accessibility tree to require the menu's "Navigate" and search's "Search"
+dialog names; the canonical WCAG axe rule set does not include `aria-dialog-name`.
 On extra-wide screens a breadcrumb sits beside the header; its trail
 (`components/layout/breadcrumb-trail.ts`) takes labels from the search index,
 links only parent paths that are real pages, and names Figma files "Design file"
