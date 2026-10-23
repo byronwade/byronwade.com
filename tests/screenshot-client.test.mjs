@@ -2,12 +2,12 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { after, before, test } from "node:test";
 import { fetchScreenshot } from "../lib/screenshot.ts";
+import { holdFirstDeadline } from "./fixtures/request-deadline.mjs";
 
 // Use real sockets so the deadline must cancel headers and streamed JSON alike.
 let handleRequest = (_request, response) => response.end();
 const server = createServer((request, response) => handleRequest(request, response));
 const realFetch = globalThis.fetch;
-const realTimeout = AbortSignal.timeout.bind(AbortSignal);
 const WIDTH = 1920;
 const HEIGHT = 1080;
 const IMAGE_PATH = "/api/screenshot/image?url=https%3A%2F%2Fproject.example%2F";
@@ -67,45 +67,45 @@ for (const stage of ["headers", "body"]) {
 	test(`a stalled screenshot ${stage} times out and releases all callers for retry`, {
 		timeout: 5000,
 	}, async (context) => {
-		const deadlines = [];
-		context.mock.method(AbortSignal, "timeout", (duration) => {
-			deadlines.push(duration);
-			return realTimeout(80);
-		});
+		const deadline = holdFirstDeadline(context);
+		const requestReceived = Promise.withResolvers();
+		const connectionClosed = Promise.withResolvers();
 		let requests = 0;
 		handleRequest = (_request, response) => {
+			context.after(() => response.destroy());
 			requests += 1;
+			response.once("close", connectionClosed.resolve);
 			if (stage === "body") {
 				response.writeHead(200, { "Content-Type": "application/json" });
 				response.write('{"url":');
 			}
-			// A late valid response makes the old unbounded implementation fail
-			// deterministically, without leaving the test waiting forever.
-			setTimeout(() => {
-				if (stage === "body") {
-					response.end(`${JSON.stringify(IMAGE_PATH)}}`);
-				} else {
-					resolveImage(response);
-				}
-			}, 300);
+			requestReceived.resolve();
 		};
 		const href = `https://project.example/stalled-${stage}`;
-		const outcomes = await Promise.allSettled([
+		const loading = Promise.allSettled([
 			fetchScreenshot(href, WIDTH, HEIGHT),
 			fetchScreenshot(href, WIDTH, HEIGHT),
 		]);
+		await requestReceived.promise;
+		if (stage === "body") {
+			await deadline.bodyStarted;
+		}
+		await deadline.expire();
+		const outcomes = await loading;
 		for (const outcome of outcomes) {
 			assert.equal(outcome.status, "rejected", "All waiting previews leave the loading state");
 			assert.equal(outcome.reason.name, "TimeoutError");
 		}
 		assert.equal(requests, 1, "A stalled request is still deduplicated");
-		assert.deepEqual(deadlines, [10_000], "Resolution has a ten-second deadline");
+		assert.deepEqual(deadline.deadlines, [10_000], "Resolution has a ten-second deadline");
+		await connectionClosed.promise;
 
 		handleRequest = (_request, response) => {
 			requests += 1;
 			resolveImage(response);
 		};
 		assert.equal(await fetchScreenshot(href, WIDTH, HEIGHT), IMAGE_PATH);
+		assert.deepEqual(deadline.deadlines, [10_000, 10_000]);
 		assert.equal(requests, 2, "Retry starts a fresh request after the timeout");
 		assert.equal(await fetchScreenshot(href, WIDTH, HEIGHT), IMAGE_PATH);
 		assert.equal(requests, 2, "A recovered result remains cacheable");
