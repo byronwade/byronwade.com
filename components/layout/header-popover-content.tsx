@@ -40,7 +40,8 @@ export default function HeaderPopoverContent({
 	const navigation = kind === "navigation";
 	return (
 		<Popover.Root modal open={open} onOpenChange={onOpenChange} triggerId={`${id}-trigger`}>
-			<Popover.Trigger id={`${id}-trigger`} aria-controls={id} render={trigger} />
+			{/* Base UI owns aria-controls so it follows the popup's mounted lifecycle. */}
+			<Popover.Trigger id={`${id}-trigger`} render={trigger} />
 			<Popover.Portal>
 				<Popover.Positioner
 					anchor={anchor}

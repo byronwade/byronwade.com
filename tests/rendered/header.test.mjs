@@ -233,6 +233,11 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					);
 					// While the panel code loads, this busy button is a stand-in that React replaces.
 					fallbackTrigger = await page.$(MENU);
+					assert.equal(
+						await fallbackTrigger.evaluate((button) => button.getAttribute("aria-controls")),
+						null,
+						"the loading trigger does not reference an unmounted panel"
+					);
 					await page.focus(MENU);
 					await page.keyboard.press("Escape");
 					assert.equal(

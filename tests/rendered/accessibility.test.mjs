@@ -63,9 +63,79 @@ async function pressOn(page, selector, key) {
 	await page.keyboard.press(key);
 }
 
-// Phone width, where navigation is the menu panel rather than inline links.
-async function checkNavigation(browser, origin, theme) {
-	const { page, errors } = await openPage(browser, origin, "/", { width: 390, theme });
+async function assertHeaderReferences(page, state) {
+	const missing = await page.$$eval(
+		"header [aria-controls], [data-header-search] [aria-controls]",
+		(elements, separator) =>
+			elements.flatMap((element) =>
+				element
+					.getAttribute("aria-controls")
+					.split(new RegExp(separator))
+					.filter((id) => !document.getElementById(id))
+					.map((id) => ({ label: element.getAttribute("aria-label"), id }))
+			),
+		"\\s+"
+	);
+	assert.deepEqual(missing, [], `${state}: header controls reference mounted elements`);
+}
+
+async function assertHeaderDialog(page, trigger, panel, name) {
+	assert.equal(
+		await page.$eval(trigger, (element) => element.getAttribute("aria-controls")),
+		await page.$eval(panel, (element) => element.id),
+		"the open trigger controls its own panel"
+	);
+	// Read the computed accessibility tree: aria-labelledby can override aria-label,
+	// and a visible heading alone does not name a dialog.
+	const session = await page.createCDPSession();
+	try {
+		const { nodes } = await session.send("Accessibility.getFullAXTree");
+		assert.deepEqual(
+			nodes
+				.filter((node) => !node.ignored && node.role?.value === "dialog")
+				.map((node) => node.name?.value),
+			[name],
+			"the open header dialog has its expected accessible name"
+		);
+	} finally {
+		await session.detach();
+	}
+	await assertHeaderReferences(page, `${name} open`);
+}
+
+async function checkMenuCycle(page, theme) {
+	await pressOn(page, MENU, "Enter");
+	await page.waitForSelector(PANEL, { visible: true });
+	assert.equal(await page.$eval(MENU, (button) => button.getAttribute("aria-expanded")), "true");
+	await assertHeaderDialog(page, MENU, PANEL, "Navigate");
+	await assertNoViolations(page, `navigation menu open ${theme}`);
+	await page.keyboard.press("Escape");
+	await page.waitForSelector(PANEL, { hidden: true });
+	await assertHeaderReferences(page, "menu closed");
+}
+
+async function checkSearchCycle(page, theme) {
+	await pressOn(page, SEARCH_TRIGGER, "Enter");
+	await page.waitForFunction(() => document.activeElement?.getAttribute("role") === "combobox");
+	await assertHeaderDialog(page, SEARCH_TRIGGER, "[data-header-search]", "Search");
+	await page.keyboard.type("thorbis");
+	await page.waitForSelector('[role="listbox"] [role="option"]', { visible: true });
+	await assertHeaderReferences(page, "search results");
+	await assertNoViolations(page, `search results open ${theme}`);
+	await page.focus('input[role="combobox"]');
+	await page.keyboard.down("Control");
+	await page.keyboard.press("A");
+	await page.keyboard.up("Control");
+	await page.keyboard.type("zzzznonexistentzzzz");
+	await page.waitForSelector('[role="listbox"]', { hidden: true });
+	await assertHeaderReferences(page, "search without results");
+	await page.keyboard.press("Escape");
+	await page.waitForSelector('input[role="combobox"]', { hidden: true });
+	await assertHeaderReferences(page, "search closed");
+}
+
+async function checkNavigation(browser, origin, theme, width) {
+	const { page, errors } = await openPage(browser, origin, "/", { width, theme });
 	try {
 		await page.waitForFunction(
 			(selector) => document.querySelector(selector)?.getAttribute("aria-expanded") === "false",
@@ -78,22 +148,17 @@ async function checkNavigation(browser, origin, theme) {
 			"#main-content",
 			"the first Tab reaches the skip link"
 		);
+		await assertHeaderReferences(page, "initial closed header");
 		await assertNoViolations(page, `home ${theme}`);
 
-		await pressOn(page, MENU, "Enter");
-		await page.waitForSelector(PANEL, { visible: true });
-		assert.equal(await page.$eval(MENU, (button) => button.getAttribute("aria-expanded")), "true");
-		await assertNoViolations(page, `navigation menu open ${theme}`);
-		await page.keyboard.press("Escape");
-		await page.waitForSelector(PANEL, { hidden: true });
+		// Desktop offers inline navigation; only phones expose the menu trigger.
+		if (width < 640) {
+			await checkMenuCycle(page, theme);
+			await checkMenuCycle(page, theme);
+		}
 
-		await pressOn(page, SEARCH_TRIGGER, "Enter");
-		await page.waitForFunction(() => document.activeElement?.getAttribute("role") === "combobox");
-		await page.keyboard.type("thorbis");
-		await page.waitForSelector('[role="listbox"] [role="option"]', { visible: true });
-		await assertNoViolations(page, `search results open ${theme}`);
-		await page.keyboard.press("Escape");
-		await page.waitForSelector('input[role="combobox"]', { hidden: true });
+		await checkSearchCycle(page, theme);
+		await checkSearchCycle(page, theme);
 		assert.deepEqual(errors, []);
 	} finally {
 		await page.close();
@@ -178,7 +243,8 @@ test("navigation, a post and the contact form have no WCAG A/AA axe violations",
 						["dark", 390],
 					]
 						.flatMap(([theme, width]) => [
-							[`navigation, ${theme}`, () => checkNavigation(browser, origin, theme)],
+							[`navigation, ${theme} 390`, () => checkNavigation(browser, origin, theme, 390)],
+							[`navigation, ${theme} 1280`, () => checkNavigation(browser, origin, theme, 1280)],
 							[`reading a post, ${theme} ${width}`, () => checkPost(browser, origin, theme, width)],
 							[
 								`submitting the contact form, ${theme} ${width}`,
