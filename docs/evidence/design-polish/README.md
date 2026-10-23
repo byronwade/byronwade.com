@@ -75,27 +75,54 @@ compact targets; the current header's rendered tests require 44px targets.
 The legacy verifier's desktop minimum is 24px, so its pass alone does not
 establish the current header contract.
 
-Known drift (October 22, 2026, main `bf18367`): `verify-design-polish-states.mjs after`
-stops at `portfolio-partial` because /portfolio now renders its repository list on
-the server, so the script's intercepted `/api/portfolio` fixture no longer reaches
-the page and 36 live rows replace the expected one. The four states before it pass
-axe. The unmodified script fails the same way; the fixture needs rework.
+The October 22, 2026 verifier on main `bf18367` stopped at `portfolio-partial`:
+the page had moved to server rendering, but its browser interception still targeted
+`/api/portfolio`. The same failure was reproduced on `0672125` (36 live rows,
+expected one). Even the preceding snapshots were uncontrolled live data. Those
+historical captures do not establish empty, error or populated fixture coverage.
 
-`verify-design-polish-states.mjs after` exercises 21 controlled states at all
-six width/theme combinations: portfolio empty, error, populated, partial, unrelated-provider failure, failed refresh,
-degraded empty refresh, loading and timeout; contact invalid, pending and failed; preview loading,
-loaded, mobile preset, keyboard resize, fullscreen and error; keyboard focus on a
-case-study contents link clearing the header; and the open homepage contact
-form and copy confirmation with a distinct, 44px control and stable label/width.
-Clipboard delivery is stubbed; no contact address is written to the OS clipboard.
-Fixtures stay in the browser.
+The repaired `verify-design-polish-states.mjs after` uses
+`tests/fixtures/portfolio-browser.mjs`, shared with the rendered retry regression.
+Only the owned Next child receives the GitHub transport preload, a fresh Data Cache
+namespace and a synthetic cache-refresh secret. No provider authorization is
+forwarded to the loopback fixture. State changes expire the canonical GitHub tag
+through the real local cache-refresh endpoint; successful cache reuse and retries
+after uncached failures remain part of the assertions. Browser requests for the
+retired `/api/portfolio` transport fail the run.
+
+The portfolio state contract now follows the server-rendered page:
+
+| Previous intent | Current evidence |
+| --- | --- |
+| Empty | A successful empty provider response shows “No repositories yet”, with zero rows |
+| Error | A provider 503 shows unavailable feedback, Try again and Open GitHub, with zero rows |
+| Populated | Keyboard retry after timeout renders exactly the synthetic repository and its description/language |
+| Partial / unrelated-provider failure | Retired: this page fetches repositories alone; aggregate Dribbble/Figma/stats warnings are unreachable |
+| Failed refresh retaining rows | An unexpired successful cache still renders its row; after explicit expiry, a failed full-page refresh shows recovery |
+| Degraded empty refresh retaining rows | Retired: there is no client-side aggregate response or retained-results state |
+| Loading | A held server request proves navigation is pending; there is no portfolio loading UI to screenshot |
+| Timeout | The genuine five-second provider bound reaches unavailable feedback; no timer is overridden |
+| Retry | Keyboard activation of Try again fetches recovered data without expiring a cached failure |
+
+The current matrix records seven portfolio captures, three contact captures
+(invalid, pending, failed), five preview captures (loading, loaded, keyboard
+resize, native modal fullscreen, error), and two inline-contact captures
+(open and copied) in each of six width/theme combinations. Four additional
+tablet/desktop captures exercise the mobile preview preset; two desktop captures
+exercise case-study contents keyboard focus and header clearance: 108 screenshots
+and axe evaluations total. Six server-pending probes and six numeric reading-progress
+probes are recorded separately. Fullscreen must match `dialog[open]:modal` and
+Escape must return focus. Invalid-field focus uses the system outline; inline-copy
+confirmation preserves its accessible name and footprint. Clipboard delivery is
+stubbed; no contact address is written to the OS clipboard.
+
 Preview fixtures reuse an existing local JPEG with a distinct URL per capture
 size, matching the real API's image identity contract. They test the frame and
 controls; they do not certify a live provider capture.
 Failed contact requests are intercepted before delivery; drafts remain intact.
 Fullscreen Escape returns focus. Any uncaught page error fails the run.
-The baseline runner recorded eight states per
-combination, including the six timeout failures fixed by this pass.
+The historical baseline runner recorded eight states per combination, including
+the six timeout failures fixed by the original design-polish pass.
 Two additional desktop captures exercise table-of-contents keyboard activation,
 focus clearance, visible focus, URL hash and reduced-motion navigation.
 Four tablet/desktop captures select the mobile preview preset and verify that

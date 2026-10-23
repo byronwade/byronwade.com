@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
-import puppeteer from "puppeteer-core";
-import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { createHash } from "node:crypto";
+import { mkdirSync, readFileSync } from "node:fs";
+import { withBrowser } from "../tests/fixtures/browser.mjs";
+import { withPortfolioFixture } from "../tests/fixtures/portfolio-browser.mjs";
 import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -13,16 +14,29 @@ const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-
 mkdirSync(destination, { recursive: true });
 const report = {
 	phase,
-	head: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
+	head: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim(),
+	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
+	harnessHash: createHash("sha256")
+		.update(readFileSync(import.meta.filename))
+		.update(readFileSync("scripts/axe-audit.mjs"))
+		.update(readFileSync("scripts/production-session.mjs"))
+		.update(readFileSync("scripts/evidence-json.mjs"))
+		.update(readFileSync("tests/fixtures/browser.mjs"))
+		.update(readFileSync("tests/fixtures/portfolio-browser.mjs"))
+		.update(readFileSync("tests/fixtures/portfolio-browser-preload.mjs"))
+		.update(readFileSync("lib/cache.ts"))
+		.digest("hex"),
 	cases: [],
 	readingProgress: [],
+	portfolioPending: [],
 	failures: [],
 	pageErrors: [],
 };
-// Controlled browser fixtures exercise presentation; these never enter app data.
+// Synthetic provider data stays in an isolated local Data Cache, never the public site.
 const repository = {
 	id: 1,
 	name: "thorbis-design-with-a-long-repository-name-for-reflow-verification",
+	full_name: "fixture/thorbis-design",
 	html_url: "https://github.com/byronwade/thorbis-design",
 	description:
 		"Thorbis design foundations. This deliberately long fixture checks that identity and supporting detail remain readable on a narrow screen.",
@@ -30,8 +44,96 @@ const repository = {
 	forks_count: 0,
 	language: "TypeScript",
 	pushed_at: "2026-10-16T12:00:00Z",
-	archived: true,
+	updated_at: "2026-10-16T12:00:00Z",
+	fork: false,
+	archived: false,
 };
+
+async function verifyPortfolio(page, url, width, theme, fixture) {
+	const load = () => page.goto(`${url}/portfolio`, { waitUntil: "networkidle2" });
+	const unavailable = async (name) => {
+		const state = await snapshot(page, name, width, theme);
+		assert.equal(state.rows, 0);
+		assert.ok(state.text.includes("Couldn’t load repositories"));
+		const actions = await page.$$eval("main a", (links) =>
+			links.map((link) => ({ label: link.textContent.trim(), href: link.getAttribute("href") }))
+		);
+		assert.ok(actions.some((link) => link.label === "Try again" && link.href === "/portfolio"));
+		assert.ok(
+			actions.some(
+				(link) => link.label === "Open GitHub" && link.href === "https://github.com/byronwade"
+			)
+		);
+	};
+	const activate = async (label) => {
+		const selector =
+			label === "Refresh"
+				? 'main header a[href="/portfolio"]'
+				: 'main a[href="/portfolio"]:not(header a)';
+		await page.waitForFunction(
+			(target, text) => document.querySelector(target)?.textContent.trim() === text,
+			{},
+			selector,
+			label
+		);
+		await page.focus(selector);
+		await Promise.all([
+			page.waitForNavigation({ waitUntil: "networkidle2" }),
+			page.keyboard.press("Enter"),
+		]);
+	};
+	fixture.setResponse({ status: 200, body: [] });
+	await fixture.invalidate(url);
+	const beforeEmpty = fixture.requests;
+	await load();
+	assert.equal(fixture.requests, beforeEmpty + 1, "empty data comes from the fixture");
+	const empty = await snapshot(page, "portfolio-empty", width, theme);
+	assert.equal(empty.rows, 0);
+	assert.ok(empty.text.includes("No repositories yet"));
+
+	fixture.setResponse({ status: 503, body: { message: "Fixture unavailable" } });
+	await fixture.invalidate(url);
+	await load();
+	await unavailable("portfolio-error");
+
+	fixture.setResponse({ hold: true });
+	await fixture.invalidate(url);
+	const requested = fixture.waitForRequest();
+	let settled = false;
+	const loading = load().finally(() => {
+		settled = true;
+	});
+	// Observe server transport before its real five-second deadline, not a retired client spinner.
+	await requested;
+	assert.equal(settled, false, "navigation waits for the held provider");
+	report.portfolioPending.push({ width, theme, providerObserved: true, navigationPending: true });
+	await loading;
+	await unavailable("portfolio-timeout");
+
+	fixture.setResponse({ status: 200, body: [repository] });
+	const beforeRecovery = fixture.requests;
+	await activate("Try again");
+	assert.equal(fixture.requests, beforeRecovery + 1, "provider failures are not cached");
+	const recovered = await snapshot(page, "portfolio-recovered", width, theme);
+	assert.equal(recovered.rows, 1);
+	assert.ok(recovered.text.includes(repository.description));
+	assert.ok(recovered.text.includes("TypeScript"));
+	assert.ok(await page.$(`main ol a[href="${repository.html_url}"]`));
+
+	fixture.setResponse({ status: 503, body: { message: "Fixture unavailable" } });
+	await activate("Refresh");
+	const cached = await snapshot(page, "portfolio-cached-refresh", width, theme);
+	assert.equal(cached.rows, 1);
+	assert.equal(fixture.requests, beforeRecovery + 1, "refresh reuses unexpired data");
+	await fixture.invalidate(url);
+	await activate("Refresh");
+	await unavailable("portfolio-refresh-failed");
+	fixture.setResponse({ status: 200, body: [repository] });
+	const beforeRetry = fixture.requests;
+	await activate("Try again");
+	assert.equal((await snapshot(page, "portfolio-retry", width, theme)).rows, 1);
+	assert.equal(fixture.requests, beforeRetry + 1, "keyboard retry reaches the recovered provider");
+}
 
 async function snapshot(page, name, width, theme) {
 	const file = `${name}-${width}-${theme}.png`;
@@ -65,15 +167,14 @@ async function verifyInlineContact(page, url, width, theme) {
 	});
 	await snapshot(page, "home-contact", width, theme);
 	const control = await page.$eval('section[aria-label="Contact"]', (section) => {
-		const copy = [...section.querySelectorAll("button")].find(
-			(button) => button.textContent.trim() === "Copy"
-		);
+		const copy = section.querySelector('button[aria-label="Copy email"]');
 		const rect = copy.getBoundingClientRect();
 		return {
 			background: getComputedStyle(copy).backgroundColor,
 			parentBackground: getComputedStyle(section).backgroundColor,
 			width: rect.width,
 			height: rect.height,
+			label: copy.getAttribute("aria-label"),
 		};
 	});
 	report.cases.at(-1).copyControl = control;
@@ -86,9 +187,7 @@ async function verifyInlineContact(page, url, width, theme) {
 			configurable: true,
 			value: { writeText: () => Promise.resolve() },
 		});
-		[...document.querySelectorAll('section[aria-label="Contact"] button')]
-			.find((button) => button.textContent.trim() === "Copy")
-			.click();
+		document.querySelector('section[aria-label="Contact"] button[aria-label="Copy email"]').click();
 	});
 	// A status nested in the button is flattened into its name, so require a sibling live region.
 	await page.waitForFunction(() =>
@@ -97,19 +196,14 @@ async function verifyInlineContact(page, url, width, theme) {
 		)
 	);
 	const copied = await page.$eval('section[aria-label="Contact"]', (section) => {
-		const button = [...section.querySelectorAll("button")].find((element) =>
-			element.textContent.trim().startsWith("Copy")
-		);
+		const button = section.querySelector('button[aria-label="Copy email"]');
 		return {
 			width: button.getBoundingClientRect().width,
-			label: [...button.childNodes]
-				.filter((node) => node.nodeType === Node.TEXT_NODE)
-				.map((node) => node.textContent.trim())
-				.join(""),
+			label: button.getAttribute("aria-label"),
 		};
 	});
 	assert.equal(copied.width, control.width, "copy confirmation keeps its footprint");
-	assert.equal(copied.label, "Copy", "copy confirmation keeps its visible label");
+	assert.equal(copied.label, control.label, "copy confirmation keeps its accessible name");
 	await snapshot(page, "home-contact-copied", width, theme);
 	report.cases.at(-1).copyControl = copied;
 }
@@ -184,15 +278,11 @@ async function verifyToc(page, url, width, theme) {
 	};
 }
 
-async function verifyCase(url, width, theme) {
-	const browser = await puppeteer.launch({
-		executablePath:
-			process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
-		headless: true,
-	});
+async function verifyCase(browser, url, width, theme, fixture) {
 	try {
 		const page = await browser.newPage();
-		let mode = "empty";
+		page.setDefaultTimeout(15_000);
+		page.setDefaultNavigationTimeout(20_000);
 		let previewMode = "loading";
 		let contactRequest;
 		// A browser exception fails the run even when the state still renders.
@@ -201,7 +291,6 @@ async function verifyCase(url, width, theme) {
 				width,
 				theme,
 				url: page.url(),
-				mode,
 				previewMode,
 				message: error.message,
 			})
@@ -210,7 +299,7 @@ async function verifyCase(url, width, theme) {
 		await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 		await page.evaluateOnNewDocument((value) => localStorage.setItem("theme", value), theme);
 		await page.setRequestInterception(true);
-		page.on("request", async (request) => {
+		const respond = async (request) => {
 			if (request.method() === "POST" && request.url().endsWith("/contact")) {
 				contactRequest = request;
 				return;
@@ -231,85 +320,27 @@ async function verifyCase(url, width, theme) {
 				}
 				return;
 			}
-			if (!request.url().endsWith("/api/portfolio")) {
+			assert.ok(!request.url().endsWith("/api/portfolio"), "portfolio must render on the server");
+			if (request.url().startsWith(url)) {
 				await request.continue();
-				return;
+			} else {
+				await request.respond({ status: 204, body: "" });
 			}
-			if (mode === "loading") {
-				return;
-			}
-			await request.respond({
-				status: mode === "error" ? 503 : 200,
-				contentType: "application/json",
-				// Mirrors /api/portfolio: `degraded` covers every provider, `githubFailed` only repositories.
-				body: JSON.stringify({
-					repos: ["populated", "partial", "provider"].includes(mode) ? [repository] : [],
-					degraded: ["degraded", "partial", "provider"].includes(mode),
-					githubFailed: ["degraded", "partial"].includes(mode),
-				}),
-			});
+		};
+		page.on("request", (request) => {
+			respond(request).catch((error) => report.failures.push(error.message));
 		});
-		const states =
-			phase === "after"
-				? ["empty", "error", "populated", "partial", "provider"]
-				: ["empty", "error", "populated"];
-		await states.reduce(async (previous, next) => {
-			await previous;
-			mode = next;
-			await page.goto(`${url}/portfolio`, { waitUntil: "networkidle2" });
-			await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]'));
-			const state = await snapshot(page, `portfolio-${mode}`, width, theme);
-			if (mode === "partial") {
-				assert.equal(state.rows, 1);
-				assert.ok(state.text.includes("Some GitHub data may be unavailable or stale"));
-			}
-			if (mode === "provider") {
-				assert.equal(state.rows, 1);
-				assert.ok(
-					!(state.text.includes("GitHub data may be") || state.text.includes("Couldn")),
-					"a Dribbble, Figma or stats failure is not a repository warning"
-				);
-			}
-		}, Promise.resolve());
-		if (phase === "after") {
-			mode = "error";
-			const refreshResponse = page.waitForResponse((response) =>
-				response.url().endsWith("/api/portfolio")
-			);
-			await page.click("main header button");
-			await refreshResponse;
-			await page.waitForFunction(() => !document.querySelector("main header button:disabled"));
-			const refresh = await snapshot(page, "portfolio-refresh-failed", width, theme);
-			assert.equal(refresh.rows, 1, "failed refresh retains previous repositories");
-			mode = "degraded";
-			const degradedResponse = page.waitForResponse((response) =>
-				response.url().endsWith("/api/portfolio")
-			);
-			await page.click("main header button");
-			await degradedResponse;
-			await page.waitForFunction(() => !document.querySelector("main header button:disabled"));
-			const degraded = await snapshot(page, "portfolio-degraded-refresh", width, theme);
-			assert.equal(degraded.rows, 1, "degraded empty refresh retains previous repositories");
-			assert.ok(degraded.text.includes("previous results are still here"));
-		}
-		mode = "loading";
-		await page.goto(`${url}/portfolio`, { waitUntil: "networkidle2" });
-		await snapshot(page, "portfolio-loading", width, theme);
-		// The existing request bound is 8s. Navigation is a separate cleanup path.
-		await new Promise((resolve) => setTimeout(resolve, 9000));
-		const timeout = await snapshot(page, "portfolio-timeout", width, theme);
-		if (timeout.busy) {
-			report.failures.push(`Portfolio remains loading after timeout at ${width} ${theme}`);
-		}
+		await verifyPortfolio(page, url, width, theme, fixture);
 		await page.goto(`${url}/contact`, { waitUntil: "networkidle2" });
 		await page.click('main button[type="submit"]');
 		await page.waitForSelector('main input[aria-invalid="true"]');
 		const invalid = await page.$eval('main input[aria-invalid="true"]', (element) => ({
 			focused: element === document.activeElement,
-			outline: getComputedStyle(element).boxShadow,
+			outline: getComputedStyle(element).outlineStyle,
+			outlineWidth: Number.parseFloat(getComputedStyle(element).outlineWidth),
 		}));
 		assert.ok(
-			invalid.focused && invalid.outline !== "none",
+			invalid.focused && invalid.outline !== "none" && invalid.outlineWidth >= 2,
 			"invalid field receives visible focus"
 		);
 		await snapshot(page, "contact-invalid", width, theme);
@@ -401,7 +432,8 @@ async function verifyCase(url, width, theme) {
 			await page.keyboard.press("ArrowLeft");
 			await snapshot(page, "preview-keyboard-resize", width, theme);
 			await page.click('main button[aria-label="Enter fullscreen"]');
-			await page.waitForSelector('[role="dialog"][aria-modal="true"]');
+			await page.waitForSelector("dialog[open]");
+			assert.equal(await page.$eval("dialog", (dialog) => dialog.matches(":modal")), true);
 			await snapshot(page, "preview-fullscreen", width, theme);
 			await page.keyboard.press("Escape");
 			assert.equal(
@@ -432,20 +464,28 @@ async function verifyCase(url, width, theme) {
 		}
 		console.log(`State checks: ${width} ${theme}`);
 	} finally {
-		await closeBrowser(browser, { diagnostic: console.log });
 		writeEvidenceJson(`${destination}/states.json`, report);
 	}
 }
 
-await withProductionServer(async (url) => {
-	const cases = [375, 768, 1440].flatMap((width) =>
-		["light", "dark"].map((theme) => ({ width, theme }))
-	);
-	await cases.reduce(async (previous, { width, theme }) => {
-		await previous;
-		await verifyCase(url, width, theme);
-	}, Promise.resolve());
-});
+await withPortfolioFixture((fixture) =>
+	withProductionServer(
+		async (url) => {
+			const cases = [375, 768, 1440].flatMap((width) =>
+				["light", "dark"].map((theme) => ({ width, theme }))
+			);
+			await cases.reduce(async (previous, { width, theme }) => {
+				await previous;
+				await withBrowser(
+					{ diagnostic: console.log },
+					{ timeout: 30_000, protocolTimeout: 30_000 },
+					(browser) => verifyCase(browser, url, width, theme, fixture)
+				);
+			}, Promise.resolve());
+		},
+		{ env: fixture.env }
+	)
+);
 assert.deepEqual(report.pageErrors, [], "state checks raise no page errors");
 if (phase === "after") {
 	assert.deepEqual(report.failures, [], "bounded requests must offer recovery");
