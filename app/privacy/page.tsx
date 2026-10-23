@@ -2,17 +2,15 @@ import type { Metadata } from "next";
 import { PageHeader, Prose } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
 	title: "Privacy Policy",
 	description:
 		"How Byron Wade and Wade's Plumbing & Septic collect, use, and protect your information.",
-	alternates: {
-		canonical: `${siteUrl}/privacy`,
-	},
-	robots: { index: true, follow: true },
-};
+	canonical: `${siteUrl}/privacy`,
+});
 
 const LAST_UPDATED = "October 23, 2026";
 

@@ -50,7 +50,7 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://byronwade.com/sitemap.xml
+Sitemap: https://www.byronwade.com/sitemap.xml
 
 # Disallow admin and private routes
 Disallow: /api/*
