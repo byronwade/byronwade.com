@@ -103,6 +103,17 @@ focus return in both themes. Reset returns focus to the next toolbar control
 before its own button disappears. Native dialog navigation may include browser
 chrome, as allowed by [W3C H102](https://www.w3.org/WAI/WCAG22/Techniques/html/H102);
 background page controls remain inert.
+
+Fullscreen padding dismisses only a primary gesture that starts and ends there.
+A click's target can be the common ancestor of its press and release. Touch
+implicitly captures its pointer and can retain press coordinates for a tap's
+click. The preview records the press target, hit-tests `pointerup` coordinates
+and dismisses on click only when both ends qualify. Cancellation clears the
+gesture. The rendered checks exercise both crossed gestures with real Chrome mouse
+and touch input at 390px and 1280px in both themes; they require trusted clicks
+so a cancelled scroll cannot masquerade as a passing touch case. Intentional
+padding clicks and taps still close, restore scrolling and return focus.
+
 The width handle uses one captured primary pointer for mouse, touch and pen.
 Release commits the final position; cancellation, lost capture, window blur,
 reset and unmount discard pending frame work and restore the previous cursor
