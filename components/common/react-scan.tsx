@@ -16,7 +16,8 @@ export function ReactScan() {
 		if (process.env.NODE_ENV !== "development") {
 			return;
 		}
-		void import("react-scan").then(({ scan }) => scan({ enabled: true }));
+		// Keep render highlighting without the upstream toolbar's unnamed button.
+		void import("react-scan").then(({ scan }) => scan({ enabled: true, showToolbar: false }));
 	}, []);
 
 	return null;

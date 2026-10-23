@@ -23,6 +23,7 @@
     "perf:lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
     "start": "next start",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test:development": "node --test tests/development/*.test.mjs",
     "test:rendered": "node --test tests/rendered/*.test.mjs",
     "type-check": "next typegen && tsc --noEmit"
   },
