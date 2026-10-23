@@ -12,6 +12,8 @@ const scenarios = [
 	{ route: "/contact", width: 1280, theme: "dark", stage: "body", edit: true },
 	{ route: "/", width: 390, theme: "dark", stage: "body", edit: false },
 	{ route: "/", width: 1280, theme: "light", stage: "headers", edit: true },
+	// Enlarged text at the narrowest width: recovery and both email reveals stay on screen.
+	{ route: "/contact", width: 320, theme: "dark", stage: "headers", edit: false, textScale: 200 },
 ];
 
 async function fillDraft(page) {
@@ -107,6 +109,33 @@ async function verifyRecovery(page, scenario) {
 	}
 }
 
+// The address is one unbroken word; at 320px and 200% text it is wider than the measure.
+async function verifyRevealedEmailsFit(page, textScale) {
+	const footerReveal = await page.waitForSelector("footer button::-p-text(Click to reveal email)");
+	await footerReveal.focus();
+	await page.keyboard.press("Enter");
+	await page.waitForSelector('footer a[href^="mailto:"]');
+	const fit = await page.evaluate(() => ({
+		rootFontSize: getComputedStyle(document.documentElement).fontSize,
+		pageFits: document.documentElement.scrollWidth <= innerWidth,
+		links: [...document.querySelectorAll('a[href^="mailto:"]')].map((link) => ({
+			matches: link.getAttribute("href").slice(7) === link.textContent.trim(),
+			inside: link.getBoundingClientRect().right <= innerWidth,
+			unclipped: link.scrollWidth <= link.clientWidth,
+		})),
+	}));
+	assert.equal(fit.rootFontSize, `${(16 * textScale) / 100}px`, "Text is still enlarged");
+	assert.equal(fit.links.length, 2, "The form fallback and the footer email both revealed");
+	assert.deepEqual(
+		{ pageFits: fit.pageFits, links: fit.links },
+		{
+			pageFits: true,
+			links: fit.links.map(() => ({ matches: true, inside: true, unclipped: true })),
+		},
+		"Revealed emails wrap inside the viewport instead of scrolling the page sideways"
+	);
+}
+
 async function verifyScenario(browser, origin, scenario, delivery) {
 	delivery.stage = scenario.stage;
 	const before = delivery.keys.length;
@@ -127,6 +156,9 @@ async function verifyScenario(browser, origin, scenario, delivery) {
 			timeout: 20_000,
 		});
 		assert.ok(response.ok());
+		await page.evaluate((scale) => {
+			document.documentElement.style.fontSize = `${scale}%`;
+		}, scenario.textScale ?? 100);
 		if (scenario.route === "/") {
 			await page.locator("button::-p-text(Start a conversation)").click();
 		}
@@ -158,6 +190,9 @@ async function verifyScenario(browser, origin, scenario, delivery) {
 			true,
 			"The direct email fallback still reveals through the keyboard"
 		);
+		if (scenario.textScale) {
+			await verifyRevealedEmailsFit(page, scenario.textScale);
+		}
 		delivery.stage = undefined;
 		await submitWithKeyboard(page);
 		await page.waitForFunction(

@@ -130,8 +130,11 @@ formatDetection: {
   omitting `signal` from its request-options declaration; the action types both
   contracts without a cast. `tests/rendered/contact-delivery.test.mjs` protects
   both forms' ten-second recovery, retained edits, keyboard retry and identity
-  rotation in light/dark at phone/desktop widths. It also pauses the real action
-  response after loopback provider acceptance, verifies pending feedback without
+  rotation in light/dark at phone/desktop widths, plus `/contact` at 320px with
+  200% text, where the revealed form and footer addresses must wrap inside the
+  viewport. `ObfuscatedEmail` and `ObfuscatedPhone` own that wrapping and their
+  44px targets, so callers style only the surrounding text. It also pauses the
+  real action response after loopback provider acceptance, verifies pending feedback without
   success, then interrupts that response to exercise the browser transport
   failure and explicit retry. These fixtures cannot verify the live provider's
   deduplication or inbox behavior, or recovery across reloads and separate forms.

@@ -166,11 +166,7 @@ export default function ContactClient({
 
 			{/* The fallback, not a second column. */}
 			<p className="text-copy-14 text-muted-foreground">
-				Prefer email?{" "}
-				<ObfuscatedEmail
-					className="text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11"
-					variant="link"
-				/>
+				Prefer email? <ObfuscatedEmail className="text-foreground" variant="link" />
 				{" · "}
 				Jasper, GA
 			</p>

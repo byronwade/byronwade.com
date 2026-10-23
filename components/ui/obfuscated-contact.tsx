@@ -20,6 +20,11 @@ const ClientOnlyContact = ({ children }: { children: React.ReactNode }) => {
 	return <>{children}</>;
 };
 
+// A standalone 44px target. An address is one unbroken word, so it may break anywhere
+// rather than push a narrow or text-enlarged page sideways.
+const contactTargetClass =
+	"link-underline inline-flex min-h-11 max-w-full items-center wrap-anywhere";
+
 interface ObfuscatedEmailProps {
 	className?: string;
 	variant?: "link" | "text";
@@ -43,11 +48,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 					{revealed ? (
 						email
 					) : (
-						<button
-							onClick={handleReveal}
-							className="link-underline inline-flex min-h-11 items-center"
-							type="button"
-						>
+						<button onClick={handleReveal} className={contactTargetClass} type="button">
 							Click to reveal email
 						</button>
 					)}
@@ -62,7 +63,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 				{revealed ? (
 					<a
 						href={`mailto:${email}`}
-						className="link-underline inline-flex min-h-11 items-center"
+						className={contactTargetClass}
 						// Additional protection: use JavaScript to build the href
 						onClick={(e) => {
 							e.preventDefault();
@@ -72,11 +73,7 @@ export const ObfuscatedEmail = ({ className = "", variant = "link" }: Obfuscated
 						{email}
 					</a>
 				) : (
-					<button
-						onClick={handleReveal}
-						className="link-underline inline-flex min-h-11 items-center"
-						type="button"
-					>
+					<button onClick={handleReveal} className={contactTargetClass} type="button">
 						Click to reveal email
 					</button>
 				)}
@@ -116,11 +113,7 @@ export const ObfuscatedPhone = ({
 					{revealed ? (
 						displayPhone
 					) : (
-						<button
-							onClick={handleReveal}
-							className="link-underline inline-flex min-h-11 items-center"
-							type="button"
-						>
+						<button onClick={handleReveal} className={contactTargetClass} type="button">
 							Click to reveal phone
 						</button>
 					)}
@@ -135,7 +128,7 @@ export const ObfuscatedPhone = ({
 				{revealed ? (
 					<a
 						href={`tel:${phone}`}
-						className="link-underline inline-flex min-h-11 items-center"
+						className={contactTargetClass}
 						onClick={(e) => {
 							e.preventDefault();
 							window.location.href = `tel:${phone}`;
@@ -144,11 +137,7 @@ export const ObfuscatedPhone = ({
 						{displayPhone}
 					</a>
 				) : (
-					<button
-						onClick={handleReveal}
-						className="link-underline inline-flex min-h-11 items-center"
-						type="button"
-					>
+					<button onClick={handleReveal} className={contactTargetClass} type="button">
 						Click to reveal phone
 					</button>
 				)}
