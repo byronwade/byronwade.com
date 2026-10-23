@@ -4,8 +4,8 @@ import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withPortfolioFixture } from "../fixtures/portfolio-browser.mjs";
 
-// A page downloads its own page chunk and the root layout, error and not-found
-// chunks, never another route's page chunk. Next builds each page's client manifest
+// A page downloads its own page chunk and the layout, error, loading and not-found
+// chunks of its own segments, never another route's chunk. Next builds each page's client manifest
 // by merging its parent segments' manifests, and the last entry written wins for a
 // module several entries reference. A client module that a root-layout server
 // component renders, and a page entry also imports, therefore resolves to that
@@ -17,7 +17,9 @@ const APP = new URL("../../.next/server/app/", import.meta.url);
 // streamed page lists only its bootstrap scripts as tags; the browser fetches the
 // payload's chunks while hydrating, so both are downloads.
 const APP_CHUNK = /static\/chunks\/(app\/[^"\\?]+?\.js)/g;
-const ROOT_BOUNDARY = /^app\/(?:layout|error|not-found)-[\w-]+\.js$/;
+const ROOT_LAYOUT = /^app\/layout-[\w-]+\.js$/;
+// A page may load its own segments' boundary files, from the root down.
+const BOUNDARY = /^(?:layout|template|loading|error|not-found)-[\w-]+\.js$/;
 // Rendered on request, so the prerender manifest cannot list them. The unknown URL
 // renders the not-found entry; the Figma key has no token, so it shows its fallback.
 const DYNAMIC_ROUTES = [
@@ -28,13 +30,24 @@ const DYNAMIC_ROUTES = [
 ];
 
 function foreignPageChunks(html, entry) {
-	const own = `app${entry === "/" ? "" : entry.replaceAll("[", "%5B").replaceAll("]", "%5D")}/page-`;
+	const directories = ["app", ...entry.replaceAll("[", "%5B").replaceAll("]", "%5D").split("/")]
+		.filter(Boolean)
+		.map((_, index, parts) => parts.slice(0, index + 1).join("/"));
+	const page = directories.at(-1);
+	const owned = (chunk) => {
+		const directory = chunk.slice(0, chunk.lastIndexOf("/"));
+		const name = chunk.slice(directory.length + 1);
+		return (
+			(directories.includes(directory) && BOUNDARY.test(name)) ||
+			(directory === page && name.startsWith("page-"))
+		);
+	};
 	const chunks = [...new Set([...html.matchAll(APP_CHUNK)].map((match) => match[1]))];
 	assert.ok(
-		chunks.some((chunk) => ROOT_BOUNDARY.test(chunk)),
+		chunks.some((chunk) => ROOT_LAYOUT.test(chunk)),
 		"Root layout chunks must remain detectable"
 	);
-	return chunks.filter((chunk) => !(ROOT_BOUNDARY.test(chunk) || chunk.startsWith(own)));
+	return chunks.filter((chunk) => !owned(chunk));
 }
 
 test("prerendered pages load no other route's page chunk", () => {

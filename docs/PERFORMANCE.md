@@ -167,8 +167,24 @@ per route and gzipped at level 9 (polyfills excluded; `noModule`), plus the HTML
 The shared-primitives chunk fell from 15,474 to 11,694 bytes gzipped; routes that
 render the Button (home, contact, the résumé, project pages) now carry it in their
 own chunk. `/portfolio` and Figma file pages no longer reference the homepage or
-`/portfolio` chunks in their payloads. This is a byte and request reduction; LCP
-was not measured for it. `tests/rendered/route-chunks.test.mjs` reads the initial
+`/portfolio` chunks in their payloads.
+
+Timing, Chrome 155 and Lighthouse's default mobile profile, three interleaved rounds
+(A B, B A, A B) of the `ca7bd78` build (A) and this change (B), sampled by
+`npm run perf:budget`'s browser setup and checked with its assessor:
+
+| Route | LCP, A | LCP, B | Budget failures, A → B |
+| --- | --- | --- | --- |
+| `/contact` | 2928 / 2942 / 2935 ms | 2862 / 2867 / 2867 ms | script count 11 > 10 in 3/3 → none |
+| `/projects/thorbis` | 3071 / 3069 / 3047 ms | 2972 / 2966 / 2981 ms | LCP over 3000 ms in 3/3 → none |
+
+The samples do not overlap: medians −68 ms and −97 ms, against a 24 ms spread
+inside either build. No separate A/A build was run, so treat the size of the drop
+as approximate. Lighthouse also counts the two Vercel diagnostics scripts: contact
+loaded the homepage and not-found chunks on main, 11 scripts against the limit of
+10, and now loads 9. Only
+these two routes were timed; other detail pages and the Nexstar post were not
+remeasured. `tests/rendered/route-chunks.test.mjs` reads the initial
 scripts and the RSC payload (a streamed page fetches those chunks while hydrating)
 of every prerendered page, `/portfolio`, a Figma file, search and an unknown URL,
 and fails when one names another route's page chunk. Both of its tests fail on the
