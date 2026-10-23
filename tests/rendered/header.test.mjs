@@ -384,6 +384,14 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				await setMenuOpen(page, false);
 				await page.tap(SEARCH_TRIGGER);
 				await page.waitForSelector('input[role="combobox"]');
+				// The visual baseline skips the portaled panel; the X stays round like the toolbar.
+				assert.equal(
+					await page.$eval(
+						`${SEARCH} button[aria-label="Close search"]`,
+						(close) => getComputedStyle(close).borderRadius
+					),
+					await page.$eval(SEARCH_TRIGGER, (trigger) => getComputedStyle(trigger).borderRadius)
+				);
 				await page.tap(`${SEARCH} button[aria-label="Close search"]`);
 				await page.waitForSelector('input[role="combobox"]', { hidden: true });
 				await page.tap(SEARCH_TRIGGER);

@@ -81,11 +81,13 @@ export default function HeaderSearchPanel({
 				<Popover.Close
 					aria-label="Close search"
 					data-slot="button"
-					className={buttonVariants({
-						variant: "ghost",
-						size: "icon",
-						className: "shrink-0 rounded-full text-muted-foreground sm:size-11",
-					})}
+					className={cn(
+						buttonVariants({
+							variant: "ghost",
+							size: "icon",
+							className: "shrink-0 rounded-full text-muted-foreground sm:size-11",
+						})
+					)}
 				>
 					{icons.close}
 				</Popover.Close>
