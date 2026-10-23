@@ -587,7 +587,9 @@ it deliberately makes no timing assertion on a shared machine.
 - The success toast loads only after a contact submission succeeds; the unused
   global query-state adapter is removed. Home does not load the breadcrumb
   popover graph.
-- Vercel Analytics and Speed Insights retain their existing root integration.
+- Vercel Analytics and Speed Insights render from the root layout through
+  `components/common/site-analytics.tsx`, which adds the search-word `beforeSend`
+  handler (+65 B gzip on the layout chunk, no extra script).
   React Scan is a development diagnostic and is excluded from production.
 - Images use the existing Next image configuration (WebP/AVIF and responsive
   sizes). No new service worker, third-party runtime origin or performance
