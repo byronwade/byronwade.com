@@ -55,6 +55,23 @@ actual exit event. Mixed failures (for example, an already-exited child plus
 access denied on another) still fail forced cleanup. The native regressions
 cover both statuses with a forced root exit and reject a root that never exits.
 
+The rendered search-corpus cache check owns a temporary FETCH cache for its
+production server. `withSearchCache` configures only that child's `cacheHandler`
+using the same runtime-config mechanism as the portfolio fixture. The handler
+delegates to Next's filesystem cache: FETCH data goes to the isolated directory,
+while route artifacts keep the build's original paths. It does not replace cache
+serialization, invalidation or persistence with a mock. The directory is removed
+after the owned server stops. The adapter uses Next's installed filesystem backend;
+native tests protect disk reads/writes and route-path separation when Next changes.
+See [Next's cacheHandler option](https://nextjs.org/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath).
+
+`expectCachedCorpora` requires an explicit cache directory and still fails on
+incomplete JSON or an inexact corpus count. The rendered regression plants empty
+files in the shared cache before and during the session and verifies they remain
+untouched; native tests require a malformed entry inside the owned cache to fail.
+This keeps interrupted or concurrent unrelated servers from poisoning the check
+without hiding corruption in the cache under observation.
+
 ## Homepage
 
 `/` renders the editorial homepage (`app/page.tsx`) composed of:
