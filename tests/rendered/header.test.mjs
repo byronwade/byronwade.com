@@ -566,6 +566,17 @@ async function closeOverflowMenu(page) {
 	);
 }
 
+async function setDarkTheme(page, dark) {
+	if ((await page.evaluate(() => document.documentElement.classList.contains("dark"))) !== dark) {
+		await page.click('button[aria-label="Toggle theme"]');
+		await page.waitForFunction(
+			(expected) => document.documentElement.classList.contains("dark") === expected,
+			{},
+			dark
+		);
+	}
+}
+
 // tw-animate falls back to 150ms and the CSS `ease` keyword unless the popover
 // sets both tokens; the menu once ran at 100ms on that second curve.
 test("the breadcrumb overflow menu moves on the site's one curve", {
@@ -587,30 +598,25 @@ test("the breadcrumb overflow menu moves on the site's one curve", {
 				probe.remove();
 				return value;
 			});
-			for (const dark of [false, true]) {
-				if (
-					(await page.evaluate(() => document.documentElement.classList.contains("dark"))) !== dark
-				) {
-					await page.click('button[aria-label="Toggle theme"]');
-					await page.waitForFunction(
-						(expected) => document.documentElement.classList.contains("dark") === expected,
-						{},
-						dark
-					);
-				}
-				await t.test(`${dark ? "dark" : "light"}: --motion-fast on --ease-out`, async () => {
-					assert.deepEqual(await openOverflowMenu(page), {
-						name: "enter",
-						duration: "0.12s",
-						easing: curve,
-					});
-					await closeOverflowMenu(page);
-				});
-			}
+			// Themes share one page and must run sequentially. Each case closes the menu
+			// before asserting, so one failure cannot leave it open for the next.
+			await [false, true].reduce(
+				(steps, dark) =>
+					steps.then(() =>
+						t.test(`${dark ? "dark" : "light"}: --motion-fast on --ease-out`, async () => {
+							await setDarkTheme(page, dark);
+							const motion = await openOverflowMenu(page);
+							await closeOverflowMenu(page);
+							assert.deepEqual(motion, { name: "enter", duration: "0.12s", easing: curve });
+						})
+					),
+				Promise.resolve()
+			);
 			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 			await t.test("reduced motion collapses the entrance", async () => {
-				assert.equal((await openOverflowMenu(page)).duration, "1e-05s");
+				const motion = await openOverflowMenu(page);
 				await closeOverflowMenu(page);
+				assert.equal(motion.duration, "1e-05s");
 			});
 			assert.deepEqual(runtimeErrors, []);
 		})
