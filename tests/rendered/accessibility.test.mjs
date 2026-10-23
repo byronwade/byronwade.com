@@ -1,17 +1,10 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { test } from "node:test";
-import { readAxe } from "../../scripts/axe-audit.mjs";
+import { axeVersion, injectAxe, readAxe } from "../../scripts/axe-audit.mjs";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
 import { withResendFixture } from "../fixtures/resend-browser.mjs";
-
-// Lighthouse already ships axe for its own accessibility audit. Resolving it from
-// there keeps this sensor on the version Lighthouse runs, with no new package.
-const fromLighthouse = createRequire(import.meta.resolve("lighthouse"));
-const axeSource = readFileSync(fromLighthouse.resolve("axe-core/axe.min.js"), "utf8");
-const axeVersion = fromLighthouse("axe-core/package.json").version;
 
 const MENU = "[data-site-menu]";
 const PANEL = "[data-header-menu]";
@@ -39,10 +32,9 @@ async function settle(page) {
 
 async function assertNoViolations(page, state) {
 	await settle(page);
-	if (!(await page.evaluate(() => Boolean(window.axe)))) {
-		await page.addScriptTag({ content: axeSource });
-	}
-	const violations = await page.evaluate(readAxe);
+	await injectAxe(page);
+	const { version, violations } = await page.evaluate(readAxe);
+	assert.equal(version, axeVersion, "the page runs Lighthouse's copy of axe");
 	assert.deepEqual(violations, [], `${state}: ${JSON.stringify(violations, null, 1)}`);
 }
 
