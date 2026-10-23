@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, content-date, and front-matter regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow + axe on key flows, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow + axe on key flows + Showcase visual baseline, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -502,8 +502,19 @@ this sensor, the full-route audit and the design-polish and Thorbis browser
 scripts. Do not fetch axe from a CDN or add a second rule set; each of those
 reports records the in-page axe version. One deliberate exception: the Thorbis
 script's open-panel check runs every axe rule, because dialog naming
-(`aria-dialog-name`) is tagged best practice; keep it. The highest-value sensor not yet built is visual
-regression for the four Showcase routes.
+(`aria-dialog-name`) is tagged best practice; keep it.
+`tests/rendered/showcase-visual.test.mjs` is visual regression for the four
+Showcase routes at 390 and 1280 in both themes: it compares each visible element's
+resolved type, colour, border, radius, shadow, spacing, column count and
+layout-decided left edge and width against `tests/fixtures/showcase-visual.json`.
+Text, heights, vertical positions and item counts are excluded, so new posts and
+projects pass. `/portfolio` reads fixed repositories from a loopback stand-in for
+GitHub (`withPortfolioFixture` in `tests/fixtures/portfolio-browser.mjs`). A changed
+content width (a scrollbar or another machine) fails with one message instead of a
+line diff. After an intended design change, regenerate it with
+`UPDATE_VISUAL_BASELINE=1 node --test tests/rendered/showcase-visual.test.mjs` and
+review the baseline diff. Pixel screenshots were rejected: they change with content
+and with each Chrome release's text rasterizing.
 
 For existing debt: record a baseline, block new violations, reduce the baseline
 when the code is touched, and tighten only after false positives are controlled.
