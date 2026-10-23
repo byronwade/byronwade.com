@@ -21,7 +21,6 @@ function rootValue(name, seen = new Set()) {
 test("SSR motion fallbacks match the tokens in app/globals.css", () => {
 	for (const name of [
 		"--motion-ease-out",
-		"--motion-ease-in-out",
 		"--motion-ease-drawer",
 		"--motion-fast",
 		"--motion-base",

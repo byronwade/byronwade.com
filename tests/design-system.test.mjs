@@ -3,6 +3,7 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
+import { declarations } from "./fixtures/global-css.mjs";
 
 /**
  * Thorbis token and profile sensors (DESIGN.md §5, §13; AGENTS.md "Mechanical
@@ -176,6 +177,13 @@ test("globals.css declares one curve and times motion only through tokens", () =
 		[],
 		"Time CSS motion with var(--motion-*)."
 	);
+});
+
+test("Tailwind uses the source motion curve without a second easing namespace", () => {
+	const aliases = [...declarations("@theme inline").keys()].filter((name) =>
+		name.startsWith("--ease-")
+	);
+	assert.deepEqual(aliases, [], "Use ease-(--ease-out); scripted motion uses --motion-* tokens.");
 });
 
 /**

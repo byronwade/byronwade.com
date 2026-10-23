@@ -255,7 +255,8 @@ use them correctly.
 - **Visual regression:** `tests/rendered/showcase-visual.test.mjs` (in `test:rendered`)
   compares resolved styles and layout-decided geometry on `/`, `/projects`,
   `/portfolio` and `/blog` (390 and 1280, light and dark) with
-  `tests/fixtures/showcase-visual.json`. Not pixels: images are compared by box and
+  `tests/fixtures/showcase-visual.json`, after the delayed footer contact control
+  is visible. Not pixels: images are compared by box and
   aspect ratio only, `/portfolio` uses fixed repositories instead of live GitHub, and
   Evidence/Guided routes are not covered.
 - **Marketing SEO/Core Web Vitals:** `npm run perf:budget` against

@@ -218,7 +218,9 @@ contains no animation.
 
 ### 6.2 Ingredients
 
-The source curve is `--ease-out`, aliased for existing consumers. Thorbis uses
+The source curve is `--ease-out`. Tailwind classes use `ease-(--ease-out)`
+directly; do not add `--ease-*` aliases in `@theme inline`. Scripted motion
+keeps its existing `--motion-ease-*` aliases through `lib/motion.ts`. Thorbis uses
 `--motion-fast` (120ms) and `--motion-overlay` (180ms). Existing duration names
 alias these two budgets; never introduce a second curve or duration scale.
 Content entrances are absent. Hover changes color; focus is immediate. Reduced

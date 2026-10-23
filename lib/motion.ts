@@ -13,7 +13,6 @@
 
 const FALLBACKS = {
 	"--motion-ease-out": "cubic-bezier(0.23, 1, 0.32, 1)",
-	"--motion-ease-in-out": "cubic-bezier(0.23, 1, 0.32, 1)",
 	"--motion-ease-drawer": "cubic-bezier(0.23, 1, 0.32, 1)",
 	"--motion-fast": "120ms",
 	"--motion-base": "180ms",
