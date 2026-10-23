@@ -3,7 +3,50 @@ import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
+import { withFigmaFixture } from "../fixtures/figma-browser.mjs";
 import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
+
+const TITLE = /<title>([^<]*)<\/title>/g;
+const NOINDEX = /<meta name="robots" content="noindex/g;
+
+// loading.tsx streams a 200 shell before the page renders, so only a check
+// above that boundary can still answer with a real status.
+test("a malformed design file key is a real 404, a missing well-formed one is not", {
+	timeout: 60_000,
+}, async () => {
+	await withFigmaFixture((env) =>
+		withProductionServer(
+			async (url) => {
+				const read = async (key) => {
+					const response = await fetch(`${url}/portfolio/figma/${key}`);
+					const html = await response.text();
+					return {
+						key,
+						status: response.status,
+						titles: [...html.matchAll(TITLE)].map((match) => match[1]),
+						noindex: html.match(NOINDEX)?.length ?? 0,
+					};
+				};
+				const malformed = await Promise.all(["bad.key", "bad%20key", "x".repeat(129)].map(read));
+				for (const { key, status, titles, noindex } of malformed) {
+					assert.equal(status, 404, key);
+					assert.ok(
+						titles.length && titles.every((title) => !title.includes("Design file unavailable")),
+						`${key}: ${titles}`
+					);
+					assert.equal(noindex, 1, key);
+				}
+				// Control: the fixture has no such file, so this renders the honest
+				// unavailable page with a 200 rather than claiming the URL is wrong.
+				const unavailable = await read("audit-unavailable");
+				assert.equal(unavailable.status, 200);
+				assert.deepEqual(unavailable.titles, ["Design file unavailable | Byron Wade"]);
+				assert.equal(unavailable.noindex, 1);
+			},
+			{ env }
+		)
+	);
+});
 
 test("synthetic Figma details preserve reflow, keyboard access and breadcrumb landmarks", {
 	timeout: 180_000,

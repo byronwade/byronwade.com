@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Sheet } from "@/components/layout/sheet";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
@@ -7,7 +6,7 @@ import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
-import { getFigmaFile, isFigmaFileKey } from "@/lib/portfolio-data";
+import { getFigmaFile } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
 interface FigmaDetailPageProps {
@@ -137,9 +136,7 @@ function UnavailableFile({ fileKey }: { fileKey: string }) {
  */
 export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) {
 	const { key } = await params;
-	if (!isFigmaFileKey(key)) {
-		notFound();
-	}
+	// layout.tsx has already answered a malformed key with a 404.
 	const file = await getFigmaFile(key)();
 	if (!file) {
 		return <UnavailableFile fileKey={key} />;
