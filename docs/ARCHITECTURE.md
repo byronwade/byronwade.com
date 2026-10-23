@@ -160,6 +160,17 @@ robots tag on 404s, no contradictory Googlebot `index`, published-page indexing,
 and preserved preview limits. See [Next's notFound contract](https://nextjs.org/docs/app/api-reference/functions/not-found)
 and [Google's robots defaults](https://developers.google.com/search/docs/crawling-indexing/special-tags).
 
+Every absolute address the site publishes (canonical links, `og:url`, JSON-LD,
+the sitemap, the feed and share-card URLs) derives from `siteUrl` in
+`lib/site.ts`. It defaults to `https://www.byronwade.com` because production
+answers the apex with a permanent redirect to www. `public/robots.txt` is static
+and repeats that origin on its `Sitemap:` line. Pages get their canonical and
+`og:url` from `generateMetadata` in `lib/seo.ts`, so neither falls back to the
+home page's. `tests/site-origin.test.mjs` rejects a hardcoded site address
+outside `lib/site.ts`; `tests/rendered/site-origin.test.mjs` checks that every
+built page, sitemap entry and feed link uses the origin and that each indexable
+page names itself.
+
 | Route | Purpose |
 |-------|---------|
 | `/` | Editorial homepage |

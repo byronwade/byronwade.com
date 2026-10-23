@@ -110,7 +110,7 @@ Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
 | `RESEND_API_KEY` | Contact form delivery |
 | `SCREENSHOTONE_ACCESS_KEY` | Live previews on project pages, fetched server-side by `/api/screenshot/image` |
 | `REVALIDATION_SECRET` | Authorizes `POST /api/cache/revalidate` |
-| `NEXT_PUBLIC_BASE_URL` | Canonical URLs and metadata |
+| `NEXT_PUBLIC_BASE_URL` | Overrides the site origin in canonical URLs, the sitemap, the feed and metadata. Defaults to `https://www.byronwade.com`, the host production serves; leave it unset in production |
 
 Every external fetch degrades to a usable fallback, so the site builds and runs
 with these unset. Cache refresh is disabled when `REVALIDATION_SECRET` is unset,

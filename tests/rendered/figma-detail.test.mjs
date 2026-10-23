@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { siteUrl } from "../../lib/site.ts";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
 import { withFigmaFixture } from "../fixtures/figma-browser.mjs";
@@ -8,6 +9,8 @@ import { renderFigmaDetail } from "../fixtures/figma-detail.mjs";
 
 const TITLE = /<title>([^<]*)<\/title>/g;
 const NOINDEX = /<meta name="robots" content="noindex/g;
+const CANONICAL = /<link rel="canonical" href="([^"]+)"/;
+const OG_URL = /<meta property="og:url" content="([^"]+)"/;
 
 // loading.tsx streams a 200 shell before the page renders, so only a check
 // above that boundary can still answer with a real status.
@@ -40,6 +43,8 @@ test("a malformed design file key is a real 404, a missing well-formed one is no
 						status: response.status,
 						titles: [...html.matchAll(TITLE)].map((match) => match[1]),
 						noindex: html.match(NOINDEX)?.length ?? 0,
+						canonical: html.match(CANONICAL)?.[1],
+						ogUrl: html.match(OG_URL)?.[1],
 					};
 				};
 				const malformed = await Promise.all(["bad.key", "bad%20key", "x".repeat(129)].map(read));
@@ -57,6 +62,12 @@ test("a malformed design file key is a real 404, a missing well-formed one is no
 				assert.equal(unavailable.status, 200);
 				assert.deepEqual(unavailable.titles, ["Design file unavailable | Byron Wade"]);
 				assert.equal(unavailable.noindex, 1);
+				// A design file is its own page, not a copy of the home page.
+				const design = await read("audit-fixture");
+				assert.equal(design.status, 200);
+				assert.equal(design.noindex, 0);
+				assert.equal(design.canonical, `${siteUrl}/portfolio/figma/audit-fixture`);
+				assert.equal(design.ogUrl, design.canonical);
 			},
 			{ env }
 		)
