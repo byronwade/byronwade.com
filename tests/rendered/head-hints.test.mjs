@@ -7,9 +7,7 @@ import { withPortfolioFixture } from "../fixtures/portfolio-browser.mjs";
 // React's server renderer turns a `<link rel="preload">` element in a server
 // component into a preload hint and still renders the element, so the root
 // layout's JSX preload put two tags for the same font on every prerendered page.
-// A server-side `preload()` call is no fix: pages rendered per request drop the
-// hint. The client `FontPreload` component requests it during HTML rendering
-// instead. See docs/PERFORMANCE.md.
+// The layout calls `preload()` from `react-dom` instead. See docs/PERFORMANCE.md.
 const APP = new URL("../../.next/server/app/", import.meta.url);
 const CORE_FONT = "/fonts/inter-latin-core.woff2";
 const HINT = /<link(?=[^>]*\brel="(preload|modulepreload|preconnect|dns-prefetch)")[^>]*>/g;

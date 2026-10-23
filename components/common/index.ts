@@ -1,6 +1,5 @@
 export { BlogPostViewTracker, ProjectViewTracker } from "./analytics-tracker";
 export { default as ErrorBoundary } from "./error-boundary";
-export { FontPreload } from "./font-preload";
 export { IndexList, IndexRow, indexRowAccentClass, indexRowLinkClass } from "./index-list";
 export { Markdown } from "./markdown";
 export { ReactScan } from "./react-scan";
