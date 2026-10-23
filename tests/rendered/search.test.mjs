@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
-import { setTimeout as delay } from "node:timers/promises";
 import { SEARCH_QUERY_MAX } from "../../lib/search-match.ts";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
+import { expectCachedCorpora } from "../fixtures/search-cache.mjs";
 
 const NO_MATCHES = /No matches/;
 
@@ -127,27 +127,6 @@ test("production search finds readable inline identifiers and keeps native GET s
 		});
 	});
 });
-
-// Read the actual local Next Data Cache, rather than replacing the cache API with a mock.
-async function cachedCorpora(marker) {
-	const directory = join(process.cwd(), ".next", "cache", "fetch-cache");
-	const files = await readdir(directory);
-	const entries = await Promise.all(
-		files.map(async (file) => JSON.parse(await readFile(join(directory, file), "utf8")))
-	);
-	return entries
-		.filter((entry) => typeof entry.data?.body === "string" && entry.data.body.includes(marker))
-		.map((entry) => entry.data.body);
-}
-
-async function expectCachedCorpora(marker, count, deadline = Date.now() + 5000) {
-	const entries = await cachedCorpora(marker);
-	if (entries.length !== count && Date.now() < deadline) {
-		await delay(25);
-		return expectCachedCorpora(marker, count, deadline);
-	}
-	assert.equal(entries.length, count, "computed corpora in the real Next cache");
-}
 
 test("production search reuses its corpus and immediately follows authored content changes", {
 	timeout: 60_000,

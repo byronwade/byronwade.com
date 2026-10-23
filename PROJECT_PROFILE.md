@@ -216,6 +216,10 @@ use them correctly.
   resume print/PDF contracts, header browser checks, axe on navigation, a
   post and the contact form, and the Showcase visual baseline
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
+- **Rendered readiness:** layout measurements wait for a visible page title and fonts;
+  search cache assertions poll for complete JSON and exact corpus counts within one
+  deadline. Native filesystem regressions preserve failures for corrupt entries,
+  incorrect counts and read errors; a browser regression preserves the hidden-title timeout.
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
 - **Lint/static analysis:** `npm run lint` (`ultracite check`, Biome underneath)
