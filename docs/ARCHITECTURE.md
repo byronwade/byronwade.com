@@ -402,7 +402,10 @@ components/
   figures may be numbers, and a malformed `draft` value keeps the post a draft.
 - `lib/seo.ts`. Metadata and JSON-LD structured data; `generateOGImageUrl` is
   the one builder for share card URLs, which `/api/og` draws with the fonts in
-  `assets/og/` (see `docs/PERFORMANCE.md`)
+  `assets/og/` (see `docs/PERFORMANCE.md`). The root metadata and page helper
+  share its default description and keywords. By default, page descriptions feed
+  social metadata and generated cards; page keywords extend the shared set
+  without duplicates.
 - `lib/analytics.ts`. Vercel analytics events
 - `lib/analytics-redact.ts`. `withoutSearchWords`, the `beforeSend` handler that
   removes site-search words from addresses sent to Vercel analytics

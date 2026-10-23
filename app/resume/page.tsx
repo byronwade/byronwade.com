@@ -9,7 +9,7 @@ import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { getContactForStructuredData } from "@/lib/contact";
 import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
-import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
 
@@ -19,10 +19,8 @@ import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resu
 
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Resume",
-	// Restates the page rather than embellishing it: one company reached $2.4M
-	// and then closed, and the summary below says so.
 	description:
-		"Byron Wade's resume: about eight years running plumbing and septic businesses and building the software they need. Founder of Thorbis, field management software for service professionals.",
+		"Byron Wade's resume: plumbing and septic operations, software development, and Thorbis, built for service professionals.",
 	keywords: [
 		"Resume",
 		"CV",
@@ -36,11 +34,6 @@ export const metadata: Metadata = generateSEOMetadata({
 		"Master Plumber",
 		"Georgia Master Plumber",
 	],
-	image: generateOGImageUrl({
-		title: "Resume - Byron Wade",
-		description: "Professional resume and experience",
-		type: "website",
-	}),
 	canonical: `${siteUrl}/resume`,
 	type: "website",
 });

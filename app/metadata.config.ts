@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { generateOGImageUrl } from "@/lib/seo";
+import { defaultDescription, defaultKeywords, generateOGImageUrl } from "@/lib/seo";
 import { siteUrl, xHandle } from "@/lib/site";
 
 const homeShareImage = generateOGImageUrl({
 	title: "Byron Wade",
-	description: "Software for service businesses",
+	description: defaultDescription,
 });
 
 export const metadata: Metadata = {
@@ -13,25 +13,11 @@ export const metadata: Metadata = {
 		template: "%s | Byron Wade",
 		default: "Byron Wade, Software for Service Businesses",
 	},
-	description:
-		"Full-stack developer and operator building products for service businesses. From a $2.4M plumbing company to Thorbis, Goodmarks, and modern Next.js apps.",
+	description: defaultDescription,
 	applicationName: "Byron Wade Portfolio",
 	authors: [{ name: "Byron Wade", url: "https://byronwade.com" }],
 	generator: "Next.js",
-	keywords: [
-		"Full Stack Developer",
-		"Service Business Software",
-		"Field Service",
-		"Web Development",
-		"React Developer",
-		"Next.js Developer",
-		"Design Systems",
-		"Thorbis",
-		"Byron Wade",
-		"Product Engineer",
-		"Accessibility",
-		"Web Performance",
-	],
+	keywords: defaultKeywords,
 	referrer: "origin-when-cross-origin",
 	creator: "Byron Wade",
 	publisher: "Byron Wade",
@@ -64,8 +50,7 @@ export const metadata: Metadata = {
 		alternateLocale: "en_GB",
 		siteName: "Byron Wade",
 		title: "Byron Wade, Software for Service Businesses",
-		description:
-			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
+		description: defaultDescription,
 		url: "https://byronwade.com",
 		images: [
 			{
@@ -79,8 +64,7 @@ export const metadata: Metadata = {
 	twitter: {
 		card: "summary_large_image",
 		title: "Byron Wade, Software for Service Businesses",
-		description:
-			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
+		description: defaultDescription,
 		creator: `@${xHandle}`,
 		images: [homeShareImage],
 	},
