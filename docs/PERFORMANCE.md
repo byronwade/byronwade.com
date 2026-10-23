@@ -101,7 +101,8 @@ Lighthouse version or from one low sample.
 
 The shared-primitives chunk now supplies its modules to every consumer. Its
 membership still requires use by at least two of the original home, layout and
-not-found entries, within the existing package/source rules. Filtering which
+not-found entries, within the existing package/source rules (later widened; see
+"Every-page chunk sharing" below). Filtering which
 chunks could reuse those modules had left their factories in detail pages too.
 The separate classname-sharing rule is covered by this owner and is removed.
 `tests/rendered/shared-modules.test.mjs` checks the emitted registrations across
@@ -310,6 +311,61 @@ spacing, `text-wrap`, font features, `overflow-wrap` or the font family changed
 its median by at most 4ms. Only `content-visibility` would cut it,
 which hides reading content and stays rejected. Raw reports are in hobby job
 `byronwade-com-hobby-1023-0459`.
+
+## Every-page chunk sharing, October 23, 2026
+
+The root layout and root error boundary chunks are initial scripts on every
+page. With webpack's default groups disabled, a module either of them shared
+with a page chunk stayed in both, so the browser downloaded and registered it
+twice. Project pages and the résumé repeated all of `next/image` (the header
+brand mark in `NavDock` uses it) and the shared `Link`; every page repeated the
+error notice, the site shell and the button recipe, which the error boundary and
+the layout both reach. Across the 39 prerendered pages that was 554 repeated
+registrations.
+
+The `sharedPrimitives` group in `next.config.js` now also takes any script
+module that `app/layout` or `app/error` shares with at least one other chunk.
+Both chunks already load on every page, so moving such a module costs no route a
+byte, and no request is added. Stylesheet modules are excluded so the group can
+never emit a second CSS file. The original two-of-home/layout/not-found rule is
+unchanged.
+
+Measured on production builds of `237cb0b` and this change, initial scripts per
+route as whole files gzipped at level 9 (polyfills excluded):
+
+| Route | Initial scripts, gzip |
+| --- | --- |
+| Every project page | 182,933 → 176,014 (−6,919) |
+| `/resume` | 176,587 → 169,571 (−7,016) |
+| `/contact` | 177,867 → 175,653 (−2,214) |
+| `/` | 170,580 → 168,886 (−1,694) |
+| `/blog`, `/projects` | −1,357 |
+| Every post, `/privacy`, `/terms` | −1,303 to −1,390 |
+| 404 and global error | −1,078 |
+
+The shared-primitives chunk grew from 11,779 to 20,156 bytes and the layout
+chunk fell from 16,885 to 8,777; the [slug] page chunk fell from 19,406 to
+13,565. Script counts (7, or 6 on the 404), the single stylesheet and the
+document sizes are unchanged; HTML moved by RSC row order only.
+`tests/rendered/shared-modules.test.mjs` now fails on any factory two initial
+scripts of one page register, not only shared-primitives ones. It reported all
+554 on the earlier build.
+
+Timing did not change beyond variation. Three interleaved rounds of
+`perf-budget.mjs` sampled main (A), a second copy of the same main build (A2,
+the A/A control) and this change (B):
+
+| Route | LCP, A (ms) | LCP, A2 (ms) | LCP, B (ms) |
+| --- | --- | --- | --- |
+| `/projects/thorbis` | 2972, 2990, 2926 | 2926, 2942, 3009 | 2995, 2870, 2916 |
+| `/resume` | 2974, 2922, 2946 | 3117, 2922, 2953 | 3474, 2992, 2957 |
+
+A and A2 alone differ by up to 83ms on Thorbis and 195ms on the résumé. B's
+2870 and 3474 and A2's 3117 ran while the shared host was busy (benchmark
+index 1398-1431, against 2215-2607 for the other fifteen); they are kept. Lantern
+counts every initial script either way, and these moves keep the same scripts,
+so only their bytes and parse work shrink. Claim the bytes, not a speedup. Raw
+reports are in hobby job `byronwade-com-hobby-1023-0709`.
 
 ## Search corpus reuse, October 22, 2026
 
