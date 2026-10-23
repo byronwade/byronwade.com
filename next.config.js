@@ -4,10 +4,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 const sharedPrimitivePackages =
 	/[\\/]node_modules[\\/](?:@base-ui|@floating-ui|@phosphor-icons|class-variance-authority|clsx|next|tailwind-merge|react-compiler-runtime)[\\/]/;
-const sharedClassnamePackages =
-	/[\\/]node_modules[\\/](?:tailwind-merge|clsx|class-variance-authority)[\\/]/;
 const sharedPrimitiveSources =
 	/[\\/](?:lib[\\/](?:utils|motion|contact|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
+const sharedRootEntries = new Set(["app/page", "app/layout", "app/not-found"]);
 
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
@@ -102,33 +101,30 @@ const nextConfig = {
 						default: false,
 						defaultVendors: false,
 						sharedPrimitives: {
-							// Home also loads the root layout and not-found fallback. Share
-							// their overlap without collecting unrelated route entries.
-							test: (module) =>
-								Boolean(
-									module.resource &&
+							// Select modules shared by the same root entries as before, then
+							// remove their copies from every consumer. Filtering chunks by
+							// root left duplicates in detail pages; filtering module ownership
+							// keeps unrelated route code out of the shared initial download.
+							test: (module, { chunkGraph }) => {
+								if (
+									!(
+										module.resource &&
 										(sharedPrimitivePackages.test(module.resource) ||
 											sharedPrimitiveSources.test(module.resource))
-								),
-							name: "shared-primitives",
-							chunks: (chunk) =>
-								chunk.name === "app/page" ||
-								chunk.name === "app/layout" ||
-								chunk.name === "app/not-found",
-							minChunks: 2,
-							enforce: true,
-							priority: 35,
-						},
-						// tailwind-merge already lives in shared-primitives via the layout.
-						// Other routes are outside that group, so each page chunk compiled
-						// and ran a second copy during hydration. Keep one copy in the
-						// chunk every route already requests.
-						sharedClassnames: {
-							test: sharedClassnamePackages,
+									)
+								) {
+									return false;
+								}
+								return (
+									[...chunkGraph.getModuleChunksIterable(module)].filter((chunk) =>
+										sharedRootEntries.has(chunk.name)
+									).length >= 2
+								);
+							},
 							name: "shared-primitives",
 							chunks: "all",
 							enforce: true,
-							priority: 40,
+							priority: 35,
 							reuseExistingChunk: true,
 						},
 					},
