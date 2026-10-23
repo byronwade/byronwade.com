@@ -284,7 +284,7 @@ the user's instruction each time.
 
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
-| Automated tests | Native regressions and rendered contracts, including header interaction, responsive geometry and enlarged search text; the full-route accessibility audit is `scripts/verify-a11y-perf.mjs` | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/`, `scripts/audit-geometry.mjs` |
+| Automated tests | Native regressions and rendered contracts, including header interaction, responsive geometry, enlarged search text and axe on navigation, a post and the contact form; the full-route accessibility audit is `scripts/verify-a11y-perf.mjs` | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/`, `scripts/audit-geometry.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |

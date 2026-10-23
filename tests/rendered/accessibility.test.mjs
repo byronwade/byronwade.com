@@ -136,7 +136,7 @@ async function checkContact(browser, origin, theme, width) {
 		await page.waitForSelector('form input[name="name"]', { visible: true });
 		// axe accepts a placeholder as a name, and every field here has one.
 		assert.deepEqual(
-			await page.$$eval("form :is(input, select, textarea)", (controls) =>
+			await page.$$eval('form :is(input:not([type="hidden"]), select, textarea)', (controls) =>
 				controls.filter((control) => !control.labels?.length).map((control) => control.name)
 			),
 			[],
