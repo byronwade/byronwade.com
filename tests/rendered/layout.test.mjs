@@ -5,9 +5,14 @@ import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
 
 // The page title, the header and the footer share one left edge (the 42rem
-// measure) at desktop widths, and no route scrolls sideways on a small phone.
+// measure) at desktop widths, and no route scrolls sideways on a small phone. The
+// narrowest phone is also checked with root text at 200%, stricter than WCAG 1.4.4 or
+// 1.4.10 asks on its own. Buttons may grow to fit enlarged text, so at default text
+// every visible button rendered on load must still be exactly the 44px target.
 const ALIGNED_WIDTHS = [1440, 1280];
 const PHONE_WIDTHS = [390, 360, 320];
+const ENLARGED_TEXT = { width: 320, rootFontSize: "200%" };
+const TARGET_HEIGHT = 44;
 const TOLERANCE = 1;
 const PAGE_ROUTE = /^\/(?!api\/|_)[^.]*$/;
 // Routes the prerender manifest cannot list: a search with results, the not-found
@@ -61,8 +66,19 @@ function measure(page) {
 			captions: [
 				...document.querySelectorAll('[data-profile="evidence"] > figure > figcaption'),
 			].map(left),
+			buttons: [...document.querySelectorAll('[data-slot="button"]')]
+				.filter((button) => button.checkVisibility(visibility))
+				.map((button) => ({
+					label: (button.getAttribute("aria-label") ?? button.textContent).trim().slice(0, 40),
+					height: Math.round(button.getBoundingClientRect().height * 10) / 10,
+				})),
 		};
 	});
+}
+
+/** Visible buttons that are not exactly the touch target's height at default text. */
+function offTarget(buttons) {
+	return buttons.filter((button) => Math.abs(button.height - TARGET_HEIGHT) > 0.5);
 }
 
 /** Runs `visit` over `items` one at a time, collecting what each returns. */
@@ -81,30 +97,61 @@ async function misalignedEdges(page, url, route) {
 		// Same mobile flags, so resizing reflows the page instead of reloading it.
 		await page.setViewport({ width, height: 900 });
 		await settled(page);
-		const { title, header, footer, captions } = await measure(page);
+		const { title, header, footer, captions, buttons } = await measure(page);
 		const edges = [title, header, footer, ...captions];
 		const aligned =
 			edges.every((edge) => typeof edge === "number") &&
 			Math.max(...edges) - Math.min(...edges) <= TOLERANCE;
-		return aligned ? [] : [{ route, width, title, header, footer, captions }];
+		const misaligned = aligned ? [] : [{ route, width, title, header, footer, captions }];
+		const tall = offTarget(buttons);
+		return tall.length === 0 ? misaligned : [...misaligned, { route, width, buttons: tall }];
 	});
 }
 
-/** Document overflow at each phone width, from one load with touch emulation. */
+/** The innermost elements whose right edge passes the viewport, to name the cause. */
+function overflowing(page) {
+	return page.evaluate(() => {
+		const limit = document.documentElement.clientWidth;
+		const past = [...document.body.querySelectorAll("*")].filter(
+			(element) => element.getBoundingClientRect().right > limit + 1
+		);
+		return past
+			.filter((element) => !past.some((other) => other !== element && element.contains(other)))
+			.slice(0, 5)
+			.map((element) => {
+				const text = element.textContent.trim().replace(/\s+/g, " ").slice(0, 40);
+				const right = Math.round(element.getBoundingClientRect().right);
+				return `${element.tagName.toLowerCase()}${text ? ` "${text}"` : ""} right=${right}`;
+			});
+	});
+}
+
+/** Document overflow at each phone width, then at 200% text, from one load with touch emulation. */
 async function sidewaysScroll(page, url, route) {
 	const phone = (width) => ({ width, height: 844, isMobile: true, hasTouch: true });
-	await page.setViewport(phone(PHONE_WIDTHS[0]));
-	await page.goto(url + route, { waitUntil: "load" });
-	return serially(PHONE_WIDTHS, async (width) => {
+	const check = async (width, text) => {
 		await page.setViewport(phone(width));
 		await settled(page);
 		const box = await measure(page);
-		const fits = box.width === width && box.scrollWidth <= box.width;
-		return fits ? [] : [{ route, width, clientWidth: box.width, scrollWidth: box.scrollWidth }];
-	});
+		const tall = text === "100%" ? offTarget(box.buttons) : [];
+		const failures = tall.length === 0 ? [] : [{ route, width, buttons: tall }];
+		if (box.width === width && box.scrollWidth <= box.width) {
+			return failures;
+		}
+		const causes = await overflowing(page);
+		const { width: clientWidth, scrollWidth } = box;
+		return [...failures, { route, width, text, clientWidth, scrollWidth, causes }];
+	};
+	await page.setViewport(phone(PHONE_WIDTHS[0]));
+	await page.goto(url + route, { waitUntil: "load" });
+	const standard = await serially(PHONE_WIDTHS, (width) => check(width, "100%"));
+	await page.evaluate((size) => {
+		document.documentElement.style.fontSize = size;
+	}, ENLARGED_TEXT.rootFontSize);
+	return [...standard, ...(await check(ENLARGED_TEXT.width, ENLARGED_TEXT.rootFontSize))];
 }
 
-test("every route keeps the title, header and footer on one edge without sideways scroll", {
+test("every route keeps one edge, 44px buttons and no sideways scroll, even at 200% text", {
 	timeout: 900_000,
 }, async (context) => {
 	const routes = await pageRoutes();
@@ -123,8 +170,8 @@ test("every route keeps the title, header and footer on one edge without sideway
 			]);
 		})
 	);
-	assert.deepEqual(failures, [], "misaligned edges or horizontal overflow");
+	assert.deepEqual(failures, [], "misaligned edges, off-target buttons or horizontal overflow");
 	context.diagnostic(
-		`Checked ${routes.length} routes at ${ALIGNED_WIDTHS.join("/")} and ${PHONE_WIDTHS.join("/")}`
+		`Checked ${routes.length} routes at ${ALIGNED_WIDTHS.join("/")}, ${PHONE_WIDTHS.join("/")} and ${ENLARGED_TEXT.width} with ${ENLARGED_TEXT.rootFontSize} text`
 	);
 });
