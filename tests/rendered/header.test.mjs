@@ -529,3 +529,96 @@ test("header controls and panels fit real responsive viewports", {
 		})
 	);
 });
+
+const OVERFLOW_TRIGGER = 'button[aria-label="Show hidden breadcrumb levels"]';
+const OVERFLOW_MENU = '[data-slot="popover-content"]';
+
+/** Opens the collapsed trail from the keyboard and reads the menu's enter animation. */
+async function openOverflowMenu(page) {
+	await page.focus(OVERFLOW_TRIGGER);
+	await page.keyboard.press("Enter");
+	// Read the live node: the lazily loaded menu can replace the first one it renders.
+	const motion = await page.waitForFunction(
+		(selector) => {
+			const element = document.querySelector(selector);
+			const style = element?.getClientRects().length ? getComputedStyle(element) : null;
+			return style?.animationName
+				? {
+						name: style.animationName,
+						duration: style.animationDuration,
+						easing: style.animationTimingFunction,
+					}
+				: null;
+		},
+		{},
+		OVERFLOW_MENU
+	);
+	return motion.jsonValue();
+}
+
+async function closeOverflowMenu(page) {
+	await page.keyboard.press("Escape");
+	await page.waitForSelector(OVERFLOW_MENU, { hidden: true });
+	await page.waitForFunction(
+		(selector) => document.activeElement === document.querySelector(selector),
+		{},
+		OVERFLOW_TRIGGER
+	);
+}
+
+async function setDarkTheme(page, dark) {
+	if ((await page.evaluate(() => document.documentElement.classList.contains("dark"))) !== dark) {
+		await page.click('button[aria-label="Toggle theme"]');
+		await page.waitForFunction(
+			(expected) => document.documentElement.classList.contains("dark") === expected,
+			{},
+			dark
+		);
+	}
+}
+
+// tw-animate falls back to 150ms and the CSS `ease` keyword unless the popover
+// sets both tokens; the menu once ran at 100ms on that second curve.
+test("the breadcrumb overflow menu moves on the site's one curve", {
+	timeout: 120_000,
+}, async (t) => {
+	await withProductionServer((url) =>
+		withBrowser(t, {}, async (browser) => {
+			const page = await browser.newPage();
+			page.setDefaultTimeout(10_000);
+			const runtimeErrors = [];
+			page.on("pageerror", (error) => runtimeErrors.push(error.message));
+			await page.setViewport({ width: 1280, height: 800 });
+			await page.goto(`${url}/blog/scaling-plumbing-business`, { waitUntil: "networkidle0" });
+			// The tokens in computed form, e.g. 0.12s on cubic-bezier(0.23, 1, 0.32, 1).
+			const tokens = await page.evaluate(() => {
+				const probe = document.body.appendChild(document.createElement("div"));
+				probe.style.animation = "enter var(--motion-fast) var(--ease-out)";
+				const { animationDuration, animationTimingFunction } = getComputedStyle(probe);
+				probe.remove();
+				return { name: "enter", duration: animationDuration, easing: animationTimingFunction };
+			});
+			// Themes share one page and must run sequentially. Each case closes the menu
+			// before asserting, so one failure cannot leave it open for the next.
+			await [false, true].reduce(
+				(steps, dark) =>
+					steps.then(() =>
+						t.test(`${dark ? "dark" : "light"}: --motion-fast on --ease-out`, async () => {
+							await setDarkTheme(page, dark);
+							const motion = await openOverflowMenu(page);
+							await closeOverflowMenu(page);
+							assert.deepEqual(motion, tokens);
+						})
+					),
+				Promise.resolve()
+			);
+			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			await t.test("reduced motion collapses the entrance", async () => {
+				const motion = await openOverflowMenu(page);
+				await closeOverflowMenu(page);
+				assert.equal(motion.duration, "1e-05s");
+			});
+			assert.deepEqual(runtimeErrors, []);
+		})
+	);
+});
