@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { registerHooks } from "node:module";
 import { after, before, test } from "node:test";
+import { holdFirstDeadline } from "./fixtures/request-deadline.mjs";
 
 // Keep the real SDK and fetch: cancellation must reach both headers and body.
 registerHooks({
@@ -18,7 +19,6 @@ const server = createServer((request, response) => {
 	request.resume();
 	respond(request, response);
 });
-const realTimeout = AbortSignal.timeout.bind(AbortSignal);
 const UNCONFIRMED = /confirm/i;
 const DRAFT = /draft/i;
 const SUBMISSION_ID = "6a19a7fe-5504-4262-8bbf-ecad29e40522";
@@ -51,44 +51,37 @@ for (const stage of ["headers", "body"]) {
 	test(`stalled contact ${stage} cancels delivery and permits an explicit retry`, {
 		timeout: 5000,
 	}, async (context) => {
-		const deadlines = [];
-		context.mock.method(AbortSignal, "timeout", (duration) => {
-			deadlines.push(duration);
-			return realTimeout(80);
-		});
+		const deadline = holdFirstDeadline(context);
 		context.mock.method(console, "error", () => undefined);
 		let requests = 0;
 		const received = [];
-		let closed;
-		const connectionClosed = new Promise((resolve) => {
-			closed = resolve;
-		});
+		const requestReceived = Promise.withResolvers();
+		const connectionClosed = Promise.withResolvers();
 		respond = (request, response) => {
+			context.after(() => response.destroy());
 			received.push([request.method, request.url, request.headers["idempotency-key"]]);
 			requests += 1;
-			response.once("close", closed);
+			response.once("close", connectionClosed.resolve);
 			if (stage === "body") {
 				response.writeHead(200, { "Content-Type": "application/json" });
 				response.write('{"id":');
 			}
-			// Let the original implementation finish, but prove it wrongly succeeds.
-			const timer = setTimeout(() => {
-				if (stage === "body") {
-					response.end('"late-acknowledgement"}');
-				} else {
-					accepted(response);
-				}
-			}, 350);
-			response.once("close", () => clearTimeout(timer));
+			requestReceived.resolve();
 		};
-		const result = await sendEmail(valid, SUBMISSION_ID);
+		const sending = sendEmail(valid, SUBMISSION_ID);
+		await requestReceived.promise;
+		if (stage === "body") {
+			await deadline.bodyStarted;
+		}
+		await deadline.expire();
+		const result = await sending;
 		assert.equal(result.success, false, "A stalled acknowledgement must not report success");
 		assert.match(result.error, UNCONFIRMED, "The outcome is unknown, not a guaranteed rejection");
 		assert.match(result.error, DRAFT);
-		assert.deepEqual(deadlines, [10_000]);
+		assert.deepEqual(deadline.deadlines, [10_000]);
 		assert.equal(requests, 1, "A timeout must not automatically send another email");
 		assert.deepEqual(received, [["POST", "/emails", `contact/${SUBMISSION_ID}`]]);
-		await connectionClosed;
+		await connectionClosed.promise;
 
 		respond = (request, response) => {
 			received.push([request.method, request.url, request.headers["idempotency-key"]]);
@@ -96,6 +89,7 @@ for (const stage of ["headers", "body"]) {
 			accepted(response);
 		};
 		assert.deepEqual(await sendEmail(valid, SUBMISSION_ID), { success: true });
+		assert.deepEqual(deadline.deadlines, [10_000, 10_000]);
 		assert.equal(requests, 2, "The visitor can choose to send again");
 		assert.deepEqual(received[1], received[0], "An unchanged retry keeps its provider key");
 	});
