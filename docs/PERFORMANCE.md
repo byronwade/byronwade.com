@@ -194,6 +194,20 @@ it deliberately makes no timing assertion on a shared machine.
   Thorbis port replaces the italic file, regenerate the subset with
   `python -m fontTools.subset public/fonts/UcC53FwrK3iLTcvneQg7B5iqpJlhKnPCkaL5UUM.woff2 --unicodes="U+0020-007E,U+00A0,U+00AB,U+00BB,U+2010-2014,U+2018-201E,U+2022,U+2026,U+2032-2033,U+2039-203A" --layout-features='*' --flavor=woff2 --output-file=public/fonts/inter-italic-latin-core.woff2`
   and keep the face's `unicode-range` equal to that list.
+- Every page preloads upright Latin Inter before its first paint, and Lighthouse
+  counts it in every route's simulated LCP. The pinned file is 49,620 bytes.
+  `public/fonts/inter-latin-core.woff2` is a 31,824-byte subset of it: the italic
+  core's characters plus the § © · × é ↑ ↓ the site prints, with both axes,
+  kerning and every layout feature. Two faces (400 and 500, matching the
+  generated pair) follow the generated block, and the root layout preloads the
+  subset instead of the full file. The full face still loads for any other Latin
+  character, such as an accented name typed into search. Content or source that
+  adds another such character fails `tests/design-contract.test.mjs`; add it here,
+  regenerate with
+  `python -m fontTools.subset public/fonts/UcCo3FwrK3iLTcviYwY.woff2 --unicodes="U+0020-007E,U+00A0,U+00A7,U+00A9,U+00AB,U+00B7,U+00BB,U+00D7,U+00E9,U+2010-2014,U+2018-201E,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2191,U+2193" --layout-features='*' --flavor=woff2 --output-file=public/fonts/inter-latin-core.woff2`
+  and keep both faces' `unicode-range` equal to that list.
+  `tests/rendered/font-subset.test.mjs` loads every prerendered page and checks
+  that only the subset is requested.
 - Shared `Link` disables viewport prefetch. Index pages compose that link, so a
   long project or writing index does not request every destination during the
   initial load. Primary navigation does the same. The contact form loads on the
