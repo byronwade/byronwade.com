@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useState } from "react";
 import { pillLinkClass } from "@/components/ui/pill";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { cn } from "@/lib/utils";
 
 interface ShareControlsProps {
@@ -16,23 +17,14 @@ interface ShareControlsProps {
 
 /** The two share actions that need the browser: the native share sheet and copying the link. */
 export function ShareControls({ children, description, icons, title, url }: ShareControlsProps) {
-	const [copied, setCopied] = useState(false);
+	const { status: copyStatus, copy } = useCopyToClipboard();
+	const copied = copyStatus === "copied";
 	const [canShare, setCanShare] = useState(false);
 
 	useEffect(() => {
 		// Check for native share support on mount
 		setCanShare(typeof navigator !== "undefined" && !!navigator.share);
 	}, []);
-
-	const handleCopy = async () => {
-		try {
-			await navigator.clipboard.writeText(url);
-			setCopied(true);
-			setTimeout(() => setCopied(false), 2000);
-		} catch (err) {
-			console.error("Failed to copy:", err);
-		}
-	};
 
 	const handleNativeShare = async () => {
 		if (navigator.share) {
@@ -71,15 +63,27 @@ export function ShareControls({ children, description, icons, title, url }: Shar
 			{/* Copy link. Both words share one grid cell so the chip never changes
 			    width when the label swaps (Thorbis "nothing shifts"); the result is
 			    announced from a sibling live region, not by renaming the button. */}
-			<button type="button" onClick={handleCopy} className={pillLinkClass} aria-label="Copy link">
+			<button
+				type="button"
+				onClick={() => copy(url)}
+				className={pillLinkClass}
+				aria-label="Copy link"
+				aria-busy={copyStatus === "copying"}
+				aria-disabled={copyStatus === "copying"}
+			>
 				{copied ? icons.copied : icons.copy}
 				<span className="grid">
 					<span className={cn("col-start-1 row-start-1", copied && "invisible")}>Copy link</span>
 					<span className={cn("col-start-1 row-start-1", !copied && "invisible")}>Copied</span>
 				</span>
 			</button>
-			<span className="sr-only" role="status">
-				{copied ? "Link copied" : ""}
+			<span
+				className={copyStatus === "failed" ? "basis-full text-copy-13 text-destructive" : "sr-only"}
+				role="status"
+			>
+				{copied && "Link copied"}
+				{copyStatus === "failed" &&
+					"Couldn’t copy the link. Copy the address from your browser instead."}
 			</span>
 		</>
 	);

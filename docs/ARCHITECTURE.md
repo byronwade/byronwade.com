@@ -157,6 +157,21 @@ these cases against a local server.
 
 ## Components
 
+Article sharing and the inline contact form share `hooks/use-copy-to-clipboard.ts`.
+It serializes clipboard writes, exposes failure instead of logging it silently,
+and owns the two-second success reset with effect cleanup. Each caller keeps its
+own recovery wording in a polite status region: use the browser address for an
+article link, or reveal the email for manual copying. Copy controls keep their
+accessible names and keyboard focus while pending (`aria-disabled`, enforced by
+the hook). `tests/rendered/clipboard.test.mjs` covers denial, an unavailable API,
+pending writes, explicit retry, confirmation, draft preservation and email reveal.
+The inline email and send control wrap at enlarged text sizes so the manual-copy
+fallback remains inside the contact panel on narrow screens. Its heading and
+close control can wrap, and the homepage facts use intrinsic columns. Shared
+section headings wrap their index links onto another line when needed; index
+rows can break overlong words. These keep recovery inside the viewport at 320px
+with 200% text.
+
 ```
 components/
   layout/        # Fixed header, navigation, search, footer, site shell

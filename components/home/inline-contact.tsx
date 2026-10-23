@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useId, useState } from "react";
+import { useId } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { pillLinkClass } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,13 @@ const ContactSentToast = dynamic(
 	{ ssr: false }
 );
 
+const COPY_FEEDBACK = {
+	idle: "",
+	copying: "",
+	copied: "Email copied",
+	failed: "Couldn’t copy the email. Reveal it to copy it manually.",
+};
+
 interface InlineContactProps {
 	email: string;
 	onClose: () => void;
@@ -26,7 +34,8 @@ interface InlineContactProps {
 }
 
 export function InlineContact({ open, onClose, email }: InlineContactProps) {
-	const [copied, setCopied] = useState(false);
+	const { status: copyStatus, copy } = useCopyToClipboard();
+	const copied = copyStatus === "copied";
 	const { formData, isSubmitting, status, fieldError, handleChange, handleSubmit } =
 		useContactForm();
 	const formId = useId();
@@ -37,16 +46,6 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 		return notification;
 	}
 
-	const copyEmail = async () => {
-		try {
-			await navigator.clipboard.writeText(email);
-			setCopied(true);
-			setTimeout(() => setCopied(false), 2000);
-		} catch (error) {
-			console.warn("Clipboard copy unavailable", error);
-		}
-	};
-
 	return (
 		<>
 			{notification}
@@ -54,8 +53,8 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 				className="w-full overflow-hidden rounded-lg border border-border bg-card shadow-card"
 				aria-label="Contact"
 			>
-				<div className="flex items-center justify-between gap-3 px-4 pt-3">
-					<div className="flex flex-col gap-0.5">
+				<div className="flex flex-wrap items-center justify-between gap-3 px-4 pt-3">
+					<div className="flex min-w-0 grow basis-40 flex-col gap-0.5">
 						<span className="font-medium text-copy-14">Start a conversation</span>
 						<span className="text-copy-12 text-muted-foreground">
 							Product builds, service software, or just an intro. Brief is fine.
@@ -64,7 +63,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					<button
 						type="button"
 						onClick={onClose}
-						className="flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+						className="ml-auto flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
 						aria-label="Close"
 					>
 						<X className="h-4 w-4" />
@@ -177,9 +176,16 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 						<div className="flex flex-wrap items-center gap-2">
-							<ObfuscatedEmail className="font-medium text-copy-14 text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_button]:min-h-11" />
+							<ObfuscatedEmail className="[&_a]:wrap-anywhere min-w-0 max-w-full font-medium text-copy-14 text-foreground [&_a]:inline-flex [&_a]:min-h-11 [&_a]:max-w-full [&_a]:items-center [&_button]:min-h-11" />
 							{/* Both words share one cell so the chip never changes width. */}
-							<button type="button" onClick={copyEmail} className={pillLinkClass}>
+							<button
+								type="button"
+								onClick={() => copy(email)}
+								className={pillLinkClass}
+								aria-label="Copy email"
+								aria-busy={copyStatus === "copying"}
+								aria-disabled={copyStatus === "copying"}
+							>
 								{copied ? (
 									<Check aria-hidden="true" className="size-4" />
 								) : (
@@ -192,11 +198,20 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 									</span>
 								</span>
 							</button>
-							<span className="sr-only" role="status">
-								{copied ? "Email copied" : ""}
+							<span
+								className={
+									copyStatus === "failed" ? "basis-full text-copy-13 text-destructive" : "sr-only"
+								}
+								role="status"
+							>
+								{COPY_FEEDBACK[copyStatus]}
 							</span>
 						</div>
-						<Button type="submit" disabled={isSubmitting} className="gap-2">
+						<Button
+							type="submit"
+							disabled={isSubmitting}
+							className="wrap-anywhere h-auto min-h-11 gap-2 whitespace-normal py-2"
+						>
 							{isSubmitting ? (
 								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
 							) : (
