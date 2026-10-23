@@ -94,6 +94,14 @@ test("pages use the Latin core fonts and keep the full faces available for uncov
 				await previous;
 				const requested = await visit(path, "light");
 				assert.ok(requested.includes(CORE), `${path} loads the core subset`);
+				// The client's copy of the preload hint must find the server's tag, not add one.
+				assert.ok(
+					(await page.evaluate(
+						(href) => document.querySelectorAll(`link[rel="preload"][href="${href}"]`).length,
+						CORE
+					)) <= 1,
+					`${path} has one preload tag for the core subset`
+				);
 				// The full face loading too would cost more than the original single file.
 				assert.ok(!requested.includes(FULL_LATIN), `${path} needs no character outside the core`);
 				assert.ok(!requested.includes(MONO_FULL), `${path} needs no full Latin Mono face`);
