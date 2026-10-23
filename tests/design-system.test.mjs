@@ -86,7 +86,8 @@ const RADIUS_KEYS = new Set([
 	"full",
 	...[...DECLARED].flatMap((name) => name.match(RADIUS_TOKEN)?.[1] ?? []),
 ]);
-const RADIUS_SIDES = new Set(["s", "e", "t", "r", "b", "l", "x", "y", "ss", "se", "ee", "es"]);
+// Bare `rounded` and bare sides (`rounded-t`) compile to Tailwind's 4px, below the scale.
+const BARE_RADIUS = /(?<![\w-])rounded(?=[\s"'`;])/;
 const OFF_SCALE_SHADOW =
 	/\b(?:inset-)?shadow-(?:2xs|xs|sm|md|lg|xl|2xl|inner|\[)|\bdrop-shadow(?:-|\b)|\b(?:boxShadow|borderRadius)\s*:\s*(?:["'`](?!var\()|\d)/;
 const TOKEN_REFERENCE = /\b(shadow|rounded(?:-[a-z]{1,2})?|duration|ease|delay)-\((--[\w-]+)\)/g;
@@ -105,13 +106,15 @@ const appliedClasses = [...css.matchAll(APPLY)].map(([rule]) => rule).join("\n")
 test("radii use the redeclared Thorbis keys", () => {
 	const offenders = [...files, "app/globals.css"].flatMap((path) => {
 		const source = path === "app/globals.css" ? appliedClasses : read(path);
-		return [...source.matchAll(RADIUS_CLASS)]
-			.filter(([, key, variable]) =>
-				variable
-					? !variable.startsWith("--radius")
-					: !(RADIUS_KEYS.has(key) || RADIUS_SIDES.has(key))
-			)
-			.map(([match]) => `${path}: ${match}`);
+		const classLists = path === "app/globals.css" ? [source] : (source.match(STRING_LITERAL) ?? []);
+		return [
+			...[...source.matchAll(RADIUS_CLASS)]
+				.filter(([, key, variable]) =>
+					variable ? !variable.startsWith("--radius") : !RADIUS_KEYS.has(key)
+				)
+				.map(([match]) => `${path}: ${match}`),
+			...classLists.filter((list) => BARE_RADIUS.test(list)).map(() => `${path}: rounded`),
+		];
 	});
 	assert.deepEqual(offenders, [], "Use rounded-sm/md/lg/xl/2xl/3xl/4xl/full or --radius-*.");
 });
