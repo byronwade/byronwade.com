@@ -17,7 +17,6 @@ export async function generateMetadata() {
 		title: "Projects",
 		description:
 			"Explore my portfolio of web development projects, products, and client work showcasing modern JavaScript, React, and Next.js expertise.",
-		type: "project",
 	});
 
 	return generateSEOMetadata({
