@@ -304,7 +304,10 @@ components/
   answers it with a real HTTP 404. That check must stay above `loading.tsx`: the
   loading boundary streams a 200 shell before the page renders, so a page-level
   `notFound()` only produced a soft 404 (checked by
-  `tests/rendered/figma-detail.test.mjs`). The file response
+  `tests/rendered/figma-detail.test.mjs`). The page's `generateMetadata` also
+  returns nothing for such a key: the client applies page metadata after
+  hydration, so without that bail-out the 404 would be titled "Design file
+  unavailable". The file response
   is read as `unknown` and projected onto what the page renders: name, last
   modified, optional version, `CANVAS` page count, components (id, optional name
   and description) and style count. The document tree itself is never cached. A
