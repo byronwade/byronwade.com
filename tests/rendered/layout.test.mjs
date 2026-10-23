@@ -44,10 +44,18 @@ async function localOnly(page, url) {
 	});
 }
 
-// Fonts change line breaks; reading a box afterwards forces a synchronous layout. No
-// animation frame: one of the two tabs is always in the background, where none fire.
-function settled(page) {
-	return page.evaluate(() => document.fonts.ready.then(() => undefined));
+// A streamed Suspense boundary can still hide the title after load and fonts are ready.
+// Match measure's visibility rule before reading boxes; poll with a timer because one
+// of the two tabs is always in the background, where animation frames do not fire.
+async function settled(page) {
+	await page.waitForFunction(
+		() =>
+			[...document.querySelectorAll("main h1")].some((heading) =>
+				heading.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })
+			),
+		{ polling: 50 }
+	);
+	await page.evaluate(() => document.fonts.ready.then(() => undefined));
 }
 
 function measure(page) {
@@ -150,6 +158,26 @@ async function sidewaysScroll(page, url, route) {
 	}, ENLARGED_TEXT.rootFontSize);
 	return [...standard, ...(await check(ENLARGED_TEXT.width, ENLARGED_TEXT.rootFontSize))];
 }
+
+test("layout readiness waits for a visible streamed title and still rejects a hidden title", {
+	timeout: 30_000,
+}, async (context) => {
+	await withBrowser(context, { timeout: 15_000, protocolTimeout: 15_000 }, async (browser) => {
+		const page = await browser.newPage();
+		page.setDefaultTimeout(5000);
+		await page.setContent('<main><h1 style="opacity: 0">Streamed title</h1></main>');
+		await page.evaluate(() => {
+			setTimeout(() => {
+				document.querySelector("h1").style.opacity = "1";
+			}, 100);
+		});
+		await settled(page);
+		assert.equal(typeof (await measure(page)).title, "number");
+		await page.setContent("<main><h1 hidden>Never revealed</h1></main>");
+		page.setDefaultTimeout(150);
+		await assert.rejects(settled(page), { name: "TimeoutError" });
+	});
+});
 
 test("every route keeps one edge, 44px buttons and no sideways scroll, even at 200% text", {
 	timeout: 900_000,
