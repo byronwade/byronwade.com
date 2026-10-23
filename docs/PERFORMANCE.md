@@ -156,6 +156,38 @@ TBT and every other limit are unchanged. Benchmark index ranged 1586-2619 on
 the shared host. The limits, the ten-script cap and the rejected probes are
 unchanged; the project-page chunk and Mono request remain the open leads.
 
+## Geist Mono Latin core subset, October 23, 2026
+
+The deferred Mono core described under current ownership reduces its font file
+from 15,524 to 10,148 bytes (5,376 bytes, 34.6%). A cold browser census on
+`83ea242` found the full Latin Mono request on 25 of 39 published and
+representative routes. The rendered subset test now checks every such route,
+requires Mono only where used, checks all 119 retained characters at both
+weights in actual light/dark themes, and verifies the full Latin fallback with
+an accented name. Original and derived specimens produced identical pixels at
+400/500 in both themes; a separate fontTools comparison found identical outlines
+and advances for all 119 characters at 400/450/500, with unchanged axes and
+vertical metrics.
+
+Three sequential default-mobile Lighthouse samples per build on
+`/blog/nexstar-win-invoice-lose-customer` used Chrome 155.0.8059.85 and Lighthouse
+13.5.0, with the runner's standard browser settle:
+
+| Build | LCP (ms), in sample order | TBT (ms), in sample order | Font transfer | Total transfer |
+| --- | --- | --- | --- | --- |
+| Baseline `83ea242`, `ZIueIgWE5g7oRWtxqLEo1` | 3077, 3048, 3043 | 70, 111, 58 | 70,345 B | 317,094 B |
+| Mono core, `Aibs2lxzuZEqNaLd6q8E5` | 3050, 3118, 3042 | 112, 176, 105 | 64,969 B | 311,739 B |
+
+Font requests remain three and scripts remain ten (176,107 transfer bytes).
+The stylesheet grows by 21 transfer bytes, leaving a net 5,355-byte page saving.
+All six samples fail only the existing 3000ms LCP limit. Timing ranges overlap;
+these samples were not interleaved and no A/A control ran, so they establish no
+LCP or blocking-time improvement. Keep this as a measured byte reduction, not
+an LCP fix. No preload, content delay, budget or initial-script change was made.
+The raw reports are in hobby job `byronwade-com-hobby-1023-0409`, directories
+`baseline-valid-1` through `3` and `candidate-1` through `3`. Three earlier probes
+used an incorrect slug, returned 404 and are excluded.
+
 ## Search corpus reuse, October 22, 2026
 
 At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
@@ -241,6 +273,17 @@ it deliberately makes no timing assertion on a shared machine.
   and keep both faces' `unicode-range` equal to that list.
   `tests/rendered/font-subset.test.mjs` loads every prerendered page and checks
   that only the subset is requested.
+- Geist Mono remains deferred. `public/fonts/geist-mono-latin-core.woff2` is a
+  10,148-byte subset of the pinned 15,524-byte
+  `or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2`, using the same 119-character core as upright
+  Inter. Both weights (400 and 500) override the generated Latin faces after
+  `thorbis-fonts:end`; other Latin characters still load the original face.
+  The weight axis, layout features, outlines, advances and vertical metrics are
+  preserved. The existing Geist OFL license covers this derived asset. Regenerate
+  with [fontTools](https://fonttools.readthedocs.io/en/latest/subset/):
+  `python -m fontTools.subset public/fonts/or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2 --unicodes="U+0020-007E,U+00A0,U+00A7,U+00A9,U+00AB,U+00B7,U+00BB,U+00D7,U+00E9,U+2010-2014,U+2018-201E,U+2022,U+2026,U+2032-2033,U+2039-203A,U+2191,U+2193" --layout-features='*' --flavor=woff2 --output-file=public/fonts/geist-mono-latin-core.woff2`
+  The same contract and rendered subset tests protect its size, range, weights,
+  request selection and full-face fallback. Do not preload Mono.
 - Shared `Link` disables viewport prefetch. Index pages compose that link, so a
   long project or writing index does not request every destination during the
   initial load. Primary navigation does the same. The contact form loads on the

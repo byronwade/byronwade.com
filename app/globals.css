@@ -304,6 +304,29 @@
 
 /* thorbis-fonts:end */
 
+/* Geist Mono, Latin core. Code and technical data use the same glyphs and
+   variable weight axis as the pinned or3nQ6H-1_WfwkMZI_qYFrcdmg.woff2, in a
+   smaller file. Both weights override the generated faces for this range;
+   other Latin characters still load the full face. Keep Mono deferred, and
+   regenerate with docs/PERFORMANCE.md when the Thorbis font source changes. */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/geist-mono-latin-core.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0, U+00A7, U+00A9, U+00AB, U+00B7, U+00BB, U+00D7, U+00E9, U+2010-2014, U+2018-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+2191, U+2193;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/geist-mono-latin-core.woff2) format('woff2');
+  unicode-range: U+0020-007E, U+00A0, U+00A7, U+00A9, U+00AB, U+00B7, U+00BB, U+00D7, U+00E9, U+2010-2014, U+2018-201E, U+2022, U+2026, U+2032-2033, U+2039-203A, U+2191, U+2193;
+}
+
 /* Inter italic, Basic Latin core. Blockquotes and emphasis are italic, and the
    full Latin italic face put every post with a quote over the 100KiB font
    budget. This face is a fontTools subset of the pinned
