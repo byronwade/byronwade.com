@@ -590,13 +590,13 @@ test("the breadcrumb overflow menu moves on the site's one curve", {
 			page.on("pageerror", (error) => runtimeErrors.push(error.message));
 			await page.setViewport({ width: 1280, height: 800 });
 			await page.goto(`${url}/blog/scaling-plumbing-business`, { waitUntil: "networkidle0" });
-			// The token in its computed form, e.g. cubic-bezier(0.23, 1, 0.32, 1).
-			const curve = await page.evaluate(() => {
+			// The tokens in computed form, e.g. 0.12s on cubic-bezier(0.23, 1, 0.32, 1).
+			const tokens = await page.evaluate(() => {
 				const probe = document.body.appendChild(document.createElement("div"));
-				probe.style.animationTimingFunction = "var(--ease-out)";
-				const value = getComputedStyle(probe).animationTimingFunction;
+				probe.style.animation = "enter var(--motion-fast) var(--ease-out)";
+				const { animationDuration, animationTimingFunction } = getComputedStyle(probe);
 				probe.remove();
-				return value;
+				return { name: "enter", duration: animationDuration, easing: animationTimingFunction };
 			});
 			// Themes share one page and must run sequentially. Each case closes the menu
 			// before asserting, so one failure cannot leave it open for the next.
@@ -607,7 +607,7 @@ test("the breadcrumb overflow menu moves on the site's one curve", {
 							await setDarkTheme(page, dark);
 							const motion = await openOverflowMenu(page);
 							await closeOverflowMenu(page);
-							assert.deepEqual(motion, { name: "enter", duration: "0.12s", easing: curve });
+							assert.deepEqual(motion, tokens);
 						})
 					),
 				Promise.resolve()
