@@ -195,10 +195,11 @@ export default function ResumePage() {
 								<h1 className="font-medium font-signature text-foreground text-heading-32">
 									Byron Wade
 								</h1>
-								{/* Each role stays whole when it fits, so a narrow screen breaks at the dot,
-								    not inside a title; a role wider than the line still wraps. */}
+								{/* Each role stays whole when it fits, so a narrow screen breaks after the
+								    dot, not inside a title. A role wider than the line still wraps, and
+								    the dot stays with the first role instead of stranding on its own line. */}
 								<p className="text-body text-copy-16">
-									<span className="inline-block">Founder at Thorbis</span> ·{" "}
+									<span className="inline-block">Founder at Thorbis ·</span>{" "}
 									<span className="inline-block">Full Stack Developer</span>
 								</p>
 							</div>
