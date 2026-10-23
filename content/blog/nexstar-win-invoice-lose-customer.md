@@ -84,7 +84,7 @@ That is why homeowners often cannot explain exactly what bothered them. The tech
 
 Research outside plumbing points in the same direction as my experience.
 
-A [2025 paper in *Psychology & Marketing*](https://onlinelibrary.wiley.com/doi/10.1002/mar.70019) reports five scenario-based experiments in retail and fitness settings. Encouraging deliberation produced more positive word-of-mouth than pressure to purchase. In one experiment, participants wrote comments about an imagined headphone purchase; those comments were not actually published to social media. This supports a reason to test less pressure, not a measured referral or retention gain for plumbing companies.
+A [2025 paper in Psychology & Marketing](https://onlinelibrary.wiley.com/doi/10.1002/mar.70019) reports five scenario-based experiments in retail and fitness settings. Encouraging deliberation produced more positive word-of-mouth than pressure to purchase. In one experiment, participants wrote comments about an imagined headphone purchase; those comments were not actually published to social media. This supports a reason to test less pressure, not a measured referral or retention gain for plumbing companies.
 
 That matters because the invoice is only one outcome of a service call. The customer also leaves with a story.
 
@@ -212,7 +212,7 @@ Repeat revenue is not merely extra revenue. It is a stabilizer.
 
 ## Retention changes the cost structure
 
-[Harvard Business Review](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers) reports acquisition costs five to 25 times retention costs, varying by industry and study. Frederick Reichheld’s [*Loyalty Rules!* excerpt, hosted by Bain](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf), describes a 25% to 95% profit increase for what he calls a 5% increase in customer retention rates. These are historical cross-industry findings, not a plumbing forecast.
+[Harvard Business Review](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers) reports acquisition costs five to 25 times retention costs, varying by industry and study. Frederick Reichheld’s [Loyalty Rules! excerpt, hosted by Bain](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf), describes a 25% to 95% profit increase for what he calls a 5% increase in customer retention rates. These are historical cross-industry findings, not a plumbing forecast.
 
 Those ranges should not be pasted blindly onto a plumbing company’s financial statement. Plumbing is episodic, job mixes vary, and a homeowner may go years without needing service. But the underlying mechanism absolutely applies:
 
@@ -318,6 +318,6 @@ It needs better judgment.
 - [Nexstar Network: Power to the Buyer](https://www.nexstarnetwork.com/blog/newsroom/power-to-the-buyer-a-conversion-breakthrough-for-dynamic-tradies/) — Member case study connecting more solutions per opportunity with higher average sale and conversion.
 - [Nexstar Network: Service System and Customer Objections](https://www.nexstarnetwork.com/blog/newsroom/service-system-clearing-our-own-objections-to-help-others-find-clarity-in-theirs/) — Nexstar’s description of rapport, options, and objection clearing in the home.
 - [Harvard Business Review: The Value of Keeping the Right Customers](https://hbr.org/2014/10/the-value-of-keeping-the-right-customers) — Summary of customer-acquisition and retention economics.
-- [Frederick Reichheld: *Loyalty Rules!*, chapter one (Bain PDF)](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf) — Original retention/profit discussion on printed page 10; cross-industry context, not a plumbing estimate.
+- [Frederick Reichheld: Loyalty Rules!, chapter one (Bain PDF)](https://www.bain.com/contentassets/29f74ec417fa4e36a1d7d7e7479badc5/loyalty_rules_chapter_one.pdf) — Original retention/profit discussion on printed page 10; cross-industry context, not a plumbing estimate.
 - [Housecall Pro: Home Service Customer Service Report](https://www.housecallpro.com/resources/home-service-customer-service-report-trends-statistics/) — 2025 survey of 1,040 U.S. homeowners on rehire, referrals, pricing, communication, and service expectations.
 - [Psychology & Marketing: When Less Pressure Leads to More Talk](https://onlinelibrary.wiley.com/doi/10.1002/mar.70019) — 2025 research comparing pressure-to-purchase tactics with encouraging customer deliberation.
