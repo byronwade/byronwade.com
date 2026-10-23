@@ -5,12 +5,13 @@ import puppeteer from "puppeteer-core";
 
 const ALREADY_GONE = /not found|no running instance of the task/i;
 
-// taskkill exits 128 when processes in the tree exited before it reached them. That is not a
-// failed cleanup; the caller still requires the owned process itself to exit.
+// Windows has reported both 128 and 255 when a tree member exited before taskkill reached it.
+// Accept only per-process "already gone" failures; the caller still requires the owned root's
+// actual exit. Neither the command's status nor a successful root kill proves the whole tree stopped.
 function onlyAlreadyGone(error, stderr) {
 	const failures = String(stderr).split("ERROR:").slice(1);
 	return (
-		error.code === 128 &&
+		(error.code === 128 || error.code === 255) &&
 		failures.length > 0 &&
 		failures.every((failure) => ALREADY_GONE.test(failure))
 	);
