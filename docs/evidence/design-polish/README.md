@@ -75,6 +75,12 @@ compact targets; the current header's rendered tests require 44px targets.
 The legacy verifier's desktop minimum is 24px, so its pass alone does not
 establish the current header contract.
 
+Known drift (October 22, 2026, main `bf18367`): `verify-design-polish-states.mjs after`
+stops at `portfolio-partial` because /portfolio now renders its repository list on
+the server, so the script's intercepted `/api/portfolio` fixture no longer reaches
+the page and 36 live rows replace the expected one. The four states before it pass
+axe. The unmodified script fails the same way; the fixture needs rework.
+
 `verify-design-polish-states.mjs after` exercises 21 controlled states at all
 six width/theme combinations: portfolio empty, error, populated, partial, unrelated-provider failure, failed refresh,
 degraded empty refresh, loading and timeout; contact invalid, pending and failed; preview loading,
