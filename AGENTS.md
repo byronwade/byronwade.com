@@ -488,6 +488,9 @@ by the root layout's or root not-found's server tree to a page entry that also
 imports it, so such modules must resolve to a chunk every page loads; a layout-only
 client component is the safe home (`NavDock` owns the brand link for this reason).
 Run this check before moving them; see `docs/PERFORMANCE.md` "Route chunk ownership".
+Request preloads from server components with `preload()` from `react-dom`, not a
+`<link rel="preload">` element: React emits the element as a hint and renders it too.
+`tests/rendered/head-hints.test.mjs` fails on a repeated or cross-origin resource hint.
 
 `tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
 blur, `transition: all`, routes without a declared profile, the Tailwind default

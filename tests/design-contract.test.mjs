@@ -277,7 +277,7 @@ for (const { family, fullName, coreName, preloaded, minimumSaving } of [
 
 		const layout = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
 		assert.equal(
-			layout.includes(`href="/fonts/${coreName}"`),
+			layout.includes(`preload("/fonts/${coreName}"`),
 			preloaded,
 			"only Inter is preloaded"
 		);

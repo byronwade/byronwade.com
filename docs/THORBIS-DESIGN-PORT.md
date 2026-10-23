@@ -110,9 +110,10 @@ for introducing a new visual choice.
   only on routes with a breadcrumb. These move dependencies to their consumers.
 - Inter uses the pinned font bytes and source face descriptors. The generated
   next/font manifest was empty in the local Windows webpack build, delaying
-  Inter until CSS discovery. Explicit source-font preload removes that dependency
-  without an experimental CSS flag. All font faces share the same CSS owner,
-  avoiding an extra blocking font stylesheet. A rendered contract checks preload.
+  Inter until CSS discovery. An explicit `preload()` of the source font removes
+  that dependency without an experimental CSS flag. All font faces share the
+  same CSS owner, avoiding an extra blocking font stylesheet. A rendered contract
+  checks preload.
 - The browser favicon reuses the existing 32px image instead of fetching the
   239KB original. The original remains at public/icon-original.png; /icon.png
   stays owned by the app route. A regression test prevents public shadowing.
