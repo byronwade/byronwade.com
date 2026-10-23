@@ -1,5 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { preload } from "react-dom";
 import {
 	generateOrganizationStructuredData,
@@ -7,7 +5,7 @@ import {
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import "./globals.css";
-import { ErrorBoundary, ReactScan, ThemeProvider } from "@/components/common";
+import { ErrorBoundary, ReactScan, SiteAnalytics, ThemeProvider } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
 
@@ -40,8 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<SiteLayout>{children}</SiteLayout>
 					</ErrorBoundary>
 				</ThemeProvider>
-				<Analytics />
-				<SpeedInsights />
+				<SiteAnalytics />
 				<ReactScan />
 			</body>
 		</html>

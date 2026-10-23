@@ -491,6 +491,9 @@ Run this check before moving them; see `docs/PERFORMANCE.md` "Route chunk owners
 Request preloads from server components with `preload()` from `react-dom`, not a
 `<link rel="preload">` element: React emits the element as a hint and renders it too.
 `tests/rendered/head-hints.test.mjs` fails on a repeated or cross-origin resource hint.
+`tests/rendered/analytics-privacy.test.mjs` fails when Vercel Web Analytics or Speed
+Insights would send the words in `/search?q=`; both get `withoutSearchWords` from
+`lib/analytics-redact.ts` through `components/common/site-analytics.tsx`.
 
 `tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
 blur, `transition: all`, routes without a declared profile, the Tailwind default
