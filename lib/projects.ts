@@ -6,6 +6,7 @@ import {
 	isText,
 	readContentMatter,
 } from "@/lib/content-matter";
+import { contentFilePath } from "@/lib/content-path";
 import { parseContentDate } from "@/lib/markdown-utils";
 
 /** Hoisted so it compiles once rather than per file. */
@@ -155,8 +156,11 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProject(slug: string): Promise<Project | null> {
+	const fullPath = contentFilePath(projectsDirectory, slug);
+	if (fullPath === null) {
+		return null;
+	}
 	try {
-		const fullPath = join(projectsDirectory, `${slug}.md`);
 		const fileContents = await readFile(fullPath, "utf8");
 		return toProject(slug, fileContents);
 	} catch (error) {
