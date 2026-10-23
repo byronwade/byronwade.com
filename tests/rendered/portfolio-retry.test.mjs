@@ -1,12 +1,9 @@
 import assert from "node:assert/strict";
-import { randomUUID } from "node:crypto";
 import { once } from "node:events";
-import { readFile } from "node:fs/promises";
 import { createServer } from "node:http";
-import { resolve } from "node:path";
 import { test } from "node:test";
-import { pathToFileURL } from "node:url";
 import { withProductionServer } from "../../scripts/production-session.mjs";
+import { portfolioProviderEnv } from "../fixtures/portfolio-provider.mjs";
 
 const FAILURE = /Couldn(?:'|&#x27;|’)t load repositories/;
 const RECOVERED = /href="https:\/\/github.com\/fixture\/audit-recovery"/;
@@ -46,13 +43,6 @@ test("portfolio retry renders provider recovery without caching failure HTML", {
 	try {
 		const address = provider.address();
 		assert.ok(address && typeof address === "object");
-		const { config } = JSON.parse(await readFile(".next/required-server-files.json", "utf8"));
-		// Next's standalone loader accepts its built config. Give the real Data Cache
-		// a unique namespace so this test neither reads nor replaces normal API data.
-		const isolatedConfig = {
-			...config,
-			experimental: { ...config.experimental, fetchCacheKeyPrefix: randomUUID() },
-		};
 		await withProductionServer(
 			async (url) => {
 				const load = async () => {
@@ -71,15 +61,7 @@ test("portfolio retry renders provider recovery without caching failure HTML", {
 				assert.match(await load(), RECOVERED);
 				assert.equal(requests, 2, "successful data must remain cached");
 			},
-			{
-				env: {
-					__NEXT_PRIVATE_STANDALONE_CONFIG: JSON.stringify(isolatedConfig),
-					PORTFOLIO_AUDIT_PORT: String(address.port),
-					GITHUB_TOKEN: "",
-					GITHUB_API_TOKEN: "",
-					NODE_OPTIONS: `${process.env.NODE_OPTIONS || ""} --import=${pathToFileURL(resolve("tests/fixtures/portfolio-browser-preload.mjs")).href}`,
-				},
-			}
+			{ env: await portfolioProviderEnv(address.port) }
 		);
 	} finally {
 		provider.closeAllConnections();

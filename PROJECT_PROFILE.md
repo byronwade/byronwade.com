@@ -249,7 +249,8 @@ use them correctly.
   compares resolved styles and layout-decided geometry on `/`, `/projects`,
   `/portfolio` and `/blog` (390 and 1280, light and dark) with
   `tests/fixtures/showcase-visual.json`. Not pixels: images are compared by box and
-  aspect ratio only, and Evidence/Guided routes are not covered.
+  aspect ratio only, `/portfolio` uses fixed repositories instead of live GitHub, and
+  Evidence/Guided routes are not covered.
 - **Marketing SEO/Core Web Vitals:** `npm run perf:budget` against
   `lighthouse-budget.json`; field data via `@vercel/speed-insights`
 - **Repository diff check:** `git diff --check`

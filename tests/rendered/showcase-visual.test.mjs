@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
+import { once } from "node:events";
 import { readFile, writeFile } from "node:fs/promises";
+import { createServer } from "node:http";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
+import { portfolioProviderEnv } from "../fixtures/portfolio-provider.mjs";
 
 // Visual regression for the four Showcase routes, as resolved styles rather than pixels.
 // A committed screenshot would change with every new post or project and with each Chrome
@@ -20,6 +23,32 @@ const ROUTES = ["/", "/projects", "/portfolio", "/blog"];
 const WIDTHS = [390, 1280];
 const THEMES = ["light", "dark"];
 const UPDATE = process.env.UPDATE_VISUAL_BASELINE === "1";
+// /portfolio renders GitHub repositories on request. Fixed ones keep the record off
+// the live account and its shared anonymous rate limit; they cover each row variant.
+const repository = (id, name, fields) => ({
+	id,
+	name,
+	full_name: `byronwade/${name}`,
+	html_url: `https://github.com/byronwade/${name}`,
+	description: null,
+	stargazers_count: 0,
+	forks_count: 0,
+	pushed_at: "2026-09-01T00:00:00Z",
+	fork: false,
+	archived: false,
+	...fields,
+});
+const REPOSITORIES = [
+	repository(1, "thorbis", {
+		description: "Field-service platform.",
+		language: "TypeScript",
+		stargazers_count: 12,
+		forks_count: 3,
+	}),
+	repository(2, "drone-pi", { description: "Flight controller.", language: "Python" }),
+	repository(3, "realistic-face", { language: "Rust", stargazers_count: 2 }),
+	repository(4, "notes", { pushed_at: null }),
+];
 
 /** Same-origin requests only; third-party images and data answer empty in every run. */
 async function localOnly(page, origin) {
@@ -237,9 +266,11 @@ async function capture(browser, origin, route, width, theme) {
 			`${route} applies the ${theme} theme`
 		);
 		await settle(page);
-		const lines = await page.evaluate(fingerprint);
+		// The body, not the root: the root reserves a stable scrollbar gutter yet reports the full width.
+		const viewport = await page.evaluate(() => document.body.clientWidth);
+		const styles = await page.evaluate(fingerprint);
 		assert.deepEqual(errors, [], `${route} ${width} ${theme} threw`);
-		return lines;
+		return { viewport, styles };
 	} finally {
 		await page.close();
 	}
@@ -248,8 +279,8 @@ async function capture(browser, origin, route, width, theme) {
 /** Lines only the baseline has, and lines only this run has, per case. */
 function differences(expected, actual) {
 	return Object.keys({ ...expected, ...actual }).flatMap((key) => {
-		const before = new Set(expected[key] ?? []);
-		const after = new Set(actual[key] ?? []);
+		const before = new Set(expected[key]?.styles ?? []);
+		const after = new Set(actual[key]?.styles ?? []);
 		const removed = [...before].filter((line) => !after.has(line)).map((line) => `- ${line}`);
 		const added = [...after].filter((line) => !before.has(line)).map((line) => `+ ${line}`);
 		return removed.length + added.length === 0 ? [] : [`${key}`, ...removed, ...added];
@@ -262,19 +293,35 @@ test("the four Showcase routes keep their resolved type, colour, spacing and lay
 	const cases = ROUTES.flatMap((route) =>
 		WIDTHS.flatMap((width) => THEMES.map((theme) => ({ route, width, theme })))
 	);
-	const actual = await withProductionServer((origin) =>
-		withBrowser(context, { timeout: 30_000, protocolTimeout: 30_000 }, (browser) =>
-			cases.reduce(
-				async (pending, { route, width, theme }) => ({
-					...(await pending),
-					[`${route} ${width} ${theme}`]: await capture(browser, origin, route, width, theme),
-				}),
-				Promise.resolve({})
-			)
-		)
-	);
-	for (const [key, lines] of Object.entries(actual)) {
-		assert.ok(lines.length > 20, `${key} recorded only ${lines.length} styles`);
+	const provider = createServer((_request, response) => {
+		response.writeHead(200, { "Content-Type": "application/json" });
+		response.end(JSON.stringify(REPOSITORIES));
+	});
+	provider.listen(0, "127.0.0.1");
+	await once(provider, "listening");
+	let actual;
+	try {
+		actual = await withProductionServer(
+			(origin) =>
+				withBrowser(context, { timeout: 30_000, protocolTimeout: 30_000 }, (browser) =>
+					cases.reduce(
+						async (pending, { route, width, theme }) => ({
+							...(await pending),
+							[`${route} ${width} ${theme}`]: await capture(browser, origin, route, width, theme),
+						}),
+						Promise.resolve({})
+					)
+				),
+			{ env: await portfolioProviderEnv(provider.address().port) }
+		);
+	} finally {
+		provider.closeAllConnections();
+		await new Promise((resolveClose, reject) =>
+			provider.close((error) => (error ? reject(error) : resolveClose()))
+		);
+	}
+	for (const [key, { styles }] of Object.entries(actual)) {
+		assert.ok(styles.length > 20, `${key} recorded only ${styles.length} styles`);
 	}
 	if (UPDATE) {
 		await writeFile(BASELINE, `${JSON.stringify(actual, null, 2)}\n`);
@@ -282,6 +329,15 @@ test("the four Showcase routes keep their resolved type, colour, spacing and lay
 		return;
 	}
 	const expected = JSON.parse(await readFile(BASELINE, "utf8"));
+	// A scrollbar or machine change moves every edge at once; say that, not 200 lines.
+	const viewports = Object.keys(actual)
+		.filter((key) => expected[key]?.viewport !== actual[key].viewport)
+		.map((key) => `${key}: ${expected[key]?.viewport} → ${actual[key].viewport}`);
+	assert.deepEqual(
+		viewports,
+		[],
+		"Viewport content width differs from the baseline (scrollbar or environment change). Regenerate on the machine that runs the release checks."
+	);
 	const changed = differences(expected, actual);
 	assert.deepEqual(
 		changed,
