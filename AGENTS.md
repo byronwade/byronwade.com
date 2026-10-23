@@ -508,9 +508,10 @@ Showcase routes at 390 and 1280 in both themes: it compares each visible element
 resolved type, colour, border, radius, shadow, spacing, column count and
 layout-decided left edge and width against `tests/fixtures/showcase-visual.json`.
 Text, heights, vertical positions and item counts are excluded, so new posts and
-projects pass; `/portfolio` reads fixed repositories from a loopback stand-in for
-GitHub (`tests/fixtures/portfolio-provider.mjs`), and a changed content width (a
-scrollbar or another machine) fails with one message instead of a line diff. After an intended design change, regenerate it with
+projects pass. `/portfolio` reads fixed repositories from a loopback stand-in for
+GitHub (`withPortfolioFixture` in `tests/fixtures/portfolio-browser.mjs`). A changed
+content width (a scrollbar or another machine) fails with one message instead of a
+line diff. After an intended design change, regenerate it with
 `UPDATE_VISUAL_BASELINE=1 node --test tests/rendered/showcase-visual.test.mjs` and
 review the baseline diff. Pixel screenshots were rejected: they change with content
 and with each Chrome release's text rasterizing.

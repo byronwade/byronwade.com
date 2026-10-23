@@ -1,11 +1,9 @@
 import assert from "node:assert/strict";
-import { once } from "node:events";
 import { readFile, writeFile } from "node:fs/promises";
-import { createServer } from "node:http";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
-import { portfolioProviderEnv } from "../fixtures/portfolio-provider.mjs";
+import { withPortfolioFixture } from "../fixtures/portfolio-browser.mjs";
 
 // Visual regression for the four Showcase routes, as resolved styles rather than pixels.
 // A committed screenshot would change with every new post or project and with each Chrome
@@ -293,15 +291,9 @@ test("the four Showcase routes keep their resolved type, colour, spacing and lay
 	const cases = ROUTES.flatMap((route) =>
 		WIDTHS.flatMap((width) => THEMES.map((theme) => ({ route, width, theme })))
 	);
-	const provider = createServer((_request, response) => {
-		response.writeHead(200, { "Content-Type": "application/json" });
-		response.end(JSON.stringify(REPOSITORIES));
-	});
-	provider.listen(0, "127.0.0.1");
-	await once(provider, "listening");
-	let actual;
-	try {
-		actual = await withProductionServer(
+	const actual = await withPortfolioFixture((fixture) => {
+		fixture.setResponse({ status: 200, body: REPOSITORIES });
+		return withProductionServer(
 			(origin) =>
 				withBrowser(context, { timeout: 30_000, protocolTimeout: 30_000 }, (browser) =>
 					cases.reduce(
@@ -312,14 +304,9 @@ test("the four Showcase routes keep their resolved type, colour, spacing and lay
 						Promise.resolve({})
 					)
 				),
-			{ env: await portfolioProviderEnv(provider.address().port) }
+			{ env: fixture.env }
 		);
-	} finally {
-		provider.closeAllConnections();
-		await new Promise((resolveClose, reject) =>
-			provider.close((error) => (error ? reject(error) : resolveClose()))
-		);
-	}
+	});
 	for (const [key, { styles }] of Object.entries(actual)) {
 		assert.ok(styles.length > 20, `${key} recorded only ${styles.length} styles`);
 	}
