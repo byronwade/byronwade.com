@@ -93,7 +93,11 @@ test("pages use the Latin core fonts and keep the full faces available for uncov
 			await routes.reduce(async (previous, path) => {
 				await previous;
 				const requested = await visit(path, "light");
-				assert.ok(requested.includes(CORE), `${path} loads the core subset`);
+				assert.equal(
+					requested.filter((file) => file === CORE).length,
+					1,
+					`${path} loads the core subset once`
+				);
 				// The client's copy of the preload hint must find the server's tag, not add one.
 				assert.ok(
 					(await page.evaluate(
