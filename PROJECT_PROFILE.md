@@ -213,8 +213,8 @@ use them correctly.
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
   production client chunks, plus visible writing dates matching their machine dates,
-  resume print/PDF contracts, header browser checks, and axe on navigation, a
-  post and the contact form
+  resume print/PDF contracts, header browser checks, axe on navigation, a
+  post and the contact form, and the Showcase visual baseline
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
@@ -241,11 +241,16 @@ use them correctly.
 - **UI consistency:** `tests/design-system.test.mjs` (in `npm test`) fails on raw colour
   literals, gradients, decorative blur, `transition-all`, a route without a profile, a
   loss of the reduced-motion block, Tailwind default type sizes, pixel font sizes, or
-  weights above 500. No visual regression suite yet. Recorded as debt below.
+  weights above 500.
 - **Duplicate detection:** `npm run knip`
 - **Dead code:** `npm run knip`, currently at zero
 - **Bundle/performance:** `npm run build:analyze`, `npm run perf:budget`
-- **Visual regression:** none
+- **Visual regression:** `tests/rendered/showcase-visual.test.mjs` (in `test:rendered`)
+  compares resolved styles and layout-decided geometry on `/`, `/projects`,
+  `/portfolio` and `/blog` (390 and 1280, light and dark) with
+  `tests/fixtures/showcase-visual.json`. Not pixels: images are compared by box and
+  aspect ratio only, `/portfolio` uses fixed repositories instead of live GitHub, and
+  Evidence/Guided routes are not covered.
 - **Marketing SEO/Core Web Vitals:** `npm run perf:budget` against
   `lighthouse-budget.json`; field data via `@vercel/speed-insights`
 - **Repository diff check:** `git diff --check`
@@ -288,7 +293,7 @@ the user's instruction each time.
 | --- | --- | --- | --- | --- |
 | Automated tests | Native regressions and rendered contracts, including header interaction, responsive geometry, enlarged search text and axe on navigation, a post and the contact form; the full-route accessibility audit is `scripts/verify-a11y-perf.mjs` | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/`, `scripts/audit-geometry.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
-| Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
+| Visual regression | The four Showcase routes, as resolved styles and layout geometry (not pixels) | Yes, on those routes | Regenerate the baseline only for an intended change and review its diff; extend to Evidence routes if they drift | `tests/fixtures/showcase-visual.json` |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
 | `react-doctor` findings | 41, each investigated | No gate | Re-run after UI work; fix new regressions, keep the recorded exceptions | `AGENTS.md` § Audit tooling |
 | `npm audit` advisories | 4 moderate entries, 0 high or critical (2026-10-22, after puppeteer-core 25.15.0, @sparticuz/chromium 153.0.0, and Lighthouse 13.5.0). All four are the pinned `js-yaml` 3.15.2 tree (`gray-matter`, `js-yaml`, `argparse`, `sprintf-js`), used only by js-yaml's command-line tool, not the parser gray-matter calls. The puppeteer 24 download tree and Lighthouse 12's OpenTelemetry tree are gone. `npm ls` shows one `puppeteer-core@25.15.0`. | No | Never apply npm's `--force` suggestion for gray-matter (a downgrade to 2.0.1). A resume PDF change still has to prove `/api/resume-pdf` returns a PDF on a Vercel preview before merging, because the unit test mocks the browser. | This table |
