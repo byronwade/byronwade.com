@@ -7,21 +7,8 @@ import { track } from "@vercel/analytics";
  */
 type AnalyticsEvent =
 	| { name: "project_view"; properties: { projectSlug: string; projectTitle: string } }
-	| {
-			name: "project_click";
-			properties: { projectSlug: string; projectTitle: string; projectUrl?: string };
-	  }
 	| { name: "blog_post_view"; properties: { postSlug: string; postTitle: string } }
-	| {
-			name: "blog_post_read";
-			properties: { postSlug: string; postTitle: string; readTime?: number };
-	  }
-	| { name: "resume_download"; properties: { format?: string } }
-	| { name: "external_link_click"; properties: { url: string; linkText?: string } }
-	| { name: "contact_form_submit"; properties: { formType?: string } }
-	| { name: "search_performed"; properties: { query: string; resultsCount?: number } }
-	| { name: "social_link_click"; properties: { platform: string; url: string } }
-	| { name: "navigation"; properties: { from: string; to: string } };
+	| { name: "resume_download"; properties: { format?: string } };
 
 /**
  * Track a custom analytics event
@@ -54,16 +41,6 @@ export const analytics = {
 	},
 
 	/**
-	 * Track when a user clicks on a project
-	 */
-	projectClick: (slug: string, title: string, url?: string) => {
-		trackEvent({
-			name: "project_click",
-			properties: { projectSlug: slug, projectTitle: title, projectUrl: url },
-		});
-	},
-
-	/**
 	 * Track when a user views a blog post
 	 */
 	blogPostView: (slug: string, title: string) => {
@@ -71,54 +48,9 @@ export const analytics = {
 	},
 
 	/**
-	 * Track when a user reads a blog post (e.g., scrolled to bottom)
-	 */
-	blogPostRead: (slug: string, title: string, readTime?: number) => {
-		trackEvent({
-			name: "blog_post_read",
-			properties: { postSlug: slug, postTitle: title, readTime },
-		});
-	},
-
-	/**
 	 * Track when a user downloads the resume
 	 */
 	resumeDownload: (format = "pdf") => {
 		trackEvent({ name: "resume_download", properties: { format } });
-	},
-
-	/**
-	 * Track when a user clicks an external link
-	 */
-	externalLinkClick: (url: string, linkText?: string) => {
-		trackEvent({ name: "external_link_click", properties: { url, linkText } });
-	},
-
-	/**
-	 * Track when a user submits a contact form
-	 */
-	contactFormSubmit: (formType?: string) => {
-		trackEvent({ name: "contact_form_submit", properties: { formType } });
-	},
-
-	/**
-	 * Track when a user performs a search
-	 */
-	searchPerformed: (query: string, resultsCount?: number) => {
-		trackEvent({ name: "search_performed", properties: { query, resultsCount } });
-	},
-
-	/**
-	 * Track when a user clicks a social media link
-	 */
-	socialLinkClick: (platform: string, url: string) => {
-		trackEvent({ name: "social_link_click", properties: { platform, url } });
-	},
-
-	/**
-	 * Track navigation between pages
-	 */
-	navigation: (from: string, to: string) => {
-		trackEvent({ name: "navigation", properties: { from, to } });
 	},
 };
