@@ -97,6 +97,32 @@ loading change, repeat the baseline on the then-current source and isolate the
 responsible work. Do not infer a speedup from older reports using another
 Lighthouse version or from one low sample.
 
+## Shared client modules, October 22, 2026
+
+The shared-primitives chunk now supplies its modules to every consumer. Its
+membership still requires use by at least two of the original home, layout and
+not-found entries, within the existing package/source rules. Filtering which
+chunks could reuse those modules had left their factories in detail pages too.
+The separate classname-sharing rule is covered by this owner and is removed.
+`tests/rendered/shared-modules.test.mjs` checks the emitted registrations across
+every prerendered page, alongside the existing glyph and server-boundary checks.
+
+The [comparison and diagnostic record](evidence/shared-module-reuse/README.md)
+retain the byte measurements, source/build pins and thirty Lighthouse samples.
+The first comparison removed 951 repeated shared registrations across 39 pages
+and reduced project script transfer by 9753 bytes without adding requests.
+The final release also compares payloads against main after the clipboard
+recovery change; the timing samples retain their earlier source pins.
+
+Timing remains inconclusive. The matched set still has nine detail LCP failures
+after the change, and one Dits sample also fails blocking time. Six declared
+follow-up controls did not reproduce that spike. Both configurations produced
+an unusually low LCP sample with unchanged bytes; the trace shows the simulated
+graph changing when hydration-related requests fall outside the observed paint
+cutoff. The report keeps those samples and the failure, without attributing a
+site-wide speedup. Every budget and the rejected preload/hide/delay constraints
+remain in place.
+
 ## Search corpus reuse, October 22, 2026
 
 At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
@@ -180,8 +206,9 @@ it deliberately makes no timing assertion on a shared machine.
   prevents a large public asset from shadowing its route.
 - `lib/icons.tsx` is a pure re-export facade over individual wrappers in
   `lib/icons/`. A monolithic factory module shipped 45 glyph definitions on home,
-  including preview-only icons. The sharing group is limited to the actual
-  homepage/layout/root-not-found overlap; sharing every route's initial modules
+  including preview-only icons. Membership in the sharing group is limited to
+  modules used by at least two of home, layout and root-not-found; every consumer
+  reuses that selected code. Sharing every route's initial modules
   recreated the same eager payload even after splitting the facade. Independent
   modules and Next's existing import optimizer resolve each consumer to its
   requested glyphs; this bounded sharing keeps route dependencies deferred
