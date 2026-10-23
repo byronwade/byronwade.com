@@ -146,8 +146,10 @@ first, with `perf-budget.mjs`'s browser settle and default simulated mobile:
 | Thorbis | 3054, 2881, 3046 | 3047, 3049, 2498 |
 | Dits | 3087, 3106, 3048 | 1540, 3041, 3125 |
 
-Home and the post separate beyond their spread: medians fall 79ms and 173ms,
-and every after sample is below every before sample. The post still misses the
+The post separates clearly: its median falls 173ms and every after sample is
+below every before sample. Home's median falls 79ms with no overlap, but no
+separate A/A control ran, and earlier A/A runs on this host differed by about
+80ms, so home is consistent with a gain at the noise floor. The post still misses the
 3000ms limit by 5-19ms. Thorbis and Dits show no change beyond variation; their
 low samples are the graph-cutoff effect described above, not this change. FCP,
 TBT and every other limit are unchanged. Benchmark index ranged 1586-2619 on
