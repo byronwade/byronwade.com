@@ -6,7 +6,7 @@ import {
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import "./globals.css";
-import { ErrorBoundary, ReactScan, ThemeProvider } from "@/components/common";
+import { ErrorBoundary, FontPreload, ReactScan, ThemeProvider } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
 
@@ -19,20 +19,8 @@ const websiteJsonLd = generateWebSiteStructuredData();
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" className="h-full" suppressHydrationWarning dir="ltr">
-			<head>
-				<link
-					rel="preload"
-					href="/fonts/inter-latin-core.woff2"
-					as="font"
-					type="font/woff2"
-					crossOrigin="anonymous"
-					fetchPriority="high"
-				/>
-				<link rel="dns-prefetch" href="//api.github.com" />
-				<link rel="dns-prefetch" href="//api.dribbble.com" />
-				<link rel="dns-prefetch" href="//api.figma.com" />
-			</head>
 			<body className="min-h-screen bg-background font-sans antialiased">
+				<FontPreload />
 				<a href="#main-content" className="skip-link">
 					Skip to main content
 				</a>
