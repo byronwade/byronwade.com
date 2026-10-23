@@ -216,8 +216,16 @@ in the real local cache and content freshness through production HTTP requests.
 `/api/resume-pdf` prints `/resume` only after a successful HTTP navigation.
 An HTTP error or missing navigation response returns the existing generic 500
 JSON with `Cache-Control: no-store`, so an error page cannot be cached as a PDF.
-Successful exports retain the shared filename and one-hour cache policy. Email
-hydration remains best-effort; the server-rendered record can print without it.
+Successful exports use the shared filename. Browsers keep one for an hour
+(`Cache-Control`); Vercel's CDN serves it for a day, then refreshes it in the
+background and keeps the last good copy if a print fails (`CDN-Cache-Control`
+with `stale-while-revalidate` and `stale-if-error`). The CDN cache key includes
+the deployment, so every deploy starts empty and a resume change is never hidden
+behind an older PDF. The route prints the production `siteUrl`, not its own
+deployment, so a print taken during an alias switch or rollback can briefly show
+the other deployment's resume; the first background refresh after a day replaces it. Email hydration
+remains best-effort; a record printed without it still downloads but is sent with
+`no-store`, so it is never kept for later visitors.
 The browser closes on both success and failure. Native Node regressions in
 `tests/resume-pdf-route.test.mjs` exercise the route with a synthetic browser;
 they do not launch Chromium or call production. The compressed browser in
