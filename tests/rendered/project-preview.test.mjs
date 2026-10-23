@@ -545,6 +545,140 @@ test("Project preview fullscreen contains focus and restores it on Escape and bu
 		}, Promise.resolve());
 });
 
+test("Project preview fullscreen dismisses only gestures starting and ending on its padding", {
+	timeout: 180_000,
+}, async (context) => {
+	await ["light", "dark"]
+		.flatMap((theme) =>
+			[390, 1280].flatMap((width) =>
+				["mouse", "touch"].map((input) => ({ theme, width, input, hasTouch: input === "touch" }))
+			)
+		)
+		.reduce(async (previous, viewport) => {
+			await previous;
+			await context.test(
+				`${viewport.theme}/${viewport.width}/${viewport.input}`,
+				async (scenario) => {
+					await withLoadedPreview(scenario, viewport, async (page) => {
+						const originalOverflow = await page.evaluate(() => document.body.style.overflow);
+						assert.equal(
+							await page.evaluate(() => document.documentElement.classList.contains("dark")),
+							viewport.theme === "dark"
+						);
+						await page.focus(FULLSCREEN);
+						await page.keyboard.press("Enter");
+						await page.waitForSelector("dialog[open]");
+						await waitForCapture(page, "dialog", 1920);
+						await page.$eval("dialog", (dialog) => {
+							dialog.dataset.trustedClicks = "0";
+							dialog.addEventListener("click", (event) => {
+								if (event.isTrusted) {
+									dialog.dataset.trustedClicks = String(Number(dialog.dataset.trustedClicks) + 1);
+								}
+							});
+						});
+						const points = await page.$eval(
+							"dialog",
+							(dialog, input) => {
+								const bar = dialog.querySelector("[aria-busy] + div").getBoundingClientRect();
+								const bounds = dialog.getBoundingClientRect();
+								if (input === "touch") {
+									const content = dialog.firstElementChild.getBoundingClientRect();
+									// Cross the padding edge within the tap slop, so Chrome keeps
+									// implicit capture instead of cancelling for a scroll gesture.
+									return {
+										inside: { x: content.left + 2, y: content.top + 8 },
+										padding: { x: content.left - 2, y: content.top + 8 },
+									};
+								}
+								return {
+									inside: { x: bar.left + 4, y: bar.top + bar.height / 2 },
+									padding: { x: bounds.left + 2, y: bounds.top + 2 },
+								};
+							},
+							viewport.input
+						);
+						assert.equal(
+							await page.evaluate(
+								({ padding }) => document.elementFromPoint(padding.x, padding.y)?.tagName,
+								points
+							),
+							"DIALOG",
+							"The dismissal target is the dialog padding"
+						);
+						const client = await page.createCDPSession();
+						await [
+							["inside", "inside"],
+							["inside", "padding"],
+							["padding", "inside"],
+						].reduce(async (prior, [start, end], index) => {
+							await prior;
+							if (viewport.input === "touch") {
+								await client.send("Input.dispatchTouchEvent", {
+									type: "touchStart",
+									touchPoints: [points[start]],
+								});
+								await client.send("Input.dispatchTouchEvent", {
+									type: "touchMove",
+									touchPoints: [points[end]],
+								});
+								await client.send("Input.dispatchTouchEvent", {
+									type: "touchEnd",
+									touchPoints: [],
+								});
+							} else {
+								await page.mouse.move(points[start].x, points[start].y);
+								await page.mouse.down();
+								await page.mouse.move(points[end].x, points[end].y);
+								await page.mouse.up();
+							}
+							// Let the discrete input update commit before asserting that nothing closed.
+							await page.evaluate(
+								() =>
+									new Promise((resolve) =>
+										requestAnimationFrame(() => requestAnimationFrame(resolve))
+									)
+							);
+							assert.equal(
+								await page.evaluate(() => document.querySelector("dialog")?.open ?? false),
+								true,
+								`${start} → ${end} must keep the preview open`
+							);
+							assert.equal(
+								await page.$eval("dialog", (dialog) => Number(dialog.dataset.trustedClicks)),
+								index + 1,
+								"The browser must complete a real click, including after touch capture"
+							);
+						}, Promise.resolve());
+						if (viewport.input === "touch") {
+							await client.send("Input.dispatchTouchEvent", {
+								type: "touchStart",
+								touchPoints: [points.padding],
+							});
+							await client.send("Input.dispatchTouchEvent", {
+								type: "touchCancel",
+								touchPoints: [],
+							});
+							assert.equal(await page.$eval("dialog", (dialog) => dialog.open), true);
+							await page.touchscreen.tap(points.padding.x, points.padding.y);
+						} else {
+							await page.mouse.click(points.padding.x, points.padding.y, { button: "right" });
+							assert.equal(await page.$eval("dialog", (dialog) => dialog.open), true);
+							await page.mouse.click(points.padding.x, points.padding.y);
+						}
+						await page.waitForSelector("dialog", { hidden: true });
+						assert.equal(
+							await page.$eval(FULLSCREEN, (trigger) => trigger === document.activeElement),
+							true,
+							"An intentional padding click closes and returns focus"
+						);
+						assert.equal(await page.evaluate(() => document.body.style.overflow), originalOverflow);
+					});
+				}
+			);
+		}, Promise.resolve());
+});
+
 test("Project preview keyboard width, reset and preset controls keep the capture in sync", {
 	timeout: 180_000,
 }, async (context) => {

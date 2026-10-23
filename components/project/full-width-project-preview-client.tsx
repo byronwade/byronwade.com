@@ -430,15 +430,39 @@ export function FullWidthProjectPreviewClient({
 		const previousOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
 		dialog.showModal();
-		// Pointer dismissal uses the dialog's padding; native cancel owns Escape.
+		// A click can target the common ancestor of a press and release. Only
+		// dismiss when both ends are on the padding; native cancel owns Escape.
+		let paddingGesture = false;
+		const recordPress = (event: PointerEvent) => {
+			paddingGesture = event.isPrimary && event.button === 0 && event.target === dialog;
+		};
+		const recordRelease = (event: PointerEvent) => {
+			// Touch captures its pointer, and a tap's click coordinates can still
+			// be the press coordinates. Hit-test the actual release before click.
+			paddingGesture =
+				paddingGesture &&
+				event.isPrimary &&
+				event.button === 0 &&
+				document.elementFromPoint(event.clientX, event.clientY) === dialog;
+		};
+		const cancelPress = () => {
+			paddingGesture = false;
+		};
 		const dismissBackdrop = (event: MouseEvent) => {
-			if (event.target === dialog) {
+			if (paddingGesture && event.target === dialog) {
 				setIsFullscreen(false);
 			}
+			cancelPress();
 		};
+		dialog.addEventListener("pointerdown", recordPress);
+		dialog.addEventListener("pointerup", recordRelease);
+		dialog.addEventListener("pointercancel", cancelPress);
 		dialog.addEventListener("click", dismissBackdrop);
 
 		return () => {
+			dialog.removeEventListener("pointerdown", recordPress);
+			dialog.removeEventListener("pointerup", recordRelease);
+			dialog.removeEventListener("pointercancel", cancelPress);
 			dialog.removeEventListener("click", dismissBackdrop);
 			dialog.close();
 			document.body.style.overflow = previousOverflow;
