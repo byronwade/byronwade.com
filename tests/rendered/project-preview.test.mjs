@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { join } from "node:path";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
@@ -88,6 +89,148 @@ function waitForWidth(page, width) {
 		width
 	);
 }
+
+async function assertReadablePreviewChrome(page, root) {
+	const clippedText = await page.$eval(`${root} [aria-busy]`, (viewport) => {
+		function outsideBar(rect, bounds) {
+			return (
+				rect.left < Math.max(bounds.left, 0) - 1 ||
+				rect.right > Math.min(bounds.right, window.innerWidth) + 1 ||
+				rect.top < bounds.top - 1 ||
+				rect.bottom > bounds.bottom + 1
+			);
+		}
+		const frame = viewport.parentElement;
+		const failures = [];
+		for (const bar of [frame.firstElementChild, frame.lastElementChild]) {
+			const bounds = bar.getBoundingClientRect();
+			failures.push(
+				...[...bar.querySelectorAll("button, a")]
+					.filter((control) => control.checkVisibility())
+					.filter((control) => outsideBar(control.getBoundingClientRect(), bounds))
+					.map((control) => ({ control: control.getAttribute("aria-label") }))
+			);
+			const walker = document.createTreeWalker(bar, NodeFilter.SHOW_TEXT);
+			let node = walker.nextNode();
+			while (node) {
+				if (
+					node.textContent.trim() &&
+					!node.parentElement.closest(".sr-only") &&
+					node.parentElement.checkVisibility()
+				) {
+					const range = document.createRange();
+					range.selectNodeContents(node);
+					failures.push(
+						...[...range.getClientRects()]
+							.filter((rect) => outsideBar(rect, bounds))
+							.map((rect) => ({
+								text: node.textContent,
+								rect: rect.toJSON(),
+								bounds: bounds.toJSON(),
+							}))
+					);
+				}
+				node = walker.nextNode();
+			}
+		}
+		return failures;
+	});
+	assert.deepEqual(
+		clippedText,
+		[],
+		"Preview chrome text must fit its bar and the screen without clipping"
+	);
+}
+
+test("Project preview chrome stays readable with enlarged text", {
+	timeout: 180_000,
+}, async (context) => {
+	await ["light", "dark"]
+		.flatMap((theme) => [320, 1280].map((width) => ({ theme, width })))
+		.reduce(async (previous, viewport) => {
+			await previous;
+			await context.test(`${viewport.theme}/${viewport.width}`, async (scenario) => {
+				await withLoadedPreview(scenario, viewport, async (page) => {
+					await assertReadablePreviewChrome(page, PREVIEW);
+					assert.equal(
+						await page.$eval(
+							`${PREVIEW} [aria-busy] + div`,
+							(bar) => bar.getBoundingClientRect().height
+						),
+						28,
+						"Normal text keeps the compact status bar"
+					);
+					await page.evaluate(() => {
+						document.documentElement.style.fontSize = "200%";
+					});
+					// ResizeObserver must refit this desktop capture before measuring pointer targets.
+					await page.waitForFunction(
+						(selector) => {
+							const preview = document.querySelector(selector);
+							const frame = preview.querySelector("[aria-busy]").parentElement.parentElement;
+							return (
+								Math.abs(
+									frame.getBoundingClientRect().width -
+										Math.min(preview.getBoundingClientRect().width, 1280)
+								) <= 1
+							);
+						},
+						{},
+						PREVIEW
+					);
+					await page.$eval(PREVIEW, (preview) => preview.scrollIntoView());
+					if (process.env.PREVIEW_PROOF_DIR) {
+						await page.screenshot({
+							path: join(
+								process.env.PREVIEW_PROOF_DIR,
+								`${viewport.theme}-${viewport.width}-inline.png`
+							),
+						});
+					}
+					await assertReadablePreviewChrome(page, PREVIEW);
+					const handle = await page.$(RESIZE);
+					await handle.scrollIntoView();
+					const box = await handle.boundingBox();
+					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+					await page.mouse.down();
+					try {
+						await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+						await page.waitForFunction(
+							(selector) => document.querySelector(selector).textContent.includes("Resizing"),
+							{},
+							PREVIEW
+						);
+						await assertReadablePreviewChrome(page, PREVIEW);
+					} finally {
+						await page.mouse.up();
+					}
+					await page.focus(RESIZE);
+					await page.keyboard.press("ArrowLeft");
+					await page.waitForSelector(`${PREVIEW} button[aria-label="Reset preview width"]`);
+					await assertReadablePreviewChrome(page, PREVIEW);
+					await page.focus(FULLSCREEN);
+					await page.keyboard.press("Enter");
+					await page.waitForSelector("dialog[open]");
+					await waitForCapture(page, "dialog", 1920);
+					if (process.env.PREVIEW_PROOF_DIR) {
+						await page.screenshot({
+							path: join(
+								process.env.PREVIEW_PROOF_DIR,
+								`${viewport.theme}-${viewport.width}-fullscreen.png`
+							),
+						});
+					}
+					await assertReadablePreviewChrome(page, "dialog");
+					await page.keyboard.press("Escape");
+					await page.waitForSelector("dialog", { hidden: true });
+					assert.equal(
+						await page.$eval(FULLSCREEN, (trigger) => trigger === document.activeElement),
+						true
+					);
+				});
+			});
+		}, Promise.resolve());
+});
 
 async function pressWithShift(page, key) {
 	await page.keyboard.down("Shift");
