@@ -472,7 +472,9 @@ machine-readable values, and that `/resume` is prerendered without contact detai
 and keeps its controls and the footer out of print. `tests/rendered/layout.test.mjs`
 loads every prerendered route plus search results, the 404 and a Figma file, and
 fails if the `main h1`, header and footer left edges differ by more than 1px at
-1280 and 1440, or if any route scrolls sideways at 320, 360 or 390.
+1280 and 1440, if any route scrolls sideways at 320, 360 or 390, or at 320 with
+200% root text, or if a visible button rendered on load is not exactly 44px tall
+at default text (Button sizes are a 44px minimum so labels can wrap when enlarged).
 `tests/code-palette.test.mjs` resolves `app/globals.css` in both themes and fails
 when any syntax colour drops below 4.5:1 on the code well. Content dates use the existing `safeFormatDate` /
 `safeISODate` helpers in `lib/markdown-utils.ts`; avoid local formatting of raw

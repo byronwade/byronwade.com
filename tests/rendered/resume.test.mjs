@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { withProductionServer } from "../../scripts/production-session.mjs";
+import { withBrowser } from "../fixtures/browser.mjs";
 
 const DESCRIPTION = /<meta name="description" content="([^"]*)"/;
 const JSON_LD_OPEN = 'type="application/ld+json"';
@@ -97,4 +99,38 @@ test("printing the resume leaves out its controls and the site footer", async ()
 	for (const record of [">Experience<", ">Licenses and certifications<"]) {
 		assert.ok(!isInsidePrintHidden(html, record), `${record} must still print`);
 	}
+});
+
+test("the revealed address and the resume header fit a 320px phone at 200% text", {
+	timeout: 120_000,
+}, async (context) => {
+	const fit = await withProductionServer((origin) =>
+		withBrowser(context, { timeout: 15_000, protocolTimeout: 15_000 }, async (browser) => {
+			const page = await browser.newPage();
+			page.setDefaultTimeout(10_000);
+			await page.setViewport({ width: 320, height: 844, isMobile: true, hasTouch: true });
+			assert.ok((await page.goto(`${origin}/resume`, { waitUntil: "load" })).ok());
+			await page.evaluate(() => {
+				document.documentElement.style.fontSize = "200%";
+			});
+			// The address is decoded after mount, so the general layout check can read too early.
+			await page.waitForSelector("[data-resume-email]", { visible: true });
+			return page.evaluate(async () => {
+				await document.fonts.ready;
+				const right = (selector) =>
+					Math.round(document.querySelector(selector).getBoundingClientRect().right);
+				return {
+					rootFontSize: getComputedStyle(document.documentElement).fontSize,
+					width: document.documentElement.clientWidth,
+					scrollWidth: document.documentElement.scrollWidth,
+					email: right("[data-resume-email]"),
+					portrait: right('main img[alt="Byron Wade"]'),
+				};
+			});
+		})
+	);
+	assert.equal(fit.rootFontSize, "32px", "Text is still enlarged");
+	assert.ok(fit.scrollWidth <= fit.width, `/resume scrolls sideways: ${JSON.stringify(fit)}`);
+	assert.ok(fit.email <= fit.width, `The address runs off screen: ${JSON.stringify(fit)}`);
+	assert.ok(fit.portrait <= fit.width, `The portrait runs off screen: ${JSON.stringify(fit)}`);
 });

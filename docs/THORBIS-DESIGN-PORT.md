@@ -90,6 +90,10 @@ for introducing a new visual choice.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.
+- Text Button sizes use a 44px minimum height instead of the source's fixed height
+  and nowrap label, and never grow wider than their container. At default text the
+  geometry is unchanged; at 200% text a long label wraps and the button grows taller
+  instead of scrolling a 320px page sideways. Icon buttons keep the fixed 44px square.
 - Canvas-computed contrast exposed small status text at 4.09:1 (warning) and
   4.42:1 (success) on tinted badges. Apply the source badge warning foreground
   recipe (76% status / 24% foreground) to both and compose StatusPill from Badge.
