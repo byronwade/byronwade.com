@@ -6,32 +6,17 @@ import { ProjectsIndex } from "@/components/project/projects-index";
 import { getProjects, type Project } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
-	generateOGImageUrl,
 	generateMetadata as generateSEOMetadata,
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
 export async function generateMetadata() {
-	const ogImage = generateOGImageUrl({
-		title: "Projects",
-		description:
-			"Explore my portfolio of web development projects, products, and client work showcasing modern JavaScript, React, and Next.js expertise.",
-	});
-
 	return generateSEOMetadata({
 		title: "Projects",
 		description:
-			"Explore my portfolio of web development projects, products, and client work. Showcasing modern JavaScript, React, Next.js, and full-stack development expertise.",
-		keywords: [
-			"Projects",
-			"Portfolio",
-			"Web Development",
-			"Case Studies",
-			"React Projects",
-			"Next.js Projects",
-		],
-		image: ogImage,
+			"Byron Wade's current work, including Thorbis, followed by earlier products, client work, and experiments.",
+		keywords: ["Projects", "Portfolio", "Case Studies", "Products", "Client Work", "Experiments"],
 		type: "website",
 		canonical: `${siteUrl}/projects`,
 	});
