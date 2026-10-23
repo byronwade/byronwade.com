@@ -279,25 +279,32 @@ const ALREADY_EXITED_TREE = [
 	"",
 ].join("\r\n");
 
-test("a tree that exited before taskkill reached it is not a failed cleanup", async (t) => {
-	const { child, context, diagnostics, exit } = stubChild(t);
-	const killError = Object.assign(new Error("taskkill partial"), { code: 128, signal: null });
-	t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
-		exit();
-		callback(
-			killError,
-			"SUCCESS: The process with PID 123 has been terminated.",
-			ALREADY_EXITED_TREE
-		);
+for (const commandCode of [128, 255]) {
+	test(`already-exited descendants do not fail a forced tree cleanup (taskkill ${commandCode})`, async (t) => {
+		const { child, context, diagnostics } = stubChild(t);
+		const killError = Object.assign(new Error("taskkill partial"), {
+			code: commandCode,
+			signal: null,
+		});
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			// A forced Windows termination exits 1; a natural exit 0 bypasses command errors.
+			child.exitCode = 1;
+			child.emit("exit", 1, null);
+			callback(
+				killError,
+				"SUCCESS: The process with PID 123 has been terminated.",
+				ALREADY_EXITED_TREE
+			);
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await result;
+		assert.ok(diagnostics.join("\n").includes("no running instance"));
+		assert.equal(child.listenerCount("exit"), 0);
 	});
-	syncBuiltinESMExports();
-	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
-	await nextTurn();
-	t.mock.timers.tick(10_000);
-	await result;
-	assert.ok(diagnostics.join("\n").includes("no running instance"));
-	assert.equal(child.listenerCount("exit"), 0);
-});
+}
 
 // Observed on Windows: taskkill stopped a renderer, then found the root already gone because the
 // browser was finishing its own shutdown, and reported before that root's exit event arrived.
@@ -308,7 +315,7 @@ const ROOT_EXITING = [
 ].join("\r\n");
 
 for (const exitCode of [0, 1]) {
-	test(`a failed taskkill followed by the owned exit (code ${exitCode}) passes only a clean exit`, async (t) => {
+	test(`an already-gone taskkill followed by the owned exit (code ${exitCode}) passes cleanup`, async (t) => {
 		const { child, context } = stubChild(t);
 		const killError = Object.assign(new Error("taskkill failed"), { code: 255, signal: null });
 		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
@@ -320,10 +327,7 @@ for (const exitCode of [0, 1]) {
 		});
 		syncBuiltinESMExports();
 		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
-		const check =
-			exitCode === 0
-				? assert.doesNotReject(result)
-				: assert.rejects(result, (error) => error.cause === killError);
+		const check = assert.doesNotReject(result);
 		await nextTurn();
 		t.mock.timers.tick(10_000);
 		await check;
@@ -331,22 +335,54 @@ for (const exitCode of [0, 1]) {
 	});
 }
 
-test("an already-gone report cannot hide an owned process that never exits", async (t) => {
-	const { child, context } = stubChild(t);
-	const killError = Object.assign(new Error("taskkill partial"), { code: 128, signal: null });
-	t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
-		callback(killError, "", ALREADY_EXITED_TREE);
+for (const commandCode of [128, 255]) {
+	test(`an already-gone report cannot hide a root that never exits (taskkill ${commandCode})`, async (t) => {
+		const { child, context } = stubChild(t);
+		const killError = Object.assign(new Error("taskkill partial"), {
+			code: commandCode,
+			signal: null,
+		});
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			callback(killError, "", ALREADY_EXITED_TREE);
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check = assert.rejects(result, PROCESS_DID_NOT_EXIT);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await nextTurn();
+		t.mock.timers.tick(15_000);
+		await check;
+		assert.equal(child.listenerCount("exit"), 0);
 	});
-	syncBuiltinESMExports();
-	const result = closeBrowser({ process: () => child, close: stalledClose }, context);
-	const check = assert.rejects(result, PROCESS_DID_NOT_EXIT);
-	await nextTurn();
-	t.mock.timers.tick(10_000);
-	await nextTurn();
-	t.mock.timers.tick(15_000);
-	await check;
-	assert.equal(child.listenerCount("exit"), 0);
-});
+	test(`already-gone descendants cannot hide access denied (taskkill ${commandCode})`, async (t) => {
+		const { child, context } = stubChild(t);
+		const killError = Object.assign(new Error("taskkill partial"), {
+			code: commandCode,
+			signal: null,
+		});
+		t.mock.method(childProcess, "execFile", (_file, _args, _options, callback) => {
+			child.exitCode = 1;
+			child.emit("exit", 1, null);
+			callback(
+				killError,
+				"SUCCESS: The process with PID 123 has been terminated.",
+				[
+					ALREADY_EXITED_TREE,
+					"ERROR: The process with PID 999 (child process of PID 123) could not be terminated.",
+					"Reason: Access is denied.",
+				].join("\r\n")
+			);
+		});
+		syncBuiltinESMExports();
+		const result = closeBrowser({ process: () => child, close: stalledClose }, context);
+		const check = assert.rejects(result, (error) => error.cause === killError);
+		await nextTurn();
+		t.mock.timers.tick(10_000);
+		await check;
+		assert.equal(child.listenerCount("exit"), 0);
+	});
+}
 
 test("non-Windows forced cleanup uses the owned child handle and observes exit", async (t) => {
 	const { child, context, exit, kill } = stubChild(t);
