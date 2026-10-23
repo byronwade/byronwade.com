@@ -141,7 +141,7 @@ and [Google's robots defaults](https://developers.google.com/search/docs/crawlin
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
-| `/privacy`, `/terms` | Legal |
+| `/privacy`, `/terms` | Legal. The privacy page names the contact fields, analytics events and data-sending services the code actually uses; `tests/legal-pages.test.mjs` fails when a field, `lib/analytics.ts` event or data-sending dependency is added without updating it |
 
 Search body text follows the same `markdownOptions` grammar as the article and
 its table of contents. `lib/search-text.ts` reads the renderer's element tree,
