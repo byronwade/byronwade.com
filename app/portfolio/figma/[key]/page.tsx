@@ -6,7 +6,7 @@ import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
 import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
-import { getFigmaFile } from "@/lib/portfolio-data";
+import { getFigmaFile, isFigmaFileKey } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
 interface FigmaDetailPageProps {
@@ -18,6 +18,11 @@ const COMPONENT_PREVIEW = 6;
 
 export async function generateMetadata({ params }: FigmaDetailPageProps): Promise<Metadata> {
 	const { key } = await params;
+	// layout.tsx answers a malformed key with a 404. The client still applies this
+	// metadata, so give it nothing to say: the not-found page keeps the site title.
+	if (!isFigmaFileKey(key)) {
+		return {};
+	}
 	const file = await getFigmaFile(key)();
 
 	if (!file) {

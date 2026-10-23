@@ -12,11 +12,26 @@ const NOINDEX = /<meta name="robots" content="noindex/g;
 // loading.tsx streams a 200 shell before the page renders, so only a check
 // above that boundary can still answer with a real status.
 test("a malformed design file key is a real 404, a missing well-formed one is not", {
-	timeout: 60_000,
-}, async () => {
+	timeout: 90_000,
+}, async (context) => {
 	await withFigmaFixture((env) =>
 		withProductionServer(
 			async (url) => {
+				// The client applies the page's metadata after hydration, so read the
+				// title the visitor ends up with, not only the served HTML.
+				await withBrowser(context, { timeout: 30_000 }, async (browser) => {
+					const page = await browser.newPage();
+					const response = await page.goto(`${url}/portfolio/figma/bad.key`, {
+						waitUntil: "networkidle0",
+					});
+					assert.equal(response.status(), 404);
+					await page.waitForSelector("main h1");
+					assert.equal(
+						await page.$eval("main h1", (heading) => heading.textContent),
+						"Page not found"
+					);
+					assert.ok(!(await page.title()).includes("Design file unavailable"), await page.title());
+				});
 				const read = async (key) => {
 					const response = await fetch(`${url}/portfolio/figma/${key}`);
 					const html = await response.text();
