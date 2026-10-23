@@ -10,7 +10,7 @@ const NO_JS_CONTACT = /<noscript>.*?Contact Byron/s;
 const HIDDEN_HEADING =
 	/class="[^"]*(?:scene-enter|reveal-delay|opacity-0)[^"]*"[^>]*id="home-title"/;
 const INTER_PRELOAD =
-	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/UcCo3FwrK3iLTcviYwY\.woff2")[^>]*>/;
+	/<link(?=[^>]*rel="preload")(?=[^>]*as="font")(?=[^>]*href="\/fonts\/inter-latin-core\.woff2")[^>]*>/;
 const INITIAL_SCRIPT = /<script[^>]+src="\/_next\/([^"]+)"/g;
 const NON_CLIENT_GLYPHS =
 	/(?:ArrowRight|Envelope|DeviceMobile|DeviceTablet|CornersOut|CornersIn|DotsThree|DotsSixVertical|MagnifyingGlass|SquaresFour)Icon/;
@@ -31,7 +31,7 @@ test("homepage content and navigation are present before hydration", async () =>
 	assert.match(
 		html,
 		INTER_PRELOAD,
-		"the pinned source font must preload without a generated manifest"
+		"the Latin core subset of the pinned font must preload without a generated manifest"
 	);
 	assert.doesNotMatch(html, HIDDEN_HEADING);
 });

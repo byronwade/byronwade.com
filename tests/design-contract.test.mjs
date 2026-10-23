@@ -170,3 +170,98 @@ test("quoted posts load the italic Latin core subset instead of the full face", 
 	);
 	assert.ok(subset.size < full.size - 10_000, "the subset must stay materially smaller");
 });
+
+const FULL_LATIN = "UcCo3FwrK3iLTcviYwY.woff2";
+const LATIN_CORE = "inter-latin-core.woff2";
+const RANGE_PREFIX = /^U\+/i;
+const UNICODES_OPTION = /--unicodes="([^"]+)"/;
+const TEXT_SOURCE = /\.(md|ts|tsx)$/;
+
+function fontFaces(css) {
+	return [...css.matchAll(/@font-face\s*\{([^}]*)\}/g)].map((match) => ({
+		at: match.index,
+		descriptor: (name) => match[1].match(new RegExp(`${name}:\\s*([^;]+);`))?.[1].trim(),
+	}));
+}
+
+/** `U+0020-007E, U+00A9` as inclusive [start, end] code point pairs. */
+function unicodeRanges(list) {
+	return list.split(",").map((part) => {
+		const [start, end = start] = part.trim().replace(RANGE_PREFIX, "").split("-");
+		return [Number.parseInt(start, 16), Number.parseInt(end, 16)];
+	});
+}
+
+const covers = (ranges, codePoint) =>
+	ranges.some(([start, end]) => codePoint >= start && codePoint <= end);
+
+test("every page preloads the upright Latin core subset, which covers the site's text", async () => {
+	const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+	const generatedEnd = css.indexOf("/* thorbis-fonts:end */");
+	const faces = fontFaces(css).filter((face) => face.descriptor("font-style") === "normal");
+	const full = faces.filter((face) => face.descriptor("src")?.includes(`/fonts/${FULL_LATIN}`));
+	const core = faces.filter((face) => face.descriptor("src")?.includes(`/fonts/${LATIN_CORE}`));
+	// A heading at weight 500 with no core face would download the full file as well.
+	for (const set of [full, core]) {
+		assert.deepEqual(
+			set.map((face) => face.descriptor("font-weight")),
+			["400", "500"]
+		);
+	}
+	assert.ok(full.every((face) => face.at < generatedEnd));
+	assert.ok(
+		core.every((face) => face.at > generatedEnd),
+		"the core subset must follow the generated Thorbis faces"
+	);
+	const [coreList, otherCoreList] = core.map((face) => face.descriptor("unicode-range"));
+	assert.equal(otherCoreList, coreList, "both weights cover the same characters");
+
+	const performance = await readFile(new URL("../docs/PERFORMANCE.md", import.meta.url), "utf8");
+	const command = performance
+		.split("\n")
+		.find((line) => line.includes(`--output-file=public/fonts/${LATIN_CORE}`));
+	assert.ok(command?.includes(FULL_LATIN), "docs/PERFORMANCE.md keeps the regeneration command");
+	assert.deepEqual(
+		unicodeRanges(command.match(UNICODES_OPTION)[1]),
+		unicodeRanges(coreList),
+		"the face's unicode-range must equal the subset's --unicodes list"
+	);
+
+	// Any character the full face covers and the core does not makes a page load both files.
+	const fullRanges = unicodeRanges(full[0].descriptor("unicode-range"));
+	const coreRanges = unicodeRanges(coreList);
+	const listed = await Promise.all(
+		["content", "app", "components", "lib"].map(async (directory) =>
+			(await readdir(new URL(directory, ROOT), { recursive: true }))
+				.filter((entry) => TEXT_SOURCE.test(entry))
+				.map((entry) => `${directory}/${entry.replaceAll("\\", "/")}`)
+		)
+	);
+	const texts = await Promise.all(
+		listed.flat().map(async (path) => ({ path, text: await readFile(new URL(path, ROOT), "utf8") }))
+	);
+	const uncovered = [];
+	for (const { path, text } of texts) {
+		for (const character of new Set(text)) {
+			const codePoint = character.codePointAt(0);
+			if (covers(fullRanges, codePoint) && !covers(coreRanges, codePoint) && codePoint > 0x7f) {
+				uncovered.push(`${path}: U+${codePoint.toString(16).toUpperCase().padStart(4, "0")}`);
+			}
+		}
+	}
+	assert.deepEqual(
+		uncovered,
+		[],
+		"add these to the core subset with the command in docs/PERFORMANCE.md, or the page loads both files"
+	);
+
+	const layout = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
+	assert.ok(layout.includes(`href="/fonts/${LATIN_CORE}"`), "the root layout preloads the core");
+	assert.ok(!layout.includes(FULL_LATIN), "the full face is never preloaded");
+	const [fullFile, coreFile] = await Promise.all(
+		[FULL_LATIN, LATIN_CORE].map((file) =>
+			stat(new URL(`../public/fonts/${file}`, import.meta.url))
+		)
+	);
+	assert.ok(coreFile.size < fullFile.size - 10_000, "the subset must stay materially smaller");
+});
