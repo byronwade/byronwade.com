@@ -498,7 +498,11 @@ confirmed send. It also requires one `h1` with no skipped heading levels in a po
 a label on every contact field (axe accepts a placeholder as a name), and focus on
 the first invalid field. With the menu or search open, Tab and Shift+Tab past the
 wrap must keep focus inside the panel; that answers axe's `aria-hidden-focus`
-manual review, and removing the panel's sr-only `Popover.Close` fails it. axe's
+manual review. Base UI traps focus only while a `Popover.Close` is mounted: the
+menu's is sr-only (its X is the trigger, outside the panel), search's is the
+visible X. Making either a plain button fails the walk. Search results are a
+combobox listbox, so Tab in search must alternate exactly between the input and
+the X; arrows move through results and a press never takes focus from the input. axe's
 other `incomplete` results were checked by hand on every prerendered route and
 `/portfolio` (Oct 2026) and are not defects: the open trigger's `aria-controls`
 (axe always asks when `aria-haspopup` is set), the active nav pill's `::before` fill

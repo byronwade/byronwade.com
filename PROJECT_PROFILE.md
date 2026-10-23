@@ -248,7 +248,9 @@ use them correctly.
   axe-core (no separate package). Direct Chrome accessibility-tree assertions
   protect the menu/search dialog names; DOM checks protect their mounted target
   references on first open, close and reopen, including search with no results.
-  A Tab and Shift+Tab walk keeps focus inside the open menu and search panels.
+  A Tab and Shift+Tab walk keeps focus inside the open menu and search panels,
+  and in search it alternates exactly between the input and the X (results are
+  reached with the arrow keys, APG combobox).
   Every browser audit, including the full-route
   audit and the design-polish and Thorbis scripts, loads that same copy through
   `scripts/axe-audit.mjs`, offline. Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
