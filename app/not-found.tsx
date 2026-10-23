@@ -1,6 +1,7 @@
 import { SiteShell } from "@/components/layout/site-shell";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 import { Link } from "@/components/ui/link";
+import { cn } from "@/lib/utils";
 
 /**
  * 404. Shared profile, the Thorbis not-found grammar: say what is missing,
@@ -29,7 +30,12 @@ export default function NotFound() {
 					.
 				</p>
 				<div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3">
-					<Button render={<Link href="/" />}>Return home</Button>
+					{/* The commit recipe on the shared link, not the Base UI Button: Next sends
+					    this boundary in every page's payload, so a Button here made the Figma
+					    file page download the /portfolio page chunk (docs/PERFORMANCE.md). */}
+					<Link className={cn(buttonVariants())} href="/">
+						Return home
+					</Link>
 					<Link className="link-action" href="/projects">
 						See selected work
 					</Link>
