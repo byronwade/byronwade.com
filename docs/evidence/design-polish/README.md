@@ -45,8 +45,11 @@ the article is `/blog/building-thorbis`.
 
 After captures wait for stable document bounds and assert that the PNG includes
 the document and footer. This avoids capturing bounds before header hydration
-finishes. The after runner also records axe 4.10.3 WCAG A/AA findings per case;
-incomplete axe checks remain visible and require human judgment.
+finishes. The after runner also records axe WCAG A/AA findings per case, using
+Lighthouse's bundled axe-core through `scripts/axe-audit.mjs` (4.14.0 at the time
+of writing; reports before October 22, 2026 used 4.10.3 from a CDN). Incomplete
+axe checks remain visible and require human judgment; an axe evaluation error or
+a page with no passing rule stops the run.
 
 ## Surface and state decisions
 

@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
 import { readGeometry } from "./audit-geometry.mjs";
+import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -14,17 +15,6 @@ if (!["before", "after"].includes(phase)) {
 }
 const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-polish"}/${phase}`;
 mkdirSync(destination, { recursive: true });
-let axeSource;
-if (phase === "after") {
-	const response = await fetch(
-		"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
-		{
-			signal: AbortSignal.timeout(30_000),
-		}
-	);
-	assert.ok(response.ok, "the pinned accessibility audit must load");
-	axeSource = await response.text();
-}
 const routes = [
 	["home", "/"],
 	["projects", "/projects"],
@@ -52,6 +42,7 @@ const initialReport = {
 	harnessHash: createHash("sha256")
 		.update(readFileSync(import.meta.filename))
 		.update(readFileSync("scripts/audit-geometry.mjs"))
+		.update(readFileSync("scripts/axe-audit.mjs"))
 		.digest("hex"),
 	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
 	head: execFileSync("git", ["rev-parse", "HEAD"], {
@@ -214,22 +205,10 @@ async function capture(page, url, name, route, width, theme) {
 	const file = `${name}-${width}-${theme}.png`;
 	const geometry = await screenshot(page, `${destination}/${file}`);
 	let accessibility;
-	if (axeSource) {
-		await page.addScriptTag({ content: axeSource });
-		accessibility = await page.evaluate(async () => {
-			const results = await window.axe.run({
-				runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
-			});
-			return {
-				version: results.testEngine.version,
-				violations: results.violations.map(({ id, impact, nodes }) => ({
-					id,
-					impact,
-					nodes: nodes.map(({ target, failureSummary }) => ({ target, failureSummary })),
-				})),
-				incomplete: results.incomplete.map(({ id }) => id),
-			};
-		});
+	if (phase === "after") {
+		await injectAxe(page);
+		accessibility = await page.evaluate(readAxe);
+		assert.equal(accessibility.version, axeVersion, "the page runs Lighthouse's copy of axe");
 	}
 	report.cases.push({
 		name,

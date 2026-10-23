@@ -7,7 +7,7 @@ import { withFigmaFixture } from "../tests/fixtures/figma-browser.mjs";
 import { withResendFixture } from "../tests/fixtures/resend-browser.mjs";
 import { launchAuditBrowser } from "./audit-browser.mjs";
 import { readGeometry } from "./audit-geometry.mjs";
-import { readAxe } from "./axe-audit.mjs";
+import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { serializeEvidence, writeEvidenceJson } from "./evidence-json.mjs";
 import { assessBudget } from "./lighthouse-budget.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -55,13 +55,6 @@ if (selectedRoute && !routes.includes(selectedRoute)) {
 	throw new Error(`Unknown audit route ${selectedRoute}`);
 }
 mkdirSync(destination, { recursive: true });
-const response = await fetch("https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js", {
-	signal: AbortSignal.timeout(30_000),
-});
-if (!response.ok) {
-	throw new Error("axe must load; a missing audit cannot pass");
-}
-const axeSource = await response.text();
 const report = {
 	checkedAt: new Date().toISOString(),
 	commit: execFileSync("git", ["rev-parse", "HEAD"], {
@@ -88,7 +81,7 @@ const report = {
 		"Provider disabled; project preview fallback only, successful captures use rendered fixtures",
 	buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
 	chrome: "",
-	axe: "4.10.3",
+	axe: axeVersion,
 	routeCoverage,
 	expectedCases: (selectedRoute ? 1 : routes.length) * 6,
 	cases: [],
@@ -187,8 +180,12 @@ async function auditPage(url, route, width, theme) {
 	try {
 		const loaded = await loadAuditedPage(page, url, route, width, theme, expectedStatus);
 		const lighthouseResult = loaded.lighthouseResult;
-		await page.addScriptTag({ content: axeSource });
-		const violations = await page.evaluate(readAxe);
+		await injectAxe(page);
+		const axe = await page.evaluate(readAxe);
+		if (axe.version !== axeVersion) {
+			throw new Error(`The page ran axe ${axe.version}, not Lighthouse's ${axeVersion}`);
+		}
+		const { violations } = axe;
 		const geometry = await readGeometry(page);
 		const result = {
 			route,
@@ -353,7 +350,6 @@ async function checkSearchStates(page) {
 		await client.send("Page.setFontSizes", { fontSizes: { standard: 16 } });
 		await client.detach();
 		await page.reload({ waitUntil: "networkidle2", timeout: 30_000 });
-		await page.addScriptTag({ content: axeSource });
 	}
 }
 
@@ -375,7 +371,6 @@ async function checkSearchState(page, query) {
 	if (query === "claude_desktop_config.json" ? !found : !noMatches) {
 		throw new Error(`Search did not render the expected state for ${query}`);
 	}
-	await page.addScriptTag({ content: axeSource });
 	await page.evaluate(() => document.fonts.ready);
 	const state = await readState(
 		page,
@@ -488,9 +483,12 @@ async function waitForMotion(page) {
 async function readState(page, name) {
 	await waitForMotion(page);
 	const { targetFailures, inlineTargetExceptions } = await readGeometry(page);
+	// A state can follow a navigation, which drops the axe an earlier check added.
+	await injectAxe(page);
+	const { violations } = await page.evaluate(readAxe);
 	return {
 		name,
-		violations: await page.evaluate(readAxe),
+		violations,
 		targetFailures,
 		inlineTargetExceptions,
 	};

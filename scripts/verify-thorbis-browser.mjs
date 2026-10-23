@@ -3,17 +3,12 @@ import { mkdirSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import sharp from "sharp";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
 const destination = process.env.THORBIS_EVIDENCE_DIR || "docs/evidence/thorbis";
 mkdirSync(destination, { recursive: true });
-const axeResponse = await fetch(
-	"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
-	{ signal: AbortSignal.timeout(30_000) }
-);
-assert.ok(axeResponse.ok, "axe must load; a missing audit cannot pass");
-const axeSource = await axeResponse.text();
 const browser = await puppeteer.launch({
 	executablePath:
 		process.env.CHROME_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe",
@@ -23,7 +18,7 @@ const report = {
 	checkedAt: new Date().toISOString(),
 	chrome: await browser.version(),
 	source: "46b6654d02fda9d8fde737395185c3141df52cd2",
-	axe: "4.10.3",
+	axe: axeVersion,
 	cases: [],
 	keyboard: [],
 	noJavaScript: [],
@@ -171,17 +166,9 @@ async function auditCase(url, width, theme) {
 		});
 	});
 	await page.evaluate(() => document.fonts.ready);
-	await page.addScriptTag({ content: axeSource });
-	const axe = await page.evaluate(async () => {
-		const results = await window.axe.run(document, {
-			runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
-		});
-		return results.violations.map(({ id, impact, nodes }) => ({
-			id,
-			impact,
-			nodes: nodes.map(({ target, failureSummary }) => ({ target, failureSummary })),
-		}));
-	});
+	await injectAxe(page);
+	const { version, violations: axe } = await page.evaluate(readAxe);
+	assert.equal(version, axeVersion, "the page runs Lighthouse's copy of axe");
 	const geometry = await page.evaluate(() => {
 		const heading = document.querySelector("h1");
 		const style = getComputedStyle(heading);
@@ -353,7 +340,7 @@ async function checkKeyboard(page, width) {
 }
 
 async function checkShellStates(page, width, theme) {
-	await page.addScriptTag({ content: axeSource });
+	await injectAxe(page);
 	// The #80 header has two panels: search at every width, and the navigation menu that
 	// replaces the inline primary links below the 40rem header container.
 	const panels = [{ trigger: SEARCH_TRIGGER, label: "Search" }];
@@ -380,6 +367,8 @@ async function checkShellStates(page, width, theme) {
 				() => document.activeElement.getAttribute("aria-label") === "Search"
 			);
 		}
+		// Every rule, not only readAxe's WCAG set: dialog naming (aria-dialog-name)
+		// is tagged best practice, and these panels are dialogs.
 		const violations = await page.evaluate(async () =>
 			(await window.axe.run()).violations.map(({ id, impact }) => ({ id, impact }))
 		);

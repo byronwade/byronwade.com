@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync } from "node:fs";
 import puppeteer from "puppeteer-core";
 import { closeBrowser } from "../tests/fixtures/browser.mjs";
+import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
 
@@ -10,17 +11,6 @@ const phase = process.argv[2];
 assert.ok(["before", "after"].includes(phase), "Choose before or after");
 const destination = `${process.env.DESIGN_EVIDENCE_DIR || "docs/evidence/design-polish"}/${phase}/states`;
 mkdirSync(destination, { recursive: true });
-let axeSource;
-if (phase === "after") {
-	const response = await fetch(
-		"https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.3/axe.min.js",
-		{
-			signal: AbortSignal.timeout(30_000),
-		}
-	);
-	assert.ok(response.ok, "the pinned accessibility audit must load");
-	axeSource = await response.text();
-}
 const report = {
 	phase,
 	head: execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(),
@@ -57,23 +47,10 @@ async function snapshot(page, name, width, theme) {
 	}));
 	report.cases.push({ name, width, theme, file, ...state });
 	assert.equal(state.overflow, false, `${name} fits at ${width}`);
-	if (axeSource) {
-		if (!(await page.evaluate(() => Boolean(window.axe)))) {
-			await page.addScriptTag({ content: axeSource });
-		}
-		const accessibility = await page.evaluate(async () => {
-			const results = await window.axe.run({
-				runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] },
-			});
-			return {
-				violations: results.violations.map(({ id, impact, nodes }) => ({
-					id,
-					impact,
-					targets: nodes.map(({ target }) => target),
-				})),
-				incomplete: results.incomplete.map(({ id }) => id),
-			};
-		});
+	if (phase === "after") {
+		await injectAxe(page);
+		const accessibility = await page.evaluate(readAxe);
+		assert.equal(accessibility.version, axeVersion, "the page runs Lighthouse's copy of axe");
 		report.cases.at(-1).accessibility = accessibility;
 		assert.deepEqual(accessibility.violations, [], `${name} has no axe A/AA violations`);
 	}
