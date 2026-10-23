@@ -2,7 +2,7 @@
 
 Source: [Thorbis Design](https://design.thorbis.com), [46b6654](https://github.com/byronwade/thorbis-design/tree/46b6654d02fda9d8fde737395185c3141df52cd2). This is a port of a private application, not a package installation.
 
-## Visual comparisons
+## Historical visual comparisons
 
 Each comparison places local home on the left and the live Thorbis Rules homepage on the right. Screenshots use device scale 1 and a 1000px-tall viewport. Layout is site-specific; color/type/component roles come from Thorbis. Accessible status/field/button deviations are documented in the port map.
 
@@ -16,12 +16,48 @@ Full-page home images also cover 768/320 in both themes. focus-*.png records vis
 ## Structured proof
 
 - browser.json: Chrome/155.0.8059.41, axe 4.10.3, eight width/theme cases, four keyboard widths, real theme-toggle round trips, 24 panels, nine route smoke checks, two no-JS widths and contact/shortcut/reduced-motion checks. All audited text meets AA and enabled field boundaries meet 3:1. Twelve live color roles match. Computed type roles survive cn().
-- Known drift (October 22, 2026, main `bf18367`): `verify-thorbis-browser.mjs` now injects Lighthouse's axe through `scripts/axe-audit.mjs`, and its first case confirms the in-page axe version, but it then stops on the geometry read before asserting results because no element carries `data-slot="card-title"` any more. The unmodified script fails at the same place. browser.json above is the last completed run.
+- The checked-in browser.json and images above are the original port evidence, not a current-source run. On October 22, the verifier stopped before recording its first case because the card-title selector had been retired. The October 23 repair below restores the current audit; it does not relabel these historical files.
 - port.json: source revision, clean read-only checkout, private manifest and asset fingerprints.
 - dev-smoke.json: earlier development checkpoint, 768px light/dark.
 - dev-current.json: client-slot checkpoint, canonical npm run dev, 1440/390 light/dark, actual theme controls, no overflow/runtime errors.
 - performance-before.json: first port candidate, before loading/dependency optimizations. This is not a measurement of the old production site.
 - performance.json: final acceptance candidate and complete budget assertions/diagnostics.
+
+## Current browser contract
+
+`scripts/verify-thorbis-browser.mjs` checks 1440/768/390/320px in both themes.
+It measures the current 32px claim, 16px opening prose, 14px specimen title and
+12px caption through `scripts/thorbis-home-contract.mjs`, following DESIGN.md
+§§5 and 7.4. It measures the visible inline navigation on wide screens and the
+offered menu trigger on phones; the open menu's label is checked at 13px.
+Keyboard focus screenshots use the actual menu link on phones. There is no
+card-title requirement and hidden desktop links cannot prove mobile navigation.
+
+Target checks use the shared `scripts/audit-geometry.mjs` classifier, including
+its recorded inline-prose exceptions; standalone links and controls still have
+to meet their target minimums. The matrix retains axe and contrast checks,
+real theme-toggle round trips, 12 open panels (eight search, four navigation),
+four keyboard widths, two no-JavaScript widths, nine route smoke checks,
+contact draft/validation/reveal, the global shortcut and reduced-motion checks.
+Panel checks still run every axe rule so dialog naming remains covered.
+
+The live upstream comparison records twelve local/upstream token values and
+their drift list at 1440/390 in both themes. Drift is informational: the port is
+pinned, while the hosted upstream can change independently. It does not update
+local tokens or establish parity with the pinned source. This compares computed
+CSS text, so serialization differences such as an achromatic hue of `0` versus
+`none` do not establish a visible color change. The live reference
+must still load within the navigation deadline; a network or capture failure
+fails the command rather than claiming comparison evidence. Upstream page
+exceptions are recorded separately from local page exceptions.
+
+New reports include the source HEAD, build ID, harness hash, Chrome/axe versions,
+local page exceptions and an explicit final status. A pass is recorded only
+after the owned production server and browser have closed successfully. The
+rendered regression in `tests/rendered/thorbis-home.test.mjs` shares the same
+type contract and deliberately corrupts the DOM to prove missing navigation,
+missing specimen, type drift and motion drift remain detectable. These local
+regressions do not depend on the live upstream.
 
 ## Performance
 
@@ -39,6 +75,6 @@ material and the final LCP margin is only 10.483ms; no real-user production clai
 
 ## Reproduce locally
 
-Use Node 24 and Chrome (CHROME_PATH can select another installation). From the worktree: npm ci; npm test; npm run check; npm run perf:budget; npm run test:rendered; node scripts/verify-thorbis-browser.mjs; npm run lint; git diff --check. The performance command builds once and owns an isolated production server/browser; the browser command uses that build with its own server. No GitHub Actions or deployment is part of verification.
+Use Node 24 and Chrome (CHROME_PATH can select another installation). From the worktree: npm ci; npm test; npm run check; npm run perf:budget; npm run test:rendered; node scripts/verify-thorbis-browser.mjs; npm run lint; git diff --check. Set THORBIS_EVIDENCE_DIR to a fresh evidence folder before the browser command to preserve the historical files above. The performance command builds once and owns an isolated production server/browser; the browser command uses that build with its own server. Browser launch, protocol, navigation and selector waits are bounded; it reuses the canonical browser fixture for unexpected-exit failures and owned-process cleanup. No GitHub Actions or deployment is part of verification.
 
 Physical-device, Safari and screen-reader validation were not run. Empty home content arrays were not forced; empty search and invalid contact states were exercised. [PR-56-RESULT.md](PR-56-RESULT.md) preserves that task's final local verification, status and merge receipts.
