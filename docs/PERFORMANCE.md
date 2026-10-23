@@ -123,6 +123,80 @@ cutoff. The report keeps those samples and the failure, without attributing a
 site-wide speedup. Every budget and the rejected preload/hide/delay constraints
 remain in place.
 
+## Route chunk ownership, October 23, 2026
+
+Next builds each page's client reference manifest by merging the manifests of its
+parent segments in order (`flight-manifest-plugin.js`, `mergeManifest`), so for a
+module several entries reference, the last entry written decides which chunks load
+it. The root group holds the layout, the homepage, `error` and `not-found`; a
+nested group holds its index page (`/projects`, `/blog`, `/portfolio`). A client
+module that a root-level server tree renders, and that a page entry also imports
+directly, therefore resolves to that page's chunk on every route that does not
+import it itself. Two did:
+
+- The header brand was a server-rendered `next/link`, which the homepage and the
+  `/projects` index also render. All 24 project pages downloaded the `/projects`
+  page chunk; contact, the résumé, privacy, terms, the 404, `/portfolio` and Figma
+  file pages downloaded the homepage chunk.
+- The root `not-found` boundary, which Next sends in every page's payload, rendered
+  the Base UI `Button`, which `/portfolio` also imports. Figma file pages downloaded
+  the `/portfolio` chunk, and the shared-primitives rule (two of home, layout and
+  not-found) kept the Button in the chunk every page loads.
+
+`NavDock`, a client component only the layout renders, now draws the brand link and
+mark. The 404's "Return home" wears the button recipe (`buttonVariants`) on the
+shared `Link`, as the error boundary already does: same classes, native link
+semantics. The rule: a client module the root layout's or root not-found's server
+tree renders must resolve to a chunk every page already loads. The shared `Link`
+does today, because the layout's own reference wins in the root group and the
+homepage does not import it; moving the homepage's raw `next/link` uses onto the
+shared `Link` would likely send the 404's links to the homepage chunk. The safest
+home for such a module is a layout-only client component, and
+`tests/rendered/route-chunks.test.mjs` is the arbiter: run it before moving any.
+
+Measured on production builds of `ca7bd78` and this change, initial scripts summed
+per route and gzipped at level 9 (polyfills excluded; `noModule`), plus the HTML:
+
+| Route | Scripts | Initial scripts, gzip | HTML, gzip |
+| --- | --- | --- | --- |
+| `/` | 8 → 7 | 170,737 → 170,588 (−149) | 21,056 → 20,713 (−343) |
+| `/blog/nexstar-win-invoice-lose-customer` | 8 → 7 | 170,813 → 166,833 (−3,980) | 45,641 → 45,339 (−302) |
+| `/projects` | 8 → 7 | 168,056 → 164,090 (−3,966) | 22,322 → 21,986 (−336) |
+| `/projects/thorbis` (every project) | 8 → 7 | 183,137 → 182,838 (−299) | 21,765 → 20,885 (−880) |
+| `/contact` | 9 → 7 | 181,396 → 177,884 (−3,512) | 17,806 → 17,554 (−252) |
+| `/resume` | 8 → 7 | 179,557 → 176,594 (−2,963) | 21,922 → 21,603 (−319) |
+| `/privacy` (and `/terms`) | 9 → 7 | 171,206 → 164,003 (−7,203) | 16,374 → 16,114 (−260) |
+| 404 | 8 → 6 | 170,737 → 163,531 (−7,206) | 15,237 → 14,953 (−284) |
+
+The release build, with main through #184 merged, has the same initial scripts on
+every prerendered route and HTML within 23 bytes of these figures; #184 changed
+only the Figma file route. The timing build below predates that merge.
+The shared-primitives chunk fell from 15,474 to 11,694 bytes gzipped; routes that
+render the Button (home, contact, the résumé, project pages) now carry it in their
+own chunk. `/portfolio` and Figma file pages no longer reference the homepage or
+`/portfolio` chunks in their payloads.
+
+Timing, Chrome 155 and Lighthouse's default mobile profile, three interleaved rounds
+(A B, B A, A B) of the `ca7bd78` build (A) and this change (B), sampled by
+`npm run perf:budget`'s browser setup and checked with its assessor:
+
+| Route | LCP, A | LCP, B | Budget failures, A → B |
+| --- | --- | --- | --- |
+| `/contact` | 2928 / 2942 / 2935 ms | 2862 / 2867 / 2867 ms | script count 11 > 10 in 3/3 → none |
+| `/projects/thorbis` | 3071 / 3069 / 3047 ms | 2972 / 2966 / 2981 ms | LCP over 3000 ms in 3/3 → none |
+
+The samples do not overlap: medians −68 ms and −97 ms, against a 24 ms spread
+inside either build. No separate A/A build was run, so treat the size of the drop
+as approximate. Lighthouse also counts the two Vercel diagnostics scripts: contact
+loaded the homepage and not-found chunks on main, 11 scripts against the limit of
+10, and now loads 9. Only
+these two routes were timed; other detail pages and the Nexstar post were not
+remeasured. `tests/rendered/route-chunks.test.mjs` reads the initial
+scripts and the RSC payload (a streamed page fetches those chunks while hydrating)
+of every prerendered page, `/portfolio`, a Figma file, search and an unknown URL,
+and fails when one names another route's page chunk. Both of its tests fail on the
+build of `ca7bd78`.
+
 ## Inter Latin core subset, October 23, 2026
 
 Lighthouse's simulated LCP counts every request that finishes before the

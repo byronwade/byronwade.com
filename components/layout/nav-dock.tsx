@@ -1,6 +1,7 @@
 "use client";
 
 // Thorbis site-header + site-shell.stylex: headerBase, navLink, menu and menuLink.
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSelectedLayoutSegment } from "next/navigation";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
@@ -9,12 +10,17 @@ import { isActive, navItems } from "@/components/layout/nav-config";
 import { publicProfiles } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
+/**
+ * The brand link renders here rather than as a server slot. Next merges parent
+ * client manifests and the last entry's chunks win, so a client module the root
+ * layout's server tree renders can resolve to a page entry that also imports it:
+ * a server-rendered `next/link` here made project pages download the /projects
+ * page chunk and contact, résumé and legal pages the homepage chunk.
+ */
 export function NavDock({
-	brand,
 	tools,
 	icons,
 }: {
-	brand: ReactNode;
 	tools: ReactNode;
 	icons: Record<(typeof navItems)[number]["href"], ReactNode>;
 }) {
@@ -80,7 +86,28 @@ export function NavDock({
 					data-site-header
 					className="pointer-events-auto relative mx-auto flex min-h-13 w-full max-w-2xl @max-[16rem]/site-header:flex-wrap items-center justify-between @max-[16rem]/site-header:gap-2 gap-3 rounded-lg border border-border bg-card px-2.5 shadow-(--header-shadow-panel)"
 				>
-					{brand}
+					<Link
+						href="/"
+						prefetch={false}
+						className="flex min-h-11 min-w-11 items-center gap-2 text-foreground outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+					>
+						<Image
+							src="/icon.png"
+							alt=""
+							width={22}
+							height={22}
+							unoptimized
+							className="size-5.5 shrink-0 object-contain"
+						/>
+						<span className="@max-[16rem]/site-header:sr-only grid min-w-0 gap-[0.05rem] leading-[1.15]">
+							<span className="whitespace-nowrap font-medium text-copy-13 leading-[1.15] tracking-[-0.03em]">
+								Byron Wade
+							</span>
+							<span className="hidden truncate font-medium text-copy-12 text-muted-foreground leading-[1.15] tracking-[-0.015em] sm:inline">
+								Design & engineering
+							</span>
+						</span>
+					</Link>
 					<nav
 						aria-label="Primary"
 						className="@min-[40rem]/site-header:flex hidden items-center gap-0.5"
