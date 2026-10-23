@@ -1,15 +1,13 @@
-"""
-Build the static Inter faces that app/api/og renders share cards with.
+"""Build the static Inter faces that app/api/og renders share cards with."""
 
-Satori reads TrueType but not the variable WOFF2 the pages load, so this pins
-each instance's axes and saves plain TTF. It also drops GPOS: Satori places
-words by their unkerned width but draws them kerned, so every kerned word
-("Teaching", "AWAY", "7,") was followed by a visibly wider gap. Without
-kerning the drawn text matches the layout.
-
-Run from the repository root: python scripts/build-og-fonts.py
-Needs fontTools with brotli (pip install fonttools brotli).
-"""
+# Satori reads TrueType but not the variable WOFF2 the pages load, so this pins
+# each instance's axes and saves plain TTF. It also drops GPOS: Satori places
+# words by their unkerned width but draws them kerned, so every kerned word
+# ("Teaching", "AWAY", "7,") was followed by a visibly wider gap. Without
+# kerning the drawn text matches the layout.
+#
+# Run from the repository root: python scripts/build-og-fonts.py
+# Needs fontTools with brotli (pip install fonttools brotli).
 
 from fontTools.ttLib import TTFont
 from fontTools.varLib.instancer import instantiateVariableFont
