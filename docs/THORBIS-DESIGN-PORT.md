@@ -136,7 +136,9 @@ for introducing a new visual choice.
 3. Review generated changes. Update headers and this map with the script pin
    together. Keep aliases as the only bridge; do not leave old/new palettes or displaced font assets.
 4. Port changes to the canonical existing primitives. Preserve Base UI keyboard,
-   focus, dismissal and rendering APIs. Update all affected callers atomically.
+   focus, dismissal and rendering APIs. Button stays a native element: port its
+   recipe and API, not a Base UI layer (see Intentional site adaptations).
+   Update all affected callers atomically.
 5. Run local lint, type-check, knip, build, contact tests, browser/axe/no-JS checks,
    and perf:budget. Compare 1440/390 light/dark against the live source and check
    768px, 320px and keyboard paths. Commit evidence and document deviations.

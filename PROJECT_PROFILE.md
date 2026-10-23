@@ -322,6 +322,6 @@ the user's instruction each time.
 
 | Exception | Reason | Owner | Review date | Replacement plan |
 | --- | --- | --- | --- | --- |
-| `components/ui/**` a11y rule relaxations | Base UI primitives forward props, so the control an a11y rule looks for is at the call site | `biome.jsonc` | On any primitive rewrite | Keep call sites correct; the relaxation never applies to application UI |
+| `components/ui/**` a11y rule relaxations | Base UI primitives forward props, so the control an a11y rule looks for is at the call site | `biome.jsonc` | On any primitive rewrite | Keep call sites correct; the relaxation never applies to application UI. The native `button.tsx` (October 23, 2026) lints clean without it |
 | `ObfuscatedPhone` exported but unused | Documented public API of the spam-protection module; the phone channel is kept ready | `components/ui/obfuscated-contact.tsx` | If still unused after the redesign | Delete and update `docs/SPAM_PROTECTION.md` together |
 | `noLeakedRender` disabled | Every `&&` render tests a string or object; no numeric conditions exist, and there is no autofix | `biome.jsonc` | If numeric conditions appear in JSX | Re-enable and convert the affected sites |
