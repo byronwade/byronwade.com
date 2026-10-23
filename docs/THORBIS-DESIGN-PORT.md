@@ -30,7 +30,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | app/globals.css semantic aliases | Same color tokens | background=bg, foreground=fg, muted-foreground=marker, card/popover=panel, primary=fg, brand=accent, ring=focus, secondary/muted=on-panel, input/border=border; dock/sidebar derive from the same surface family |
 | lib/utils.ts | src/stylex/tokens.stylex.ts type roles | Extend the existing class merger with Thorbis size names so color classes cannot erase typography |
 | app/globals.css font block; public/fonts/UcCo*, UcC53*, or3n*, inter-latin-core, inter-italic-latin-core, geist-mono-latin-core; app/layout.tsx | src/styles.css Inter/Geist Mono @font-face blocks; public/fonts (Inter/Geist Mono subsets and OFL licenses); src/stylex/tokens.stylex.ts | Exact source files/faces and licenses copied; Latin core subsets of upright Inter and Geist Mono (see docs/PERFORMANCE.md), full Latin faces kept as fallbacks; only upright Inter preloaded; Mono deferred; existing signature face retained only for resume |
-| components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Neutral commit, compact/comfortable/touch sizes, source radii and shadows; Base UI render/nativeButton adapter preserves destination link semantics. The later checklist pass removes the unused electric-blue variant. |
+| components/ui/button.tsx | src/components/ui/button.tsx; button-dimensions.stylex.ts | Neutral commit, compact/comfortable/touch sizes, source radii and shadows; a hookless native adapter draws a `<button>` or clones a link target, so destinations keep link semantics. The later checklist pass removes the unused electric-blue variant. |
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/layout/sheet.tsx | src/components/guidelines/specimen-styles.stylex.ts frame/sheet/note | Panel tone, source large radius and panel elevation around real work, 12px marker caption, edge-to-edge below 40rem. Replaces the card primitive, which no surface needed once panels stopped wrapping counts and sections |
 | components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
@@ -60,6 +60,11 @@ for introducing a new visual choice.
   select as a light system button instead of the field well. Preview controls reuse Button,
   keep 44px geometry, and change dimensions immediately; loading/fullscreen
   surfaces use neutral fills. No motion library or parallel token set is added.
+- Button draws native elements instead of wrapping Base UI's Button. A plain
+  `<button>` (or an `<a href>`/`<Link>` passed as `render`) already provides
+  keyboard, focus, form and disabled behavior; the Base UI layer added only
+  `type="button"` and role handling, at about 4 KB gzip per route. Without
+  hooks, server-rendered Buttons ship no client code. See docs/PERFORMANCE.md.
 
 - Public portfolio Showcase, Evidence and Guided surfaces; no trades Workbench.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.

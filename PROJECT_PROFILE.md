@@ -157,7 +157,7 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
 
 | Capability | Approved owner | Version/range | Why | Replacement or overlap policy |
 | --- | --- | --- | --- | --- |
-| Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive uses it | No second primitive library. Radix was removed entirely. |
+| Accessible primitives | `@base-ui/react` | ^1.5.0 | Migration off Radix is complete; every surviving primitive that needs behavior uses it (`Button` is native HTML: the platform already covers it) | No second primitive library. Radix was removed entirely. |
 | Motion | CSS and Web Animations API | platform | Thorbis transitions and existing theme behavior | No motion package; the capsule morph was removed with the old header |
 | Command menu | Base UI popover + in-house search matching (`dock-toolbar`) | - | Anchored search shares focus, dismissal and scroll ownership with Base UI | Do not reintroduce a command-menu dependency |
 | Toasts | `sonner` | ^2.0.5 | Already standardized | - |
