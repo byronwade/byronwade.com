@@ -90,14 +90,18 @@ async function servedCard(origin, card) {
 	});
 	const body = Buffer.from(await response.arrayBuffer());
 	const type = response.headers.get("content-type");
+	const cache = response.headers.get("cache-control");
 	const isPng = body.subarray(0, 8).toString("hex") === PNG_SIGNATURE;
 	const size = isPng ? `${body.readUInt32BE(16)}x${body.readUInt32BE(20)}` : "not a PNG";
-	return response.status === 200 && type === "image/png" && size === "1200x630"
+	return response.status === 200 &&
+		type === "image/png" &&
+		size === "1200x630" &&
+		cache === "public, max-age=86400, s-maxage=604800"
 		? null
-		: `${response.status} ${type} ${size}`;
+		: `${response.status} ${type} ${size} Cache-Control: ${cache}`;
 }
 
-test("every share card is served as a 1200x630 PNG", { timeout: 180_000 }, async () => {
+test("every share card is a publicly cacheable 1200x630 PNG", { timeout: 180_000 }, async () => {
 	const urls = [
 		...new Set(
 			prerenderedCards()
@@ -113,4 +117,39 @@ test("every share card is served as a 1200x630 PNG", { timeout: 180_000 }, async
 		return Object.fromEntries(results.filter(([, problem]) => problem));
 	});
 	assert.deepEqual(failures, {});
+});
+
+test("share-card rendering keeps different query titles distinct", {
+	timeout: 60_000,
+}, async () => {
+	await withProductionServer(async (origin) => {
+		const card = (title) => `${origin}/api/og?${new URLSearchParams({ title })}`;
+		const read = async (url) => {
+			const response = await fetch(url, { signal: AbortSignal.timeout(30_000) });
+			assert.equal(response.status, 200);
+			return Buffer.from(await response.arrayBuffer());
+		};
+		const first = await read(card("First card"));
+		const second = await read(card("Second card"));
+		const repeated = await read(card("First card"));
+		assert.notDeepEqual(first, second, "Different titles must not reuse one generated image");
+		assert.deepEqual(first, repeated, "The same query renders the same image");
+	});
+});
+
+test("an asset failure is not cached and a later request can recover", {
+	timeout: 60_000,
+}, async () => {
+	const preload = new URL("../fixtures/og-font-failure.mjs", import.meta.url).href;
+	await withProductionServer(
+		async (origin) => {
+			const url = `${origin}/api/og?title=Retry`;
+			const failed = await fetch(url, { signal: AbortSignal.timeout(30_000) });
+			assert.equal(failed.status, 500);
+			assert.equal(await failed.text(), "Failed to generate OG image");
+			assert.equal(failed.headers.get("cache-control"), "no-store");
+			assert.equal(await servedCard(origin, url), null, "A later request renders normally");
+		},
+		{ env: { NODE_OPTIONS: `${process.env.NODE_OPTIONS || ""} --import=${preload}` } }
+	);
 });

@@ -139,6 +139,8 @@ export async function GET(request: NextRequest) {
 			{
 				width: 1200,
 				height: 630,
+				// Cards depend only on their query and these deployed assets, never a visitor.
+				headers: { "Cache-Control": "public, max-age=86400, s-maxage=604800" },
 				fonts: [
 					{ name: "Inter", data: regular, style: "normal", weight: 400 },
 					{ name: "Inter", data: medium, style: "normal", weight: 500 },
@@ -147,6 +149,9 @@ export async function GET(request: NextRequest) {
 		);
 	} catch (error) {
 		console.error("OG image generation error:", error);
-		return new Response("Failed to generate OG image", { status: 500 });
+		return new Response("Failed to generate OG image", {
+			status: 500,
+			headers: { "Cache-Control": "no-store" },
+		});
 	}
 }

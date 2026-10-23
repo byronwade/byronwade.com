@@ -501,6 +501,15 @@ it deliberately makes no timing assertion on a shared machine.
   `python scripts/build-og-fonts.py`. `tests/share-card.test.mjs` checks their
   format and that they cover every title and excerpt; the route fails rather
   than fall back to another font when they are missing.
+  Successful PNG responses use `public, max-age=86400, s-maxage=604800`:
+  one day in browsers and one week in shared caches. Card text lives in the
+  query, so different titles and descriptions have different cache keys;
+  template and font changes at the same URL can remain in a browser for a day.
+  Asset-loading failures return `no-store` so a later request can recover.
+  `tests/rendered/share-cards.test.mjs` checks the actual production HTTP
+  policy for every page's card, distinct/repeated queries, and recovery after
+  a child-server-only simulated font failure. No application cache or extra
+  cache tag is needed for these binary responses, as with project screenshots.
 - With the earlier italic blockquotes, Inter, Geist Mono and the full
   Latin italic face together measured 103,933 bytes on a post with a quote,
   over the 100KiB font limit. `public/fonts/inter-italic-latin-core.woff2` is a
