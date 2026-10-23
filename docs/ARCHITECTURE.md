@@ -9,6 +9,7 @@ Tailwind CSS.
 Every page is wrapped by `components/layout/conditional-layout.tsx` (`SiteLayout`),
 which renders the fixed `SiteHeader`, the page `main`, and the `Footer`. Header
 clearance is reserved before hydration. `SiteHeader` combines `NavDock` navigation
+(which also draws the brand link, see `docs/PERFORMANCE.md` "Route chunk ownership")
 with `DockToolbar` search and theme controls; Base UI owns the anchored menu and
 search panels. Content width and gutters come from `components/layout/site-shell.tsx`.
 Header panel relationships follow their lazy mount lifecycle: the fallback trigger

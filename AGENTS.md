@@ -482,6 +482,11 @@ UTC-midnight strings, which can shift the calendar day and year group.
 `readContentMatter` returns front matter as `unknown` values, so a loader that
 passes a field through without `frontMatterFields` fails `type-check`.
 `.gitattributes` keeps text checkouts in LF to match Biome on Windows as well.
+`tests/rendered/route-chunks.test.mjs` fails when a page's initial scripts or RSC
+payload name another route's page chunk. Next resolves a client module rendered by
+the root layout's or root not-found's server tree to whichever page entry imports it,
+so draw such modules inside a layout-only client component (`NavDock` owns the brand
+link for this reason); see `docs/PERFORMANCE.md` "Route chunk ownership".
 
 `tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
 blur, `transition: all`, routes without a declared profile, the Tailwind default

@@ -123,6 +123,57 @@ cutoff. The report keeps those samples and the failure, without attributing a
 site-wide speedup. Every budget and the rejected preload/hide/delay constraints
 remain in place.
 
+## Route chunk ownership, October 23, 2026
+
+Next builds each page's client reference manifest by merging the manifests of its
+parent segments in order (`flight-manifest-plugin.js`, `mergeManifest`), so for a
+module several entries reference, the last entry written decides which chunks load
+it. The root group holds the layout, the homepage, `error` and `not-found`; a
+nested group holds its index page (`/projects`, `/blog`, `/portfolio`). A client
+module that a root-level server tree renders, and that a page entry also imports
+directly, therefore resolves to that page's chunk on every route that does not
+import it itself. Two did:
+
+- The header brand was a server-rendered `next/link`, which the homepage and the
+  `/projects` index also render. All 24 project pages downloaded the `/projects`
+  page chunk; contact, the résumé, privacy, terms, the 404, `/portfolio` and Figma
+  file pages downloaded the homepage chunk.
+- The root `not-found` boundary, which Next sends in every page's payload, rendered
+  the Base UI `Button`, which `/portfolio` also imports. Figma file pages downloaded
+  the `/portfolio` chunk, and the shared-primitives rule (two of home, layout and
+  not-found) kept the Button in the chunk every page loads.
+
+`NavDock`, a client component only the layout renders, now draws the brand link and
+mark. The 404's "Return home" wears the button recipe (`buttonVariants`) on the
+shared `Link`, as the error boundary already does: same classes, native link
+semantics. Do not render a client module from the root layout's or the root
+not-found's server tree when a page entry also imports it; draw it inside a
+layout-only client component instead.
+
+Measured on production builds of `ca7bd78` and this change, initial scripts summed
+per route and gzipped at level 9 (polyfills excluded; `noModule`), plus the HTML:
+
+| Route | Scripts | Initial scripts, gzip | HTML, gzip |
+| --- | --- | --- | --- |
+| `/` | 8 → 7 | 170,737 → 170,588 (−149) | 21,056 → 20,713 (−343) |
+| `/blog/nexstar-win-invoice-lose-customer` | 8 → 7 | 170,813 → 166,833 (−3,980) | 45,641 → 45,339 (−302) |
+| `/projects` | 8 → 7 | 168,056 → 164,090 (−3,966) | 22,322 → 21,986 (−336) |
+| `/projects/thorbis` (every project) | 8 → 7 | 183,137 → 182,838 (−299) | 21,765 → 20,885 (−880) |
+| `/contact` | 9 → 7 | 181,396 → 177,884 (−3,512) | 17,806 → 17,554 (−252) |
+| `/resume` | 8 → 7 | 179,557 → 176,594 (−2,963) | 21,922 → 21,603 (−319) |
+| `/privacy` (and `/terms`) | 9 → 7 | 171,206 → 164,003 (−7,203) | 16,374 → 16,114 (−260) |
+| 404 | 8 → 6 | 170,737 → 163,531 (−7,206) | 15,237 → 14,953 (−284) |
+
+The shared-primitives chunk fell from 15,474 to 11,694 bytes gzipped; routes that
+render the Button (home, contact, the résumé, project pages) now carry it in their
+own chunk. `/portfolio` and Figma file pages no longer reference the homepage or
+`/portfolio` chunks in their payloads. This is a byte and request reduction; LCP
+was not measured for it. `tests/rendered/route-chunks.test.mjs` reads the initial
+scripts and the RSC payload (a streamed page fetches those chunks while hydrating)
+of every prerendered page, `/portfolio`, a Figma file, search and an unknown URL,
+and fails when one names another route's page chunk. Both of its tests fail on the
+build of `ca7bd78`.
+
 ## Inter Latin core subset, October 23, 2026
 
 Lighthouse's simulated LCP counts every request that finishes before the
