@@ -145,6 +145,27 @@ test("sitemap uses authored updates and omits unknown modification dates", async
 	}
 });
 
+test("static sitemap pages omit modification dates and stay stable as the clock advances", async (context) => {
+	context.mock.timers.enable({ apis: ["Date"], now: Date.UTC(2030, 0, 1) });
+	const first = await sitemap();
+	for (const path of [
+		"/",
+		"/projects",
+		"/portfolio",
+		"/blog",
+		"/resume",
+		"/contact",
+		"/privacy",
+		"/terms",
+	]) {
+		const entry = first.find((item) => new URL(item.url).pathname === path);
+		assert.ok(entry, `${path} should remain discoverable`);
+		assert.equal(entry.lastModified, undefined, `${path} has no recorded modification date`);
+	}
+	context.mock.timers.setTime(Date.UTC(2040, 0, 1));
+	assert.deepEqual(await sitemap(), first, "time alone must not change sitemap entries");
+});
+
 test("an unquoted leap day stays February 29", async () => {
 	assert.equal((await getBlogPost("leap"))?.date, "2024-02-29T00:00:00.000Z");
 });
