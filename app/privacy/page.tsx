@@ -36,10 +36,11 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Usage data.</strong> Vercel Web Analytics and Vercel Speed Insights record
-						anonymous page views and page-speed measurements: the address of the page you visit, the
-						referring site, your approximate location, and your browser and device type. The site
-						also records a few anonymous events, such as viewing a project or post and downloading
-						the résumé. Vercel Web Analytics does not use third-party cookies.
+						anonymous page views and page-speed measurements: the address of the page you visit
+						(without any words you type into site search), the referring site, your approximate
+						location, and your browser and device type. The site also records a few anonymous
+						events, such as viewing a project or post and downloading the résumé. Vercel Web
+						Analytics does not use third-party cookies.
 					</li>
 					<li>
 						<strong>Saved preferences.</strong> If you pick a light or dark theme, that choice is

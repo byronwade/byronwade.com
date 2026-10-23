@@ -141,7 +141,7 @@ and [Google's robots defaults](https://developers.google.com/search/docs/crawlin
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
-| `/privacy`, `/terms` | Legal. The privacy page names the contact fields, analytics events and data-sending services the code actually uses; `tests/legal-pages.test.mjs` fails when a field, `lib/analytics.ts` event or data-sending dependency is added without updating it |
+| `/privacy`, `/terms` | Legal. The privacy page names the contact fields, analytics events and data-sending services the code actually uses; `tests/legal-pages.test.mjs` fails when a field, `lib/analytics.ts` event or data-sending dependency is added without updating it. Site-search words are removed from `/search` addresses before Vercel Web Analytics or Speed Insights sends them; `tests/rendered/analytics-privacy.test.mjs` fails if either would send them |
 
 Search body text follows the same `markdownOptions` grammar as the article and
 its table of contents. `lib/search-text.ts` reads the renderer's element tree,
@@ -374,6 +374,8 @@ components/
   figures may be numbers, and a malformed `draft` value keeps the post a draft.
 - `lib/seo.ts`. Metadata and JSON-LD structured data
 - `lib/analytics.ts`. Vercel analytics events
+- `lib/analytics-redact.ts`. `withoutSearchWords`, the `beforeSend` handler that
+  removes site-search words from addresses sent to Vercel analytics
 - `lib/cache.ts`. `CACHE_TAGS`, the single source of truth for cache tags
 - `lib/screenshot-capture.ts`. Server-only project previews: `/api/screenshot`
   returns a same-origin image URL and `/api/screenshot/image` fetches the capture
