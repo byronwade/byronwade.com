@@ -392,8 +392,8 @@ level 9 as whole files, polyfills excluded:
 | Every other prerendered page | −1 |
 
 Request-time page chunks: `/portfolio` 4,288 → 281, Figma file pages 5,930 →
-1,869, `/search` 6,310 → 5,431. Contact and search keep Base UI's input helpers,
-so they save less. Script counts and the stylesheet are unchanged. No timing was
+1,869, `/search` 6,310 → 5,431. Contact and search kept Base UI's input helpers,
+so they saved less (since removed; see Native Input below). Script counts and the stylesheet are unchanged. No timing was
 claimed. `tests/rendered/button-markup.test.mjs` fails if any route's client
 manifest includes Base UI's `Button` (the earlier build's project-page manifest
 did), checks that prerendered Buttons keep native link and button semantics, and
