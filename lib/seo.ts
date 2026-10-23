@@ -4,8 +4,19 @@ import { publicProfiles, siteUrl, xHandle } from "@/lib/site";
 
 const siteName = "Byron Wade";
 const profileLinks = publicProfiles.map((profile) => profile.href);
-const defaultDescription =
+export const defaultDescription =
 	"Byron Wade builds software for service businesses, drawing on his experience running a plumbing company. Explore Thorbis, shipped projects, and lessons from the trades.";
+export const defaultKeywords = [
+	"Byron Wade",
+	"Thorbis",
+	"Service Business Software",
+	"Field Service Software",
+	"Product Engineering",
+	"Web Development",
+	"TypeScript",
+	"React",
+	"Next.js",
+];
 const defaultAuthor = "Byron Wade";
 
 interface SEOConfig {
@@ -50,21 +61,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	const pageUrl = canonical || siteUrl;
 
 	// Combine default keywords with page-specific ones
-	const allKeywords = [
-		"Full Stack Developer",
-		"Web Development",
-		"JavaScript Expert",
-		"React Developer",
-		"NextJS Developer",
-		"Web Performance",
-		"SEO Optimization",
-		"Byron Wade",
-		"California Developer",
-		"Tech Entrepreneur",
-		"Accessibility",
-		"Web Standards",
-		...keywords,
-	];
+	const allKeywords = [...new Set([...defaultKeywords, ...keywords])];
 
 	const metadata: Metadata = {
 		metadataBase: new URL(siteUrl),

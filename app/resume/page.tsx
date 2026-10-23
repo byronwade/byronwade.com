@@ -9,7 +9,7 @@ import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { getContactForStructuredData } from "@/lib/contact";
 import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
-import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
 
@@ -36,11 +36,6 @@ export const metadata: Metadata = generateSEOMetadata({
 		"Master Plumber",
 		"Georgia Master Plumber",
 	],
-	image: generateOGImageUrl({
-		title: "Resume - Byron Wade",
-		description: "Professional resume and experience",
-		type: "website",
-	}),
 	canonical: `${siteUrl}/resume`,
 	type: "website",
 });
