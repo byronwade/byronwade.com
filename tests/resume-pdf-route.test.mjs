@@ -44,6 +44,7 @@ async function assertFailure(response) {
 	assert.equal(response.status, 500);
 	assert.deepEqual(await response.json(), { error: "Failed to generate PDF" });
 	assert.equal(response.headers.get("cache-control"), "no-store");
+	assert.equal(response.headers.get("cdn-cache-control"), null);
 	assert.equal(response.headers.get("content-disposition"), null);
 }
 
@@ -56,7 +57,14 @@ test("a successful resume load returns the PDF and closes the browser", async (t
 		response.headers.get("content-disposition"),
 		`attachment; filename="${RESUME_PDF_FILENAME}"`
 	);
-	assert.equal(response.headers.get("cache-control"), "public, max-age=3600, s-maxage=3600");
+	// Browsers keep a download for an hour. The CDN (each deployment starts empty)
+	// serves it for a day, then refreshes in the background, keeping the last good
+	// copy when a print fails.
+	assert.equal(response.headers.get("cache-control"), "public, max-age=3600");
+	assert.equal(
+		response.headers.get("cdn-cache-control"),
+		"public, max-age=86400, stale-while-revalidate=31536000, stale-if-error=31536000"
+	);
 	assert.deepEqual(new Uint8Array(await response.arrayBuffer()), PDF_BYTES);
 	assert.equal(browser.close.mock.callCount(), 1);
 });
@@ -86,13 +94,17 @@ test("printing failure is retryable and still closes the browser", async (t) => 
 	assert.equal(browser.close.mock.callCount(), 1);
 });
 
-test("missing email hydration still prints the server-rendered resume", async (t) => {
+test("missing email hydration still prints the server-rendered resume, uncached", async (t) => {
 	const { page, browser } = stubBrowser(t);
 	t.mock.method(page, "waitForSelector", () =>
 		Promise.reject(new Error("synthetic hydration timeout"))
 	);
 	const response = await GET();
 	assert.equal(response.status, 200);
+	assert.equal(response.headers.get("content-type"), "application/pdf");
+	// A resume without its email line must not be stored for later visitors.
+	assert.equal(response.headers.get("cache-control"), "no-store");
+	assert.equal(response.headers.get("cdn-cache-control"), null);
 	assert.deepEqual(new Uint8Array(await response.arrayBuffer()), PDF_BYTES);
 	assert.equal(browser.close.mock.callCount(), 1);
 });

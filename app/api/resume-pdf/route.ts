@@ -7,6 +7,16 @@ import { siteUrl } from "@/lib/site";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** Browsers keep a downloaded PDF for an hour. */
+const BROWSER_CACHE_CONTROL = "public, max-age=3600";
+/**
+ * Vercel's CDN serves a PDF for a day, then refreshes it in the background and keeps
+ * the last good copy if a print fails, so visitors rarely wait for the browser launch.
+ * Each deployment starts with an empty cache, so a resume change is never hidden.
+ */
+const CDN_CACHE_CONTROL =
+	"public, max-age=86400, stale-while-revalidate=31536000, stale-if-error=31536000";
+
 export async function GET() {
 	let browser: Browser | undefined;
 	try {
@@ -40,9 +50,13 @@ export async function GET() {
 		// The record is server-rendered; the email line is decoded after hydration
 		// (docs/SPAM_PROTECTION.md), so wait for it rather than for an arbitrary delay.
 		// A page without it (hydration failure, or an older deployment) still prints.
-		await page.waitForSelector("[data-resume-email]", { timeout: 10_000 }).catch(() => {
-			console.warn("Resume PDF: email line did not appear; printing without it");
-		});
+		const hasEmail = await page.waitForSelector("[data-resume-email]", { timeout: 10_000 }).then(
+			() => true,
+			() => {
+				console.warn("Resume PDF: email line did not appear; printing without it");
+				return false;
+			}
+		);
 
 		// page.pdf() renders print media, so the page's own print:* rules hide the
 		// site chrome and controls. Browser printing gets the same document.
@@ -58,12 +72,15 @@ export async function GET() {
 			preferCSSPageSize: false,
 		});
 
-		// Return PDF as response
+		// A print without the email line still goes to this visitor, but is not stored.
+		const cacheHeaders: Record<string, string> = hasEmail
+			? { "Cache-Control": BROWSER_CACHE_CONTROL, "CDN-Cache-Control": CDN_CACHE_CONTROL }
+			: { "Cache-Control": "no-store" };
 		return new NextResponse(new Uint8Array(pdf).buffer, {
 			headers: {
 				"Content-Type": "application/pdf",
 				"Content-Disposition": `attachment; filename="${RESUME_PDF_FILENAME}"`,
-				"Cache-Control": "public, max-age=3600, s-maxage=3600", // Cache for 1 hour
+				...cacheHeaders,
 			},
 		});
 	} catch (error) {
