@@ -7,6 +7,12 @@ const sharedPrimitivePackages =
 const sharedPrimitiveSources =
 	/[\\/](?:lib[\\/](?:utils|motion|contact|icons[\\/]create-icon)|components[\\/]ui[\\/]button)\.tsx?$/;
 const sharedRootEntries = new Set(["app/page", "app/layout", "app/not-found"]);
+// Every page loads the root layout and error boundary chunks, so a script
+// module they share with any other chunk can move to shared-primitives without
+// adding a byte to any route. Stylesheets stay out: a CSS module here would
+// emit an extra stylesheet.
+const everyPageEntries = new Set(["app/layout", "app/error"]);
+const scriptResource = /\.(?:[cm]?js|tsx?)$/;
 
 const imageRemotePatterns = [
 	{ hostname: "cdn.dribbble.com", protocol: "https" },
@@ -106,19 +112,22 @@ const nextConfig = {
 							// root left duplicates in detail pages; filtering module ownership
 							// keeps unrelated route code out of the shared initial download.
 							test: (module, { chunkGraph }) => {
-								if (
-									!(
-										module.resource &&
-										(sharedPrimitivePackages.test(module.resource) ||
-											sharedPrimitiveSources.test(module.resource))
-									)
-								) {
+								if (!module.resource) {
 									return false;
 								}
+								const chunks = [...chunkGraph.getModuleChunksIterable(module)];
+								if (
+									(sharedPrimitivePackages.test(module.resource) ||
+										sharedPrimitiveSources.test(module.resource)) &&
+									chunks.filter((chunk) => sharedRootEntries.has(chunk.name)).length >= 2
+								) {
+									return true;
+								}
 								return (
-									[...chunkGraph.getModuleChunksIterable(module)].filter((chunk) =>
-										sharedRootEntries.has(chunk.name)
-									).length >= 2
+									chunks.length >= 2 &&
+									chunks.some((chunk) => everyPageEntries.has(chunk.name)) &&
+									module.type.startsWith("javascript") &&
+									scriptResource.test(module.resource.split("?")[0])
 								);
 							},
 							name: "shared-primitives",
