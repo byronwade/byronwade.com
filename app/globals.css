@@ -751,6 +751,7 @@
     text-rendering: optimizeLegibility;
     letter-spacing: -0.006em;
     line-height: var(--text-copy-16--line-height);
+
     /* A word longer than its line (a headline at 200% text, a domain in a caption)
        breaks instead of pushing the page sideways. `break-word`, not `anywhere`, so
        intrinsic sizes and every layout at default text stay exactly as they are. */
