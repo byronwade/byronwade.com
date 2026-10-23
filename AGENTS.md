@@ -500,7 +500,9 @@ the first invalid field. `scripts/axe-audit.mjs` is the only place axe comes fro
 it injects Lighthouse's bundled copy and holds the one WCAG rule set, shared by
 this sensor, the full-route audit and the design-polish and Thorbis browser
 scripts. Do not fetch axe from a CDN or add a second rule set; each of those
-reports records the in-page axe version. The highest-value sensor not yet built is visual
+reports records the in-page axe version. One deliberate exception: the Thorbis
+script's open-panel check runs every axe rule, because dialog naming
+(`aria-dialog-name`) is tagged best practice; keep it. The highest-value sensor not yet built is visual
 regression for the four Showcase routes.
 
 For existing debt: record a baseline, block new violations, reduce the baseline
