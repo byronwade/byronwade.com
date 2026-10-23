@@ -1,12 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { COMMENT, globalCss as css, declarations } from "./fixtures/global-css.mjs";
 
 // WCAG 2.2 AA for body-size text. Code in the well is 14px, never large text.
 const AA = 4.5;
 
-const COMMENT = /\/\*[\s\S]*?\*\//g;
-const DECLARATION = /(--[\w-]+)\s*:\s*([^;]+);/g;
 const VARIABLE = /^var\((--[\w-]+)(?:,\s*(.+))?\)$/;
 const OKLCH = /^oklch\(\s*([^\s]+)\s+([^\s]+)\s+([^\s/)]+)/;
 const OKLAB = /^oklab\(\s*([^\s]+)\s+([^\s]+)\s+([^\s/)]+)/;
@@ -15,28 +13,6 @@ const MIX_WEIGHT = /\s(\d+(?:\.\d+)?)%$/;
 const SYNTAX_RULE = /([^{}]*\.hljs-[^{}]*)\{([^{}]*)\}/g;
 const COLOR_DECLARATION = /(?:^|;|\s)color\s*:\s*([^;]+);/;
 const THEME_IMPORT = /@import\s+["']highlight\.js/;
-
-const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
-
-/** Top-level `--name: value` declarations of every rule whose selector is exactly `selector`. */
-function declarations(selector) {
-	const found = new Map();
-	const opener = new RegExp(`(?:^|\\n)\\s*${selector.replace(".", "\\.")}\\s*\\{`, "g");
-	for (const match of css.matchAll(opener)) {
-		let depth = 1;
-		let index = match.index + match[0].length;
-		const start = index;
-		while (depth > 0 && index < css.length) {
-			depth += css[index] === "{" ? 1 : css[index] === "}" ? -1 : 0;
-			index += 1;
-		}
-		const body = css.slice(start, index - 1).replace(COMMENT, "");
-		for (const [, name, value] of body.matchAll(DECLARATION)) {
-			found.set(name, value.trim());
-		}
-	}
-	return found;
-}
 
 const light = declarations(":root");
 const dark = new Map([...light, ...declarations(".dark")]);

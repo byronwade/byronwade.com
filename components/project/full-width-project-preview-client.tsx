@@ -515,8 +515,8 @@ export function FullWidthProjectPreviewClient({
 
 					{isFullscreen ? (
 						<div className="font-mono text-copy-12 text-muted-foreground">
-							Press <kbd className="rounded bg-background px-1 py-0.5 text-foreground">ESC</kbd> to
-							exit
+							Press <kbd className="rounded-sm bg-background px-1 py-0.5 text-foreground">ESC</kbd>{" "}
+							to exit
 						</div>
 					) : (
 						<span className="font-mono text-copy-12 text-muted-foreground capitalize">
