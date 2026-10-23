@@ -49,7 +49,6 @@ export async function generateMetadata({
 		description: post.excerpt || "",
 		type: "article",
 		date: post.date,
-		author: "Byron Wade",
 	});
 
 	return generateSEOMetadata({
@@ -81,7 +80,6 @@ async function BlogPostContent({ slug }: { slug: string }) {
 		description: post.excerpt || "",
 		type: "article",
 		date: post.date,
-		author: "Byron Wade",
 	});
 
 	const articleStructuredData = generateArticleStructuredData({

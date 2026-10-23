@@ -3,81 +3,72 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { safeFormatDate } from "@/lib/markdown-utils";
+import { type OGImageType, ogImageTypes } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-// Load font file - using Node.js file system since we can't use edge runtime with cacheComponents
-async function getFontData(): Promise<ArrayBuffer> {
-	try {
-		const fontPath = join(process.cwd(), "public", "fonts", "Modelistasignature-ownAV.otf");
-		const fontBuffer = await readFile(fontPath);
-		// Convert Buffer to ArrayBuffer
-		const arrayBuffer = new ArrayBuffer(fontBuffer.length);
-		const view = new Uint8Array(arrayBuffer);
-		view.set(fontBuffer);
-		return arrayBuffer;
-	} catch {
-		// Fallback: return empty buffer if font not found
-		console.warn("Font file not found, using system fonts");
-		return new ArrayBuffer(0);
-	}
+const siteName = "Byron Wade";
+
+// Satori cannot read oklch, so these are the sRGB values of the light Thorbis
+// tokens in app/globals.css. Regenerate them if those tokens change.
+const palette = {
+	background: "#f7f4ee", // --thorbis-bg
+	foreground: "#201b14", // --thorbis-fg
+	body: "#4a4139", // --thorbis-body
+	marker: "#655e56", // --thorbis-marker
+	border: "#eae7e1", // --thorbis-border over --thorbis-bg
+};
+
+const kickers: Record<OGImageType, string | undefined> = {
+	article: "Blog",
+	blog: undefined,
+	project: "Project",
+	website: undefined,
+};
+
+// Static Inter instances of the site's own Latin face, generated as documented
+// in docs/PERFORMANCE.md. Satori reads TTF but not the WOFF2 the pages use.
+// Without these it would fall back to a font the site never shows, so a
+// missing file fails the request instead.
+async function loadAssets() {
+	const [regular, medium, mark] = await Promise.all([
+		readFile(join(process.cwd(), "assets", "og", "inter-og-regular.ttf")),
+		readFile(join(process.cwd(), "assets", "og", "inter-og-medium.ttf")),
+		readFile(join(process.cwd(), "public", "icon-192x192.png")),
+	]);
+	return { regular, medium, mark: `data:image/png;base64,${mark.toString("base64")}` };
 }
 
-interface OGImageParams {
-	author?: string;
-	date?: string;
-	description?: string;
-	image?: string;
-	siteName?: string;
-	tags?: string;
-	title: string;
-	type?: "website" | "article" | "project" | "blog";
+// About two lines of the description at 30px. lineClamp stays as the backstop,
+// but it would cut mid-word.
+const descriptionLimit = 120;
+const TRAILING_PUNCTUATION = /[\s,;:.–—-]+$/;
+
+function clip(text: string, limit: number): string {
+	if (text.length <= limit) {
+		return text;
+	}
+	const cut = text.slice(0, limit + 1);
+	const lastSpace = cut.lastIndexOf(" ");
+	return `${cut.slice(0, lastSpace > 0 ? lastSpace : limit).replace(TRAILING_PUNCTUATION, "")}…`;
+}
+
+function readType(value: string | null): OGImageType {
+	return ogImageTypes.find((type) => type === value) ?? "website";
 }
 
 export async function GET(request: NextRequest) {
 	try {
 		const { searchParams } = new URL(request.url);
+		const title = searchParams.get("title") || siteName;
+		const description = clip(searchParams.get("description") || "", descriptionLimit);
+		const type = readType(searchParams.get("type"));
+		const date = safeFormatDate(searchParams.get("date"));
+		const kicker = [kickers[type], date].filter(Boolean).join(" · ");
+		const titleIsName = title === siteName;
 
-		const title = searchParams.get("title") || "Byron Wade";
-		const description = searchParams.get("description") || "";
-		const type = (searchParams.get("type") || "website") as OGImageParams["type"];
-		const siteName = searchParams.get("siteName") || "Byron Wade";
-		const tags = searchParams.get("tags");
-		const author = searchParams.get("author") || "Byron Wade";
-		const date = searchParams.get("date");
-
-		const fontBoldData = await getFontData();
-
-		// Determine colors based on type
-		const colors = {
-			website: {
-				bg: "#000000",
-				primary: "#FCD34D",
-				secondary: "#FFFFFF",
-				accent: "#FBBF24",
-			},
-			article: {
-				bg: "#1A1A1A",
-				primary: "#FCD34D",
-				secondary: "#FFFFFF",
-				accent: "#FBBF24",
-			},
-			project: {
-				bg: "#0A0A0A",
-				primary: "#FCD34D",
-				secondary: "#FFFFFF",
-				accent: "#FBBF24",
-			},
-			blog: {
-				bg: "#111111",
-				primary: "#FCD34D",
-				secondary: "#FFFFFF",
-				accent: "#FBBF24",
-			},
-		};
-
-		const colorScheme = colors[type as keyof typeof colors] || colors.website;
+		const { regular, medium, mark } = await loadAssets();
 
 		return new ImageResponse(
 			<div
@@ -86,204 +77,72 @@ export async function GET(request: NextRequest) {
 					width: "100%",
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
-					justifyContent: "center",
-					backgroundColor: colorScheme.bg,
-					backgroundImage:
-						"linear-gradient(135deg, rgba(252, 211, 77, 0.1) 0%, rgba(0, 0, 0, 0.8) 100%)",
-					padding: "80px",
-					fontFamily: "system-ui, -apple-system, sans-serif",
-					position: "relative",
+					justifyContent: "space-between",
+					backgroundColor: palette.background,
+					color: palette.foreground,
+					fontFamily: "Inter",
+					padding: "72px 80px 64px",
 				}}
 			>
-				{/* Decorative elements */}
-				<div
-					style={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: 0,
-						opacity: 0.1,
-						backgroundImage:
-							"radial-gradient(circle at 50% 50%, rgba(252, 211, 77, 0.3) 0%, transparent 70%)",
-					}}
-				/>
-
-				{/* Logo/Brand */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						marginBottom: "40px",
-						position: "relative",
-						zIndex: 1,
-					}}
-				>
+				<div style={{ display: "flex", flexDirection: "column" }}>
+					{kicker && (
+						<div style={{ fontSize: 26, color: palette.marker, marginBottom: 28 }}>{kicker}</div>
+					)}
 					<div
 						style={{
-							fontSize: "32px",
-							fontWeight: 700,
-							color: colorScheme.primary,
-							letterSpacing: "-0.02em",
-						}}
-					>
-						{siteName}
-					</div>
-				</div>
-
-				{/* Main Content */}
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-						justifyContent: "center",
-						textAlign: "center",
-						maxWidth: "900px",
-						position: "relative",
-						zIndex: 1,
-					}}
-				>
-					{/* Title */}
-					<h1
-						style={{
-							fontSize: title.length > 50 ? "56px" : "72px",
-							fontWeight: 800,
-							lineHeight: 1.1,
-							color: colorScheme.secondary,
-							margin: "0 0 24px 0",
-							letterSpacing: "-0.03em",
-							textShadow: "0 4px 20px rgba(0, 0, 0, 0.5)",
+							display: "block",
+							fontSize: title.length > 48 ? 60 : 76,
+							fontWeight: 500,
+							lineHeight: 1.12,
+							letterSpacing: "-0.025em", // tracking-tight, as on the page titles
+							lineClamp: 3,
 						}}
 					>
 						{title}
-					</h1>
-
-					{/* Description */}
+					</div>
 					{description && (
-						<p
+						<div
 							style={{
-								fontSize: "28px",
-								lineHeight: 1.4,
-								color: "#CCCCCC",
-								margin: "0 0 32px 0",
-								maxWidth: "800px",
+								display: "block",
+								marginTop: 28,
+								maxWidth: 980,
+								fontSize: 30,
+								lineHeight: 1.45,
+								color: palette.body,
+								lineClamp: 2,
 							}}
 						>
-							{description.length > 150 ? `${description.slice(0, 150)}...` : description}
-						</p>
+							{description}
+						</div>
 					)}
-
-					{/* Meta Information */}
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "row",
-							alignItems: "center",
-							gap: "24px",
-							marginTop: "32px",
-							flexWrap: "wrap",
-							justifyContent: "center",
-						}}
-					>
-						{author && (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									fontSize: "20px",
-									color: colorScheme.primary,
-								}}
-							>
-								<span>✍️</span>
-								<span style={{ marginLeft: "8px" }}>{author}</span>
-							</div>
-						)}
-
-						{date && (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									fontSize: "20px",
-									color: "#999999",
-								}}
-							>
-								<span>📅</span>
-								<span style={{ marginLeft: "8px" }}>{safeFormatDate(date, "MMMM yyyy")}</span>
-							</div>
-						)}
-
-						{tags && (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									fontSize: "18px",
-									color: "#999999",
-								}}
-							>
-								<span>🏷️</span>
-								<span style={{ marginLeft: "8px" }}>{tags.split(",").slice(0, 3).join(", ")}</span>
-							</div>
-						)}
+				</div>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "space-between",
+						borderTop: `2px solid ${palette.border}`,
+						paddingTop: 32,
+					}}
+				>
+					<div style={{ display: "flex", alignItems: "center" }}>
+						{/* biome-ignore lint/performance/noImgElement: Satori renders plain img elements only. */}
+						<img src={mark} alt="" width={48} height={43} />
+						<div style={{ display: "flex", flexDirection: "column", marginLeft: 18 }}>
+							{!titleIsName && <div style={{ fontSize: 26, fontWeight: 500 }}>{siteName}</div>}
+							<div style={{ fontSize: 22, color: palette.marker }}>Design & engineering</div>
+						</div>
 					</div>
-				</div>
-
-				{/* Footer */}
-				<div
-					style={{
-						position: "absolute",
-						bottom: "40px",
-						right: "80px",
-						display: "flex",
-						alignItems: "center",
-						fontSize: "18px",
-						color: "#666666",
-						zIndex: 1,
-					}}
-				>
-					byronwade.com
-				</div>
-
-				{/* Type Badge */}
-				<div
-					style={{
-						position: "absolute",
-						top: "40px",
-						right: "80px",
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "center",
-						padding: "8px 16px",
-						backgroundColor: colorScheme.primary,
-						color: colorScheme.bg,
-						borderRadius: "20px",
-						fontSize: "14px",
-						fontWeight: 600,
-						textTransform: "uppercase",
-						letterSpacing: "0.05em",
-						zIndex: 1,
-					}}
-				>
-					{type}
+					<div style={{ fontSize: 24, color: palette.marker }}>byronwade.com</div>
 				</div>
 			</div>,
 			{
 				width: 1200,
 				height: 630,
-				fonts:
-					fontBoldData.byteLength > 0
-						? [
-								{
-									name: "Modelista",
-									data: fontBoldData,
-									style: "normal",
-									weight: 700,
-								},
-							]
-						: undefined,
+				fonts: [
+					{ name: "Inter", data: regular, style: "normal", weight: 400 },
+					{ name: "Inter", data: medium, style: "normal", weight: 500 },
+				],
 			}
 		);
 	} catch (error) {

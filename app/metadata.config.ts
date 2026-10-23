@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
+import { generateOGImageUrl } from "@/lib/seo";
 import { siteUrl, xHandle } from "@/lib/site";
+
+const homeShareImage = generateOGImageUrl({
+	title: "Byron Wade",
+	description: "Software for service businesses",
+});
 
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
@@ -63,10 +69,7 @@ export const metadata: Metadata = {
 		url: "https://byronwade.com",
 		images: [
 			{
-				url: new URL(
-					"/api/og?title=Byron Wade&description=Software for service businesses&type=website",
-					siteUrl
-				).toString(),
+				url: homeShareImage,
 				width: 1200,
 				height: 630,
 				alt: "Byron Wade, Software for Service Businesses",
@@ -79,12 +82,7 @@ export const metadata: Metadata = {
 		description:
 			"Full-stack developer and operator building field-service products, design systems, and high-performance Next.js apps.",
 		creator: `@${xHandle}`,
-		images: [
-			new URL(
-				"/api/og?title=Byron Wade&description=Software for service businesses&type=website",
-				siteUrl
-			).toString(),
-		],
+		images: [homeShareImage],
 	},
 	appleWebApp: {
 		capable: true,

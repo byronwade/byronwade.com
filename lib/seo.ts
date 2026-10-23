@@ -46,9 +46,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	} = config;
 
 	const fullTitle = title.includes("|") ? title : `${title} | ${siteName}`;
-	const ogImage =
-		image ||
-		`${siteUrl}/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&type=${type}${tags.length > 0 ? `&tags=${encodeURIComponent(tags.join(", "))}` : ""}${publishedTime ? `&date=${encodeURIComponent(publishedTime)}` : ""}`;
+	const ogImage = image || generateOGImageUrl({ title, description, type, date: publishedTime });
 	const pageUrl = canonical || siteUrl;
 
 	// Combine default keywords with page-specific ones
@@ -157,24 +155,23 @@ export function generateMetadata(config: SEOConfig): Metadata {
 	return metadata;
 }
 
+export const ogImageTypes = ["website", "article", "project", "blog"] as const;
+export type OGImageType = (typeof ogImageTypes)[number];
+
 /**
- * Generate Open Graph image URL
+ * Generate the share card URL that app/api/og renders.
  */
 export function generateOGImageUrl(params: {
 	title: string;
 	description?: string;
-	type?: "website" | "article" | "project" | "blog";
-	tags?: string[];
-	author?: string;
+	type?: OGImageType;
 	date?: string;
 }): string {
-	const { title, description, type = "website", tags, author, date } = params;
+	const { title, description, type = "website", date } = params;
 	const queryParams = new URLSearchParams({
 		title,
 		...(description ? { description } : {}),
 		type,
-		...(tags && tags.length > 0 ? { tags: tags.join(", ") } : {}),
-		...(author ? { author } : {}),
 		...(date ? { date } : {}),
 	});
 	return `${siteUrl}/api/og?${queryParams.toString()}`;
