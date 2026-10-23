@@ -427,8 +427,17 @@ it deliberately makes no timing assertion on a shared machine.
 - The resume signature renders only the name "Byron Wade". The stylesheet loads
   `public/fonts/byron-signature.woff2`, a subset of those glyphs, so `/resume`
   stays inside the 100KiB font limit. The full
-  `Modelistasignature-ownAV.otf` remains for server-side OG rendering and is not
-  referenced by the page stylesheet.
+  `Modelistasignature-ownAV.otf` is kept only as the source of that subset; no
+  page or route loads it.
+- Share cards (`/api/og`, every page's `og:image`) are drawn by Satori, which
+  reads TrueType but not WOFF2 and ignores variable axes. `assets/og/` holds
+  static Inter instances of the Latin face above (regular at opsz 14 and medium
+  at opsz 32, the page title weight), without GPOS, because Satori places words
+  by their unkerned width but draws them kerned, which widened the gap after
+  every kerned word. If the Thorbis port replaces that face, regenerate them with
+  `python scripts/build-og-fonts.py`. `tests/share-card.test.mjs` checks their
+  format and that they cover every title and excerpt; the route fails rather
+  than fall back to another font when they are missing.
 - With the earlier italic blockquotes, Inter, Geist Mono and the full
   Latin italic face together measured 103,933 bytes on a post with a quote,
   over the 100KiB font limit. `public/fonts/inter-italic-latin-core.woff2` is a
