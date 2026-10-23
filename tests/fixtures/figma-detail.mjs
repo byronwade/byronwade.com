@@ -60,6 +60,7 @@ export const isFigmaFileKey = (key) => /^[\\w-]{1,128}$/.test(key);`,
 });
 
 const { default: FigmaDetailPage } = await import("../../app/portfolio/figma/[key]/page.tsx");
+const { default: FigmaFileLayout } = await import("../../app/portfolio/figma/[key]/layout.tsx");
 const { BreadcrumbTrail } = await import("../../components/layout/breadcrumb-trail-view.tsx");
 const { PathnameContext } = await import(
 	"next/dist/shared/lib/hooks-client-context.shared-runtime.js"
@@ -107,4 +108,8 @@ export async function renderFigmaDetail(overrides = {}, { includeSiteBreadcrumb 
 export function renderMissingFigmaDetail(key = "UnavailableKey") {
 	fixture.file = null;
 	return FigmaDetailPage({ params: Promise.resolve({ key }) });
+}
+
+export function renderFigmaLayout(key, children = "file") {
+	return FigmaFileLayout({ children, params: Promise.resolve({ key }) });
 }

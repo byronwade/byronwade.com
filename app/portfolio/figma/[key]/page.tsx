@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Sheet } from "@/components/layout/sheet";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
@@ -19,6 +18,11 @@ const COMPONENT_PREVIEW = 6;
 
 export async function generateMetadata({ params }: FigmaDetailPageProps): Promise<Metadata> {
 	const { key } = await params;
+	// layout.tsx answers a malformed key with a 404. The client still applies this
+	// metadata, so give it nothing to say: the not-found page keeps the site title.
+	if (!isFigmaFileKey(key)) {
+		return {};
+	}
 	const file = await getFigmaFile(key)();
 
 	if (!file) {
@@ -137,9 +141,7 @@ function UnavailableFile({ fileKey }: { fileKey: string }) {
  */
 export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) {
 	const { key } = await params;
-	if (!isFigmaFileKey(key)) {
-		notFound();
-	}
+	// layout.tsx has already answered a malformed key with a 404.
 	const file = await getFigmaFile(key)();
 	if (!file) {
 		return <UnavailableFile fileKey={key} />;

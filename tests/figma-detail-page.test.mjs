@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
-import { renderFigmaDetail, renderMissingFigmaDetail } from "./fixtures/figma-detail.mjs";
+import {
+	renderFigmaDetail,
+	renderFigmaLayout,
+	renderMissingFigmaDetail,
+} from "./fixtures/figma-detail.mjs";
 
 const BREADCRUMB = /<nav\b[^>]*aria-label="Design file breadcrumb"[^>]*>(.*?)<\/nav>/s;
 const CURRENT_FILE = /aria-current="page"[^>]*>Design &lt;draft&gt; &amp; review<\/span>/;
@@ -113,6 +117,9 @@ test("a well-formed key Figma did not return renders an honest unavailable state
 	assert.ok(html.includes('data-profile="evidence"'));
 });
 
-test("a malformed key keeps the not-found route", async () => {
-	await assert.rejects(renderMissingFigmaDetail("bad key!"), NOT_FOUND);
+// The layout sits above loading.tsx, so its 404 is decided before a shell streams.
+test("the segment layout sends a malformed key to the not-found route", async () => {
+	await assert.rejects(renderFigmaLayout("bad key!"), NOT_FOUND);
+	await assert.rejects(renderFigmaLayout("bad.key"), NOT_FOUND);
+	assert.equal(await renderFigmaLayout("UnavailableKey"), "file");
 });
