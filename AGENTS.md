@@ -483,9 +483,13 @@ passes a field through without `frontMatterFields` fails `type-check`.
 
 `tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
 blur, `transition: all`, routes without a declared profile, the Tailwind default
-type ramp, pixel font sizes, and weights above 500. High-value
-sensors not yet built, in rough priority order: arbitrary-radius/shadow and
-parallel-easing checks, visual regression for the four Showcase routes, and
+type ramp, pixel font sizes, and weights above 500. It also blocks radius keys
+`app/globals.css` does not redeclare (`rounded-xs`, arbitrary values), Tailwind's
+default shadows, numeric durations, keyword or arbitrary curves, literal CSS motion
+timing, a second `cubic-bezier`, and tw-animate enter/exit classes without both
+`duration-(--motion-*)` and `ease-(--…)`; `tests/motion-duration.test.mjs` holds
+the `lib/motion.ts` SSR fallbacks to the same tokens. High-value sensors not yet
+built, in rough priority order: visual regression for the four Showcase routes, and
 accessibility regression for navigation, reading a post, and submitting the
 contact form.
 

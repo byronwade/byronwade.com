@@ -6,9 +6,10 @@ import { fileURLToPath } from "node:url";
 
 /**
  * Thorbis token and profile sensors (DESIGN.md §5, §13; AGENTS.md "Mechanical
- * prevention"). Every rule here is hard: one type scale, token colours only,
- * no gradients or decorative blur, a reduced-motion path, and a declared
- * surface profile on every route.
+ * prevention"). Every rule here is hard: one type scale, token colours, radii
+ * and shadows only, one curve and two duration budgets, no gradients or
+ * decorative blur, a reduced-motion path, and a declared surface profile on
+ * every route.
  */
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -69,6 +70,109 @@ test("reduced motion collapses every animation and transition", () => {
 	const block = css.match(REDUCED_MOTION_BLOCK)?.[1] ?? "";
 	assert.match(block, REDUCED_ANIMATION);
 	assert.match(block, REDUCED_TRANSITION);
+});
+
+// Radii, shadows, curves and durations are tokens too (DESIGN.md §5, §6.2). A
+// Tailwind default key that globals.css does not redeclare, an arbitrary value
+// or a literal curve renders a value from outside the Thorbis scale.
+const css = read("app/globals.css");
+const DECLARATION_NAME = /(--[\w-]+)\s*:/g;
+const RADIUS_TOKEN = /^--radius-([\w-]+)$/;
+const DECLARED = new Set([...css.matchAll(DECLARATION_NAME)].map(([, name]) => name));
+const RADIUS_CLASS =
+	/\brounded(?:-(?:ss|se|ee|es|tl|tr|br|bl|[setrblxy]))?-(\w+|\[[^\]]*\]|\((--[\w-]+)\))/g;
+const RADIUS_KEYS = new Set([
+	"none",
+	"full",
+	...[...DECLARED].flatMap((name) => name.match(RADIUS_TOKEN)?.[1] ?? []),
+]);
+const RADIUS_SIDES = new Set(["s", "e", "t", "r", "b", "l", "x", "y", "ss", "se", "ee", "es"]);
+const OFF_SCALE_SHADOW =
+	/\b(?:inset-)?shadow-(?:2xs|xs|sm|md|lg|xl|2xl|inner|\[)|\bdrop-shadow(?:-|\b)|\b(?:boxShadow|borderRadius)\s*:\s*(?:["'`](?!var\()|\d)/;
+const TOKEN_REFERENCE = /\b(shadow|rounded(?:-[a-z]{1,2})?|duration|ease|delay)-\((--[\w-]+)\)/g;
+const MOTION_TOKEN = /^--(?:motion|ease)-/;
+const OFF_SCALE_MOTION =
+	/(?<![\w-])(?:(?:duration|delay)-(?:\d|\[)|ease-(?:in|out|in-out|linear|initial|\[)(?![\w-])|animate-(?!(?:spin|pulse|in|out|none)(?![\w-]))[\w[(])/;
+const STRING_LITERAL = /"[^"\n]*"|`[^`]*`/g;
+const ENTER_EXIT = /\banimate-(?:in|out)\b/;
+const LITERAL_CURVE = /cubic-bezier\(|\beasing:\s*["'`]|\bduration:\s*\d/;
+const CUBIC_BEZIER = /cubic-bezier\(/g;
+const APPLY = /@apply\s[^;]+;/g;
+const CSS_TIMING =
+	/(?<![\w-])(?:(?:transition|animation)(?:-duration|-delay)?\s*:[^;]*\b\d+(?:\.\d+)?m?s\b|(?:transition|animation)-timing-function\s*:(?!\s*var\())[^;]*/g;
+const appliedClasses = [...css.matchAll(APPLY)].map(([rule]) => rule).join("\n");
+
+test("radii use the redeclared Thorbis keys", () => {
+	const offenders = [...files, "app/globals.css"].flatMap((path) => {
+		const source = path === "app/globals.css" ? appliedClasses : read(path);
+		return [...source.matchAll(RADIUS_CLASS)]
+			.filter(([, key, variable]) =>
+				variable
+					? !variable.startsWith("--radius")
+					: !(RADIUS_KEYS.has(key) || RADIUS_SIDES.has(key))
+			)
+			.map(([match]) => `${path}: ${match}`);
+	});
+	assert.deepEqual(offenders, [], "Use rounded-sm/md/lg/xl/2xl/3xl/4xl/full or --radius-*.");
+});
+
+test("shadows use the Thorbis elevation tokens", () => {
+	const offenders = files.filter((path) => OFF_SCALE_SHADOW.test(read(path)));
+	assert.ok(!OFF_SCALE_SHADOW.test(appliedClasses), "app/globals.css @apply uses a default shadow");
+	assert.deepEqual(offenders, [], "Use shadow-card, shadow-float or shadow-(--shadow-*).");
+});
+
+test("token-reference utilities name a declared token", () => {
+	const offenders = files.flatMap((path) =>
+		[...read(path).matchAll(TOKEN_REFERENCE)]
+			.filter(
+				([, utility, name]) =>
+					!DECLARED.has(name) ||
+					((utility === "duration" || utility === "ease" || utility === "delay") &&
+						!MOTION_TOKEN.test(name))
+			)
+			.map(([match]) => `${path}: ${match}`)
+	);
+	assert.deepEqual(offenders, [], "Reference a token declared in app/globals.css.");
+});
+
+test("motion classes use the one curve and the two duration budgets", () => {
+	const offenders = files.filter((path) => OFF_SCALE_MOTION.test(read(path)));
+	assert.ok(!OFF_SCALE_MOTION.test(appliedClasses), "app/globals.css @apply uses a default curve");
+	assert.deepEqual(offenders, [], "Use duration-(--motion-*) and ease-(--ease-out).");
+});
+
+// tw-animate's enter/exit keyframes fall back to 150ms and the CSS `ease`
+// keyword unless the same class list sets both tokens.
+test("enter and exit animations set the token duration and curve", () => {
+	const offenders = files.flatMap((path) =>
+		[...read(path).matchAll(STRING_LITERAL)]
+			.map(([literal]) => literal)
+			.filter(
+				(literal) =>
+					ENTER_EXIT.test(literal) &&
+					!(literal.includes("duration-(--motion-") && literal.includes("ease-(--"))
+			)
+			.map((literal) => `${path}: ${literal.slice(0, 60)}…`)
+	);
+	assert.deepEqual(offenders, []);
+});
+
+test("scripted motion reads its curve and duration from lib/motion.ts", () => {
+	const offenders = [...files, ...["hooks", "lib"].flatMap((dir) => sourceFiles(dir))]
+		.filter((path) => path !== "lib/motion.ts")
+		.filter((path) => LITERAL_CURVE.test(read(path)));
+	assert.deepEqual(offenders, [], "Use motionToken()/motionDuration().");
+});
+
+test("globals.css declares one curve and times motion only through tokens", () => {
+	assert.equal(css.match(CUBIC_BEZIER)?.length, 1, "one cubic-bezier, the --ease-out source");
+	const literals = [...css.replace(REDUCED_MOTION_BLOCK, "").matchAll(CSS_TIMING)];
+	assert.deepEqual(
+		literals.map(([declaration]) => declaration),
+		[],
+		"Time CSS motion with var(--motion-*)."
+	);
 });
 
 /**
