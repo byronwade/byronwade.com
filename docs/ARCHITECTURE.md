@@ -76,7 +76,12 @@ entry so Retry starts a fresh request. `tests/screenshot-client.test.mjs` checks
 stalled headers and streamed bodies against a local server, plus cache reuse,
 concurrency, malformed responses and recovery without calling the provider.
 The preview's rendered control checks use local images at each offered capture
-size. They cover keyboard width adjustment, reset, preset selection and capture
+size. The toolbar actions and status groups wrap when enlarged text leaves too
+little room; the status bar grows from its normal 28px minimum rather than
+clipping device names or the fullscreen hint. Rendered checks measure visible
+text and controls within both bars at 320px and 1280px in both themes, including
+200% root text, active resizing, Reset and keyboard fullscreen entry/exit.
+They also cover keyboard width adjustment, reset, preset selection and capture
 reuse, plus native fullscreen focus, background inertness, Escape and exit-button
 focus return in both themes. Reset returns focus to the next toolbar control
 before its own button disappears. Native dialog navigation may include browser

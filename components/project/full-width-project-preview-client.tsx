@@ -163,7 +163,7 @@ function PreviewToolbar({
 			)}
 
 			{/* Actions */}
-			<div className="flex shrink-0 items-center gap-3">
+			<div className="flex max-w-full shrink-0 flex-wrap items-center gap-3">
 				{interactive && manualWidth !== null && !isFullscreen && (
 					<Button
 						size="lg"
@@ -500,11 +500,12 @@ export function FullWidthProjectPreviewClient({
 
 				{/* Bottom status bar */}
 				<div
-					className={cn("flex h-7 shrink-0 items-center justify-between bg-secondary px-3", {
-						invisible: !mounted,
-					})}
+					className={cn(
+						"flex min-h-7 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 bg-secondary px-3 py-1",
+						{ invisible: !mounted }
+					)}
 				>
-					<div className="flex items-center gap-2 font-mono text-copy-12 text-muted-foreground">
+					<div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 font-mono text-copy-12 text-muted-foreground">
 						<span className="text-foreground">
 							{capture.width}×{capture.height}
 						</span>
