@@ -207,11 +207,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 								{COPY_FEEDBACK[copyStatus]}
 							</span>
 						</div>
-						<Button
-							type="submit"
-							disabled={isSubmitting}
-							className="wrap-anywhere h-auto min-h-11 gap-2 whitespace-normal py-2"
-						>
+						<Button type="submit" disabled={isSubmitting} className="gap-2">
 							{isSubmitting ? (
 								<Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
 							) : (

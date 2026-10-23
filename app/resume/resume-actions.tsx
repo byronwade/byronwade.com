@@ -42,15 +42,22 @@ export function CopyEmailButton({ icons }: { icons: { email: ReactNode; copied: 
 	};
 
 	return (
-		<span className="inline-flex flex-wrap items-center gap-x-3">
+		<span className="inline-flex max-w-full flex-wrap items-center gap-x-3">
 			<button
 				type="button"
 				onClick={copyEmail}
 				disabled={!email}
-				className="inline-flex min-h-11 cursor-pointer items-center gap-2 border-none bg-transparent p-0 transition-colors hover:text-brand disabled:cursor-default"
+				className="inline-flex min-h-11 max-w-full cursor-pointer items-center gap-2 border-none bg-transparent p-0 text-left transition-colors hover:text-brand disabled:cursor-default"
 			>
 				{status === "copied" ? icons.copied : icons.email}
-				{email ? <span data-resume-email="">{email}</span> : <span>Email</span>}
+				{/* An address has no spaces, so enlarged text may break it anywhere to stay on screen. */}
+				{email ? (
+					<span className="wrap-anywhere min-w-0" data-resume-email="">
+						{email}
+					</span>
+				) : (
+					<span>Email</span>
+				)}
 				<span className="sr-only">, copy to clipboard</span>
 			</button>
 			<span role="status" className="text-copy-14 print:hidden">

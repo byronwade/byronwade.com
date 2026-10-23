@@ -188,16 +188,19 @@ export default function ResumePage() {
 				<header className="w-full">
 					<div className="flex w-full flex-col gap-6 print:gap-3">
 						{/* The name starts the measure like every other page title; the portrait
-						    closes the row instead of pushing the h1 off the shared left edge. */}
-						<div className="flex items-start justify-between gap-5">
+						    closes the row instead of pushing the h1 off the shared left edge, and
+						    drops below the name when enlarged text leaves no room beside it. */}
+						<div className="flex flex-wrap items-start justify-between gap-5">
 							<div className="flex flex-col gap-1 pt-1">
 								<h1 className="font-medium font-signature text-foreground text-heading-32">
 									Byron Wade
 								</h1>
-								{/* Each role stays whole, so a narrow screen breaks at the dot, not inside a title. */}
+								{/* Each role stays whole when it fits, so a narrow screen breaks after the
+								    dot, not inside a title. A role wider than the line still wraps, and
+								    the dot stays with the first role instead of stranding on its own line. */}
 								<p className="text-body text-copy-16">
-									<span className="whitespace-nowrap">Founder at Thorbis</span> ·{" "}
-									<span className="whitespace-nowrap">Full Stack Developer</span>
+									<span className="inline-block">Founder at Thorbis ·</span>{" "}
+									<span className="inline-block">Full Stack Developer</span>
 								</p>
 							</div>
 							<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
