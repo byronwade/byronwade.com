@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 	},
 	description: defaultDescription,
 	applicationName: "Byron Wade Portfolio",
-	authors: [{ name: "Byron Wade", url: "https://byronwade.com" }],
+	authors: [{ name: "Byron Wade", url: siteUrl }],
 	generator: "Next.js",
 	keywords: defaultKeywords,
 	referrer: "origin-when-cross-origin",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
 		siteName: "Byron Wade",
 		title: "Byron Wade, Software for Service Businesses",
 		description: defaultDescription,
-		url: "https://byronwade.com",
+		url: siteUrl,
 		images: [
 			{
 				url: homeShareImage,

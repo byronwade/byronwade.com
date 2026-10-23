@@ -2,17 +2,15 @@ import type { Metadata } from "next";
 import { PageHeader, Prose } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
+import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSEOMetadata({
 	title: "Terms of Service",
 	description:
 		"The terms that govern your use of byronwade.com and services provided by Byron Wade and Wade's Plumbing & Septic.",
-	alternates: {
-		canonical: `${siteUrl}/terms`,
-	},
-	robots: { index: true, follow: true },
-};
+	canonical: `${siteUrl}/terms`,
+});
 
 const LAST_UPDATED = "October 23, 2026";
 

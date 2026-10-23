@@ -7,6 +7,7 @@ import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import { getFigmaFile, isFigmaFileKey } from "@/lib/portfolio-data";
+import { siteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 interface FigmaDetailPageProps {
@@ -33,14 +34,16 @@ export async function generateMetadata({ params }: FigmaDetailPageProps): Promis
 		};
 	}
 
+	const url = `${siteUrl}/portfolio/figma/${key}`;
 	return {
 		title: `${file.name} - Figma Design`,
 		description: `View the ${file.name} design file from Figma.`,
+		alternates: { canonical: url },
 		openGraph: {
 			title: `${file.name} - Figma Design`,
 			description: `View the ${file.name} design file from Figma.`,
 			type: "website",
-			url: `https://byronwade.com/portfolio/figma/${key}`,
+			url,
 			images: file.thumbnailUrl
 				? [{ url: file.thumbnailUrl, width: 800, height: 600, alt: file.name }]
 				: undefined,
