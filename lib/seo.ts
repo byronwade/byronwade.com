@@ -5,7 +5,7 @@ import { publicProfiles, siteUrl, xHandle } from "@/lib/site";
 const siteName = "Byron Wade";
 const profileLinks = publicProfiles.map((profile) => profile.href);
 export const defaultDescription =
-	"Byron Wade builds software for service businesses, drawing on his experience running a plumbing company. Explore Thorbis, shipped projects, and lessons from the trades.";
+	"Byron Wade builds Thorbis, software for service businesses, drawing on experience running a plumbing company.";
 export const defaultKeywords = [
 	"Byron Wade",
 	"Thorbis",

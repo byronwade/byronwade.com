@@ -19,10 +19,8 @@ import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resu
 
 export const metadata: Metadata = generateSEOMetadata({
 	title: "Resume",
-	// Restates the page rather than embellishing it: one company reached $2.4M
-	// and then closed, and the summary below says so.
 	description:
-		"Byron Wade's resume: about eight years running plumbing and septic businesses and building the software they need. Founder of Thorbis, field management software for service professionals.",
+		"Byron Wade's resume: plumbing and septic operations, software development, and Thorbis, built for service professionals.",
 	keywords: [
 		"Resume",
 		"CV",
