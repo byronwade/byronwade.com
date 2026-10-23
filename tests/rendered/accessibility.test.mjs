@@ -11,6 +11,7 @@ const PANEL = "[data-header-menu]";
 const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
 const STATUS = 'form p[aria-live="polite"]';
 const BLOG_ROUTE = /^\/blog\/[^/]+$/;
+const OUTSIDE_PANEL = /^outside: /;
 const manifest = JSON.parse(readFileSync(".next/prerender-manifest.json", "utf8"));
 const post = Object.keys(manifest.routes)
 	.filter((route) => BLOG_ROUTE.test(route))
@@ -103,7 +104,7 @@ async function assertHeaderDialog(page, trigger, panel, name) {
 	await assertHeaderReferences(page, `${name} open`);
 }
 
-/** Presses Tab (or Shift+Tab) and reports whether focus lands inside the panel. */
+/** Presses Tab (or Shift+Tab) and names the panel stop focus lands on, or "outside: <element>". */
 async function tabFrom(page, panel, shift) {
 	if (shift) {
 		await page.keyboard.down("Shift");
@@ -120,8 +121,8 @@ async function tabFrom(page, panel, shift) {
 				return false;
 			}
 			return document.querySelector(selector)?.contains(active)
-				? "inside"
-				: active.outerHTML.slice(0, 120);
+				? `${active.getAttribute("role") ?? active.localName} ${active.getAttribute("aria-label") ?? active.textContent.trim()}`
+				: `outside: ${active.outerHTML.slice(0, 120)}`;
 		},
 		{},
 		panel
@@ -144,10 +145,33 @@ async function assertFocusContained(page, panel, state) {
 		.reduce(
 			(pending, [key, step]) =>
 				pending.then(async () =>
-					assert.equal(
+					assert.doesNotMatch(
 						await tabFrom(page, panel, key === "Shift+Tab"),
-						"inside",
+						OUTSIDE_PANEL,
 						`${state}: ${key} ${step} stays in the panel`
+					)
+				),
+			Promise.resolve()
+		);
+}
+
+/**
+ * Results are a combobox listbox: arrows move through them while focus stays in the input
+ * (APG). So Tab and Shift+Tab only alternate between the input and the visible X, which is
+ * also the panel's one Close part.
+ */
+async function assertSearchTabCycle(page, theme) {
+	const cycle = ["button Close search", "combobox Search"];
+	await page.focus('input[role="combobox"]');
+	await ["Tab", "Shift+Tab"]
+		.flatMap((key) => Array.from({ length: 4 }, (_, index) => [key, index]))
+		.reduce(
+			(pending, [key, index]) =>
+				pending.then(async () =>
+					assert.equal(
+						await tabFrom(page, "[data-header-search]", key === "Shift+Tab"),
+						cycle[index % 2],
+						`search results ${theme}: ${key} ${index + 1}`
 					)
 				),
 			Promise.resolve()
@@ -175,7 +199,7 @@ async function checkSearchCycle(page, theme) {
 	await assertHeaderReferences(page, "search results");
 	await assertNoViolations(page, `search results open ${theme}`);
 	await assertFocusContained(page, "[data-header-search]", `search results ${theme}`);
-	await page.focus('input[role="combobox"]');
+	await assertSearchTabCycle(page, theme);
 	await page.keyboard.down("Control");
 	await page.keyboard.press("A");
 	await page.keyboard.up("Control");

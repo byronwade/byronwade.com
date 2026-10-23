@@ -75,10 +75,13 @@ export default function HeaderPopoverContent({
 						)}
 					>
 						{children}
-						{/* Base UI requires its Close part to enable modal focus containment. */}
-						<Popover.Close className="sr-only min-h-11 min-w-11 focus:not-sr-only focus:mt-2 focus:w-full focus:rounded-lg focus:bg-muted focus:px-2.5 focus:text-copy-13">
-							Close {navigation ? "menu" : "search"}
-						</Popover.Close>
+						{/* Base UI requires a Close part to enable modal focus containment. Search's
+						    visible X is one; the menu's X is its trigger, outside the panel. */}
+						{navigation && (
+							<Popover.Close className="sr-only min-h-11 min-w-11 focus:not-sr-only focus:mt-2 focus:w-full focus:rounded-lg focus:bg-muted focus:px-2.5 focus:text-copy-13">
+								Close menu
+							</Popover.Close>
+						)}
 					</Popover.Popup>
 				</Popover.Positioner>
 			</Popover.Portal>
