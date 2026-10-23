@@ -1,13 +1,16 @@
 // Thorbis Design port: src/components/ui/input.tsx @ 46b6654.
-// Base UI/Next.js adapter; see docs/THORBIS-DESIGN-PORT.md.
-import { Input as InputPrimitive } from "@base-ui/react/input";
+// Native-element adapter; see docs/THORBIS-DESIGN-PORT.md.
 import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * Hookless, so a server component renders it as plain HTML and a client component
+ * ships only this function: the native input already labels, validates and submits.
+ */
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
 	return (
-		<InputPrimitive
+		<input
 			type={type}
 			data-slot="input"
 			className={cn(

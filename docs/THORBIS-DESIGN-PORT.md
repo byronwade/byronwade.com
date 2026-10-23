@@ -34,7 +34,7 @@ mechanism (StyleX to CSS/Tailwind), and keep this app's Base UI and Next APIs.
 | components/ui/link.tsx; .link-underline | src/components/site/site-shell.stylex.ts link/focusRing | Next link adapter, visible outline, text-decoration and inherited color |
 | components/layout/sheet.tsx | src/components/guidelines/specimen-styles.stylex.ts frame/sheet/note | Panel tone, source large radius and panel elevation around real work, 12px marker caption, edge-to-edge below 40rem. Replaces the card primitive, which no surface needed once panels stopped wrapping counts and sections |
 | components/ui/badge.tsx; status-pill.tsx | src/components/ui/badge.tsx; status-pill.tsx | Neutral on-panel badge and source pill shape; existing Base UI render and semantic variants |
-| components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, existing Base UI/native APIs |
+| components/ui/input.tsx; textarea.tsx | src/components/ui/input.tsx; textarea.tsx | Sunk field material/elevation, source radius, mobile 16px text, visible focus, native input/textarea APIs |
 | components/layout/nav-dock.tsx; site-header.tsx | src/components/site/site-header.tsx; site-shell.stylex.ts headerBase/navLink/menu/menuLink | Fixed 52px row, 42rem measure, 8px top/16px mobile side insets, 13px nav and 12px descriptions, active pill/dot, 44px targets; Base UI modal focus and dismissal |
 | conditional-layout.tsx; dock-toolbar.tsx; dock-toolbar-client.tsx | src/components/site/shell.tsx; site-header.tsx tools; site-shell.stylex.ts chrome | Reserved chrome space, bare search/theme buttons, anchored search; existing breadcrumb component retained outside the compact row |
 | components/layout/page.tsx; common/index-list.tsx | src/components/rules/page.tsx; site-shell.stylex.ts section | Source 32px title/20px section roles; stable-contrast evidence rows, shared focus |
@@ -65,6 +65,10 @@ for introducing a new visual choice.
   keyboard, focus, form and disabled behavior; the Base UI layer added only
   `type="button"` and role handling, at about 4 KB gzip per route. Without
   hooks, server-rendered Buttons ship no client code. See docs/PERFORMANCE.md.
+- Input draws a native `<input>` instead of Base UI's Input (Field.Control).
+  Outside a Field that layer added only unread state attributes, an unused id
+  and validation that never ran, at about 5 KB gzip on contact and search.
+  Like Textarea, it has no hooks. See docs/PERFORMANCE.md.
 
 - Public portfolio Showcase, Evidence and Guided surfaces; no trades Workbench.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.

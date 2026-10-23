@@ -392,12 +392,43 @@ level 9 as whole files, polyfills excluded:
 | Every other prerendered page | −1 |
 
 Request-time page chunks: `/portfolio` 4,288 → 281, Figma file pages 5,930 →
-1,869, `/search` 6,310 → 5,431. Contact and search keep Base UI's input helpers,
-so they save less. Script counts and the stylesheet are unchanged. No timing was
+1,869, `/search` 6,310 → 5,431. Contact and search kept Base UI's input helpers,
+so they saved less (since removed; see Native Input below). Script counts and the stylesheet are unchanged. No timing was
 claimed. `tests/rendered/button-markup.test.mjs` fails if any route's client
 manifest includes Base UI's `Button` (the earlier build's project-page manifest
 did), checks that prerendered Buttons keep native link and button semantics, and
 clicks the résumé's Download PDF link to prove its own handler still runs.
+
+## Native Input, October 23, 2026
+
+`components/ui/input.tsx` wrapped Base UI's `Input`, which is `Field.Control`.
+Outside a `Field` it only added state attributes nothing reads, an id nothing
+references and validation that never runs, but it brought Base UI's field,
+labelling, render and floating-ui helpers. Because it was a client reference,
+the server-rendered `/search` form also loaded it. The Input now draws a native
+`<input>` with no hooks, like `Textarea` and `Button`. Prerendered contact fields
+keep the same attribute set.
+
+Measured on production builds of `2bca28b` and this change, gzipped at level 9 as
+whole files, polyfills excluded. Initial chunks are every chunk the HTML names;
+`/search` is request-time, so its HTML came from a production server. Lazy chunks
+are the files the loadable manifest lists for each dynamic import, excluding
+`shared-primitives`, which every page already has:
+
+| What loads it | Gzip |
+| --- | --- |
+| `/contact`, initial | 174,788 → 169,797 (−4,991) |
+| `/search` and `/search?q=`, initial | 167,941 → 162,709 (−5,232); page chunk 5,390 → 160 |
+| Home inline contact form, on open | 15,100 → 9,988 (−5,112) |
+| Header search panel, on open | 8,067 → 6,303 (−1,764) |
+| Every other prerendered page | −2 |
+
+The header search panel keeps the helpers its Base UI Popover needs. Script
+counts and the stylesheet are unchanged. No timing was claimed.
+`tests/rendered/input-markup.test.mjs` fails if any route's client manifest
+includes Base UI's `Input` or `Field` (every route's did before) and checks that
+the prerendered contact fields keep their ids, names, types, `required` and
+labels.
 
 ## Search corpus reuse, October 22, 2026
 
