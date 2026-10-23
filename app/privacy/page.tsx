@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	robots: { index: true, follow: true },
 };
 
-const LAST_UPDATED = "June 1, 2026";
+const LAST_UPDATED = "October 23, 2026";
 
 export default function PrivacyPage() {
 	return (
@@ -31,16 +31,19 @@ export default function PrivacyPage() {
 				<h2>Information we collect</h2>
 				<ul>
 					<li>
-						<strong>Information you provide.</strong> When you submit a contact or quote form, we
-						collect your name, email address, phone number, and any details you choose to share.
+						<strong>Information you provide.</strong> When you send a message through the contact
+						form, we collect your name, email address, the topic you choose, and your message.
 					</li>
 					<li>
-						<strong>Usage data.</strong> We collect anonymized analytics (pages visited, performance
-						metrics, approximate region) through privacy-friendly tooling to improve the site.
+						<strong>Usage data.</strong> Vercel Web Analytics and Vercel Speed Insights record
+						anonymous page views and page-speed measurements: the address of the page you visit, the
+						referring site, your approximate location, and your browser and device type. The site
+						also records a few anonymous events, such as viewing a project or post and downloading
+						the résumé. Vercel Web Analytics does not use third-party cookies.
 					</li>
 					<li>
-						<strong>Device data.</strong> Standard technical information such as browser type and
-						screen size, used only for compatibility and performance.
+						<strong>Saved preferences.</strong> If you pick a light or dark theme, that choice is
+						saved in your browser so the site remembers it. It is not sent to us.
 					</li>
 				</ul>
 
@@ -54,8 +57,9 @@ export default function PrivacyPage() {
 				<h2>Sharing your information</h2>
 				<p>
 					We do not sell your personal information. We share data only with service providers that
-					help us operate the site (such as hosting and analytics), and only as needed to deliver
-					the service, or when required by law.
+					help us operate the site, and only as needed to deliver the service, or when required by
+					law. Vercel hosts the site and provides its analytics. Resend delivers contact form
+					messages to us by email.
 				</p>
 
 				<h2>Data retention</h2>
