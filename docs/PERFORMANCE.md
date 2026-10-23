@@ -123,6 +123,37 @@ cutoff. The report keeps those samples and the failure, without attributing a
 site-wide speedup. Every budget and the rejected preload/hide/delay constraints
 remain in place.
 
+## Inter Latin core subset, October 23, 2026
+
+Lighthouse's simulated LCP counts every request that finishes before the
+observed largest paint. Locally that paint lands 224-441ms after navigation, so
+the document, the preloaded Inter file, the stylesheet and all initial scripts
+are in every route's graph. Thorbis and Dits add a 15.7KB page chunk and Geist
+Mono (15.5KB); the Nexstar post adds a 45.6KB document, the italic core and
+Geist Mono. Home and Thorbis documents are about the same size, so bytes alone
+do not explain the detail-page gap.
+
+The preloaded upright Inter file is now the 31,824-byte Latin core subset
+described under current ownership, replacing the 49,620-byte file. Builds
+`rDCyH0MglPluRC3l_5Bfn` (main `4b76f94`) and `y_ehpexxlezZ7kcf5Wm4G` (the
+subset) were sampled in three interleaved rounds, alternating which build ran
+first, with `perf-budget.mjs`'s browser settle and default simulated mobile:
+
+| Route | Before LCP (ms) | After LCP (ms) |
+| --- | --- | --- |
+| Home | 2908, 2943, 2906 | 2879, 2829, 2826 |
+| Nexstar post | 3170, 3186, 3203 | 3013, 3005, 3019 |
+| Thorbis | 3054, 2881, 3046 | 3047, 3049, 2498 |
+| Dits | 3087, 3106, 3048 | 1540, 3041, 3125 |
+
+Home and the post separate beyond their spread: medians fall 79ms and 173ms,
+and every after sample is below every before sample. The post still misses the
+3000ms limit by 5-19ms. Thorbis and Dits show no change beyond variation; their
+low samples are the graph-cutoff effect described above, not this change. FCP,
+TBT and every other limit are unchanged. Benchmark index ranged 1586-2619 on
+the shared host. The limits, the ten-script cap and the rejected probes are
+unchanged; the project-page chunk and Mono request remain the open leads.
+
 ## Search corpus reuse, October 22, 2026
 
 At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
