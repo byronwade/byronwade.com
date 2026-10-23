@@ -70,7 +70,7 @@ npm run knip         # unused files, exports, deps      (local release gate)
 npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, content-date, and front-matter regressions (no live services)
-npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow, after build
+npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow + axe on key flows, after build
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -490,10 +490,15 @@ type ramp, pixel font sizes, and weights above 500. It also blocks radius keys
 default shadows, numeric durations, keyword or arbitrary curves, literal CSS motion
 timing, a second `cubic-bezier`, and tw-animate enter/exit classes without both
 `duration-(--motion-*)` and `ease-(--…)`; `tests/motion-duration.test.mjs` holds
-the `lib/motion.ts` SSR fallbacks to the same tokens. High-value sensors not yet
-built, in rough priority order: visual regression for the four Showcase routes, and
-accessibility regression for navigation, reading a post, and submitting the
-contact form.
+the `lib/motion.ts` SSR fallbacks to the same tokens.
+`tests/rendered/accessibility.test.mjs` runs axe (WCAG 2.2 A/AA, the copy
+Lighthouse ships) in both themes on the home page, its keyboard-opened menu and
+search results, a published post, and `/contact` after an empty send and after a
+confirmed send. It also requires one `h1` with no skipped heading levels in a post,
+a label on every contact field (axe accepts a placeholder as a name), and focus on
+the first invalid field. `scripts/axe-audit.mjs` holds the one axe rule set shared
+with the full-route audit. The highest-value sensor not yet built is visual
+regression for the four Showcase routes.
 
 For existing debt: record a baseline, block new violations, reduce the baseline
 when the code is touched, and tighten only after false positives are controlled.

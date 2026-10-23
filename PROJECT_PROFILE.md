@@ -213,7 +213,8 @@ use them correctly.
 - **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
   production client chunks, plus visible writing dates matching their machine dates,
-  resume print/PDF contracts, and header browser checks
+  resume print/PDF contracts, header browser checks, and axe on navigation, a
+  post and the contact form
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
 - **Type check:** `npm run type-check` (`next typegen && tsc --noEmit`, strict +
   `noUncheckedIndexedAccess`)
@@ -229,8 +230,10 @@ use them correctly.
   full-route audit: every visual route template at 390/768/1280 in both themes with
   axe, Lighthouse, keyboard, target, overflow and reduced-motion checks. Fixtures
   cover Figma and email transport. Header browser regressions in `test:rendered`
-  cover keyboard operation, focus, touch targets and layout at 100%/200% text.
-  Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
+  cover keyboard operation, focus, touch targets and layout at 100%/200% text, and
+  `tests/rendered/accessibility.test.mjs` runs axe in both themes on navigation,
+  a post and the contact form's error and sent states, using Lighthouse's own
+  axe-core (no separate package). Biome's a11y rules run in lint. Live third-party embeds and assistive-technology
   checks remain outside these, so manual keyboard passes are still required for
   critical flows.
 - **UI consistency:** `tests/design-system.test.mjs` (in `npm test`) fails on raw colour
@@ -281,7 +284,7 @@ the user's instruction each time.
 
 | Area | Current baseline | New violations blocked? | Reduction rule | Tracking location |
 | --- | --- | --- | --- | --- |
-| Automated tests | Native regressions and rendered contracts, including header interaction, responsive geometry and enlarged search text; the full-route accessibility audit is `scripts/verify-a11y-perf.mjs` | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/`, `scripts/audit-geometry.mjs` |
+| Automated tests | Native regressions and rendered contracts, including header interaction, responsive geometry, enlarged search text and axe on navigation, a post and the contact form; the full-route accessibility audit is `scripts/verify-a11y-perf.mjs` | Contact, cache-refresh, and date changes require `npm test` locally; rendered checks require a build and local Chrome | Add focused regressions when changing behavior | `tests/`, `tests/rendered/`, `scripts/audit-geometry.mjs` |
 | Automatic CodeQL setup | GitHub default setup triggers dynamic Actions runs despite the manual-only workflow file | Source cannot disable this repository setting | Owner must move scanning off Actions; agents cannot change GitHub settings | PR #41 / hobby job result |
 | Visual regression | None | No | Add once the redesign settles, starting with the four Showcase routes | This table |
 | Reduced transparency / high contrast | Not implemented | No | Implement when a surface depends on translucency for legibility | This table |
