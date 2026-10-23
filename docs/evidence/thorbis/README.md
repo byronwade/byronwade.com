@@ -16,6 +16,7 @@ Full-page home images also cover 768/320 in both themes. focus-*.png records vis
 ## Structured proof
 
 - browser.json: Chrome/155.0.8059.41, axe 4.10.3, eight width/theme cases, four keyboard widths, real theme-toggle round trips, 24 panels, nine route smoke checks, two no-JS widths and contact/shortcut/reduced-motion checks. All audited text meets AA and enabled field boundaries meet 3:1. Twelve live color roles match. Computed type roles survive cn().
+- Known drift (October 22, 2026, main `bf18367`): `verify-thorbis-browser.mjs` now injects Lighthouse's axe through `scripts/axe-audit.mjs`, and its first case confirms the in-page axe version, but it then stops on the geometry read before asserting results because no element carries `data-slot="card-title"` any more. The unmodified script fails at the same place. browser.json above is the last completed run.
 - port.json: source revision, clean read-only checkout, private manifest and asset fingerprints.
 - dev-smoke.json: earlier development checkpoint, 768px light/dark.
 - dev-current.json: client-slot checkpoint, canonical npm run dev, 1440/390 light/dark, actual theme controls, no overflow/runtime errors.

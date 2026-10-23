@@ -496,11 +496,17 @@ Lighthouse ships) in both themes on the home page, its keyboard-opened menu and
 search results, a published post, and `/contact` after an empty send and after a
 confirmed send. It also requires one `h1` with no skipped heading levels in a post,
 a label on every contact field (axe accepts a placeholder as a name), and focus on
-the first invalid field. `scripts/axe-audit.mjs` holds the one axe rule set shared
-with the full-route audit. `tests/rendered/showcase-visual.test.mjs` is visual
-regression for the four Showcase routes at 390 and 1280 in both themes: it compares
-each visible element's resolved type, colour, border, radius, shadow, spacing, column
-count and layout-decided left edge and width against `tests/fixtures/showcase-visual.json`.
+the first invalid field. `scripts/axe-audit.mjs` is the only place axe comes from:
+it injects Lighthouse's bundled copy and holds the one WCAG rule set, shared by
+this sensor, the full-route audit and the design-polish and Thorbis browser
+scripts. Do not fetch axe from a CDN or add a second rule set; each of those
+reports records the in-page axe version. One deliberate exception: the Thorbis
+script's open-panel check runs every axe rule, because dialog naming
+(`aria-dialog-name`) is tagged best practice; keep it.
+`tests/rendered/showcase-visual.test.mjs` is visual regression for the four
+Showcase routes at 390 and 1280 in both themes: it compares each visible element's
+resolved type, colour, border, radius, shadow, spacing, column count and
+layout-decided left edge and width against `tests/fixtures/showcase-visual.json`.
 Text, heights, vertical positions and item counts are excluded, so new posts and
 projects pass. After an intended design change, regenerate it with
 `UPDATE_VISUAL_BASELINE=1 node --test tests/rendered/showcase-visual.test.mjs` and

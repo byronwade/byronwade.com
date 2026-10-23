@@ -45,8 +45,11 @@ the article is `/blog/building-thorbis`.
 
 After captures wait for stable document bounds and assert that the PNG includes
 the document and footer. This avoids capturing bounds before header hydration
-finishes. The after runner also records axe 4.10.3 WCAG A/AA findings per case;
-incomplete axe checks remain visible and require human judgment.
+finishes. The after runner also records axe WCAG A/AA findings per case, using
+Lighthouse's bundled axe-core through `scripts/axe-audit.mjs` (4.14.0 at the time
+of writing; reports before October 22, 2026 used 4.10.3 from a CDN). Incomplete
+axe checks remain visible and require human judgment; an axe evaluation error or
+a page with no passing rule stops the run.
 
 ## Surface and state decisions
 
@@ -71,6 +74,12 @@ Navigation remains owned by the shared header. R05 records its historical
 compact targets; the current header's rendered tests require 44px targets.
 The legacy verifier's desktop minimum is 24px, so its pass alone does not
 establish the current header contract.
+
+Known drift (October 22, 2026, main `bf18367`): `verify-design-polish-states.mjs after`
+stops at `portfolio-partial` because /portfolio now renders its repository list on
+the server, so the script's intercepted `/api/portfolio` fixture no longer reaches
+the page and 36 live rows replace the expected one. The four states before it pass
+axe. The unmodified script fails the same way; the fixture needs rework.
 
 `verify-design-polish-states.mjs after` exercises 21 controlled states at all
 six width/theme combinations: portfolio empty, error, populated, partial, unrelated-provider failure, failed refresh,
