@@ -1,49 +1,68 @@
 // Thorbis Design port: src/components/ui/button.tsx @ 46b6654.
-// Base UI/Next.js adapter; see docs/THORBIS-DESIGN-PORT.md.
-import { Button as ButtonPrimitive } from "@base-ui/react/button";
+// Native-element adapter; see docs/THORBIS-DESIGN-PORT.md.
 import type { VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { type ComponentProps, cloneElement, type ReactElement, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./button-variants";
 
+type Handler = (event: never) => void;
+
+interface LinkTargetProps {
+	children?: ReactNode;
+	className?: string;
+	href: unknown;
+	[prop: string]: unknown;
+}
+
+type ButtonProps = ComponentProps<"button"> &
+	VariantProps<typeof buttonVariants> & {
+		/**
+		 * A destination (`<a href>` or Next `<Link>`) to draw as a button. It stays a
+		 * real link: no button role, type or key handling is added. Its own children
+		 * win over the Button's; its handlers run before the Button's.
+		 */
+		render?: ReactElement<LinkTargetProps>;
+	};
+
+/**
+ * Hookless, so a server component renders it as plain HTML and a client component
+ * ships only this function: native elements already give buttons and links their
+ * keyboard, focus, form and disabled behavior.
+ */
 function Button({
 	className,
 	variant = "default",
 	size = "default",
 	render,
-	nativeButton,
-	role,
 	...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-	// When `render` swaps the underlying element for a non-<button> (e.g. a
-	// Next.js <Link> that renders an <a>), Base UI requires `nativeButton={false}`
-	// for a custom render target. Destinations keep native link semantics; other
-	// custom targets keep button semantics. Explicit caller roles still win.
-	const renderedElement = React.isValidElement<{ href?: unknown }>(render) ? render : null;
-	const resolvedNativeButton =
-		nativeButton ??
-		(render !== undefined && render !== null && renderedElement?.type !== "button"
-			? false
-			: undefined);
-	const resolvedRole =
-		role ??
-		(resolvedNativeButton === false &&
-		renderedElement?.props.href !== undefined &&
-		renderedElement?.props.href !== null
-			? "link"
-			: undefined);
+}: ButtonProps) {
+	// cva joins classes without merging; cn lets a caller's override win.
+	const classes = cn(buttonVariants({ variant, size, className }));
+	if (!render) {
+		return <button type="button" data-slot="button" className={classes} {...props} />;
+	}
 
-	return (
-		<ButtonPrimitive
-			data-slot="button"
-			className={cn(buttonVariants({ variant, size, className }))}
-			render={render}
-			nativeButton={resolvedNativeButton}
-			role={resolvedRole}
-			{...props}
-		/>
-	);
+	const { type: _buttonOnly, ...linkProps } = props;
+	const own = render.props;
+	const merged: Record<string, unknown> = { ...linkProps, ...own };
+	for (const [key, outer] of Object.entries(linkProps)) {
+		const inner = own[key];
+		// Chain only when both sides handle the event, so a server render never
+		// creates a function prop that nobody passed.
+		if (key.startsWith("on") && typeof outer === "function" && typeof inner === "function") {
+			merged[key] = (event: never) => {
+				(inner as Handler)(event);
+				(outer as Handler)(event);
+			};
+		}
+	}
+	return cloneElement(render, {
+		...merged,
+		children: own.children ?? props.children,
+		className: cn(classes, own.className),
+		"data-slot": "button",
+	});
 }
 
 export { Button };

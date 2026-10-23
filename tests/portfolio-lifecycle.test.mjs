@@ -8,9 +8,10 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 
 const FAILED = /Couldn(?:'|&#x27;|’)t load repositories/;
-const RETRY = /<a[^>]*href="\/portfolio"[^>]*role="link"[^>]*>Try again<\/a>/;
+// Recovery controls are real links: no role may override the anchor's own.
+const RETRY = /<a(?![^>]*\srole=)[^>]*href="\/portfolio"[^>]*>Try again<\/a>/;
 const PROFILE =
-	/<a[^>]*href="https:\/\/github.com\/byronwade"[^>]*role="link"[^>]*>Open GitHub<\/a>/;
+	/<a(?![^>]*\srole=)[^>]*href="https:\/\/github.com\/byronwade"[^>]*>Open GitHub<\/a>/;
 const EMPTY_OR_LOADING = /No repositories yet|Loading repositories|Refreshing/;
 const EMPTY = /No repositories yet/;
 const ERROR_OR_LOADING = /Couldn(?:'|&#x27;|’)t load repositories|Loading repositories/;

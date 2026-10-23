@@ -367,6 +367,38 @@ counts every initial script either way, and these moves keep the same scripts,
 so only their bytes and parse work shrink. Claim the bytes, not a speedup. Raw
 reports are in hobby job `byronwade-com-hobby-1023-0709`.
 
+## Native Button, October 23, 2026
+
+`components/ui/button.tsx` wrapped Base UI's `Button`. Every page that showed a
+Button therefore loaded Base UI's `Button`, `useButton`, its render and
+prop-merging helpers and `@floating-ui/utils/dom`, about 4 KB gzipped, even where
+the Button was a server-rendered link. Those layers added only `type="button"` and
+role handling to elements the platform already makes operable. The Button now draws
+a native `<button>`, or clones its `render` link target, with no hooks: a server
+component renders it as HTML with no client code, and a client component ships one
+small function. The header popover chunks keep their own Base UI copy, which
+Popover needs.
+
+Measured on production builds of `55dafe7` and this change. Each prerendered page:
+every chunk its HTML names (script tags and RSC payload references), gzipped at
+level 9 as whole files, polyfills excluded:
+
+| Route | Chunks named by the page, gzip |
+| --- | --- |
+| Every project page | 175,908 → 171,936 (−3,972) |
+| `/` | 168,968 → 165,042 (−3,926) |
+| `/resume` | 169,470 → 165,547 (−3,923) |
+| `/contact` | 175,717 → 174,748 (−969) |
+| Every other prerendered page | −1 |
+
+Request-time page chunks: `/portfolio` 4,288 → 281, Figma file pages 5,930 →
+1,869, `/search` 6,310 → 5,431. Contact and search keep Base UI's input helpers,
+so they save less. Script counts and the stylesheet are unchanged. No timing was
+claimed. `tests/rendered/button-markup.test.mjs` fails if any route's client
+manifest includes Base UI's `Button` (the earlier build's project-page manifest
+did), checks that prerendered Buttons keep native link and button semantics, and
+clicks the résumé's Download PDF link to prove its own handler still runs.
+
 ## Search corpus reuse, October 22, 2026
 
 At `d238896`, each nonempty `/search?q=` request rebuilt readable text for all
