@@ -1,7 +1,29 @@
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { mkdir, mkdtemp, readdir, readFile, rm } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
+
+export async function withSearchCache(verify) {
+	const { config } = JSON.parse(await readFile(".next/required-server-files.json", "utf8"));
+	const root = await mkdtemp(join(process.cwd(), ".next", "cache", "search-session-"));
+	try {
+		const directory = join(root, "cache", "fetch-cache");
+		await mkdir(directory, { recursive: true });
+		return await verify({
+			directory,
+			env: {
+				__NEXT_PRIVATE_STANDALONE_CONFIG: JSON.stringify({
+					...config,
+					cacheHandler: resolve("tests/fixtures/search-cache-handler.mjs"),
+				}),
+				SEARCH_CACHE_FIXTURE_ROOT: root,
+			},
+		});
+	} finally {
+		// The caller awaits its owned server's shutdown before this directory is removed.
+		await rm(root, { recursive: true, force: true });
+	}
+}
 
 async function cacheEntry(directory, file) {
 	// Filesystem errors are real failures. Only JSON parsing can observe an unfinished write.
@@ -31,11 +53,7 @@ async function cachedCorpora(directory, marker) {
 }
 
 // Inspect the real Next Data Cache, with one deadline for the complete observation.
-export async function expectCachedCorpora(
-	marker,
-	count,
-	{ directory = join(process.cwd(), ".next", "cache", "fetch-cache"), timeout = 5000 } = {}
-) {
+export async function expectCachedCorpora(marker, count, { directory, timeout = 5000 }) {
 	const deadline = Date.now() + timeout;
 	async function observe() {
 		const { entries, incomplete } = await cachedCorpora(directory, marker);

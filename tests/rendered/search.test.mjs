@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { test } from "node:test";
 import { SEARCH_QUERY_MAX } from "../../lib/search-match.ts";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
-import { expectCachedCorpora } from "../fixtures/search-cache.mjs";
+import { expectCachedCorpora, withSearchCache } from "../fixtures/search-cache.mjs";
 
 const NO_MATCHES = /No matches/;
 
@@ -134,54 +134,70 @@ test("production search reuses its corpus and immediately follows authored conte
 	const marker = `searchcache${randomUUID().replaceAll("-", "")}`;
 	const projectPath = join(process.cwd(), "content", "projects", `${marker}.md`);
 	const postPath = join(process.cwd(), "content", "blog", `${marker}.md`);
+	const sharedCache = join(process.cwd(), ".next", "cache", "fetch-cache");
+	const staleEntry = join(sharedCache, `${marker}-interrupted-write`);
+	const concurrentEntry = join(sharedCache, `${marker}-concurrent-write`);
 	context.after(async () => {
 		await rm(projectPath, { force: true });
 		await rm(postPath, { force: true });
+		await rm(staleEntry, { force: true });
+		await rm(concurrentEntry, { force: true });
 	});
 	const project = (title, body) => `---\ntitle: ${title}\n---\n${marker} ${body}\n`;
 	const post = (draft) =>
 		`---\ntitle: ${marker} post\ndate: 2026-10-22\ndraft: ${draft}\n---\n${marker} draftbody\n`;
 	await writeFile(projectPath, project("Original corpus fixture", "alphabody"));
 	await writeFile(postPath, post(true));
-	await mkdir(join(process.cwd(), ".next", "cache", "fetch-cache"), { recursive: true });
+	await mkdir(sharedCache, { recursive: true });
+	// A previous server can be stopped between opening a cache entry and writing its JSON.
+	await writeFile(staleEntry, "");
 
-	await withProductionServer(async (origin) => {
-		async function search(query) {
-			const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
-				signal: AbortSignal.timeout(15_000),
-			});
-			assert.equal(response.status, 200);
-			return response.text();
-		}
-		const projectLink = `href="/projects/${marker}"`;
-		const postLink = `href="/blog/${marker}"`;
-		assert.ok((await search(`${marker} alphabody`)).includes(projectLink));
-		await expectCachedCorpora(marker, 1);
-		assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
-		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
-		await expectCachedCorpora(marker, 1);
+	await withSearchCache(({ directory, env }) =>
+		withProductionServer(
+			async (origin) => {
+				// Other rendered servers can also leave partial writes while this session is running.
+				await writeFile(concurrentEntry, "");
+				async function search(query) {
+					const response = await fetch(`${origin}/search?q=${encodeURIComponent(query)}`, {
+						signal: AbortSignal.timeout(15_000),
+					});
+					assert.equal(response.status, 200);
+					return response.text();
+				}
+				const projectLink = `href="/projects/${marker}"`;
+				const postLink = `href="/blog/${marker}"`;
+				assert.ok((await search(`${marker} alphabody`)).includes(projectLink));
+				await expectCachedCorpora(marker, 1, { directory });
+				assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
+				assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
+				await expectCachedCorpora(marker, 1, { directory });
 
-		await writeFile(projectPath, project("Updated corpus fixture", "alphabody"));
-		assert.ok((await search(`${marker} Updated`)).includes(projectLink));
-		await expectCachedCorpora(marker, 2);
-		await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
-		assert.ok((await search(`${marker} betabody`)).includes(projectLink));
-		assert.ok(!(await search(`${marker} alphabody`)).includes(projectLink));
-		await expectCachedCorpora(marker, 3);
+				await writeFile(projectPath, project("Updated corpus fixture", "alphabody"));
+				assert.ok((await search(`${marker} Updated`)).includes(projectLink));
+				await expectCachedCorpora(marker, 2, { directory });
+				await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
+				assert.ok((await search(`${marker} betabody`)).includes(projectLink));
+				assert.ok(!(await search(`${marker} alphabody`)).includes(projectLink));
+				await expectCachedCorpora(marker, 3, { directory });
 
-		await writeFile(postPath, post(false));
-		assert.ok((await search(`${marker} draftbody`)).includes(postLink));
-		await expectCachedCorpora(marker, 4);
-		await writeFile(postPath, post(true));
-		assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
-		await expectCachedCorpora(marker, 4);
+				await writeFile(postPath, post(false));
+				assert.ok((await search(`${marker} draftbody`)).includes(postLink));
+				await expectCachedCorpora(marker, 4, { directory });
+				await writeFile(postPath, post(true));
+				assert.ok(!(await search(`${marker} draftbody`)).includes(postLink));
+				await expectCachedCorpora(marker, 4, { directory });
 
-		await writeFile(projectPath, "---\ntitle: [broken\n---\n");
-		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
-		await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
-		assert.ok((await search(`${marker} betabody`)).includes(projectLink));
-		await expectCachedCorpora(marker, 4);
-		await rm(projectPath);
-		assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
-	});
+				await writeFile(projectPath, "---\ntitle: [broken\n---\n");
+				assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
+				await writeFile(projectPath, project("Updated corpus fixture", "betabody"));
+				assert.ok((await search(`${marker} betabody`)).includes(projectLink));
+				await expectCachedCorpora(marker, 4, { directory });
+				await rm(projectPath);
+				assert.ok(!(await search(`${marker} betabody`)).includes(projectLink));
+				assert.equal(await readFile(staleEntry, "utf8"), "");
+				assert.equal(await readFile(concurrentEntry, "utf8"), "");
+			},
+			{ env }
+		)
+	);
 });
