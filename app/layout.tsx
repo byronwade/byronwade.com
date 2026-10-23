@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head>
 				<link
 					rel="preload"
-					href="/fonts/UcCo3FwrK3iLTcviYwY.woff2"
+					href="/fonts/inter-latin-core.woff2"
 					as="font"
 					type="font/woff2"
 					crossOrigin="anonymous"
