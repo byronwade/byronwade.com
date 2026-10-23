@@ -1,4 +1,5 @@
 "use client";
+import { Popover } from "@base-ui/react/popover";
 import { useRouter } from "next/navigation";
 import {
 	type KeyboardEvent,
@@ -9,7 +10,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 import { Input } from "@/components/ui/input";
 import { groupSearchResults, SEARCH_QUERY_MAX } from "@/lib/search-match";
 import type { SearchEntry, SearchKind } from "@/lib/search-types";
@@ -76,16 +77,18 @@ export default function HeaderSearchPanel({
 					aria-activedescendant={selected ? `${listId}-${active}` : undefined}
 					className="h-11 min-w-0 flex-1 text-copy-16 sm:h-11 md:text-copy-16"
 				/>
-				<Button
-					type="button"
-					onClick={onClose}
+				{/* The visible X is the panel's Close part, so Tab cycles input, X, input. */}
+				<Popover.Close
 					aria-label="Close search"
-					variant="ghost"
-					size="icon"
-					className="shrink-0 rounded-full text-muted-foreground sm:size-11"
+					data-slot="button"
+					className={buttonVariants({
+						variant: "ghost",
+						size: "icon",
+						className: "shrink-0 rounded-full text-muted-foreground sm:size-11",
+					})}
 				>
 					{icons.close}
-				</Button>
+				</Popover.Close>
 			</div>
 			{/* A listbox must own options, so an empty query result is plain text instead. */}
 			<div ref={listRef} className="max-h-80 overflow-y-auto p-2">
@@ -112,6 +115,9 @@ export default function HeaderSearchPanel({
 											id={`${listId}-${index}`}
 											role="option"
 											aria-selected={index === active}
+											// Focus stays in the input; arrows move the active option (APG combobox).
+											tabIndex={-1}
+											onMouseDown={(event) => event.preventDefault()}
 											onPointerMove={() => setActive(index)}
 											data-idx={index}
 											onClick={() => run(entry.href)}

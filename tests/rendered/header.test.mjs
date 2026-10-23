@@ -380,6 +380,20 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 				await page.waitForSelector(PANEL);
 			});
 
+			await t.test("the search X closes it; tapping a result opens it", async () => {
+				await setMenuOpen(page, false);
+				await page.tap(SEARCH_TRIGGER);
+				await page.waitForSelector('input[role="combobox"]');
+				await page.tap(`${SEARCH} button[aria-label="Close search"]`);
+				await page.waitForSelector('input[role="combobox"]', { hidden: true });
+				await page.tap(SEARCH_TRIGGER);
+				await page.waitForSelector('input[role="combobox"]');
+				await page.type('input[role="combobox"]', "Privacy policy");
+				await page.tap(`${SEARCH} [role="option"]`);
+				await page.waitForFunction(() => location.pathname === "/privacy");
+				await page.waitForSelector('input[role="combobox"]', { hidden: true });
+			});
+
 			await t.test(
 				"desktop resize releases the menu and keeps 44px navigation targets",
 				async () => {
@@ -459,6 +473,27 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.keyboard.press("ArrowUp");
 					await page.keyboard.press("Enter");
 					await page.waitForFunction(() => location.pathname === "/resume");
+				}
+			);
+
+			await t.test(
+				"clicking a search result opens it; the press leaves focus in the input",
+				async () => {
+					await page.click(SEARCH_TRIGGER);
+					await page.waitForFunction(
+						() => document.activeElement?.getAttribute("role") === "combobox"
+					);
+					await page.type('input[role="combobox"]', "Terms of service");
+					const option = await page.waitForSelector(`${SEARCH} [role="option"]`);
+					const box = await option.boundingBox();
+					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+					await page.mouse.down();
+					assert.equal(
+						await page.evaluate(() => document.activeElement?.getAttribute("role")),
+						"combobox"
+					);
+					await page.mouse.up();
+					await page.waitForFunction(() => location.pathname === "/terms");
 				}
 			);
 
