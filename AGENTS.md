@@ -43,7 +43,7 @@ When the mode is unclear, prefer reading and proposing over writing.
 | Framework | Next.js 16 App Router, `reactCompiler: true`, Turbopack for dev, webpack for production (`next.config.js`, existing request budget) |
 | Runtime | React 19, TypeScript strict, `moduleResolution: bundler` |
 | Styling | Tailwind CSS v4 via `@tailwindcss/postcss`; `cn()` from `lib/utils.ts` |
-| UI | `@base-ui/react` primitives wrapped in `components/ui/` |
+| UI | `@base-ui/react` primitives wrapped in `components/ui/`; `Button` is a hookless native element |
 | Theme | `next-themes`, light/dark with a header toggle (not forced dark) |
 | Lint/format | Ultracite over Biome (`biome.jsonc`), tabs, width 100, double quotes, semicolons |
 | Dead code | knip (`knip.json`), clean, a new unused export fails release checks |
@@ -494,6 +494,10 @@ Request preloads from server components with `preload()` from `react-dom`, not a
 `tests/rendered/analytics-privacy.test.mjs` fails when Vercel Web Analytics or Speed
 Insights would send the words in `/search?q=`; both get `withoutSearchWords` from
 `lib/analytics-redact.ts` through `components/common/site-analytics.tsx`.
+`components/ui/button.tsx` stays hookless and draws native elements, so a server
+component's Button ships no client code; `tests/rendered/button-markup.test.mjs`
+fails if a route's client manifest includes Base UI's `Button` again, or if a
+prerendered link-button gains a `type` or `role`.
 
 `tests/design-system.test.mjs` blocks raw colour literals, gradients, decorative
 blur, `transition: all`, routes without a declared profile, the Tailwind default
