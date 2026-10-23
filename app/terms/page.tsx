@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 	robots: { index: true, follow: true },
 };
 
-const LAST_UPDATED = "June 1, 2026";
+const LAST_UPDATED = "October 23, 2026";
 
 export default function TermsPage() {
 	return (
@@ -46,7 +46,7 @@ export default function TermsPage() {
 				<p>
 					Information about web development and plumbing services is provided for general reference.
 					Quotes, timelines, and pricing are estimates until confirmed in a written agreement.
-					Plumbing services are provided in accordance with applicable California licensing and
+					Plumbing services are provided in accordance with applicable state licensing and
 					regulations.
 				</p>
 
