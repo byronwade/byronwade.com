@@ -103,12 +103,64 @@ async function assertHeaderDialog(page, trigger, panel, name) {
 	await assertHeaderReferences(page, `${name} open`);
 }
 
+/** Presses Tab (or Shift+Tab) and reports whether focus lands inside the panel. */
+async function tabFrom(page, panel, shift) {
+	if (shift) {
+		await page.keyboard.down("Shift");
+	}
+	await page.keyboard.press("Tab");
+	if (shift) {
+		await page.keyboard.up("Shift");
+	}
+	// Base UI's focus guards sit outside the panel and pass focus on a moment later.
+	const landed = await page.waitForFunction(
+		(selector) => {
+			const active = document.activeElement;
+			if (!active || active === document.body || active.hasAttribute("data-base-ui-focus-guard")) {
+				return false;
+			}
+			return document.querySelector(selector)?.contains(active)
+				? "inside"
+				: active.outerHTML.slice(0, 120);
+		},
+		{},
+		panel
+	);
+	return landed.jsonValue();
+}
+
+/**
+ * An open header panel marks the rest of the page aria-hidden, so axe can only ask for a
+ * manual check that nothing behind it is still reachable (aria-hidden-focus). Answer it:
+ * Tab and Shift+Tab past the wrap must always land inside the panel.
+ */
+async function assertFocusContained(page, panel, state) {
+	const stops = await page.$eval(
+		panel,
+		(element) => element.querySelectorAll("a[href], button, input").length
+	);
+	await ["Tab", "Shift+Tab"]
+		.flatMap((key) => Array.from({ length: stops + 2 }, (_, index) => [key, index + 1]))
+		.reduce(
+			(pending, [key, step]) =>
+				pending.then(async () =>
+					assert.equal(
+						await tabFrom(page, panel, key === "Shift+Tab"),
+						"inside",
+						`${state}: ${key} ${step} stays in the panel`
+					)
+				),
+			Promise.resolve()
+		);
+}
+
 async function checkMenuCycle(page, theme) {
 	await pressOn(page, MENU, "Enter");
 	await page.waitForSelector(PANEL, { visible: true });
 	assert.equal(await page.$eval(MENU, (button) => button.getAttribute("aria-expanded")), "true");
 	await assertHeaderDialog(page, MENU, PANEL, "Navigate");
 	await assertNoViolations(page, `navigation menu open ${theme}`);
+	await assertFocusContained(page, PANEL, `navigation menu ${theme}`);
 	await page.keyboard.press("Escape");
 	await page.waitForSelector(PANEL, { hidden: true });
 	await assertHeaderReferences(page, "menu closed");
@@ -122,6 +174,7 @@ async function checkSearchCycle(page, theme) {
 	await page.waitForSelector('[role="listbox"] [role="option"]', { visible: true });
 	await assertHeaderReferences(page, "search results");
 	await assertNoViolations(page, `search results open ${theme}`);
+	await assertFocusContained(page, "[data-header-search]", `search results ${theme}`);
 	await page.focus('input[role="combobox"]');
 	await page.keyboard.down("Control");
 	await page.keyboard.press("A");

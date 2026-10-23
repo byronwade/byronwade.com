@@ -496,7 +496,15 @@ Lighthouse ships) in both themes on the home page, its keyboard-opened menu and
 search results, a published post, and `/contact` after an empty send and after a
 confirmed send. It also requires one `h1` with no skipped heading levels in a post,
 a label on every contact field (axe accepts a placeholder as a name), and focus on
-the first invalid field. `scripts/axe-audit.mjs` is the only place axe comes from:
+the first invalid field. With the menu or search open, Tab and Shift+Tab past the
+wrap must keep focus inside the panel; that answers axe's `aria-hidden-focus`
+manual review, and removing the panel's sr-only `Popover.Close` fails it. axe's
+other `incomplete` results were checked by hand on every prerendered route and
+`/portfolio` (Oct 2026) and are not defects: the open trigger's `aria-controls`
+(axe always asks when `aria-haspopup` is set), the active nav pill's `::before` fill
+(14.1:1 light, 13.6:1 dark), search rows scrolled under the result count, and `→`
+between bold labels (9.1:1, 16.7:1). Review any new kind before calling it noise.
+`scripts/axe-audit.mjs` is the only place axe comes from:
 it injects Lighthouse's bundled copy and holds the one WCAG rule set, shared by
 this sensor, the full-route audit and the design-polish and Thorbis browser
 scripts. Do not fetch axe from a CDN or add a second rule set; each of those
