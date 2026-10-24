@@ -1,7 +1,7 @@
-import { Markdown, ProjectViewTracker } from "@/components/common";
+import { Markdown, PageToc, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
-import { FullWidthProjectPreview, ProjectToc } from "@/components/project";
+import { FullWidthProjectPreview } from "@/components/project";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
@@ -218,13 +218,7 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 					</article>
 
-					{toc.length >= 3 && (
-						<aside className="absolute inset-y-0 left-full ml-10 hidden w-60 xl:block">
-							<div className="sticky top-24">
-								<ProjectToc items={toc} />
-							</div>
-						</aside>
-					)}
+					<PageToc items={toc} />
 				</div>
 
 				<div
