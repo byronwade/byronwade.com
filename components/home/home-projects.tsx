@@ -2,7 +2,7 @@ import Link from "next/link";
 import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Section } from "@/components/layout/page";
 import { StatusPill } from "@/components/ui/status-pill";
-import { ArrowUpRight } from "@/lib/icons";
+import { ArrowRight } from "@/lib/icons";
 import type { Project } from "@/lib/projects";
 import { getFeaturedProjects } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
@@ -32,7 +32,7 @@ function FeaturedProject({ project }: { project: Project }) {
 							<p className="text-copy-14 text-muted-foreground">{project.tagline}</p>
 						)}
 					</div>
-					<ArrowUpRight
+					<ArrowRight
 						aria-hidden="true"
 						className="mt-1 size-4 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
 					/>
