@@ -147,7 +147,7 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
   and sections are type and space, never boxes
 - **Dialogs/sheets/popovers/tooltips:** `components/ui/popover.tsx`. There is no dialog primitive; the one modal
   (fullscreen preview) is a portal in `full-width-project-preview-client.tsx`.
-- **Inspectors:** `components/project/project-toc.tsx`
+- **Inspectors:** `components/common/page-toc.tsx` (case studies and posts)
 - **Charts/data visualization:** none installed
 - **Toasts/notifications:** `sonner` via `components/ui/sonner.tsx`
 - **Drag and drop:** `hooks/use-drag-resize.ts`, the preview width handle. Has a

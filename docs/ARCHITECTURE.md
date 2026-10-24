@@ -185,7 +185,7 @@ the way a crawler reads it, against the source and the built file.
 | `/` | Editorial homepage |
 | `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`). Both slug routes set `dynamicParams = false`: only loader slugs are pages, so unknown slugs and production drafts get the static 404 (status 404, `noindex`, `no-store`) instead of a streamed 200 that `next start` would cache (`tests/rendered/missing-content.test.mjs`) |
 | `/portfolio`, `/portfolio/figma/[key]` | Live GitHub portfolio and Figma viewer. The retired 2024 Thorbis pitch pages (`/portfolio/thorbis`, `-ai`, `-mobile`) redirect permanently to `/projects/thorbis` (`next.config.js`; checked by `tests/rendered/legacy-portfolio.test.mjs`) |
-| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`); same 404 contract as projects. Development rebuilds the slug list per request, so drafts still preview |
+| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`); same 404 contract as projects. Posts with three or more headings get the case study's docked "On this page" outline at `xl`. Development rebuilds the slug list per request, so drafts still preview |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |
 | `/search` | Site search. `?q=` uses the same matcher as the header palette (`lib/search-match.ts`). The page also searches the readable text of each project and article (`buildPageSearchIndex`). The header list stays on titles, summaries, and tags, because every page ships it. The page is `noindex`. The WebSite JSON-LD search box points here. |
@@ -268,7 +268,7 @@ components/
   blog/          # Blog UI
   project/       # Project preview UI
   portfolio/     # Figma viewer
-  common/        # Theme, analytics, markdown, error boundary, empty state
+  common/        # Theme, analytics, markdown, page outline, error boundary, empty state
   ui/            # Base UI primitives
 ```
 

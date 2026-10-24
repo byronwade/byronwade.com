@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 
-interface ProjectTocProps {
+interface PageTocProps {
 	items: TocItem[];
 }
 
 /**
- * Sticky table of contents with scroll-spy. Highlights the heading currently
- * in view and supports keyboard + smooth-scroll navigation. Renders nothing
- * when there are too few headings to be useful.
+ * Sticky table of contents with scroll-spy for a long write-up (case studies
+ * and posts). Highlights the heading currently in view and supports keyboard +
+ * smooth-scroll navigation. It docks in the right gutter of its `relative`
+ * parent on wide screens, so it never moves the text's edge, and renders
+ * nothing when there are too few headings to be useful.
  */
-export function ProjectToc({ items }: ProjectTocProps) {
+export function PageToc({ items }: PageTocProps) {
 	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
 	const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -90,39 +92,41 @@ export function ProjectToc({ items }: ProjectTocProps) {
 	}
 
 	return (
-		<nav aria-label="On this page" className="flex flex-col gap-2 text-copy-13">
-			<p className="px-3 text-copy-12 text-muted-foreground">On this page</p>
-			<ul className="flex flex-col">
-				{items.map((item) => {
-					const isActive = activeId === item.id;
-					return (
-						<li key={item.id}>
-							<a
-								href={`#${item.id}`}
-								onClick={(event) => handleClick(event, item.id)}
-								aria-current={isActive ? "location" : undefined}
-								className={cn(
-									"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
-									item.depth === 3 ? "pl-6" : "pl-3",
-									isActive
-										? "bg-muted font-medium text-foreground"
-										: "text-muted-foreground hover:text-foreground"
-								)}
-							>
-								{/* The place mark (Thorbis header menu): an accent dot, never a rule on the edge. */}
-								<span
-									aria-hidden="true"
+		<aside className="absolute inset-y-0 left-full ml-10 hidden w-60 xl:block">
+			<nav aria-label="On this page" className="sticky top-24 flex flex-col gap-2 text-copy-13">
+				<p className="px-3 text-copy-12 text-muted-foreground">On this page</p>
+				<ul className="flex flex-col">
+					{items.map((item) => {
+						const isActive = activeId === item.id;
+						return (
+							<li key={item.id}>
+								<a
+									href={`#${item.id}`}
+									onClick={(event) => handleClick(event, item.id)}
+									aria-current={isActive ? "location" : undefined}
 									className={cn(
-										"size-1.5 shrink-0 rounded-full",
-										isActive ? "bg-brand" : "bg-transparent"
+										"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
+										item.depth === 3 ? "pl-6" : "pl-3",
+										isActive
+											? "bg-muted font-medium text-foreground"
+											: "text-muted-foreground hover:text-foreground"
 									)}
-								/>
-								{item.text}
-							</a>
-						</li>
-					);
-				})}
-			</ul>
-		</nav>
+								>
+									{/* The place mark (Thorbis header menu): an accent dot, never a rule on the edge. */}
+									<span
+										aria-hidden="true"
+										className={cn(
+											"size-1.5 shrink-0 rounded-full",
+											isActive ? "bg-brand" : "bg-transparent"
+										)}
+									/>
+									{item.text}
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			</nav>
+		</aside>
 	);
 }

@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { PostPager, ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
-import { BlogPostViewTracker, Markdown, TagList } from "@/components/common";
+import { BlogPostViewTracker, Markdown, PageToc, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
 import { getAdjacentPosts, getAllBlogSlugs, getBlogPost } from "@/lib/blog";
 import { ArrowLeft } from "@/lib/icons";
+import { extractToc } from "@/lib/markdown";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateArticleStructuredData,
@@ -132,10 +133,15 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
 			</header>
 
-			{/* Blog Post Content */}
-			<article className="w-full">
-				<Markdown content={post.content} />
-			</article>
+			{/* The prose on the measure, its outline docked in the right gutter on
+			    wide screens, as on a case study, so long posts can be navigated
+			    without moving the text's edge. */}
+			<div className="relative w-full">
+				<article className="w-full">
+					<Markdown content={post.content} />
+				</article>
+				<PageToc items={extractToc(post.content)} />
+			</div>
 
 			<PostPager newer={adjacent.newer} older={adjacent.older} />
 
