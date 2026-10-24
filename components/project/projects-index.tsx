@@ -1,7 +1,7 @@
 import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
 import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
-import { ArrowUpRight, Sparkle } from "@/lib/icons";
+import { ArrowRight, Sparkle } from "@/lib/icons";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import type { Project } from "@/lib/projects";
 import { statusTone } from "@/lib/status-tone";
@@ -104,7 +104,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 								<TypeMark type={project.type} />
 								<RowMarker project={project} />
 
-								<ArrowUpRight
+								<ArrowRight
 									aria-hidden="true"
 									className="size-4 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
 								/>

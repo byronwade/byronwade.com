@@ -67,6 +67,7 @@ any change that renders UI.
 - SHOULD: Optical alignment; adjust by ±1px when perception beats geometry
 - MUST: Deliberate alignment to grid/baseline/edges/optical centers, no accidental placement
 - SHOULD: Balance icon/text lockups (stroke/weight/size/spacing/color)
+- MUST: Link arrows say where the link goes: `ArrowUpRight` only for a new tab or another site, `ArrowRight` for a page on this site
 - MUST: Verify mobile, laptop, ultra-wide (simulate ultra-wide at 50% zoom)
 - MUST: Respect safe areas (use env(safe-area-inset-*))
 - MUST: Avoid unwanted scrollbars; fix overflows
