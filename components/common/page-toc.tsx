@@ -1,8 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
+
+/** Fewer headings than this and an outline adds nothing to the page. */
+const MIN_ITEMS = 3;
+
+/** Fraction of the viewport, from the top, where a heading counts as being read. */
+const READING_LINE = 0.3;
 
 interface PageTocProps {
 	items: TocItem[];
@@ -17,54 +23,56 @@ interface PageTocProps {
  */
 export function PageToc({ items }: PageTocProps) {
 	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
-	const observerRef = useRef<IntersectionObserver | null>(null);
 
 	useEffect(() => {
-		if (items.length === 0 || typeof IntersectionObserver === "undefined") {
+		if (items.length < MIN_ITEMS) {
 			return;
 		}
 
-		const visible = new Map<string, number>();
-
-		observerRef.current = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						visible.set(entry.target.id, entry.intersectionRatio);
-					} else {
-						visible.delete(entry.target.id);
-					}
-				}
-				// Pick the heading nearest the top of the viewport that is visible.
-				let bestId = "";
-				let bestTop = Number.POSITIVE_INFINITY;
-				for (const id of visible.keys()) {
-					const el = document.getElementById(id);
-					if (!el) {
-						continue;
-					}
-					const top = Math.abs(el.getBoundingClientRect().top);
-					if (top < bestTop) {
-						bestTop = top;
-						bestId = id;
-					}
-				}
-				if (bestId) {
-					setActiveId(bestId);
-				}
-			},
-			{ rootMargin: "-88px 0px -70% 0px", threshold: [0, 1] }
-		);
-
-		const observer = observerRef.current;
-		for (const item of items) {
+		const headings = items.flatMap((item) => {
 			const el = document.getElementById(item.id);
-			if (el) {
-				observer.observe(el);
-			}
+			return el ? [{ id: item.id, el }] : [];
+		});
+		const first = headings[0];
+		if (!first) {
+			return;
 		}
 
-		return () => observer.disconnect();
+		// The section being read is the last heading above the reading line. An
+		// observer only sees headings crossing a band, so a jump (End, a long
+		// fling, a restored scroll position) could leave a stale section lit.
+		// Measuring on scroll answers from position, whatever the path there.
+		let frame = 0;
+		const update = () => {
+			frame = 0;
+			const root = document.documentElement;
+			// At the foot of the page the last sections can never reach the line,
+			// so anything on screen counts.
+			const atBottom = window.scrollY + window.innerHeight >= root.scrollHeight - 2;
+			const line = window.innerHeight * (atBottom ? 1 : READING_LINE);
+			let current = first.id;
+			for (const { id, el } of headings) {
+				if (el.getBoundingClientRect().top > line) {
+					break;
+				}
+				current = id;
+			}
+			setActiveId(current);
+		};
+		const schedule = () => {
+			if (frame === 0) {
+				frame = window.requestAnimationFrame(update);
+			}
+		};
+
+		update();
+		window.addEventListener("scroll", schedule, { passive: true });
+		window.addEventListener("resize", schedule, { passive: true });
+		return () => {
+			window.cancelAnimationFrame(frame);
+			window.removeEventListener("scroll", schedule);
+			window.removeEventListener("resize", schedule);
+		};
 	}, [items]);
 
 	const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
@@ -87,7 +95,7 @@ export function PageToc({ items }: PageTocProps) {
 		el.focus({ preventScroll: true });
 	};
 
-	if (items.length < 3) {
+	if (items.length < MIN_ITEMS) {
 		return null;
 	}
 
