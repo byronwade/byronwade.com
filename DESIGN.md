@@ -242,7 +242,10 @@ motion disables nonessential transitions and the theme wipe.
 ### 6.4 Reduced motion
 
 `globals.css` collapses animation and transition durations globally under
-`prefers-reduced-motion`. Because of that, motion may never be the only way to
+`prefers-reduced-motion`. Transitions go to `0s`, not a token positive value:
+`transition-property` defaults to `all`, so any positive duration would make every
+style change on every element (a theme switch, enlarged text) a transition that
+lands a frame late. Because of that, motion may never be the only way to
 understand sequence, state, or completion, the reduced experience must remain
 complete, not broken.
 

@@ -28,7 +28,9 @@ const BANNED_EFFECT =
 const CSS_EFFECT = /(?:linear|radial|conic)-gradient\(|backdrop-filter/;
 const REDUCED_MOTION_BLOCK = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n {2}\}/;
 const REDUCED_ANIMATION = /animation-duration:\s*0\.01ms !important/;
-const REDUCED_TRANSITION = /transition-duration:\s*0\.01ms !important/;
+// transition-property defaults to `all`, so any positive duration here would turn every
+// style change on every element into a transition that lags a frame. Zero creates none.
+const REDUCED_TRANSITION = /transition-duration:\s*0s !important/;
 
 function sourceFiles(dir = "") {
 	const absolute = join(ROOT, dir);

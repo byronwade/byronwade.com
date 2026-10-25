@@ -245,9 +245,20 @@ test("Project preview chrome stays readable with enlarged text", {
 						28,
 						"Normal text keeps the compact status bar"
 					);
-					await page.evaluate(() => {
+					// A transition here would keep rem lengths stale for a frame or more, so the
+					// refit wait below could pass on the old layout.
+					const transitions = await page.evaluate(() => {
 						document.documentElement.style.fontSize = "200%";
+						return document
+							.getAnimations()
+							.filter((animation) => animation instanceof CSSTransition)
+							.map((animation) => animation.transitionProperty);
 					});
+					assert.deepEqual(
+						transitions,
+						[],
+						"Under reduced motion, enlarged text applies at once instead of transitioning"
+					);
 					// ResizeObserver must refit this desktop capture before measuring pointer targets.
 					await page.waitForFunction(
 						(selector) => {
