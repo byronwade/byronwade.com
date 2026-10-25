@@ -12,15 +12,25 @@ import {
 	Smartphone,
 	Tablet,
 } from "@/lib/icons";
+import { screenshotsConfigured } from "@/lib/screenshot-capture";
 import { FullWidthProjectPreviewClient } from "./full-width-project-preview-client";
 
-/** Server-rendered slots avoid shipping glyph definitions with the preview. */
+/**
+ * Server-rendered slots avoid shipping glyph definitions with the preview.
+ *
+ * A deployment without a capture key renders nothing: every capture would answer
+ * "off", so the frame would be a large empty box whose only action repeats the
+ * page header's Visit site link.
+ */
 export function FullWidthProjectPreview(props: {
 	captionClassName?: string;
 	href: string;
 	title: string;
 	url: string;
 }) {
+	if (!screenshotsConfigured()) {
+		return null;
+	}
 	return (
 		<FullWidthProjectPreviewClient
 			{...props}

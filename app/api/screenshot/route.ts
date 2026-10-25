@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import {
 	captureImagePath,
-	getAccessKey,
 	resolveCapture,
+	screenshotsConfigured,
 	screenshotsUnconfigured,
 } from "@/lib/screenshot-capture";
 
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 	if (!resolution.ok) {
 		return NextResponse.json({ error: resolution.error }, { status: resolution.status });
 	}
-	if (!getAccessKey()) {
+	if (!screenshotsConfigured()) {
 		return screenshotsUnconfigured();
 	}
 	return NextResponse.json({ url: captureImagePath(resolution.capture), mode: "static" });

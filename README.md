@@ -68,7 +68,7 @@ and point at the code that holds the values.
 | `npm run build` | Production build ,  **local release gate** |
 | `npm run check` | Lint, then type-check and knip |
 | `npm test` | Contact, cache-refresh, and content-date regressions; no live services (Node 22.18+) |
-| `npm run test:rendered` | Check contact semantics, portfolio client bundles, and visible content dates after `npm run build` |
+| `npm run test:rendered` | Check contact semantics, portfolio client bundles, and visible content dates after `SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build` (a placeholder key, so project pages keep their previews) |
 | `npm run audit:react` | react-doctor. React codebase health |
 | `npm run audit:ui` | shadcn registry/config check |
 | `npm run audit:deploy` | `vercel build` (needs a linked project) |
@@ -108,7 +108,7 @@ Create `.env.local`. All are server-only except `NEXT_PUBLIC_BASE_URL`:
 | `DRIBBBLE_ACCESS_TOKEN` | Dribbble shots |
 | `FIGMA_ACCESS_TOKEN` | Figma files and the `/portfolio/figma` viewer |
 | `RESEND_API_KEY` | Contact form delivery |
-| `SCREENSHOTONE_ACCESS_KEY` | Live previews on project pages, fetched server-side by `/api/screenshot/image` |
+| `SCREENSHOTONE_ACCESS_KEY` | Live previews on project pages, fetched server-side by `/api/screenshot/image`. Without it, project pages leave the preview out; adding it takes a redeploy |
 | `REVALIDATION_SECRET` | Authorizes `POST /api/cache/revalidate` |
 | `NEXT_PUBLIC_BASE_URL` | Overrides the site origin in canonical URLs, the sitemap, the feed and metadata. Defaults to `https://www.byronwade.com`, the host production serves; leave it unset in production |
 

@@ -120,8 +120,15 @@ entry so Retry starts a fresh request. `tests/screenshot-client.test.mjs` checks
 stalled headers and streamed bodies against a local server, plus cache reuse,
 concurrency, malformed responses and recovery without calling the provider.
 A deployment without `SCREENSHOTONE_ACCESS_KEY` is a lasting state, not a failed
-capture: both routes answer an uncached 503 with `code: "unconfigured"`
-(`SCREENSHOTS_UNCONFIGURED` in `lib/screenshot-viewports.ts`). The preview then
+capture. Project pages read `screenshotsConfigured()` (`lib/screenshot-capture.ts`)
+while they prerender and leave the preview out entirely: every capture would answer
+"off", so the frame would be an empty box (about 1200×680 at 1280px) whose only
+action repeats the header's Visit site link. Vercel applies an environment change only to new
+deployments, so adding the key takes a redeploy, and that deploy prerenders the
+previews back. Both routes still answer an uncached 503 with `code: "unconfigured"`
+(`SCREENSHOTS_UNCONFIGURED` in `lib/screenshot-viewports.ts`) for the case where a
+page built with a key is served without one (a local `next start` with a different
+environment, which is how the rendered suite exercises it). The preview then
 says "Live preview is off" with only the Open site action. It shows no Retry,
 viewport presets, fullscreen or resize handles, and the caption says that captures
 are off. The frame keeps its reserved size, so settling into this state measured a
@@ -130,8 +137,14 @@ frame or entered fullscreen, the frame returns to its default. Focus left by a r
 control moves to the toolbar's site link. Any other
 failure, including a 503 without that code, keeps Retry. Production ran without
 the key from at least October 20 to October 24, 2026, and every project page with
-a site offered a Retry that could not succeed. `project-preview.test.mjs` checks
-this state against the real keyless routes, with no stubbing.
+a site offered a Retry that could not succeed; since this change those pages show no
+preview at all until the key is set. `project-preview.test.mjs` checks the off
+state against the real keyless routes, with no stubbing. The rendered preview
+checks therefore need a build made with a placeholder key
+(`SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`); the key is read only for
+its presence. Set it on the build command only: the preview checks refuse to run
+with a key in their environment, but other rendered files load project pages with
+scripts and would send it to the provider.
 The preview's rendered control checks use local images at each offered capture
 size. The toolbar actions and status groups wrap when enlarged text leaves too
 little room; the status bar grows from its normal 28px minimum rather than

@@ -88,6 +88,15 @@ export function getAccessKey(): string | null {
 	return process.env.SCREENSHOTONE_ACCESS_KEY?.trim() || null;
 }
 
+/**
+ * Whether this deployment can capture at all. Project pages read it while they
+ * prerender; Vercel applies an environment change only to new deployments, so a
+ * page and the routes it calls always agree about the key.
+ */
+export function screenshotsConfigured(): boolean {
+	return getAccessKey() !== null;
+}
+
 /** Both routes' answer when there is no key: lasting until a deploy adds one, so never cached. */
 export function screenshotsUnconfigured() {
 	return Response.json(
