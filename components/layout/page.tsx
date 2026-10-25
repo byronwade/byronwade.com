@@ -38,7 +38,9 @@ export function PageHeader({
 	return (
 		<header className={cn("flex w-full flex-col gap-3", className)}>
 			<div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-				<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
+				{/* A one-word title (a blog topic like "Engineering") can be wider than a
+				    small phone at 200% text; let it shrink and break rather than scroll. */}
+				<h1 className="min-w-0 text-balance break-words font-heading font-medium text-foreground text-heading-32 tracking-tight">
 					{title}
 				</h1>
 				{aside}
