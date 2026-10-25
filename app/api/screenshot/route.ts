@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { captureImagePath, getAccessKey, resolveCapture } from "@/lib/screenshot-capture";
+import {
+	captureImagePath,
+	getAccessKey,
+	resolveCapture,
+	screenshotsUnconfigured,
+} from "@/lib/screenshot-capture";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +19,7 @@ export async function GET(request: Request) {
 		return NextResponse.json({ error: resolution.error }, { status: resolution.status });
 	}
 	if (!getAccessKey()) {
-		return NextResponse.json({ error: "Screenshots are not configured" }, { status: 500 });
+		return screenshotsUnconfigured();
 	}
 	return NextResponse.json({ url: captureImagePath(resolution.capture), mode: "static" });
 }

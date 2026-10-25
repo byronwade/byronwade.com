@@ -193,13 +193,12 @@ export function ProjectContent({ project }: ProjectContentProps) {
 
 				{/* The live artifact, beside the story (§7.1). */}
 				{project.url && domain && (
-					<figure className="flex w-full flex-col gap-3.5">
-						<FullWidthProjectPreview href={project.url} title={project.title} url={domain} />
-						<figcaption className={cn(measureClass, "text-copy-12 text-muted-foreground")}>
-							A capture of {domain}, refreshed from the live site. Switch the viewport, drag the
-							side handles, or use the arrow keys on a handle to resize.
-						</figcaption>
-					</figure>
+					<FullWidthProjectPreview
+						captionClassName={measureClass}
+						href={project.url}
+						title={project.title}
+						url={domain}
+					/>
 				)}
 
 				{/* Audit read: the write-up on the measure, its outline docked in the

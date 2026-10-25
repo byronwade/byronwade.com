@@ -1,6 +1,6 @@
 import "server-only";
 import { getProjects } from "@/lib/projects";
-import { SCREENSHOT_VIEWPORTS } from "@/lib/screenshot-viewports";
+import { SCREENSHOT_VIEWPORTS, SCREENSHOTS_UNCONFIGURED } from "@/lib/screenshot-viewports";
 
 /**
  * Server side of the project preview. Both screenshot routes resolve requests
@@ -86,6 +86,14 @@ export function captureImagePath({ target, width, height }: Capture): string {
 
 export function getAccessKey(): string | null {
 	return process.env.SCREENSHOTONE_ACCESS_KEY?.trim() || null;
+}
+
+/** Both routes' answer when there is no key: lasting until a deploy adds one, so never cached. */
+export function screenshotsUnconfigured() {
+	return Response.json(
+		{ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED },
+		{ status: 503, headers: { "Cache-Control": "no-store" } }
+	);
 }
 
 /**

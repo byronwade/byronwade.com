@@ -21,7 +21,9 @@ registerHooks({
 const { GET: resolveRoute } = await import("../app/api/screenshot/route.ts");
 const { GET: imageRoute } = await import("../app/api/screenshot/image/route.ts");
 const { getProjects } = await import("@/lib/projects");
-const { SCREENSHOT_VIEWPORTS } = await import("@/lib/screenshot-viewports");
+const { SCREENSHOT_VIEWPORTS, SCREENSHOTS_UNCONFIGURED } = await import(
+	"@/lib/screenshot-viewports"
+);
 
 const KEY = "screenshot-test-only-key";
 const IMAGE_BYTES = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3]);
@@ -141,7 +143,9 @@ for (const [label, params, status] of rejected) {
 }
 
 for (const value of [undefined, "", "  "]) {
-	test(`missing configuration fails generically on both routes (${JSON.stringify(value)})`, async (t) => {
+	// A missing key is how this deployment is set up, not a failed capture, so both
+	// routes say so in a form the preview can tell apart from a retryable failure.
+	test(`missing configuration is a lasting, uncached 503 on both routes (${JSON.stringify(value)})`, async (t) => {
 		const { calls } = stubProvider(t);
 		if (value === undefined) {
 			delete process.env.SCREENSHOTONE_ACCESS_KEY;
@@ -154,12 +158,15 @@ for (const value of [undefined, "", "  "]) {
 		]);
 		const bodies = await Promise.all(responses.map((response) => response.json()));
 		assert.deepEqual(
-			responses.map((response) => response.status),
-			[500, 500]
+			responses.map((response) => [response.status, response.headers.get("cache-control")]),
+			[
+				[503, "no-store"],
+				[503, "no-store"],
+			]
 		);
 		assert.deepEqual(bodies, [
-			{ error: "Screenshots are not configured" },
-			{ error: "Screenshots are not configured" },
+			{ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED },
+			{ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED },
 		]);
 		assert.equal(calls.length, 0);
 	});

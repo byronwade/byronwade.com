@@ -1,8 +1,20 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
+import { registerHooks } from "node:module";
 import { after, before, test } from "node:test";
-import { fetchScreenshot } from "../lib/screenshot.ts";
 import { holdFirstDeadline } from "./fixtures/request-deadline.mjs";
+
+registerHooks({
+	resolve(specifier, context, nextResolve) {
+		if (specifier.startsWith("@/lib/")) {
+			return nextResolve(new URL(`../${specifier.slice(2)}.ts`, import.meta.url).href, context);
+		}
+		return nextResolve(specifier, context);
+	},
+});
+
+const { fetchScreenshot, ScreenshotsOffError } = await import("../lib/screenshot.ts");
+const { SCREENSHOTS_UNCONFIGURED } = await import("../lib/screenshot-viewports.ts");
 
 // Use real sockets so the deadline must cancel headers and streamed JSON alike.
 let handleRequest = (_request, response) => response.end();
@@ -112,8 +124,26 @@ for (const stage of ["headers", "body"]) {
 	});
 }
 
+test("a deployment without screenshots is reported as off, not as a failed capture", async () => {
+	let requests = 0;
+	handleRequest = (_request, response) => {
+		requests += 1;
+		response.writeHead(503, { "Content-Type": "application/json" });
+		response.end(
+			JSON.stringify({ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED })
+		);
+	};
+	const href = "https://project.example/off";
+	await assert.rejects(fetchScreenshot(href, WIDTH, HEIGHT), ScreenshotsOffError);
+	// Off is never cached either, so a key added on a later deploy takes effect.
+	await assert.rejects(fetchScreenshot(href, WIDTH, HEIGHT), ScreenshotsOffError);
+	assert.equal(requests, 2);
+});
+
 for (const [label, status, body] of [
 	["HTTP failure", 503, "{}"],
+	["HTTP failure with another code", 503, '{"code":"busy"}'],
+	["unconfigured code on another status", 500, '{"code":"unconfigured"}'],
 	["malformed JSON", 200, "{"],
 	["null body", 200, "null"],
 	["missing URL", 200, "{}"],

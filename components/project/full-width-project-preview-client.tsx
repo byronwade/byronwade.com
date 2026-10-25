@@ -33,6 +33,8 @@ interface PreviewIcons {
 }
 
 interface FullWidthProjectPreviewProps {
+	/** The page's measure for the caption, which stays on the reading column. */
+	captionClassName?: string;
 	href: string;
 	icons: PreviewIcons;
 	title: string;
@@ -214,35 +216,49 @@ function PreviewToolbar({
 interface PreviewFallbackProps {
 	href: string;
 	icons: PreviewIcons;
-	onRetry?: () => void;
+	onRetry: () => void;
+	/** `pending`: before hydration. `failed`: this capture failed. `off`: no captures on this deployment. */
+	reason: "pending" | "failed" | "off";
 	url: string;
 }
 
-// A retry is available only after hydration and a failed capture. Before hydration the
-// scripts notice sits in <noscript>, so visitors with JavaScript never see it flash.
-function PreviewFallback({ href, icons, onRetry, url }: PreviewFallbackProps) {
+const FALLBACK_TITLES = {
+	pending: "Screenshot preview",
+	failed: "Preview unavailable",
+	off: "Live preview is off",
+} as const;
+
+// Before hydration the scripts notice sits in <noscript>, so visitors with JavaScript
+// never see it flash. Only a failed capture offers Retry: when the deployment has no
+// capture key a retry could never succeed, so the frame says so and links out instead.
+function PreviewFallback({ href, icons, onRetry, reason, url }: PreviewFallbackProps) {
 	const icon = icons.unavailable;
 	const noticeClass = "max-w-xs text-copy-13 text-muted-foreground";
 	return (
 		<div className="flex min-w-0 flex-col items-center justify-center gap-2 self-stretch p-4 text-center">
-			{onRetry ? icon : <noscript>{icon}</noscript>}
+			{reason === "pending" ? <noscript>{icon}</noscript> : icon}
 			<div className="flex flex-col gap-1">
-				<p className="font-medium text-copy-14 text-foreground">
-					{onRetry ? "Preview unavailable" : "Screenshot preview"}
-				</p>
-				{onRetry ? (
-					<p className={noticeClass}>
-						The capture service didn’t return this site just now. The site itself may be fine; open
-						it directly or try the capture again.
-					</p>
-				) : (
+				<p className="font-medium text-copy-14 text-foreground">{FALLBACK_TITLES[reason]}</p>
+				{reason === "pending" && (
 					<noscript>
 						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>
 					</noscript>
 				)}
+				{reason === "failed" && (
+					<p className={noticeClass}>
+						The capture service didn’t return this site just now. The site itself may be fine; open
+						it directly or try the capture again.
+					</p>
+				)}
+				{reason === "off" && (
+					<p className={noticeClass}>
+						This site isn’t taking screenshots right now, so there’s nothing to load or retry. {url}{" "}
+						itself is unaffected; open it directly.
+					</p>
+				)}
 			</div>
 			<div className="flex flex-wrap items-center justify-center gap-3">
-				{onRetry && (
+				{reason === "failed" && (
 					<Button onClick={onRetry} size="lg" variant="outline">
 						{icons.retry}
 						Retry
@@ -291,7 +307,12 @@ function PreviewViewport({
 	style,
 }: PreviewViewportProps) {
 	const { src, status, onLoad: onImageLoad, onError: onImageError, retry } = screenshot;
-	const retryCapture = mounted ? retry : undefined;
+	let reason: PreviewFallbackProps["reason"] = "failed";
+	if (!mounted) {
+		reason = "pending";
+	} else if (status === "off") {
+		reason = "off";
+	}
 
 	return (
 		<div
@@ -306,7 +327,7 @@ function PreviewViewport({
 			aria-busy={mounted && status === "loading"}
 		>
 			{showFallback ? (
-				<PreviewFallback href={href} icons={icons} onRetry={retryCapture} url={url} />
+				<PreviewFallback href={href} icons={icons} onRetry={retry} reason={reason} url={url} />
 			) : (
 				<div
 					className="relative"
@@ -349,6 +370,7 @@ function PreviewViewport({
 }
 
 export function FullWidthProjectPreviewClient({
+	captionClassName,
 	href,
 	icons,
 	title,
@@ -361,12 +383,17 @@ export function FullWidthProjectPreviewClient({
 	const wrapperRef = useRef<HTMLElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const dialogRef = useRef<HTMLDialogElement>(null);
+	// Whether keyboard focus was last inside the preview, fullscreen dialog included.
+	const focusInside = useRef(false);
 
 	const capture = VIEWPORT_PRESETS[preset];
 
 	const screenshot = useScreenshot(href, capture.width, capture.height);
 	const { status, naturalSize } = screenshot;
-	const showFallback = !mounted || status === "error";
+	const off = status === "off";
+	// Preview controls need a picture to act on; when captures are off there never is one.
+	const interactive = mounted && !off;
+	const showFallback = !mounted || off || status === "error";
 
 	const {
 		width: manualWidth,
@@ -418,6 +445,41 @@ export function FullWidthProjectPreviewClient({
 	useEffect(() => {
 		resetWidth();
 	}, [preset, resetWidth]);
+
+	// The off answer can land after a visitor has already used the controls. Put the
+	// frame back to its default, since Exit, Reset and the presets are gone with it.
+	useEffect(() => {
+		if (off) {
+			setIsFullscreen(false);
+			setPreset("desktop");
+			resetWidth();
+		}
+	}, [off, resetWidth]);
+
+	// Where focus last landed. A removed control fires no event, so this still says
+	// "inside" after the off state takes its controls away.
+	useEffect(() => {
+		const track = (event: FocusEvent) => {
+			const target = event.target as Node;
+			focusInside.current = Boolean(
+				wrapperRef.current?.contains(target) || dialogRef.current?.contains(target)
+			);
+		};
+		document.addEventListener("focusin", track);
+		return () => document.removeEventListener("focusin", track);
+	}, []);
+
+	// A control that held focus has gone, so focus would be left on the page body.
+	// Hand it to the site link, the action that remains.
+	useEffect(() => {
+		if (!off || isFullscreen || !focusInside.current) {
+			return;
+		}
+		const active = document.activeElement;
+		if (active === null || active === document.body) {
+			wrapperRef.current?.querySelector<HTMLAnchorElement>("a[href]")?.focus();
+		}
+	}, [off, isFullscreen]);
 
 	// The native modal owns focus containment, background inertness and Escape.
 	useEffect(() => {
@@ -495,7 +557,7 @@ export function FullWidthProjectPreviewClient({
 				<PreviewToolbar
 					href={href}
 					icons={icons}
-					interactive={mounted}
+					interactive={interactive}
 					isFullscreen={isFullscreen}
 					manualWidth={manualWidth}
 					preset={preset}
@@ -524,7 +586,7 @@ export function FullWidthProjectPreviewClient({
 				<div
 					className={cn(
 						"flex min-h-7 shrink-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 bg-secondary px-3 py-1",
-						{ invisible: !mounted }
+						{ invisible: !interactive }
 					)}
 				>
 					<div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 font-mono text-copy-12 text-muted-foreground">
@@ -550,7 +612,7 @@ export function FullWidthProjectPreviewClient({
 			</div>
 
 			{/* Resize handles (pointer + keyboard) */}
-			{mounted &&
+			{interactive &&
 				!isFullscreen &&
 				status !== "error" &&
 				(["left", "right"] as const).map((side) => (
@@ -587,22 +649,31 @@ export function FullWidthProjectPreviewClient({
 	);
 
 	return (
-		<section ref={wrapperRef} className="w-full" aria-label={`${title} site preview`}>
-			{isFullscreen
-				? createPortal(
-						<dialog
-							ref={dialogRef}
-							className="fixed inset-0 m-0 flex h-dvh max-h-none w-screen max-w-none flex-col border-0 bg-background p-4 text-foreground sm:p-6"
-							onCancel={() => setIsFullscreen(false)}
-							aria-label={`${title} fullscreen preview`}
-						>
-							<div className="flex h-full w-full items-center justify-center">{previewContent}</div>
-						</dialog>,
-						document.body
-					)
-				: null}
+		<figure className="flex w-full flex-col gap-3.5">
+			<section ref={wrapperRef} className="w-full" aria-label={`${title} site preview`}>
+				{isFullscreen
+					? createPortal(
+							<dialog
+								ref={dialogRef}
+								className="fixed inset-0 m-0 flex h-dvh max-h-none w-screen max-w-none flex-col border-0 bg-background p-4 text-foreground sm:p-6"
+								onCancel={() => setIsFullscreen(false)}
+								aria-label={`${title} fullscreen preview`}
+							>
+								<div className="flex h-full w-full items-center justify-center">
+									{previewContent}
+								</div>
+							</dialog>,
+							document.body
+						)
+					: null}
 
-			{!isFullscreen && <div className="flex w-full justify-center">{previewContent}</div>}
-		</section>
+				{!isFullscreen && <div className="flex w-full justify-center">{previewContent}</div>}
+			</section>
+			<figcaption className={cn(captionClassName, "text-copy-12 text-muted-foreground")}>
+				{off
+					? `Live captures of ${url} are switched off on this site right now, so the frame above links to the site instead of showing it.`
+					: `A capture of ${url}, refreshed from the live site. Switch the viewport, drag the side handles, or use the arrow keys on a handle to resize.`}
+			</figcaption>
+		</figure>
 	);
 }

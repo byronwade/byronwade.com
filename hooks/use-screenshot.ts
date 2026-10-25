@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { fetchScreenshot } from "@/lib/screenshot";
+import { fetchScreenshot, ScreenshotsOffError } from "@/lib/screenshot";
 
-type LoadingState = "loading" | "loaded" | "error";
+/** `off`: this deployment has no capture key, so there is nothing to retry. */
+type LoadingState = "loading" | "loaded" | "error" | "off";
 
 /**
  * Resolves a screenshot for `href` at the given capture size, and tracks the
@@ -33,6 +34,12 @@ export function useScreenshot(href: string, captureWidth: number, captureHeight:
 				}
 			})
 			.catch((error) => {
+				if (error instanceof ScreenshotsOffError) {
+					if (active) {
+						setStatus("off");
+					}
+					return;
+				}
 				console.error("Error fetching screenshot:", error);
 				if (active) {
 					setStatus("error");
