@@ -468,8 +468,9 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
 production build made with a placeholder `SCREENSHOTONE_ACCESS_KEY` (project pages
-leave the preview out of a keyless build; the preview checks fail with that hint and
-refuse a key in their own environment, so no check reaches the paid provider),
+leave the preview out of a keyless build, and the preview checks fail with that
+hint). Set the key on the build command only: the preview checks refuse to run with
+a key in their environment, but other rendered files would call the provider with it),
 `npm run test:rendered` checks native contact submit semantics
 and the portfolio client bundle boundary, visible writing dates against their
 machine-readable values, and that `/resume` is prerendered without contact details

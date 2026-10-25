@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync } from "node:fs";
 import { withBrowser } from "../tests/fixtures/browser.mjs";
 import { withPortfolioFixture } from "../tests/fixtures/portfolio-browser.mjs";
+import { KEYED_BUILD_HINT } from "../tests/fixtures/preview-build.mjs";
 import { axeVersion, injectAxe, readAxe } from "./axe-audit.mjs";
 import { writeEvidenceJson } from "./evidence-json.mjs";
 import { withProductionServer } from "./production-session.mjs";
@@ -471,6 +472,10 @@ async function verifyCase(browser, url, width, theme, fixture) {
 await withPortfolioFixture((fixture) =>
 	withProductionServer(
 		async (url) => {
+			if (phase === "after") {
+				const project = await (await fetch(`${url}/projects/thorbis-design`)).text();
+				assert.ok(project.includes('site preview"'), `No project previews. ${KEYED_BUILD_HINT}`);
+			}
 			const cases = [375, 768, 1440].flatMap((width) =>
 				["light", "dark"].map((theme) => ({ width, theme }))
 			);

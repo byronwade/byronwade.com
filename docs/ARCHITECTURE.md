@@ -142,7 +142,9 @@ preview at all until the key is set. `project-preview.test.mjs` checks the off
 state against the real keyless routes, with no stubbing. The rendered preview
 checks therefore need a build made with a placeholder key
 (`SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`); the key is read only for
-its presence, and the checks refuse to run with a key in their own environment.
+its presence. Set it on the build command only: the preview checks refuse to run
+with a key in their environment, but other rendered files load project pages with
+scripts and would send it to the provider.
 The preview's rendered control checks use local images at each offered capture
 size. The toolbar actions and status groups wrap when enlarged text leaves too
 little room; the status bar grows from its normal 28px minimum rather than
