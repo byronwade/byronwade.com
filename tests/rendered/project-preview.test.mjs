@@ -1129,7 +1129,8 @@ test("A deployment without a capture key says the preview is off and offers no R
 					await page.waitForFunction(
 						(selector) =>
 							document.querySelector(selector)?.innerText.includes("Live preview is off"),
-						{},
+						// Inside the 15 s protocol limit, so a missing state fails as a plain timeout.
+						{ timeout: 10_000 },
 						PREVIEW
 					);
 					const state = await page.$eval(PREVIEW, (preview) => {
