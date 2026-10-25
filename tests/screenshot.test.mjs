@@ -21,6 +21,7 @@ registerHooks({
 const { GET: resolveRoute } = await import("../app/api/screenshot/route.ts");
 const { GET: imageRoute } = await import("../app/api/screenshot/image/route.ts");
 const { getProjects } = await import("@/lib/projects");
+const { screenshotsConfigured } = await import("@/lib/screenshot-capture");
 const { SCREENSHOT_VIEWPORTS, SCREENSHOTS_UNCONFIGURED } = await import(
 	"@/lib/screenshot-viewports"
 );
@@ -169,8 +170,14 @@ for (const value of [undefined, "", "  "]) {
 			{ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED },
 		]);
 		assert.equal(calls.length, 0);
+		// Project pages read the same answer while they prerender and leave the frame out.
+		assert.equal(screenshotsConfigured(), false);
 	});
 }
+
+test("a deployment with a key renders project previews", () => {
+	assert.equal(screenshotsConfigured(), true);
+});
 
 const providerFailures = [
 	[

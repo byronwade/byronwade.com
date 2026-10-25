@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
+import { KEYED_BUILD_HINT } from "../fixtures/preview-build.mjs";
 
 const CONTENT_LOADING = [
 	"Loading post…",
@@ -99,7 +100,10 @@ for (const kind of ["blog", "projects"]) {
 						assert.equal(preview.linkRole, "link", `${path} preserves link semantics`);
 					}
 				}, Promise.resolve());
-				assert.ok(kind !== "projects" || previewCount > 0, "Project previews were exercised");
+				assert.ok(
+					kind !== "projects" || previewCount > 0,
+					`Project previews were exercised. ${KEYED_BUILD_HINT}`
+				);
 				context.diagnostic(`Checked ${previewCount} screenshot preview fallbacks`);
 			})
 		);

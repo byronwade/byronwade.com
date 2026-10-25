@@ -71,6 +71,7 @@ npm run build        # production build                 (local release gate)
 npm run check        # lint, then type-check and knip
 npm test             # contact, cache-refresh, content-date, and front-matter regressions (no live services)
 npm run test:rendered # contact semantics + portfolio bundles + writing dates + resume print + PDF route trace + layout edges/overflow + axe on key flows + Showcase visual baseline, after build
+                      # build it with SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build (key for the build only)
 npm run lint:fix     # ultracite fix
 npm run build:analyze    # ANALYZE=true bundle report
 npm run perf:budget      # build + lighthouse against lighthouse-budget.json
@@ -466,7 +467,10 @@ Sensors already in place: Ultracite/Biome (lint + format) at zero findings,
 `tsc --noEmit` under `strict` **and** `noUncheckedIndexedAccess`, knip at zero
 unused files/exports/types/dependencies, and a production build, all four
 required locally before publishing. Contact changes also run `npm test`; after a
-production build, `npm run test:rendered` checks native contact submit semantics
+production build made with a placeholder `SCREENSHOTONE_ACCESS_KEY` (project pages
+leave the preview out of a keyless build; the preview checks fail with that hint and
+refuse a key in their own environment, so no check reaches the paid provider),
+`npm run test:rendered` checks native contact submit semantics
 and the portfolio client bundle boundary, visible writing dates against their
 machine-readable values, and that `/resume` is prerendered without contact details
 and keeps its controls and the footer out of print. `tests/rendered/layout.test.mjs`

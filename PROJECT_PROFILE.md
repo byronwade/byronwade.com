@@ -222,7 +222,8 @@ use them correctly.
 - **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
   fixture operations, content-date regressions across five timezones, and Thorbis
   class merging/token/favicon contracts
-- **Rendered contracts:** `npm run test:rendered` after `npm run build`, native
+- **Rendered contracts:** `npm run test:rendered` after
+  `SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
   production client chunks, plus visible writing dates matching their machine dates,
   resume print/PDF contracts, header browser checks, axe on navigation, a

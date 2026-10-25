@@ -3,12 +3,27 @@ import { join } from "node:path";
 import { test } from "node:test";
 import { withProductionServer } from "../../scripts/production-session.mjs";
 import { withBrowser } from "../fixtures/browser.mjs";
+import { KEYED_BUILD_HINT } from "../fixtures/preview-build.mjs";
 
 const PREVIEW = 'section[aria-label$=" site preview"]';
 const RESIZE = `${PREVIEW} button[aria-label="Resize preview width"]`;
 const FULLSCREEN = `${PREVIEW} button[aria-label="Enter fullscreen"]`;
 
 const TIMELINE_LIMIT = 40;
+
+// The servers below must run without the key, so a stub that misses a request can
+// never spend a paid capture.
+assert.ok(
+	!process.env.SCREENSHOTONE_ACCESS_KEY?.trim(),
+	`Preview checks run without a capture key. ${KEYED_BUILD_HINT}`
+);
+await withProductionServer(async (url) => {
+	const html = await (await fetch(`${url}/projects/thorbis`)).text();
+	assert.ok(
+		html.includes('site preview"'),
+		`This build has no project previews. ${KEYED_BUILD_HINT}`
+	);
+});
 
 /**
  * Runs in the page before any script. A press that never starts resizing has several
