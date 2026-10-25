@@ -92,19 +92,18 @@ export async function HomeHero() {
 				>
 					I ran the service business. Now I build the software it needed.
 				</h1>
+				{/* The story behind the claim is a link inside the lede, not a third
+				    stranded action under the buttons: the opening ends on its CTAs. */}
 				<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
 					I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
 					reputation: I learned the problems firsthand. Today I turn those lessons into products for
-					the trades.
+					the trades.{" "}
+					<Link prefetch={false} className="link-underline" href="/blog/scaling-plumbing-business">
+						Read what went wrong, and what I learned
+					</Link>
+					.
 				</p>
 				<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
-				<Link
-					prefetch={false}
-					className="link-action font-normal text-copy-13"
-					href="/blog/scaling-plumbing-business"
-				>
-					Read what went wrong, and what I learned
-				</Link>
 			</div>
 			<ThorbisSpecimen />
 			<dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,5rem),1fr))] gap-4">
