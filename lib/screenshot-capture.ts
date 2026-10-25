@@ -1,5 +1,4 @@
 import "server-only";
-import { NextResponse } from "next/server";
 import { getProjects } from "@/lib/projects";
 import { SCREENSHOT_VIEWPORTS, SCREENSHOTS_UNCONFIGURED } from "@/lib/screenshot-viewports";
 
@@ -91,7 +90,7 @@ export function getAccessKey(): string | null {
 
 /** Both routes' answer when there is no key: lasting until a deploy adds one, so never cached. */
 export function screenshotsUnconfigured() {
-	return NextResponse.json(
+	return Response.json(
 		{ error: "Screenshots are not configured", code: SCREENSHOTS_UNCONFIGURED },
 		{ status: 503, headers: { "Cache-Control": "no-store" } }
 	);
