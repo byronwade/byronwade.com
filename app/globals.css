@@ -821,9 +821,11 @@
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
+      /* Transitions take 0s, not 0.01ms: transition-property defaults to all, so a
+         positive duration makes every style change a transition that lands a frame late. */
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+      transition-duration: 0s !important;
       scroll-behavior: auto !important;
     }
   }

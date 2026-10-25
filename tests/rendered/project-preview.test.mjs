@@ -8,6 +8,90 @@ const PREVIEW = 'section[aria-label$=" site preview"]';
 const RESIZE = `${PREVIEW} button[aria-label="Resize preview width"]`;
 const FULLSCREEN = `${PREVIEW} button[aria-label="Enter fullscreen"]`;
 
+const TIMELINE_LIMIT = 40;
+
+/**
+ * Runs in the page before any script. A press that never starts resizing has several
+ * causes (a missed target, a thrown capture call, a blur or lost capture resetting the
+ * cursor), so the page keeps the evidence that tells them apart.
+ */
+function recordPressTimeline(limit) {
+	const timeline = [];
+	window.__pressTimeline = timeline;
+	const push = (entry) => {
+		timeline.push({ t: Math.round(performance.now()), ...entry });
+		timeline.splice(0, timeline.length - limit);
+	};
+	const describe = (node) =>
+		node instanceof Element
+			? node.closest("button")?.getAttribute("aria-label") || node.tagName.toLowerCase()
+			: String(node);
+	// Bubble phase on window runs after React, so defaultPrevented shows the handler ran.
+	for (const type of ["pointerdown", "pointerup", "pointercancel"]) {
+		window.addEventListener(type, (event) =>
+			push({
+				type,
+				target: describe(event.target),
+				x: event.clientX,
+				y: event.clientY,
+				button: event.button,
+				handled: event.defaultPrevented,
+			})
+		);
+	}
+	for (const type of ["gotpointercapture", "lostpointercapture"]) {
+		window.addEventListener(type, (event) => push({ type, target: describe(event.target) }), true);
+	}
+	window.addEventListener("blur", (event) => {
+		if (event.target === window) {
+			push({ type: "blur" });
+		}
+	});
+	window.addEventListener("focus", (event) => {
+		if (event.target === window) {
+			push({ type: "focus" });
+		}
+	});
+	document.addEventListener("visibilitychange", () =>
+		push({ type: "visibilitychange", state: document.visibilityState })
+	);
+	window.addEventListener("error", (event) => push({ type: "error", message: event.message }));
+	document.addEventListener("DOMContentLoaded", () => {
+		new MutationObserver(() => push({ type: "cursor", value: document.body.style.cursor })).observe(
+			document.body,
+			{ attributeFilter: ["style"] }
+		);
+	});
+}
+
+/** A press that never starts resizing reports what the page saw instead of only timing out. */
+async function waitForResizeCursor(page) {
+	try {
+		await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+	} catch (error) {
+		const seen = await page
+			.evaluate((selector) => {
+				const timeline = window.__pressTimeline ?? [];
+				const press = timeline.findLast((entry) => entry.type === "pointerdown");
+				const hit = press && document.elementFromPoint(press.x, press.y);
+				return {
+					timeline,
+					hit: hit ? (hit.closest("button")?.getAttribute("aria-label") ?? hit.tagName) : null,
+					handles: [...document.querySelectorAll(selector)].map((handle) =>
+						handle.getBoundingClientRect().toJSON()
+					),
+					hasFocus: document.hasFocus(),
+					visibility: document.visibilityState,
+					cursor: document.body.style.cursor,
+				};
+			}, RESIZE)
+			.catch((reason) => ({ unavailable: String(reason) }));
+		throw new Error(`Resizing never started after the press: ${JSON.stringify(seen)}`, {
+			cause: error,
+		});
+	}
+}
+
 /** Successful local captures keep these control checks independent of the paid provider. */
 async function withLoadedPreview(context, viewport, verify) {
 	await withProductionServer((url) =>
@@ -24,6 +108,7 @@ async function withLoadedPreview(context, viewport, verify) {
 			await page.evaluateOnNewDocument((theme) => {
 				localStorage.setItem("theme", theme);
 			}, viewport.theme);
+			await page.evaluateOnNewDocument(recordPressTimeline, TIMELINE_LIMIT);
 			const requests = [];
 			const errors = [];
 			page.on("pageerror", (error) => errors.push(error.message));
@@ -160,9 +245,20 @@ test("Project preview chrome stays readable with enlarged text", {
 						28,
 						"Normal text keeps the compact status bar"
 					);
-					await page.evaluate(() => {
+					// A transition here would keep rem lengths stale for a frame or more, so the
+					// refit wait below could pass on the old layout.
+					const transitions = await page.evaluate(() => {
 						document.documentElement.style.fontSize = "200%";
+						return document
+							.getAnimations()
+							.filter((animation) => animation instanceof CSSTransition)
+							.map((animation) => animation.transitionProperty);
 					});
+					assert.deepEqual(
+						transitions,
+						[],
+						"Under reduced motion, enlarged text applies at once instead of transitioning"
+					);
 					// ResizeObserver must refit this desktop capture before measuring pointer targets.
 					await page.waitForFunction(
 						(selector) => {
@@ -194,7 +290,7 @@ test("Project preview chrome stays readable with enlarged text", {
 					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 					await page.mouse.down();
 					try {
-						await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+						await waitForResizeCursor(page);
 						await page.waitForFunction(
 							(selector) => document.querySelector(selector).textContent.includes("Resizing"),
 							{},
@@ -251,7 +347,7 @@ test("Project preview touch cancellation releases resizing and ignores later tou
 		const client = await page.createCDPSession();
 		const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
 		await client.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
-		await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+		await waitForResizeCursor(page);
 		await client.send("Input.dispatchTouchEvent", {
 			type: "touchMove",
 			touchPoints: [{ ...point, x: point.x - 20 }],
@@ -285,7 +381,7 @@ test("Project preview window blur ends a mouse drag", { timeout: 120_000 }, asyn
 		const box = await handle.boundingBox();
 		await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 		await page.mouse.down();
-		await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+		await waitForResizeCursor(page);
 		// OS/window deactivation has no CDP input primitive; dispatch only that lifecycle boundary.
 		await page.evaluate(() => window.dispatchEvent(new Event("blur")));
 		await page.waitForFunction(() => document.body.style.cursor !== "ew-resize");
@@ -387,7 +483,7 @@ test("Project preview mouse capture bounds both handles and restores page styles
 					assert.equal(await page.evaluate(() => document.body.style.cursor), "crosshair");
 					await page.mouse.up({ button: "right" });
 					await page.mouse.down();
-					await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+					await waitForResizeCursor(page);
 					const container = await page.$eval(PREVIEW, (preview) => {
 						const rect = preview.getBoundingClientRect();
 						return { centre: rect.left + rect.width / 2, left: rect.left, right: rect.right };
@@ -414,7 +510,7 @@ test("Project preview mouse capture bounds both handles and restores page styles
 					});
 					await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 					await page.mouse.down();
-					await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+					await waitForResizeCursor(page);
 					await page.mouse.move(container.centre + 250, y);
 					await waitForWidth(page, 498);
 					await handle.evaluate((node) =>
@@ -434,14 +530,14 @@ test("Project preview mouse capture bounds both handles and restores page styles
 				const box = await handle.boundingBox();
 				await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 				await page.mouse.down();
-				await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+				await waitForResizeCursor(page);
 				await page.focus(RESIZE);
 				await page.keyboard.press("Home");
 				await page.waitForFunction(() => document.body.style.cursor === "crosshair");
 				await page.mouse.up();
 				await waitForWidth(page, initial);
 				await page.mouse.down();
-				await page.waitForFunction(() => document.body.style.cursor === "ew-resize");
+				await waitForResizeCursor(page);
 				await page.focus('[data-site-header] a[href="/projects"]');
 				await page.keyboard.press("Enter");
 				await page.waitForFunction(() => location.pathname === "/projects");
