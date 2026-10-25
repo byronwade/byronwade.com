@@ -383,6 +383,8 @@ export function FullWidthProjectPreviewClient({
 	const wrapperRef = useRef<HTMLElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const dialogRef = useRef<HTMLDialogElement>(null);
+	// Whether keyboard focus was last inside the preview, fullscreen dialog included.
+	const focusInside = useRef(false);
 
 	const capture = VIEWPORT_PRESETS[preset];
 
@@ -443,6 +445,41 @@ export function FullWidthProjectPreviewClient({
 	useEffect(() => {
 		resetWidth();
 	}, [preset, resetWidth]);
+
+	// The off answer can land after a visitor has already used the controls. Put the
+	// frame back to its default, since Exit, Reset and the presets are gone with it.
+	useEffect(() => {
+		if (off) {
+			setIsFullscreen(false);
+			setPreset("desktop");
+			resetWidth();
+		}
+	}, [off, resetWidth]);
+
+	// Where focus last landed. A removed control fires no event, so this still says
+	// "inside" after the off state takes its controls away.
+	useEffect(() => {
+		const track = (event: FocusEvent) => {
+			const target = event.target as Node;
+			focusInside.current = Boolean(
+				wrapperRef.current?.contains(target) || dialogRef.current?.contains(target)
+			);
+		};
+		document.addEventListener("focusin", track);
+		return () => document.removeEventListener("focusin", track);
+	}, []);
+
+	// A control that held focus has gone, so focus would be left on the page body.
+	// Hand it to the site link, the action that remains.
+	useEffect(() => {
+		if (!off || isFullscreen || !focusInside.current) {
+			return;
+		}
+		const active = document.activeElement;
+		if (active === null || active === document.body) {
+			wrapperRef.current?.querySelector<HTMLAnchorElement>("a[href]")?.focus();
+		}
+	}, [off, isFullscreen]);
 
 	// The native modal owns focus containment, background inertness and Escape.
 	useEffect(() => {

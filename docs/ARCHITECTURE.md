@@ -124,7 +124,10 @@ capture: both routes answer an uncached 503 with `code: "unconfigured"`
 (`SCREENSHOTS_UNCONFIGURED` in `lib/screenshot-viewports.ts`). The preview then
 says "Live preview is off" with only the Open site action. It shows no Retry,
 viewport presets, fullscreen or resize handles, and the caption says that captures
-are off. The frame keeps its reserved size, so the page does not shift. Any other
+are off. The frame keeps its reserved size, so settling into this state measured a
+layout shift of 0.0008 or less. If the answer arrives after a visitor has narrowed the
+frame or entered fullscreen, the frame returns to its default. Focus left by a removed
+control moves to the toolbar's site link. Any other
 failure, including a 503 without that code, keeps Retry. Production ran without
 the key from at least October 20 to October 24, 2026, and every project page with
 a site offered a Retry that could not succeed. `project-preview.test.mjs` checks

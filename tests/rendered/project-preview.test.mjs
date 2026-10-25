@@ -1082,18 +1082,52 @@ test("Project preview does not ask script-enabled visitors to enable JavaScript 
 	);
 });
 
+/** The site link every preview state keeps, in the frame's toolbar. */
+function offStateSnapshot(preview) {
+	const visible = (element) =>
+		element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
+	const named = (label) =>
+		[...preview.querySelectorAll("button, a")].filter(
+			(control) =>
+				visible(control) &&
+				(control.textContent.trim() === label ||
+					control.getAttribute("aria-label")?.startsWith(label))
+		).length;
+	const open = [...preview.querySelectorAll("a")].find(
+		(link) => link.textContent.trim() === "Open site"
+	);
+	const box = open.getBoundingClientRect();
+	return {
+		text: preview.innerText,
+		caption: preview.closest("figure").querySelector("figcaption").textContent,
+		busy: preview.querySelector("[aria-busy]").getAttribute("aria-busy"),
+		retry: named("Retry"),
+		resize: named("Resize preview width"),
+		fullscreen: named("Enter fullscreen") + named("Exit fullscreen"),
+		presets: preview.querySelectorAll("button[aria-pressed]").length,
+		openSite: visible(open) && box.width >= 44 && box.height >= 44,
+		openHref: open.href,
+		frameWidth: Math.round(preview.querySelector("[aria-busy]").getBoundingClientRect().width),
+	};
+}
+
 test("A deployment without a capture key says the preview is off and offers no Retry", {
-	timeout: 120_000,
+	timeout: 180_000,
 }, async (context) => {
 	// Production has run without a key, so this case is real: nothing here stubs the
-	// screenshot routes. Only third-party requests are answered locally.
+	// screenshot routes. Only third-party requests are answered locally. The held
+	// cases delay the real answer while a visitor is already narrowing the frame or
+	// in fullscreen, whose controls the off state removes.
 	await withProductionServer(
 		(url) =>
 			withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
+				const defaultWidths = {};
 				await [
 					{ width: 390, theme: "light" },
 					{ width: 1280, theme: "dark" },
-				].reduce(async (previous, { width, theme }) => {
+					{ width: 1280, theme: "light", hold: "resize" },
+					{ width: 1280, theme: "dark", hold: "fullscreen" },
+				].reduce(async (previous, { width, theme, hold }) => {
 					await previous;
 					const page = await browser.newPage();
 					page.setDefaultTimeout(20_000);
@@ -1112,6 +1146,11 @@ test("A deployment without a capture key says the preview is off and offers no R
 					const resolutions = [];
 					const interceptionErrors = [];
 					const pageErrors = [];
+					let held = null;
+					let markHeld;
+					const heldRequest = new Promise((resolve) => {
+						markHeld = resolve;
+					});
 					page.on("pageerror", (error) => pageErrors.push(error.message));
 					page.on("response", (response) => {
 						if (new URL(response.url()).pathname.startsWith("/api/screenshot")) {
@@ -1120,47 +1159,70 @@ test("A deployment without a capture key says the preview is off and offers no R
 					});
 					await page.setRequestInterception(true);
 					page.on("request", (request) => {
+						if (hold && !held && new URL(request.url()).pathname === "/api/screenshot") {
+							held = request;
+							markHeld();
+							return;
+						}
 						const response = request.url().startsWith(url)
 							? request.continue()
 							: request.respond({ status: 204, body: "" });
 						response.catch((error) => interceptionErrors.push(error.message));
 					});
-					await page.goto(`${url}/projects/thorbis`, { waitUntil: "networkidle0" });
+					await page.goto(`${url}/projects/thorbis`, { waitUntil: "domcontentloaded" });
+
+					let narrowed = null;
+					if (hold) {
+						await heldRequest;
+						if (hold === "resize") {
+							await page.waitForSelector(RESIZE, { visible: true });
+							await page.focus(RESIZE);
+							await page.keyboard.press("ArrowLeft");
+							await page.keyboard.press("ArrowLeft");
+							await page.keyboard.press("ArrowLeft");
+							narrowed = await page.$eval(PREVIEW, (preview) =>
+								Math.round(preview.querySelector("[aria-busy]").getBoundingClientRect().width)
+							);
+							assert.ok(
+								narrowed < defaultWidths[width] - 20,
+								`The handle narrowed the frame before the answer (${narrowed})`
+							);
+						} else {
+							await page.waitForSelector(FULLSCREEN, { visible: true });
+							await page.focus(FULLSCREEN);
+							await page.keyboard.press("Enter");
+							await page.waitForSelector("dialog[open]");
+						}
+						// The real keyless route answers now.
+						held.continue().catch((error) => interceptionErrors.push(error.message));
+					}
+
 					await page.waitForFunction(
 						(selector) =>
-							document.querySelector(selector)?.innerText.includes("Live preview is off"),
+							document.querySelector(selector)?.innerText.includes("Live preview is off") &&
+							!document.querySelector("dialog[open]"),
 						// Inside the 15 s protocol limit, so a missing state fails as a plain timeout.
 						{ timeout: 10_000 },
 						PREVIEW
 					);
-					const state = await page.$eval(PREVIEW, (preview) => {
-						const visible = (element) =>
-							element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
-						const named = (label) =>
-							[...preview.querySelectorAll("button, a")].filter(
-								(control) =>
-									visible(control) &&
-									(control.textContent.trim() === label ||
-										control.getAttribute("aria-label")?.startsWith(label))
-							).length;
-						const open = [...preview.querySelectorAll("a")].find(
-							(link) => link.textContent.trim() === "Open site"
-						);
-						const box = open.getBoundingClientRect();
+					await page.evaluate(
+						() =>
+							new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+					);
+					const state = await page.$eval(PREVIEW, offStateSnapshot);
+					const focus = await page.evaluate((selector) => {
+						const active = document.activeElement;
 						return {
-							text: preview.innerText,
-							caption: preview.closest("figure").querySelector("figcaption").textContent,
-							busy: preview.querySelector("[aria-busy]").getAttribute("aria-busy"),
-							retry: named("Retry"),
-							resize: named("Resize preview width"),
-							fullscreen: named("Enter fullscreen"),
-							presets: preview.querySelectorAll("button[aria-pressed]").length,
-							openSite: visible(open) && box.width >= 44 && box.height >= 44,
-							openHref: open.href,
+							onBody: active === document.body,
+							inPreview: Boolean(document.querySelector(selector)?.contains(active)),
+							label: active?.getAttribute("aria-label") ?? active?.textContent.trim(),
+							bodyOverflow: document.body.style.overflow,
 						};
-					});
+					}, PREVIEW);
 					const shift = await page.evaluate(() => window.__shifts.reduce((a, b) => a + b, 0));
-					context.diagnostic(JSON.stringify({ width, theme, resolutions, shift, ...state }));
+					context.diagnostic(
+						JSON.stringify({ width, theme, hold, resolutions, shift, narrowed, focus, ...state })
+					);
 					assert.deepEqual(resolutions, [503], "One real resolution answers 503, with no retry");
 					assert.ok(!state.text.includes("Preview unavailable"), "Not presented as a failure");
 					assert.ok(!state.text.includes("try the capture again"), "No retry advice");
@@ -1180,7 +1242,21 @@ test("A deployment without a capture key says the preview is off and offers no R
 						"Only the site link remains; there is no picture to resize or enlarge"
 					);
 					assert.equal(new URL(state.openHref).hostname, "thorbis.com");
-					assert.ok(shift < 0.01, `Settling into the off state barely moves the page (${shift})`);
+					if (hold) {
+						assert.equal(
+							state.frameWidth,
+							defaultWidths[width],
+							"The frame is back to its default"
+						);
+						assert.equal(focus.bodyOverflow, "", "Page scrolling is restored");
+						assert.ok(
+							!focus.onBody && focus.inPreview,
+							`Focus moved to a remaining preview control, not the page body (${focus.label})`
+						);
+					} else {
+						defaultWidths[width] = state.frameWidth;
+						assert.ok(shift < 0.01, `Settling into the off state barely moves the page (${shift})`);
+					}
 					assert.deepEqual(pageErrors, [], "No uncaught browser errors");
 					assert.deepEqual(interceptionErrors, [], "All handled interceptions settle");
 					await page.close();
