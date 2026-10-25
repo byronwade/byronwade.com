@@ -1,9 +1,11 @@
 // Thorbis Design port: rules/page + guidelines/specimen @ 46b6654.
 // Showcase adaptation; provenance and sync: docs/THORBIS-DESIGN-PORT.md.
 import Link from "next/link";
+import { Orbit } from "@/components/common/orbit";
 import { Sheet } from "@/components/layout/sheet";
 import { ArrowRight, ArrowUpRight } from "@/lib/icons";
 import { getProjects } from "@/lib/projects";
+import { cn } from "@/lib/utils";
 import { HomeActions } from "./home-actions";
 
 /**
@@ -29,7 +31,7 @@ function Fact({ value, label }: { value: string; label: string }) {
 
 function ThorbisSpecimen() {
 	return (
-		<Sheet caption="The chain Thorbis organizes. An outline of the product’s scope, not live data.">
+		<Sheet caption="The chain Thorbis organizes, plotted as a flight path. An outline of the product’s scope, not live data.">
 			<div className="flex flex-col gap-1.5 px-1.5 pt-1 pb-3">
 				<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
 					<h2 className="font-medium text-copy-14 text-foreground">
@@ -54,19 +56,33 @@ function ThorbisSpecimen() {
 					system, grounded in the work of a service business.
 				</p>
 			</div>
-			{/* On the measure each stage reads as one ledger line: number, stage, what it
-			    carries. Phones stack the detail under the stage. */}
-			<ol className="flex flex-col gap-0.5">
+			{/* The stages read as one flight path: a dashed trajectory through a node per
+			    stage, ending on the filled node where the work lands. On the measure each
+			    stage is one ledger line; phones stack the detail under the stage. */}
+			<ol className="relative flex flex-col gap-0.5">
+				<span
+					aria-hidden="true"
+					className="absolute top-5 bottom-5 left-[0.6875rem] border-(--space-orbit) border-l border-dashed"
+				/>
 				{CHAIN.map(({ stage, detail }, index) => (
 					<li
-						className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 odd:bg-muted sm:grid-cols-[auto_5.5rem_minmax(0,1fr)]"
+						className="grid grid-cols-[0.625rem_auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 sm:grid-cols-[0.625rem_auto_5.5rem_minmax(0,1fr)]"
 						key={stage}
 					>
+						<span
+							aria-hidden="true"
+							className={cn(
+								"relative size-2.5 self-center rounded-full border",
+								index === CHAIN.length - 1
+									? "border-brand bg-brand"
+									: "border-(--space-rim) bg-card"
+							)}
+						/>
 						<span className="text-copy-12 text-muted-foreground tabular-nums">
 							{String(index + 1).padStart(2, "0")}
 						</span>
 						<span className="font-medium text-copy-14 text-foreground">{stage}</span>
-						<span className="col-start-2 text-pretty text-body text-copy-14 sm:col-start-auto">
+						<span className="col-start-3 text-pretty text-body text-copy-14 sm:col-start-auto">
 							{detail}
 						</span>
 					</li>
@@ -82,28 +98,37 @@ export async function HomeHero() {
 		// Claim, then the product it led to, then the facts behind the claim: one
 		// column on the shared measure, so the title keeps the header's edge.
 		<section aria-labelledby="home-title" className="flex flex-col gap-8">
-			<div className="flex flex-col items-start gap-5">
-				<p className="text-copy-13 text-muted-foreground">
-					Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
-				</p>
-				<h1
-					className="wrap-anywhere max-w-xl text-balance font-medium text-heading-32 tracking-tight"
-					id="home-title"
-				>
-					I ran the service business. Now I build the software it needed.
-				</h1>
-				{/* The story behind the claim is a link inside the lede, not a third
+			{/* From md the opening shares its row with a small planetary system: the
+			    theme's one figure, set beside the claim so it never sits under text. */}
+			<div className="grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_11rem]">
+				<div className="flex flex-col items-start gap-5">
+					<p className="text-copy-13 text-muted-foreground">
+						Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
+					</p>
+					<h1
+						className="wrap-anywhere max-w-xl text-balance font-medium text-heading-32 tracking-tight"
+						id="home-title"
+					>
+						I ran the service business. Now I build the software it needed.
+					</h1>
+					{/* The story behind the claim is a link inside the lede, not a third
 				    stranded action under the buttons: the opening ends on its CTAs. */}
-				<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
-					I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
-					reputation: I learned the problems firsthand. Today I turn those lessons into products for
-					the trades.{" "}
-					<Link prefetch={false} className="link-underline" href="/blog/scaling-plumbing-business">
-						Read what went wrong, and what I learned
-					</Link>
-					.
-				</p>
-				<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
+					<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
+						I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
+						reputation: I learned the problems firsthand. Today I turn those lessons into products
+						for the trades.{" "}
+						<Link
+							prefetch={false}
+							className="link-underline"
+							href="/blog/scaling-plumbing-business"
+						>
+							Read what went wrong, and what I learned
+						</Link>
+						.
+					</p>
+					<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
+				</div>
+				<Orbit className="hidden size-44 md:block" />
 			</div>
 			<ThorbisSpecimen />
 			<dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,5rem),1fr))] gap-4">

@@ -37,7 +37,8 @@ from the profile and makes first-visit clarity the dominant design concern.
 - **Primary traits:** direct, evidence-first, quietly confident, technically
   literate
 - **Traits to avoid:** salesy, playful, corporate, mysterious, hype-driven
-- **Canvas:** Thorbis neutral light and dark themes
+- **Canvas:** Thorbis light and dark themes retinted to a cool sky hue for the
+  space theme (DESIGN.md §5.1): daylight and deep space
 - **Density level:** comfortable for reading, compact for indexes. Never sparse
   for its own sake.
 - **Motion personality:** crisp and near-still. Motion confirms and orients; it
@@ -99,7 +100,7 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
   `assets/og/`, built by `scripts/build-og-fonts.py` (`docs/PERFORMANCE.md`).
 - **Motion token owner:** `app/globals.css` (`--motion-*`). Established as part of
   adopting this standard; before that the curve was copy-pasted in four files.
-- **Theme owner:** `next-themes`, light default, system aware, toggled from the
+- **Theme owner:** `next-themes`, dark (deep space) default, system aware, toggled from the
   header through `hooks/use-theme-toggle.ts`.
 - **Content/terminology owner:** `content/blog/*.md`, `content/projects/*.md`,
   read through `lib/blog.ts` and `lib/projects.ts`.
@@ -183,7 +184,7 @@ use them correctly.
   (`background`/`card`/`popover`/`muted`), text (`foreground`/`muted-foreground`),
   structural (`border`/`input`/`ring`), `brand` (Thorbis electric blue),
   `success`, `warning`, `destructive`, and a `dock` family for the dark chrome.
-- **Light/dark/high-contrast policy:** light default; `.dark` is a deliberate
+- **Light/dark/high-contrast policy:** dark default (the space theme); `.dark` is a deliberate
   re-mapping, not an inversion. No separate high-contrast theme.
 - **Spacing scale:** Tailwind's 4px grid, 8px dominant rhythm.
 - **Radius scale:** derived from `--radius: 0.625rem` through `--radius-sm` … `4xl`.

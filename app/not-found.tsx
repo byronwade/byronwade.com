@@ -1,3 +1,4 @@
+import { Orbit } from "@/components/common/orbit";
 import { SiteShell } from "@/components/layout/site-shell";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Link } from "@/components/ui/link";
@@ -6,20 +7,22 @@ import { cn } from "@/lib/utils";
 /**
  * 404. Shared profile, the Thorbis not-found grammar: say what is missing,
  * then offer the places a visitor most likely meant, start-aligned on the
- * page edge like every other route. No gradient numeral, ornament, or
+ * page edge like every other route. The one figure is the space theme's
+ * Orbit, beside the copy and never under it. No gradient numeral or
  * viewport-height spacer.
  */
 export default function NotFound() {
 	return (
 		<SiteShell profile="shared">
 			<div className="flex flex-col gap-3 sm:pt-8">
+				<Orbit className="mb-2 size-24" />
 				<p className="font-mono text-copy-13 text-muted-foreground tabular-nums">404</p>
 				<h1 className="text-balance font-heading font-medium text-heading-32 tracking-tight">
 					Page not found
 				</h1>
 				<p className="text-body text-copy-16 leading-relaxed">
-					This URL doesn&rsquo;t exist, or the page that lived here has moved. The rest of the site
-					is fine: start at the homepage, read the{" "}
+					This page has drifted out of orbit. The URL doesn&rsquo;t exist, or the page that lived
+					here has moved. The rest of the site is fine: start at the homepage, read the{" "}
 					<Link className="link-underline" href="/blog">
 						writing
 					</Link>

@@ -9,7 +9,7 @@ const signOffLinkClass =
 
 export default function Footer() {
 	return (
-		<footer className="w-full px-4 pb-10 sm:px-5 print:hidden">
+		<footer className="w-full px-4 sm:px-5 print:hidden">
 			{/* The sign-off keeps the header's 42rem measure (Thorbis site-footer). */}
 			<div
 				className="mx-auto grid max-w-2xl gap-8 border-border border-t pt-10 sm:grid-cols-[1.5fr_1fr]"
@@ -78,6 +78,14 @@ export default function Footer() {
 						Terms
 					</Link>
 				</div>
+			</div>
+			{/* The site sets on a planet's horizon: the top arc of a circle far wider
+			    than the page, its sunlit rim in the space tokens (DESIGN.md §5.1). */}
+			<div
+				aria-hidden="true"
+				className="relative -mx-4 mt-10 h-16 overflow-hidden sm:-mx-5 sm:h-24"
+			>
+				<div className="absolute top-0 left-1/2 aspect-square w-[max(160%,72rem)] -translate-x-1/2 rounded-full border-(--space-rim) border-t bg-(--space-planet)" />
 			</div>
 		</footer>
 	);

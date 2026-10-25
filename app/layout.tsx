@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<JsonLd data={personJsonLd} />
 				<JsonLd data={organizationJsonLd} />
 				<JsonLd data={websiteJsonLd} />
-				<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 					<ErrorBoundary>
 						<SiteLayout>{children}</SiteLayout>
 					</ErrorBoundary>
