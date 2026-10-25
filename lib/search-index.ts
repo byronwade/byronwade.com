@@ -1,5 +1,5 @@
 import { unstable_cache } from "next/cache";
-import { type BlogPost, getBlogPosts } from "@/lib/blog";
+import { type BlogPost, type BlogTopic, getBlogPosts, getBlogTopics } from "@/lib/blog";
 import { getProjects, type Project } from "@/lib/projects";
 import { searchPlainText } from "@/lib/search-text";
 import type { SearchEntry } from "@/lib/search-types";
@@ -73,11 +73,28 @@ function postEntry(post: BlogPost, includeBody: boolean): SearchEntry {
 	};
 }
 
-function fromCorpus(projects: Project[], posts: BlogPost[], includeBody: boolean): SearchEntry[] {
+/** Topic pages are searchable by name, and their labels name the breadcrumb leaf. */
+function topicEntry(topic: BlogTopic): SearchEntry {
+	return {
+		kind: "Writing",
+		label: topic.label,
+		href: `/blog/topic/${topic.slug}`,
+		meta: `${topic.posts.length} posts`,
+		keywords: "topic",
+	};
+}
+
+function fromCorpus(
+	projects: Project[],
+	posts: BlogPost[],
+	topics: BlogTopic[],
+	includeBody: boolean
+): SearchEntry[] {
 	return [
 		...PAGES,
 		...projects.map((project) => projectEntry(project, includeBody)),
 		...posts.map((post) => postEntry(post, includeBody)),
+		...topics.map(topicEntry),
 	];
 }
 
@@ -86,8 +103,9 @@ function fromCorpus(projects: Project[], posts: BlogPost[], includeBody: boolean
 // Bump this revision when the mapping, PAGES or shared Markdown grammar changes:
 // Next's Data Cache can survive deployments as well as individual requests.
 const cachedPageCorpus = unstable_cache(
-	async (projects: Project[], posts: BlogPost[]) => fromCorpus(projects, posts, true),
-	["page-search-corpus-v1"],
+	async (projects: Project[], posts: BlogPost[], topics: BlogTopic[]) =>
+		fromCorpus(projects, posts, topics, true),
+	["page-search-corpus-v2"],
 	{ revalidate: false }
 );
 
@@ -96,8 +114,12 @@ const cachedPageCorpus = unstable_cache(
  * Every page ships this list, so it does not include article text.
  */
 export async function buildSearchIndex(): Promise<SearchEntry[]> {
-	const [projects, posts] = await Promise.all([getProjects(), getBlogPosts()]);
-	return fromCorpus(projects, posts, false);
+	const [projects, posts, topics] = await Promise.all([
+		getProjects(),
+		getBlogPosts(),
+		getBlogTopics(),
+	]);
+	return fromCorpus(projects, posts, topics, false);
 }
 
 /**
@@ -106,8 +128,12 @@ export async function buildSearchIndex(): Promise<SearchEntry[]> {
  * off the client.
  */
 export async function buildPageSearchIndex(): Promise<SearchEntry[]> {
-	const [projects, posts] = await Promise.all([getProjects(), getBlogPosts()]);
+	const [projects, posts, topics] = await Promise.all([
+		getProjects(),
+		getBlogPosts(),
+		getBlogTopics(),
+	]);
 	return process.env.NODE_ENV === "production"
-		? cachedPageCorpus(projects, posts)
-		: fromCorpus(projects, posts, true);
+		? cachedPageCorpus(projects, posts, topics)
+		: fromCorpus(projects, posts, topics, true);
 }

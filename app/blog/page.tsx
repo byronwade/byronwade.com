@@ -1,10 +1,11 @@
 import { PostRow } from "@/components/blog/post-row";
+import { TopicNav } from "@/components/blog/topic-nav";
 import { IndexList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
-import { getBlogPosts } from "@/lib/blog";
+import { getBlogPosts, getBlogTopics } from "@/lib/blog";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import {
 	generateBreadcrumbStructuredData,
@@ -96,7 +97,9 @@ async function BlogList() {
 	);
 }
 
-export default function BlogPage() {
+export default async function BlogPage() {
+	const topics = await getBlogTopics();
+
 	// Generate structured data
 	const websiteStructuredData = generateWebSiteStructuredData();
 	const breadcrumbStructuredData = generateBreadcrumbStructuredData([
@@ -115,6 +118,9 @@ export default function BlogPage() {
 					lede="Notes from building products and running a service business. Design systems, field ops, and the software that has to work out in the truck."
 					title="Writing"
 				/>
+				{/* Topics sit between the header and the chronology so a reader who came
+				    for one subject can narrow before scanning. */}
+				<TopicNav topics={topics} />
 				<BlogList />
 			</SiteShell>
 		</>

@@ -86,6 +86,14 @@ for (const kind of ["blog", "projects"]) {
 							published.toSorted(),
 							`${path} exposes every published entry without scripts`
 						);
+					} else if (path.startsWith(`/${kind}/topic/`)) {
+						// A topic page is the index narrowed: it lists posts rather than prose.
+						assert.ok(
+							visible.links.some(
+								(href) => published.includes(href) && !href.startsWith(`/${kind}/topic/`)
+							),
+							`${path} lists its posts without scripts`
+						);
 					} else {
 						assert.ok(visible.paragraphs > 0, `${path} exposes the prose without scripts`);
 					}

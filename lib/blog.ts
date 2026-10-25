@@ -121,3 +121,45 @@ export async function getAllBlogSlugs(): Promise<string[]> {
 	const posts = await getBlogPosts();
 	return posts.map((post) => post.slug);
 }
+
+export interface BlogTopic {
+	/** The tag as authors write it, e.g. "Field service". */
+	label: string;
+	/** Newest first, like the writing index. */
+	posts: BlogPost[];
+	slug: string;
+}
+
+/** A tag on a single post is a label, not a topic; it gets no page of its own. */
+const TOPIC_MIN_POSTS = 2;
+const NON_SLUG = /[^a-z0-9]+/g;
+const EDGE_DASHES = /^-+|-+$/g;
+
+function topicSlug(tag: string): string {
+	return tag.toLowerCase().replace(NON_SLUG, "-").replace(EDGE_DASHES, "");
+}
+
+/**
+ * Tags shared by enough posts to read as a topic, most-written first. Tags that
+ * differ only in case or punctuation are one topic, labelled as first written.
+ */
+export async function getBlogTopics(): Promise<BlogTopic[]> {
+	const topics = new Map<string, BlogTopic>();
+	for (const post of await getBlogPosts()) {
+		for (const tag of post.tags ?? []) {
+			const slug = topicSlug(tag);
+			if (!slug) {
+				continue;
+			}
+			const topic = topics.get(slug);
+			if (!topic) {
+				topics.set(slug, { label: tag, slug, posts: [post] });
+			} else if (!topic.posts.includes(post)) {
+				topic.posts.push(post);
+			}
+		}
+	}
+	return [...topics.values()]
+		.filter((topic) => topic.posts.length >= TOPIC_MIN_POSTS)
+		.sort((a, b) => b.posts.length - a.posts.length || a.label.localeCompare(b.label));
+}

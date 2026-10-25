@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getBlogPosts } from "@/lib/blog";
+import { getBlogPosts, getBlogTopics } from "@/lib/blog";
 import { getProjects } from "@/lib/projects";
 import { siteUrl } from "@/lib/site";
 
@@ -44,13 +44,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		},
 	];
 
-	const [posts, projects] = await Promise.all([getBlogPosts(), getProjects()]);
+	const [posts, topics, projects] = await Promise.all([
+		getBlogPosts(),
+		getBlogTopics(),
+		getProjects(),
+	]);
 	const blogPages: MetadataRoute.Sitemap = posts.map((post) => ({
 		url: `${siteUrl}/blog/${post.slug}`,
 		lastModified: new Date(post.updated ?? post.date),
 		changeFrequency: "monthly",
 		priority: 0.7,
 	}));
+	// A topic page changes when its newest post does; posts arrive newest first.
+	const topicPages: MetadataRoute.Sitemap = topics.map((topic) => {
+		const newest = topic.posts[0];
+		return {
+			url: `${siteUrl}/blog/topic/${topic.slug}`,
+			...(newest ? { lastModified: new Date(newest.updated ?? newest.date) } : {}),
+			changeFrequency: "monthly",
+			priority: 0.5,
+		};
+	});
 	const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
 		url: `${siteUrl}/projects/${project.slug}`,
 		...(project.date ? { lastModified: new Date(project.date) } : {}),
@@ -58,5 +72,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		priority: 0.7,
 	}));
 
-	return [...staticPages, ...blogPages, ...projectPages];
+	return [...staticPages, ...blogPages, ...topicPages, ...projectPages];
 }
