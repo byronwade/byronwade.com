@@ -13,11 +13,11 @@ const siteName = "Byron Wade";
 // Satori cannot read oklch, so these are the sRGB values of the light Thorbis
 // tokens in app/globals.css; tests/share-card.test.mjs fails when they drift.
 const palette = {
-	background: "#f7f4ee", // --thorbis-bg
-	foreground: "#201b14", // --thorbis-fg
-	body: "#4a4139", // --thorbis-body
-	marker: "#655e56", // --thorbis-marker
-	border: "#eae7e1", // --thorbis-border over --thorbis-bg
+	background: "#f4f6fa", // --thorbis-bg
+	foreground: "#131824", // --thorbis-fg
+	body: "#39404d", // --thorbis-body
+	marker: "#585e6a", // --thorbis-marker
+	border: "#e6e9ed", // --thorbis-border over --thorbis-bg
 };
 
 const kickers: Record<OGImageType, string | undefined> = {

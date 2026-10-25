@@ -493,34 +493,45 @@
  * Raw design values belong only in this token block. */
 /* thorbis-tokens:start */
 :root {
+  /* Site space theme (Byron, 2026-10-25), not Thorbis source. The neutrals
+     above are retinted from Thorbis's warm hue to a cool 265-270 so both themes
+     read as sky: daylight and deep space. These roles paint only the decorative
+     layer (Starfield, Orbit, the footer horizon); preserve them when regenerating. */
+  --space-star: color-mix(in oklab, var(--thorbis-marker) 34%, transparent);
+  --space-star-dim: color-mix(in oklab, var(--thorbis-marker) 18%, transparent);
+  --space-planet: oklch(93.8% 0.014 265);
+  --space-rim: color-mix(in oklab, var(--thorbis-accent) 45%, transparent);
+  --space-orbit: color-mix(in oklab, var(--thorbis-fg) 18%, transparent);
+  --space-moon: var(--thorbis-pumpkin);
+  --motion-orbit: 160s;
   /* Header-only source recipes from src/styles.css light overrides.
      Preserve these scoped values when regenerating the general token port. */
-  --header-on-panel: oklch(93.5% 0.011 84.6);
+  --header-on-panel: oklch(94% 0.011 265);
   --header-shadow-panel: inset 0 0 0 1px var(--thorbis-border),
     0 1px 2px color-mix(in oklab, var(--thorbis-fg) 5%, transparent);
   --thorbis-accent: oklch(52% 0.17 264.4);
   /* Numeric achromatic hue preserves the color and supports the audit parser. */
   --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(50% 0.188 264.4);
-  --thorbis-bg: oklch(96.8% 0.009 84.6);
-  --thorbis-body: oklch(38.2% 0.018 68);
+  --thorbis-bg: oklch(97.2% 0.006 265);
+  --thorbis-body: oklch(37% 0.025 265);
   --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
   --thorbis-burnt: oklch(49.6% 0.143 34);
-  --thorbis-busy: oklch(22.4% 0.014 72);
-  --thorbis-code-bg: oklch(93.5% 0.011 84.6);
-  --thorbis-code-fg: oklch(22.4% 0.014 72);
+  --thorbis-busy: oklch(21% 0.025 268);
+  --thorbis-code-bg: oklch(94% 0.011 265);
+  --thorbis-code-fg: oklch(21% 0.025 268);
   --thorbis-danger: oklch(52% 0.17 23);
-  --thorbis-fg: oklch(22.4% 0.014 72);
-  --thorbis-field: oklch(93.2% 0.012 84.6);
+  --thorbis-fg: oklch(21% 0.025 268);
+  --thorbis-field: oklch(93.6% 0.011 265);
   --thorbis-focus: oklch(55.8% 0.188 264.4);
   --thorbis-forest: oklch(38% 0.052 147.2);
   --thorbis-info: oklch(52% 0.16 259.8);
   --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
-  --thorbis-link-decoration: oklch(66% 0.012 68);
-  --thorbis-marker: oklch(48.5% 0.015 68);
+  --thorbis-link-decoration: oklch(66% 0.016 265);
+  --thorbis-marker: oklch(48% 0.022 265);
   --thorbis-olive: oklch(47.9% 0.05 115.3);
-  --thorbis-on-panel: oklch(96.2% 0.008 84.6);
-  --thorbis-panel: oklch(99.15% 0.0035 84.6);
+  --thorbis-on-panel: oklch(96.4% 0.008 265);
+  --thorbis-panel: oklch(99.3% 0.003 265);
   --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
   --thorbis-success: oklch(50% 0.14 149.2);
   --thorbis-warning: oklch(54% 0.13 80.5);
@@ -556,7 +567,7 @@
       0 1px 1px color-mix(in oklab, var(--thorbis-fg) 10%, transparent);
   --shadow-field: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),
       inset 0 1px 1px color-mix(in oklab, var(--thorbis-fg) 4%, transparent);
-  --shadow-layer: 0 1px 2px rgb(35 28 20 / 0.08), 0 18px 48px rgb(35 28 20 / 0.14);
+  --shadow-layer: 0 1px 2px rgb(16 20 42 / 0.08), 0 18px 48px rgb(16 20 42 / 0.14);
   --shadow-panel: 0 1px 2px color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
   --shadow-photo: inset 0 0 0 1px color-mix(in oklab, var(--thorbis-fg) 7%, transparent),
       0 1px 2px color-mix(in oklab, var(--thorbis-fg) 6%, transparent),
@@ -612,30 +623,35 @@
   --z-underlay: -1;
 }
 .dark {
+  --space-star: oklch(97% 0.02 255 / 0.9);
+  --space-star-dim: oklch(82% 0.05 265 / 0.5);
+  --space-planet: oklch(19.5% 0.045 272);
+  --space-rim: color-mix(in oklab, var(--thorbis-accent) 70%, transparent);
+  --space-orbit: color-mix(in oklab, var(--thorbis-fg) 22%, transparent);
   --header-on-panel: var(--thorbis-on-panel);
   --header-shadow-panel: var(--shadow-panel);
   --thorbis-accent: oklch(61% 0.17 264.4);
   --thorbis-accent-foreground: oklch(100% 0 0);
   --thorbis-accent-hover: oklch(63.2% 0.157 265.4);
-  --thorbis-bg: oklch(14.5% 0 0);
-  --thorbis-body: oklch(94% 0.013 259.8);
+  --thorbis-bg: oklch(13.5% 0.03 270);
+  --thorbis-body: oklch(90% 0.02 262);
   --thorbis-border: color-mix(in oklab, var(--thorbis-fg) 6%, transparent);
   --thorbis-burnt: oklch(49.6% 0.143 34);
-  --thorbis-busy: oklch(96.8% 0.009 84.6);
-  --thorbis-code-bg: oklch(20.5% 0 0);
-  --thorbis-code-fg: oklch(96.8% 0.009 84.6);
+  --thorbis-busy: oklch(96.8% 0.008 260);
+  --thorbis-code-bg: oklch(18.5% 0.035 270);
+  --thorbis-code-fg: oklch(96.8% 0.008 260);
   --thorbis-danger: oklch(62.6% 0.193 23);
-  --thorbis-fg: oklch(96.8% 0.009 84.6);
+  --thorbis-fg: oklch(96.8% 0.008 260);
   --thorbis-field: color-mix(in oklab, black 22%, var(--thorbis-bg));
   --thorbis-focus: oklch(55.8% 0.188 264.4);
   --thorbis-forest: oklch(38% 0.052 147.2);
   --thorbis-info: oklch(62.3% 0.188 259.8);
   --thorbis-lift: color-mix(in oklab, var(--thorbis-fg) 12%, var(--thorbis-panel));
-  --thorbis-link-decoration: oklch(60% 0 0);
-  --thorbis-marker: oklch(78% 0 0);
+  --thorbis-link-decoration: oklch(60% 0.03 265);
+  --thorbis-marker: oklch(76% 0.03 265);
   --thorbis-olive: oklch(47.9% 0.05 115.3);
   --thorbis-on-panel: color-mix(in oklab, var(--thorbis-fg) 9%, var(--thorbis-panel));
-  --thorbis-panel: oklch(20.5% 0 0);
+  --thorbis-panel: oklch(18.5% 0.035 270);
   --thorbis-pumpkin: oklch(59.4% 0.152 47.5);
   --thorbis-success: oklch(62.7% 0.17 149.2);
   --thorbis-warning: oklch(82.7% 0.171 80.5);
@@ -948,6 +964,34 @@
     top: 1rem;
   }
 
+  /* ── Space theme (DESIGN.md §5.1) ──
+     Orbit's moons turn about the system's centre (240px viewBox). A constant
+     rotation is the one place a linear timing is correct: an eased orbit would
+     visibly speed up and stall once a lap. Rare delight, so it passes the motion
+     gate only on the home opening and the 404; the global reduced-motion rule
+     ends it on its first frame, leaving the moons parked. */
+  .orbit-spin {
+    transform-box: view-box;
+    transform-origin: 120px 120px;
+    animation: orbit-spin var(--motion-orbit) linear infinite;
+  }
+  .orbit-spin-reverse {
+    animation-direction: reverse;
+    animation-duration: calc(var(--motion-orbit) * 1.6);
+  }
+  .orbit-spin-near {
+    animation-duration: calc(var(--motion-orbit) * 0.55);
+  }
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+::selection {
+  background: color-mix(in oklab, var(--thorbis-accent) 32%, transparent);
 }
 
 /*

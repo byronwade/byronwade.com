@@ -5,12 +5,14 @@ import { MoreHorizontal } from "@/lib/icons";
 import { buildSearchIndex } from "@/lib/search-index";
 import { AppBreadcrumb } from "./app-breadcrumb";
 import Footer from "./footer";
+import { Starfield } from "./starfield";
 
 export default async function SiteLayout({ children }: { children: ReactNode }) {
 	const searchEntries = await buildSearchIndex();
 	const pathLabels = Object.fromEntries(searchEntries.map((e) => [e.href, e.label]));
 	return (
 		<div className="relative flex min-h-screen flex-col">
+			<Starfield />
 			<SiteHeader entries={searchEntries} />
 			<div className="fixed top-2 left-5 z-(--z-chrome) hidden xl:block print:hidden">
 				<AppBreadcrumb

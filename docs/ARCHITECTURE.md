@@ -31,7 +31,7 @@ visitor's URL, so any label taken from the path would differ between the two.
 For the same reason `NavDock` marks no section current when the root segment is
 `_not-found`; otherwise `/blog/missing` would highlight "Blog" in the browser only.
 
-Theme is light/dark via `next-themes` (light default) with a toggle in
+Theme is light/dark via `next-themes` (dark default, the space theme) with a toggle in
 the header.
 
 ### Local browser verification

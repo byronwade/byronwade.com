@@ -96,6 +96,13 @@ for introducing a new visual choice.
   for subsequent opens. `header-search-panel.tsx` also defers the search field,
   matching and query state. The header reserves its clearance with the same
   container query used by its narrow reflow, including 200% text.
+- Space theme (DESIGN.md §5.1, Byron 2026-10-25): the neutral surface, ink,
+  marker, field, code-well and link-decoration values in both themes are retinted
+  from Thorbis's warm hue 84.6 / 68 to a cool 265-270 (dark: a deep navy canvas
+  and panel). Accent, status and category inks are unchanged. The `--space-*`
+  roles and `--motion-orbit` are site-only and sit at the top of each token
+  rule; preserve both when syncing the token port, then re-run
+  `tests/code-palette.test.mjs` and `tests/share-card.test.mjs`.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.

@@ -3,6 +3,7 @@ name: Thorbis Design, byronwade.com
 version: 3.0
 status: Thorbis port adopted
 principle: "Quiet chrome. Precise work."
+theme: "Space (Byron, 2026-10-25): deep-space dark default, starfield, orbit, planet horizon"
 adoption:
   project_profile: PROJECT_PROFILE.md
   agent_protocol: AGENTS.md
@@ -183,6 +184,32 @@ line heights and elevation are tokens, not page-specific approximations.
 Electric blue indicates action/focus. Categories are neutral labels; status is
 always written. Any contrast correction must be documented against its source.
 
+### 5.1 Space theme
+
+Byron loves space, and on 2026-10-25 asked for the whole site to carry it. The
+theme lives in values and in one decorative layer, never in the work: the
+dominant object of every route (§4.1) is unchanged and stays more important
+than anything below.
+
+- **Sky.** The Thorbis neutrals are retinted to a cool hue in both themes:
+  daylight (light) and deep space (dark, the default theme). Accent, status and
+  category inks are Thorbis's own. Contrast rules are unchanged.
+- **Starfield.** `components/layout/starfield.tsx` is the one decorative layer:
+  a fixed, server-rendered SVG of three repeating star tiles behind every page,
+  hidden from assistive technology and print. Stars are dots, not glow; no
+  nebula, gradient or blur. Daylight shows them as faint chart dots.
+- **Orbit.** `components/common/orbit.tsx`, a ringed planet with three moons, is
+  the theme's one figure. It sits beside copy, never under it: the home
+  opening (from `md`) and the 404. It is not a section ornament or an icon.
+- **Flight path.** The home specimen plots the Thorbis chain as a trajectory:
+  a dashed rail through a node per stage, the last node filled.
+- **Horizon.** The footer ends on a planet's arc with a sunlit rim.
+- **Colour.** The layer paints only with the `--space-*` roles in the token
+  block; nothing else may use them.
+- **Copy.** First person and plain (§9) still wins. A space metaphor is allowed
+  where it is the plain thing to say (the 404 "drifted out of orbit"), never as
+  vocabulary layered on real content.
+
 ## 6. Motion
 
 Motion is an interaction tool. Decide whether it should exist before choosing a
@@ -224,7 +251,10 @@ keeps its existing `--motion-ease-*` aliases through `lib/motion.ts`. Thorbis us
 `--motion-fast` (120ms) and `--motion-overlay` (180ms). Existing duration names
 alias these two budgets; never introduce a second curve or duration scale.
 Content entrances are absent. Hover changes color; focus is immediate. Reduced
-motion disables nonessential transitions and the theme wipe.
+motion disables nonessential transitions and the theme wipe. The one ambient
+motion is the Orbit's moons (§5.1), the rare-delight budget for the home opening
+and the 404: a linear lap on `--motion-orbit` (linear is correct for constant
+rotation), never on content, parked under reduced motion.
 
 ### 6.3 Physicality
 
@@ -441,7 +471,8 @@ Performance claims require before-and-after measurement.
 Do not ship: a centered hero followed by a card grid; a page made entirely of
 summary cards; repeated KPI boxes where one relationship would be clearer;
 nested cards; borders around every row; all-caps eyebrows; gradient text;
-glassmorphism; neon glow; decorative blobs or grid backgrounds; icons in colored
+glassmorphism; neon glow; decorative blobs or grid backgrounds (the starfield
+in §5.1 is the one sanctioned decorative layer); icons in colored
 tiles; tiny muted text; every control as a pill; arbitrary radii, shadows, or
 colors; one layout repeated across unrelated pages; tooltips containing
 essential instructions; hover-only or right-click-only critical actions; modals
