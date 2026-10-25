@@ -4,6 +4,7 @@ import {
 	fetchCapture,
 	getAccessKey,
 	resolveCapture,
+	screenshotsUnconfigured,
 } from "@/lib/screenshot-capture";
 
 export const dynamic = "force-dynamic";
@@ -32,10 +33,7 @@ export async function GET(request: Request) {
 	}
 	const accessKey = getAccessKey();
 	if (!accessKey) {
-		return NextResponse.json(
-			{ error: "Screenshots are not configured" },
-			{ status: 500, headers: NO_STORE }
-		);
+		return screenshotsUnconfigured();
 	}
 
 	try {

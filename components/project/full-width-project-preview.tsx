@@ -15,7 +15,12 @@ import {
 import { FullWidthProjectPreviewClient } from "./full-width-project-preview-client";
 
 /** Server-rendered slots avoid shipping glyph definitions with the preview. */
-export function FullWidthProjectPreview(props: { href: string; title: string; url: string }) {
+export function FullWidthProjectPreview(props: {
+	captionClassName?: string;
+	href: string;
+	title: string;
+	url: string;
+}) {
 	return (
 		<FullWidthProjectPreviewClient
 			{...props}

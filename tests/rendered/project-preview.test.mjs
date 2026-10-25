@@ -1081,3 +1081,110 @@ test("Project preview does not ask script-enabled visitors to enable JavaScript 
 		})
 	);
 });
+
+test("A deployment without a capture key says the preview is off and offers no Retry", {
+	timeout: 120_000,
+}, async (context) => {
+	// Production has run without a key, so this case is real: nothing here stubs the
+	// screenshot routes. Only third-party requests are answered locally.
+	await withProductionServer(
+		(url) =>
+			withBrowser(context, { timeout: 30_000, protocolTimeout: 15_000 }, async (browser) => {
+				await [
+					{ width: 390, theme: "light" },
+					{ width: 1280, theme: "dark" },
+				].reduce(async (previous, { width, theme }) => {
+					await previous;
+					const page = await browser.newPage();
+					page.setDefaultTimeout(20_000);
+					await page.setViewport({ width, height: 844 });
+					await page.evaluateOnNewDocument((nextTheme) => {
+						localStorage.setItem("theme", nextTheme);
+						window.__shifts = [];
+						new PerformanceObserver((list) => {
+							for (const entry of list.getEntries()) {
+								if (!entry.hadRecentInput) {
+									window.__shifts.push(entry.value);
+								}
+							}
+						}).observe({ type: "layout-shift", buffered: true });
+					}, theme);
+					const resolutions = [];
+					const interceptionErrors = [];
+					const pageErrors = [];
+					page.on("pageerror", (error) => pageErrors.push(error.message));
+					page.on("response", (response) => {
+						if (new URL(response.url()).pathname.startsWith("/api/screenshot")) {
+							resolutions.push(response.status());
+						}
+					});
+					await page.setRequestInterception(true);
+					page.on("request", (request) => {
+						const response = request.url().startsWith(url)
+							? request.continue()
+							: request.respond({ status: 204, body: "" });
+						response.catch((error) => interceptionErrors.push(error.message));
+					});
+					await page.goto(`${url}/projects/thorbis`, { waitUntil: "networkidle0" });
+					await page.waitForFunction(
+						(selector) =>
+							document.querySelector(selector)?.innerText.includes("Live preview is off"),
+						{},
+						PREVIEW
+					);
+					const state = await page.$eval(PREVIEW, (preview) => {
+						const visible = (element) =>
+							element.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
+						const named = (label) =>
+							[...preview.querySelectorAll("button, a")].filter(
+								(control) =>
+									visible(control) &&
+									(control.textContent.trim() === label ||
+										control.getAttribute("aria-label")?.startsWith(label))
+							).length;
+						const open = [...preview.querySelectorAll("a")].find(
+							(link) => link.textContent.trim() === "Open site"
+						);
+						const box = open.getBoundingClientRect();
+						return {
+							text: preview.innerText,
+							caption: preview.closest("figure").querySelector("figcaption").textContent,
+							busy: preview.querySelector("[aria-busy]").getAttribute("aria-busy"),
+							retry: named("Retry"),
+							resize: named("Resize preview width"),
+							fullscreen: named("Enter fullscreen"),
+							presets: preview.querySelectorAll("button[aria-pressed]").length,
+							openSite: visible(open) && box.width >= 44 && box.height >= 44,
+							openHref: open.href,
+						};
+					});
+					const shift = await page.evaluate(() => window.__shifts.reduce((a, b) => a + b, 0));
+					context.diagnostic(JSON.stringify({ width, theme, resolutions, shift, ...state }));
+					assert.deepEqual(resolutions, [503], "One real resolution answers 503, with no retry");
+					assert.ok(!state.text.includes("Preview unavailable"), "Not presented as a failure");
+					assert.ok(!state.text.includes("try the capture again"), "No retry advice");
+					assert.ok(state.text.includes("thorbis.com itself is unaffected"), "Names the site");
+					assert.ok(state.caption.includes("switched off"), "The caption matches the frame");
+					assert.ok(!state.caption.includes("refreshed from the live site"), "No false claim");
+					assert.deepEqual(
+						{
+							busy: state.busy,
+							retry: state.retry,
+							resize: state.resize,
+							fullscreen: state.fullscreen,
+							presets: state.presets,
+							openSite: state.openSite,
+						},
+						{ busy: "false", retry: 0, resize: 0, fullscreen: 0, presets: 0, openSite: true },
+						"Only the site link remains; there is no picture to resize or enlarge"
+					);
+					assert.equal(new URL(state.openHref).hostname, "thorbis.com");
+					assert.ok(shift < 0.01, `Settling into the off state barely moves the page (${shift})`);
+					assert.deepEqual(pageErrors, [], "No uncaught browser errors");
+					assert.deepEqual(interceptionErrors, [], "All handled interceptions settle");
+					await page.close();
+				}, Promise.resolve());
+			}),
+		{ env: { SCREENSHOTONE_ACCESS_KEY: "" } }
+	);
+});
