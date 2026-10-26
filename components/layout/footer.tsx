@@ -21,7 +21,7 @@ export default function Footer() {
 						Plumber first. Product engineer today. Building software for the service businesses I
 						know firsthand.
 					</p>
-					{/* Two 44px targets stacked flush: the boxes already space them. */}
+					{/* 44px targets stacked flush: the boxes already space them. */}
 					<div className="flex flex-col items-start">
 						<ObfuscatedEmail className="min-h-11 text-copy-14 text-foreground" variant="link" />
 						<a
@@ -31,6 +31,17 @@ export default function Footer() {
 							target="_blank"
 						>
 							Built with Thorbis Design<span className="sr-only"> (opens in a new tab)</span>
+						</a>
+						{/* Credit for the dark theme's sky photograph (DESIGN.md §5.1); the light
+						    theme does not show the photo, so it does not show the credit. */}
+						<a
+							className="link-underline hidden min-h-11 items-center text-copy-13 dark:inline-flex"
+							href="https://hubblesite.org/contents/news-releases/2012/news-2012-37"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							Sky: Hubble eXtreme Deep Field, NASA and ESA
+							<span className="sr-only"> (opens in a new tab)</span>
 						</a>
 					</div>
 				</div>
