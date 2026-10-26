@@ -99,12 +99,16 @@ export async function HomeHero() {
 		// column on the shared measure, so the title keeps the header's edge.
 		<section aria-labelledby="home-title" className="flex flex-col gap-8">
 			{/* From md the opening shares its row with a small planetary system: the
-			    theme's one figure, set beside the claim so it never sits under text. */}
+			    theme's one figure, set beside the claim so it never sits under text.
+			    Phones carry a smaller one at the end of the byline row instead. */}
 			<div className="grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_11rem]">
 				<div className="flex flex-col items-start gap-5">
-					<p className="text-copy-13 text-muted-foreground">
-						Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
-					</p>
+					<div className="flex w-full items-center justify-between gap-4">
+						<p className="text-copy-13 text-muted-foreground">
+							Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
+						</p>
+						<Orbit className="-my-4 size-16 shrink-0 md:hidden" />
+					</div>
 					<h1
 						className="wrap-anywhere max-w-xl text-balance font-medium text-heading-32 tracking-tight"
 						id="home-title"

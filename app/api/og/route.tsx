@@ -4,21 +4,32 @@ import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import { type OGImageType, ogImageTypes } from "@/lib/seo";
+import { starScatter } from "@/lib/star-scatter";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 const siteName = "Byron Wade";
 
-// Satori cannot read oklch, so these are the sRGB values of the light Thorbis
-// tokens in app/globals.css; tests/share-card.test.mjs fails when they drift.
+// Satori cannot read oklch, so these are the sRGB values of the dark (deep
+// space) Thorbis tokens in app/globals.css, the site's default theme; the
+// share card is the space theme in one frame. tests/share-card.test.mjs fails
+// when they drift.
 const palette = {
-	background: "#f4f6fa", // --thorbis-bg
-	foreground: "#131824", // --thorbis-fg
-	body: "#39404d", // --thorbis-body
-	marker: "#585e6a", // --thorbis-marker
-	border: "#e6e9ed", // --thorbis-border over --thorbis-bg
+	background: "#050714", // --thorbis-bg (dark)
+	foreground: "#f1f5fa", // --thorbis-fg (dark)
+	body: "#d7deec", // --thorbis-body (dark)
+	marker: "#a8b1c5", // --thorbis-marker (dark)
+	border: "#1d1f2b", // --thorbis-border over --thorbis-bg (dark)
+	planet: "#0e1329", // --space-planet (dark)
+	rim: "#4e7de8", // --thorbis-accent (dark)
 };
+
+// The page starfield's own scatter, so the card's sky is the site's, kept off
+// the kicker, title and description as the page keeps bright stars off its text.
+const stars = starScatter(48, 1200, 630, 1).filter(
+	({ x, y }) => !(x > 64 && x < 1000 && y > 56 && y < 430)
+);
 
 const kickers: Record<OGImageType, string | undefined> = {
 	article: "Blog",
@@ -82,8 +93,37 @@ export async function GET(request: NextRequest) {
 					color: palette.foreground,
 					fontFamily: "Inter",
 					padding: "72px 80px 64px",
+					position: "relative",
 				}}
 			>
+				{stars.map(({ x, y, size }) => (
+					<div
+						key={`${x}-${y}`}
+						style={{
+							position: "absolute",
+							left: x,
+							top: y,
+							width: 1.5 + size * 2.5,
+							height: 1.5 + size * 2.5,
+							borderRadius: 999,
+							backgroundColor: palette.foreground,
+							opacity: 0.25 + size * 0.5,
+						}}
+					/>
+				))}
+				{/* The footer's planet horizon, rising from the card's lower right. */}
+				<div
+					style={{
+						position: "absolute",
+						left: 640,
+						top: 430,
+						width: 1100,
+						height: 1100,
+						borderRadius: 999,
+						backgroundColor: palette.planet,
+						border: `2px solid ${palette.rim}`,
+					}}
+				/>
 				<div style={{ display: "flex", flexDirection: "column" }}>
 					{kicker && (
 						<div style={{ fontSize: 26, color: palette.marker, marginBottom: 28 }}>{kicker}</div>
