@@ -197,13 +197,19 @@ than anything below.
 - **Starfield.** `components/layout/starfield.tsx` is the one decorative layer:
   a fixed, server-rendered SVG of three repeating star tiles behind every page,
   hidden from assistive technology and print. Stars are dots, not glow; no
-  nebula, gradient or blur. Daylight shows them as faint chart dots.
+  nebula, gradient or blur. Daylight shows them as faint chart dots. Only the
+  faint far layer crosses the reading column; the brighter layers fill the
+  gutters beside the measure (from `md`), so no star reads as punctuation in
+  the text. Positions come from `lib/star-scatter.ts`.
 - **Orbit.** `components/common/orbit.tsx`, a ringed planet with three moons, is
   the theme's one figure. It sits beside copy, never under it: the home
-  opening (from `md`) and the 404. It is not a section ornament or an icon.
+  opening (beside the claim from `md`, at the end of the byline row on
+  phones) and the 404. It is not a section ornament or an icon.
 - **Flight path.** The home specimen plots the Thorbis chain as a trajectory:
   a dashed rail through a node per stage, the last node filled.
 - **Horizon.** The footer ends on a planet's arc with a sunlit rim.
+- **Share card.** `app/api/og` draws the dark theme: the same star scatter
+  (kept off the text) and the planet horizon rising at the lower right.
 - **Colour.** The layer paints only with the `--space-*` roles in the token
   block; nothing else may use them.
 - **Copy.** First person and plain (§9) still wins. A space metaphor is allowed

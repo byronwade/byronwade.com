@@ -19,8 +19,9 @@ const FONT = /\.(?:ttf|otf|woff2?)$/;
 const JSX_TEXT = />([^<>{}]+)</g;
 const PICTOGRAPH = /\p{Extended_Pictographic}/u;
 const WHITESPACE = /\s/;
-// A palette entry copied from one token, like `body: "#4a4139", // --thorbis-body`.
-const PALETTE_ENTRY = /\w+: "(#[\da-f]{6})", \/\/ (--[\w-]+)$/gm;
+// A palette entry copied from one token, like `body: "#4a4139", // --thorbis-body`,
+// or from its dark-theme value, `// --thorbis-body (dark)`.
+const PALETTE_ENTRY = /\w+: "(#[\da-f]{6})", \/\/ (--[\w-]+)( \(dark\))?$/gm;
 const OKLCH = /^oklch\(\s*([\d.]+)%\s+([\d.]+)\s+([\d.]+)\s*\)$/;
 // date-fns "MMMM d, yyyy", as safeFormatDate prints the card's date.
 const MONTHS = Array.from({ length: 12 }, (_, month) =>
@@ -92,11 +93,13 @@ function oklchToSrgb(value) {
 	});
 }
 
-test("the share card palette still matches the light tokens it copies", () => {
-	const tokens = declarations(":root");
+test("the share card palette still matches the tokens it copies", () => {
+	const light = declarations(":root");
+	const dark = new Map([...light, ...declarations(".dark")]);
 	const entries = [...source.matchAll(PALETTE_ENTRY)];
 	assert.ok(entries.length >= 4, `${ROUTE} should name the token behind each color`);
-	for (const [, hex, token] of entries) {
+	for (const [, hex, token, theme] of entries) {
+		const tokens = theme ? dark : light;
 		const expected = oklchToSrgb(tokens.get(token) ?? "");
 		const actual = [1, 3, 5].map((start) => Number.parseInt(hex.slice(start, start + 2), 16));
 		const drift = Math.max(...actual.map((channel, index) => Math.abs(channel - expected[index])));

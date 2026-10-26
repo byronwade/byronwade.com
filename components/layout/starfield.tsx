@@ -1,3 +1,5 @@
+import { starScatter } from "@/lib/star-scatter";
+
 /**
  * The site's one decorative layer (DESIGN.md §5.1): a fixed field of stars
  * behind every page. It is a server-rendered SVG of three repeating tiles at
@@ -5,55 +7,73 @@
  * and the star positions come from a fixed sequence, so the markup is identical on
  * every render and hydration has nothing to reconcile. It paints with the
  * `--space-star*` tokens: bright in deep space, faint chart dots in daylight.
+ *
+ * The work is the hero (DESIGN.md §4.1), so stars never sit under it at a size
+ * that reads as punctuation: only the faint far layer crosses the reading
+ * column; the brighter layers fill the gutters either side of it, from `md`.
  */
-
-const fraction = (value: number) => value - Math.floor(value);
-
-/**
- * The R2 low-discrepancy sequence: point n of an even scatter that never
- * clumps or lines up, with no randomness, so the sky is the same on every build.
- */
-const R2 = [0.754_877_666_2, 0.569_840_291] as const;
-
-const LAYERS = [
-	{ id: "stars-far", tile: 263, count: 14, radius: [0.5, 0.8], tone: "fill-(--space-star-dim)" },
-	{ id: "stars-mid", tile: 409, count: 9, radius: [0.8, 1.2], tone: "fill-(--space-star)" },
-	{ id: "stars-near", tile: 677, count: 5, radius: [1.2, 1.7], tone: "fill-(--space-star)" },
-] as const;
 
 const round = (value: number) => Math.round(value * 10) / 10;
 
-const TILES = LAYERS.map((layer, index) => {
-	const [min, max] = layer.radius;
+function starTile(
+	id: string,
+	side: number,
+	count: number,
+	[min, max]: [number, number],
+	tone: string,
+	offset: number
+) {
 	return {
-		...layer,
-		stars: Array.from({ length: layer.count }, (_, n) => ({
-			cx: round(fraction(0.5 + index / 3 + (n + 1) * R2[0]) * layer.tile),
-			cy: round(fraction(0.5 + index / 5 + (n + 1) * R2[1]) * layer.tile),
-			r: round(min + fraction((n + 1) * 0.618_034) * (max - min)),
+		id,
+		tile: side,
+		tone,
+		stars: starScatter(count, side, side, offset).map(({ x, y, size: radius }) => ({
+			cx: x,
+			cy: y,
+			r: round(min + radius * (max - min)),
 		})),
 	};
-});
+}
+
+const far = starTile("stars-far", 263, 14, [0.5, 0.8], "fill-(--space-star-dim)", 0);
+const bright = [
+	starTile("stars-mid", 409, 9, [0.8, 1.2], "fill-(--space-star)", 1),
+	starTile("stars-near", 677, 5, [1.2, 1.7], "fill-(--space-star)", 2),
+];
+const TILES = [far, ...bright];
+
+/** Either side of the 42rem measure and its gutter, so bright stars stay off the text. */
+const GUTTERS = ["left-0 w-[calc(50%-23rem)]", "right-0 w-[calc(50%-23rem)]"] as const;
+
+const layerClass = "pointer-events-none fixed inset-y-0 z-(--z-underlay) print:hidden";
 
 export function Starfield() {
 	return (
-		<svg
-			aria-hidden="true"
-			className="pointer-events-none fixed inset-0 z-(--z-underlay) size-full print:hidden"
-			focusable="false"
-		>
-			<defs>
-				{TILES.map(({ id, tile, tone, stars }) => (
-					<pattern height={tile} id={id} key={id} patternUnits="userSpaceOnUse" width={tile}>
-						{stars.map(({ cx, cy, r }) => (
-							<circle className={tone} cx={cx} cy={cy} key={`${cx}-${cy}`} r={r} />
-						))}
-					</pattern>
-				))}
-			</defs>
-			{TILES.map(({ id }) => (
-				<rect fill={`url(#${id})`} height="100%" key={id} width="100%" />
+		<>
+			<svg aria-hidden="true" className={`${layerClass} inset-x-0 size-full`} focusable="false">
+				<defs>
+					{TILES.map(({ id, tile, tone, stars }) => (
+						<pattern height={tile} id={id} key={id} patternUnits="userSpaceOnUse" width={tile}>
+							{stars.map(({ cx, cy, r }) => (
+								<circle className={tone} cx={cx} cy={cy} key={`${cx}-${cy}`} r={r} />
+							))}
+						</pattern>
+					))}
+				</defs>
+				<rect fill={`url(#${far.id})`} height="100%" width="100%" />
+			</svg>
+			{GUTTERS.map((side) => (
+				<svg
+					aria-hidden="true"
+					className={`${layerClass} ${side} hidden h-full md:block`}
+					focusable="false"
+					key={side}
+				>
+					{bright.map(({ id }) => (
+						<rect fill={`url(#${id})`} height="100%" key={id} width="100%" />
+					))}
+				</svg>
 			))}
-		</svg>
+		</>
 	);
 }
