@@ -496,9 +496,7 @@
   /* Site space theme (Byron, 2026-10-25), not Thorbis source. The neutrals
      above are retinted from Thorbis's warm hue to a cool 265-270 so both themes
      read as sky: daylight and deep space. These roles paint only the decorative
-     layer (Starfield, Orbit, the footer horizon); preserve them when regenerating. */
-  --space-star: color-mix(in oklab, var(--thorbis-marker) 34%, transparent);
-  --space-star-dim: color-mix(in oklab, var(--thorbis-marker) 18%, transparent);
+     layer (Orbit, the footer horizon); preserve them when regenerating. */
   --space-planet: oklch(93.8% 0.014 265);
   --space-rim: color-mix(in oklab, var(--thorbis-accent) 45%, transparent);
   --space-orbit: color-mix(in oklab, var(--thorbis-fg) 18%, transparent);
@@ -623,8 +621,6 @@
   --z-underlay: -1;
 }
 .dark {
-  --space-star: oklch(97% 0.02 255 / 0.9);
-  --space-star-dim: oklch(82% 0.05 265 / 0.5);
   --space-planet: oklch(19.5% 0.045 272);
   --space-rim: color-mix(in oklab, var(--thorbis-accent) 70%, transparent);
   --space-orbit: color-mix(in oklab, var(--thorbis-fg) 22%, transparent);

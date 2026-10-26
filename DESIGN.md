@@ -3,7 +3,7 @@ name: Thorbis Design, byronwade.com
 version: 3.0
 status: Thorbis port adopted
 principle: "Quiet chrome. Precise work."
-theme: "Space (Byron, 2026-10-25): deep-space dark default, starfield, orbit, planet horizon"
+theme: "Space (Byron, 2026-10-25): deep-space dark default, Hubble Deep Field sky, orbit, planet horizon"
 adoption:
   project_profile: PROJECT_PROFILE.md
   agent_protocol: AGENTS.md
@@ -191,16 +191,18 @@ theme lives in values and in one decorative layer, never in the work: the
 dominant object of every route (§4.1) is unchanged and stays more important
 than anything below.
 
-- **Sky.** The Thorbis neutrals are retinted to a cool hue in both themes:
+- **Palette.** The Thorbis neutrals are retinted to a cool hue in both themes:
   daylight (light) and deep space (dark, the default theme). Accent, status and
   category inks are Thorbis's own. Contrast rules are unchanged.
-- **Starfield.** `components/layout/starfield.tsx` is the one decorative layer:
-  a fixed, server-rendered SVG of three repeating star tiles behind every page,
-  hidden from assistive technology and print. Stars are dots, not glow; no
-  nebula, gradient or blur. Daylight shows them as faint chart dots. Only the
-  faint far layer crosses the reading column; the brighter layers fill the
-  gutters beside the measure (from `md`), so no star reads as punctuation in
-  the text. Positions come from `lib/star-scatter.ts`.
+- **Sky.** The dark theme's sky is a real photograph, never drawn stars
+  (Byron, 2026-10-26: "real, not fake stars"): the Hubble eXtreme Deep Field
+  (NASA/ESA, public domain), `components/layout/deep-field.tsx`. It sits
+  behind the top of every page and scrolls away with it, dimmed and faded
+  into the page by `scripts/build-space-band.py` (the fade is baked, since CSS
+  gradients are out) and blended with `screen`. Two 15KB exposures (wide
+  screens dim only the reading column; phones dim evenly), lazy, hidden in the
+  light theme and print. The footer credits it. New space imagery must also be
+  real astronomy with its credit, processed the same way.
 - **Orbit.** `components/common/orbit.tsx`, a ringed planet with three moons, is
   the theme's one figure. It sits beside copy, never under it: the home
   opening (beside the claim from `md`, at the end of the byline row on
@@ -208,8 +210,8 @@ than anything below.
 - **Flight path.** The home specimen plots the Thorbis chain as a trajectory:
   a dashed rail through a node per stage, the last node filled.
 - **Horizon.** The footer ends on a planet's arc with a sunlit rim.
-- **Share card.** `app/api/og` draws the dark theme: the same star scatter
-  (kept off the text) and the planet horizon rising at the lower right.
+- **Share card.** `app/api/og` draws the dark theme over the same Deep Field
+  photograph, darker under the type, with the planet horizon at lower right.
 - **Colour.** The layer paints only with the `--space-*` roles in the token
   block; nothing else may use them.
 - **Copy.** First person and plain (§9) still wins. A space metaphor is allowed
@@ -477,8 +479,8 @@ Performance claims require before-and-after measurement.
 Do not ship: a centered hero followed by a card grid; a page made entirely of
 summary cards; repeated KPI boxes where one relationship would be clearer;
 nested cards; borders around every row; all-caps eyebrows; gradient text;
-glassmorphism; neon glow; decorative blobs or grid backgrounds (the starfield
-in §5.1 is the one sanctioned decorative layer); icons in colored
+glassmorphism; neon glow; decorative blobs or grid backgrounds (the Deep Field
+photograph in §5.1 is the one sanctioned backdrop); icons in colored
 tiles; tiny muted text; every control as a pill; arbitrary radii, shadows, or
 colors; one layout repeated across unrelated pages; tooltips containing
 essential instructions; hover-only or right-click-only critical actions; modals

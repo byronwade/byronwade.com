@@ -4,7 +4,6 @@ import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
 import { safeFormatDate } from "@/lib/markdown-utils";
 import { type OGImageType, ogImageTypes } from "@/lib/seo";
-import { starScatter } from "@/lib/star-scatter";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -13,7 +12,7 @@ const siteName = "Byron Wade";
 
 // Satori cannot read oklch, so these are the sRGB values of the dark (deep
 // space) Thorbis tokens in app/globals.css, the site's default theme; the
-// share card is the space theme in one frame. tests/share-card.test.mjs fails
+// share card is the space theme in one frame, over the same Hubble photograph. tests/share-card.test.mjs fails
 // when they drift.
 const palette = {
 	background: "#050714", // --thorbis-bg (dark)
@@ -24,12 +23,6 @@ const palette = {
 	planet: "#0e1329", // --space-planet (dark)
 	rim: "#4e7de8", // --thorbis-accent (dark)
 };
-
-// The page starfield's own scatter, so the card's sky is the site's, kept off
-// the kicker, title and description as the page keeps bright stars off its text.
-const stars = starScatter(48, 1200, 630, 1).filter(
-	({ x, y }) => !(x > 64 && x < 1000 && y > 56 && y < 430)
-);
 
 const kickers: Record<OGImageType, string | undefined> = {
 	article: "Blog",
@@ -43,12 +36,19 @@ const kickers: Record<OGImageType, string | undefined> = {
 // Without these it would fall back to a font the site never shows, so a
 // missing file fails the request instead.
 async function loadAssets() {
-	const [regular, medium, mark] = await Promise.all([
+	const [regular, medium, mark, sky] = await Promise.all([
 		readFile(join(process.cwd(), "assets", "og", "inter-og-regular.ttf")),
 		readFile(join(process.cwd(), "assets", "og", "inter-og-medium.ttf")),
 		readFile(join(process.cwd(), "public", "icon-192x192.png")),
+		// The Hubble eXtreme Deep Field, dimmed under the type (scripts/build-space-band.py).
+		readFile(join(process.cwd(), "assets", "space", "hubble-xdf-card.jpg")),
 	]);
-	return { regular, medium, mark: `data:image/png;base64,${mark.toString("base64")}` };
+	return {
+		regular,
+		medium,
+		mark: `data:image/png;base64,${mark.toString("base64")}`,
+		sky: `data:image/jpeg;base64,${sky.toString("base64")}`,
+	};
 }
 
 // About two lines of the description at 30px. lineClamp stays as the backstop,
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
 		const kicker = [kickers[type], date].filter(Boolean).join(" · ");
 		const titleIsName = title === siteName;
 
-		const { regular, medium, mark } = await loadAssets();
+		const { regular, medium, mark, sky } = await loadAssets();
 
 		return new ImageResponse(
 			<div
@@ -96,21 +96,14 @@ export async function GET(request: NextRequest) {
 					position: "relative",
 				}}
 			>
-				{stars.map(({ x, y, size }) => (
-					<div
-						key={`${x}-${y}`}
-						style={{
-							position: "absolute",
-							left: x,
-							top: y,
-							width: 1.5 + size * 2.5,
-							height: 1.5 + size * 2.5,
-							borderRadius: 999,
-							backgroundColor: palette.foreground,
-							opacity: 0.25 + size * 0.5,
-						}}
-					/>
-				))}
+				{/* biome-ignore lint/performance/noImgElement: Satori renders plain img elements only. */}
+				<img
+					alt=""
+					height={630}
+					src={sky}
+					style={{ position: "absolute", left: 0, top: 0 }}
+					width={1200}
+				/>
 				{/* The footer's planet horizon, rising from the card's lower right. */}
 				<div
 					style={{
