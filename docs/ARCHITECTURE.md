@@ -211,7 +211,7 @@ the way a crawler reads it, against the source and the built file.
 | `/` | Editorial homepage |
 | `/projects`, `/projects/[slug]` | Markdown case studies (`content/projects/`). Both slug routes set `dynamicParams = false`: only loader slugs are pages, so unknown slugs and production drafts get the static 404 (status 404, `noindex`, `no-store`) instead of a streamed 200 that `next start` would cache (`tests/rendered/missing-content.test.mjs`) |
 | `/portfolio`, `/portfolio/figma/[key]` | Live GitHub portfolio and Figma viewer. The retired 2024 Thorbis pitch pages (`/portfolio/thorbis`, `-ai`, `-mobile`) redirect permanently to `/projects/thorbis` (`next.config.js`; checked by `tests/rendered/legacy-portfolio.test.mjs`) |
-| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`); same 404 contract as projects. Posts with three or more headings get the case study's docked "On this page" outline at `xl`. Development rebuilds the slug list per request, so drafts still preview |
+| `/blog`, `/blog/[slug]` | Markdown blog (`content/blog/`); same 404 contract as projects. Posts with three or more headings get the case study's docked "On this page" outline at `xl`, and every post links its topics ("More on these topics") after the prose. Development rebuilds the slug list per request, so drafts still preview |
 | `/blog/topic/[topic]` | Static topic pages for tags shared by two or more posts (`getBlogTopics` in `lib/blog.ts`), linked from the topic row on `/blog`, listed in the sitemap and search; other topics 404 |
 | `/resume` | Resume, server-rendered; print rules (`print:*`) on the page also shape the PDF export via `/api/resume-pdf` |
 | `/contact` | Contact form (Resend via `lib/actions/send-email.ts`) |

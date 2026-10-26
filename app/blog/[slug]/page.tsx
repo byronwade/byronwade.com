@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { PostPager, ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
+import { TopicNav } from "@/components/blog/topic-nav";
 import { BlogPostViewTracker, Markdown, PageToc, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
-import { getAdjacentPosts, getAllBlogSlugs, getBlogPost } from "@/lib/blog";
+import { getAdjacentPosts, getAllBlogSlugs, getBlogPost, getBlogTopics } from "@/lib/blog";
 import { ArrowLeft } from "@/lib/icons";
 import { extractToc } from "@/lib/markdown";
 import { safeFormatDate } from "@/lib/markdown-utils";
@@ -69,7 +70,11 @@ export async function generateMetadata({
 }
 
 async function BlogPostContent({ slug }: { slug: string }) {
-	const [post, adjacent] = await Promise.all([getBlogPost(slug), getAdjacentPosts(slug)]);
+	const [post, adjacent, topics] = await Promise.all([
+		getBlogPost(slug),
+		getAdjacentPosts(slug),
+		getBlogTopics(),
+	]);
 
 	if (!post) {
 		notFound();
@@ -142,6 +147,12 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				</article>
 				<PageToc items={extractToc(post.content)} />
 			</div>
+
+			{/* Where to read next on the same subject, right after the prose. */}
+			<TopicNav
+				heading="More on these topics"
+				topics={topics.filter((topic) => topic.posts.some(({ slug: other }) => other === slug))}
+			/>
 
 			<PostPager newer={adjacent.newer} older={adjacent.older} />
 
