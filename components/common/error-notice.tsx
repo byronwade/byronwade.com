@@ -11,12 +11,14 @@ export function ErrorNotice({
 	description,
 	reference,
 	onRetry,
+	retryLabel,
 }: {
 	title: string;
 	description: string;
 	/** Server error digest, so a report can be matched to a log line. */
 	reference?: string;
 	onRetry: () => void;
+	retryLabel: string;
 }) {
 	return (
 		<SiteShell profile="shared">
@@ -30,7 +32,7 @@ export function ErrorNotice({
 					{/* A native button with the commit recipe: Next loads this boundary on
 					    every route, so it stays off the Base UI button code. */}
 					<button className={buttonVariants()} onClick={onRetry} type="button">
-						Try again
+						{retryLabel}
 					</button>
 					{/* A full navigation, so a broken client bundle cannot trap the visitor. */}
 					<a className="link-action" href="/">
