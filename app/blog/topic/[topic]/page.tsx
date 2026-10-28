@@ -81,7 +81,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
 				<TopicNav current={topic.slug} topics={topics} />
 				<IndexList as="ol">
 					{topic.posts.map((post) => (
-						<PostRow key={post.slug} post={post} tagLimit={4} />
+						<PostRow headingAs="h2" key={post.slug} post={post} tagLimit={4} />
 					))}
 				</IndexList>
 				{/* The shared Link, as on a post's foot. It also keeps this route's client

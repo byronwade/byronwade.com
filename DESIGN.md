@@ -360,7 +360,9 @@ than restyling them.
   with a mono column for the date or signal; `PostRow` owns the writing row.
   Index descriptions use the 14px content role with its own 1.5 line height
   and pretty wrapping, rather than the long-form leading override. Writing
-  row titles are level-three headings below each section or year heading.
+  row titles are level-three headings below each section or year heading;
+  topic pages use level two directly below the page title through `PostRow`'s
+  `headingAs` option.
 - **Sheet.** `components/layout/sheet.tsx` frames real work with a caption that
   says what it is. It bleeds to the phone edge. It is not a card for counts or
   sections, and there is no card primitive.
