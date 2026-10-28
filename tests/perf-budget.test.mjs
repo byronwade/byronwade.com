@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
@@ -16,12 +16,17 @@ const metrics = {
 
 // Exercise the CLI and its saved report, replacing only the browser, server and
 // evidence formatter boundaries. No inherited provider key reaches a real server.
-async function runBudget(context, lcp) {
+async function runBudget(
+	context,
+	lcp,
+	{ saveAssets = false, assetFailure = false, debugValue } = {}
+) {
 	await mkdir(join(root, ".next"), { recursive: true });
 	const directory = await mkdtemp(join(root, ".next", "perf-budget-"));
 	context.after(() => rm(directory, { recursive: true, force: true }));
 	const output = join(directory, "evidence");
 	const closed = join(directory, "browser-closed");
+	const assets = join(directory, "saved-assets.json");
 	const lhr = {
 		categories: { performance: { score: 0.9 } },
 		configSettings: { throttlingMethod: "simulate" },
@@ -39,7 +44,15 @@ async function runBudget(context, lcp) {
 		},
 	};
 	const modules = {
-		lighthouse: `export default async () => ({ lhr: ${JSON.stringify(lhr)} });`,
+		lighthouse: `export default async () => ({ lhr: ${JSON.stringify(lhr)}, artifacts: { fixture: "captured artifacts" } });`,
+		"lighthouse/core/lib/asset-saver.js": `
+import assert from "node:assert/strict";
+import { writeFile } from "node:fs/promises";
+export async function saveAssets(artifacts, audits, stem) {
+  assert.equal(process.env.LANTERN_DEBUG, "1", "Simulated traces must be included");
+  await writeFile(${JSON.stringify(assets)}, JSON.stringify({ artifacts, audits, stem }));
+  if (${assetFailure}) throw new Error("Synthetic asset write failure");
+}`,
 		"./production-session.mjs": `
 import assert from "node:assert/strict";
 export async function withProductionServer(verify, options) {
@@ -47,13 +60,17 @@ export async function withProductionServer(verify, options) {
   return await verify("http://127.0.0.1:12345");
 }`,
 		"./audit-browser.mjs": `
+import assert from "node:assert/strict";
 import { writeFileSync } from "node:fs";
 export async function launchAuditBrowser() {
   return {
     wsEndpoint: () => "ws://127.0.0.1:12346/fixture",
     version: async () => "synthetic Chrome",
     process: () => null,
-    close: async () => writeFileSync(${JSON.stringify(closed)}, "closed"),
+    close: async () => {
+      assert.equal(process.env.LANTERN_DEBUG, ${JSON.stringify(debugValue)}, "Export must restore the environment even on failure");
+      writeFileSync(${JSON.stringify(closed)}, "closed");
+    },
   };
 }`,
 		"./evidence-json.mjs": `
@@ -88,12 +105,14 @@ registerHooks({
 			`data:text/javascript,${encodeURIComponent(preload)}`,
 			fileURLToPath(runner),
 			"--route=/projects/thorbis",
+			...(saveAssets ? ["--save-assets"] : []),
 		],
 		{
 			cwd: directory,
 			env: {
 				...process.env,
 				SCREENSHOTONE_ACCESS_KEY: "synthetic-inherited-key",
+				LANTERN_DEBUG: debugValue,
 				THORBIS_EVIDENCE_DIR: output,
 			},
 			encoding: "utf8",
@@ -105,12 +124,13 @@ registerHooks({
 	return {
 		result,
 		closed,
+		assets,
 		report: join(output, "route-budget_projects_thorbis.json"),
 	};
 }
 
 test("budget reports retain observed paint diagnostics without using them to pass simulated limits", async (context) => {
-	const { result, closed, report } = await runBudget(context, 2400);
+	const { result, closed, report, assets } = await runBudget(context, 2400);
 	assert.equal(result.status, 0, result.stderr);
 	const saved = JSON.parse(await readFile(report, "utf8"));
 	assert.deepEqual(saved.diagnostics.metrics.items, [metrics]);
@@ -118,6 +138,35 @@ test("budget reports retain observed paint diagnostics without using them to pas
 	assert.deepEqual(saved.failures, []);
 	assert.equal(saved.route, "/projects/thorbis");
 	assert.equal(saved.buildId, "synthetic-build");
+	assert.equal(await readFile(closed, "utf8"), "closed");
+	await assert.rejects(readFile(assets), { code: "ENOENT" });
+});
+
+for (const lcp of [2400, 3100]) {
+	test(`opt-in trace export retains actual artifacts and simulated traces at LCP ${lcp}`, async (context) => {
+		const { result, closed, report, assets } = await runBudget(context, lcp, {
+			saveAssets: true,
+			debugValue: lcp > 3000 ? "inherited-debug-value" : undefined,
+		});
+		assert.equal(result.status, lcp > 3000 ? 1 : 0, result.stderr);
+		const saved = JSON.parse(await readFile(assets, "utf8"));
+		assert.deepEqual(saved.artifacts, { fixture: "captured artifacts" });
+		assert.equal(saved.audits["largest-contentful-paint"].numericValue, lcp);
+		assert.equal(resolve(saved.stem), report.slice(0, -5));
+		assert.equal(JSON.parse(await readFile(report, "utf8")).timings[0].value, lcp);
+		assert.equal(await readFile(closed, "utf8"), "closed");
+	});
+}
+
+test("trace export failure retains the budget report and closes its browser", async (context) => {
+	const { result, closed, report } = await runBudget(context, 2400, {
+		saveAssets: true,
+		assetFailure: true,
+		debugValue: "inherited-debug-value",
+	});
+	assert.equal(result.status, 1, result.stderr);
+	assert.ok(result.stderr.includes("Synthetic asset write failure"));
+	assert.equal(JSON.parse(await readFile(report, "utf8")).timings[0].value, 2400);
 	assert.equal(await readFile(closed, "utf8"), "closed");
 });
 

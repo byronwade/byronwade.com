@@ -33,6 +33,11 @@ The [October 28 baseline and identical-build controls](evidence/lighthouse-2026-
 measure the application at `ae357ba` in 24 samples: 23 pass every budget and one
 Dits sample exceeds LCP by 8ms. The reports retain that miss, CPU calibration,
 observed paint diagnostics and source/build pins; they make no speedup claim.
+The later [Dits graph investigation](evidence/dits-lcp-graph-2026-10-28/README.md)
+measures application `02b3e41`: six serial identical-build controls pass three
+times and miss LCP three times. Exported simulator traces explain a 222ms paired
+swing through different graph membership for the local analytics 404s. This is
+a diagnosis of the local model, not a production bottleneck or an optimization.
 Lighthouse 12 removed built-in budget enforcement, and Lighthouse 13 does not
 restore it. This runner checks the JSON limits itself instead of relying on an
 ignored CLI/config flag.
@@ -64,6 +69,20 @@ Successful image capture and recovery use the rendered suite's local image
 fixtures, without issuing a provider request. The route-budget report keeps
 Lighthouse's `metrics` diagnostics, including observed paint, beside its
 simulated budget timings. Observed paint never substitutes for a budget metric.
+For a request-graph investigation, add `--save-assets` to the route-budget command
+and point `THORBIS_EVIDENCE_DIR` at a local job folder. Beside the budget JSON,
+Lighthouse's own asset exporter writes `-0.trace.json`, `-0.devtoolslog.json` and
+named optimistic/pessimistic simulator traces. Open a trace in Chrome DevTools'
+Performance panel to inspect the observed timeline or the simulated request/CPU
+schedule. The simulated traces are models, not additional browser measurements.
+The [Node API does not implement the CLI's `saveAssets` flag](https://github.com/GoogleChrome/lighthouse/blob/v13.5.0/docs/readme.md#differences-from-cli-flags),
+so the runner calls the installed exporter's `saveAssets` directly and enables its
+Lantern debug export only for that call. Exports are opt-in and do not change the
+measurement profile or any limit. The budget report is saved before export, even
+on a budget miss; an export failure still fails the command and closes the browser.
+Raw traces and network logs stay in the local job folder; publish only reviewed,
+bounded evidence. Native subprocess regressions cover export on passes and misses,
+export failure, environment restoration and unchanged default output.
 Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
 in an external job folder instead of replacing the checked-in evidence. Omit
 `--lighthouse` for accessibility and interaction checks without timing samples;
@@ -725,11 +744,13 @@ After merging main through `5cef5db` (#129 shortened the Dits article to a
 case study 3261 ms and the Nexstar post 3301 ms, all still over the limit.
 `lighthouse-budget.json` is unchanged.
 
-Lighthouse simulates this LCP. On the homepage the observed paint happens about
-300 ms after navigation, but the simulation counts every request that started
-before it, and the async scripts start within 80 ms. The simulated LCP therefore tracks the
-bytes of the document, the preloaded font and all initial scripts, of which
-about 132 KB is the React and Next framework. Detail pages add a larger document
+Lighthouse simulates this LCP. In the historical homepage sample the observed
+paint happened about 300 ms after navigation. Lantern selects requests using
+their observed completion times and CPU evidence; it does not simply count
+every request started before paint. The later Dits graph investigation above
+shows local analytics 404s entering or leaving that model on identical bytes.
+The historical initial scripts included about 132 KB of React and Next framework
+code. Detail pages added a larger document
 (the Nexstar post is 45 KB gzipped, much of it the RSC payload repeating the
 article), a 22 KB gzipped page chunk on project pages and, on posts, italic and mono
 fonts discovered from the stylesheet. Preloading the mono
