@@ -171,7 +171,7 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
 | Virtualization | none | - | Not needed at this scale | - |
 | State management | React and URL/search params | platform | No query-state consumer exists; unused nuqs provider removed | Use nuqs when a real URL-state surface requires it; no global store |
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
-| Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
+| Theme management | `next-themes` | ^0.4.6 | Dark default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
 | Content front matter | `gray-matter` and `js-yaml` 3.15.2 | 3.15.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not add js-yaml 4 for app code, and do not hand-roll a YAML parser |
 
