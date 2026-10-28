@@ -1,0 +1,4086 @@
+{
+  "pins": {
+    "applicationBase": "02b3e41c8ec605eb2c438bc086bbd3341af91f95",
+    "runnerCommit": "7ce370c7c2482160677756e80e47338c570db36c",
+    "buildId": "6f814QXm0b5PfCX1O2qpa",
+    "node": "v24.21.0",
+    "chrome": "Chrome/155.0.8059.85",
+    "lighthouseVersion": "13.5.0",
+    "profile": {
+      "formFactor": "mobile",
+      "screenEmulation": {
+        "mobile": true,
+        "width": 412,
+        "height": 823,
+        "deviceScaleFactor": 1.75,
+        "disabled": false
+      },
+      "throttlingMethod": "simulate",
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      }
+    },
+    "files": {
+      "scripts/perf-budget.mjs": "191dd63ab56978a6f268785886eec17918b34b9796a57e0c42345e6aabce7f89",
+      "scripts/audit-browser.mjs": "7ac8040ed1481ad87cd5ceac16a222f9b3f55231774f69e6d1ce456466c6e625",
+      "scripts/production-session.mjs": "abf90587c1d614447a4764a9a017af7c1511c9be2aef143e96aff794f8dcc5dc",
+      "scripts/lighthouse-budget.mjs": "45d484f405c863b4f2094eaf9a1becc36a56a39e6d29e12af75c16e61bef0c42",
+      "lighthouse-budget.json": "1f06cb7a7b5cb2339d80a212b0e375a68b68b50836ba6795d2eb3e29787eddd4",
+      "package-lock.json": "15581c58472e72f3e15213a481c60de9a6f6f497e44d267d48a7c46ddc10846f"
+    },
+    "installedModelFiles": {
+      "lighthouse/core/lib/asset-saver.js": "39d8a83c048bdf1f8bbcd069d72e1d5cbfea3a87116b6435f17612b5646de7a4",
+      "lighthouse/core/lib/lantern-trace-saver.js": "d98fefee06e17ce2459dc62a59070e6a3422077994d74679e203c3fec506a2a1",
+      "@paulirish/trace_engine/models/trace/lantern/metrics/LargestContentfulPaint.js": "9720fadc9a5abdc9b76dfc1265f8c205cf719703b46a159707e36b8393010348",
+      "@paulirish/trace_engine/models/trace/lantern/metrics/FirstContentfulPaint.js": "4550072f594f5ab21be08b441d3fb01db7d3bb17d6c36faa442d8d4bea9447b1",
+      "@paulirish/trace_engine/models/trace/lantern/metrics/Metric.js": "d2ea753ea90e1d2cf5403bb5d36adfff61f00b3a00ad0dd3fc9fb32a1b9ea323",
+      "@paulirish/trace_engine/models/trace/lantern/simulation/Simulator.js": "4e8efe774b0fc80ef9811b371fc985f5bf79f38bf0f7d6dfa7fe7918a99e207f"
+    },
+    "derivation": "Unmodified Lighthouse exporter traces, synthetic timestamp origin 1e9 microseconds. Omit exporter trailing one-ms artificial Task, exclude Low/VeryLow image network endpoints only as Lighthouse LCP does, take maximum remaining network/CPU end for each branch. Branch mean agrees with every budget LCP within 0.001ms. Schedules retain low images so contention remains visible. This does not compute counterfactual savings.",
+    "analysisScriptSha256": "4e48e6682499ac5340a0cda6651634418bc54ff4664994dc5b05d2bb49fcd083"
+  },
+  "exploratoryOverlapSeconds": 19.790336847305298,
+  "samples": [
+    {
+      "name": "dits-r1-A",
+      "group": "exploratory",
+      "startedEpoch": 1793211514.6597335,
+      "elapsedSeconds": 65.1091661453247,
+      "exitCode": 0,
+      "availableRamBytes": 15706447872,
+      "benchmarkIndex": 2520,
+      "reportFile": "dits-r1-A.json",
+      "originalReportSha256": "a119cd3a13cc00c5f6f487ab5111f447dec644171b5f78c25a98fcc9da068d71",
+      "publishedReportSha256": "a119cd3a13cc00c5f6f487ab5111f447dec644171b5f78c25a98fcc9da068d71",
+      "commandLogSha256": "8f4cd65b008b06e36e360dc2f61dbfd77c9428a975d94bac104bb72a44996eb4",
+      "receiptSha256": "48f67f2295dec048948623947683fb52d350224c31ed8dd1a1d46e4b4015a55e",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "1f86cfd9559ad54316dad8b1c5b7dc8b3996221f5560e800c29656e5926c37ec",
+        "route-budget_projects_dits-0.devtoolslog.json": "7d3905ee0db73dfad84f4346277301fe5635d972bdfa901ceed1f47e366a8870",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "ea7c8ed8ac011c7f10e8c28fce9331db7a084118dd7eebd0a962e269d328d566",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "18e72d1a1c4156f695c703f12ee57043799810b602fe8837ecb000b1e448cb71"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1075.17225,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2992.563,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 106,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1081.8467820495607,
+          "budget": 3000
+        }
+      ],
+      "failures": [],
+      "observedLcpMs": 449,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2917.563,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2759.17225,
+            "endMs": 2917.563,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2731.17225,
+            "endMs": 2759.17225,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.39075,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.39075,
+              "endMs": 1366.7815,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 1525.17225,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 1825.17225,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.7815,
+              "endMs": 1825.17225,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1525.17225,
+              "endMs": 1983.563,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1825.17225,
+              "endMs": 1983.563,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.39075,
+              "endMs": 2116.7815,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.39075,
+              "endMs": 2566.7815,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 2575.17225,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2575.17225,
+              "endMs": 2733.563,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2759.17225,
+              "endMs": 2917.563,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.39075,
+              "endMs": 759.39075,
+              "durationMs": 1
+            },
+            {
+              "startMs": 759.39075,
+              "endMs": 882.39075,
+              "durationMs": 123
+            },
+            {
+              "startMs": 882.39075,
+              "endMs": 938.39075,
+              "durationMs": 56
+            },
+            {
+              "startMs": 2575.17225,
+              "endMs": 2731.17225,
+              "durationMs": 156
+            },
+            {
+              "startMs": 2731.17225,
+              "endMs": 2759.17225,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3067.563,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2909.17225,
+            "endMs": 3067.563,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2881.17225,
+            "endMs": 2909.17225,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.39075,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.39075,
+              "endMs": 1066.7815,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.39075,
+              "endMs": 1366.7815,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 1525.17225,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 1825.17225,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.7815,
+              "endMs": 1825.17225,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1525.17225,
+              "endMs": 1983.563,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1825.17225,
+              "endMs": 1983.563,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.39075,
+              "endMs": 2116.7815,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1983.563,
+              "endMs": 2141.95375,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1825.17225,
+              "endMs": 2433.563,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.39075,
+              "endMs": 2716.7815,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7815,
+              "endMs": 2725.17225,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2725.17225,
+              "endMs": 2883.563,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2909.17225,
+              "endMs": 3067.563,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.39075,
+              "endMs": 759.39075,
+              "durationMs": 1
+            },
+            {
+              "startMs": 759.39075,
+              "endMs": 882.39075,
+              "durationMs": 123
+            },
+            {
+              "startMs": 882.39075,
+              "endMs": 938.39075,
+              "durationMs": 56
+            },
+            {
+              "startMs": 2725.17225,
+              "endMs": 2881.17225,
+              "durationMs": 156
+            },
+            {
+              "startMs": 2881.17225,
+              "endMs": 2909.17225,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dits-r1-A2",
+      "group": "exploratory",
+      "startedEpoch": 1793211605.042992,
+      "elapsedSeconds": 64.65151524543762,
+      "exitCode": 0,
+      "availableRamBytes": 14501462016,
+      "benchmarkIndex": 2549.5,
+      "reportFile": "dits-r1-A2.json",
+      "originalReportSha256": "4f07efa5993c113a64d001804d1f9cb191b183dbe1d32a81a932852e9359a60b",
+      "publishedReportSha256": "4f07efa5993c113a64d001804d1f9cb191b183dbe1d32a81a932852e9359a60b",
+      "commandLogSha256": "185dedf08747c50709e41319f1fb8236eaf8c71590f6467756d264ff0f6ca7fa",
+      "receiptSha256": "195746762d1bbf34c721bf2fe5b97f04e3b2553c2b58e867bcacbad00c7b5fb1",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "8611acf86aa55991d34006ed9560cdd62f5e6e1a17db5f6825b61c0c074bd413",
+        "route-budget_projects_dits-0.devtoolslog.json": "23446808e7b55b63e2199ac404321ee604bc200e109f8fd295f782a2c4874390",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "1322364fb593227c1e9198a07cbce5c118adc8ac81f338de621a250cd7c37f0a",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "163e93bdb33f76336c249b22a1baf67e9760eea48c1a0a2a12f5d348e5573329"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1074.3602999999998,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2994.4804000000004,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 109,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1074.3602999999998,
+          "budget": 3000
+        }
+      ],
+      "failures": [],
+      "observedLcpMs": 217,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2919.4803999999763,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2761.3602999999525,
+            "endMs": 2919.4803999999763,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2733.3602999999525,
+            "endMs": 2761.3602999999525,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.1201000000239,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.1201000000239,
+              "endMs": 1366.2402000000477,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 1524.3602999999523,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 1824.3602999999523,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.2402000000477,
+              "endMs": 1824.3602999999523,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.3602999999523,
+              "endMs": 1982.4803999999763,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.3602999999523,
+              "endMs": 1982.4803999999763,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.1201000000239,
+              "endMs": 2116.2402000000475,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1201000000239,
+              "endMs": 2566.2402000000475,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 2574.3602999999525,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2574.3602999999525,
+              "endMs": 2732.4803999999763,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2761.3602999999525,
+              "endMs": 2919.4803999999763,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.1201000000239,
+              "endMs": 758.1201000000239,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.1201000000239,
+              "endMs": 845.1201000000239,
+              "durationMs": 87
+            },
+            {
+              "startMs": 2574.3602999999525,
+              "endMs": 2733.3602999999525,
+              "durationMs": 159
+            },
+            {
+              "startMs": 2733.3602999999525,
+              "endMs": 2761.3602999999525,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3069.4803999999763,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2911.3602999999525,
+            "endMs": 3069.4803999999763,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2883.3602999999525,
+            "endMs": 2911.3602999999525,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.1201000000239,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.1201000000239,
+              "endMs": 1066.2402000000477,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.1201000000239,
+              "endMs": 1366.2402000000477,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 1524.3602999999523,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 1824.3602999999523,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.2402000000477,
+              "endMs": 1824.3602999999523,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.3602999999523,
+              "endMs": 1982.4803999999763,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.3602999999523,
+              "endMs": 1982.4803999999763,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.1201000000239,
+              "endMs": 2116.2402000000475,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1982.4803999999763,
+              "endMs": 2140.6005,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1824.3602999999523,
+              "endMs": 2432.4803999999763,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1201000000239,
+              "endMs": 2716.2402000000475,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.2402000000477,
+              "endMs": 2724.3602999999525,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2724.3602999999525,
+              "endMs": 2882.4803999999763,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2911.3602999999525,
+              "endMs": 3069.4803999999763,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.1201000000239,
+              "endMs": 758.1201000000239,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.1201000000239,
+              "endMs": 845.1201000000239,
+              "durationMs": 87
+            },
+            {
+              "startMs": 2724.3602999999525,
+              "endMs": 2883.3602999999525,
+              "durationMs": 159
+            },
+            {
+              "startMs": 2883.3602999999525,
+              "endMs": 2911.3602999999525,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "dits-r2-A2",
+      "group": "exploratory",
+      "startedEpoch": 1793211649.9041705,
+      "elapsedSeconds": 62.26746416091919,
+      "exitCode": 1,
+      "availableRamBytes": 15389618176,
+      "benchmarkIndex": 2584.5,
+      "reportFile": "dits-r2-A2.json",
+      "originalReportSha256": "202a0912611390349d90ba2e9aa7ca15b63e002dc6e6ef8e31cfa072dec5a66e",
+      "publishedReportSha256": "202a0912611390349d90ba2e9aa7ca15b63e002dc6e6ef8e31cfa072dec5a66e",
+      "commandLogSha256": "9ef4c5ad6117bcbd2d1e1d5fe36fa100af152d259e2ff7900fb8e63ef0c2199c",
+      "receiptSha256": "f40ffb1f161db5b6638fd50f6a26289cc8077f6f4ddda9b01760f89c4afdaa0b",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "b60b488ae33f4ed1f279c0b74f0278042290ef04c21aa4f168b15ebd9069a313",
+        "route-budget_projects_dits-0.devtoolslog.json": "c90ec954797ba8bc5272a99f08e49907bfbc397429e3a5083fff757780a4ce6c",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "770825a580347d8622ec67e3391acfba007df49927ff240c00ccd5a169985ef8",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "529ac614db34d07f20a150cd70233360d9ff1e576a28c76512767b0b29c20208"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1075.0899,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3004.4532,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 120,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1075.0899,
+          "budget": 3000
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3004.4532 > 3000"],
+      "observedLcpMs": 243,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2929.4532000000477,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2771.0898999999763,
+            "endMs": 2929.4532000000477,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2745.0898999999763,
+            "endMs": 2771.0898999999763,
+            "durationMs": 26
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.3632999999523,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.3632999999523,
+              "endMs": 1366.7266000000238,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 1525.089899999976,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 1825.089899999976,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.7266000000238,
+              "endMs": 1825.089899999976,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1525.089899999976,
+              "endMs": 1983.4532000000477,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1825.089899999976,
+              "endMs": 1983.4532000000477,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.3632999999523,
+              "endMs": 2116.726600000024,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.3632999999523,
+              "endMs": 2566.726600000024,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 2575.0898999999763,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2575.0898999999763,
+              "endMs": 2733.4532000000477,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2771.0898999999763,
+              "endMs": 2929.4532000000477,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.3632999999523,
+              "endMs": 758.3632999999523,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.3632999999523,
+              "endMs": 852.3632999999523,
+              "durationMs": 94
+            },
+            {
+              "startMs": 2575.0898999999763,
+              "endMs": 2745.0898999999763,
+              "durationMs": 170
+            },
+            {
+              "startMs": 2745.0898999999763,
+              "endMs": 2771.0898999999763,
+              "durationMs": 26
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3079.4532000000477,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2921.0898999999763,
+            "endMs": 3079.4532000000477,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2895.0898999999763,
+            "endMs": 2921.0898999999763,
+            "durationMs": 26
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.3632999999523,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.3632999999523,
+              "endMs": 1066.7266000000238,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.3632999999523,
+              "endMs": 1366.7266000000238,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 1525.089899999976,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 1825.089899999976,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.7266000000238,
+              "endMs": 1825.089899999976,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1525.089899999976,
+              "endMs": 1983.4532000000477,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1825.089899999976,
+              "endMs": 1983.4532000000477,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.3632999999523,
+              "endMs": 2116.726600000024,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1983.4532000000477,
+              "endMs": 2141.8165,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1825.089899999976,
+              "endMs": 2433.4532000000477,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.3632999999523,
+              "endMs": 2716.726600000024,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.7266000000238,
+              "endMs": 2725.0898999999763,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2725.0898999999763,
+              "endMs": 2883.4532000000477,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2921.0898999999763,
+              "endMs": 3079.4532000000477,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.3632999999523,
+              "endMs": 758.3632999999523,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.3632999999523,
+              "endMs": 852.3632999999523,
+              "durationMs": 94
+            },
+            {
+              "startMs": 2725.0898999999763,
+              "endMs": 2895.0898999999763,
+              "durationMs": 170
+            },
+            {
+              "startMs": 2895.0898999999763,
+              "endMs": 2921.0898999999763,
+              "durationMs": 26
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r1-A",
+      "group": "serial-control",
+      "startedEpoch": 1793211727.8743362,
+      "elapsedSeconds": 62.18205642700195,
+      "exitCode": 1,
+      "availableRamBytes": 15173828608,
+      "benchmarkIndex": 2074,
+      "reportFile": "control-r1-A.json",
+      "originalReportSha256": "247575988f8ba109acdd2ab381908b2315383ec062306e51d644bd7cad24cea1",
+      "publishedReportSha256": "247575988f8ba109acdd2ab381908b2315383ec062306e51d644bd7cad24cea1",
+      "commandLogSha256": "dc21d655a1760d761da2f7c25d8ba17c4bce80386a310cc4f7d97318d3c931a0",
+      "receiptSha256": "fdc07ca119cc2c412f677d569f001b9016f5c3e46c2ce8b56b10106d152c4361",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "849c8d18854bc4a1e55ed797ac2224389b11ca66cbdab6af8cf75cf173e45d56",
+        "route-budget_projects_dits-0.devtoolslog.json": "54c38e14a527a02c36eec213641d1531fa2a34dbc3f214bbf70223d4a16f6a08",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "3a32d3d63620d6c625eb9b4f62aceec6688824353fdcf2dbd8197b01c9fad354",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "70aa32e678a691f922a5445e82124313ce9fa4c0ffc481068515db2420e37343"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1080.7992756503568,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3031.0657008671424,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 137,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1080.7992756503568,
+          "budget": 3000
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3031.0657008671424 > 3000"],
+      "observedLcpMs": 253,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2956.065700867176,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2795.7992756503822,
+            "endMs": 2956.065700867176,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2767.7992756503822,
+            "endMs": 2795.7992756503822,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 760.266425216794,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 760.266425216794,
+              "endMs": 1370.532850433588,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 1530.799275650382,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 1830.799275650382,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1370.532850433588,
+              "endMs": 1830.799275650382,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1530.799275650382,
+              "endMs": 1991.065700867176,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1830.799275650382,
+              "endMs": 1991.065700867176,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 760.266425216794,
+              "endMs": 2120.532850433588,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 760.266425216794,
+              "endMs": 2570.532850433588,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 2580.7992756503822,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2580.7992756503822,
+              "endMs": 2741.065700867176,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2795.7992756503822,
+              "endMs": 2956.065700867176,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 760.266425216794,
+              "endMs": 761.266425216794,
+              "durationMs": 1
+            },
+            {
+              "startMs": 761.266425216794,
+              "endMs": 869.266425216794,
+              "durationMs": 108
+            },
+            {
+              "startMs": 2580.7992756503822,
+              "endMs": 2767.7992756503822,
+              "durationMs": 187
+            },
+            {
+              "startMs": 2767.7992756503822,
+              "endMs": 2795.7992756503822,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3106.065700867176,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2945.7992756503822,
+            "endMs": 3106.065700867176,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2917.7992756503822,
+            "endMs": 2945.7992756503822,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 760.266425216794,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 760.266425216794,
+              "endMs": 1070.532850433588,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 760.266425216794,
+              "endMs": 1370.532850433588,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 1530.799275650382,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 1830.799275650382,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1370.532850433588,
+              "endMs": 1830.799275650382,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1530.799275650382,
+              "endMs": 1991.065700867176,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1830.799275650382,
+              "endMs": 1991.065700867176,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 760.266425216794,
+              "endMs": 2120.532850433588,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1991.065700867176,
+              "endMs": 2151.3321260839703,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1830.799275650382,
+              "endMs": 2441.065700867176,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 760.266425216794,
+              "endMs": 2720.532850433588,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1070.532850433588,
+              "endMs": 2730.7992756503822,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2730.7992756503822,
+              "endMs": 2891.065700867176,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2945.7992756503822,
+              "endMs": 3106.065700867176,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 760.266425216794,
+              "endMs": 761.266425216794,
+              "durationMs": 1
+            },
+            {
+              "startMs": 761.266425216794,
+              "endMs": 869.266425216794,
+              "durationMs": 108
+            },
+            {
+              "startMs": 2730.7992756503822,
+              "endMs": 2917.7992756503822,
+              "durationMs": 187
+            },
+            {
+              "startMs": 2917.7992756503822,
+              "endMs": 2945.7992756503822,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r1-A2",
+      "group": "serial-control",
+      "startedEpoch": 1793211790.6116297,
+      "elapsedSeconds": 64.13867282867432,
+      "exitCode": 0,
+      "availableRamBytes": 16385232896,
+      "benchmarkIndex": 2577.5,
+      "reportFile": "control-r1-A2.json",
+      "originalReportSha256": "9d1714c2ae3db90dfc84656a076a7ed33b1b018c606c11b163ffb59ce9724a20",
+      "publishedReportSha256": "9d1714c2ae3db90dfc84656a076a7ed33b1b018c606c11b163ffb59ce9724a20",
+      "commandLogSha256": "a8f550fbc442c9583a4f8e24733f0b6b6a2b5bf81079dbd74f432702265d4158",
+      "receiptSha256": "dc4642fee372a1f86bc9917ff5ba885c22a0ce6caf4a26ddaecd0d042554f812",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "206c51a941b378ed64c76e09b2a7d48f9d5779cce43a8746f0c9e00c9f58b00d",
+        "route-budget_projects_dits-0.devtoolslog.json": "9737e50f1cbccfd80120ebc0cf95264a1af9eedb32c69bbdd48f544f44638f8e",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "64818a7b5a4c198a504918c2d4b26f82283eb4930f5bd7e1a51518bbe1a7e2bf",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "14aec2970dc21694250d2b31326aeb5bfdc040a95601f79e2bdcdcb0892ed46b"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1074.3856500000002,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2993.5141999999996,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 112,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1074.3856500000002,
+          "budget": 3000
+        }
+      ],
+      "failures": [],
+      "observedLcpMs": 221,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2918.514200000048,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2760.385649999976,
+            "endMs": 2918.514200000048,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2736.385649999976,
+            "endMs": 2760.385649999976,
+            "durationMs": 24
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.1285499999523,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.1285499999523,
+              "endMs": 1366.257100000024,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 1524.385649999976,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 1824.385649999976,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.257100000024,
+              "endMs": 1824.385649999976,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.385649999976,
+              "endMs": 1982.5142000000476,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.385649999976,
+              "endMs": 1982.5142000000476,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.1285499999523,
+              "endMs": 2116.257100000024,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1285499999523,
+              "endMs": 2566.257100000024,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 2574.385649999976,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2574.385649999976,
+              "endMs": 2732.514200000048,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2760.385649999976,
+              "endMs": 2918.514200000048,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.1285499999523,
+              "endMs": 758.1285499999523,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.1285499999523,
+              "endMs": 848.1285499999523,
+              "durationMs": 90
+            },
+            {
+              "startMs": 2574.385649999976,
+              "endMs": 2736.385649999976,
+              "durationMs": 162
+            },
+            {
+              "startMs": 2736.385649999976,
+              "endMs": 2760.385649999976,
+              "durationMs": 24
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3068.514200000048,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2910.385649999976,
+            "endMs": 3068.514200000048,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2886.385649999976,
+            "endMs": 2910.385649999976,
+            "durationMs": 24
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.1285499999523,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.1285499999523,
+              "endMs": 1066.257100000024,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.1285499999523,
+              "endMs": 1366.257100000024,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 1524.385649999976,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 1824.385649999976,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.257100000024,
+              "endMs": 1824.385649999976,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.385649999976,
+              "endMs": 1982.5142000000476,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.385649999976,
+              "endMs": 1982.5142000000476,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.1285499999523,
+              "endMs": 2116.257100000024,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1982.5142000000476,
+              "endMs": 2140.64275,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1824.385649999976,
+              "endMs": 2432.514200000048,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.1285499999523,
+              "endMs": 2716.257100000024,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.257100000024,
+              "endMs": 2724.385649999976,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2724.385649999976,
+              "endMs": 2882.514200000048,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2910.385649999976,
+              "endMs": 3068.514200000048,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.1285499999523,
+              "endMs": 758.1285499999523,
+              "durationMs": 0
+            },
+            {
+              "startMs": 758.1285499999523,
+              "endMs": 848.1285499999523,
+              "durationMs": 90
+            },
+            {
+              "startMs": 2724.385649999976,
+              "endMs": 2886.385649999976,
+              "durationMs": 162
+            },
+            {
+              "startMs": 2886.385649999976,
+              "endMs": 2910.385649999976,
+              "durationMs": 24
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r2-A2",
+      "group": "serial-control",
+      "startedEpoch": 1793211855.1765084,
+      "elapsedSeconds": 64.67154669761658,
+      "exitCode": 0,
+      "availableRamBytes": 16492756992,
+      "benchmarkIndex": 2419.5,
+      "reportFile": "control-r2-A2.json",
+      "originalReportSha256": "2d2db3c201775956cb5f6e12fa40248798b2fd545a95ddbc73b17adfa0ad962b",
+      "publishedReportSha256": "2d2db3c201775956cb5f6e12fa40248798b2fd545a95ddbc73b17adfa0ad962b",
+      "commandLogSha256": "9afbf9492d36999601d4c47462fc8015afdeccb4706b32ac802954b3ac8a7aaa",
+      "receiptSha256": "8f830e7bb492e32b032ca7d1d2f339d391f6f48f3fdd2466bfb83c8b8bebafb3",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "80a6f97333c44667db48b784fecb477cbd085904d7ac411a337d74fc279e70ba",
+        "route-budget_projects_dits-0.devtoolslog.json": "4faafaef17e0849f9871d26237cdc70c2d25969087ecf3e9b1dd8927b1a36942",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "eb26b02ceb7c66e9ab83f466bbd9c19b5c323992b6d8230b0ff915f528f78cf9",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "c566d080d69fd4ad58149341b6bd45ee92745c7517da7a84704f542431a96ff7"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1078.0453499999999,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2999.3938,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 109,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1078.0453499999999,
+          "budget": 3000
+        }
+      ],
+      "failures": [],
+      "observedLcpMs": 249,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2924.3937999999525,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2765.045350000024,
+            "endMs": 2924.3937999999525,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2737.045350000024,
+            "endMs": 2765.045350000024,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 759.3484500000477,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 759.3484500000477,
+              "endMs": 1368.6968999999763,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 1528.0453500000237,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 1828.0453500000237,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1368.6968999999763,
+              "endMs": 1828.0453500000237,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1528.0453500000237,
+              "endMs": 1987.3937999999523,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1828.0453500000237,
+              "endMs": 1987.3937999999523,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 759.3484500000477,
+              "endMs": 2118.6968999999763,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 759.3484500000477,
+              "endMs": 2568.6968999999763,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 2578.045350000024,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2578.045350000024,
+              "endMs": 2737.3937999999525,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2765.045350000024,
+              "endMs": 2924.3937999999525,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 759.3484500000477,
+              "endMs": 760.3484500000477,
+              "durationMs": 1
+            },
+            {
+              "startMs": 760.3484500000477,
+              "endMs": 849.3484500000477,
+              "durationMs": 89
+            },
+            {
+              "startMs": 2578.045350000024,
+              "endMs": 2737.045350000024,
+              "durationMs": 159
+            },
+            {
+              "startMs": 2737.045350000024,
+              "endMs": 2765.045350000024,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3074.3937999999525,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2915.045350000024,
+            "endMs": 3074.3937999999525,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2887.045350000024,
+            "endMs": 2915.045350000024,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 759.3484500000477,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 759.3484500000477,
+              "endMs": 1068.6968999999763,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 759.3484500000477,
+              "endMs": 1368.6968999999763,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 1528.0453500000237,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 1828.0453500000237,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1368.6968999999763,
+              "endMs": 1828.0453500000237,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1528.0453500000237,
+              "endMs": 1987.3937999999523,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1828.0453500000237,
+              "endMs": 1987.3937999999523,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 759.3484500000477,
+              "endMs": 2118.6968999999763,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1987.3937999999523,
+              "endMs": 2146.74225,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1828.0453500000237,
+              "endMs": 2437.3937999999525,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 759.3484500000477,
+              "endMs": 2718.6968999999763,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1068.6968999999763,
+              "endMs": 2728.045350000024,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2728.045350000024,
+              "endMs": 2887.3937999999525,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2915.045350000024,
+              "endMs": 3074.3937999999525,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 759.3484500000477,
+              "endMs": 760.3484500000477,
+              "durationMs": 1
+            },
+            {
+              "startMs": 760.3484500000477,
+              "endMs": 849.3484500000477,
+              "durationMs": 89
+            },
+            {
+              "startMs": 2728.045350000024,
+              "endMs": 2887.045350000024,
+              "durationMs": 159
+            },
+            {
+              "startMs": 2887.045350000024,
+              "endMs": 2915.045350000024,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r2-A",
+      "group": "serial-control",
+      "startedEpoch": 1793211920.8545997,
+      "elapsedSeconds": 65.27638602256775,
+      "exitCode": 1,
+      "availableRamBytes": 13950218240,
+      "benchmarkIndex": 1906.5,
+      "reportFile": "control-r2-A.json",
+      "originalReportSha256": "d7619e0ee9c0d5c322531a7351d0ed276a00aac6756c8e4bab1cfe8b763f3199",
+      "publishedReportSha256": "d7619e0ee9c0d5c322531a7351d0ed276a00aac6756c8e4bab1cfe8b763f3199",
+      "commandLogSha256": "70f0c373b66a618eb561d15617d98b3a4051c9b2f5d285852ce1d244b0c7ba36",
+      "receiptSha256": "8cc697ae0af9778ee27c78dd6e6d393e775460ca9ee55d4410b50975079b02f1",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "5d1cb998a825e437a4e4974e0db52dbbbf48f8e0329dc30f06428bc5d6df7f90",
+        "route-budget_projects_dits-0.devtoolslog.json": "cfeb38b07885876bb579ffd4555c6afe0b7127d9a5455be6ece2ee4d0c834379",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "6196058249b5ece8332b76b48444d70bf8150ae9806fdef84869760ecff8d692",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "05d5d853fbf31b33f8f25b647bb9e8fa9c4f1e7b7895d2a624e46613a44652f6"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1089.89415,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3025.1922,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 119,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1089.89415,
+          "budget": 3000
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3025.1922 > 3000"],
+      "observedLcpMs": 300,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2950.1922000000477,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2786.894149999976,
+            "endMs": 2950.1922000000477,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2758.894149999976,
+            "endMs": 2786.894149999976,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 763.2980499999524,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 763.2980499999524,
+              "endMs": 1076.5961000000239,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 763.2980499999524,
+              "endMs": 1076.5961000000239,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 810.2980499999524,
+              "endMs": 1123.5961000000239,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 763.2980499999524,
+              "endMs": 1376.5961000000239,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1123.5961000000239,
+              "endMs": 1586.8941499999762,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1076.5961000000239,
+              "endMs": 1839.8941499999762,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1376.5961000000239,
+              "endMs": 1839.8941499999762,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 763.2980499999524,
+              "endMs": 1976.5961000000239,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1839.8941499999762,
+              "endMs": 2003.1922000000477,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1586.8941499999762,
+              "endMs": 2050.1922000000477,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 810.2980499999524,
+              "endMs": 2473.596100000024,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1076.5961000000239,
+              "endMs": 2589.894149999976,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2589.894149999976,
+              "endMs": 2753.1922000000477,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2786.894149999976,
+              "endMs": 2950.1922000000477,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 763.2980499999524,
+              "endMs": 810.2980499999524,
+              "durationMs": 47
+            },
+            {
+              "startMs": 810.2980499999524,
+              "endMs": 811.2980499999524,
+              "durationMs": 1
+            },
+            {
+              "startMs": 811.2980499999524,
+              "endMs": 843.2980499999524,
+              "durationMs": 32
+            },
+            {
+              "startMs": 2589.894149999976,
+              "endMs": 2758.894149999976,
+              "durationMs": 169
+            },
+            {
+              "startMs": 2758.894149999976,
+              "endMs": 2786.894149999976,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3100.1922000000477,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2936.894149999976,
+            "endMs": 3100.1922000000477,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2908.894149999976,
+            "endMs": 2936.894149999976,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 763.2980499999524,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 763.2980499999524,
+              "endMs": 1076.5961000000239,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 763.2980499999524,
+              "endMs": 1076.5961000000239,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 763.2980499999524,
+              "endMs": 1076.5961000000239,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1076.5961000000239,
+              "endMs": 1239.8941499999762,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 763.2980499999524,
+              "endMs": 1376.5961000000239,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 763.2980499999524,
+              "endMs": 1526.5961000000239,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1376.5961000000239,
+              "endMs": 1839.8941499999762,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1526.5961000000239,
+              "endMs": 1989.8941499999762,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1239.8941499999762,
+              "endMs": 2003.1922000000477,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 763.2980499999524,
+              "endMs": 2126.596100000024,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1989.8941499999762,
+              "endMs": 2153.1922000000477,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1839.8941499999762,
+              "endMs": 2303.1922000000477,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1076.5961000000239,
+              "endMs": 2739.894149999976,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1076.5961000000239,
+              "endMs": 2739.894149999976,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2739.894149999976,
+              "endMs": 2903.1922000000477,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2936.894149999976,
+              "endMs": 3100.1922000000477,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 763.2980499999524,
+              "endMs": 810.2980499999524,
+              "durationMs": 47
+            },
+            {
+              "startMs": 810.2980499999524,
+              "endMs": 811.2980499999524,
+              "durationMs": 1
+            },
+            {
+              "startMs": 811.2980499999524,
+              "endMs": 843.2980499999524,
+              "durationMs": 32
+            },
+            {
+              "startMs": 843.2980499999524,
+              "endMs": 953.2980499999524,
+              "durationMs": 110
+            },
+            {
+              "startMs": 2739.894149999976,
+              "endMs": 2908.894149999976,
+              "durationMs": 169
+            },
+            {
+              "startMs": 2908.894149999976,
+              "endMs": 2936.894149999976,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r3-A",
+      "group": "serial-control",
+      "startedEpoch": 1793211987.458551,
+      "elapsedSeconds": 64.64696455001831,
+      "exitCode": 0,
+      "availableRamBytes": 14835007488,
+      "benchmarkIndex": 2583,
+      "reportFile": "control-r3-A.json",
+      "originalReportSha256": "30efd4aa1dcdbe4bbee875649cc017cc4bed5a49def3f8446ae489e1dddc1258",
+      "publishedReportSha256": "30efd4aa1dcdbe4bbee875649cc017cc4bed5a49def3f8446ae489e1dddc1258",
+      "commandLogSha256": "499ccf498275883067cf76b4825db04fe9928de333fc4ce17921b6b37f70ed27",
+      "receiptSha256": "358da050b3fad7dae1c768b2961f8e0484521725bf0ca49a02cd224c184d5e1e",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "24c9d5872a2292ba61a9b41361453ce154f1288526fd9922f4d3afa40b4ea31e",
+        "route-budget_projects_dits-0.devtoolslog.json": "a0678cff74257f6ad41a4a3d2d871339bd669cc31e599fffd7408a5237e47504",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "e20ba8f9fcdb1618c9ca8d744668f54ae70cdf81459eb0b8e6ed3487d39d9abb",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "a60a9b696abefb0d214507afa92b4fe5f4a5bc9d8584648c370af3abe6b32087"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1073.27505,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 2802.27505,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 52,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1073.27505,
+          "budget": 3000
+        }
+      ],
+      "failures": [],
+      "observedLcpMs": 224,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2727.2750499999524,
+          "terminalNetwork": {
+            "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 1065.5167000000476,
+            "endMs": 2573.2750499999524,
+            "bytes": 67850,
+            "status": 200
+          },
+          "terminalCpu": {
+            "startMs": 2573.2750499999524,
+            "endMs": 2727.2750499999524,
+            "durationMs": 154
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 757.7583500000238,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 757.7583500000238,
+              "endMs": 1365.5167000000476,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 1523.2750499999522,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 1823.2750499999522,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1365.5167000000476,
+              "endMs": 1823.2750499999522,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1523.2750499999522,
+              "endMs": 1981.0333999999762,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1823.2750499999522,
+              "endMs": 1981.0333999999762,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 757.7583500000238,
+              "endMs": 2115.516700000048,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 757.7583500000238,
+              "endMs": 2565.516700000048,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 2573.2750499999524,
+              "bytes": 67850,
+              "status": 200
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 757.7583500000238,
+              "endMs": 757.7583500000238,
+              "durationMs": 0
+            },
+            {
+              "startMs": 757.7583500000238,
+              "endMs": 779.7583500000238,
+              "durationMs": 22
+            },
+            {
+              "startMs": 2573.2750499999524,
+              "endMs": 2727.2750499999524,
+              "durationMs": 154
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 2877.2750499999524,
+          "terminalNetwork": {
+            "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 1065.5167000000476,
+            "endMs": 2723.2750499999524,
+            "bytes": 67850,
+            "status": 200
+          },
+          "terminalCpu": {
+            "startMs": 2723.2750499999524,
+            "endMs": 2877.2750499999524,
+            "durationMs": 154
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 757.7583500000238,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 757.7583500000238,
+              "endMs": 1065.5167000000476,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 757.7583500000238,
+              "endMs": 1365.5167000000476,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 1523.2750499999522,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 1823.2750499999522,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1365.5167000000476,
+              "endMs": 1823.2750499999522,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1523.2750499999522,
+              "endMs": 1981.0333999999762,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1823.2750499999522,
+              "endMs": 1981.0333999999762,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 757.7583500000238,
+              "endMs": 2115.516700000048,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1981.0333999999762,
+              "endMs": 2138.79175,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1823.2750499999522,
+              "endMs": 2431.033399999976,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 757.7583500000238,
+              "endMs": 2715.516700000048,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1065.5167000000476,
+              "endMs": 2723.2750499999524,
+              "bytes": 67850,
+              "status": 200
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 757.7583500000238,
+              "endMs": 757.7583500000238,
+              "durationMs": 0
+            },
+            {
+              "startMs": 757.7583500000238,
+              "endMs": 779.7583500000238,
+              "durationMs": 22
+            },
+            {
+              "startMs": 779.7583500000238,
+              "endMs": 874.7583500000238,
+              "durationMs": 95
+            },
+            {
+              "startMs": 2723.2750499999524,
+              "endMs": 2877.2750499999524,
+              "durationMs": 154
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "control-r3-A2",
+      "group": "serial-control",
+      "startedEpoch": 1793212052.9607837,
+      "elapsedSeconds": 61.83750605583191,
+      "exitCode": 1,
+      "availableRamBytes": 16061898752,
+      "benchmarkIndex": 2549,
+      "reportFile": "control-r3-A2.json",
+      "originalReportSha256": "247a6473fa3f5b3a2a159f2503d1338feca2c6c6b15113f5038d289c7a3ea8b5",
+      "publishedReportSha256": "247a6473fa3f5b3a2a159f2503d1338feca2c6c6b15113f5038d289c7a3ea8b5",
+      "commandLogSha256": "aa165ce374300cec852bdce65b19e44a463cfc3c0277e60fefcb3ed94364d9f4",
+      "receiptSha256": "575fb355a64bfd93c8b85fef35e32b4c0ccf984e2a6bde9d5da21ebc7ffb3de8",
+      "localArtifactSha256": {
+        "route-budget_projects_dits-0.trace.json": "4264e4ca27dbeb90f32ad8714f3ce1360b64c319c253d946029c584a6ec11523",
+        "route-budget_projects_dits-0.devtoolslog.json": "a881d202443288f4d18cc5475ab871afc8f0ef1c8472f0a129bea0115cf1d276",
+        "route-budget_projects_dits-optimisticLargestContentfulPaint.trace.json": "aab74774fdac04b15438446653baa0f5366fcf5e34fac20f676ed458c39f8eab",
+        "route-budget_projects_dits-pessimisticLargestContentfulPaint.trace.json": "b35ff70b61775291661c4035e2276bb1bd376d065e5b90f7021f3e1fb118ed31"
+      },
+      "timings": [
+        {
+          "metric": "first-contentful-paint",
+          "value": 1074.7154032058943,
+          "budget": 2000
+        },
+        {
+          "metric": "largest-contentful-paint",
+          "value": 3023.953870941192,
+          "budget": 3000
+        },
+        {
+          "metric": "cumulative-layout-shift",
+          "value": 0.0001343967184380303,
+          "budget": 0.1
+        },
+        {
+          "metric": "total-blocking-time",
+          "value": 138,
+          "budget": 300
+        },
+        {
+          "metric": "speed-index",
+          "value": 1074.7154032058943,
+          "budget": 3000
+        }
+      ],
+      "failures": ["largest-contentful-paint: 3023.953870941192 > 3000"],
+      "observedLcpMs": 261,
+      "analyticsInitiators": [
+        {
+          "path": "/_vercel/insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15976
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 15991
+            }
+          ]
+        },
+        {
+          "path": "/_vercel/speed-insights/script.js",
+          "type": "script",
+          "topFrames": [
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 17961
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "lineNumber": 0,
+              "columnNumber": 18018
+            }
+          ]
+        }
+      ],
+      "simulations": {
+        "optimistic": {
+          "estimatedEndMs": 2948.953870941162,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2790.7154032058716,
+            "endMs": 2948.953870941162,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2762.7154032058716,
+            "endMs": 2790.7154032058716,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.2384677352906,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.2384677352906,
+              "endMs": 1366.476935470581,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 1524.7154032058716,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 1824.7154032058716,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.476935470581,
+              "endMs": 1824.7154032058716,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.7154032058716,
+              "endMs": 1982.9538709411622,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.7154032058716,
+              "endMs": 1982.9538709411622,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.2384677352906,
+              "endMs": 2116.476935470581,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.2384677352906,
+              "endMs": 2566.476935470581,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 2574.7154032058716,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2574.7154032058716,
+              "endMs": 2732.953870941162,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2790.7154032058716,
+              "endMs": 2948.953870941162,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.2384677352906,
+              "endMs": 759.2384677352906,
+              "durationMs": 1
+            },
+            {
+              "startMs": 759.2384677352906,
+              "endMs": 853.2384677352906,
+              "durationMs": 94
+            },
+            {
+              "startMs": 2574.7154032058716,
+              "endMs": 2762.7154032058716,
+              "durationMs": 188
+            },
+            {
+              "startMs": 2762.7154032058716,
+              "endMs": 2790.7154032058716,
+              "durationMs": 28
+            }
+          ]
+        },
+        "pessimistic": {
+          "estimatedEndMs": 3098.953870941162,
+          "terminalNetwork": {
+            "path": "/_vercel/insights/script.js",
+            "priority": "Low",
+            "resourceType": "Script",
+            "startMs": 2940.7154032058716,
+            "endMs": 3098.953870941162,
+            "bytes": 363
+          },
+          "terminalCpu": {
+            "startMs": 2912.7154032058716,
+            "endMs": 2940.7154032058716,
+            "durationMs": 28
+          },
+          "network": [
+            {
+              "path": "/projects/dits",
+              "priority": "VeryHigh",
+              "resourceType": "Document",
+              "startMs": 0,
+              "endMs": 758.2384677352906,
+              "bytes": 27504,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/webpack-7432991127588d43.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 2398,
+              "status": 200
+            },
+            {
+              "path": "/manifest.json",
+              "priority": "Medium",
+              "resourceType": "Manifest",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 832,
+              "status": 200
+            },
+            {
+              "path": "/icon.png?20d704102e79780a",
+              "priority": "High",
+              "resourceType": "Other",
+              "startMs": 758.2384677352906,
+              "endMs": 1066.476935470581,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/css/81e9a4dfd2a25028.css",
+              "priority": "VeryHigh",
+              "resourceType": "Stylesheet",
+              "startMs": 758.2384677352906,
+              "endMs": 1366.476935470581,
+              "bytes": 17299,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/layout-884c6a9183f2eefa.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 1524.7154032058716,
+              "bytes": 9077,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/shared-primitives-b4d66b911fe1d014.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 1824.7154032058716,
+              "bytes": 20681,
+              "status": 200
+            },
+            {
+              "path": "/fonts/geist-mono-latin-core.woff2",
+              "priority": "VeryHigh",
+              "resourceType": "Font",
+              "startMs": 1366.476935470581,
+              "endMs": 1824.7154032058716,
+              "bytes": 10519,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/projects/%5Bslug%5D/page-eab637ed7e6b7324.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1524.7154032058716,
+              "endMs": 1982.9538709411622,
+              "bytes": 10860,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/app/error-5ec36431bae4ab4a.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1824.7154032058716,
+              "endMs": 1982.9538709411622,
+              "bytes": 1305,
+              "status": 200
+            },
+            {
+              "path": "/fonts/inter-latin-core.woff2",
+              "priority": "High",
+              "resourceType": "Font",
+              "startMs": 758.2384677352906,
+              "endMs": 2116.476935470581,
+              "bytes": 32195,
+              "status": 200
+            },
+            {
+              "path": "/icon.png",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1982.9538709411622,
+              "endMs": 2141.1923386764524,
+              "bytes": 3252,
+              "status": 200
+            },
+            {
+              "path": "/images/space/hubble-xdf-band-narrow.webp",
+              "priority": "Low",
+              "resourceType": "Image",
+              "startMs": 1824.7154032058716,
+              "endMs": 2432.953870941162,
+              "bytes": 16181,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 758.2384677352906,
+              "endMs": 2716.476935470581,
+              "bytes": 64582,
+              "status": 200
+            },
+            {
+              "path": "/_next/static/chunks/main-app-226e52d37532a0b3.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 1066.476935470581,
+              "endMs": 2724.7154032058716,
+              "bytes": 67850,
+              "status": 200
+            },
+            {
+              "path": "/_vercel/speed-insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2724.7154032058716,
+              "endMs": 2882.953870941162,
+              "bytes": 363
+            },
+            {
+              "path": "/_vercel/insights/script.js",
+              "priority": "Low",
+              "resourceType": "Script",
+              "startMs": 2940.7154032058716,
+              "endMs": 3098.953870941162,
+              "bytes": 363
+            }
+          ],
+          "cpuTasks": [
+            {
+              "startMs": 758.2384677352906,
+              "endMs": 759.2384677352906,
+              "durationMs": 1
+            },
+            {
+              "startMs": 759.2384677352906,
+              "endMs": 853.2384677352906,
+              "durationMs": 94
+            },
+            {
+              "startMs": 853.2384677352906,
+              "endMs": 873.2384677352906,
+              "durationMs": 20
+            },
+            {
+              "startMs": 2724.7154032058716,
+              "endMs": 2912.7154032058716,
+              "durationMs": 188
+            },
+            {
+              "startMs": 2912.7154032058716,
+              "endMs": 2940.7154032058716,
+              "durationMs": 28
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
