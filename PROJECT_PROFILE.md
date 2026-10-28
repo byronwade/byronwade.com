@@ -223,6 +223,12 @@ use them correctly.
 - **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
   fixture operations, content-date regressions across five timezones, and Thorbis
   class merging/token/favicon contracts
+- **Preview configuration:** `tests/project-preview-server.test.mjs` renders the real
+  server wrapper, client and glyphs with React's static renderer. Missing, empty or
+  whitespace-only keys produce no markup; synthetic keys preserve the preview,
+  project link and caption without starting a capture or exposing the key. This
+  native check covers keyless omission without a second Next build; the rendered
+  suite below covers browser behavior on the placeholder-key build.
 - **Rendered contracts:** `npm run test:rendered` after
   `SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
