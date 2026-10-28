@@ -242,10 +242,12 @@ use them correctly.
   sending a message. Physical keyboards, screen readers and mobile keyboards
   remain separate checks.
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
-- **Rendered readiness:** layout measurements wait for a visible page title and fonts;
+- **Rendered readiness:** layout measurements activate the measured tab so React's
+  streamed reveals get an animation frame, then wait for a visible title and fonts;
   search cache assertions poll for complete JSON and exact corpus counts within one
   deadline. Native filesystem regressions preserve failures for corrupt entries,
-  incorrect counts and read errors; a browser regression preserves the hidden-title timeout.
+  incorrect counts and read errors; a browser regression covers a background tab's
+  frame-delayed title and preserves the hidden-title timeout.
 - **Native deadline fixtures:** contact delivery and screenshot resolution share
   `tests/fixtures/request-deadline.mjs`. It holds the first deadline until the
   local server receives the request, and for body stalls until the client starts
