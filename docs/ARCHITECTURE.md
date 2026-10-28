@@ -34,6 +34,17 @@ For the same reason `NavDock` marks no section current when the root segment is
 Theme is light/dark via `next-themes` (dark default, the space theme) with a toggle in
 the header.
 
+Both render-error boundaries use `components/common/error-notice.tsx`. A route
+failure keeps the shell and offers Next's `retry` as **Try again**, refreshing
+server data as well as clearing the error state. A shell
+failure replaces the shell with its own `main#main-content` and offers **Reload
+page**, which navigates only when activated. Neither boundary schedules reloads:
+a persistent render failure must not create a navigation loop or interrupt work
+with a late callback. Both retain a full-navigation homepage link and warn that
+unsent text may need to be re-entered. `tests/error-recovery.test.mjs` protects
+the recovery actions, timer-free lifecycle, landmark and guidance. Both accept
+non-Error throws; the route only displays a reference for an Error with a text digest.
+
 ### Local browser verification
 
 Rendered browser tests use `withBrowser` in `tests/fixtures/browser.mjs` to own
