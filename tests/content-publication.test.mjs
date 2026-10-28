@@ -43,9 +43,17 @@ const invalidDates = [
 	["object", "date: { year: 2026 }\n"],
 ];
 const validDates = [
-	["calendar", "date: 2026-01-01\n", "2026-01-01T00:00:00.000Z"],
-	["quoted", 'date: "2024-02-29"\n', "2024-02-29"],
-	["timestamp", 'date: "2026-01-01T23:30:00-05:00"\n', "2026-01-01T23:30:00-05:00"],
+	[
+		"calendar",
+		"date: 2026-01-01\ntags: [Revised, Unedited, Offset, Invalid update]\n",
+		"2026-01-01T00:00:00.000Z",
+	],
+	["quoted", 'date: "2024-02-29"\nupdated: "2026-01-02T04:00:00Z"\ntags: [Offset]\n', "2024-02-29"],
+	[
+		"timestamp",
+		'date: "2026-01-01T23:30:00-05:00"\ntags: [Unedited, Offset]\n',
+		"2026-01-01T23:30:00-05:00",
+	],
 ];
 await Promise.all(
 	["blog", "projects"].map(async (kind) => {
@@ -63,15 +71,15 @@ await Promise.all(
 );
 await writeFile(
 	join(directory, "content/blog/updated.md"),
-	"---\ntitle: Updated post\ndate: 2024-01-01\nupdated: 2026-08-07\n---\nUpdated body.\n"
+	"---\ntitle: Updated post\ndate: 2024-01-01\nupdated: 2026-08-07\ntags: [Revised]\n---\nUpdated body.\n"
 );
 await writeFile(
 	join(directory, "content/blog/invalid-update.md"),
-	'---\ntitle: Invalid update\ndate: 2024-01-01\nupdated: "2026-02-30"\n---\nBody.\n'
+	'---\ntitle: Invalid update\ndate: 2024-01-01\nupdated: "2026-02-30"\ntags: [Invalid update]\n---\nBody.\n'
 );
 await writeFile(
 	join(directory, "content/blog/draft.md"),
-	"---\ntitle: Draft\ndate: 2026-01-01\ndraft: true\n---\nDraft body.\n"
+	"---\ntitle: Draft\ndate: 2026-01-01\nupdated: 2035-01-01\ndraft: true\ntags: [Revised]\n---\nDraft body.\n"
 );
 await writeFile(
 	join(directory, "content/blog/leap.md"),
@@ -165,6 +173,19 @@ test("static sitemap pages omit modification dates and stay stable as the clock 
 	context.mock.timers.setTime(Date.UTC(2040, 0, 1));
 	assert.deepEqual(await sitemap(), first, "time alone must not change sitemap entries");
 });
+
+for (const [topic, expected] of [
+	["revised", "2026-08-07T00:00:00.000Z"],
+	["unedited", "2026-01-02T04:30:00.000Z"],
+	["offset", "2026-01-02T04:30:00.000Z"],
+	["invalid-update", "2026-01-01T00:00:00.000Z"],
+]) {
+	test(`topic ${topic} uses its latest published change, excluding drafts and invalid updates`, async () => {
+		const entry = (await sitemap()).find((item) => item.url.endsWith(`/blog/topic/${topic}`));
+		assert.ok(entry, `${topic} should be discoverable`);
+		assert.equal(new Date(entry.lastModified).toISOString(), expected);
+	});
+}
 
 test("an unquoted leap day stays February 29", async () => {
 	assert.equal((await getBlogPost("leap"))?.date, "2024-02-29T00:00:00.000Z");
