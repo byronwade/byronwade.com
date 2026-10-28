@@ -12,10 +12,33 @@ const SEARCH_TRIGGER = 'button[aria-label="Search (⌘K)"]';
 const STATUS = 'form p[aria-live="polite"]';
 const BLOG_ROUTE = /^\/blog\/[^/]+$/;
 const OUTSIDE_PANEL = /^outside: /;
+const TOPIC_ROUTE = /^\/blog\/topic\/[^/]+$/;
+const HEADING = /<h([1-6])\b/g;
 const manifest = JSON.parse(readFileSync(".next/prerender-manifest.json", "utf8"));
+const topics = Object.keys(manifest.routes).filter((route) => TOPIC_ROUTE.test(route));
 const post = Object.keys(manifest.routes)
 	.filter((route) => BLOG_ROUTE.test(route))
 	.sort()[0];
+
+test("every built topic page has one h1 followed by h2 post titles", async (context) => {
+	assert.ok(topics.length > 0, "a production build must contain writing topics");
+	await Promise.all(
+		topics.map((route) =>
+			context.test(route, () => {
+				const html = readFileSync(`.next/server/app${route}.html`, "utf8");
+				const levels = [...html.matchAll(HEADING)].map(([, level]) => Number(level));
+				assert.equal(levels[0], 1, "the outline starts with the topic's h1");
+				assert.equal(levels.filter((level) => level === 1).length, 1, "exactly one h1");
+				assert.ok(levels.length > 1, "the topic lists post titles");
+				assert.deepEqual(
+					levels.slice(1),
+					levels.slice(1).map(() => 2),
+					"posts follow at h2"
+				);
+			})
+		)
+	);
+});
 
 /** Fonts loaded and no transition mid-flight: a fading layer reads as low contrast. */
 async function settle(page) {
@@ -242,8 +265,8 @@ async function checkNavigation(browser, origin, theme, width) {
 	}
 }
 
-async function checkPost(browser, origin, theme, width) {
-	const { page, errors } = await openPage(browser, origin, post, { width, theme });
+async function checkWriting(browser, origin, route, theme, width) {
+	const { page, errors } = await openPage(browser, origin, route, { width, theme });
 	try {
 		const outline = await page.evaluate(() => ({
 			h1: document.querySelectorAll("h1").length,
@@ -251,13 +274,13 @@ async function checkPost(browser, origin, theme, width) {
 				Number(heading.tagName[1])
 			),
 		}));
-		assert.equal(outline.h1, 1, "a post has exactly one h1");
-		assert.equal(outline.levels[0], 1, "the post outline starts at its h1");
+		assert.equal(outline.h1, 1, "a writing page has exactly one h1");
+		assert.equal(outline.levels[0], 1, "the writing outline starts at its h1");
 		const skipped = outline.levels.filter(
 			(level, index) => level > (outline.levels[index - 1] ?? 0) + 1
 		);
 		assert.deepEqual(skipped, [], `heading levels are not skipped: ${outline.levels.join(" ")}`);
-		await assertNoViolations(page, `${post} ${theme}`);
+		await assertNoViolations(page, `${route} ${theme}`);
 		assert.deepEqual(errors, []);
 	} finally {
 		await page.close();
@@ -322,7 +345,10 @@ test("navigation, a post and the contact form have no WCAG A/AA axe violations",
 						.flatMap(([theme, width]) => [
 							[`navigation, ${theme} 390`, () => checkNavigation(browser, origin, theme, 390)],
 							[`navigation, ${theme} 1280`, () => checkNavigation(browser, origin, theme, 1280)],
-							[`reading a post, ${theme} ${width}`, () => checkPost(browser, origin, theme, width)],
+							[
+								`reading a post, ${theme} ${width}`,
+								() => checkWriting(browser, origin, post, theme, width),
+							],
 							[
 								`submitting the contact form, ${theme} ${width}`,
 								() => checkContact(browser, origin, theme, width),
@@ -334,6 +360,30 @@ test("navigation, a post and the contact form have no WCAG A/AA axe violations",
 						)
 				),
 			{ env }
+		)
+	);
+});
+
+test("writing topics have ordered headings and no WCAG A/AA axe violations in both themes", {
+	timeout: 180_000,
+}, async (context) => {
+	assert.ok(topics.length > 0, "a production build must contain writing topics");
+	await withProductionServer((origin) =>
+		withBrowser(context, { timeout: 30_000 }, (browser) =>
+			[
+				["light", 1280],
+				["dark", 390],
+			]
+				.flatMap(([theme, width]) => topics.map((route) => ({ route, theme, width })))
+				.reduce(
+					(pending, { route, theme, width }) =>
+						pending.then(() =>
+							context.test(`${route} ${theme} ${width}`, () =>
+								checkWriting(browser, origin, route, theme, width)
+							)
+						),
+					Promise.resolve()
+				)
 		)
 	);
 });
