@@ -1,0 +1,582 @@
+{
+  "pins": {
+    "commit": "b7816116bf5999148c72d30d7642e94bf7af75c5",
+    "applicationBase": "ae357bafc7e489e264b2a789cdb34eefc5ac3109",
+    "buildId": "sX6RsYxAT4O-RN9Rgeznh",
+    "node": "v24.21.0",
+    "files": {
+      "scripts/perf-budget.mjs": "df0276fce3accf8aff9703af8130bd8f04d6e01a5f97c76b1a6ea2896ddedbab",
+      "scripts/audit-browser.mjs": "7ac8040ed1481ad87cd5ceac16a222f9b3f55231774f69e6d1ce456466c6e625",
+      "scripts/production-session.mjs": "abf90587c1d614447a4764a9a017af7c1511c9be2aef143e96aff794f8dcc5dc",
+      "scripts/lighthouse-budget.mjs": "45d484f405c863b4f2094eaf9a1becc36a56a39e6d29e12af75c16e61bef0c42",
+      "lighthouse-budget.json": "1f06cb7a7b5cb2339d80a212b0e375a68b68b50836ba6795d2eb3e29787eddd4",
+      "package-lock.json": "15581c58472e72f3e15213a481c60de9a6f6f497e44d267d48a7c46ddc10846f"
+    },
+    "applicationDiff": "",
+    "method": "Three rounds; same-build A/A2 pairs on each route; reverse pair order in round 2. No application candidate or speed claim."
+  },
+  "samples": [
+    {
+      "file": "home-r1-A.json",
+      "sha256": "2ffaf922d4ed0b52422c90490853a44ca0f70e3535c322823bb4d2aa5d882371",
+      "sourceSha256": "2ffaf922d4ed0b52422c90490853a44ca0f70e3535c322823bb4d2aa5d882371",
+      "route": "/",
+      "round": 1,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793206695.0460875,
+      "elapsedSeconds": 65.01350426673889,
+      "availableRamBytes": 15829295104,
+      "benchmarkIndex": 2511.5
+    },
+    {
+      "file": "home-r1-A2.json",
+      "sha256": "f8375dbf17370cafbfc3925581a78de8ca3d1921a09e10a9159696f3c84ddbbf",
+      "sourceSha256": "f8375dbf17370cafbfc3925581a78de8ca3d1921a09e10a9159696f3c84ddbbf",
+      "route": "/",
+      "round": 1,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793206760.899182,
+      "elapsedSeconds": 65.89409494400024,
+      "availableRamBytes": 13516070912,
+      "benchmarkIndex": 2505
+    },
+    {
+      "file": "thorbis-r1-A.json",
+      "sha256": "7509cafa0d1968abcc35595e22ad6eb11aa5b6b964606b7ed9d6e944fa82525c",
+      "sourceSha256": "7509cafa0d1968abcc35595e22ad6eb11aa5b6b964606b7ed9d6e944fa82525c",
+      "route": "/projects/thorbis",
+      "round": 1,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793206827.0856576,
+      "elapsedSeconds": 64.86937999725342,
+      "availableRamBytes": 15598166016,
+      "benchmarkIndex": 2533
+    },
+    {
+      "file": "thorbis-r1-A2.json",
+      "sha256": "438c907f295b0fbe773f08283c099efc23f7a72f6d5c7a327915cae0f6246761",
+      "sourceSha256": "438c907f295b0fbe773f08283c099efc23f7a72f6d5c7a327915cae0f6246761",
+      "route": "/projects/thorbis",
+      "round": 1,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793206892.3662338,
+      "elapsedSeconds": 64.40029001235962,
+      "availableRamBytes": 15822249984,
+      "benchmarkIndex": 2398
+    },
+    {
+      "file": "dits-r1-A.json",
+      "sha256": "88c449a21a2a1fca6f723b008d22c0370add1a53df754841952ecc59b08c20cc",
+      "sourceSha256": "88c449a21a2a1fca6f723b008d22c0370add1a53df754841952ecc59b08c20cc",
+      "route": "/projects/dits",
+      "round": 1,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793206957.043146,
+      "elapsedSeconds": 64.22111916542053,
+      "availableRamBytes": 15378907136,
+      "benchmarkIndex": 2541
+    },
+    {
+      "file": "dits-r1-A2.json",
+      "sha256": "12f2f4b8602cad92948b9f0312f4b86a6fbd433be5f8cebd180ca663ebce8c97",
+      "sourceSha256": "12f2f4b8602cad92948b9f0312f4b86a6fbd433be5f8cebd180ca663ebce8c97",
+      "route": "/projects/dits",
+      "round": 1,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207021.5159354,
+      "elapsedSeconds": 64.07877278327942,
+      "availableRamBytes": 16166113280,
+      "benchmarkIndex": 2555
+    },
+    {
+      "file": "nexstar-r1-A.json",
+      "sha256": "95b7a795eb917bf884c28c5687ea1d8aa3ec97c1be1d0a24d5c61000639935cc",
+      "sourceSha256": "95b7a795eb917bf884c28c5687ea1d8aa3ec97c1be1d0a24d5c61000639935cc",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 1,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207085.8209717,
+      "elapsedSeconds": 64.2239990234375,
+      "availableRamBytes": 16273465344,
+      "benchmarkIndex": 2604
+    },
+    {
+      "file": "nexstar-r1-A2.json",
+      "sha256": "04a077d40b24ed3f083458545b05322b0521c713efec212b5d0871b7380571f5",
+      "sourceSha256": "04a077d40b24ed3f083458545b05322b0521c713efec212b5d0871b7380571f5",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 1,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207150.287614,
+      "elapsedSeconds": 64.25253129005432,
+      "availableRamBytes": 16412889088,
+      "benchmarkIndex": 2561.5
+    },
+    {
+      "file": "home-r2-A2.json",
+      "sha256": "0e356e70f377d02518922a61cea0b7ff39caa4c96992320283d30ad16a485344",
+      "sourceSha256": "0e356e70f377d02518922a61cea0b7ff39caa4c96992320283d30ad16a485344",
+      "route": "/",
+      "round": 2,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207214.7780786,
+      "elapsedSeconds": 65.06445002555847,
+      "availableRamBytes": 16210157568,
+      "benchmarkIndex": 2454.5
+    },
+    {
+      "file": "home-r2-A.json",
+      "sha256": "fee825835b25dc144cdfcd94be7cfdafb87826286a046672110f499f33e895b2",
+      "sourceSha256": "fee825835b25dc144cdfcd94be7cfdafb87826286a046672110f499f33e895b2",
+      "route": "/",
+      "round": 2,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207280.1155329,
+      "elapsedSeconds": 64.6529905796051,
+      "availableRamBytes": 16445124608,
+      "benchmarkIndex": 2553
+    },
+    {
+      "file": "thorbis-r2-A2.json",
+      "sha256": "0686b9b95ee212065a58de4d6ad0587c32fcf41169885f6de5b70d24ded764e3",
+      "sourceSha256": "0686b9b95ee212065a58de4d6ad0587c32fcf41169885f6de5b70d24ded764e3",
+      "route": "/projects/thorbis",
+      "round": 2,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207345.0056334,
+      "elapsedSeconds": 64.24240803718567,
+      "availableRamBytes": 16176197632,
+      "benchmarkIndex": 2584.5
+    },
+    {
+      "file": "thorbis-r2-A.json",
+      "sha256": "1aee11e60a842af451d437a90b289a727bec20f3b35c68a96e14681683938e05",
+      "sourceSha256": "1aee11e60a842af451d437a90b289a727bec20f3b35c68a96e14681683938e05",
+      "route": "/projects/thorbis",
+      "round": 2,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207409.7161772,
+      "elapsedSeconds": 65.01505994796753,
+      "availableRamBytes": 16255836160,
+      "benchmarkIndex": 2541
+    },
+    {
+      "file": "dits-r2-A2.json",
+      "sha256": "626c3a3bbf681a1e7b3842fd70a48978a6eeaadad6a6ee3989fb48d62443f09f",
+      "sourceSha256": "626c3a3bbf681a1e7b3842fd70a48978a6eeaadad6a6ee3989fb48d62443f09f",
+      "route": "/projects/dits",
+      "round": 2,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207475.2074203,
+      "elapsedSeconds": 64.39213609695435,
+      "availableRamBytes": 16423931904,
+      "benchmarkIndex": 2529.5
+    },
+    {
+      "file": "dits-r2-A.json",
+      "sha256": "9a5ee62487f952ca5be559ccd3b8416880267d99a7f0c132438347636a71e6c2",
+      "sourceSha256": "9a5ee62487f952ca5be559ccd3b8416880267d99a7f0c132438347636a71e6c2",
+      "route": "/projects/dits",
+      "round": 2,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207539.8127646,
+      "elapsedSeconds": 64.13910150527954,
+      "availableRamBytes": 15635341312,
+      "benchmarkIndex": 2467.5
+    },
+    {
+      "file": "nexstar-r2-A2.json",
+      "sha256": "5d47b710fc8a6c63eedbd573c52a09cf2001710765faee78a50acb649c23d7e9",
+      "sourceSha256": "5d47b710fc8a6c63eedbd573c52a09cf2001710765faee78a50acb649c23d7e9",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 2,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207604.2124891,
+      "elapsedSeconds": 65.25608897209167,
+      "availableRamBytes": 15231299584,
+      "benchmarkIndex": 2515
+    },
+    {
+      "file": "nexstar-r2-A.json",
+      "sha256": "22739155b391a15d1cce91735ecf22c6613a40268a000d857437ef9d05ac3f68",
+      "sourceSha256": "22739155b391a15d1cce91735ecf22c6613a40268a000d857437ef9d05ac3f68",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 2,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207669.737953,
+      "elapsedSeconds": 64.37031435966492,
+      "availableRamBytes": 16101048320,
+      "benchmarkIndex": 2509
+    },
+    {
+      "file": "home-r3-A.json",
+      "sha256": "2015df353d1eda93ffafcd3a58f5e9913e6b34cec15dd86e60750a7cbc21feb0",
+      "sourceSha256": "2015df353d1eda93ffafcd3a58f5e9913e6b34cec15dd86e60750a7cbc21feb0",
+      "route": "/",
+      "round": 3,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207734.3422706,
+      "elapsedSeconds": 65.4742922782898,
+      "availableRamBytes": 16652636160,
+      "benchmarkIndex": 2324.5
+    },
+    {
+      "file": "home-r3-A2.json",
+      "sha256": "1e566a39bacc7c709c3a5fcb7a7f9086d04a950e927e6b306f93898b28cc677c",
+      "sourceSha256": "1e566a39bacc7c709c3a5fcb7a7f9086d04a950e927e6b306f93898b28cc677c",
+      "route": "/",
+      "round": 3,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207800.0484447,
+      "elapsedSeconds": 64.88447093963623,
+      "availableRamBytes": 16212652032,
+      "benchmarkIndex": 2566
+    },
+    {
+      "file": "thorbis-r3-A.json",
+      "sha256": "614c20b5f6399246ab9e40905a86569fe986c5e53c22466bbc76f0c681bb6f19",
+      "sourceSha256": "614c20b5f6399246ab9e40905a86569fe986c5e53c22466bbc76f0c681bb6f19",
+      "route": "/projects/thorbis",
+      "round": 3,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207865.1988428,
+      "elapsedSeconds": 64.0203926563263,
+      "availableRamBytes": 16637739008,
+      "benchmarkIndex": 2554.5
+    },
+    {
+      "file": "thorbis-r3-A2.json",
+      "sha256": "e83469a5dd8e5a5d2b554582854321a104e7c520ffa61a5d58e2932c1585d17d",
+      "sourceSha256": "e83469a5dd8e5a5d2b554582854321a104e7c520ffa61a5d58e2932c1585d17d",
+      "route": "/projects/thorbis",
+      "round": 3,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793207929.522885,
+      "elapsedSeconds": 64.58457493782043,
+      "availableRamBytes": 15656579072,
+      "benchmarkIndex": 2533
+    },
+    {
+      "file": "dits-r3-A.json",
+      "sha256": "fbb862e6173b35c0c723f194f087765f9a006fb2176c84e549e525c11b8ddf99",
+      "sourceSha256": "fbb862e6173b35c0c723f194f087765f9a006fb2176c84e549e525c11b8ddf99",
+      "route": "/projects/dits",
+      "round": 3,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793207994.4319181,
+      "elapsedSeconds": 64.25102663040161,
+      "availableRamBytes": 15166328832,
+      "benchmarkIndex": 2593.5
+    },
+    {
+      "file": "dits-r3-A2.json",
+      "sha256": "ca1880c6f623ab11205e97e567dc8c3b2e387e88e8494a9f2d217c4498746f59",
+      "sourceSha256": "ca1880c6f623ab11205e97e567dc8c3b2e387e88e8494a9f2d217c4498746f59",
+      "route": "/projects/dits",
+      "round": 3,
+      "label": "A2",
+      "exitCode": 1,
+      "startedEpoch": 1793208058.9353187,
+      "elapsedSeconds": 61.816384077072144,
+      "availableRamBytes": 16165855232,
+      "benchmarkIndex": 2578.5
+    },
+    {
+      "file": "nexstar-r3-A.json",
+      "sha256": "e5f14b5c8e0aba15114b1f5258119f75cb0b2cbdaebbf79cf7d5036f387cc02f",
+      "sourceSha256": "e5f14b5c8e0aba15114b1f5258119f75cb0b2cbdaebbf79cf7d5036f387cc02f",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 3,
+      "label": "A",
+      "exitCode": 0,
+      "startedEpoch": 1793208120.969175,
+      "elapsedSeconds": 70.51288414001465,
+      "availableRamBytes": 15928102912,
+      "benchmarkIndex": 1273.5
+    },
+    {
+      "file": "nexstar-r3-A2.json",
+      "sha256": "e63276175bcea699bff2b3c133bdfc557e333f56610b07518b42499b7d69c641",
+      "sourceSha256": "e63276175bcea699bff2b3c133bdfc557e333f56610b07518b42499b7d69c641",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "round": 3,
+      "label": "A2",
+      "exitCode": 0,
+      "startedEpoch": 1793208191.744055,
+      "elapsedSeconds": 64.24862289428711,
+      "availableRamBytes": 18083078144,
+      "benchmarkIndex": 2560
+    }
+  ],
+  "minimumAvailableRamBytes": 13516070912,
+  "routes": [
+    {
+      "name": "home",
+      "route": "/",
+      "samples": 6,
+      "passes": 6,
+      "lcp": {
+        "minimum": 2837.2960749999993,
+        "median": 2851.396592545336,
+        "maximum": 2940.5650000000005
+      },
+      "observedLcp": { "minimum": 341, "median": 377.5, "maximum": 477 },
+      "tbt": { "minimum": 98, "median": 109.0, "maximum": 153 },
+      "cls": { "minimum": 0, "median": 0.0, "maximum": 0 },
+      "benchmarkIndex": {
+        "minimum": 2324.5,
+        "median": 2508.25,
+        "maximum": 2566
+      },
+      "scriptBytes": {
+        "minimum": 169865,
+        "median": 169865.0,
+        "maximum": 169865
+      },
+      "scriptCount": { "minimum": 9, "median": 9.0, "maximum": 9 },
+      "documentBytes": {
+        "minimum": 23636,
+        "median": 23636.0,
+        "maximum": 23636
+      },
+      "fontBytes": { "minimum": 32195, "median": 32195.0, "maximum": 32195 },
+      "totalBytes": {
+        "minimum": 266512,
+        "median": 266512.0,
+        "maximum": 266512
+      },
+      "sameBuildPairs": [
+        {
+          "round": 1,
+          "lcpA2MinusA": -34.81120000000101,
+          "observedLcpA2MinusA": -85
+        },
+        {
+          "round": 2,
+          "lcpA2MinusA": 1.910200000000259,
+          "observedLcpA2MinusA": -22
+        },
+        {
+          "round": 3,
+          "lcpA2MinusA": -22.30558509067214,
+          "observedLcpA2MinusA": -53
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "thorbis",
+      "route": "/projects/thorbis",
+      "samples": 6,
+      "passes": 6,
+      "lcp": {
+        "minimum": 2910.3153999999995,
+        "median": 2917.3605,
+        "maximum": 2927.6018
+      },
+      "observedLcp": { "minimum": 205, "median": 219.5, "maximum": 411 },
+      "tbt": { "minimum": 100, "median": 107.5, "maximum": 112 },
+      "cls": { "minimum": 0, "median": 0.0, "maximum": 0 },
+      "benchmarkIndex": {
+        "minimum": 2398,
+        "median": 2537.0,
+        "maximum": 2584.5
+      },
+      "scriptBytes": {
+        "minimum": 177727,
+        "median": 177727.0,
+        "maximum": 177727
+      },
+      "scriptCount": { "minimum": 9, "median": 9.0, "maximum": 9 },
+      "documentBytes": {
+        "minimum": 19628,
+        "median": 19628.0,
+        "maximum": 19628
+      },
+      "fontBytes": { "minimum": 32195, "median": 32195.0, "maximum": 32195 },
+      "totalBytes": {
+        "minimum": 270366,
+        "median": 270366.0,
+        "maximum": 270366
+      },
+      "sameBuildPairs": [
+        {
+          "round": 1,
+          "lcpA2MinusA": -3.944999999999709,
+          "observedLcpA2MinusA": -171
+        },
+        {
+          "round": 2,
+          "lcpA2MinusA": 7.944999999999709,
+          "observedLcpA2MinusA": -7
+        },
+        {
+          "round": 3,
+          "lcpA2MinusA": 4.115400000000591,
+          "observedLcpA2MinusA": 10
+        }
+      ],
+      "failures": []
+    },
+    {
+      "name": "dits",
+      "route": "/projects/dits",
+      "samples": 6,
+      "passes": 5,
+      "lcp": {
+        "minimum": 2979.889,
+        "median": 2993.615171980671,
+        "maximum": 3007.6180000000004
+      },
+      "observedLcp": { "minimum": 228, "median": 244.0, "maximum": 254 },
+      "tbt": { "minimum": 100, "median": 105.0, "maximum": 120 },
+      "cls": {
+        "minimum": 0.0001343967184380303,
+        "median": 0.0001343967184380303,
+        "maximum": 0.0001343967184380303
+      },
+      "benchmarkIndex": {
+        "minimum": 2467.5,
+        "median": 2548.0,
+        "maximum": 2593.5
+      },
+      "scriptBytes": {
+        "minimum": 177727,
+        "median": 177727.0,
+        "maximum": 177727
+      },
+      "scriptCount": { "minimum": 9, "median": 9.0, "maximum": 9 },
+      "documentBytes": {
+        "minimum": 27509,
+        "median": 27509.0,
+        "maximum": 27509
+      },
+      "fontBytes": { "minimum": 42714, "median": 42714.0, "maximum": 42714 },
+      "totalBytes": {
+        "minimum": 288766,
+        "median": 288766.0,
+        "maximum": 288766
+      },
+      "sameBuildPairs": [
+        {
+          "round": 1,
+          "lcpA2MinusA": 13.216999999999643,
+          "observedLcpA2MinusA": -25
+        },
+        {
+          "round": 2,
+          "lcpA2MinusA": 2.766943961342804,
+          "observedLcpA2MinusA": 12
+        },
+        {
+          "round": 3,
+          "lcpA2MinusA": 9.888200000000325,
+          "observedLcpA2MinusA": -1
+        }
+      ],
+      "failures": [
+        {
+          "round": 3,
+          "label": "A2",
+          "failures": ["largest-contentful-paint: 3007.6180000000004 > 3000"]
+        }
+      ]
+    },
+    {
+      "name": "nexstar",
+      "route": "/blog/nexstar-win-invoice-lose-customer",
+      "samples": 6,
+      "passes": 6,
+      "lcp": {
+        "minimum": 2869.8601,
+        "median": 2882.216,
+        "maximum": 2951.6869423062644
+      },
+      "observedLcp": { "minimum": 187, "median": 216.0, "maximum": 332 },
+      "tbt": { "minimum": 52, "median": 56.75, "maximum": 164.16261153874711 },
+      "cls": { "minimum": 0, "median": 0.0, "maximum": 0 },
+      "benchmarkIndex": {
+        "minimum": 1273.5,
+        "median": 2537.5,
+        "maximum": 2604
+      },
+      "scriptBytes": {
+        "minimum": 171211,
+        "median": 171211.0,
+        "maximum": 171211
+      },
+      "scriptCount": { "minimum": 9, "median": 9.0, "maximum": 9 },
+      "documentBytes": {
+        "minimum": 48486,
+        "median": 48486.0,
+        "maximum": 48486
+      },
+      "fontBytes": { "minimum": 42714, "median": 42714.0, "maximum": 42714 },
+      "totalBytes": {
+        "minimum": 303227,
+        "median": 303227.0,
+        "maximum": 303227
+      },
+      "sameBuildPairs": [
+        {
+          "round": 1,
+          "lcpA2MinusA": -20.25579999999991,
+          "observedLcpA2MinusA": -42
+        },
+        {
+          "round": 2,
+          "lcpA2MinusA": 13.05769999999984,
+          "observedLcpA2MinusA": 32
+        },
+        {
+          "round": 3,
+          "lcpA2MinusA": -73.47204230626448,
+          "observedLcpA2MinusA": -119
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "profile": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "chrome": "Chrome/155.0.8059.85",
+  "lighthouseVersion": "13.5.0"
+}
