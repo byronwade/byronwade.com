@@ -12,6 +12,7 @@
     "check": "ultracite check && npm run type-check && npm run knip",
     "clear": "rimraf .turbo .next node_modules && echo Cleared successfully",
     "dev": "next dev",
+    "dev:preview": "node --import ./scripts/preview-fixture.mjs node_modules/next/dist/bin/next dev --hostname 127.0.0.1",
     "dev:turbo": "next dev --turbopack",
     "docker:down": "docker-compose down",
     "docker:up": "docker-compose up --build",
