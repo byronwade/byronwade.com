@@ -702,6 +702,70 @@ it deliberately makes no timing assertion on a shared machine.
   sizes). No new service worker, third-party runtime origin or performance
   utility layer is introduced by the design port.
 
+## Replaying analytics runtimes locally
+
+Plain `next start` does not serve Vercel's platform scripts. Its analytics 404
+responses are part of the historical local baseline, not hosted analytics work.
+To investigate the runtime separately, capture the two public scripts once into
+a **new directory outside the repository**:
+
+```powershell
+node scripts/analytics-runtime.mjs capture C:/path/to/job/runtime-snapshot
+```
+
+Capture uses only GETs to the canonical `https://www.byronwade.com` script URLs,
+refuses redirects, and records capture time, decoded byte sizes, content types
+and SHA-256 hashes in `manifest.json`. It refuses to replace an existing directory.
+Snapshot files stay local; do not commit fetched third-party code or raw telemetry.
+The hashes detect changed inputs; they do not authenticate a manually edited
+manifest. Use snapshots you captured and reviewed.
+
+After a keyless production build, replay that snapshot on the existing runner:
+
+```powershell
+$env:THORBIS_EVIDENCE_DIR = "C:/path/to/job/runtime-report"
+node scripts/perf-budget.mjs --route=/projects/dits --analytics-runtime=C:/path/to/job/runtime-snapshot --save-assets
+```
+
+The runner validates the snapshot before starting its server/browser, passes an
+owned intercepted page to Lighthouse's Node API, and serves the unchanged script
+bytes. Every off-origin HTTP request is blocked; same-origin `/_vercel/` telemetry
+gets a local 204 response. No telemetry is forwarded to Vercel. Interception stays
+active until that page closes, including on failed audits. Application code,
+production configuration, loading policy and budgets are unchanged.
+
+These scripts skip automation. The isolated replay sets `navigator.webdriver`
+to false and removes `HeadlessChrome` from its initial user agent so the runtime
+actually executes. Lighthouse still applies its own mobile profile. Reports
+declare `analytics.mode = "pinned-runtime-replay"`, activation policy, script
+hashes/source/capture time, script request paths, telemetry count and blocked
+origins. Inactive runtimes or unexpected off-origin requests fail the run. Reports
+without replay declare `"unmodified-local-server"`; do not pool the two conditions.
+
+Interception adds overhead and serves decoded bodies without Vercel's compression,
+CDN timing or response policy. Local 204s are telemetry sinks, not provider responses.
+This is a reproducible lab condition for runtime and graph diagnosis, not hosted
+performance or an optimization. A loading-policy claim still requires matched
+interleaved A/B and fresh A/A controls under the same condition and unchanged limits.
+
+For privacy coverage with these actual scripts, run the explicit browser check:
+
+```powershell
+$env:ANALYTICS_RUNTIME_DIR = "C:/path/to/job/runtime-snapshot"
+node --test tests/analytics-runtime/browser.test.mjs
+```
+
+It requires real page-view and measured-vital payloads in phone/light and
+desktop/dark states, checks that search words are removed while attribution and
+hash survive, and proves an intentional off-origin fetch is blocked. Telemetry
+bodies are checked in memory only. The default rendered suite retains its cheap
+queued-handler sensor; this opt-in check needs a locally captured snapshot.
+Vercel documents [Web Analytics `beforeSend`](https://vercel.com/docs/analytics/package),
+[Speed Insights `beforeSend`](https://vercel.com/docs/speed-insights/package), and
+[vital delivery on blur/unload](https://vercel.com/docs/speed-insights/troubleshooting).
+Repeat capture review and the real browser/export smoke checks after a runtime,
+Puppeteer or Lighthouse upgrade; synthetic native tests do not certify those APIs.
+
 ## Evidence and limits
 
 The Thorbis migration's baseline and final measurements are stored alongside the
