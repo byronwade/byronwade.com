@@ -223,6 +223,12 @@ use them correctly.
 - **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
   fixture operations, content-date regressions across five timezones, and Thorbis
   class merging/token/favicon contracts
+- **Preview configuration:** `tests/project-preview-server.test.mjs` renders the real
+  server wrapper, client and glyphs with React's static renderer. Missing, empty or
+  whitespace-only keys produce no markup; synthetic keys preserve the preview,
+  project link and caption without starting a capture or exposing the key. This
+  native check covers keyless omission without a second Next build; the rendered
+  suite below covers browser behavior on the placeholder-key build.
 - **Rendered contracts:** `npm run test:rendered` after
   `SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
@@ -236,10 +242,12 @@ use them correctly.
   sending a message. Physical keyboards, screen readers and mobile keyboards
   remain separate checks.
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
-- **Rendered readiness:** layout measurements wait for a visible page title and fonts;
+- **Rendered readiness:** layout measurements activate the measured tab so React's
+  streamed reveals get an animation frame, then wait for a visible title and fonts;
   search cache assertions poll for complete JSON and exact corpus counts within one
   deadline. Native filesystem regressions preserve failures for corrupt entries,
-  incorrect counts and read errors; a browser regression preserves the hidden-title timeout.
+  incorrect counts and read errors; a browser regression covers a background tab's
+  frame-delayed title and preserves the hidden-title timeout.
 - **Native deadline fixtures:** contact delivery and screenshot resolution share
   `tests/fixtures/request-deadline.mjs`. It holds the first deadline until the
   local server receives the request, and for body stalls until the client starts
