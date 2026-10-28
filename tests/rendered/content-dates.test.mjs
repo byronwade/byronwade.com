@@ -8,6 +8,7 @@ const DATETIME_ATTRIBUTE = /datetime="([^"]+)"/i;
 const SITEMAP_ENTRY = /<url>([\s\S]*?)<\/url>/g;
 const SITEMAP_LOCATION = /<loc>(.*?)<\/loc>/;
 const SITEMAP_MODIFIED = /<lastmod>(.*?)<\/lastmod>/;
+const TOPIC_POST_LINK = /href="(\/blog\/[^"/]+)"/g;
 
 function assertCalendarDates(html, route) {
 	const times = [...html.matchAll(TIME_ELEMENT)];
@@ -89,7 +90,25 @@ test("built sitemap dates reflect authored content rather than the build clock",
 	);
 	const checked = counts.reduce((sum, count) => sum + count, 0);
 	assert.ok(checked > 0);
+	const topics = entries.filter(({ url }) => new URL(url).pathname.startsWith("/blog/topic/"));
+	await Promise.all(
+		topics.map(async (topic) => {
+			const route = new URL(topic.url).pathname;
+			const html = await readFile(
+				new URL(`../../.next/server/app${route}.html`, import.meta.url),
+				"utf8"
+			);
+			const posts = [...new Set([...html.matchAll(TOPIC_POST_LINK)].map(([, href]) => href))];
+			assert.ok(posts.length >= 2, `${route} should list at least two posts`);
+			const dates = posts.map((path) => {
+				const post = entries.find(({ url }) => new URL(url).pathname === path);
+				assert.ok(post?.modified, `${route}: ${path} needs an authored modification date`);
+				return new Date(post.modified).getTime();
+			});
+			assert.equal(topic.modified, new Date(Math.max(...dates)).toISOString(), route);
+		})
+	);
 	context.diagnostic(
-		`Checked authored modification dates for ${checked} content URLs and no dates for ${staticEntries.length} static URLs`
+		`Checked authored modification dates for ${checked} content URLs and ${topics.length} topic URLs, and no dates for ${staticEntries.length} static URLs`
 	);
 });

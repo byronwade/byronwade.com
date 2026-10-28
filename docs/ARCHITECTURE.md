@@ -439,12 +439,14 @@ components/
   excluded by the same shared boundary and logged for the author to correct.
   Invalid optional update/project dates are omitted. No loader substitutes the
   build date. The sitemap uses an article's update date when present and leaves
-  modification dates off undated projects. Static sitemap entries omit
-  modification dates: a rebuild is not evidence that a page changed. They do
-  not infer dates from collection contents or duplicate page-local legal
+  modification dates off undated projects. Topic pages use the latest article
+  modification date across their published posts, including edits to older posts;
+  their publication order does not determine the modification date. Static sitemap
+  entries omit modification dates: a rebuild is not evidence that a page changed.
+  They do not infer dates from collection contents or duplicate page-local legal
   update labels. The native publication test advances the clock to protect
   sitemap stability; the rendered date check verifies the emitted XML for
-  both static entries and authored content dates.
+  static entries, authored content dates and each topic's linked posts.
   `readContentMatter` in `lib/content-matter.ts` keeps js-yaml's timestamp
   constructor, but only for real calendar days. Impossible unquoted dates such
   as `2026-02-30` stay the original text and fail the same validation as quoted

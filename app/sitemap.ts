@@ -55,12 +55,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		changeFrequency: "monthly",
 		priority: 0.7,
 	}));
-	// A topic page changes when its newest post does; posts arrive newest first.
+	// Topics follow publication order, but an older post can have the latest edit.
 	const topicPages: MetadataRoute.Sitemap = topics.map((topic) => {
-		const newest = topic.posts[0];
+		const latestChange = Math.max(
+			...topic.posts.map((post) => new Date(post.updated ?? post.date).getTime())
+		);
 		return {
 			url: `${siteUrl}/blog/topic/${topic.slug}`,
-			...(newest ? { lastModified: new Date(newest.updated ?? newest.date) } : {}),
+			lastModified: new Date(latestChange),
 			changeFrequency: "monthly",
 			priority: 0.5,
 		};
