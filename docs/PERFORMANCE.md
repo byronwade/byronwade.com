@@ -29,6 +29,10 @@ A Lighthouse score alone cannot pass a failed resource or timing limit.
 The [repeated October 22 template baseline](evidence/lighthouse-2026-10-22/README.md)
 keeps twelve later measurements separately, with their exact source/build pins
 and all budget failures; `home-budget.json` is an earlier snapshot.
+The [October 28 baseline and identical-build controls](evidence/lighthouse-2026-10-28/README.md)
+measure the application at `ae357ba` in 24 samples: 23 pass every budget and one
+Dits sample exceeds LCP by 8ms. The reports retain that miss, CPU calibration,
+observed paint diagnostics and source/build pins; they make no speedup claim.
 Lighthouse 12 removed built-in budget enforcement, and Lighthouse 13 does not
 restore it. This runner checks the JSON limits itself instead of relying on an
 ignored CLI/config flag.
@@ -54,9 +58,12 @@ an HTTP 404.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
 Both capture runners explicitly disable the screenshot provider in their owned
-server environment. Project pages therefore exercise the unavailable-preview
-fallback; successful image capture and recovery use the rendered suite's local
-image fixtures, without issuing a provider request.
+server environment, including when the parent shell has a key. A keyless build
+omits project previews; a placeholder-key build exercises the runtime off state.
+Successful image capture and recovery use the rendered suite's local image
+fixtures, without issuing a provider request. The route-budget report keeps
+Lighthouse's `metrics` diagnostics, including observed paint, beside its
+simulated budget timings. Observed paint never substitutes for a budget metric.
 Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
 in an external job folder instead of replacing the checked-in evidence. Omit
 `--lighthouse` for accessibility and interaction checks without timing samples;

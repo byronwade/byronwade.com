@@ -1,0 +1,688 @@
+{
+  "checkedAt": "2026-10-28T17:01:28.655Z",
+  "route": "/projects/thorbis",
+  "buildId": "sX6RsYxAT4O-RN9Rgeznh",
+  "workingTreeDirty": false,
+  "commit": "b7816116bf5999148c72d30d7642e94bf7af75c5",
+  "chrome": "Chrome/155.0.8059.85",
+  "score": 0.94,
+  "lighthouseVersion": "13.5.0",
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+    "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "benchmarkIndex": 2533,
+    "credits": {}
+  },
+  "runWarnings": [],
+  "profile": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "diagnostics": {
+    "metrics": {
+      "type": "debugdata",
+      "items": [
+        {
+          "firstContentfulPaint": 920,
+          "largestContentfulPaint": 2928,
+          "interactive": 2928,
+          "speedIndex": 978,
+          "totalBlockingTime": 111,
+          "maxPotentialFID": 161,
+          "cumulativeLayoutShift": 0,
+          "cumulativeLayoutShiftMainFrame": 0,
+          "timeToFirstByte": 460,
+          "observedTimeOrigin": 0,
+          "observedTimeOriginTs": 613145453311,
+          "observedNavigationStart": 0,
+          "observedNavigationStartTs": 613145453311,
+          "observedFirstPaint": 411,
+          "observedFirstPaintTs": 613145864615,
+          "observedFirstContentfulPaint": 411,
+          "observedFirstContentfulPaintTs": 613145864615,
+          "observedFirstContentfulPaintAllFrames": 411,
+          "observedFirstContentfulPaintAllFramesTs": 613145864615,
+          "observedLargestContentfulPaint": 411,
+          "observedLargestContentfulPaintTs": 613145864615,
+          "observedLargestContentfulPaintAllFrames": 411,
+          "observedLargestContentfulPaintAllFramesTs": 613145864615,
+          "observedTraceEnd": 2781,
+          "observedTraceEndTs": 613148234524,
+          "observedLoad": 356,
+          "observedLoadTs": 613145809320,
+          "observedDomContentLoaded": 296,
+          "observedDomContentLoadedTs": 613145749478,
+          "observedCumulativeLayoutShift": 0,
+          "observedCumulativeLayoutShiftMainFrame": 0,
+          "observedFirstVisualChange": 12,
+          "observedFirstVisualChangeTs": 613145465311,
+          "observedLastVisualChange": 446,
+          "observedLastVisualChangeTs": 613145899311,
+          "observedSpeedIndex": 426,
+          "observedSpeedIndexTs": 613145879604
+        },
+        { "lcpInvalidated": false }
+      ]
+    },
+    "network-requests": {
+      "type": "table",
+      "headings": [
+        { "key": "url", "valueType": "url", "label": "URL" },
+        { "key": "protocol", "valueType": "text", "label": "Protocol" },
+        {
+          "key": "networkRequestTime",
+          "valueType": "ms",
+          "granularity": 1,
+          "label": "Network Request Time"
+        },
+        {
+          "key": "networkEndTime",
+          "valueType": "ms",
+          "granularity": 1,
+          "label": "Network End Time"
+        },
+        {
+          "key": "transferSize",
+          "valueType": "bytes",
+          "displayUnit": "kb",
+          "granularity": 1,
+          "label": "Transfer Size"
+        },
+        {
+          "key": "resourceSize",
+          "valueType": "bytes",
+          "displayUnit": "kb",
+          "granularity": 1,
+          "label": "Resource Size"
+        },
+        { "key": "statusCode", "valueType": "text", "label": "Status Code" },
+        { "key": "mimeType", "valueType": "text", "label": "MIME Type" },
+        { "key": "resourceType", "valueType": "text", "label": "Resource Type" }
+      ],
+      "items": [
+        {
+          "url": "http://127.0.0.1:60066/projects/thorbis",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 0,
+          "networkRequestTime": 1.0830000638961792,
+          "networkEndTime": 79.11400008201599,
+          "finished": true,
+          "transferSize": 19628,
+          "resourceSize": 85213,
+          "statusCode": 200,
+          "mimeType": "text/html",
+          "resourceType": "Document",
+          "priority": "VeryHigh",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/fonts/inter-latin-core.woff2",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 118.63700008392334,
+          "networkRequestTime": 119.44900000095367,
+          "networkEndTime": 236.52700006961823,
+          "finished": true,
+          "transferSize": 32195,
+          "resourceSize": 31824,
+          "statusCode": 200,
+          "mimeType": "font/woff2",
+          "resourceType": "Font",
+          "priority": "High",
+          "isLinkPreload": true,
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/css/81e9a4dfd2a25028.css",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.04800009727478,
+          "networkRequestTime": 123.2720000743866,
+          "networkEndTime": 239.325000166893,
+          "finished": true,
+          "transferSize": 17299,
+          "resourceSize": 94785,
+          "statusCode": 200,
+          "mimeType": "text/css",
+          "resourceType": "Stylesheet",
+          "priority": "VeryHigh",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/webpack-143890e0b1f9d840.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.17599999904633,
+          "networkRequestTime": 123.50100004673004,
+          "networkEndTime": 242.7570000886917,
+          "finished": true,
+          "transferSize": 2396,
+          "resourceSize": 3627,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "isLinkPreload": true,
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/4bd1b696-228d6cc6681fc189.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.25400006771088,
+          "networkRequestTime": 123.61300003528595,
+          "networkEndTime": 258.92900002002716,
+          "finished": true,
+          "transferSize": 64582,
+          "resourceSize": 203721,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/main-app-3b4dbb42b2803eaf.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.32599997520447,
+          "networkRequestTime": 123.71399998664856,
+          "networkEndTime": 258.3820000886917,
+          "finished": true,
+          "transferSize": 67843,
+          "resourceSize": 243021,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/shared-primitives-4a79a785ed815ff2.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.38000011444092,
+          "networkRequestTime": 123.88000011444092,
+          "networkEndTime": 249.62600004673004,
+          "finished": true,
+          "transferSize": 20662,
+          "resourceSize": 57956,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/app/layout-d389594c129d9847.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.42700004577637,
+          "networkRequestTime": 239.46000003814697,
+          "networkEndTime": 249.9869999885559,
+          "finished": true,
+          "transferSize": 9372,
+          "resourceSize": 25977,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/app/projects/%5Bslug%5D/page-dfa3acba746fd913.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.48199999332428,
+          "networkRequestTime": 242.90700006484985,
+          "networkEndTime": 261.4210000038147,
+          "finished": true,
+          "transferSize": 10861,
+          "resourceSize": 27619,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/app/error-4fb32ed593a601c3.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 119.52799999713898,
+          "networkRequestTime": 248.807000041008,
+          "networkEndTime": 259.36100006103516,
+          "finished": true,
+          "transferSize": 1285,
+          "resourceSize": 849,
+          "statusCode": 200,
+          "mimeType": "application/javascript",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/manifest.json",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 127.70100009441376,
+          "networkRequestTime": 236.8050000667572,
+          "networkEndTime": 248.45899999141693,
+          "finished": true,
+          "transferSize": 832,
+          "resourceSize": 420,
+          "statusCode": 200,
+          "mimeType": "application/json",
+          "resourceType": "Manifest",
+          "priority": "Medium",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/images/space/hubble-xdf-band-narrow.webp",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 294.4850001335144,
+          "networkRequestTime": 294.904000043869,
+          "networkEndTime": 310.60399997234344,
+          "finished": true,
+          "transferSize": 16181,
+          "resourceSize": 15792,
+          "statusCode": 200,
+          "mimeType": "image/webp",
+          "resourceType": "Image",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/icon.png",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 294.6119999885559,
+          "networkRequestTime": 295.11500000953674,
+          "networkEndTime": 317.4870001077652,
+          "finished": true,
+          "transferSize": 3252,
+          "resourceSize": 2836,
+          "statusCode": 200,
+          "mimeType": "image/png",
+          "resourceType": "Image",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/icon.png?20d704102e79780a",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 369.19000005722046,
+          "networkRequestTime": 369.66299998760223,
+          "networkEndTime": 374.5260000228882,
+          "finished": true,
+          "transferSize": 3252,
+          "resourceSize": 2836,
+          "statusCode": 200,
+          "mimeType": "image/png",
+          "resourceType": "Other",
+          "priority": "High",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_vercel/insights/script.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 376.3990000486374,
+          "networkRequestTime": 377.02500009536743,
+          "networkEndTime": 380.87400007247925,
+          "finished": true,
+          "transferSize": 363,
+          "resourceSize": 0,
+          "statusCode": 404,
+          "mimeType": "text/plain",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        },
+        {
+          "url": "http://127.0.0.1:60066/_vercel/speed-insights/script.js",
+          "sessionTargetType": "page",
+          "protocol": "http/1.1",
+          "cache": "none",
+          "rendererStartTime": 381.6870000362396,
+          "networkRequestTime": 382.32099997997284,
+          "networkEndTime": 384.8589999675751,
+          "finished": true,
+          "transferSize": 363,
+          "resourceSize": 0,
+          "statusCode": 404,
+          "mimeType": "text/plain",
+          "resourceType": "Script",
+          "priority": "Low",
+          "experimentalFromMainFrame": true,
+          "entity": "127.0.0.1"
+        }
+      ],
+      "debugData": {
+        "type": "debugdata",
+        "networkStartTimeTs": 613145454541.9999,
+        "initiators": [
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 332
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 425
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 534
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 607
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 689
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 780
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 864
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 966
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 1049
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 0,
+            "columnNumber": 7461
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 5,
+            "columnNumber": 63422
+          },
+          {
+            "type": "parser",
+            "url": "http://127.0.0.1:60066/projects/thorbis",
+            "lineNumber": 5,
+            "columnNumber": 63422
+          }
+        ]
+      }
+    },
+    "bootup-time": {
+      "type": "table",
+      "headings": [
+        { "key": "url", "valueType": "url", "label": "URL" },
+        {
+          "key": "total",
+          "granularity": 1,
+          "valueType": "ms",
+          "label": "Total CPU Time"
+        },
+        {
+          "key": "scripting",
+          "granularity": 1,
+          "valueType": "ms",
+          "label": "Script Evaluation"
+        },
+        {
+          "key": "scriptParseCompile",
+          "granularity": 1,
+          "valueType": "ms",
+          "label": "Script Parse"
+        }
+      ],
+      "items": [
+        {
+          "url": "http://127.0.0.1:60066/_next/static/chunks/main-app-3b4dbb42b2803eaf.js",
+          "total": 294.4719999999998,
+          "scripting": 271.05999999999983,
+          "scriptParseCompile": 17.62
+        },
+        {
+          "url": "http://127.0.0.1:60066/projects/thorbis",
+          "total": 251.15599999999998,
+          "scripting": 9.93999999999999,
+          "scriptParseCompile": 7.2959999999999985
+        },
+        {
+          "url": "Unattributable",
+          "total": 227.37200000000067,
+          "scripting": 4.164,
+          "scriptParseCompile": 0
+        }
+      ],
+      "summary": { "wastedMs": 310.0799999999998 },
+      "sortedBy": ["total"]
+    },
+    "mainthread-work-breakdown": {
+      "type": "table",
+      "headings": [
+        { "key": "groupLabel", "valueType": "text", "label": "Category" },
+        {
+          "key": "duration",
+          "valueType": "ms",
+          "granularity": 1,
+          "label": "Time Spent"
+        }
+      ],
+      "items": [
+        {
+          "group": "scriptEvaluation",
+          "groupLabel": "Script Evaluation",
+          "duration": 299.0279999999999
+        },
+        {
+          "group": "other",
+          "groupLabel": "Other",
+          "duration": 254.7680000000006
+        },
+        {
+          "group": "styleLayout",
+          "groupLabel": "Style & Layout",
+          "duration": 170.052
+        },
+        {
+          "group": "scriptParseCompile",
+          "groupLabel": "Script Parsing & Compilation",
+          "duration": 49.508
+        },
+        {
+          "group": "paintCompositeRender",
+          "groupLabel": "Rendering",
+          "duration": 39.035999999999994
+        },
+        {
+          "group": "parseHTML",
+          "groupLabel": "Parse HTML & CSS",
+          "duration": 15.284
+        }
+      ],
+      "sortedBy": ["duration"]
+    },
+    "lcp-breakdown-insight": {
+      "type": "list",
+      "items": [
+        {
+          "type": "table",
+          "headings": [
+            { "key": "label", "valueType": "text", "label": "Subpart" },
+            { "key": "duration", "valueType": "ms", "label": "Duration" }
+          ],
+          "items": [
+            {
+              "subpart": "timeToFirstByte",
+              "label": "Time to first byte",
+              "duration": 79.568
+            },
+            {
+              "subpart": "elementRenderDelay",
+              "label": "Element render delay",
+              "duration": 331.736
+            }
+          ]
+        },
+        {
+          "type": "node",
+          "lhId": "page-0-P",
+          "path": "1,HTML,1,BODY,6,DIV,4,MAIN,2,DIV,1,DIV,0,ARTICLE,0,DIV,4,P",
+          "selector": "div.mx-auto > article.min-w-0 > div.relative > p.leading-relaxed",
+          "boundingRect": {
+            "top": 719,
+            "bottom": 849,
+            "left": 16,
+            "right": 396,
+            "width": 380,
+            "height": 130
+          },
+          "snippet": "<p class=\"leading-relaxed\">",
+          "nodeLabel": "The public Thorbis repository describes business-management workflows for servi…"
+        }
+      ]
+    }
+  },
+  "timings": [
+    { "metric": "first-contentful-paint", "value": 919.8009, "budget": 2000 },
+    {
+      "metric": "largest-contentful-paint",
+      "value": 2927.6018,
+      "budget": 3000
+    },
+    { "metric": "cumulative-layout-shift", "value": 0, "budget": 0.1 },
+    { "metric": "total-blocking-time", "value": 111, "budget": 300 },
+    { "metric": "speed-index", "value": 978.3705760235118, "budget": 3000 }
+  ],
+  "resources": [
+    {
+      "resourceType": "total",
+      "label": "Total",
+      "requestCount": 16,
+      "transferSize": 270366
+    },
+    {
+      "resourceType": "script",
+      "label": "Script",
+      "requestCount": 9,
+      "transferSize": 177727
+    },
+    {
+      "resourceType": "font",
+      "label": "Font",
+      "requestCount": 1,
+      "transferSize": 32195
+    },
+    {
+      "resourceType": "document",
+      "label": "Document",
+      "requestCount": 1,
+      "transferSize": 19628
+    },
+    {
+      "resourceType": "image",
+      "label": "Image",
+      "requestCount": 2,
+      "transferSize": 19433
+    },
+    {
+      "resourceType": "stylesheet",
+      "label": "Stylesheet",
+      "requestCount": 1,
+      "transferSize": 17299
+    },
+    {
+      "resourceType": "other",
+      "label": "Other",
+      "requestCount": 2,
+      "transferSize": 4084
+    },
+    {
+      "resourceType": "media",
+      "label": "Media",
+      "requestCount": 0,
+      "transferSize": 0
+    },
+    {
+      "resourceType": "third-party",
+      "label": "Third-party",
+      "requestCount": 0,
+      "transferSize": 0
+    }
+  ],
+  "failures": []
+}
