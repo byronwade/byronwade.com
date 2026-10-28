@@ -44,10 +44,10 @@ async function localOnly(page, url) {
 	});
 }
 
-// A streamed Suspense boundary can still hide the title after load and fonts are ready.
-// Match measure's visibility rule before reading boxes; poll with a timer because one
-// of the two tabs is always in the background, where animation frames do not fire.
+// React reveals streamed Suspense boundaries in an animation frame. Foreground the
+// measured tab so that reveal can run, then match measure's title visibility rule.
 async function settled(page) {
+	await page.bringToFront();
 	await page.waitForFunction(
 		() =>
 			[...document.querySelectorAll("main h1")].some((heading) =>
