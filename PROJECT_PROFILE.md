@@ -212,6 +212,14 @@ use them correctly.
   overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev` (Turbopack); production uses Next webpack to
   keep requests within the existing Lighthouse budget.
+- **Local preview development:** `npm run dev:preview -- --port 3407` uses
+  `scripts/preview-fixture.mjs` as a Node preload in the CLI and its development
+  workers. It replaces the capture credential and intercepts ScreenshotOne with
+  labeled images at the canonical viewport sizes. `--fixture-state=retry` fails
+  once per target URL/size; `error` keeps failing. The preload refuses build/start,
+  is not imported by application code and adds no production switch. Normal
+  development remains keyless unless a real key is configured. See README for
+  cache/reset instructions; native subprocess checks cover routes and isolation.
 - **Development diagnostics:** React Scan highlights renders without its upstream
   toolbar, whose 0.5.7 controls include an unnamed button. With your dev server
   running, set `DEVELOPMENT_ORIGIN` to its URL and run `npm run test:development`:

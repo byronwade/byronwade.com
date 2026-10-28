@@ -156,6 +156,20 @@ checks therefore need a build made with a placeholder key
 its presence. Set it on the build command only: the preview checks refuse to run
 with a key in their environment, but other rendered files load project pages with
 scripts and would send it to the provider.
+For manual development, `npm run dev:preview -- --port 3407` installs
+`scripts/preview-fixture.mjs` only in the Next dev CLI and its development workers. It replaces
+the capture key before Next loads configuration, and intercepts the provider's
+whole hostname so even malformed capture requests stay local. The real routes
+still validate project URLs and viewport pairs. Labeled SVG fixtures use
+`SCREENSHOT_VIEWPORTS`, with success, persistent-error and fail-once/retry states.
+This follows the other Node transport fixtures without adding an application
+environment switch or production import. Build/start invocations refuse the
+preload. Route cache headers are unchanged; reset the server and browser cache
+when changing fixture modes. `tests/preview-fixture.test.mjs` exercises the real
+routes in isolated child processes with an underlying fetch that rejects any
+escaped provider request. This development command does not replace the keyed
+build needed by the production rendered suite.
+
 The preview's rendered control checks use local images at each offered capture
 size. The toolbar actions and status groups wrap when enlarged text leaves too
 little room; the status bar grows from its normal 28px minimum rather than

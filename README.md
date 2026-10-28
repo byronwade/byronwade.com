@@ -15,6 +15,23 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+For project-preview UI work without ScreenshotOne, run:
+
+```bash
+npm run dev:preview -- --port 3407
+npm run dev:preview -- --port 3407 --fixture-state=retry
+```
+
+Use an available local port. This command binds to loopback and replaces the capture
+credential with a synthetic value before Next starts. The real screenshot routes
+return clearly labeled local images in all four preset sizes; they never contact
+ScreenshotOne. `success` is the default; `retry` fails the first capture of each
+target URL at each size, then succeeds; `error` keeps failing. Restart to reset fail-once state,
+and use a fresh page with the browser cache disabled when changing modes (the real
+routes retain their normal image caching). These images test controls and layout,
+not the appearance of the project sites. Ordinary `npm run dev` is unchanged;
+the fixture refuses production builds and `next start`.
+
 ## Routes
 
 | Route | Purpose |
@@ -60,6 +77,7 @@ and point at the code that holds the values.
 | Command | Description |
 | --------- | ------------- |
 | `npm run dev` | Dev server |
+| `npm run dev:preview -- --port 3407` | Loopback dev server with local project-preview fixtures; optional `--fixture-state=success\|retry\|error` |
 | `npm run dev:turbo` | Dev with Turbopack |
 | `npm run build` | Production build |
 | `npm run lint` / `lint:fix` | Ultracite over Biome ,  **local release gate** |
