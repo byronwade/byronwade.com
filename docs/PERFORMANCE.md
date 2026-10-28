@@ -64,6 +64,20 @@ Successful image capture and recovery use the rendered suite's local image
 fixtures, without issuing a provider request. The route-budget report keeps
 Lighthouse's `metrics` diagnostics, including observed paint, beside its
 simulated budget timings. Observed paint never substitutes for a budget metric.
+For a request-graph investigation, add `--save-assets` to the route-budget command
+and point `THORBIS_EVIDENCE_DIR` at a local job folder. Beside the budget JSON,
+Lighthouse's own asset exporter writes `-0.trace.json`, `-0.devtoolslog.json` and
+named optimistic/pessimistic simulator traces. Open a trace in Chrome DevTools'
+Performance panel to inspect the observed timeline or the simulated request/CPU
+schedule. The simulated traces are models, not additional browser measurements.
+The [Node API does not implement the CLI's `saveAssets` flag](https://github.com/GoogleChrome/lighthouse/blob/v13.5.0/docs/readme.md#differences-from-cli-flags),
+so the runner calls the installed exporter's `saveAssets` directly and enables its
+Lantern debug export only for that call. Exports are opt-in and do not change the
+measurement profile or any limit. The budget report is saved before export, even
+on a budget miss; an export failure still fails the command and closes the browser.
+Raw traces and network logs stay in the local job folder; publish only reviewed,
+bounded evidence. Native subprocess regressions cover export on passes and misses,
+export failure, environment restoration and unchanged default output.
 Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
 in an external job folder instead of replacing the checked-in evidence. Omit
 `--lighthouse` for accessibility and interaction checks without timing samples;

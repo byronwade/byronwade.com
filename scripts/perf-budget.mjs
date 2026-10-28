@@ -32,51 +32,65 @@ await withProductionServer(
 			const { lhr } = result;
 			const { timings, resources, failures } = assessBudget(lhr, budgets[0]);
 			mkdirSync(destination, { recursive: true });
-			writeEvidenceJson(
-				`${destination}/${reportStem}${process.argv.includes("--baseline") ? "-baseline" : ""}.json`,
-				{
-					checkedAt: new Date().toISOString(),
-					route,
-					buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
-					workingTreeDirty: Boolean(
-						execFileSync("git", ["diff", "--name-only"], {
-							encoding: "utf8",
-							windowsHide: true,
-						}).trim()
-					),
-					commit: execFileSync("git", ["rev-parse", "HEAD"], {
+			const outputStem = `${destination}/${reportStem}${process.argv.includes("--baseline") ? "-baseline" : ""}`;
+			writeEvidenceJson(`${outputStem}.json`, {
+				checkedAt: new Date().toISOString(),
+				route,
+				buildId: readFileSync(".next/BUILD_ID", "utf8").trim(),
+				workingTreeDirty: Boolean(
+					execFileSync("git", ["diff", "--name-only"], {
 						encoding: "utf8",
 						windowsHide: true,
-					}).trim(),
-					chrome: await browser.version(),
-					score: lhr.categories.performance.score,
-					lighthouseVersion: lhr.lighthouseVersion,
-					environment: lhr.environment,
-					runWarnings: lhr.runWarnings,
-					profile: {
-						formFactor: lhr.configSettings.formFactor,
-						screenEmulation: lhr.configSettings.screenEmulation,
-						throttlingMethod: lhr.configSettings.throttlingMethod,
-						throttling: lhr.configSettings.throttling,
-					},
-					diagnostics: Object.fromEntries(
-						[
-							// Keep observed paint beside the simulated budget timings: the
-							// request graph can change without an equally large paint change.
-							"metrics",
-							"network-requests",
-							"bootup-time",
-							"mainthread-work-breakdown",
-							// Lighthouse 13 removed largest-contentful-paint-element.
-							// lcp-breakdown-insight is the audit that still names the element.
-							"lcp-breakdown-insight",
-						].map((name) => [name, lhr.audits[name]?.details])
-					),
-					timings,
-					resources,
-					failures,
+					}).trim()
+				),
+				commit: execFileSync("git", ["rev-parse", "HEAD"], {
+					encoding: "utf8",
+					windowsHide: true,
+				}).trim(),
+				chrome: await browser.version(),
+				score: lhr.categories.performance.score,
+				lighthouseVersion: lhr.lighthouseVersion,
+				environment: lhr.environment,
+				runWarnings: lhr.runWarnings,
+				profile: {
+					formFactor: lhr.configSettings.formFactor,
+					screenEmulation: lhr.configSettings.screenEmulation,
+					throttlingMethod: lhr.configSettings.throttlingMethod,
+					throttling: lhr.configSettings.throttling,
+				},
+				diagnostics: Object.fromEntries(
+					[
+						// Keep observed paint beside the simulated budget timings: the
+						// request graph can change without an equally large paint change.
+						"metrics",
+						"network-requests",
+						"bootup-time",
+						"mainthread-work-breakdown",
+						// Lighthouse 13 removed largest-contentful-paint-element.
+						// lcp-breakdown-insight is the audit that still names the element.
+						"lcp-breakdown-insight",
+					].map((name) => [name, lhr.audits[name]?.details])
+				),
+				timings,
+				resources,
+				failures,
+			});
+			if (process.argv.includes("--save-assets")) {
+				// Lighthouse's Node API ignores its CLI saveAssets flag. Reuse its
+				// exporter, including the simulator's own optimistic/pessimistic traces.
+				const { saveAssets } = await import("lighthouse/core/lib/asset-saver.js");
+				const previousDebug = process.env.LANTERN_DEBUG;
+				try {
+					process.env.LANTERN_DEBUG = "1";
+					await saveAssets(result.artifacts, lhr.audits, outputStem);
+				} finally {
+					if (previousDebug === undefined) {
+						delete process.env.LANTERN_DEBUG;
+					} else {
+						process.env.LANTERN_DEBUG = previousDebug;
+					}
 				}
-			);
+			}
 			console.log(JSON.stringify({ timings, resources, failures }, null, 2));
 			if (failures.length) {
 				throw new Error("Performance budget exceeded");
