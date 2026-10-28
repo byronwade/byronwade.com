@@ -44,10 +44,10 @@ async function localOnly(page, url) {
 	});
 }
 
-// A streamed Suspense boundary can still hide the title after load and fonts are ready.
-// Match measure's visibility rule before reading boxes; poll with a timer because one
-// of the two tabs is always in the background, where animation frames do not fire.
+// React reveals streamed Suspense boundaries on a frame. Activate the tab being
+// measured so that reveal can run, then match measure's visibility rule.
 async function settled(page) {
+	await page.bringToFront();
 	await page.waitForFunction(
 		() =>
 			[...document.querySelectorAll("main h1")].some((heading) =>
@@ -173,6 +173,18 @@ test("layout readiness waits for a visible streamed title and still rejects a hi
 		});
 		await settled(page);
 		assert.equal(typeof (await measure(page)).title, "number");
+		// React's streamed reveal needs a frame; background tabs can pause it.
+		const foreground = await browser.newPage();
+		await foreground.bringToFront();
+		await page.setContent("<main><h1 hidden>Background streamed title</h1></main>");
+		await page.evaluate(() => {
+			requestAnimationFrame(() => {
+				document.querySelector("h1").hidden = false;
+			});
+		});
+		await settled(page);
+		assert.equal(typeof (await measure(page)).title, "number");
+		await foreground.close();
 		await page.setContent("<main><h1 hidden>Never revealed</h1></main>");
 		page.setDefaultTimeout(150);
 		await assert.rejects(settled(page), { name: "TimeoutError" });
