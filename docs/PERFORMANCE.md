@@ -226,10 +226,12 @@ build of `ca7bd78`.
 
 ## Inter Latin core subset, October 23, 2026
 
-Lighthouse's simulated LCP counts every request that finishes before the
-observed largest paint. Locally that paint lands 224-441ms after navigation, so
-the document, the preloaded Inter file, the stylesheet and all initial scripts
-are in every route's graph. Thorbis and Dits add a 15.7KB page chunk and Geist
+Lighthouse selects its simulated LCP graph using observed request completion
+and CPU evidence; it does not include every request completed before paint.
+In these October 23 samples, observed largest paint landed 224-441ms after
+navigation. The document, preloaded Inter file, stylesheet and initial scripts
+were early requests, not proof of identical graph membership on every run.
+Thorbis and Dits add a 15.7KB page chunk and Geist
 Mono (15.5KB); the Nexstar post adds a 45.6KB document, the italic core and
 Geist Mono. Home and Thorbis documents are about the same size, so bytes alone
 do not explain the detail-page gap.
@@ -765,6 +767,9 @@ Vercel documents [Web Analytics `beforeSend`](https://vercel.com/docs/analytics/
 [vital delivery on blur/unload](https://vercel.com/docs/speed-insights/troubleshooting).
 Repeat capture review and the real browser/export smoke checks after a runtime,
 Puppeteer or Lighthouse upgrade; synthetic native tests do not certify those APIs.
+The [October 28 integration sample](evidence/analytics-runtime-2026-10-28/README.md)
+pins one actual replay/export and retains its LCP budget miss. It is not a new
+performance baseline or a speed comparison.
 
 ## Evidence and limits
 
