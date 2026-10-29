@@ -2,7 +2,6 @@ import {
 	ExternalLink,
 	Globe,
 	Grip,
-	ImageOff,
 	Laptop,
 	Maximize2,
 	Minimize2,
@@ -48,7 +47,6 @@ export function FullWidthProjectPreview(props: {
 				},
 				resetWidth: <RotateCcw className="size-3.5" aria-hidden="true" />,
 				retry: <RefreshCw className="size-3" aria-hidden="true" />,
-				unavailable: <ImageOff className="size-6 text-muted-foreground" aria-hidden="true" />,
 			}}
 		/>
 	);

@@ -47,7 +47,7 @@ export function TopicNav({
 							<Link
 								aria-current={isCurrent ? "page" : undefined}
 								className={cn(
-									"inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-copy-13 transition-colors",
+									"inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-copy-13 transition-colors hover:bg-muted active:bg-muted active:text-foreground",
 									isCurrent
 										? "bg-muted font-medium text-foreground"
 										: "text-muted-foreground hover:text-foreground"

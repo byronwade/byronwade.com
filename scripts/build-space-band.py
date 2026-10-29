@@ -1,6 +1,5 @@
 """Builds the space theme's photographs from one source:
-public/images/space/hubble-xdf-band{,-narrow}.webp, the dark theme's sky on
-wide and narrow screens, and
+public/images/space/hubble-xdf-band.webp, the dark theme's sky at every width, and
 assets/space/hubble-xdf-card.jpg, the share card's background.
 
 Source: assets/space/hubble-xdf.jpg, the Hubble eXtreme Deep Field (NASA, ESA,
@@ -23,7 +22,6 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = ROOT / "assets" / "space" / "hubble-xdf.jpg"
 OUTPUT = ROOT / "public" / "images" / "space" / "hubble-xdf-band.webp"
-NARROW = ROOT / "public" / "images" / "space" / "hubble-xdf-band-narrow.webp"
 CARD = ROOT / "assets" / "space" / "hubble-xdf-card.jpg"
 WIDTH = 1600
 CARD_SIZE = (1200, 630)
@@ -43,18 +41,14 @@ def main():
     y = np.linspace(0, 1, height)[:, None]
     x = np.linspace(0, 1, WIDTH)[None, :]
     fade = (1 - smoothstep((y - 0.35) / 0.6)) * smoothstep(x / 0.2) * smoothstep((1 - x) / 0.2)
-    # The band is centred on the page, so its middle is the reading column: the
-    # photo drops to a third there, and keeps its full depth in the gutters.
-    column = np.abs(x - 0.5) * WIDTH
-    wide = fade * (0.32 + 0.68 * smoothstep((column - 330) / 220))
-    # Below md the text spans the screen and there are no gutters, so the whole
-    # visible middle is held at an even, slightly brighter level instead.
-    narrow = fade * 0.55
+    # Copy also lives in the gutters (the article outline and breadcrumbs).
+    # One exposure protects both those labels and the phone's full-width copy;
+    # brighter gutters put outline links below AA over galaxies. The rendered
+    # contrast sensor samples the photograph, not only its base colour tokens.
+    band = (pixels * (fade * 0.32)[..., None]).clip(0, 1)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    for path, mask in ((OUTPUT, wide), (NARROW, narrow)):
-        band = (pixels * mask[..., None]).clip(0, 1)
-        Image.fromarray((band * 255 + 0.5).astype(np.uint8)).save(path, quality=70)
-        print(f"{path.relative_to(ROOT)}: {WIDTH}x{height}, {path.stat().st_size} bytes")
+    Image.fromarray((band * 255 + 0.5).astype(np.uint8)).save(OUTPUT, quality=70)
+    print(f"{OUTPUT.relative_to(ROOT)}: {WIDTH}x{height}, {OUTPUT.stat().st_size} bytes")
 
     # The card: the field's centre at 1200x630, darker still under the type,
     # which runs along the left and across the middle.

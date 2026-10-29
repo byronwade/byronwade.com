@@ -72,7 +72,7 @@ for introducing a new visual choice.
 
 - Public portfolio Showcase, Evidence and Guided surfaces; no trades Workbench.
 - Existing URLs, Markdown/front-matter, API contracts and contact flow preserved.
-- The light theme stays the default; next-themes owns persistence and dark mode.
+- Deep-space dark is the default; next-themes owns persistence and the daylight light theme.
 - No page-entry/scroll fade. Content is server-rendered and immediately visible.
 - `lib/icons.tsx` remains the public Phosphor facade. Its individual glyph wrappers
   in `lib/icons/` preserve duotone/brand-fill defaults, overrides and display names

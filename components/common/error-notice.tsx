@@ -23,10 +23,14 @@ export function ErrorNotice({
 	return (
 		<SiteShell profile="shared">
 			<div className="flex flex-col gap-3" role="alert">
-				<h1 className="text-balance font-medium text-heading-32 tracking-tight">{title}</h1>
-				<p className="text-body text-copy-16 leading-relaxed">{description}</p>
+				<h1 className="text-balance break-words font-medium text-heading-32 tracking-tight">
+					{title}
+				</h1>
+				<p className="text-pretty text-body text-copy-16 leading-relaxed">{description}</p>
 				{reference && (
-					<p className="font-mono text-copy-12 text-muted-foreground">Reference {reference}</p>
+					<p className="wrap-anywhere font-mono text-copy-12 text-muted-foreground">
+						Reference {reference}
+					</p>
 				)}
 				<p className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3">
 					{/* A native button with the commit recipe: Next loads this boundary on

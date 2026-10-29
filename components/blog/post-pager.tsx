@@ -24,7 +24,7 @@ export function PostPager({ newer, older }: { newer?: BlogPost; older?: BlogPost
 					</span>
 					<span
 						className={cn(
-							"text-pretty font-medium text-copy-16 text-foreground",
+							"text-pretty font-medium text-foreground text-heading-16",
 							indexRowAccentClass
 						)}
 					>
@@ -45,7 +45,7 @@ export function PostPager({ newer, older }: { newer?: BlogPost; older?: BlogPost
 					</span>
 					<span
 						className={cn(
-							"text-pretty font-medium text-copy-16 text-foreground",
+							"text-pretty font-medium text-foreground text-heading-16",
 							indexRowAccentClass
 						)}
 					>

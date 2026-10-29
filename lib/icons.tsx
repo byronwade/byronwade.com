@@ -21,7 +21,6 @@ export { Grip } from "./icons/grip";
 export { Hash } from "./icons/hash";
 export { Home } from "./icons/home";
 export { Image } from "./icons/image";
-export { ImageOff } from "./icons/image-off";
 export { InfoIcon } from "./icons/info-icon";
 export { Laptop } from "./icons/laptop";
 export { Layers } from "./icons/layers";

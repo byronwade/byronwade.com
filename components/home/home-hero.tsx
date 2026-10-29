@@ -59,11 +59,7 @@ function ThorbisSpecimen() {
 			{/* The stages read as one flight path: a dashed trajectory through a node per
 			    stage, ending on the filled node where the work lands. On the measure each
 			    stage is one ledger line; phones stack the detail under the stage. */}
-			<ol className="relative flex flex-col gap-0.5">
-				<span
-					aria-hidden="true"
-					className="absolute top-5 bottom-5 left-[0.6875rem] border-(--space-orbit) border-l border-dashed"
-				/>
+			<ol className="relative flex flex-col gap-0.5 before:pointer-events-none before:absolute before:top-5 before:bottom-5 before:left-[0.6875rem] before:border-(--space-orbit) before:border-l before:border-dashed">
 				{CHAIN.map(({ stage, detail }, index) => (
 					<li
 						className="grid grid-cols-[0.625rem_auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 sm:grid-cols-[0.625rem_auto_5.5rem_minmax(0,1fr)]"
