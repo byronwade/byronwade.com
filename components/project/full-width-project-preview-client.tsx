@@ -29,7 +29,6 @@ interface PreviewIcons {
 	presets: Record<ViewportPreset, ReactNode>;
 	resetWidth: ReactNode;
 	retry: ReactNode;
-	unavailable: ReactNode;
 }
 
 interface FullWidthProjectPreviewProps {
@@ -232,13 +231,11 @@ const FALLBACK_TITLES = {
 // never see it flash. Only a failed capture offers Retry: when the deployment has no
 // capture key a retry could never succeed, so the frame says so and links out instead.
 function PreviewFallback({ href, icons, onRetry, reason, url }: PreviewFallbackProps) {
-	const icon = icons.unavailable;
-	const noticeClass = "max-w-xs text-copy-13 text-muted-foreground";
+	const noticeClass = "max-w-xs text-pretty text-body text-copy-14";
 	return (
-		<div className="flex min-w-0 flex-col items-center justify-center gap-2 self-stretch p-4 text-center">
-			{reason === "pending" ? <noscript>{icon}</noscript> : icon}
+		<div className="flex min-w-0 flex-col items-center justify-center gap-3 self-stretch p-4 text-center">
 			<div className="flex flex-col gap-1">
-				<p className="font-medium text-copy-14 text-foreground">{FALLBACK_TITLES[reason]}</p>
+				<p className="font-medium text-foreground text-heading-16">{FALLBACK_TITLES[reason]}</p>
 				{reason === "pending" && (
 					<noscript>
 						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>

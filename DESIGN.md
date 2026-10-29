@@ -199,9 +199,13 @@ than anything below.
   (NASA/ESA, public domain), `components/layout/deep-field.tsx`. It sits
   behind the top of every page and scrolls away with it, dimmed and faded
   into the page by `scripts/build-space-band.py` (the fade is baked, since CSS
-  gradients are out) and blended with `screen`. Two 15KB exposures (wide
-  screens dim only the reading column; phones dim evenly), lazy, hidden in the
-  light theme and print. The footer credits it. New space imagery must also be
+  gradients are out) and blended with `screen`. One exposure protects reading
+  in the column and in gutter outlines at every width, lazy and hidden in the
+  light theme and print. The band ends within the layout on short pages, so it
+  cannot extend past the footer horizon. Rendered pixel sampling protects AA
+  text contrast over the photograph on home, a detail page and an article outline
+  in both themes.
+  The footer credits it. New space imagery must also be
   real astronomy with its credit, processed the same way.
 - **Orbit.** `components/common/orbit.tsx`, a ringed planet with three moons, is
   the theme's one figure. It sits beside copy, never under it: the home
@@ -355,9 +359,14 @@ than restyling them.
   (`indexRowLinkClass`), with the same hover fill, focus ring and accent as
   every other list of posts. Related posts exclude the two pager posts, so no
   title repeats at the foot of a post.
+  Titles keep `PostRow`'s 16px heading role and line height. Topic links share
+  the same neutral hover and press fill; the selected topic retains its fill
+  and `aria-current` when another link is focused.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
+  Hover and keyboard focus use foreground ink: accent text falls below AA on
+  the dark hover fill. The focus outline retains the accent.
   Index descriptions use the 14px content role with its own 1.5 line height
   and pretty wrapping, rather than the long-form leading override. Writing
   row titles are level-three headings below each section or year heading;
@@ -399,7 +408,9 @@ than restyling them.
   both themes, and `tests/code-palette.test.mjs` fails the build if one stops.
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
-  illustration.
+  illustration. Preview recovery stays in the reserved artifact frame; its
+  explanation uses the 14px body role, its title the 16px heading role, and its
+  controls use Button. Error references can break anywhere to preserve reflow.
 
 ## 8. Component contracts
 

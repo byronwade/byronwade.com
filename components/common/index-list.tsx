@@ -40,11 +40,13 @@ export function IndexRow({
  * extend past the text edge while the text stays on the page measure.
  */
 export const indexRowLinkClass =
-	"group/row -mx-3 flex flex-col items-stretch gap-1.5 wrap-anywhere rounded-lg px-3 py-4 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2";
+	"group/row -mx-3 flex flex-col items-stretch gap-1.5 wrap-anywhere rounded-lg px-3 py-4 outline-none transition-colors hover:bg-muted active:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2";
 
 /**
  * The colour transition a row's title and affordances share, so the whole row
  * responds as one object rather than as several independently hovering parts.
+ * Foreground ink retains AA on the dark hover fill; accent ink did not. The
+ * focus outline still carries the accent without reducing text contrast.
  */
 export const indexRowAccentClass =
-	"transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand";
+	"transition-colors group-hover/row:text-foreground group-focus-visible/row:text-foreground";

@@ -1,10 +1,5 @@
 import Image from "next/image";
 
-const BANDS = [
-	{ src: "/images/space/hubble-xdf-band-narrow.webp", className: "md:hidden" },
-	{ src: "/images/space/hubble-xdf-band.webp", className: "hidden md:block" },
-] as const;
-
 /**
  * The dark theme's sky (DESIGN.md §5.1): a real photograph, the Hubble eXtreme
  * Deep Field, set behind the top of every page and scrolling away with it.
@@ -18,27 +13,26 @@ const BANDS = [
  * technology, from print and from the light theme. `loading="lazy"` keeps a
  * `display: none` image from downloading in the light theme at all; in the dark
  * theme it is already in view, so it loads at once, after the text it sits under.
+ * The band is capped by the layout as well as the photograph: a short page must
+ * end on its footer horizon, without the absolute image extending its scroll area.
  */
 export function DeepField() {
 	return (
 		<div
 			aria-hidden="true"
-			className="pointer-events-none absolute inset-x-0 top-0 z-(--z-underlay) hidden h-[87.1875rem] overflow-hidden mix-blend-screen dark:block print:hidden"
+			className="pointer-events-none absolute inset-0 z-(--z-underlay) hidden max-h-[87.1875rem] overflow-hidden mix-blend-screen dark:block print:hidden"
 		>
-			{/* Two exposures of one photo: wide screens dim only the reading column,
-			    phones (all column) dim evenly. Lazy, so only the shown one loads. */}
-			{BANDS.map(({ src, className }) => (
-				<Image
-					alt=""
-					className={`absolute top-0 left-1/2 w-[100rem] max-w-none -translate-x-1/2 ${className}`}
-					height={1395}
-					key={src}
-					loading="lazy"
-					src={src}
-					unoptimized
-					width={1600}
-				/>
-			))}
+			{/* One exposure protects copy in the reading column and in the gutters
+			    (the article outline and breadcrumbs), at every viewport width. */}
+			<Image
+				alt=""
+				className="absolute top-0 left-1/2 w-[100rem] max-w-none -translate-x-1/2"
+				height={1395}
+				loading="lazy"
+				src="/images/space/hubble-xdf-band.webp"
+				unoptimized
+				width={1600}
+			/>
 		</div>
 	);
 }
