@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-const HOME_HEADING = /<h1[^>]*>I ran the service business/;
+// The planet shares the heading, so the claim may sit in a span inside the h1.
+const HOME_HEADING = /<h1[^>]*>\s*(?:<span[^>]*>\s*)?I ran the service business/;
 const WORK = /Selected work/;
 const WRITING = /Writing/;
 const NAVIGATION = /<nav[^>]*aria-label="Primary"/;

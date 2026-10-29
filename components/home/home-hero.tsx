@@ -60,7 +60,7 @@ function ThorbisSpecimen() {
 			{/* The stages read as one flight path: a dashed trajectory through a node per
 			    stage, ending on the filled node where the work lands. On the measure each
 			    stage is one ledger line; phones stack the detail under the stage. */}
-			<ol className="relative flex flex-col gap-0.5 before:pointer-events-none before:absolute before:top-5 before:bottom-5 before:left-[0.6875rem] before:border-(--space-orbit) before:border-l before:border-dashed">
+			<ol className="relative flex flex-col gap-0.5 before:pointer-events-none before:absolute before:top-5 before:bottom-5 before:left-[0.6875rem] before:border-(--space-rim) before:border-l before:border-dashed">
 				{CHAIN.map(({ stage, detail }, index) => (
 					<li
 						className="grid grid-cols-[0.625rem_auto_minmax(0,1fr)] items-baseline gap-x-3 rounded-md px-1.5 py-2 sm:grid-cols-[0.625rem_auto_5.5rem_minmax(0,1fr)]"
@@ -95,38 +95,38 @@ export async function HomeHero() {
 		// Claim, then the product it led to, then the facts behind the claim: one
 		// column on the shared measure, so the title keeps the header's edge.
 		<section aria-labelledby="home-title" className="flex flex-col gap-8">
-			{/* From md the opening shares its row with a small planetary system: the
-			    theme's one figure, set beside the claim so it never sits under text.
-			    Phones carry a smaller one at the end of the byline row instead. */}
-			<div className="grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_11rem]">
-				<div className="flex flex-col items-start gap-5">
-					<div className="flex w-full items-center justify-between gap-4">
-						<p className="text-copy-13 text-muted-foreground">
-							Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
-						</p>
-						<Orbit className="-my-4 size-16 shrink-0 md:hidden" />
-					</div>
-					<h1 className={cn(pageTitleClass, "wrap-anywhere max-w-xl")} id="home-title">
+			{/* The planet locks to the title, not the paragraph. A column beside the
+			    whole opening left a hole next to the lede; the claim still uses the measure. */}
+			<div className="flex flex-col items-start gap-5">
+				<p className="text-copy-13 text-muted-foreground">
+					Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
+				</p>
+				{/* The planet sits inside the title so the lede stays the next sibling
+				    and still uses the full measure. */}
+				<h1
+					className={cn(
+						pageTitleClass,
+						"grid w-full grid-cols-[minmax(0,1fr)_4.5rem] items-center gap-4 sm:grid-cols-[minmax(0,1fr)_8.5rem]"
+					)}
+					id="home-title"
+				>
+					<span className="wrap-anywhere min-w-0">
 						I ran the service business. Now I build the software it needed.
-					</h1>
-					{/* The story behind the claim is a link inside the lede, not a third
+					</span>
+					<Orbit className="size-16 justify-self-end sm:size-32" />
+				</h1>
+				{/* The story behind the claim is a link inside the lede, not a third
 				    stranded action under the buttons: the opening ends on its CTAs. */}
-					<p className="max-w-xl text-pretty text-body text-copy-16 leading-relaxed">
-						I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
-						reputation: I learned the problems firsthand. Today I turn those lessons into products
-						for the trades.{" "}
-						<Link
-							prefetch={false}
-							className="link-underline"
-							href="/blog/scaling-plumbing-business"
-						>
-							Read what went wrong, and what I learned
-						</Link>
-						.
-					</p>
-					<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
-				</div>
-				<Orbit className="hidden size-44 md:block" />
+				<p className="text-pretty text-body text-copy-16 leading-relaxed">
+					I grew a plumbing company to $2.4M in year two. Then it closed. Dispatch, phones,
+					reputation: I learned the problems firsthand. Today I turn those lessons into products for
+					the trades.{" "}
+					<Link prefetch={false} className="link-underline" href="/blog/scaling-plumbing-business">
+						Read what went wrong, and what I learned
+					</Link>
+					.
+				</p>
+				<HomeActions arrow={<ArrowRight aria-hidden="true" className="size-4" />} />
 			</div>
 			<ThorbisSpecimen />
 			<dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,5rem),1fr))] gap-4">

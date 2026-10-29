@@ -37,12 +37,10 @@ const TYPE_TONE: Record<string, string> = {
 };
 
 function TypeMark({ type }: { type?: string }) {
-	if (!type) {
-		return null;
-	}
+	const tone = TYPE_TONE[type ?? ""] ?? "text-muted-foreground";
 	return (
 		<span
-			className={`hidden shrink-0 font-medium text-copy-12 capitalize sm:inline ${TYPE_TONE[type] ?? "text-muted-foreground"}`}
+			className={`hidden shrink-0 font-medium text-copy-12 capitalize sm:inline ${type ? tone : ""}`}
 		>
 			{type}
 		</span>
@@ -57,17 +55,20 @@ function RowMarker({ project }: { project: Project }) {
 	const tone = statusTone(project.status);
 	if (tone) {
 		return (
-			<StatusPill className="shrink-0 capitalize" tone={tone.tone}>
+			<StatusPill className="justify-self-end capitalize" tone={tone.tone}>
 				{project.status}
 			</StatusPill>
 		);
 	}
 	const year = safeFormatDate(project.date, "yyyy");
-	return year ? (
-		<span className="shrink-0 font-mono text-copy-12 text-muted-foreground tabular-nums">
-			{year}
-		</span>
-	) : null;
+	if (year) {
+		return (
+			<span className="justify-self-end font-mono text-copy-12 text-muted-foreground tabular-nums">
+				{year}
+			</span>
+		);
+	}
+	return <span />;
 }
 
 export function ProjectsIndex({ projects }: { projects: Project[] }) {
@@ -81,8 +82,10 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 				return (
 					<li key={project.slug}>
 						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
-							<div className="flex items-center gap-4">
-								<span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5 gap-y-1">
+							{/* Same tracks on every row: title, kind, status, way in.
+							    A flex row let long taglines shove the kind and status. */}
+							<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-center gap-x-3 sm:grid-cols-[minmax(0,1fr)_5.25rem_6.5rem_1rem]">
+								<span className="flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-1">
 									<span
 										className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
 									>
@@ -106,7 +109,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 
 								<ArrowRight
 									aria-hidden="true"
-									className="size-4 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand"
+									className="size-4 justify-self-end text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
 								/>
 							</div>
 

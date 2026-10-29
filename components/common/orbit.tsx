@@ -45,13 +45,7 @@ export function Orbit({ className }: { className?: string }) {
 			</clipPath>
 			<circle className="fill-(--space-planet)" cx="120" cy="120" r="26" />
 			{/* The night side: the page's own sky, offset away from the light. */}
-			<circle
-				className="fill-background opacity-60"
-				clipPath={`url(#${planet})`}
-				cx="134"
-				cy="130"
-				r="26"
-			/>
+			<circle className="orbit-night" clipPath={`url(#${planet})`} cx="134" cy="130" r="26" />
 			<circle className="stroke-(--space-rim)" cx="120" cy="120" r="26" strokeWidth="1" />
 			{/* The ring passes behind the planet; its near half is redrawn in front. */}
 			<path
