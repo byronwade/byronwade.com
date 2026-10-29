@@ -10,6 +10,7 @@ import {
 	useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { failureCopyClass, failureTitleClass } from "@/components/common/empty-state";
 import { Button } from "@/components/ui/button";
 import { useDragResize } from "@/hooks/use-drag-resize";
 import { useFrameSize } from "@/hooks/use-frame-size";
@@ -230,31 +231,28 @@ const FALLBACK_TITLES = {
 // Before hydration the scripts notice sits in <noscript>, so visitors with JavaScript
 // never see it flash. Only a failed capture offers Retry: when the deployment has no
 // capture key a retry could never succeed, so the frame says so and links out instead.
-function PreviewFallback({ href, icons, onRetry, reason, url }: PreviewFallbackProps) {
-	const noticeClass = "max-w-xs text-pretty text-body text-copy-14";
+export function PreviewFallback({ href, icons, onRetry, reason, url }: PreviewFallbackProps) {
 	return (
-		<div className="flex min-w-0 flex-col items-center justify-center gap-3 self-stretch p-4 text-center">
-			<div className="flex flex-col gap-1">
-				<p className="font-medium text-foreground text-heading-16">{FALLBACK_TITLES[reason]}</p>
-				{reason === "pending" && (
-					<noscript>
-						<p className={noticeClass}>Enable JavaScript to load the screenshot preview.</p>
-					</noscript>
-				)}
-				{reason === "failed" && (
-					<p className={noticeClass}>
-						The capture service didn’t return this site just now. The site itself may be fine; open
-						it directly or try the capture again.
-					</p>
-				)}
-				{reason === "off" && (
-					<p className={noticeClass}>
-						This site isn’t taking screenshots right now, so there’s nothing to load or retry. {url}{" "}
-						itself is unaffected; open it directly.
-					</p>
-				)}
-			</div>
-			<div className="flex flex-wrap items-center justify-center gap-3">
+		<div className="flex min-w-0 flex-col items-start gap-2 self-stretch p-4 text-left">
+			<p className={failureTitleClass}>{FALLBACK_TITLES[reason]}</p>
+			{reason === "pending" && (
+				<noscript>
+					<p className={failureCopyClass}>Enable JavaScript to load the screenshot preview.</p>
+				</noscript>
+			)}
+			{reason === "failed" && (
+				<p className={failureCopyClass}>
+					The capture service didn’t return this site just now. The site itself may be fine; open it
+					directly or try the capture again.
+				</p>
+			)}
+			{reason === "off" && (
+				<p className={failureCopyClass}>
+					This site isn’t taking screenshots right now, so there’s nothing to load or retry. {url}{" "}
+					itself is unaffected; open it directly.
+				</p>
+			)}
+			<div className="flex flex-wrap items-center gap-3 pt-3">
 				{reason === "failed" && (
 					<Button onClick={onRetry} size="lg" variant="outline">
 						{icons.retry}
@@ -316,7 +314,8 @@ function PreviewViewport({
 			// Clipping would make the fallback a scroll container, which caps an
 			// aspect-ratio box at its ratio instead of letting the content grow it.
 			className={cn(
-				"relative flex w-full justify-center bg-muted/30",
+				"relative flex w-full justify-center",
+				showFallback ? "bg-muted" : "bg-muted/30",
 				isFullscreen ? "flex-1 items-center" : "items-start",
 				!showFallback && "overflow-hidden"
 			)}
@@ -646,7 +645,7 @@ export function FullWidthProjectPreviewClient({
 	);
 
 	return (
-		<figure className="flex w-full flex-col gap-3.5">
+		<figure className="flex w-full flex-col gap-4">
 			<section ref={wrapperRef} className="w-full" aria-label={`${title} site preview`}>
 				{isFullscreen
 					? createPortal(

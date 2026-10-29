@@ -2,6 +2,7 @@
 // Showcase adaptation; provenance and sync: docs/THORBIS-DESIGN-PORT.md.
 import Link from "next/link";
 import { Orbit } from "@/components/common/orbit";
+import { pageTitleClass } from "@/components/layout/page";
 import { Sheet } from "@/components/layout/sheet";
 import { ArrowRight, ArrowUpRight } from "@/lib/icons";
 import { getProjects } from "@/lib/projects";
@@ -105,10 +106,7 @@ export async function HomeHero() {
 						</p>
 						<Orbit className="-my-4 size-16 shrink-0 md:hidden" />
 					</div>
-					<h1
-						className="wrap-anywhere max-w-xl text-balance font-medium text-heading-32 tracking-tight"
-						id="home-title"
-					>
+					<h1 className={cn(pageTitleClass, "wrap-anywhere max-w-xl")} id="home-title">
 						I ran the service business. Now I build the software it needed.
 					</h1>
 					{/* The story behind the claim is a link inside the lede, not a third

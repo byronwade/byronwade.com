@@ -2,6 +2,7 @@ import type React from "react";
 import type { ElementType } from "react";
 import ReactMarkdown, { type Components, type ExtraProps, type Options } from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+import { sectionHeadingClass } from "@/components/layout/page";
 import { markdownOptions } from "@/lib/markdown";
 import { childrenToText, createSlugger } from "@/lib/markdown-utils";
 import { cn } from "@/lib/utils";
@@ -143,7 +144,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h1: ({ children, ...props }) => (
 						<h1
 							id={headingId(children)}
-							className="mt-8 scroll-mt-24 text-balance font-medium text-foreground text-heading-20 tracking-tight"
+							className={cn(sectionHeadingClass, "mt-8 scroll-mt-24")}
 							{...props}
 						>
 							{children}
@@ -152,7 +153,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h2: ({ children, ...props }) => (
 						<h2
 							id={headingId(children)}
-							className="mt-8 scroll-mt-24 text-balance font-medium text-foreground text-heading-20 tracking-tight"
+							className={cn(sectionHeadingClass, "mt-8 scroll-mt-24")}
 							{...props}
 						>
 							{children}

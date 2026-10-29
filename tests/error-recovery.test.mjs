@@ -43,6 +43,7 @@ registerHooks({
 
 const { default: ErrorBoundary } = await import("../components/common/error-boundary.tsx");
 const { default: RouteError } = await import("../app/error.tsx");
+const { ledeClass, pageTitleClass } = await import("../components/layout/page.tsx");
 const AUTOMATIC_RELOAD = "Cannot read properties of undefined (reading 'call')";
 const LOST_DRAFT_PROMISE = /Nothing you typed|nothing.*lost|clearing the browser cache/i;
 
@@ -104,6 +105,8 @@ test("route recovery retains Try again and does not promise that text survived",
 	const html = renderToStaticMarkup(
 		createElement(RouteError, { error: new Error("A failed route"), retry: () => undefined })
 	);
+	assert.ok(html.includes(`class="${pageTitleClass}"`), "The failure title is the page title role");
+	assert.ok(html.includes(`class="${ledeClass}"`), "The failure description is the page lede");
 	assert.ok(html.includes('type="button">Try again</button>'));
 	assert.ok(html.includes("unsent text"));
 	assert.doesNotMatch(html, LOST_DRAFT_PROMISE);
