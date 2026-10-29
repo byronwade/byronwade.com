@@ -1,5 +1,5 @@
-import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
+import { ledeClass, pageTitleClass } from "@/components/layout/type-roles";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 /**

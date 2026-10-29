@@ -45,6 +45,7 @@ const { default: ErrorBoundary } = await import("../components/common/error-boun
 const { default: RouteError } = await import("../app/error.tsx");
 const { ledeClass, pageTitleClass } = await import("../components/layout/page.tsx");
 const AUTOMATIC_RELOAD = "Cannot read properties of undefined (reading 'call')";
+const IMPORT_STATEMENT = /^\s*import\s/m;
 const LOST_DRAFT_PROMISE = /Nothing you typed|nothing.*lost|clearing the browser cache/i;
 
 function failedBoundary(error) {
@@ -107,6 +108,17 @@ test("route recovery retains Try again and does not promise that text survived",
 	);
 	assert.ok(html.includes(`class="${pageTitleClass}"`), "The failure title is the page title role");
 	assert.ok(html.includes(`class="${ledeClass}"`), "The failure description is the page lede");
+	const notice = readFileSync(
+		new URL("../components/common/error-notice.tsx", import.meta.url),
+		"utf8"
+	);
+	assert.equal(notice.includes("@/components/layout/page"), false);
+	assert.equal(notice.includes("@/lib/utils"), false);
+	const roles = readFileSync(
+		new URL("../components/layout/type-roles.ts", import.meta.url),
+		"utf8"
+	);
+	assert.equal(IMPORT_STATEMENT.test(roles), false);
 	assert.ok(html.includes('type="button">Try again</button>'));
 	assert.ok(html.includes("unsent text"));
 	assert.doesNotMatch(html, LOST_DRAFT_PROMISE);

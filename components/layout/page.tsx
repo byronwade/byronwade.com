@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
+import { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/type-roles";
 import { cn } from "@/lib/utils";
+
+export { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/type-roles";
 
 /**
  * Page-level typographic structure: the pieces every route was hand-rolling.
@@ -15,20 +18,6 @@ import { cn } from "@/lib/utils";
  * so what is shared here is the *identity* block and the *turn* in the argument,
  * never the arrangement of the content beneath them.
  */
-
-/** Page title: the one 32px heading role. Error recovery uses the same string. */
-export const pageTitleClass =
-	"min-w-0 text-balance break-words font-heading font-medium text-foreground text-heading-32 tracking-tight";
-
-/** The orientation passage under a page title. */
-export const ledeClass = "max-w-2xl text-pretty text-body text-copy-16 leading-relaxed";
-
-/**
- * A section heading: 20px, weight 500. Post-end topics, the writing pager and
- * related writing use this so those peers share one role.
- */
-export const sectionHeadingClass =
-	"text-balance font-heading font-medium text-foreground text-heading-20 tracking-tight";
 
 /**
  * Route or object identity. One per page, per §5.2.
