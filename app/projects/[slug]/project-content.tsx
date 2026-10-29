@@ -1,5 +1,6 @@
 import { Markdown, PageToc, ProjectViewTracker } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
+import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview } from "@/components/project";
 import { Button } from "@/components/ui/button";
@@ -152,13 +153,9 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 					</p>
 
-					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
-						{project.title}
-					</h1>
+					<h1 className={pageTitleClass}>{project.title}</h1>
 
-					{project.excerpt && (
-						<p className="text-pretty text-body text-copy-16 leading-relaxed">{project.excerpt}</p>
-					)}
+					{project.excerpt && <p className={ledeClass}>{project.excerpt}</p>}
 
 					<ProjectProof project={project} />
 

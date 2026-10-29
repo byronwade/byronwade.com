@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { quietPressClass } from "@/components/common/index-list";
+import { sectionHeadingClass } from "@/components/layout/page";
 import type { BlogTopic } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 
@@ -37,9 +39,17 @@ export function TopicNav({
 	];
 
 	return (
-		<nav aria-label={heading ?? "Topics"} className={cn(heading && "flex flex-col gap-1")}>
-			{heading && <p className="text-copy-13 text-muted-foreground">{heading}</p>}
-			<ul className="-mx-3 flex flex-wrap gap-x-1 gap-y-0.5">
+		<nav
+			aria-label={heading ? undefined : "Topics"}
+			aria-labelledby={heading ? "post-topics" : undefined}
+			className={cn(heading && "flex flex-col gap-4")}
+		>
+			{heading && (
+				<h2 className={sectionHeadingClass} id="post-topics">
+					{heading}
+				</h2>
+			)}
+			<ul className="-mx-3 flex flex-wrap gap-1">
 				{links.map(({ href, label, slug, count }) => {
 					const isCurrent = slug === current;
 					return (
@@ -47,17 +57,23 @@ export function TopicNav({
 							<Link
 								aria-current={isCurrent ? "page" : undefined}
 								className={cn(
-									"inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-copy-13 transition-colors hover:bg-muted active:bg-muted active:text-foreground",
-									isCurrent
-										? "bg-muted font-medium text-foreground"
-										: "text-muted-foreground hover:text-foreground"
+									"inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 text-copy-13",
+									quietPressClass,
+									isCurrent ? "bg-muted font-medium text-foreground" : "text-muted-foreground"
 								)}
 								href={href}
 								prefetch={false}
 							>
 								{label}
 								{count !== undefined && (
-									<span className="text-copy-12 text-muted-foreground tabular-nums">{count}</span>
+									<span
+										className={cn(
+											"text-copy-12 tabular-nums",
+											isCurrent ? "text-foreground" : "text-muted-foreground"
+										)}
+									>
+										{count}
+									</span>
 								)}
 							</Link>
 						</li>

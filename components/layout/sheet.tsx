@@ -25,7 +25,7 @@ export function Sheet({
 	label?: string;
 }) {
 	return (
-		<figure aria-label={label} className={cn("-mx-4 flex flex-col gap-3.5 sm:mx-0", className)}>
+		<figure aria-label={label} className={cn("-mx-4 flex flex-col gap-4 sm:mx-0", className)}>
 			<div
 				className="overflow-hidden border-border border-y bg-card p-2.5 sm:rounded-lg sm:border sm:shadow-card"
 				data-slot="sheet"

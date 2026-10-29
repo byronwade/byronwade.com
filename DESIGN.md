@@ -354,14 +354,17 @@ than restyling them.
   muted facts line (type or date, then reading time), the 32px title, the
   16px lede, then the evidence (problem and outcome, or tags).
 - **Pager.** A post ends with `PostPager` (`components/blog/post-pager.tsx`):
-  the older post on the reading edge, the newer opposite it, in the writing
-  index's published order, so drafts never appear. Each side is an index row
-  (`indexRowLinkClass`), with the same hover fill, focus ring and accent as
-  every other list of posts. Related posts exclude the two pager posts, so no
+  a visible "More writing" heading in the 20px section role, then the older
+  post on the reading edge and the newer opposite it, in the writing index's
+  published order, so drafts never appear. The heading, the post's topic
+  heading and "Related posts" share `sectionHeadingClass` and a 16px group gap.
+  Each side is an index row (`indexRowLinkClass`), with the same hover fill,
+  focus ring and accent as every other list of posts. Kickers use the 13px
+  meta role and 16px icons. Related posts exclude the two pager posts, so no
   title repeats at the foot of a post.
   Titles keep `PostRow`'s 16px heading role and line height. Topic links share
-  the same neutral hover and press fill; the selected topic retains its fill
-  and `aria-current` when another link is focused.
+  the same neutral hover and press fill (`quietPressClass`); the selected topic
+  keeps its fill, foreground count and `aria-current` when another link is focused.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
@@ -408,9 +411,10 @@ than restyling them.
   both themes, and `tests/code-palette.test.mjs` fails the build if one stops.
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
-  illustration. Preview recovery stays in the reserved artifact frame; its
-  explanation uses the 14px body role, its title the 16px heading role, and its
-  controls use Button. Error references can break anywhere to preserve reflow.
+  illustration. `ErrorNotice` uses the page title and lede roles (`pageTitleClass`,
+  `ledeClass`). Preview recovery and a Figma file with no exported thumbnail
+  stay in their frames and use `EmptyState`'s 16px title and 14px body, start-aligned.
+  Preview controls use Button. Error references can break anywhere to preserve reflow.
 
 ## 8. Component contracts
 

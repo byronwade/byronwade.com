@@ -1,4 +1,5 @@
 import { SiteShell } from "@/components/layout/site-shell";
+import { ledeClass, pageTitleClass } from "@/components/layout/type-roles";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 /**
@@ -23,10 +24,8 @@ export function ErrorNotice({
 	return (
 		<SiteShell profile="shared">
 			<div className="flex flex-col gap-3" role="alert">
-				<h1 className="text-balance break-words font-medium text-heading-32 tracking-tight">
-					{title}
-				</h1>
-				<p className="text-pretty text-body text-copy-16 leading-relaxed">{description}</p>
+				<h1 className={pageTitleClass}>{title}</h1>
+				<p className={ledeClass}>{description}</p>
 				{reference && (
 					<p className="wrap-anywhere font-mono text-copy-12 text-muted-foreground">
 						Reference {reference}
