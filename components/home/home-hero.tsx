@@ -96,18 +96,25 @@ export async function HomeHero() {
 		// column on the shared measure, so the title keeps the header's edge.
 		<section aria-labelledby="home-title" className="flex flex-col gap-8">
 			{/* The planet locks to the title, not the paragraph. A column beside the
-			    whole opening left a hole next to the lede; the figure stays off the
-			    text and the claim still uses the measure. */}
+			    whole opening left a hole next to the lede; the claim still uses the measure. */}
 			<div className="flex flex-col items-start gap-5">
 				<p className="text-copy-13 text-muted-foreground">
 					Byron Wade <span aria-hidden="true">·</span> Product engineer and founder
 				</p>
-				<div className="grid w-full grid-cols-[minmax(0,1fr)_4.5rem] items-center gap-4 sm:grid-cols-[minmax(0,1fr)_8.5rem]">
-					<h1 className={cn(pageTitleClass, "wrap-anywhere")} id="home-title">
+				{/* The planet sits inside the title so the lede stays the next sibling
+				    and still uses the full measure. */}
+				<h1
+					className={cn(
+						pageTitleClass,
+						"grid w-full grid-cols-[minmax(0,1fr)_4.5rem] items-center gap-4 sm:grid-cols-[minmax(0,1fr)_8.5rem]"
+					)}
+					id="home-title"
+				>
+					<span className="wrap-anywhere min-w-0">
 						I ran the service business. Now I build the software it needed.
-					</h1>
+					</span>
 					<Orbit className="size-16 justify-self-end sm:size-32" />
-				</div>
+				</h1>
 				{/* The story behind the claim is a link inside the lede, not a third
 				    stranded action under the buttons: the opening ends on its CTAs. */}
 				<p className="text-pretty text-body text-copy-16 leading-relaxed">
