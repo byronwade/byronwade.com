@@ -50,7 +50,13 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 
 			// Touch emulation does not match :hover, and a colour transition would be
 			// read mid-flight. A fine pointer with reduced motion shows the settled fill.
+			// Parallel Chrome sessions can drop the emulation, so confirm it stuck.
 			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			assert.equal(
+				await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches),
+				true,
+				"reduced motion emulation is active"
+			);
 			await page.setViewport({
 				width: 1440,
 				height: 900,
@@ -85,11 +91,20 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 			await page.mouse.up();
 			assert.equal(pressed, chipFill, "The press fill matches the hover fill");
 
-			const motion = await page.$eval(
-				`a[href="${hover.chip}"]`,
-				(element) => getComputedStyle(element).transitionDuration
+			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			const motion = await page.evaluate((selector) => {
+				const element = document.querySelector(selector);
+				return {
+					duration: getComputedStyle(element).transitionDuration,
+					reduced: matchMedia("(prefers-reduced-motion: reduce)").matches,
+				};
+			}, `a[href="${hover.chip}"]`);
+			assert.equal(motion.reduced, true, "reduced motion emulation is still active");
+			assert.ok(
+				motion.duration === "0s" ||
+					motion.duration.split(",").every((part) => part.trim() === "0s"),
+				motion.duration
 			);
-			assert.ok(motion === "0s" || motion.split(",").every((part) => part.trim() === "0s"), motion);
 
 			await page.setViewport(PHONE);
 			await page.goto(`${origin}/blog/building-thorbis`, {
