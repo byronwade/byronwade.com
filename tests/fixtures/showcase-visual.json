@@ -38,7 +38,7 @@
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 16 w 109",
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 265 w 109",
       "figcaption · block · pad 0 16 0 16 · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 0 w 390",
-      "figure · flex · column nowrap align normal · gap 14/14 · x 0 w 390",
+      "figure · flex · column nowrap align normal · gap 16/16 · x 0 w 390",
       "h1 · block · font Inter 32/40 500 · tracking -0.8px · color oklch(0.21 0.025 268)",
       "h2 · block · font Inter 14/21 500 · tracking -0.28px · color oklch(0.21 0.025 268)",
       "h2 · block · font Inter 20/24 500 · tracking -0.5px · color oklch(0.21 0.025 268) · x 16 w 268",
@@ -128,7 +128,7 @@
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 16 w 109",
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 265 w 109",
       "figcaption · block · pad 0 16 0 16 · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 0 w 390",
-      "figure · flex · column nowrap align normal · gap 14/14 · x 0 w 390",
+      "figure · flex · column nowrap align normal · gap 16/16 · x 0 w 390",
       "h1 · block · font Inter 32/40 500 · tracking -0.8px · color oklch(0.968 0.008 260)",
       "h2 · block · font Inter 14/21 500 · tracking -0.28px · color oklch(0.968 0.008 260)",
       "h2 · block · font Inter 20/24 500 · tracking -0.5px · color oklch(0.968 0.008 260) · x 16 w 268",
@@ -222,7 +222,7 @@
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 526 w 213",
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 755 w 213",
       "figcaption · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 297 w 672",
-      "figure · flex · column nowrap align normal · gap 14/14 · x 297 w 672",
+      "figure · flex · column nowrap align normal · gap 16/16 · x 297 w 672",
       "h1 · block · font Inter 32/40 500 · tracking -0.8px · color oklch(0.21 0.025 268)",
       "h2 · block · font Inter 14/21 500 · tracking -0.28px · color oklch(0.21 0.025 268)",
       "h2 · block · font Inter 20/24 500 · tracking -0.5px · color oklch(0.21 0.025 268) · x 297 w 582",
@@ -316,7 +316,7 @@
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 526 w 213",
       "dt · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 755 w 213",
       "figcaption · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 297 w 672",
-      "figure · flex · column nowrap align normal · gap 14/14 · x 297 w 672",
+      "figure · flex · column nowrap align normal · gap 16/16 · x 297 w 672",
       "h1 · block · font Inter 32/40 500 · tracking -0.8px · color oklch(0.968 0.008 260)",
       "h2 · block · font Inter 14/21 500 · tracking -0.28px · color oklch(0.968 0.008 260)",
       "h2 · block · font Inter 20/24 500 · tracking -0.5px · color oklch(0.968 0.008 260) · x 297 w 582",
@@ -792,7 +792,7 @@
       "span[badge] · inline-flex · row nowrap align center · gap 4/4 · pad 2 8 2 8 · font Inter 12/16.8 500 · tracking -0.096px · color oklch(0.48 0.022 265) · fill oklch(0.964 0.008 265) · border 1 oklab(0.21 -0.000872482 -0.0249848 / 0.06) · radius full",
       "svg · block · ratio 1",
       "time · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265)",
-      "ul · flex · row wrap align normal · gap 2/4 · x 4 w 382",
+      "ul · flex · row wrap align normal · gap 4/4 · x 4 w 382",
       "ul · flex · row wrap align normal · gap 6/6 · pad 4 0 0 0 · x 16 w 358"
     ]
   },
@@ -839,7 +839,7 @@
       "span[badge] · inline-flex · row nowrap align center · gap 4/4 · pad 2 8 2 8 · font Inter 12/16.8 500 · tracking -0.096px · color oklch(0.76 0.03 265) · fill oklab(0.25547 -0.000125026 -0.0325591) · border 1 oklab(0.968 -0.00138919 -0.00787846 / 0.06) · radius full",
       "svg · block · ratio 1",
       "time · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265)",
-      "ul · flex · row wrap align normal · gap 2/4 · x 4 w 382",
+      "ul · flex · row wrap align normal · gap 4/4 · x 4 w 382",
       "ul · flex · row wrap align normal · gap 6/6 · pad 4 0 0 0 · x 16 w 358"
     ]
   },
@@ -887,7 +887,7 @@
       "span[badge] · inline-flex · row nowrap align center · gap 4/4 · pad 2 8 2 8 · font Inter 12/16.8 500 · tracking -0.096px · color oklch(0.48 0.022 265) · fill oklch(0.964 0.008 265) · border 1 oklab(0.21 -0.000872482 -0.0249848 / 0.06) · radius full",
       "svg · block · ratio 1",
       "time · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.48 0.022 265) · x 297 w 112",
-      "ul · flex · row wrap align normal · gap 2/4 · x 285 w 696",
+      "ul · flex · row wrap align normal · gap 4/4 · x 285 w 696",
       "ul · flex · row wrap align normal · gap 6/6 · pad 4 0 0 0 · x 433 w 536"
     ]
   },
@@ -935,7 +935,7 @@
       "span[badge] · inline-flex · row nowrap align center · gap 4/4 · pad 2 8 2 8 · font Inter 12/16.8 500 · tracking -0.096px · color oklch(0.76 0.03 265) · fill oklab(0.25547 -0.000125026 -0.0325591) · border 1 oklab(0.968 -0.00138919 -0.00787846 / 0.06) · radius full",
       "svg · block · ratio 1",
       "time · block · font Inter 12/16.8 400 · tracking -0.096px · color oklch(0.76 0.03 265) · x 297 w 112",
-      "ul · flex · row wrap align normal · gap 2/4 · x 285 w 696",
+      "ul · flex · row wrap align normal · gap 4/4 · x 285 w 696",
       "ul · flex · row wrap align normal · gap 6/6 · pad 4 0 0 0 · x 433 w 536"
     ]
   }

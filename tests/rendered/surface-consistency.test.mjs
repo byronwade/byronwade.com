@@ -48,6 +48,16 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 			assert.equal(topic.countColor, topic.labelColor, "The selected count matches its label");
 			assert.equal(topic.blur, false);
 
+			// Touch emulation does not match :hover, and a colour transition would be
+			// read mid-flight. A fine pointer with reduced motion shows the settled fill.
+			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
+			await page.setViewport({
+				width: 1440,
+				height: 900,
+				isMobile: false,
+				hasTouch: false,
+				deviceScaleFactor: 1,
+			});
 			await page.goto(`${origin}/blog`, { waitUntil: "domcontentloaded" });
 			await page.waitForSelector('a[href^="/blog/"]');
 			const hover = await page.evaluate(() => {
@@ -65,6 +75,7 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 				`a[href="${hover.chip}"]`,
 				(element) => getComputedStyle(element).backgroundColor
 			);
+			assert.notEqual(rowFill, "rgba(0, 0, 0, 0)", "A fine pointer shows the row hover fill");
 			assert.equal(chipFill, rowFill, "Topic hover fill matches an index row");
 			await page.mouse.down();
 			const pressed = await page.$eval(
@@ -74,13 +85,13 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 			await page.mouse.up();
 			assert.equal(pressed, chipFill, "The press fill matches the hover fill");
 
-			await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
 			const motion = await page.$eval(
 				`a[href="${hover.chip}"]`,
 				(element) => getComputedStyle(element).transitionDuration
 			);
 			assert.ok(motion === "0s" || motion.split(",").every((part) => part.trim() === "0s"), motion);
 
+			await page.setViewport(PHONE);
 			await page.goto(`${origin}/blog/building-thorbis`, {
 				waitUntil: "domcontentloaded",
 			});
@@ -163,7 +174,10 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 						frame.innerHTML.includes("blur-") || getComputedStyle(frame).filter.includes("blur"),
 				};
 			});
-			assert.equal(recovery.align, "start");
+			assert.ok(
+				recovery.align === "start" || recovery.align === "left",
+				`Preview recovery aligns ${recovery.align}`
+			);
 			assert.equal(recovery.title, recovery.heading16);
 			assert.equal(recovery.copy, recovery.copy14);
 			assert.ok(
