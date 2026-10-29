@@ -73,7 +73,7 @@ const topicHeadingPattern = /<h2[^>]*id="post-topics"[^>]*>More on these topics<
 const currentChipPattern = /aria-current="page"[^>]*bg-muted/;
 const selectedCountPattern = /text-foreground">2</;
 const writingHeadingPattern = /<h2[^>]*id="more-writing"[^>]*>More writing<\/h2>/;
-const previewStartPattern = /^<div class="[^"]*\bitems-start\b[^"]*\btext-left\b/;
+const previewStartPattern = /^<div class="[^"]*\bw-full\b[^"]*\bitems-start\b[^"]*\btext-left\b/;
 const previewCenterPattern = /^<div class="[^"]*\btext-center\b/;
 
 function markup(element) {

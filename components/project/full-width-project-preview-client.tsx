@@ -233,7 +233,7 @@ const FALLBACK_TITLES = {
 // capture key a retry could never succeed, so the frame says so and links out instead.
 export function PreviewFallback({ href, icons, onRetry, reason, url }: PreviewFallbackProps) {
 	return (
-		<div className="flex min-w-0 flex-col items-start gap-2 self-stretch p-4 text-left">
+		<div className="flex w-full min-w-0 flex-col items-start gap-2 self-stretch p-4 text-left">
 			<p className={failureTitleClass}>{FALLBACK_TITLES[reason]}</p>
 			{reason === "pending" && (
 				<noscript>

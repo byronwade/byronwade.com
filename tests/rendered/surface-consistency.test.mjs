@@ -162,8 +162,11 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 					node.textContent.includes("Open site")
 				);
 				const box = action?.getBoundingClientRect();
+				const titleBox = title.getBoundingClientRect();
+				const frameBox = frame.getBoundingClientRect();
 				return {
 					align: getComputedStyle(title).textAlign,
+					inset: titleBox.left - frameBox.left,
 					title: getComputedStyle(title).fontSize,
 					copy: getComputedStyle(copy).fontSize,
 					heading16: px("--thorbis-text-heading-16"),
@@ -178,6 +181,7 @@ test("topic pages, post endings, preview recovery and failures share roles", {
 				recovery.align === "start" || recovery.align === "left",
 				`Preview recovery aligns ${recovery.align}`
 			);
+			assert.ok(recovery.inset < 40, `Preview title starts ${recovery.inset}px into the frame`);
 			assert.equal(recovery.title, recovery.heading16);
 			assert.equal(recovery.copy, recovery.copy14);
 			assert.ok(
