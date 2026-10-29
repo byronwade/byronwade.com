@@ -19,7 +19,16 @@ const metrics = {
 async function runBudget(
 	context,
 	lcp,
-	{ saveAssets = false, assetFailure = false, debugValue } = {}
+	{
+		saveAssets = false,
+		assetFailure = false,
+		debugValue,
+		runtime = false,
+		inactive = false,
+		blocked = false,
+		invalidRuntime = false,
+		emptyRuntime = false,
+	} = {}
 ) {
 	await mkdir(join(root, ".next"), { recursive: true });
 	const directory = await mkdtemp(join(root, ".next", "perf-budget-"));
@@ -44,7 +53,29 @@ async function runBudget(
 		},
 	};
 	const modules = {
-		lighthouse: `export default async () => ({ lhr: ${JSON.stringify(lhr)}, artifacts: { fixture: "captured artifacts" } });`,
+		lighthouse: `
+import assert from "node:assert/strict";
+export default async function (_url, flags, _config, page) {
+  assert.equal(Boolean(page), ${runtime}, "Replay must pass the intercepted page to Lighthouse");
+  assert.equal(flags.onlyCategories[0], "performance");
+  return { lhr: ${JSON.stringify(lhr)}, artifacts: { fixture: "captured artifacts" } };
+}`,
+		"./analytics-runtime.mjs": `
+import assert from "node:assert/strict";
+export async function loadAnalyticsRuntime(directory) {
+  if (${invalidRuntime}) throw new Error("Invalid pinned runtime");
+  assert.equal(directory, "pinned runtime");
+  return { fixture: true };
+}
+export async function withAnalyticsRuntime(_browser, origin, fixture, verify) {
+  assert.equal(origin, "http://127.0.0.1:12345");
+  assert.equal(fixture.fixture, true);
+  return await verify({ evaluate: async () => ${!inactive} }, {
+    assertComplete() {},
+    provenance: { mode: "pinned-runtime-replay", scripts: [{ sha256: "synthetic-pinned-hash" }] },
+    requests: { scripts: ["/_vercel/insights/script.js", "/_vercel/speed-insights/script.js"], telemetry: [], blocked: ${JSON.stringify(blocked ? ["https://blocked.invalid"] : [])} }
+  });
+}`,
 		"lighthouse/core/lib/asset-saver.js": `
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
@@ -56,6 +87,7 @@ export async function saveAssets(artifacts, audits, stem) {
 		"./production-session.mjs": `
 import assert from "node:assert/strict";
 export async function withProductionServer(verify, options) {
+  assert.equal(${invalidRuntime || emptyRuntime}, false, "Invalid replay input must fail before starting a server");
   assert.equal(options?.env?.SCREENSHOTONE_ACCESS_KEY, "", "Budget runs must disable captures explicitly");
   return await verify("http://127.0.0.1:12345");
 }`,
@@ -106,6 +138,7 @@ registerHooks({
 			fileURLToPath(runner),
 			"--route=/projects/thorbis",
 			...(saveAssets ? ["--save-assets"] : []),
+			...(runtime ? [`--analytics-runtime=${emptyRuntime ? "" : "pinned runtime"}`] : []),
 		],
 		{
 			cwd: directory,
@@ -138,9 +171,50 @@ test("budget reports retain observed paint diagnostics without using them to pas
 	assert.deepEqual(saved.failures, []);
 	assert.equal(saved.route, "/projects/thorbis");
 	assert.equal(saved.buildId, "synthetic-build");
+	assert.deepEqual(saved.analytics, { mode: "unmodified-local-server" });
 	assert.equal(await readFile(closed, "utf8"), "closed");
 	await assert.rejects(readFile(assets), { code: "ENOENT" });
 });
+
+test("runtime replay reports pinned provenance and passes the owned page to Lighthouse", async (context) => {
+	const { result, closed, report } = await runBudget(context, 2400, { runtime: true });
+	assert.equal(result.status, 0, result.stderr);
+	const saved = JSON.parse(await readFile(report, "utf8"));
+	assert.equal(saved.analytics.mode, "pinned-runtime-replay");
+	assert.equal(saved.analytics.scripts[0].sha256, "synthetic-pinned-hash");
+	assert.equal(saved.analytics.scriptRequests.length, 2);
+	assert.equal(saved.analytics.telemetryRequests, 0);
+	assert.deepEqual(saved.analytics.blockedOrigins, []);
+	assert.equal(await readFile(closed, "utf8"), "closed");
+});
+
+for (const options of [{ invalidRuntime: true }, { emptyRuntime: true }]) {
+	test(`invalid replay inputs fail before launching a server: ${JSON.stringify(options)}`, async (context) => {
+		const { result, closed } = await runBudget(context, 2400, { runtime: true, ...options });
+		assert.equal(result.status, 1);
+		assert.ok(
+			result.stderr.includes(
+				options.emptyRuntime
+					? "--analytics-runtime requires a pinned snapshot directory"
+					: "Invalid pinned runtime"
+			),
+			result.stderr
+		);
+		await assert.rejects(readFile(closed), { code: "ENOENT" });
+	});
+}
+
+for (const options of [{ inactive: true }, { blocked: true }]) {
+	test(`runtime replay fails and retains its report when ${JSON.stringify(options)}`, async (context) => {
+		const { result, closed, report } = await runBudget(context, 2400, {
+			runtime: true,
+			...options,
+		});
+		assert.equal(result.status, 1, result.stderr);
+		assert.equal(JSON.parse(await readFile(report, "utf8")).failures.length, 1);
+		assert.equal(await readFile(closed, "utf8"), "closed");
+	});
+}
 
 for (const lcp of [2400, 3100]) {
 	test(`opt-in trace export retains actual artifacts and simulated traces at LCP ${lcp}`, async (context) => {
