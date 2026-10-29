@@ -167,7 +167,7 @@ function RepoRow({ repo }: { repo: GitHubRepo }) {
 							{repo.archived && <StatusPill className="shrink-0">Archived</StatusPill>}
 							<ExternalLink
 								aria-hidden="true"
-								className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
+								className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
 							/>
 						</span>
 						{repo.description && (

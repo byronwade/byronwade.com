@@ -144,7 +144,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h1: ({ children, ...props }) => (
 						<h1
 							id={headingId(children)}
-							className={cn(sectionHeadingClass, "mt-8 scroll-mt-24")}
+							className={cn(sectionHeadingClass, "mt-3 scroll-mt-24")}
 							{...props}
 						>
 							{children}
@@ -153,7 +153,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h2: ({ children, ...props }) => (
 						<h2
 							id={headingId(children)}
-							className={cn(sectionHeadingClass, "mt-8 scroll-mt-24")}
+							className={cn(sectionHeadingClass, "mt-3 scroll-mt-24")}
 							{...props}
 						>
 							{children}
@@ -162,7 +162,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h3: ({ children, ...props }) => (
 						<h3
 							id={headingId(children)}
-							className="mt-5 scroll-mt-24 text-balance font-medium text-foreground text-heading-16"
+							className="mt-1 scroll-mt-24 text-balance font-medium text-foreground text-heading-16"
 							{...props}
 						>
 							{children}
@@ -171,7 +171,7 @@ export function Markdown({ content, className }: MarkdownProps) {
 					h4: ({ children, ...props }) => (
 						<h4
 							id={headingId(children)}
-							className="mt-4 scroll-mt-24 font-medium text-copy-16 text-foreground"
+							className="scroll-mt-24 font-medium text-copy-16 text-foreground"
 							{...props}
 						>
 							{children}

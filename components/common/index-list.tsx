@@ -45,7 +45,7 @@ export function IndexRow({
  * ink is not used for the label (it fails AA on this fill).
  */
 export const quietPressClass =
-	"transition-colors hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground";
+	"transition-colors duration-(--motion-fast) ease-(--ease-out) hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground motion-reduce:transition-none";
 
 export const indexRowLinkClass = `group/row -mx-3 flex flex-col items-stretch gap-1.5 wrap-anywhere rounded-lg px-3 py-4 outline-none ${quietPressClass} focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2`;
 
