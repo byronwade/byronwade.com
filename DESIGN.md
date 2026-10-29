@@ -365,6 +365,8 @@ than restyling them.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
+  Hover and keyboard focus use foreground ink: accent text falls below AA on
+  the dark hover fill. The focus outline retains the accent.
   Index descriptions use the 14px content role with its own 1.5 line height
   and pretty wrapping, rather than the long-form leading override. Writing
   row titles are level-three headings below each section or year heading;

@@ -216,6 +216,48 @@ test("text holds AA over the rendered sky on home, a detail and an article outli
 	);
 });
 
+test("index row hover and keyboard feedback retain AA in both themes", async (context) => {
+	const cases = WIDTHS.flatMap((width) => THEMES.map((theme) => ({ width, theme })));
+	const row = 'main a[href="/projects/thorbis"]';
+	await withProductionServer(
+		(origin) =>
+			withBrowser(context, {}, (browser) =>
+				cases.reduce(
+					(previous, { width, theme }) =>
+						previous.then(() =>
+							context.test(`${width} ${theme}`, async (subtest) => {
+								const page = await browser.newPage();
+								try {
+									await open(page, origin, "/projects", width, theme);
+									await page.hover(row);
+									await assertContrast(page, subtest);
+									await page.mouse.move(0, 0);
+									await page.focus(row);
+									await page.keyboard.press("Tab");
+									await page.keyboard.down("Shift");
+									await page.keyboard.press("Tab");
+									await page.keyboard.up("Shift");
+									assert.ok(
+										await page.$eval(
+											row,
+											(element) =>
+												element === document.activeElement && element.matches(":focus-visible")
+										),
+										"exercise actual keyboard focus"
+									);
+									await assertContrast(page, subtest);
+								} finally {
+									await page.close();
+								}
+							})
+						),
+					Promise.resolve()
+				)
+			),
+		{ env: { SCREENSHOTONE_ACCESS_KEY: "" } }
+	);
+});
+
 test("the sky ends inside the layout on short pages", async (context) => {
 	await withProductionServer(
 		(origin) =>

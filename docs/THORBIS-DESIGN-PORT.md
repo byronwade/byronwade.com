@@ -106,6 +106,9 @@ for introducing a new visual choice.
 - Categories use neutral marker labels instead of a competing taxonomy palette.
 - Source default-button hover text is adapted to preserve contrasting text rather
   than copying an upstream same-tone foreground/background defect.
+- Index-row hover and focus use foreground ink, matching the source neutral
+  interaction recipe. The former local accent-text feedback measured 4.081:1 on
+  the dark row fill. The accent remains in the keyboard focus outline.
 - Text Button sizes use a 44px minimum height instead of the source's fixed height
   and nowrap label, and never grow wider than their container. At default text the
   geometry is unchanged; at 200% text a long label wraps and the button grows taller

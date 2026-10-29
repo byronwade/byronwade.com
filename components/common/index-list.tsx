@@ -45,6 +45,8 @@ export const indexRowLinkClass =
 /**
  * The colour transition a row's title and affordances share, so the whole row
  * responds as one object rather than as several independently hovering parts.
+ * Foreground ink retains AA on the dark hover fill; accent ink did not. The
+ * focus outline still carries the accent without reducing text contrast.
  */
 export const indexRowAccentClass =
-	"transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand";
+	"transition-colors group-hover/row:text-foreground group-focus-visible/row:text-foreground";

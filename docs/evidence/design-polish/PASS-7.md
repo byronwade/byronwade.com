@@ -23,7 +23,9 @@ dependency, font, or shared-layout behavior is added.
    ordered list contains only its four real stages.
 3. **Writing keeps one grammar.** TopicNav uses the canonical neutral hover
    and press fill, retaining selected state and native links. Index rows use
-   the same press fill. PostPager titles use PostRow's 16px heading role and
+   the same press fill. Hover and keyboard focus use foreground ink instead
+   of accent: the previous dark hover title measured 4.081:1 on the row fill.
+   The focus outline retains the accent. PostPager titles use PostRow's 16px heading role and
    line height. Chronology, older/newer positions, and every topic remain.
 4. **Recovery copy is content.** The preview fallback's explanation uses the
    14px body role and its title uses the 16px heading role. Group spacing is
@@ -75,7 +77,8 @@ so an ellipsized breadcrumb's hidden tail cannot sample an adjacent control.
 A browser control checks both clipped healthy text and a deliberately bad
 visible background. It requires the photograph to have loaded in dark
 mode and to be hidden in light mode. A second check bounds the sky within a
-short search layout. Both defects reproduced before the implementation.
+short search layout. Hover and actual keyboard-focus cases cover the index
+feedback in both themes. These defects reproduced before their fixes.
 
 Screenshots live at
 `C:/Users/bcw19/agent-tools/screens/redesign-1028a/{before,after}/`.
