@@ -1,4 +1,5 @@
 import { SiteShell } from "@/components/layout/site-shell";
+import { ledeClass, pageTitleClass } from "@/components/layout/type-roles";
 import { buttonVariants } from "@/components/ui/button-variants";
 
 /**
@@ -11,26 +12,30 @@ export function ErrorNotice({
 	description,
 	reference,
 	onRetry,
+	retryLabel,
 }: {
 	title: string;
 	description: string;
 	/** Server error digest, so a report can be matched to a log line. */
 	reference?: string;
 	onRetry: () => void;
+	retryLabel: string;
 }) {
 	return (
 		<SiteShell profile="shared">
 			<div className="flex flex-col gap-3" role="alert">
-				<h1 className="text-balance font-medium text-heading-32 tracking-tight">{title}</h1>
-				<p className="text-body text-copy-16 leading-relaxed">{description}</p>
+				<h1 className={pageTitleClass}>{title}</h1>
+				<p className={ledeClass}>{description}</p>
 				{reference && (
-					<p className="font-mono text-copy-12 text-muted-foreground">Reference {reference}</p>
+					<p className="wrap-anywhere font-mono text-copy-12 text-muted-foreground">
+						Reference {reference}
+					</p>
 				)}
 				<p className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3">
 					{/* A native button with the commit recipe: Next loads this boundary on
 					    every route, so it stays off the Base UI button code. */}
 					<button className={buttonVariants()} onClick={onRetry} type="button">
-						Try again
+						{retryLabel}
 					</button>
 					{/* A full navigation, so a broken client bundle cannot trap the visitor. */}
 					<a className="link-action" href="/">

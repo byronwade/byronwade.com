@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { Sheet } from "@/components/layout/sheet";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FigmaInteractiveViewer } from "@/components/portfolio/figma-viewer";
@@ -97,7 +98,7 @@ function OpenInFigma({ fileKey, children }: { fileKey: string; children: ReactNo
 			target="_blank"
 		>
 			{children}
-			<ArrowUpRight aria-hidden="true" className="size-3.5" />
+			<ArrowUpRight aria-hidden="true" className="size-4" />
 			<span className="sr-only"> (opens in a new tab)</span>
 		</a>
 	);
@@ -114,14 +115,12 @@ function UnavailableFile({ fileKey }: { fileKey: string }) {
 		<SiteShell profile="evidence">
 			<div className="flex flex-col gap-3">
 				<DesignFileBreadcrumb current="Design file" />
-				<h1 className="text-balance font-medium text-heading-32 tracking-tight">
-					Design file unavailable
-				</h1>
-				<p className="text-body text-copy-16 leading-relaxed">
+				<h1 className={pageTitleClass}>Design file unavailable</h1>
+				<p className={ledeClass}>
 					Figma didn’t return this file. It may be private or removed, or Figma may be unreachable
 					right now. The file itself is unchanged; try it on Figma, or browse the rest of the work.
 				</p>
-				<p className="flex flex-wrap items-center gap-x-6">
+				<p className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-3">
 					<OpenInFigma fileKey={fileKey}>Try it on Figma</OpenInFigma>
 					<Link className="link-action" href="/portfolio">
 						Back to portfolio
@@ -165,10 +164,8 @@ export default async function FigmaDetailPage({ params }: FigmaDetailPageProps) 
 		<SiteShell profile="evidence" width="wide">
 			<header className={cn(measureClass, "flex flex-col gap-3")}>
 				<DesignFileBreadcrumb current={file.name} />
-				<h1 className="wrap-anywhere text-balance font-medium text-heading-32 tracking-tight">
-					{file.name}
-				</h1>
-				<p className="text-body text-copy-16 leading-relaxed">
+				<h1 className={cn(pageTitleClass, "wrap-anywhere")}>{file.name}</h1>
+				<p className={ledeClass}>
 					A Figma file, last updated <time dateTime={file.lastModified}>{modifiedDate}</time>.
 				</p>
 				<dl className="flex flex-wrap gap-x-10 gap-y-3 pt-3">

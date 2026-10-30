@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { test } from "node:test";
 import matter from "gray-matter";
@@ -11,13 +11,23 @@ import { createSlugger, stripLeadingH1 } from "../lib/markdown-utils.ts";
 const markdownUrl = new URL("../components/common/markdown.tsx", import.meta.url).href;
 registerHooks({
 	resolve(specifier, context, nextResolve) {
-		if (specifier.startsWith("@/lib/")) {
-			return nextResolve(new URL(`../${specifier.slice(2)}.ts`, import.meta.url).href, context);
+		const base = specifier.startsWith("@/")
+			? new URL(`../${specifier.slice(2)}`, import.meta.url)
+			: specifier.startsWith(".") && context.parentURL?.startsWith("file:")
+				? new URL(specifier, context.parentURL)
+				: null;
+		if (base) {
+			const source = [".ts", ".tsx"]
+				.map((extension) => new URL(`${base.href}${extension}`))
+				.find((candidate) => existsSync(candidate));
+			if (source) {
+				return nextResolve(source.href, context);
+			}
 		}
 		return nextResolve(specifier, context);
 	},
 	load(url, context, nextLoad) {
-		if (url === markdownUrl) {
+		if (url.endsWith(".tsx")) {
 			return {
 				format: "module",
 				shortCircuit: true,

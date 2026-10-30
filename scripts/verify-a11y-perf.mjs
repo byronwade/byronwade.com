@@ -24,18 +24,23 @@ const reportFile = `${destination}/${phase}${selectedRoute ? `-${selectedRoute.r
 const budgets = JSON.parse(readFileSync("lighthouse-budget.json", "utf8"));
 const PAGE_SUFFIX = /\/?page\.tsx$/;
 const CONTENT_DETAIL_ROUTE = /^\/(blog|projects)\/[^/]+$/;
+const TOPIC_ROUTE = /^\/blog\/topic\/[^/]+$/;
 const prerenderManifest = JSON.parse(readFileSync(".next/prerender-manifest.json", "utf8"));
 const publishedContentRoutes = Object.keys(prerenderManifest.routes)
 	.filter((route) => CONTENT_DETAIL_ROUTE.test(route))
 	.sort();
 const projectRoutes = publishedContentRoutes.filter((route) => route.startsWith("/projects/"));
 const blogRoutes = publishedContentRoutes.filter((route) => route.startsWith("/blog/"));
+const topicRoutes = Object.keys(prerenderManifest.routes).filter((route) =>
+	TOPIC_ROUTE.test(route)
+);
 if (!(projectRoutes.length && blogRoutes.length)) {
 	throw new Error("A production build must contain published project and writing detail routes");
 }
 const representatives = {
 	"/projects/[slug]": projectRoutes,
 	"/blog/[slug]": blogRoutes,
+	"/blog/topic/[topic]": topicRoutes,
 	"/portfolio/figma/[key]": [
 		"/portfolio/figma/audit-fixture",
 		"/portfolio/figma/audit-unavailable",

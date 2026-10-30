@@ -3,6 +3,7 @@ import { PostPager, ReadingProgress, RelatedPosts, SocialShare } from "@/compone
 import { TopicNav } from "@/components/blog/topic-nav";
 import { BlogPostViewTracker, Markdown, PageToc, TagList } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
+import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
 import { getAdjacentPosts, getAllBlogSlugs, getBlogPost, getBlogTopics } from "@/lib/blog";
@@ -129,12 +130,8 @@ async function BlogPostContent({ slug }: { slug: string }) {
 					<span aria-hidden="true">·</span>
 					<span>{post.readingTime} min read</span>
 				</p>
-				<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
-					{post.title}
-				</h1>
-				{post.excerpt && (
-					<p className="text-pretty text-body text-copy-16 leading-relaxed">{post.excerpt}</p>
-				)}
+				<h1 className={pageTitleClass}>{post.title}</h1>
+				{post.excerpt && <p className={ledeClass}>{post.excerpt}</p>}
 				{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
 			</header>
 

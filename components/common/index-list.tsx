@@ -39,12 +39,21 @@ export function IndexRow({
  * plain anchor, or a button. The negative inline margin lets the hover fill
  * extend past the text edge while the text stays on the page measure.
  */
-export const indexRowLinkClass =
-	"group/row -mx-3 flex flex-col items-stretch gap-1.5 wrap-anywhere rounded-lg px-3 py-4 outline-none transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2";
+/**
+ * Neutral hover and press fill shared by index rows and topic links.
+ * The press fill matches the hover fill: the row is one object, and accent
+ * ink is not used for the label (it fails AA on this fill).
+ */
+export const quietPressClass =
+	"transition-colors duration-(--motion-fast) ease-(--ease-out) hover:bg-muted hover:text-foreground active:bg-muted active:text-foreground motion-reduce:transition-none";
+
+export const indexRowLinkClass = `group/row -mx-3 flex flex-col items-stretch gap-1.5 wrap-anywhere rounded-lg px-3 py-4 outline-none ${quietPressClass} focus-visible:outline-2 focus-visible:outline-ring focus-visible:-outline-offset-2`;
 
 /**
  * The colour transition a row's title and affordances share, so the whole row
  * responds as one object rather than as several independently hovering parts.
+ * Foreground ink retains AA on the dark hover fill; accent ink did not. The
+ * focus outline still carries the accent without reducing text contrast.
  */
 export const indexRowAccentClass =
-	"transition-colors group-hover/row:text-brand group-focus-visible/row:text-brand";
+	"transition-colors group-hover/row:text-foreground group-focus-visible/row:text-foreground";

@@ -1,4 +1,5 @@
 import { IndexList } from "@/components/common/index-list";
+import { sectionHeadingClass } from "@/components/layout/page";
 import { type BlogPost, getBlogPost, getBlogPosts } from "@/lib/blog";
 import { PostRow } from "./post-row";
 
@@ -48,10 +49,7 @@ export async function RelatedPosts({ currentSlug, limit = 3, exclude = [] }: Rel
 
 	return (
 		<section aria-labelledby="related-posts" className="flex w-full flex-col gap-4">
-			<h2
-				className="font-heading font-medium text-foreground text-heading-20 tracking-tight"
-				id="related-posts"
-			>
+			<h2 className={sectionHeadingClass} id="related-posts">
 				Related posts
 			</h2>
 			{/* The same row as the writing index: shared tags first, then recency. */}

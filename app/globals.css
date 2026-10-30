@@ -966,6 +966,13 @@
      visibly speed up and stall once a lap. Rare delight, so it passes the motion
      gate only on the home opening and the 404; the global reduced-motion rule
      ends it on its first frame, leaving the moons parked. */
+
+  /* Night side of the home planet. A mix toward black stays darker than
+     --space-planet in both themes; the page background does not, so light mode
+     was losing the terminator. */
+  .orbit-night {
+    fill: color-mix(in oklab, black 42%, var(--space-planet));
+  }
   .orbit-spin {
     transform-box: view-box;
     transform-origin: 120px 120px;

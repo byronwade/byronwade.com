@@ -1,5 +1,7 @@
 import { Markdown, PageToc, ProjectViewTracker } from "@/components/common";
+import { indexRowAccentClass, indexRowLinkClass } from "@/components/common/index-list";
 import { JsonLd } from "@/components/common/json-ld";
+import { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/page";
 import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview } from "@/components/project";
 import { Button } from "@/components/ui/button";
@@ -152,13 +154,9 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						)}
 					</p>
 
-					<h1 className="text-balance font-heading font-medium text-foreground text-heading-32 tracking-tight">
-						{project.title}
-					</h1>
+					<h1 className={pageTitleClass}>{project.title}</h1>
 
-					{project.excerpt && (
-						<p className="text-pretty text-body text-copy-16 leading-relaxed">{project.excerpt}</p>
-					)}
+					{project.excerpt && <p className={ledeClass}>{project.excerpt}</p>}
 
 					<ProjectProof project={project} />
 
@@ -220,23 +218,41 @@ export function ProjectContent({ project }: ProjectContentProps) {
 					<PageToc items={toc} />
 				</div>
 
-				<div
-					className={cn(
-						measureClass,
-						"flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
-					)}
+				<nav
+					aria-labelledby="project-next"
+					className={cn(measureClass, "flex w-full flex-col gap-4")}
 				>
-					<Link className="link-action" href="/projects">
-						<ArrowLeft aria-hidden="true" className="size-4" />
-						Back to projects
-					</Link>
-					<p className="flex flex-wrap items-center gap-x-2 text-copy-14 text-muted-foreground">
-						Want something like this?
-						<Link className="link-action" href="/contact">
-							Start a conversation
+					<h2 className={sectionHeadingClass} id="project-next">
+						Continue
+					</h2>
+					<div className="grid w-full gap-1 sm:grid-cols-2 sm:gap-6">
+						<Link className={indexRowLinkClass} href="/projects">
+							<span className="inline-flex items-center gap-1.5 text-copy-13 text-muted-foreground">
+								<ArrowLeft aria-hidden="true" className="size-4" />
+								All projects
+							</span>
+							<span
+								className={cn(
+									"text-pretty font-medium text-foreground text-heading-16",
+									indexRowAccentClass
+								)}
+							>
+								Back to projects
+							</span>
 						</Link>
-					</p>
-				</div>
+						<Link className={cn(indexRowLinkClass, "sm:items-end sm:text-right")} href="/contact">
+							<span className="text-copy-13 text-muted-foreground">Want something like this?</span>
+							<span
+								className={cn(
+									"text-pretty font-medium text-foreground text-heading-16",
+									indexRowAccentClass
+								)}
+							>
+								Start a conversation
+							</span>
+						</Link>
+					</div>
+				</nav>
 			</SiteShell>
 		</>
 	);

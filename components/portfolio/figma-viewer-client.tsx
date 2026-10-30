@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { type ReactNode, useState } from "react";
+import { failureCopyClass, failureTitleClass } from "@/components/common/empty-state";
 import { Button } from "@/components/ui/button";
 
 interface FigmaViewerIcons {
@@ -96,10 +97,10 @@ export function FigmaInteractiveViewerClient({
 			)}
 
 			{viewMode === "static" && !imageUrl && (
-				<div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-md bg-muted px-6 text-center">
+				<div className="flex aspect-video w-full flex-col items-start justify-center gap-2 rounded-md bg-muted px-4 text-left">
 					{icons.missing}
-					<p className="font-medium text-copy-14 text-foreground">No exported preview</p>
-					<p className="max-w-sm text-copy-13 text-muted-foreground">
+					<p className={failureTitleClass}>No exported preview</p>
+					<p className={failureCopyClass}>
 						Figma didn’t return a thumbnail for this file. Switch to Interactive to see the design
 						itself.
 					</p>

@@ -16,31 +16,28 @@ function FeaturedProject({ project }: { project: Project }) {
 	return (
 		<li>
 			<Link prefetch={false} className={indexRowLinkClass} href={`/projects/${project.slug}`}>
-				<div className="flex items-start justify-between gap-4">
-					<div className="flex min-w-0 flex-col gap-1">
-						<div className="flex flex-wrap items-center gap-2">
-							<span className={`font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}>
-								{title}
-							</span>
-							{tone && project.status && (
-								<StatusPill className="capitalize" tone={tone.tone}>
-									{project.status}
-								</StatusPill>
-							)}
-						</div>
-						{project.tagline && (
-							<p className="text-copy-14 text-muted-foreground">{project.tagline}</p>
-						)}
-					</div>
+				<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-center gap-x-3">
+					<span
+						className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
+					>
+						{title}
+					</span>
+					{tone && project.status ? (
+						<StatusPill className="justify-self-end capitalize" tone={tone.tone}>
+							{project.status}
+						</StatusPill>
+					) : (
+						<span />
+					)}
 					<ArrowRight
 						aria-hidden="true"
-						className="mt-1 size-4 shrink-0 text-muted-foreground transition-colors group-hover/row:text-brand"
+						className="size-4 justify-self-end text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
 					/>
 				</div>
 
-				{(project.outcome || project.problem) && (
+				{(project.outcome || project.excerpt) && (
 					<p className="max-w-2xl text-pretty text-body text-copy-14">
-						{project.outcome || project.problem}
+						{project.outcome || project.excerpt}
 					</p>
 				)}
 

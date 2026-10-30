@@ -199,9 +199,13 @@ than anything below.
   (NASA/ESA, public domain), `components/layout/deep-field.tsx`. It sits
   behind the top of every page and scrolls away with it, dimmed and faded
   into the page by `scripts/build-space-band.py` (the fade is baked, since CSS
-  gradients are out) and blended with `screen`. Two 15KB exposures (wide
-  screens dim only the reading column; phones dim evenly), lazy, hidden in the
-  light theme and print. The footer credits it. New space imagery must also be
+  gradients are out) and blended with `screen`. One exposure protects reading
+  in the column and in gutter outlines at every width, lazy and hidden in the
+  light theme and print. The band ends within the layout on short pages, so it
+  cannot extend past the footer horizon. Rendered pixel sampling protects AA
+  text contrast over the photograph on home, a detail page and an article outline
+  in both themes.
+  The footer credits it. New space imagery must also be
   real astronomy with its credit, processed the same way.
 - **Orbit.** `components/common/orbit.tsx`, a ringed planet with three moons, is
   the theme's one figure. It sits beside copy, never under it: the home
@@ -350,17 +354,27 @@ than restyling them.
   muted facts line (type or date, then reading time), the 32px title, the
   16px lede, then the evidence (problem and outcome, or tags).
 - **Pager.** A post ends with `PostPager` (`components/blog/post-pager.tsx`):
-  the older post on the reading edge, the newer opposite it, in the writing
-  index's published order, so drafts never appear. Each side is an index row
-  (`indexRowLinkClass`), with the same hover fill, focus ring and accent as
-  every other list of posts. Related posts exclude the two pager posts, so no
+  a visible "More writing" heading in the 20px section role, then the older
+  post on the reading edge and the newer opposite it, in the writing index's
+  published order, so drafts never appear. The heading, the post's topic
+  heading and "Related posts" share `sectionHeadingClass` and a 16px group gap.
+  Each side is an index row (`indexRowLinkClass`), with the same hover fill,
+  focus ring and accent as every other list of posts. Kickers use the 13px
+  meta role and 16px icons. Related posts exclude the two pager posts, so no
   title repeats at the foot of a post.
+  Titles keep `PostRow`'s 16px heading role and line height. Topic links share
+  the same neutral hover and press fill (`quietPressClass`); the selected topic
+  keeps its fill, foreground count and `aria-current` when another link is focused.
 - **Rows.** Indexes separate rows with space and a rounded hover fill, never
   hairlines (Thorbis D-017). Chronologies (writing, resume, repositories) lead
   with a mono column for the date or signal; `PostRow` owns the writing row.
+  Hover and keyboard focus use foreground ink: accent text falls below AA on
+  the dark hover fill. The focus outline retains the accent.
   Index descriptions use the 14px content role with its own 1.5 line height
   and pretty wrapping, rather than the long-form leading override. Writing
-  row titles are level-three headings below each section or year heading.
+  row titles are level-three headings below each section or year heading;
+  topic pages use level two directly below the page title through `PostRow`'s
+  `headingAs` option.
 - **Sheet.** `components/layout/sheet.tsx` frames real work with a caption that
   says what it is. It bleeds to the phone edge. It is not a card for counts or
   sections, and there is no card primitive.
@@ -397,7 +411,10 @@ than restyling them.
   both themes, and `tests/code-palette.test.mjs` fails the build if one stops.
 - **Failure.** Route errors and the root boundary render `ErrorNotice`;
   collections render `EmptyState`. Both are start-aligned type, never a boxed
-  illustration.
+  illustration. `ErrorNotice` uses the page title and lede roles (`pageTitleClass`,
+  `ledeClass`). Preview recovery and a Figma file with no exported thumbnail
+  stay in their frames and use `EmptyState`'s 16px title and 14px body, start-aligned.
+  Preview controls use Button. Error references can break anywhere to preserve reflow.
 
 ## 8. Component contracts
 

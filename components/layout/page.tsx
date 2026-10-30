@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
+import { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/type-roles";
 import { cn } from "@/lib/utils";
+
+export { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/type-roles";
 
 /**
  * Page-level typographic structure: the pieces every route was hand-rolling.
@@ -40,14 +43,12 @@ export function PageHeader({
 			<div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
 				{/* A one-word title (a blog topic like "Engineering") can be wider than a
 				    small phone at 200% text; let it shrink and break rather than scroll. */}
-				<h1 className="min-w-0 text-balance break-words font-heading font-medium text-foreground text-heading-32 tracking-tight">
-					{title}
-				</h1>
+				<h1 className={pageTitleClass}>{title}</h1>
 				{aside}
 			</div>
 			{lede && (
 				// Reading measure near 60–72 characters (§5.2).
-				<p className="max-w-2xl text-pretty text-body text-copy-16 leading-relaxed">{lede}</p>
+				<p className={ledeClass}>{lede}</p>
 			)}
 		</header>
 	);
@@ -108,9 +109,7 @@ export function Section({
 		<section className={cn("flex w-full flex-col gap-5", className)}>
 			<div className="flex flex-wrap items-baseline justify-between gap-4">
 				<div className="flex min-w-0 grow basis-40 flex-col gap-1">
-					<h2 className="text-balance font-heading font-medium text-heading-20 tracking-tight">
-						{title}
-					</h2>
+					<h2 className={sectionHeadingClass}>{title}</h2>
 					{description && <p className="text-body text-copy-14">{description}</p>}
 				</div>
 				{link}

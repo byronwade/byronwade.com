@@ -171,7 +171,7 @@ Figma file), where only the artifact spans and the text stays on `measureClass`.
 | Virtualization | none | - | Not needed at this scale | - |
 | State management | React and URL/search params | platform | No query-state consumer exists; unused nuqs provider removed | Use nuqs when a real URL-state surface requires it; no global store |
 | Class/variant composition | `clsx` + `tailwind-merge` (`cn`) + `class-variance-authority` | - | `cn()` in `lib/utils.ts` is canonical | Never hand-concatenate class strings |
-| Theme management | `next-themes` | ^0.4.6 | Light default, system aware | - |
+| Theme management | `next-themes` | ^0.4.6 | Dark default, system aware | - |
 | Server/client boundary | `server-only` | 0.0.1 | Next.js compiler marker rejects client imports of portfolio API code | Use the marker on the API module; keep static catalog data separate |
 | Content front matter | `gray-matter` and `js-yaml` 3.15.2 | 3.15.2 | gray-matter already parses Markdown with js-yaml 3. The direct pin exposes that schema so impossible calendar days are rejected before they become Dates | Do not add js-yaml 4 for app code, and do not hand-roll a YAML parser |
 
@@ -212,6 +212,14 @@ use them correctly.
   overrides Vercel's retired Node 20 project default without a dashboard change.
 - **Development:** `npm run dev` (Turbopack); production uses Next webpack to
   keep requests within the existing Lighthouse budget.
+- **Local preview development:** `npm run dev:preview -- --port 3407` uses
+  `scripts/preview-fixture.mjs` as a Node preload in the CLI and its development
+  workers. It replaces the capture credential and intercepts ScreenshotOne with
+  labeled images at the canonical viewport sizes. `--fixture-state=retry` fails
+  once per target URL/size; `error` keeps failing. The preload refuses build/start,
+  is not imported by application code and adds no production switch. Normal
+  development remains keyless unless a real key is configured. See README for
+  cache/reset instructions; native subprocess checks cover routes and isolation.
 - **Development diagnostics:** React Scan highlights renders without its upstream
   toolbar, whose 0.5.7 controls include an unnamed button. With your dev server
   running, set `DEVELOPMENT_ORIGIN` to its URL and run `npm run test:development`:
@@ -223,6 +231,12 @@ use them correctly.
 - **Affected tests:** `npm test`, contact-action/cache-refresh regressions with
   fixture operations, content-date regressions across five timezones, and Thorbis
   class merging/token/favicon contracts
+- **Preview configuration:** `tests/project-preview-server.test.mjs` renders the real
+  server wrapper, client and glyphs with React's static renderer. Missing, empty or
+  whitespace-only keys produce no markup; synthetic keys preserve the preview,
+  project link and caption without starting a capture or exposing the key. This
+  native check covers keyless omission without a second Next build; the rendered
+  suite below covers browser behavior on the placeholder-key build.
 - **Rendered contracts:** `npm run test:rendered` after
   `SCREENSHOTONE_ACCESS_KEY=rendered-checks npm run build`, native
   submit semantics on `/contact` and exclusion of portfolio API/cache code from
@@ -236,10 +250,12 @@ use them correctly.
   sending a message. Physical keyboards, screen readers and mobile keyboards
   remain separate checks.
 - **Package tests:** native Node runner; Node 22.18+ for TypeScript stripping and module hooks; no new dependencies
-- **Rendered readiness:** layout measurements wait for a visible page title and fonts;
+- **Rendered readiness:** layout measurements activate the measured tab so React's
+  streamed reveals get an animation frame, then wait for a visible title and fonts;
   search cache assertions poll for complete JSON and exact corpus counts within one
   deadline. Native filesystem regressions preserve failures for corrupt entries,
-  incorrect counts and read errors; a browser regression preserves the hidden-title timeout.
+  incorrect counts and read errors; a browser regression covers a background tab's
+  frame-delayed title and preserves the hidden-title timeout.
 - **Native deadline fixtures:** contact delivery and screenshot resolution share
   `tests/fixtures/request-deadline.mjs`. It holds the first deadline until the
   local server receives the request, and for body stalls until the client starts

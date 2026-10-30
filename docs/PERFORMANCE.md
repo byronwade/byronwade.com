@@ -29,6 +29,15 @@ A Lighthouse score alone cannot pass a failed resource or timing limit.
 The [repeated October 22 template baseline](evidence/lighthouse-2026-10-22/README.md)
 keeps twelve later measurements separately, with their exact source/build pins
 and all budget failures; `home-budget.json` is an earlier snapshot.
+The [October 28 baseline and identical-build controls](evidence/lighthouse-2026-10-28/README.md)
+measure the application at `ae357ba` in 24 samples: 23 pass every budget and one
+Dits sample exceeds LCP by 8ms. The reports retain that miss, CPU calibration,
+observed paint diagnostics and source/build pins; they make no speedup claim.
+The later [Dits graph investigation](evidence/dits-lcp-graph-2026-10-28/README.md)
+measures application `02b3e41`: six serial identical-build controls pass three
+times and miss LCP three times. Exported simulator traces explain a 222ms paired
+swing through different graph membership for the local analytics 404s. This is
+a diagnosis of the local model, not a production bottleneck or an optimization.
 Lighthouse 12 removed built-in budget enforcement, and Lighthouse 13 does not
 restore it. This runner checks the JSON limits itself instead of relying on an
 ignored CLI/config flag.
@@ -54,9 +63,26 @@ an HTTP 404.
 Figma and email delivery use local fixtures. Browser submissions exercise success
 feedback without delivering a message or certifying a live provider.
 Both capture runners explicitly disable the screenshot provider in their owned
-server environment. Project pages therefore exercise the unavailable-preview
-fallback; successful image capture and recovery use the rendered suite's local
-image fixtures, without issuing a provider request.
+server environment, including when the parent shell has a key. A keyless build
+omits project previews; a placeholder-key build exercises the runtime off state.
+Successful image capture and recovery use the rendered suite's local image
+fixtures, without issuing a provider request. The route-budget report keeps
+Lighthouse's `metrics` diagnostics, including observed paint, beside its
+simulated budget timings. Observed paint never substitutes for a budget metric.
+For a request-graph investigation, add `--save-assets` to the route-budget command
+and point `THORBIS_EVIDENCE_DIR` at a local job folder. Beside the budget JSON,
+Lighthouse's own asset exporter writes `-0.trace.json`, `-0.devtoolslog.json` and
+named optimistic/pessimistic simulator traces. Open a trace in Chrome DevTools'
+Performance panel to inspect the observed timeline or the simulated request/CPU
+schedule. The simulated traces are models, not additional browser measurements.
+The [Node API does not implement the CLI's `saveAssets` flag](https://github.com/GoogleChrome/lighthouse/blob/v13.5.0/docs/readme.md#differences-from-cli-flags),
+so the runner calls the installed exporter's `saveAssets` directly and enables its
+Lantern debug export only for that call. Exports are opt-in and do not change the
+measurement profile or any limit. The budget report is saved before export, even
+on a budget miss; an export failure still fails the command and closes the browser.
+Raw traces and network logs stay in the local job folder; publish only reviewed,
+bounded evidence. Native subprocess regressions cover export on passes and misses,
+export failure, environment restoration and unchanged default output.
 Set `THORBIS_EVIDENCE_DIR` for either runner to keep fresh reports and screenshots
 in an external job folder instead of replacing the checked-in evidence. Omit
 `--lighthouse` for accessibility and interaction checks without timing samples;
@@ -200,10 +226,12 @@ build of `ca7bd78`.
 
 ## Inter Latin core subset, October 23, 2026
 
-Lighthouse's simulated LCP counts every request that finishes before the
-observed largest paint. Locally that paint lands 224-441ms after navigation, so
-the document, the preloaded Inter file, the stylesheet and all initial scripts
-are in every route's graph. Thorbis and Dits add a 15.7KB page chunk and Geist
+Lighthouse selects its simulated LCP graph using observed request completion
+and CPU evidence; it does not include every request completed before paint.
+In these October 23 samples, observed largest paint landed 224-441ms after
+navigation. The document, preloaded Inter file, stylesheet and initial scripts
+were early requests, not proof of identical graph membership on every run.
+Thorbis and Dits add a 15.7KB page chunk and Geist
 Mono (15.5KB); the Nexstar post adds a 45.6KB document, the italic core and
 Geist Mono. Home and Thorbis documents are about the same size, so bytes alone
 do not explain the detail-page gap.
@@ -676,6 +704,73 @@ it deliberately makes no timing assertion on a shared machine.
   sizes). No new service worker, third-party runtime origin or performance
   utility layer is introduced by the design port.
 
+## Replaying analytics runtimes locally
+
+Plain `next start` does not serve Vercel's platform scripts. Its analytics 404
+responses are part of the historical local baseline, not hosted analytics work.
+To investigate the runtime separately, capture the two public scripts once into
+a **new directory outside the repository**:
+
+```powershell
+node scripts/analytics-runtime.mjs capture C:/path/to/job/runtime-snapshot
+```
+
+Capture uses only GETs to the canonical `https://www.byronwade.com` script URLs,
+refuses redirects, and records capture time, decoded byte sizes, content types
+and SHA-256 hashes in `manifest.json`. It refuses to replace an existing directory.
+Snapshot files stay local; do not commit fetched third-party code or raw telemetry.
+The hashes detect changed inputs; they do not authenticate a manually edited
+manifest. Use snapshots you captured and reviewed.
+
+After a keyless production build, replay that snapshot on the existing runner:
+
+```powershell
+$env:THORBIS_EVIDENCE_DIR = "C:/path/to/job/runtime-report"
+node scripts/perf-budget.mjs --route=/projects/dits --analytics-runtime=C:/path/to/job/runtime-snapshot --save-assets
+```
+
+The runner validates the snapshot before starting its server/browser, passes an
+owned intercepted page to Lighthouse's Node API, and serves the unchanged script
+bytes. Every off-origin HTTP request is blocked; same-origin `/_vercel/` telemetry
+gets a local 204 response. No telemetry is forwarded to Vercel. Interception stays
+active until that page closes, including on failed audits. Application code,
+production configuration, loading policy and budgets are unchanged.
+
+These scripts skip automation. The isolated replay sets `navigator.webdriver`
+to false and removes `HeadlessChrome` from its initial user agent so the runtime
+actually executes. Lighthouse still applies its own mobile profile. Reports
+declare `analytics.mode = "pinned-runtime-replay"`, activation policy, script
+hashes/source/capture time, script request paths, telemetry count and blocked
+origins. Inactive runtimes or unexpected off-origin requests fail the run. Reports
+without replay declare `"unmodified-local-server"`; do not pool the two conditions.
+
+Interception adds overhead and serves decoded bodies without Vercel's compression,
+CDN timing or response policy. Local 204s are telemetry sinks, not provider responses.
+This is a reproducible lab condition for runtime and graph diagnosis, not hosted
+performance or an optimization. A loading-policy claim still requires matched
+interleaved A/B and fresh A/A controls under the same condition and unchanged limits.
+
+For privacy coverage with these actual scripts, run the explicit browser check:
+
+```powershell
+$env:ANALYTICS_RUNTIME_DIR = "C:/path/to/job/runtime-snapshot"
+node --test tests/analytics-runtime/browser.test.mjs
+```
+
+It requires real page-view and measured-vital payloads in phone/light and
+desktop/dark states, checks that search words are removed while attribution and
+hash survive, and proves an intentional off-origin fetch is blocked. Telemetry
+bodies are checked in memory only. The default rendered suite retains its cheap
+queued-handler sensor; this opt-in check needs a locally captured snapshot.
+Vercel documents [Web Analytics `beforeSend`](https://vercel.com/docs/analytics/package),
+[Speed Insights `beforeSend`](https://vercel.com/docs/speed-insights/package), and
+[vital delivery on blur/unload](https://vercel.com/docs/speed-insights/troubleshooting).
+Repeat capture review and the real browser/export smoke checks after a runtime,
+Puppeteer or Lighthouse upgrade; synthetic native tests do not certify those APIs.
+The [October 28 integration sample](evidence/analytics-runtime-2026-10-28/README.md)
+pins one actual replay/export and retains its LCP budget miss. It is not a new
+performance baseline or a speed comparison.
+
 ## Evidence and limits
 
 The Thorbis migration's baseline and final measurements are stored alongside the
@@ -718,11 +813,13 @@ After merging main through `5cef5db` (#129 shortened the Dits article to a
 case study 3261 ms and the Nexstar post 3301 ms, all still over the limit.
 `lighthouse-budget.json` is unchanged.
 
-Lighthouse simulates this LCP. On the homepage the observed paint happens about
-300 ms after navigation, but the simulation counts every request that started
-before it, and the async scripts start within 80 ms. The simulated LCP therefore tracks the
-bytes of the document, the preloaded font and all initial scripts, of which
-about 132 KB is the React and Next framework. Detail pages add a larger document
+Lighthouse simulates this LCP. In the historical homepage sample the observed
+paint happened about 300 ms after navigation. Lantern selects requests using
+their observed completion times and CPU evidence; it does not simply count
+every request started before paint. The later Dits graph investigation above
+shows local analytics 404s entering or leaving that model on identical bytes.
+The historical initial scripts included about 132 KB of React and Next framework
+code. Detail pages added a larger document
 (the Nexstar post is 45 KB gzipped, much of it the RSC payload repeating the
 article), a 22 KB gzipped page chunk on project pages and, on posts, italic and mono
 fonts discovered from the stylesheet. Preloading the mono

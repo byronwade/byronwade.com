@@ -34,6 +34,17 @@ For the same reason `NavDock` marks no section current when the root segment is
 Theme is light/dark via `next-themes` (dark default, the space theme) with a toggle in
 the header.
 
+Both render-error boundaries use `components/common/error-notice.tsx`. A route
+failure keeps the shell and offers Next's `retry` as **Try again**, refreshing
+server data as well as clearing the error state. A shell
+failure replaces the shell with its own `main#main-content` and offers **Reload
+page**, which navigates only when activated. Neither boundary schedules reloads:
+a persistent render failure must not create a navigation loop or interrupt work
+with a late callback. Both retain a full-navigation homepage link and warn that
+unsent text may need to be re-entered. `tests/error-recovery.test.mjs` protects
+the recovery actions, timer-free lifecycle, landmark and guidance. Both accept
+non-Error throws; the route only displays a reference for an Error with a text digest.
+
 ### Local browser verification
 
 Rendered browser tests use `withBrowser` in `tests/fixtures/browser.mjs` to own
@@ -145,6 +156,20 @@ checks therefore need a build made with a placeholder key
 its presence. Set it on the build command only: the preview checks refuse to run
 with a key in their environment, but other rendered files load project pages with
 scripts and would send it to the provider.
+For manual development, `npm run dev:preview -- --port 3407` installs
+`scripts/preview-fixture.mjs` only in the Next dev CLI and its development workers. It replaces
+the capture key before Next loads configuration, and intercepts the provider's
+whole hostname so even malformed capture requests stay local. The real routes
+still validate project URLs and viewport pairs. Labeled SVG fixtures use
+`SCREENSHOT_VIEWPORTS`, with success, persistent-error and fail-once/retry states.
+This follows the other Node transport fixtures without adding an application
+environment switch or production import. Build/start invocations refuse the
+preload. Route cache headers are unchanged; reset the server and browser cache
+when changing fixture modes. `tests/preview-fixture.test.mjs` exercises the real
+routes in isolated child processes with an underlying fetch that rejects any
+escaped provider request. This development command does not replace the keyed
+build needed by the production rendered suite.
+
 The preview's rendered control checks use local images at each offered capture
 size. The toolbar actions and status groups wrap when enlarged text leaves too
 little room; the status bar grows from its normal 28px minimum rather than
@@ -439,12 +464,14 @@ components/
   excluded by the same shared boundary and logged for the author to correct.
   Invalid optional update/project dates are omitted. No loader substitutes the
   build date. The sitemap uses an article's update date when present and leaves
-  modification dates off undated projects. Static sitemap entries omit
-  modification dates: a rebuild is not evidence that a page changed. They do
-  not infer dates from collection contents or duplicate page-local legal
+  modification dates off undated projects. Topic pages use the latest article
+  modification date across their published posts, including edits to older posts;
+  their publication order does not determine the modification date. Static sitemap
+  entries omit modification dates: a rebuild is not evidence that a page changed.
+  They do not infer dates from collection contents or duplicate page-local legal
   update labels. The native publication test advances the clock to protect
   sitemap stability; the rendered date check verifies the emitted XML for
-  both static entries and authored content dates.
+  static entries, authored content dates and each topic's linked posts.
   `readContentMatter` in `lib/content-matter.ts` keeps js-yaml's timestamp
   constructor, but only for real calendar days. Impossible unquoted dates such
   as `2026-02-30` stay the original text and fail the same validation as quoted
