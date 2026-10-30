@@ -212,7 +212,10 @@ than anything below.
   opening (beside the claim from `md`, at the end of the byline row on
   phones) and the 404. It is not a section ornament or an icon.
 - **Flight path.** The home specimen plots the Thorbis chain as a trajectory:
-  a dashed rail through a node per stage, the last node filled.
+  a dashed rail through a node per stage, the last node filled. The resume's
+  Experience list runs the same rail between the period and the record (at the
+  left edge on phones), one node per role with the current role filled; paper
+  drops it. It marks sequences only, never a plain list.
 - **Horizon.** The footer ends on a planet's arc with a sunlit rim.
 - **Share card.** `app/api/og` draws the dark theme over the same Deep Field
   photograph, darker under the type, with the planet horizon at lower right.
