@@ -11,6 +11,7 @@ import { getContactForStructuredData } from "@/lib/contact";
 import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/icons";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
+import { cn } from "@/lib/utils";
 import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
 
 // Rendered on the server so the record is in the HTML itself; only the email
@@ -267,13 +268,23 @@ export default function ResumePage() {
 						Experience
 					</h2>
 					{/* The site's chronology grammar: the period leads in a tabular column,
-						    the record sits beside it. Paper keeps the same two columns. */}
+						    the record sits beside it. Paper keeps the same two columns.
+						    Between them runs the flight path (DESIGN.md §5.1): a dashed rail
+						    through a node per role, the current role filled. Phones carry the
+						    rail at the left edge; paper drops it. */}
 					<div className="flex flex-col gap-8 print:gap-4">
 						{workExperience.map((job) => (
 							<article
 								key={`${job.company}-${job.role}`}
-								className="flex flex-col gap-x-6 gap-y-1 sm:flex-row print:break-inside-avoid"
+								className="relative flex flex-col gap-x-10 gap-y-1 pl-6 not-last:before:pointer-events-none not-last:before:absolute not-last:before:top-[0.1875rem] not-last:before:-bottom-[2.1875rem] not-last:before:left-[calc(0.3125rem-0.5px)] not-last:before:border-(--space-rim) not-last:before:border-l not-last:before:border-dashed sm:flex-row sm:pl-0 sm:not-last:before:top-[0.4375rem] sm:not-last:before:-bottom-[2.4375rem] sm:not-last:before:left-[calc(8.25rem-0.5px)] print:break-inside-avoid print:pl-0 print:before:hidden"
 							>
+								<span
+									aria-hidden="true"
+									className={cn(
+										"absolute top-[0.1875rem] left-0 size-2.5 rounded-full border sm:top-[0.4375rem] sm:left-[7.9375rem] print:hidden",
+										job.current ? "border-brand bg-brand" : "border-(--space-rim) bg-background"
+									)}
+								/>
 								<p className="text-copy-12 text-muted-foreground tabular-nums sm:w-28 sm:shrink-0 sm:pt-1">
 									<Period value={job.period} />
 								</p>
