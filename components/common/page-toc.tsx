@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +23,7 @@ interface PageTocProps {
  */
 export function PageToc({ items }: PageTocProps) {
 	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
+	const listRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
 		if (items.length < MIN_ITEMS) {
@@ -75,6 +76,24 @@ export function PageToc({ items }: PageTocProps) {
 		};
 	}, [items]);
 
+	// A long outline scrolls inside its own box (it can be taller than a laptop
+	// screen), so keep the lit section in that box as the reader moves through.
+	// Only the list moves; the page's scroll is left alone.
+	useEffect(() => {
+		const list = listRef.current;
+		const link = list?.querySelector(`a[href="#${CSS.escape(activeId)}"]`);
+		if (!(list && link) || list.scrollHeight <= list.clientHeight) {
+			return;
+		}
+		const box = list.getBoundingClientRect();
+		const row = link.getBoundingClientRect();
+		if (row.top < box.top) {
+			list.scrollTop -= box.top - row.top;
+		} else if (row.bottom > box.bottom) {
+			list.scrollTop += row.bottom - box.bottom;
+		}
+	}, [activeId]);
+
 	const handleClick = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
 		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
 			return;
@@ -103,7 +122,12 @@ export function PageToc({ items }: PageTocProps) {
 		<aside className="absolute inset-y-0 left-full ml-10 hidden w-60 xl:block">
 			<nav aria-label="On this page" className="sticky top-24 flex flex-col gap-2 text-copy-13">
 				<p className="px-3 text-copy-12 text-muted-foreground">On this page</p>
-				<ul className="flex flex-col">
+				{/* Capped to the screen below the sticky offset; the 4px inset keeps the
+				    links' focus rings inside the scroll box's clip. */}
+				<ul
+					className="-m-1 flex max-h-[calc(100dvh-10rem)] flex-col overflow-y-auto overscroll-contain p-1"
+					ref={listRef}
+				>
 					{items.map((item) => {
 						const isActive = activeId === item.id;
 						return (
