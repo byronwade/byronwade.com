@@ -28,15 +28,9 @@ function joinKeywords(parts: Array<string | undefined>): string {
 		.join(" ");
 }
 
-function withBody(keywords: string, body: string | undefined): string {
-	if (!body) {
-		return keywords;
-	}
-	const plain = searchPlainText(body);
-	if (!plain) {
-		return keywords;
-	}
-	return keywords ? `${keywords} ${plain}` : plain;
+/** Summary, then the article's readable text: the prose /search quotes from. */
+function readableText(summary: string | undefined, body: string | undefined): string | undefined {
+	return joinKeywords([summary, body ? searchPlainText(body) : undefined]) || undefined;
 }
 
 /** The short name stays the label. Breadcrumbs use it, and the rest of the title stays searchable. */
@@ -58,7 +52,10 @@ function projectEntry(project: Project, includeBody: boolean): SearchEntry {
 		label: projectLabel(project.title),
 		href: `/projects/${project.slug}`,
 		meta: project.status ?? project.category,
-		keywords: includeBody ? withBody(keywords, project.content) : keywords,
+		keywords,
+		text: includeBody
+			? readableText(project.excerpt ?? project.tagline, project.content)
+			: undefined,
 	};
 }
 
@@ -69,7 +66,8 @@ function postEntry(post: BlogPost, includeBody: boolean): SearchEntry {
 		label: post.title,
 		href: `/blog/${post.slug}`,
 		meta: `${post.readingTime} min read`,
-		keywords: includeBody ? withBody(keywords, post.content) : keywords,
+		keywords,
+		text: includeBody ? readableText(post.excerpt, post.content) : undefined,
 	};
 }
 
@@ -105,7 +103,7 @@ function fromCorpus(
 const cachedPageCorpus = unstable_cache(
 	async (projects: Project[], posts: BlogPost[], topics: BlogTopic[]) =>
 		fromCorpus(projects, posts, topics, true),
-	["page-search-corpus-v2"],
+	["page-search-corpus-v3"],
 	{ revalidate: false }
 );
 

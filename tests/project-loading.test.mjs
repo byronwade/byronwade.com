@@ -79,7 +79,7 @@ test("development search follows draft body and metadata edits immediately", asy
 			(entry) => entry.href === "/blog/local-draft"
 		);
 		assert.equal(first?.label, "Local draft");
-		assert.ok(first?.keywords.includes("firstDraftToken"));
+		assert.ok(first?.text?.includes("firstDraftToken"));
 		await writeFile(
 			postPath,
 			"---\ntitle: Edited draft\ndate: 2026-10-22\ndraft: true\n---\nsecondDraftToken\n"
@@ -88,11 +88,12 @@ test("development search follows draft body and metadata edits immediately", asy
 			(entry) => entry.href === "/blog/local-draft"
 		);
 		assert.equal(second?.label, "Edited draft");
-		assert.ok(second?.keywords.includes("secondDraftToken"));
-		assert.ok(!second?.keywords.includes("firstDraftToken"));
+		assert.ok(second?.text?.includes("secondDraftToken"));
+		assert.ok(!second?.text?.includes("firstDraftToken"));
 		const header = (await buildSearchIndex()).find((entry) => entry.href === "/blog/local-draft");
 		assert.equal(header?.label, "Edited draft");
-		assert.ok(!header?.keywords.includes("secondDraftToken"));
+		assert.equal(header?.text, undefined, "the header never ships article text");
+		assert.ok(!header?.keywords?.includes("secondDraftToken"));
 		assert.ok(errors.length > 0, "unrelated malformed project fixtures remain isolated");
 	} finally {
 		await rm(postPath, { force: true });

@@ -12,4 +12,9 @@ export interface SearchEntry {
 	label: string;
 	/** Small trailing hint, e.g. a status or reading time. */
 	meta?: string;
+	/**
+	 * Readable prose (summary, then article text), matched like keywords and
+	 * quoted under a /search result. The search page only: the header never gets it.
+	 */
+	text?: string;
 }
