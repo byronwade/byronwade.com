@@ -6,7 +6,12 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildPageSearchIndex } from "@/lib/search-index";
-import { groupSearchResults, normalizeSearchQuery, SEARCH_QUERY_MAX } from "@/lib/search-match";
+import {
+	groupSearchResults,
+	normalizeSearchQuery,
+	SEARCH_QUERY_MAX,
+	searchExcerpt,
+} from "@/lib/search-match";
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 
@@ -92,6 +97,7 @@ export default async function SearchPage({
 														</span>
 													) : null}
 												</span>
+												<Excerpt query={query} text={entry.text} />
 											</Link>
 										</li>
 									))}
@@ -114,6 +120,28 @@ export default async function SearchPage({
 				</p>
 			)}
 		</SiteShell>
+	);
+}
+
+/** The passage that matched, with the query words in the title's weight and colour. */
+function Excerpt({ query, text }: { query: string; text: string | undefined }) {
+	const parts = searchExcerpt(text, query);
+	if (!parts) {
+		return null;
+	}
+	return (
+		<span className="mt-1 line-clamp-2 block text-pretty text-copy-14 text-muted-foreground">
+			{parts.map((part, index) =>
+				part.hit ? (
+					// biome-ignore lint/suspicious/noArrayIndexKey: parts are a fixed split of one string
+					<mark className="bg-transparent font-medium text-foreground" key={index}>
+						{part.text}
+					</mark>
+				) : (
+					part.text
+				)
+			)}
+		</span>
 	);
 }
 

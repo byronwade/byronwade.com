@@ -15,8 +15,13 @@ registerHooks({
 });
 
 const { generateMetadata, generateWebSiteStructuredData } = await import("../lib/seo.ts");
-const { entryMatchesQuery, groupSearchResults, normalizeSearchQuery, SEARCH_QUERY_MAX } =
-	await import("../lib/search-match.ts");
+const {
+	entryMatchesQuery,
+	groupSearchResults,
+	normalizeSearchQuery,
+	SEARCH_QUERY_MAX,
+	searchExcerpt,
+} = await import("../lib/search-match.ts");
 const { xHandle } = await import("../lib/site.ts");
 
 const entries = [
@@ -55,6 +60,46 @@ test("every word must match, and an empty query keeps the full palette", () => {
 	assert.equal(entryMatchesQuery(entries[1], "field active"), true);
 	assert.equal(entryMatchesQuery(entries[1], "thorbis missing"), false);
 	assert.equal(entryMatchesQuery(entries[2], "invoice"), true);
+});
+
+test("a result quotes the passage around its first query word, words kept whole", () => {
+	const text = `${"Lead in words that set the scene. ".repeat(4)}Dispatch keeps the job context attached from call to invoice. ${"Trailing detail after the match. ".repeat(6)}`;
+	const parts = searchExcerpt(text, "invoice  DISPATCH");
+	assert.ok(parts);
+	const passage = parts.map((part) => part.text).join("");
+	assert.ok(passage.startsWith("…"), "a cut start is marked");
+	assert.ok(passage.endsWith("…"), "a cut end is marked");
+	assert.ok(passage.length <= 182);
+	assert.ok(text.includes(` ${passage.slice(1, 12)}`), "the passage starts on a word boundary");
+	assert.deepEqual(
+		parts.filter((part) => part.hit).map((part) => part.text),
+		["Dispatch", "invoice"],
+		"hits keep the article's own casing"
+	);
+	assert.equal(
+		searchExcerpt("Short summary about pricing.", "pricing")?.[0]?.text,
+		"Short summary about "
+	);
+	assert.equal(
+		searchExcerpt("Nothing relevant here.", "dispatch"),
+		null,
+		"a title-only match has no passage"
+	);
+	assert.equal(searchExcerpt(undefined, "dispatch"), null);
+	const phrase = searchExcerpt(
+		`An average day. ${"Filler words between the two. ".repeat(12)}Average ticket is not a harmless metric.`,
+		"average ticket"
+	);
+	assert.deepEqual(
+		phrase?.filter((part) => part.hit).map((part) => part.text),
+		["Average", "ticket"],
+		"a multi-word query centres on the phrase, not the first stray word"
+	);
+});
+
+test("search matches article text without folding it into the header's keywords", () => {
+	const entry = { kind: "Writing", label: "Post", href: "/blog/post", text: "Dispatch boards" };
+	assert.equal(entryMatchesQuery(entry, "dispatch boards"), true);
 });
 
 test("results stay in page, project, then writing order and drop empty groups", () => {
