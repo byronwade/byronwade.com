@@ -183,9 +183,11 @@ export default function ResumePage() {
 					<div className="flex w-full flex-col gap-6 print:gap-3">
 						{/* The name starts the measure like every other page title; the portrait
 						    closes the row instead of pushing the h1 off the shared left edge, and
-						    drops below the name when enlarged text leaves no room beside it. */}
+						    drops below the name when enlarged text leaves no room beside it. The
+						    name's rem basis lets its roles stack beside the portrait on a phone,
+						    yet still forces the wrap once text is enlarged. */}
 						<div className="flex flex-wrap items-start justify-between gap-5">
-							<div className="flex flex-col gap-1 pt-1">
+							<div className="flex min-w-0 flex-1 basis-48 flex-col gap-1 pt-1">
 								<h1 className="font-medium font-signature text-foreground text-heading-32">
 									Byron Wade
 								</h1>
