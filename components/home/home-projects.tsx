@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import {
+	IndexList,
+	indexRowAccentClass,
+	indexRowLinkClass,
+	indexRowMarkerClass,
+} from "@/components/common";
 import { Section } from "@/components/layout/page";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowRight } from "@/lib/icons";
@@ -16,23 +21,27 @@ function FeaturedProject({ project }: { project: Project }) {
 	return (
 		<li>
 			<Link prefetch={false} className={indexRowLinkClass} href={`/projects/${project.slug}`}>
-				<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-center gap-x-3">
+				<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-start gap-x-3">
 					<span
 						className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
 					>
 						{title}
 					</span>
 					{tone && project.status ? (
-						<StatusPill className="justify-self-end capitalize" tone={tone.tone}>
-							{project.status}
-						</StatusPill>
+						<span className={indexRowMarkerClass}>
+							<StatusPill className="capitalize" tone={tone.tone}>
+								{project.status}
+							</StatusPill>
+						</span>
 					) : (
 						<span />
 					)}
-					<ArrowRight
-						aria-hidden="true"
-						className="size-4 justify-self-end text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
-					/>
+					<span className={indexRowMarkerClass}>
+						<ArrowRight
+							aria-hidden="true"
+							className="size-4 text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
+						/>
+					</span>
 				</div>
 
 				{(project.outcome || project.excerpt) && (

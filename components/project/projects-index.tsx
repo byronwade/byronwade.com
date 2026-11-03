@@ -1,4 +1,9 @@
-import { IndexList, indexRowAccentClass, indexRowLinkClass } from "@/components/common";
+import {
+	IndexList,
+	indexRowAccentClass,
+	indexRowLinkClass,
+	indexRowMarkerClass,
+} from "@/components/common";
 import { Link } from "@/components/ui/link";
 import { StatusPill } from "@/components/ui/status-pill";
 import { ArrowRight, Sparkle } from "@/lib/icons";
@@ -40,7 +45,7 @@ function TypeMark({ type }: { type?: string }) {
 	const tone = TYPE_TONE[type ?? ""] ?? "text-muted-foreground";
 	return (
 		<span
-			className={`hidden shrink-0 font-medium text-copy-12 capitalize sm:inline ${type ? tone : ""}`}
+			className={`hidden shrink-0 font-medium text-copy-12 capitalize sm:inline-flex sm:h-[1.625rem] sm:items-center ${type ? tone : ""}`}
 		>
 			{type}
 		</span>
@@ -55,15 +60,19 @@ function RowMarker({ project }: { project: Project }) {
 	const tone = statusTone(project.status);
 	if (tone) {
 		return (
-			<StatusPill className="justify-self-end capitalize" tone={tone.tone}>
-				{project.status}
-			</StatusPill>
+			<span className={indexRowMarkerClass}>
+				<StatusPill className="capitalize" tone={tone.tone}>
+					{project.status}
+				</StatusPill>
+			</span>
 		);
 	}
 	const year = safeFormatDate(project.date, "yyyy");
 	if (year) {
 		return (
-			<span className="justify-self-end font-mono text-copy-12 text-muted-foreground tabular-nums">
+			<span
+				className={`${indexRowMarkerClass} font-mono text-copy-12 text-muted-foreground tabular-nums`}
+			>
 				{year}
 			</span>
 		);
@@ -83,8 +92,9 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 					<li key={project.slug}>
 						<Link className={indexRowLinkClass} href={`/projects/${project.slug}`}>
 							{/* Same tracks on every row: title, kind, status, way in.
-							    A flex row let long taglines shove the kind and status. */}
-							<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-center gap-x-3 sm:grid-cols-[minmax(0,1fr)_5.25rem_6.5rem_1rem]">
+							    A flex row let long taglines shove the kind and status. The
+							    markers hold to the title's first line when it wraps. */}
+							<div className="grid grid-cols-[minmax(0,1fr)_auto_1rem] items-start gap-x-3 sm:grid-cols-[minmax(0,1fr)_5.25rem_6.5rem_1rem]">
 								<span className="flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-1">
 									<span
 										className={`min-w-0 font-medium text-copy-16 text-foreground ${indexRowAccentClass}`}
@@ -107,10 +117,12 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 								<TypeMark type={project.type} />
 								<RowMarker project={project} />
 
-								<ArrowRight
-									aria-hidden="true"
-									className="size-4 justify-self-end text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
-								/>
+								<span className={indexRowMarkerClass}>
+									<ArrowRight
+										aria-hidden="true"
+										className="size-4 text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-out) group-hover/row:text-foreground group-focus-visible/row:text-foreground motion-reduce:transition-none"
+									/>
+								</span>
 							</div>
 
 							{carriesEvidence && (proof || leadMetric) && (

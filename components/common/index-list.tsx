@@ -57,3 +57,10 @@ export const indexRowLinkClass = `group/row -mx-3 flex flex-col items-stretch ga
  */
 export const indexRowAccentClass =
 	"transition-colors group-hover/row:text-foreground group-focus-visible/row:text-foreground";
+
+/**
+ * A box one title line tall (copy-16, 1.625rem) for each right-hand marker of a
+ * row grid that aligns its items to the start. A wrapping title then keeps its
+ * kind, status, and arrow on its first line instead of centring them between lines.
+ */
+export const indexRowMarkerClass = "flex h-[1.625rem] items-center justify-self-end";
