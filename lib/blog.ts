@@ -135,7 +135,7 @@ const TOPIC_MIN_POSTS = 2;
 const NON_SLUG = /[^a-z0-9]+/g;
 const EDGE_DASHES = /^-+|-+$/g;
 
-function topicSlug(tag: string): string {
+export function topicSlug(tag: string): string {
 	return tag.toLowerCase().replace(NON_SLUG, "-").replace(EDGE_DASHES, "");
 }
 

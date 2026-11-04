@@ -6,7 +6,7 @@ import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
-import { getBlogTopics } from "@/lib/blog";
+import { getBlogTopics, topicSlug } from "@/lib/blog";
 import { ArrowLeft } from "@/lib/icons";
 import {
 	generateBreadcrumbStructuredData,
@@ -80,8 +80,15 @@ export default async function TopicPage({ params }: TopicPageProps) {
 				/>
 				<TopicNav current={topic.slug} topics={topics} />
 				<IndexList as="ol">
+					{/* Every post here carries this topic, so its badge would repeat on each
+					    row; the rows name only the other tags. */}
 					{topic.posts.map((post) => (
-						<PostRow headingAs="h2" key={post.slug} post={post} tagLimit={4} />
+						<PostRow
+							headingAs="h2"
+							key={post.slug}
+							post={{ ...post, tags: post.tags?.filter((tag) => topicSlug(tag) !== topic.slug) }}
+							tagLimit={4}
+						/>
 					))}
 				</IndexList>
 				{/* The shared Link, as on a post's foot. It also keeps this route's client
