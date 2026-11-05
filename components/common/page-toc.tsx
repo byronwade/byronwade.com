@@ -129,6 +129,8 @@ export function PageToc({ items }: PageTocProps) {
 					ref={listRef}
 				>
 					{items.map((item) => {
+						// The outline only docks on wide screens: 32px rows for a mouse (the UI
+						// guidelines ask 24px), 44px wherever the pointer is a finger.
 						const isActive = activeId === item.id;
 						return (
 							<li key={item.id}>
@@ -137,7 +139,7 @@ export function PageToc({ items }: PageTocProps) {
 									onClick={(event) => handleClick(event, item.id)}
 									aria-current={isActive ? "location" : undefined}
 									className={cn(
-										"flex min-h-11 items-center gap-2.5 rounded-lg pr-3 leading-snug transition-colors",
+										"flex min-h-8 pointer-coarse:min-h-11 items-center gap-2.5 rounded-lg py-1 pr-3 leading-snug transition-colors",
 										item.depth === 3 ? "pl-6" : "pl-3",
 										isActive
 											? "bg-muted font-medium text-foreground"
