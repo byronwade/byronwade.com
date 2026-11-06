@@ -526,7 +526,7 @@ async function checkShellStates(page) {
 					states.push(await checkPanelKeyboard(page, label));
 					if (label === "Search") {
 						await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
-						await page.waitForFunction(() => document.body.textContent.includes("No results"));
+						await page.waitForFunction(() => document.body.textContent.includes("No names match"));
 						states.push(await readState(page, "Empty search"));
 					}
 					await page.keyboard.press("Escape");

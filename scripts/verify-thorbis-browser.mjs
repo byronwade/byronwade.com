@@ -392,7 +392,7 @@ async function checkShellStates(page, width, theme) {
 			await page.type('input[aria-label="Search"]', "zzzz-no-matching-entry");
 			await page.waitForSelector('[role="dialog"]');
 			assert.ok(
-				await page.$eval(selector, (element) => element.textContent.includes("No results"))
+				await page.$eval(selector, (element) => element.textContent.includes("No names match"))
 			);
 		}
 		await page.keyboard.press("Escape");
