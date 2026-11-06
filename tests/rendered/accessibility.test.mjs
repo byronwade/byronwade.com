@@ -227,8 +227,12 @@ async function checkSearchCycle(page, theme) {
 	await page.keyboard.press("A");
 	await page.keyboard.up("Control");
 	await page.keyboard.type("zzzznonexistentzzzz");
-	await page.waitForSelector('[role="listbox"]', { hidden: true });
-	await assertHeaderReferences(page, "search without results");
+	// No name matches: the full-text search is the listbox's only option.
+	await page.waitForFunction(
+		() => document.querySelectorAll('[role="listbox"] [role="option"]').length === 1
+	);
+	await assertHeaderReferences(page, "search without name matches");
+	await assertNoViolations(page, `search without name matches ${theme}`);
 	await page.keyboard.press("Escape");
 	await page.waitForSelector('input[role="combobox"]', { hidden: true });
 	await assertHeaderReferences(page, "search closed");

@@ -467,7 +467,13 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 						)
 					);
 					await page.type('input[role="combobox"]', "zz-no-matching-destination");
-					assert.equal(await page.$$eval('[role="option"]', (options) => options.length), 0);
+					// No name matches, so the only option hands the words to the full-text search.
+					assert.deepEqual(
+						await page.$$eval('[role="option"]', (options) =>
+							options.map((option) => option.textContent?.trim())
+						),
+						["Search all text for “zz-no-matching-destination”"]
+					);
 					await page.keyboard.press("Escape");
 					// Otherwise the reopened wait can match the closing input and type into it.
 					await page.waitForSelector('input[role="combobox"]', { hidden: true });
