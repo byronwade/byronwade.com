@@ -9,6 +9,7 @@ export {
 } from "./index-list";
 export { Markdown } from "./markdown";
 export { PageToc } from "./page-toc";
+export { PageTocInline } from "./page-toc-inline";
 export { ReactScan } from "./react-scan";
 export { SiteAnalytics } from "./site-analytics";
 export { TagList } from "./tag-list";

@@ -1,4 +1,4 @@
-import { Markdown, PageToc, ProjectViewTracker } from "@/components/common";
+import { Markdown, PageToc, PageTocInline, ProjectViewTracker } from "@/components/common";
 import { indexRowAccentClass, indexRowLinkClass } from "@/components/common/index-list";
 import { JsonLd } from "@/components/common/json-ld";
 import { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/page";
@@ -200,8 +200,10 @@ export function ProjectContent({ project }: ProjectContentProps) {
 				)}
 
 				{/* Audit read: the write-up on the measure, its outline docked in the
-					    right gutter on wide screens so it never moves the text's edge. */}
+					    right gutter on wide screens so it never moves the text's edge;
+				    narrower screens get it folded above. */}
 				<div className={cn(measureClass, "relative")}>
+					<PageTocInline items={toc} />
 					<article className="min-w-0">
 						{hasContent ? (
 							<Markdown content={body} />
