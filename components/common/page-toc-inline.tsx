@@ -1,9 +1,7 @@
 import { CaretDown } from "@/lib/icons";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
-
-/** Fewer headings than this and an outline adds nothing to the page. */
-export const PAGE_TOC_MIN_ITEMS = 3;
+import { PAGE_TOC_MIN_ITEMS } from "./page-toc-min-items";
 
 interface PageTocInlineProps {
 	items: TocItem[];

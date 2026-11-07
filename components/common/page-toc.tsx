@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
-import { PAGE_TOC_MIN_ITEMS as MIN_ITEMS } from "./page-toc-inline";
+import { PAGE_TOC_MIN_ITEMS as MIN_ITEMS } from "./page-toc-min-items";
 
 /** Fraction of the viewport, from the top, where a heading counts as being read. */
 const READING_LINE = 0.3;
