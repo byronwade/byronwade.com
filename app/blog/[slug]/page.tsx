@@ -1,7 +1,13 @@
 import { notFound } from "next/navigation";
 import { PostPager, ReadingProgress, RelatedPosts, SocialShare } from "@/components/blog";
 import { TopicNav } from "@/components/blog/topic-nav";
-import { BlogPostViewTracker, Markdown, PageToc, TagList } from "@/components/common";
+import {
+	BlogPostViewTracker,
+	Markdown,
+	PageToc,
+	PageTocInline,
+	TagList,
+} from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -105,6 +111,7 @@ async function BlogPostContent({ slug }: { slug: string }) {
 		{ name: "Blog", url: `${siteUrl}/blog` },
 		{ name: post.title, url },
 	]);
+	const toc = extractToc(post.content);
 
 	return (
 		<>
@@ -137,12 +144,13 @@ async function BlogPostContent({ slug }: { slug: string }) {
 
 			{/* The prose on the measure, its outline docked in the right gutter on
 			    wide screens, as on a case study, so long posts can be navigated
-			    without moving the text's edge. */}
+			    without moving the text's edge; narrower screens get it folded above. */}
 			<div className="relative w-full">
+				<PageTocInline items={toc} />
 				<article className="w-full">
 					<Markdown content={post.content} />
 				</article>
-				<PageToc items={extractToc(post.content)} />
+				<PageToc items={toc} />
 			</div>
 
 			{/* Where to read next on the same subject, right after the prose. */}

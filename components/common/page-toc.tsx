@@ -3,9 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { TocItem } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
-
-/** Fewer headings than this and an outline adds nothing to the page. */
-const MIN_ITEMS = 3;
+import { PAGE_TOC_MIN_ITEMS as MIN_ITEMS } from "./page-toc-inline";
 
 /** Fraction of the viewport, from the top, where a heading counts as being read. */
 const READING_LINE = 0.3;
@@ -19,7 +17,8 @@ interface PageTocProps {
  * and posts). Highlights the heading currently in view and supports keyboard +
  * smooth-scroll navigation. It docks in the right gutter of its `relative`
  * parent on wide screens, so it never moves the text's edge, and renders
- * nothing when there are too few headings to be useful.
+ * nothing when there are too few headings to be useful. Below `xl`,
+ * `PageTocInline` carries the same outline above the prose.
  */
 export function PageToc({ items }: PageTocProps) {
 	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
