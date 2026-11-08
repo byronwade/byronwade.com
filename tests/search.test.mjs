@@ -191,12 +191,23 @@ for (const [name, markdown] of [
 	});
 }
 
-test("search keeps table cells, list items, and paragraphs as separate words", () => {
+test("search keeps table cells, list items, and paragraphs as separate sentences", () => {
 	assert.equal(
 		searchPlainText(
 			"| First | Second |\n| --- | --- |\n| Third | Fourth |\n\n- Fifth\n- Sixth\n\nSeventh\n\nEighth"
 		),
-		"First Second Third Fourth Fifth Sixth Seventh Eighth"
+		"First. Second. Third. Fourth. Fifth. Sixth. Seventh. Eighth."
+	);
+});
+
+test("a heading ends like a sentence, so an excerpt never runs it into the next one", () => {
+	assert.equal(
+		searchPlainText("Still in progress.\n\n## Performance\n\nThe repository includes results."),
+		"Still in progress. Performance. The repository includes results."
+	);
+	assert.equal(
+		searchPlainText("## Why it matters?\n\n- one panel changes width,\n- one does not"),
+		"Why it matters? one panel changes width, one does not."
 	);
 });
 

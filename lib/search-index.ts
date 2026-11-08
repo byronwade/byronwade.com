@@ -103,7 +103,7 @@ function fromCorpus(
 const cachedPageCorpus = unstable_cache(
 	async (projects: Project[], posts: BlogPost[], topics: BlogTopic[]) =>
 		fromCorpus(projects, posts, topics, true),
-	["page-search-corpus-v3"],
+	["page-search-corpus-v4"],
 	{ revalidate: false }
 );
 
