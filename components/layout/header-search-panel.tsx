@@ -63,6 +63,15 @@ export default function HeaderSearchPanel({
 			run(selectedHref);
 		}
 	};
+	// The live line names what Enter does now: with no name matches the only
+	// option is the full-text search, so it never says "0 results" beside it.
+	const count = `${results.length} ${results.length === 1 ? "match" : "matches"}`;
+	const status =
+		results.length > 0
+			? `${typed ? `${count} · ` : ""}↑↓ navigate · Enter open · Esc close`
+			: fullText
+				? "No name matches · Enter searches all text · Esc close"
+				: "Esc close";
 	let cursor = 0;
 	return (
 		<>
@@ -177,7 +186,7 @@ export default function HeaderSearchPanel({
 				role="status"
 				className="border-border border-t px-3.5 py-2 text-copy-12 text-muted-foreground"
 			>
-				{results.length} results · ↑↓ navigate · Enter open · Esc close
+				{status}
 			</p>
 		</>
 	);
