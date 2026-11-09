@@ -474,6 +474,11 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 						),
 						["Search all text for “zz-no-matching-destination”"]
 					);
+					// The live line says what Enter does, never "0 results" beside an option.
+					assert.equal(
+						await page.$eval(`${SEARCH} [role="status"]`, (status) => status.textContent?.trim()),
+						"No name matches · Enter searches all text · Esc close"
+					);
 					await page.keyboard.press("Escape");
 					// Otherwise the reopened wait can match the closing input and type into it.
 					await page.waitForSelector('input[role="combobox"]', { hidden: true });
