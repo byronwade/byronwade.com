@@ -12,7 +12,7 @@ import { withBrowser } from "../fixtures/browser.mjs";
 const CASES = [
 	{
 		route: "/projects/thorbis-design",
-		next: "Back to projects",
+		next: "Next project",
 	},
 	{
 		route: "/blog/building-thorbis",
