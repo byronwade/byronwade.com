@@ -169,6 +169,52 @@ export async function getProject(slug: string): Promise<Project | null> {
 	}
 }
 
+function timeOf(date?: string): number {
+	return date ? new Date(date).getTime() : 0;
+}
+
+function byLeadThenRecency(a: Project, b: Project): number {
+	const aLead = Boolean(a.flagship || a.featured);
+	const bLead = Boolean(b.flagship || b.featured);
+	if (aLead !== bLead) {
+		return aLead ? -1 : 1;
+	}
+	if (aLead && bLead) {
+		const orderA = a.order ?? Number.POSITIVE_INFINITY;
+		const orderB = b.order ?? Number.POSITIVE_INFINITY;
+		if (orderA !== orderB) {
+			return orderA - orderB;
+		}
+	}
+	return timeOf(b.date) - timeOf(a.date);
+}
+
+export function isArchivedProject(project: Project): boolean {
+	return project.status?.toLowerCase() === "archived";
+}
+
+/**
+ * The /projects reading order: current work, then earlier (archived) work;
+ * within each, featured/flagships first (by explicit `order`), then recency.
+ */
+export function sortProjectsForIndex(projects: Project[]): Project[] {
+	const sorted = [...projects].sort(byLeadThenRecency);
+	return [
+		...sorted.filter((project) => !isArchivedProject(project)),
+		...sorted.filter(isArchivedProject),
+	];
+}
+
+/** The project after `slug` in the /projects order, wrapping to the first. */
+export async function getNextProject(slug: string): Promise<Project | null> {
+	const ordered = sortProjectsForIndex(await getProjects());
+	const at = ordered.findIndex((project) => project.slug === slug);
+	if (at < 0 || ordered.length < 2) {
+		return null;
+	}
+	return ordered[(at + 1) % ordered.length] ?? null;
+}
+
 export async function getAllProjectSlugs(): Promise<string[]> {
 	const projects = await getProjects();
 	return projects.map((project) => project.slug);

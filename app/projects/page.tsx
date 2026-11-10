@@ -3,7 +3,7 @@ import { JsonLd } from "@/components/common/json-ld";
 import { PageHeader, Section } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ProjectsIndex } from "@/components/project/projects-index";
-import { getProjects, type Project } from "@/lib/projects";
+import { getProjects, isArchivedProject, sortProjectsForIndex } from "@/lib/projects";
 import {
 	generateBreadcrumbStructuredData,
 	generateMetadata as generateSEOMetadata,
@@ -22,32 +22,9 @@ export async function generateMetadata() {
 	});
 }
 
-function timeOf(date?: string): number {
-	return date ? new Date(date).getTime() : 0;
-}
-
-/** Featured/flagships first (by explicit `order`, then recency), then everything else by recency. */
-function sortForIndex(projects: Project[]): Project[] {
-	return [...projects].sort((a, b) => {
-		const aLead = Boolean(a.flagship || a.featured);
-		const bLead = Boolean(b.flagship || b.featured);
-		if (aLead !== bLead) {
-			return aLead ? -1 : 1;
-		}
-		if (aLead && bLead) {
-			const orderA = a.order ?? Number.POSITIVE_INFINITY;
-			const orderB = b.order ?? Number.POSITIVE_INFINITY;
-			if (orderA !== orderB) {
-				return orderA - orderB;
-			}
-		}
-		return timeOf(b.date) - timeOf(a.date);
-	});
-}
-
 async function ProjectsList() {
 	const projects = await getProjects();
-	const sorted = sortForIndex(projects);
+	const sorted = sortProjectsForIndex(projects);
 
 	if (sorted.length === 0) {
 		return (
@@ -61,8 +38,8 @@ async function ProjectsList() {
 		);
 	}
 
-	const current = sorted.filter((project) => project.status?.toLowerCase() !== "archived");
-	const earlier = sorted.filter((project) => project.status?.toLowerCase() === "archived");
+	const current = sorted.filter((project) => !isArchivedProject(project));
+	const earlier = sorted.filter(isArchivedProject);
 
 	return (
 		<div className="flex flex-col gap-12">

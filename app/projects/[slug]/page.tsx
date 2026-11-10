@@ -1,6 +1,6 @@
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
-import { getAllProjectSlugs, getProject } from "@/lib/projects";
+import { getAllProjectSlugs, getNextProject, getProject } from "@/lib/projects";
 import { generateOGImageUrl, generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import { ProjectContent } from "./project-content";
@@ -62,5 +62,5 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 		notFound();
 	}
 
-	return <ProjectContent project={project} />;
+	return <ProjectContent next={await getNextProject(slug)} project={project} />;
 }

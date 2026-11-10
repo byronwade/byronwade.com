@@ -6,7 +6,7 @@ import { measureClass, SiteShell } from "@/components/layout/site-shell";
 import { FullWidthProjectPreview } from "@/components/project";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
-import { ArrowLeft, ArrowUpRight, Github } from "@/lib/icons";
+import { ArrowRight, ArrowUpRight, Github } from "@/lib/icons";
 import { extractToc } from "@/lib/markdown";
 import { safeFormatDate, safeISODate, stripLeadingH1 } from "@/lib/markdown-utils";
 import type { Project, ProjectType } from "@/lib/projects";
@@ -24,6 +24,8 @@ const GITHUB_URL = /https?:\/\/github\.com\/[^\s)<>"']+/i;
 const TRAILING_PUNCTUATION = /[.,]+$/;
 
 interface ProjectContentProps {
+	/** The next write-up in the /projects order, so a case study never dead-ends. */
+	next: Project | null;
 	project: Project;
 }
 
@@ -92,7 +94,7 @@ function ProjectProof({ project }: { project: Project }) {
 		</>
 	);
 }
-export function ProjectContent({ project }: ProjectContentProps) {
+export function ProjectContent({ next, project }: ProjectContentProps) {
 	const domain = extractDomain(project.url);
 	const projectType = project.type;
 	const projectTypeLabel = projectType ? typeLabels[projectType] : "Project";
@@ -228,20 +230,35 @@ export function ProjectContent({ project }: ProjectContentProps) {
 						Continue
 					</h2>
 					<div className="grid w-full gap-1 sm:grid-cols-2 sm:gap-6">
-						<Link className={indexRowLinkClass} href="/projects">
-							<span className="inline-flex items-center gap-1.5 text-copy-13 text-muted-foreground">
-								<ArrowLeft aria-hidden="true" className="size-4" />
-								All projects
-							</span>
-							<span
-								className={cn(
-									"text-pretty font-medium text-foreground text-heading-16",
-									indexRowAccentClass
-								)}
-							>
-								Back to projects
-							</span>
-						</Link>
+						{next ? (
+							<Link className={indexRowLinkClass} href={`/projects/${next.slug}`} prefetch={false}>
+								<span className="inline-flex items-center gap-1.5 text-copy-13 text-muted-foreground">
+									Next project
+									<span className="sr-only">:</span>
+									<ArrowRight aria-hidden="true" className="size-4" />
+								</span>
+								<span
+									className={cn(
+										"text-pretty font-medium text-foreground text-heading-16",
+										indexRowAccentClass
+									)}
+								>
+									{next.title.split(":")[0]}
+								</span>
+							</Link>
+						) : (
+							<Link className={indexRowLinkClass} href="/projects">
+								<span className="text-copy-13 text-muted-foreground">All projects</span>
+								<span
+									className={cn(
+										"text-pretty font-medium text-foreground text-heading-16",
+										indexRowAccentClass
+									)}
+								>
+									Back to projects
+								</span>
+							</Link>
+						)}
 						<Link className={cn(indexRowLinkClass, "sm:items-end sm:text-right")} href="/contact">
 							<span className="text-copy-13 text-muted-foreground">Want something like this?</span>
 							<span
