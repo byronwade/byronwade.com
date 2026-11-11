@@ -115,6 +115,25 @@ test("results stay in page, project, then writing order and drop empty groups", 
 	assert.equal(groupSearchResults(entries, "not-a-real-page").length, 0);
 });
 
+test("within a group, a name match leads a summary match, which leads a text-only match", () => {
+	const ranked = [
+		{ kind: "Project", label: "Ui kit", href: "/a", text: "Built for Thorbis and others." },
+		{ kind: "Project", label: "Dispatch", href: "/b", keywords: "thorbis scheduling" },
+		{ kind: "Project", label: "Thorbis Design", href: "/c" },
+		{ kind: "Project", label: "Unrelated", href: "/d", text: "Nothing here." },
+		{ kind: "Project", label: "Thorbis Network", href: "/e" },
+	];
+	assert.deepEqual(
+		groupSearchResults(ranked, "thorbis")[0].items.map((entry) => entry.href),
+		["/c", "/e", "/b", "/a"]
+	);
+	assert.deepEqual(
+		groupSearchResults(ranked, "")[0].items.map((entry) => entry.href),
+		["/a", "/b", "/c", "/d", "/e"],
+		"an empty query keeps corpus order"
+	);
+});
+
 const { searchPlainText } = await import("../lib/search-text.ts");
 const { buildPageSearchIndex, buildSearchIndex } = await import("../lib/search-index.ts");
 
