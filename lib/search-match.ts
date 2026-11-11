@@ -45,13 +45,40 @@ export function entryMatchesQuery(entry: SearchEntry, query: string): boolean {
 		.every((token) => haystack.includes(token));
 }
 
-/** Matches, in the same group order the header palette uses. Empty groups are omitted. */
+function queryTokens(query: string): string[] {
+	return normalizeSearchQuery(query).toLowerCase().split(WHITESPACE).filter(Boolean);
+}
+
+/**
+ * How directly an entry answers the query: 0 when every word is in its name,
+ * 1 when every word is in its name, meta or keywords (summary, tags), 2 when
+ * some word is only in the article text. A project named for the words then
+ * leads one that merely mentions them.
+ */
+function matchRank(entry: SearchEntry, tokens: string[]): number {
+	const label = entry.label.toLowerCase();
+	if (tokens.every((token) => label.includes(token))) {
+		return 0;
+	}
+	const described = `${label} ${entry.meta ?? ""} ${entry.keywords ?? ""}`.toLowerCase();
+	return tokens.every((token) => described.includes(token)) ? 1 : 2;
+}
+
+/**
+ * Matches, in the same group order the header palette uses, each group ranked
+ * by `matchRank` and otherwise kept in corpus order (the sort is stable). An
+ * empty query keeps corpus order. Empty groups are omitted.
+ */
 export function groupSearchResults(entries: SearchEntry[], query: string): SearchGroup[] {
-	return SEARCH_KIND_ORDER.map((kind) => ({
-		kind,
-		label: SEARCH_KIND_LABEL[kind],
-		items: entries.filter((entry) => entry.kind === kind && entryMatchesQuery(entry, query)),
-	})).filter((group) => group.items.length > 0);
+	const tokens = queryTokens(query);
+	return SEARCH_KIND_ORDER.map((kind) => {
+		const items = entries.filter((entry) => entry.kind === kind && entryMatchesQuery(entry, query));
+		if (tokens.length > 0) {
+			const ranks = new Map(items.map((entry) => [entry, matchRank(entry, tokens)]));
+			items.sort((a, b) => (ranks.get(a) ?? 2) - (ranks.get(b) ?? 2));
+		}
+		return { kind, label: SEARCH_KIND_LABEL[kind], items };
+	}).filter((group) => group.items.length > 0);
 }
 
 /** Characters of context kept before the first hit, and the passage's whole length. */
