@@ -356,6 +356,9 @@ than restyling them.
 - **Detail identity.** Case studies and posts open the same way: a 13px
   muted facts line (type or date, then reading time), the 32px title, the
   16px lede, then the evidence (problem and outcome, or tags).
+- **Post ending order.** The prose, then the "Share this post" row (it is
+  what a reader does on finishing), then the topic links, `PostPager` and
+  "Related posts", then "Back to writing" last.
 - **Pager.** A post ends with `PostPager` (`components/blog/post-pager.tsx`):
   a visible "More writing" heading in the 20px section role, then the older
   post on the reading edge and the newer opposite it, in the writing index's
