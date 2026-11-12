@@ -153,7 +153,15 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				<PageToc items={toc} />
 			</div>
 
-			{/* Where to read next on the same subject, right after the prose. */}
+			{/* Sharing is what a reader does on finishing the prose, so it closes the
+			    article rather than waiting below three lists of other posts. Left-aligned
+			    like everything else on the page. */}
+			<div className="flex w-full flex-col gap-3">
+				<p className="text-copy-13 text-muted-foreground">Share this post</p>
+				<SocialShare description={post.excerpt} title={post.title} url={url} />
+			</div>
+
+			{/* Where to read next on the same subject, right after the prose and its share row. */}
 			<TopicNav
 				heading="More on these topics"
 				topics={topics.filter((topic) => topic.posts.some(({ slug: other }) => other === slug))}
@@ -170,16 +178,10 @@ async function BlogPostContent({ slug }: { slug: string }) {
 				limit={3}
 			/>
 
-			{/* Left-aligned like everything else on the page. Centring these two was
-			    the only place the site abandoned its left edge. */}
-			<div className="flex w-full flex-col gap-3">
-				<p className="text-copy-13 text-muted-foreground">Share this post</p>
-				<SocialShare description={post.excerpt} title={post.title} url={url} />
-				<Link className="link-action w-fit" href="/blog">
-					<ArrowLeft aria-hidden="true" className="size-4" />
-					Back to writing
-				</Link>
-			</div>
+			<Link className="link-action w-fit" href="/blog">
+				<ArrowLeft aria-hidden="true" className="size-4" />
+				Back to writing
+			</Link>
 		</>
 	);
 }
