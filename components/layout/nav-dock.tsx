@@ -198,6 +198,17 @@ export function NavDock({
 								))}
 							</nav>
 							<div className="mt-2 flex flex-wrap gap-1 border-border border-t pt-2">
+								{/* The site's one call to action, reachable from the menu as it is
+								    from the footer; the dock keeps its five destinations. */}
+								<Link
+									href="/contact"
+									prefetch={false}
+									onClick={() => setOpen(false)}
+									aria-current={pathname === "/contact" ? "page" : undefined}
+									className="inline-flex min-h-11 min-w-11 items-center rounded-lg px-2.5 font-medium text-copy-13 text-foreground transition-colors hover:bg-muted aria-[current=page]:bg-muted"
+								>
+									Contact
+								</Link>
 								{publicProfiles.map((profile) => (
 									<a
 										key={profile.href}
