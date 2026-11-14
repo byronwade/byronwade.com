@@ -87,6 +87,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 				const proof = project.outcome || project.excerpt;
 				const leadMetric = project.metrics?.[0];
 				const carriesEvidence = Boolean(project.featured || project.flagship);
+				const showsProof = carriesEvidence && Boolean(proof || leadMetric);
 
 				return (
 					<li key={project.slug}>
@@ -107,8 +108,13 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 											className="size-3 shrink-0 translate-y-px fill-brand text-brand"
 										/>
 									)}
+									{/* On a phone a row without a proof line would be a bare
+									    name, so its tagline drops to a line of its own there.
+									    Rows with a proof line keep the phone row to the proof. */}
 									{project.tagline && (
-										<span className="hidden text-copy-14 text-muted-foreground sm:inline">
+										<span
+											className={`text-copy-14 text-muted-foreground ${showsProof ? "hidden sm:inline" : "basis-full sm:basis-auto"}`}
+										>
 											{project.tagline}
 										</span>
 									)}
@@ -125,7 +131,7 @@ export function ProjectsIndex({ projects }: { projects: Project[] }) {
 								</span>
 							</div>
 
-							{carriesEvidence && (proof || leadMetric) && (
+							{showsProof && (
 								<div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
 									{proof && <p className="max-w-2xl text-pretty text-body text-copy-14">{proof}</p>}
 									{leadMetric && (
