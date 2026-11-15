@@ -14,7 +14,7 @@ featured: false
 
 ---
 
-## The Problem
+## The problem
 
 Anyone who's shipped on Vercel, Netlify, Railway, Render, or Cloudflare knows the three recurring frustrations:
 
@@ -28,7 +28,7 @@ Ciel is a design answer to all three.
 
 ---
 
-## What Ciel Does
+## What Ciel does
 
 Ciel is organized around three promises:
 
@@ -42,7 +42,7 @@ Around that core sits the rest of a real platform: import pages for moving off V
 
 ---
 
-## How It's Built
+## How it's built
 
 Ciel runs on **Next.js 16** (App Router, Turbopack) and **React 19** with TypeScript, **Tailwind CSS v4**, and **shadcn/ui** components built on Base UI primitives. Charts use Recharts. The command palette uses cmdk. Theming is dark-mode-aware via next-themes.
 
@@ -56,7 +56,7 @@ A few details I'm proud of even at this stage:
 
 ---
 
-## Status, An Honest Note
+## Status, an honest note
 
 Ciel is a **frontend-first prototype** that I built in June 2026. The product surface (navigation, layouts, flows, data visualization, and auth screens) runs against a typed mock-data layer, with stubbed authentication: signing in sets a demo session cookie, and there's no real passkey or Git check behind it. There's no production deploy pipeline or live database. That phase was about getting the *experience* right before any infrastructure went in.
 

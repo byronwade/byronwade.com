@@ -15,13 +15,13 @@ With **Rebuzzle**, I set out to build more than just a wrapper around OpenAI or 
 
 Here is a technical deep dive into how Rebuzzle worked as of December 2025, moving beyond simple prompts to a multi-step generation pipeline.
 
-## The Architecture: Serverless & Event-Driven
+## The architecture: serverless & event-driven
 
 Rebuzzle was built on **Next.js 16** and the **Vercel AI SDK**, backed by **MongoDB**, which stored the puzzles, their vector embeddings, and play history.
 
 There's no puzzle server sitting idle. Once a day at midnight UTC, a Vercel cron job calls a workflow route that generates the day's puzzle and writes a blog post about the previous one.
 
-## The Core: Multi-Agent Orchestration
+## The core: multi-agent orchestration
 
 The daily puzzle doesn't come from a single prompt. Generation, quality review, and difficulty calibration are separate AI steps, each with its own instructions, a bit like a small editorial team:
 
@@ -33,7 +33,7 @@ The daily puzzle doesn't come from a single prompt. Generation, quality review, 
 
 I also built a true multi-agent mode on the Vercel AI SDK, where generator, evaluator, and calibrator agents work with database tools, plus a fourth **Personalization Agent** that tailors puzzles to a signed-in player's skill level and history. It sat behind an experimental feature flag that was on in development and off in production unless explicitly enabled, so the steps above are what the default daily run used.
 
-## The Generation Pipeline: Quality by Design
+## The generation pipeline: quality by design
 
 Every daily puzzle goes through a **five-stage pipeline** before it's saved. We don't publish raw AI output.
 
@@ -47,13 +47,13 @@ Every daily puzzle goes through a **five-stage pipeline** before it's saved. We 
 
 *   **Stage 5: Decision:** The puzzle is accepted for publishing or sent back for another attempt.
 
-## Semantic Understanding & Vector Embeddings
+## Semantic understanding & vector embeddings
 
 Once a puzzle is saved, it gets a vector embedding, stored alongside it in MongoDB.
 
 An API route could use those embeddings to find puzzles by meaning, ranking them by cosine similarity, but no page in the app called it yet. I also wrote a similarity-based cache for AI responses, meant to reuse results for near-identical requests and cut API costs, but nothing in the generation path used it.
 
-## Continuous Learning
+## Continuous learning
 
 Each attempt record has room for whether the player solved it, how long it took, and how many hints they used.
 

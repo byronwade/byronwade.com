@@ -19,7 +19,7 @@ This account describes the June 2026 public source, reviewed in October 2026. Fa
 
 ---
 
-## The Problem
+## The problem
 
 When I prototype against a local Supabase stack, I have to start Docker, manage migrations and seeds, and keep the services running before I can work on the feature. For a quick Next.js experiment, I wanted a smaller starting point.
 
@@ -29,7 +29,7 @@ It trades service setup for local approximations. Those limits need to stay visi
 
 ---
 
-## What Fakebase Does
+## What Fakebase does
 
 The in-process client implements part of the Supabase API:
 
@@ -45,7 +45,7 @@ For AI-assisted work, `fakebase ai init` writes starter rules and documentation 
 
 ---
 
-## How It's Built
+## How it's built
 
 Fakebase is a TypeScript workspace using pnpm, Node 20+ and ES modules. It separates the kernel, client, adapters, auth, storage, realtime, functions, migrations, type generation, CLI and AI tooling. The root also contains the Next.js documentation site and playground. Turborepo configuration and a separate apps workspace described in the README are absent from the reviewed main branch.
 
@@ -60,7 +60,7 @@ Underneath sits a schema representation, query handling and the shared policy en
 
 ---
 
-## Why It's a Flagship, and Why It's Free
+## Why it's a flagship, and why it's free
 
 Fakebase is work I chose to make available under MIT because I wanted a reusable starting point for experiments. Designing a backend to be replaced gives it a useful constraint: the export path matters as much as the local API.
 

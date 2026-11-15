@@ -21,7 +21,7 @@ People know the WordPress admin. They have used it for years and they do not wan
 
 ReactPress rebuilds the WordPress admin interface as React pages using **Next.js 14**, **React 18**, and **TypeScript**. It is not a WordPress theme or a skin. It keeps the layout people already know and puts it on a stack I would actually choose today. On the main branch the screens are static: nothing loads or saves content yet.
 
-### The Technical Foundation
+### The technical foundation
 
 Built with:
 
@@ -35,9 +35,9 @@ The admin area has 39 routes under `/rp-admin`: the dashboard, post and page lis
 
 ---
 
-## Why I Started Building ReactPress
+## Why I started building ReactPress
 
-### The Problem with Traditional WordPress
+### The problem with traditional WordPress
 
 WordPress powers over 40% of the internet, and for good reason. Its admin interface is intuitive, well-designed, and familiar to millions of users. However, as a developer working on modern web applications, I found myself constantly hitting limitations:
 
@@ -49,7 +49,7 @@ WordPress powers over 40% of the internet, and for good reason. Its admin interf
 
 4. **Developer Experience**: Working with WordPress means dealing with PHP, jQuery, and older development patterns
 
-### The Vision: A Modern Admin Interface Foundation
+### The vision: a modern admin interface foundation
 
 I realized that what the web development community needed wasn't another CMS or another admin framework. What we needed was a way to leverage the familiar, battle-tested WordPress admin interface with modern technologies that could integrate with any backend, whether that's a headless WordPress installation, a custom API, or a specialized field management system.
 
@@ -57,7 +57,7 @@ ReactPress was born from this vision: **take the best of WordPress's UX and comb
 
 ---
 
-## The Journey So Far
+## The journey so far
 
 ### Phase 1: Foundation ✅
 
@@ -70,7 +70,7 @@ The first phase focused on establishing the core architecture:
 
 That gives every screen a real route and real components. On the main branch it does not give them data: forms and tables render, but they do not load or save anything.
 
-### Phase 2: CSS Modernization 🚧
+### Phase 2: CSS modernization 🚧
 
 This phase is unfinished. The plan was to convert the original WordPress CSS to Tailwind CSS utility classes. On the main branch the screens still run on the copied WordPress stylesheet, about 18,600 lines of it. Unmerged work from June 2026 removes unused rules from that stylesheet and starts converting the admin shell to Tailwind. The point of the conversion was:
 
@@ -79,7 +79,7 @@ This phase is unfinished. The plan was to convert the original WordPress CSS to 
 - Enabling easier customization
 - Supporting better responsive design patterns
 
-### Future Phases
+### Future phases
 
 The roadmap, none of it built yet:
 
@@ -89,9 +89,9 @@ The roadmap, none of it built yet:
 
 ---
 
-## Why ReactPress is a Critical Stepping Stone for Field Management Systems
+## Why ReactPress is a critical stepping stone for field management systems
 
-### The Field Management System Vision
+### The field management system vision
 
 Field management systems are complex applications that need to handle:
 
@@ -107,19 +107,19 @@ Building such a system from scratch is a massive undertaking. You need:
 - An architecture that supports rapid development and iteration
 - A foundation that doesn't require reinventing the wheel
 
-### How ReactPress Fills the Gap
+### How ReactPress fills the gap
 
 That is the foundation ReactPress is meant to become:
 
-#### 1. Proven UX Patterns
+#### 1. Proven UX patterns
 
 WordPress's admin interface has been refined over two decades. Millions of users already know how to navigate it, where to find settings, and how to manage content. By starting with ReactPress, a field management system inherits these proven patterns rather than forcing users to learn a completely new interface.
 
-#### 2. Component-Based Architecture
+#### 2. Component-based architecture
 
 The sidebar, toolbar, footer and list table are shared components. Most screens are still one large page file each, so breaking the dashboard widgets and settings forms into their own components is part of the remaining work. Once they are, a field management system extends them instead of starting from scratch: a field-operations widget built on the dashboard's widget layout, an equipment-tracking form built on the settings forms.
 
-#### 3. API-First Design
+#### 3. API-first design
 
 The plan is for ReactPress to work with any backend: WordPress, a custom API, MongoDB, or a field management database. None of that is on the main branch: SWR and Recoil are installed but not used, and an early MongoDB and Firebase setup script is commented out. An unmerged branch from June 2026 connects most list screens, the dashboard and General Settings to Fakebase, an in-process stand-in backend, which is a first step but not a real one. That flexibility matters for field management systems, which often need to integrate with:
 
@@ -129,11 +129,11 @@ The plan is for ReactPress to work with any backend: WordPress, a custom API, Mo
 - Scheduling systems
 - Reporting tools
 
-#### 4. Modern Performance
+#### 4. Modern performance
 
 Field management systems need to be fast, especially when field workers are accessing them on mobile devices with limited connectivity. I have not measured ReactPress against the WordPress admin, so I make no speed claim here. The bet is that React pages built with the Next.js App Router are a better place to start than a PHP admin carrying years of plugins.
 
-#### 5. Developer Productivity
+#### 5. Developer productivity
 
 Building a field management system is complex enough without also having to build an admin interface from scratch. ReactPress aims to provide:
 
@@ -144,7 +144,7 @@ Building a field management system is complex enough without also having to buil
 
 This means developers can focus on the domain-specific features of the field management system rather than spending months building basic admin functionality.
 
-### The Path Forward
+### The path forward
 
 ReactPress isn't the end goal, it's the foundation. Here's how it enables the field management system:
 
@@ -157,7 +157,7 @@ The aim is to cut development time and risk: start from screens people already k
 
 ---
 
-## The Bigger Picture
+## The bigger picture
 
 ReactPress represents more than just a WordPress alternative. It's a demonstration that:
 

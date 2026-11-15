@@ -15,7 +15,7 @@ featured: false
 
 ---
 
-## The Thesis
+## The thesis
 
 The dominant streaming platforms run a winner-take-all algorithm. Rank by concurrent viewers, surface what's already huge, and the rich get richer while a great 30-person community stays invisible. The incentives push creators toward sensationalism and leave newcomers feeling like they walked into a stadium mid-game with no idea what's happening.
 
@@ -29,7 +29,7 @@ Stream is built on three principles that fall out of rejecting that:
 
 ---
 
-## What's Built
+## What's built
 
 Stream is a full product surface, not a landing page with three screenshots. It has 33 page templates:
 
@@ -45,7 +45,7 @@ The thesis is in the data, but the ranking isn't finished. Each seeded stream ca
 
 ---
 
-## How It's Built
+## How it's built
 
 Stream is built with **Next.js 16** and **React 19** as a **statically exported** site. It's styled with **Tailwind CSS v4** on a semantic-token design system with its own hand-built components, and it uses Motion for the panel transitions. It has real engineering hygiene around it: Vitest unit tests, Playwright end-to-end, accessibility, and visual tests, and Storybook stories for the main components.
 
