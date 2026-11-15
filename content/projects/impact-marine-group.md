@@ -19,15 +19,15 @@ The site is a custom WordPress theme I designed and developed for the dealership
 
 ---
 
-## The Design Strategy: The Lifestyle Authority
+## The design strategy: the lifestyle authority
 
-### Visual-First Immersion
+### Visual-first immersion
 
 I moved away from the cluttered "classifieds" look that plagues the boat industry. Instead, I prioritized a "Showroom Experience" on the web. The home page opens on a full-width looping video with the headline over it, before any list of boats. The design is not showing a product. It is selling the *feeling* of a Saturday on Lake Lanier.
 
 When someone lands on the site, they should feel like they're already on the water, not like they're shopping for a used car. That first impression is visual, and it comes before a single price.
 
-### Clean, High-Contrast UI
+### Clean, high-contrast UI
 
 To match the name "Impact," I used bold typography and high contrast: white type on black, with blue for actions. The goal was a "premium" feel that separates the brand from "mom-and-pop" boat yards and signals a modern, professional operation, not a roadside lot.
 
@@ -41,21 +41,21 @@ When inventory loads, it should feel like part of the site, not like you've been
 
 ---
 
-## The SEO Strategy: Lake-Logic and Brand Niches
+## The SEO strategy: lake-logic and brand niches
 
-### Water-Body Targeting (Not Just Cities)
+### Water-body targeting (not just cities)
 
 Boaters don't think in zip codes. They think in water. The About page names the water the shop serves instead of stopping at the town: fourteen Georgia lakes, including **Lake Lanier**, **Lake Allatoona**, **Lake Burton**, Lake Hartwell, and West Point Lake. The same page says the shop is serving Lake Lanier and all Georgia lakes, with nationwide shipping, and that it is proudly serving all North Georgia lakes.
 
 My reasoning was that someone searching for a lake is already in the mindset of being on the water. They are not looking for a dealer. They are looking for their next weekend. The lakes are a list on the About page, not separate pages for each lake.
 
-### Brand Pages
+### Brand pages
 
 The home page names the lines the dealership carries: **Viaggio** pontoons, **MB Sports**, **Tige** and **ATX**. Every manufacturer in the inventory also gets its own page listing that brand's boats, so a search for a specific make has somewhere specific to go.
 
 These are inventory pages, not separate mini-sites with their own long-form content. Someone looking at a specific model is usually further along than someone browsing, and the brand page puts the boats that are actually in stock in front of them.
 
-### Service & Certification Keywords
+### Service & certification keywords
 
 Each service has its own page: winterization, fiberglass repair, engine maintenance and repair, dockside service, trailer repair, detailing, decking, towers and surf systems, and marine audio and electronics. The About page says the technicians are factory certified and lists the engines they have experience on, including Indmar, Yamaha, Mercury, Mercruiser and Volvo Penta.
 
@@ -63,23 +63,23 @@ While sales happen once, service happens every year. My bet was that someone who
 
 ---
 
-## The Psychology: Identity, Empathy, and Risk Reversal
+## The psychology: identity, empathy, and risk reversal
 
 These sections describe the reasoning behind the design. They are not a measured study of how customers behaved.
 
-### The "In-Group" Bias: "We Are Boaters"
+### The "in-group" bias: "We Are Boaters"
 
 The "About Us" story opens with *"We are boaters."* and closes with *"From one boater to another..."* I designed the site to dismantle the "us vs. them" barrier between salesman and customer. The brand signals that they belong to the same tribe, because people prefer to buy from peers rather than corporations.
 
 In an industry where salespeople are often seen as pushy or disconnected, positioning the team as fellow boaters changes the entire dynamic. It's not a transaction, it's a conversation between people who share the same passion.
 
-### Risk Reversal: The "Anti-Lemon" Strategy
+### Risk reversal: the "Anti-Lemon" strategy
 
 Buying a boat (especially used) is high-risk. I countered that anxiety by putting the service side up front: **over 10,000 sq ft of shop space** and **factory-certified technicians**. The home page also says every used boat goes through an inspection before it is sold. What that tells the buyer is that we sell it and we can also fix it. It removes the fear of being stranded with a broken expensive toy.
 
 The service capabilities are not buried in a list. They are featured, because they are a sales tool. A "supported" customer is a more confident buyer.
 
-### Identity Reinforcement
+### Identity reinforcement
 
 The copy and the imagery are about *memories* and *family* rather than horsepower and fiberglass. The home page headline is "Make an Impact!", and the footer says the dealership is "dedicated to helping our customers make impactful memories with their families and friends on the water." I'm selling the identity of the "Good Dad" or the "Adventurous Captain," and the tagline turns the dealership's name into a promise about their *lifestyle*.
 
@@ -87,7 +87,7 @@ People don't buy boats for the boat, they buy them for the experiences they'll h
 
 ---
 
-## Why I Built It This Way
+## Why I built it this way
 
 I built the site this way to solve the biggest problem in the marine industry: **The Disconnect.**
 
@@ -99,7 +99,7 @@ I built the site this way to solve the biggest problem in the marine industry: *
 
 ---
 
-## The Result
+## The result
 
 The site does not open with a sale. It opens with the "Make an Impact!" headline over the video, then a way to reach sales and a way to reach service, and only then the boats, which sit inside that same experience.
 

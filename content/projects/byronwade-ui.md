@@ -46,7 +46,7 @@ This site now runs on a port of [Thorbis Design](/projects/thorbis-design) inste
 
 ---
 
-## How It's Built
+## How it's built
 
 byronwade/ui sits on the same React stack the rest of my work uses. **Next.js**, **React**, **Tailwind**, and **Radix** primitives for accessible behavior. But the real backbone is **semantic design tokens**. Surfaces are driven by intent-named tokens like `--dock`, `--brand`, and `--dock-active` rather than raw colors, so one brand decision, like the gold accent this site used to carry, reaches every product without a find-and-replace.
 
@@ -54,7 +54,7 @@ The components are **server-components-first**, dropping to client only where in
 
 ---
 
-## Why It Exists
+## Why it exists
 
 Maintaining a half-dozen products alone is only sustainable if they share a foundation. byronwade/ui was built to be that foundation: build a pattern once, harden it against real use, and reuse it everywhere. When I improve the morph timing or tighten the focus behavior in one place, every project that uses it inherits the change.
 

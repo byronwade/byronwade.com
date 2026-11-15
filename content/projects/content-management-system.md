@@ -18,9 +18,9 @@ This article explores why I decided to build this CMS, the architectural decisio
 
 ---
 
-## Why Build a CMS in 2024?
+## Why build a CMS in 2024?
 
-### The Problem with Existing Solutions
+### The problem with existing solutions
 
 When I first started thinking about building a Field Management System for agriculture, I quickly realized that most existing CMS platforms, while powerful, come with significant limitations:
 
@@ -32,7 +32,7 @@ When I first started thinking about building a Field Management System for agric
 
 4. **Performance overhead**: Traditional CMS platforms often include features we don't need, creating unnecessary complexity and slower performance
 
-### The Vision: A Purpose-Built Foundation
+### The vision: a purpose-built foundation
 
 Instead of starting directly with the FMS, I decided to build a modern CMS that would serve as both a learning platform and a foundation. This approach offers several advantages:
 
@@ -46,9 +46,9 @@ Instead of starting directly with the FMS, I decided to build a modern CMS that 
 
 ---
 
-## What Makes This CMS Different
+## What makes this CMS different
 
-### Server-First Architecture
+### Server-first architecture
 
 The plan was a server-first system built on Next.js Server Components (the project started on Next.js 15 and moved to 16 in December 2025), which means:
 
@@ -62,7 +62,7 @@ The plan was a server-first system built on Next.js Server Components (the proje
 
 The prototype did not get there. The CMS layout and nearly every admin screen are client components, and the content editor loads and saves through an API route. Only the landing page, the analytics overview and a few redirects render on the server.
 
-### Visual Database Schema Builder
+### Visual database schema builder
 
 The most distinctive part of this CMS is the visual database schema builder, built with ReactFlow. It opens with a sample schema and lets you:
 
@@ -86,7 +86,7 @@ This feature is particularly important for the FMS because agricultural data has
 
 Having a visual tool to model these relationships before implementation is invaluable.
 
-### Component Isolation and Modularity
+### Component isolation and modularity
 
 The aim was to build every component in isolation. That means:
 
@@ -98,7 +98,7 @@ The aim was to build every component in isolation. That means:
 
 - **Scalability**: New features can be added without refactoring existing code
 
-### Modern UI Patterns
+### Modern UI patterns
 
 The CMS uses shadcn/ui components with Tailwind CSS, providing:
 
@@ -110,11 +110,11 @@ The CMS uses shadcn/ui components with Tailwind CSS, providing:
 
 ---
 
-## Key Features That Translate to FMS
+## Key features that translate to FMS
 
 These are mappings, not shipped features. In the prototype, media, analytics and the publishing board all run on sample data.
 
-### 1. Content Management → Field Data Management
+### 1. Content management → field data management
 
 The content management system in the CMS directly translates to managing field data in the FMS:
 
@@ -124,7 +124,7 @@ The content management system in the CMS directly translates to managing field d
 
 - **Media management** becomes **field documentation** (photos, drone imagery, soil samples)
 
-### 2. Visual Schema Builder → Agricultural Data Modeling
+### 2. Visual schema builder → agricultural data modeling
 
 The visual database builder is perhaps the most directly applicable feature:
 
@@ -134,7 +134,7 @@ The visual database builder is perhaps the most directly applicable feature:
 
 - **Field types** represent agricultural data (GPS coordinates, soil pH, yield data, etc.)
 
-### 3. Analytics Dashboard → Farm Performance Metrics
+### 3. Analytics dashboard → farm performance metrics
 
 The analytics system in the CMS will become the performance dashboard for the FMS:
 
@@ -144,7 +144,7 @@ The analytics system in the CMS will become the performance dashboard for the FM
 
 - **Traffic patterns** → **Seasonal operation patterns**
 
-### 4. Publishing System → Field Operation Planning
+### 4. Publishing system → field operation planning
 
 The publishing workflow in the CMS translates to operation planning:
 
@@ -156,9 +156,9 @@ The publishing workflow in the CMS translates to operation planning:
 
 ---
 
-## Why This Matters for Field Management
+## Why this matters for field management
 
-### Agriculture is Data-Rich
+### Agriculture is data-rich
 
 Modern agriculture generates enormous amounts of data:
 
@@ -176,7 +176,7 @@ Modern agriculture generates enormous amounts of data:
 
 A Field Management System needs to handle this data complexity while remaining usable for farmers who may not be technical experts. The CMS provides the foundation for building intuitive interfaces that hide complexity while exposing powerful functionality.
 
-### The Need for Customization
+### The need for customization
 
 Every farm is different:
 
@@ -198,7 +198,7 @@ A CMS-based architecture would allow for:
 
 - **API-first design**: Integrate with existing farm management tools
 
-### Performance at Scale
+### Performance at scale
 
 Agricultural operations don't stop for slow software. A farmer checking field conditions on a tablet in the middle of a field needs instant responses. A server-first architecture is meant to provide the following; none of it was measured in the prototype:
 
@@ -212,7 +212,7 @@ Agricultural operations don't stop for slow software. A farmer checking field co
 
 ---
 
-## Technical Architecture Highlights
+## Technical architecture highlights
 
 ### Next.js 16 with App Router
 
@@ -226,7 +226,7 @@ The application uses the Next.js App Router (on Next.js 16 since December 2025),
 
 - **Route-based code splitting**: Automatic optimization
 
-### TypeScript Throughout
+### TypeScript throughout
 
 Type safety is critical when building complex systems:
 
@@ -238,7 +238,7 @@ Type safety is critical when building complex systems:
 
 - **Safer refactoring**: Changes are validated across the codebase
 
-### State Management with Zustand
+### State management with Zustand
 
 For client-side state, I chose Zustand for its simplicity:
 
@@ -248,7 +248,7 @@ For client-side state, I chose Zustand for its simplicity:
 
 - **Performance**: Only re-renders components that use changed state
 
-### Component Library: shadcn/ui
+### Component library: shadcn/ui
 
 The UI is built on shadcn/ui, which provides:
 
@@ -262,9 +262,9 @@ The UI is built on shadcn/ui, which provides:
 
 ---
 
-## The Road Ahead: From CMS to FMS
+## The road ahead: from CMS to FMS
 
-### Phase 1: CMS Foundation (Current)
+### Phase 1: CMS foundation (current)
 
 The prototype has:
 
@@ -273,7 +273,7 @@ The prototype has:
 ✅ User interface patterns
 🚧 Media management and analytics: interface only, on sample data
 
-### Phase 2: FMS-Specific Features (Next)
+### Phase 2: FMS-specific features (next)
 
 Building on the CMS foundation, the FMS will add:
 
@@ -289,7 +289,7 @@ Building on the CMS foundation, the FMS will add:
 
 - **Financial management**: Cost tracking, yield analysis, profitability
 
-### Phase 3: Advanced Features (Future)
+### Phase 3: Advanced features (future)
 
 With a solid foundation, we can add:
 
@@ -305,9 +305,9 @@ With a solid foundation, we can add:
 
 ---
 
-## Lessons Learned
+## Lessons learned
 
-### Start with the Foundation
+### Start with the foundation
 
 Building the CMS first has taught me that:
 
@@ -319,7 +319,7 @@ Building the CMS first has taught me that:
 
 - **User experience is king**: Even the most powerful system is useless if users can't figure it out
 
-### The Value of Constraints
+### The value of constraints
 
 By building a frontend-only CMS first, I've learned to:
 

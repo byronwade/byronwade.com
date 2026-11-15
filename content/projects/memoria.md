@@ -15,13 +15,13 @@ I built **Memoria** after watching AI assistants refactor code perfectly in isol
 
 ---
 
-## Why Memoria Exists
+## Why Memoria exists
 
-### The Failure Pattern
+### The failure pattern
 
 You ask an AI to update `route.ts`. It ships the change confidently. Production blows up because `billing.tsx` relied on a subtle side effect. There were no imports between them, so the AI never saw the dependency.
 
-### The Requirements
+### The requirements
 
 - **Local-first**: Analyze the repo without sending code to any server.
 - **Low friction**: One small config entry for the common MCP clients (Claude Code, Claude Desktop, Cursor, Windsurf, Cline).
@@ -30,7 +30,7 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 
 ---
 
-## What Memoria Does
+## What Memoria does
 
 **Reveals hidden coupling** by mining git history to find files that change together, even without imports.
 **Assigns a risk score** so you and the AI know when to slow down.
@@ -40,7 +40,7 @@ You ask an AI to update `route.ts`. It ships the change confidently. Production 
 
 ---
 
-## How It Works
+## How it works
 
 ### Volatility Engine
 Scans commit history with time-decayed weighting for panic keywords (fix, bug, revert, hotfix) to flag historically brittle files and who usually touches them.
@@ -56,7 +56,7 @@ Runs lightweight git grep to enumerate importers so new or low-history files sti
 
 ---
 
-## Installing in Minutes
+## Installing in minutes
 
 Memoria is distributed as an **MCP server**. Every client gets the same server entry, `{"mcpServers":{"memoria":{"command":"npx","args":["-y","@byronwade/memoria"]}}}`:
 
@@ -70,7 +70,7 @@ Restart your AI tool and the analysis tools are available, with no account or AP
 
 ---
 
-## Using Memoria With Your AI
+## Using Memoria with your AI
 
 Ask your AI to analyze a file before it edits anything:
 
@@ -89,7 +89,7 @@ Repeat the analysis during refactors, the cache returns results in milliseconds.
 
 ---
 
-## When to Reach for Memoria
+## When to reach for Memoria
 
 - Refactors or API shape changes where hidden dependents are likely.
 - Deleting "dead" code that might actually be a regression fix, run history first.
@@ -98,7 +98,7 @@ Repeat the analysis during refactors, the cache returns results in milliseconds.
 
 ---
 
-## Confidence Without Compromise
+## Confidence without compromise
 
 Memoria keeps your codebase private, accelerates AI-driven work, and reduces the risk of shipping regressions caused by unseen dependencies. If you want your AI to be both fast *and* safe, give it the memory it’s missing.
 

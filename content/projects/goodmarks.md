@@ -28,7 +28,7 @@ As checked on October 20, 2026, [goodmarks.io](https://goodmarks.io) offers web 
 
 ---
 
-## The Problem
+## The problem
 
 Running a service business made the gap between doing the work and hearing about the experience hard to ignore. A customer might have a complaint I could resolve, but I needed a way to hear it. Asking for feedback also needed to fit into the workday.
 
@@ -36,7 +36,7 @@ That is the problem I set out to address. A feedback channel gives an owner some
 
 ---
 
-## What Goodmarks Does
+## What Goodmarks does
 
 The [published routing explanation](https://goodmarks.io/no-review-gating) describes a rating-led flow with two options:
 
@@ -61,7 +61,7 @@ The public product pages distinguish available web features from upcoming work:
 
 ---
 
-## How It's Built
+## How it's built
 
 The public [stack credits](https://goodmarks.io/humans.txt), dated May 7, 2026, describe a **Next.js**, **React**, and **TypeScript** web application using **Supabase**, hosted on **Vercel**, with **Stripe** billing. These are published credits, not an inspection of the current application source.
 
@@ -75,7 +75,7 @@ The distinction between the web product and the native plan matters:
 
 ---
 
-## Why It's the Flagship
+## Why it's the flagship
 
 I originally described Goodmarks as my flagship because it connected my service-business experience with product development. That motivation still explains the project. This site's earlier-work grouping is editorial; the public web product has its own release history.
 

@@ -356,6 +356,10 @@ than restyling them.
 - **Detail identity.** Case studies and posts open the same way: a 13px
   muted facts line (type or date, then reading time), the 32px title, the
   16px lede, then the evidence (problem and outcome, or tags).
+- **Heading case.** Section headings inside a post or case study are
+  sentence case ("How it's built"), as posts already were. Only a page's own
+  title may use Title Case. Product and component names keep their capitals
+  (ReactPress, Morph Panel, Sentinel Engine).
 - **Post ending order.** The prose, then the "Share this post" row (it is
   what a reader does on finishing), then the topic links, `PostPager` and
   "Related posts", then "Back to writing" last.
