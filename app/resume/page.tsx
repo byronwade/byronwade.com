@@ -145,13 +145,14 @@ const skills = [
 	"TypeScript",
 ];
 
+/** Newest first, the same direction as the experience list above it. */
 const certifications: { name: string; year: string; pending?: boolean }[] = [
 	{ name: "Master Plumber License (GA)", year: "2026" },
-	{ name: "C-36 Plumbing License (CA)", year: "2018" },
 	{ name: "C-42 Sanitation License (CA)", year: "2020" },
-	{ name: "Septic System Installer (Santa Cruz County)", year: "2016" },
-	{ name: "Septic System Installer (Santa Clara County)", year: "2017" },
 	{ name: "Project Management", year: "2019" },
+	{ name: "C-36 Plumbing License (CA)", year: "2018" },
+	{ name: "Septic System Installer (Santa Clara County)", year: "2017" },
+	{ name: "Septic System Installer (Santa Cruz County)", year: "2016" },
 ];
 
 /**
