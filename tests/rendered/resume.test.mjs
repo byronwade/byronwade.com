@@ -11,6 +11,7 @@ const SECTION_TAG = /<(\/?)(section|div|footer)\b/g;
 const PRINT_HIDDEN_FOOTER = /<footer class="[^"]*\bprint:hidden\b/;
 const OVERSTATED = /multi-million/i;
 const MAIN = `id="main-content"`;
+const CERT_YEAR = /tabular-nums">(\d{4})/g;
 
 async function readResume() {
 	const file = new URL("../../.next/server/app/resume.html", import.meta.url);
@@ -79,6 +80,20 @@ test("the resume record is in the prerendered HTML, without the real contact det
 	assert.ok(person, "/resume should carry its Person JSON-LD");
 	assert.equal(person.email, "contact@byronwade.com", "JSON-LD uses the published role address");
 	assert.equal(person.telephone, "+1-8xx-xxx-xxxx", "JSON-LD uses the masked number");
+});
+
+test("licenses and certifications read newest first, like the experience list", async () => {
+	const html = await readResume();
+	const section = html.slice(html.indexOf(">Licenses and certifications<"));
+	const years = [...section.slice(0, section.indexOf("</ul>")).matchAll(CERT_YEAR)].map(
+		([, year]) => Number(year)
+	);
+	assert.ok(years.length > 1, "the section should list its credentials with years");
+	assert.deepEqual(
+		years,
+		[...years].sort((a, b) => b - a),
+		"credentials should be ordered by year, newest first"
+	);
 });
 
 test("the resume description restates the page instead of overstating it", async () => {
