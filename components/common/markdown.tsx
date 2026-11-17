@@ -101,9 +101,12 @@ export function Markdown({ content, className }: MarkdownProps) {
 						// Without this check those blocks drew an inline chip inside the code well.
 						const isInline = !(codeClassName || String(children).endsWith("\n"));
 						if (isInline) {
+							// 4px of side padding: wider and the chip pushes a following comma or
+							// full stop far enough away to read as a stray space. A chip that wraps
+							// keeps its padding and corners on each line (box-decoration-clone).
 							return (
 								<code
-									className="wrap-anywhere rounded-sm bg-(--thorbis-code-bg) px-1.5 py-0.5 font-mono text-(--thorbis-code-fg) text-copy-14"
+									className="wrap-anywhere rounded-sm bg-(--thorbis-code-bg) box-decoration-clone px-1 py-0.5 font-mono text-(--thorbis-code-fg) text-copy-14"
 									{...props}
 								>
 									{children}
