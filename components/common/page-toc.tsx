@@ -21,7 +21,9 @@ interface PageTocProps {
  * `PageTocInline` carries the same outline above the prose.
  */
 export function PageToc({ items }: PageTocProps) {
-	const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
+	// Nothing is lit until the reader reaches the first section: the intro above
+	// it belongs to no heading, and lighting one there would misreport the place.
+	const [activeId, setActiveId] = useState<string>("");
 	const listRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
@@ -33,8 +35,7 @@ export function PageToc({ items }: PageTocProps) {
 			const el = document.getElementById(item.id);
 			return el ? [{ id: item.id, el }] : [];
 		});
-		const first = headings[0];
-		if (!first) {
+		if (headings.length === 0) {
 			return;
 		}
 
@@ -50,7 +51,7 @@ export function PageToc({ items }: PageTocProps) {
 			// so anything on screen counts.
 			const atBottom = window.scrollY + window.innerHeight >= root.scrollHeight - 2;
 			const line = window.innerHeight * (atBottom ? 1 : READING_LINE);
-			let current = first.id;
+			let current = "";
 			for (const { id, el } of headings) {
 				if (el.getBoundingClientRect().top > line) {
 					break;
