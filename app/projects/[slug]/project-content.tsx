@@ -224,7 +224,7 @@ export function ProjectContent({ next, project }: ProjectContentProps) {
 
 				<nav
 					aria-labelledby="project-next"
-					className={cn(measureClass, "flex w-full flex-col gap-4")}
+					className={cn(measureClass, "flex w-full flex-col gap-4 print:hidden")}
 				>
 					<h2 className={sectionHeadingClass} id="project-next">
 						Continue

@@ -5,7 +5,13 @@ import {
 	generateWebSiteStructuredData,
 } from "@/lib/seo";
 import "./globals.css";
-import { ErrorBoundary, ReactScan, SiteAnalytics, ThemeProvider } from "@/components/common";
+import {
+	ErrorBoundary,
+	PrintInLightTheme,
+	ReactScan,
+	SiteAnalytics,
+	ThemeProvider,
+} from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import SiteLayout from "@/components/layout/conditional-layout";
 
@@ -38,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<SiteLayout>{children}</SiteLayout>
 					</ErrorBoundary>
 				</ThemeProvider>
+				<PrintInLightTheme />
 				<SiteAnalytics />
 				<ReactScan />
 			</body>

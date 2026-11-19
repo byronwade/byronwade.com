@@ -10,6 +10,7 @@ export {
 export { Markdown } from "./markdown";
 export { PageToc } from "./page-toc";
 export { PageTocInline } from "./page-toc-inline";
+export { PrintInLightTheme } from "./print-in-light-theme";
 export { ReactScan } from "./react-scan";
 export { SiteAnalytics } from "./site-analytics";
 export { TagList } from "./tag-list";
