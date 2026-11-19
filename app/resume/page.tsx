@@ -12,7 +12,7 @@ import { ArrowRight, Check, Download, ExternalLink, Mail, MapPin } from "@/lib/i
 import { generateMetadata as generateSEOMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
-import { CopyEmailButton, DownloadResumeButton, PrintInLightTheme } from "./resume-actions";
+import { CopyEmailButton, DownloadResumeButton } from "./resume-actions";
 
 // Rendered on the server so the record is in the HTML itself; only the email
 // line and the download button hydrate. Print rules live here (print:*), so
@@ -177,7 +177,6 @@ export default function ResumePage() {
 	return (
 		<>
 			<JsonLd data={jsonLdData} />
-			<PrintInLightTheme />
 
 			<SiteShell className="print:max-w-none print:gap-6 print:p-0" profile="evidence">
 				<header className="w-full">
