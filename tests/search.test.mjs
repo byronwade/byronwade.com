@@ -115,6 +115,18 @@ test("results stay in page, project, then writing order and drop empty groups", 
 	assert.equal(groupSearchResults(entries, "not-a-real-page").length, 0);
 });
 
+test("an entry named exactly for the query leads entries that only contain it", () => {
+	const writing = [
+		{ kind: "Writing", label: "Teaching Plumbing Companies", href: "/blog/a" },
+		{ kind: "Writing", label: "What My Plumbing Company Taught Me", href: "/blog/b" },
+		{ kind: "Writing", label: "Plumbing", href: "/blog/topic/plumbing" },
+	];
+	assert.deepEqual(
+		groupSearchResults(writing, "  PLUMBING ")[0].items.map((entry) => entry.href),
+		["/blog/topic/plumbing", "/blog/a", "/blog/b"]
+	);
+});
+
 test("within a group, a name match leads a summary match, which leads a text-only match", () => {
 	const ranked = [
 		{ kind: "Project", label: "Ui kit", href: "/a", text: "Built for Thorbis and others." },

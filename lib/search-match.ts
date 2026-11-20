@@ -50,18 +50,23 @@ function queryTokens(query: string): string[] {
 }
 
 /**
- * How directly an entry answers the query: 0 when every word is in its name,
- * 1 when every word is in its name, meta or keywords (summary, tags), 2 when
- * some word is only in the article text. A project named for the words then
- * leads one that merely mentions them.
+ * How directly an entry answers the query: 0 when its name is exactly the
+ * query, 1 when every word is in its name, 2 when every word is in its name,
+ * meta or keywords (summary, tags), 3 when some word is only in the article
+ * text. A topic named "Plumbing" then leads posts that mention plumbing in
+ * their titles, and a project named for the words leads one that merely
+ * mentions them.
  */
 function matchRank(entry: SearchEntry, tokens: string[]): number {
 	const label = entry.label.toLowerCase();
-	if (tokens.every((token) => label.includes(token))) {
+	if (queryTokens(label).join(" ") === tokens.join(" ")) {
 		return 0;
 	}
+	if (tokens.every((token) => label.includes(token))) {
+		return 1;
+	}
 	const described = `${label} ${entry.meta ?? ""} ${entry.keywords ?? ""}`.toLowerCase();
-	return tokens.every((token) => described.includes(token)) ? 1 : 2;
+	return tokens.every((token) => described.includes(token)) ? 2 : 3;
 }
 
 /**
@@ -75,7 +80,7 @@ export function groupSearchResults(entries: SearchEntry[], query: string): Searc
 		const items = entries.filter((entry) => entry.kind === kind && entryMatchesQuery(entry, query));
 		if (tokens.length > 0) {
 			const ranks = new Map(items.map((entry) => [entry, matchRank(entry, tokens)]));
-			items.sort((a, b) => (ranks.get(a) ?? 2) - (ranks.get(b) ?? 2));
+			items.sort((a, b) => (ranks.get(a) ?? 3) - (ranks.get(b) ?? 3));
 		}
 		return { kind, label: SEARCH_KIND_LABEL[kind], items };
 	}).filter((group) => group.items.length > 0);
