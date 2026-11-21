@@ -255,11 +255,11 @@ export default function ResumePage() {
 								render={
 									<Link href="/contact">
 										Start a conversation
-										<ArrowRight className="size-3.5" aria-hidden="true" />
+										<ArrowRight className="size-4" aria-hidden="true" />
 									</Link>
 								}
 							/>
-							<DownloadResumeButton icon={<Download className="size-3.5" aria-hidden="true" />} />
+							<DownloadResumeButton icon={<Download className="size-4" aria-hidden="true" />} />
 						</div>
 					</div>
 				</section>
@@ -393,7 +393,7 @@ export default function ResumePage() {
 							size="lg"
 							render={
 								<Link href="/contact">
-									Contact Byron
+									Start a conversation
 									<ArrowRight className="size-4" aria-hidden="true" />
 								</Link>
 							}

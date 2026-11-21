@@ -356,6 +356,9 @@ than restyling them.
 - **Detail identity.** Case studies and posts open the same way: a 13px
   muted facts line (type or date, then reading time), the 32px title, the
   16px lede, then the evidence (problem and outcome, or tags).
+- **Contact action.** Every button that leads to a conversation with Byron
+  says "Start a conversation" with a 16px `ArrowRight`, so one action has
+  one name across home, case studies and the resume.
 - **Heading case.** Section headings inside a post or case study are
   sentence case ("How it's built"), as posts already were. Only a page's own
   title may use Title Case. Product and component names keep their capitals
