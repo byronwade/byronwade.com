@@ -13,13 +13,15 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 	return (
 		<div className="relative flex min-h-screen flex-col">
 			<DeepField />
-			<SiteHeader entries={searchEntries} />
+			{/* The trail sits left of the header on screen, so it comes first in the
+			    tab order too: both are fixed, and source order is only reading order. */}
 			<div className="fixed top-2 left-5 z-(--z-chrome) hidden xl:block print:hidden">
 				<AppBreadcrumb
 					labels={pathLabels}
 					overflowIcon={<MoreHorizontal aria-hidden="true" className="size-4" />}
 				/>
 			</div>
+			<SiteHeader entries={searchEntries} />
 			<main id="main-content" className="min-w-0 flex-1">
 				{children}
 			</main>
