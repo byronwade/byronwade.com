@@ -405,8 +405,10 @@ than restyling them.
   and turn to the foreground on hover.
 - **Focus.** One indicator everywhere: the global `:focus-visible` outline,
   2px in the focus token, 2px off the control and following its radius
-  (Thorbis `focusRing`). Buttons, fields and badges add no ring of their own;
-  a row inside a panel may inset it (`-outline-offset-2`).
+  (Thorbis `focusRing`). Buttons, fields and badges add no ring of their own.
+  A control inside a container that clips its overflow (the breadcrumb trail)
+  draws the ring inside instead, with `data-focus-inset`; the unlayered global
+  rule outranks an `-outline-offset-2` utility, so that utility alone does not.
 - **Fields.** Inputs, the textarea and the native select are one recessed
   well. The select drops the platform paint (WebKit drew it as a light system
   button) and carries a caret, while its options stay the platform picker.

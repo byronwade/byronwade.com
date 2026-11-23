@@ -25,14 +25,23 @@ test("on wide screens the breadcrumb, left of the header, is reached before it b
 					return el?.textContent?.trim().slice(0, 30) ?? "";
 				});
 			const seen = [];
+			let breadcrumbRing = "";
 			for (const _ of [1, 2, 3, 4]) {
 				// biome-ignore lint/performance/noAwaitInLoops: each Tab depends on the last
 				await page.keyboard.press("Tab");
 				seen.push(await where());
+				if (seen.length === 2) {
+					breadcrumbRing = await page.evaluate(() => {
+						const style = getComputedStyle(document.activeElement);
+						return `${style.outlineStyle} ${style.outlineOffset}`;
+					});
+				}
 			}
-			return seen;
+			return { seen, breadcrumbRing };
 		})
 	);
 
-	assert.deepEqual(stops, ["Skip to main content", "breadcrumb", "breadcrumb", "header"]);
+	assert.deepEqual(stops.seen, ["Skip to main content", "breadcrumb", "breadcrumb", "header"]);
+	// The trail clips its overflow, so its ring is drawn inside the control.
+	assert.equal(stops.breadcrumbRing, "solid -2px");
 });
