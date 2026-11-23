@@ -14,6 +14,7 @@ export function BreadcrumbOverflowTrigger({
 	return (
 		<button
 			aria-label="Show hidden breadcrumb levels"
+			data-focus-inset
 			className="flex size-11 items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
 			type="button"
 			{...props}

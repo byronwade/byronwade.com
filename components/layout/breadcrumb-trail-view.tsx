@@ -140,10 +140,12 @@ function CrumbLink({
 }) {
 	return (
 		<li className={cn("flex items-center", truncate ? "min-w-0" : "shrink-0")}>
-			{/* Same pill target as the header's nav links: 44px, quiet until hovered. */}
+			{/* Same pill target as the header's nav links: 44px, quiet until hovered.
+			    The trail clips its overflow, so the focus ring sits inside the pill. */}
 			<Link
 				href={crumb.href}
 				aria-current={current ? "page" : undefined}
+				data-focus-inset
 				className={cn(
 					"inline-flex min-h-11 min-w-11 max-w-full items-center justify-center whitespace-nowrap rounded-full px-2.5 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
 					current ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground"

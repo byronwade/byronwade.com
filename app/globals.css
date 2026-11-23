@@ -1026,6 +1026,12 @@
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
+/* The one exception to "off the control": inside a container that clips its
+   overflow (the breadcrumb trail truncates a long title that way), an outside
+   ring loses its edges, so the ring is drawn just inside the control instead. */
+[data-focus-inset]:focus-visible {
+  outline-offset: -2px;
+}
 @media (forced-colors: active) {
   :focus-visible { outline-color: Highlight; }
 }
