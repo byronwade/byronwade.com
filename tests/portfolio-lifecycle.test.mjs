@@ -12,6 +12,7 @@ const FAILED = /Couldn(?:'|&#x27;|’)t load repositories/;
 const RETRY = /<a(?![^>]*\srole=)[^>]*href="\/portfolio"[^>]*>Try again<\/a>/;
 const PROFILE =
 	/<a(?![^>]*\srole=)[^>]*href="https:\/\/github.com\/byronwade"[^>]*>Open GitHub<\/a>/;
+const REFRESH = />Refresh<\/a>/;
 const EMPTY_OR_LOADING = /No repositories yet|Loading repositories|Refreshing/;
 const EMPTY = /No repositories yet/;
 const ERROR_OR_LOADING = /Couldn(?:'|&#x27;|’)t load repositories|Loading repositories/;
@@ -116,6 +117,7 @@ test("repository failure renders recovery links instead of an empty profile or p
 	assert.match(output, FAILED);
 	assert.match(output, RETRY);
 	assert.match(output, PROFILE);
+	assert.doesNotMatch(output, REFRESH, "Try again is the only retry; no second reload control");
 	assert.doesNotMatch(output, EMPTY_OR_LOADING);
 	assert.equal(errors.length, 1);
 	assert.equal(errors[0][1], failure);
@@ -125,6 +127,7 @@ test("an empty repository profile has a distinct non-error result", async () => 
 	const { html, errors } = renderPage(async () => []);
 	const output = await html;
 	assert.match(output, EMPTY);
+	assert.doesNotMatch(output, REFRESH);
 	assert.doesNotMatch(output, ERROR_OR_LOADING);
 	assert.deepEqual(errors, []);
 });
@@ -140,6 +143,7 @@ test("retry can succeed after failure and renders every eligible repository in r
 	]);
 	const output = await html;
 	assert.equal((output.match(ROW) || []).length, 12, "no client-only load-more gate");
+	assert.match(output, REFRESH, "a loaded list keeps the header Refresh");
 	assert.ok(output.indexOf("project-12") < output.indexOf('project-1"'));
 	assert.doesNotMatch(output, EXCLUDED);
 	assert.deepEqual(errors, []);

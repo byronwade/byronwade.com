@@ -213,10 +213,14 @@ export default async function PortfolioPage() {
 		failed = true;
 	}
 
+	const listed = !failed && repos.length > 0;
+
 	return (
 		<SiteShell profile="showcase">
 			<PageHeader
-				aside={<RefreshLink label="Refresh" />}
+				// One reload control at a time: the header's Refresh updates a list that
+				// loaded; without one, the empty state's Try again is the only retry.
+				aside={listed ? <RefreshLink label="Refresh" /> : undefined}
 				lede={
 					<>
 						Open-source work and experiments. Pulled live from{" "}
@@ -238,14 +242,14 @@ export default async function PortfolioPage() {
 				title="Portfolio"
 			/>
 
-			{failed || repos.length === 0 ? (
-				<PortfolioUnavailable failed={failed} />
-			) : (
+			{listed ? (
 				<IndexList as="ol">
 					{repos.map((repo) => (
 						<RepoRow key={repo.id} repo={repo} />
 					))}
 				</IndexList>
+			) : (
+				<PortfolioUnavailable failed={failed} />
 			)}
 		</SiteShell>
 	);
