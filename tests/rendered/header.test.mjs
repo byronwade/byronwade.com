@@ -479,6 +479,11 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 						await page.$eval(`${SEARCH} [role="status"]`, (status) => status.textContent?.trim()),
 						"No name matches · Enter searches all text · Esc close"
 					);
+					// A fine pointer shows the key hints, not only the screen reader.
+					assert.equal(
+						await page.$eval(`${SEARCH} [role="status"]`, (status) => status.innerText.trim()),
+						"No name matches · Enter searches all text · Esc close"
+					);
 					await page.keyboard.press("Escape");
 					// Otherwise the reopened wait can match the closing input and type into it.
 					await page.waitForSelector('input[role="combobox"]', { hidden: true });
@@ -515,6 +520,20 @@ test("site header preserves layout and accessible navigation", { timeout: 180_00
 					await page.waitForFunction(() => location.pathname === "/terms");
 				}
 			);
+
+			await t.test("a touch screen keeps the result line but drops the key hints", async () => {
+				await page.setViewport({ width: 390, height: 844, isMobile: true, hasTouch: true });
+				await page.goto(url, { waitUntil: "networkidle0" });
+				await page.tap(SEARCH_TRIGGER);
+				await page.waitForSelector('input[role="combobox"]');
+				const status = `${SEARCH} [role="status"]`;
+				// Before typing the line holds only key hints, so it is not drawn at all.
+				assert.equal(await page.$eval(status, (line) => line.getClientRects().length), 0);
+				await page.type('input[role="combobox"]', "zz-no-matching-destination");
+				assert.equal(await page.$eval(status, (line) => line.innerText.trim()), "No name matches");
+				await page.keyboard.press("Escape");
+				await page.waitForSelector('input[role="combobox"]', { hidden: true });
+			});
 
 			// Snapshot before the 200% case rewrites the root size, but assert after it, so a
 			// failure here never drops that subtest from the run.
