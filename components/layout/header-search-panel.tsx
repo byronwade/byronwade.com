@@ -65,13 +65,17 @@ export default function HeaderSearchPanel({
 	};
 	// The live line names what Enter does now: with no name matches the only
 	// option is the full-text search, so it never says "0 results" beside it.
+	// Key hints are for a keyboard; a touch screen keeps only the result line.
 	const count = `${results.length} ${results.length === 1 ? "match" : "matches"}`;
-	const status =
-		results.length > 0
-			? `${typed ? `${count} · ` : ""}↑↓ navigate · Enter open · Esc close`
-			: fullText
-				? "No name matches · Enter searches all text · Esc close"
-				: "Esc close";
+	let outcome = "";
+	let keys = "Esc close";
+	if (results.length > 0) {
+		outcome = typed ? count : "";
+		keys = "↑↓ navigate · Enter open · Esc close";
+	} else if (fullText) {
+		outcome = "No name matches";
+		keys = "Enter searches all text · Esc close";
+	}
 	let cursor = 0;
 	return (
 		<>
@@ -184,9 +188,16 @@ export default function HeaderSearchPanel({
 			</div>
 			<p
 				role="status"
-				className="border-border border-t px-3.5 py-2 text-copy-12 text-muted-foreground"
+				className={cn(
+					"border-border border-t px-3.5 py-2 text-copy-12 text-muted-foreground",
+					!outcome && "pointer-coarse:hidden"
+				)}
 			>
-				{status}
+				{outcome}
+				<span className="pointer-coarse:hidden">
+					{outcome && " · "}
+					{keys}
+				</span>
 			</p>
 		</>
 	);
