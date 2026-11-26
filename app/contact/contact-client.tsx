@@ -11,7 +11,7 @@ import { NativeSelect } from "@/components/ui/native-select";
 import { ObfuscatedEmail } from "@/components/ui/obfuscated-contact";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
-import { CONTACT_TOPICS } from "@/lib/contact-form";
+import { CONTACT_FIELD_COPY, CONTACT_TOPICS } from "@/lib/contact-form";
 
 const ContactSentToast = dynamic(
 	() => import("@/components/common/contact-sent-toast").then((module) => module.ContactSentToast),
@@ -45,7 +45,7 @@ export default function ContactClient({
 			>
 				<div className="grid gap-5 sm:grid-cols-2">
 					<div className="flex flex-col gap-2">
-						<Label htmlFor="name">Name</Label>
+						<Label htmlFor="name">{CONTACT_FIELD_COPY.name.label}</Label>
 						<Input
 							autoComplete="name"
 							aria-invalid={fieldError?.field === "name"}
@@ -53,7 +53,7 @@ export default function ContactClient({
 							id="name"
 							name="name"
 							onChange={(e) => handleChange("name", e.target.value)}
-							placeholder="Alex Rivera…"
+							placeholder={CONTACT_FIELD_COPY.name.placeholder}
 							required
 							value={formData.name}
 						/>
@@ -64,7 +64,7 @@ export default function ContactClient({
 						)}
 					</div>
 					<div className="flex flex-col gap-2">
-						<Label htmlFor="email">Email</Label>
+						<Label htmlFor="email">{CONTACT_FIELD_COPY.email.label}</Label>
 						<Input
 							autoComplete="email"
 							inputMode="email"
@@ -74,7 +74,7 @@ export default function ContactClient({
 							id="email"
 							name="email"
 							onChange={(e) => handleChange("email", e.target.value)}
-							placeholder="you@example.com…"
+							placeholder={CONTACT_FIELD_COPY.email.placeholder}
 							required
 							type="email"
 							value={formData.email}
@@ -88,7 +88,7 @@ export default function ContactClient({
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<Label htmlFor="topic">What is this about?</Label>
+					<Label htmlFor="topic">{CONTACT_FIELD_COPY.topic.label}</Label>
 					{/* A select is a well, the same sink as the text fields. */}
 					<NativeSelect
 						aria-invalid={fieldError?.field === "topic"}
@@ -112,7 +112,7 @@ export default function ContactClient({
 				</div>
 
 				<div className="flex flex-col gap-2">
-					<Label htmlFor="message">Message</Label>
+					<Label htmlFor="message">{CONTACT_FIELD_COPY.message.label}</Label>
 					{/* `field-sizing-content` on the primitive overrides `rows`, so the
 						    empty field collapsed to 64px, which was the smallest thing on a page whose
 						    entire job is writing a message. The floor is set here. */}
@@ -128,7 +128,7 @@ export default function ContactClient({
 								e.currentTarget.form?.requestSubmit();
 							}
 						}}
-						placeholder="I’d like to talk about a project…"
+						placeholder={CONTACT_FIELD_COPY.message.placeholder}
 						required
 						rows={8}
 						value={formData.message}

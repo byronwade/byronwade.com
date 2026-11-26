@@ -11,7 +11,7 @@ import { pillLinkClass } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { CONTACT_TOPICS } from "@/lib/contact-form";
+import { CONTACT_FIELD_COPY, CONTACT_TOPICS } from "@/lib/contact-form";
 import { Check, Copy, Loader2, Send, X } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
@@ -78,7 +78,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 				>
 					<div className="grid gap-4 sm:grid-cols-2">
 						<div className="flex flex-col gap-2">
-							<Label htmlFor={`${formId}-name`}>Name</Label>
+							<Label htmlFor={`${formId}-name`}>{CONTACT_FIELD_COPY.name.label}</Label>
 							<Input
 								aria-invalid={fieldError?.field === "name"}
 								aria-describedby={fieldError?.field === "name" ? `${formId}-name-error` : undefined}
@@ -88,7 +88,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 								autoFocus
 								value={formData.name}
 								onChange={(event) => handleChange("name", event.target.value)}
-								placeholder="Alex Rivera…"
+								placeholder={CONTACT_FIELD_COPY.name.placeholder}
 								required
 							/>
 							{fieldError?.field === "name" && (
@@ -98,7 +98,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							)}
 						</div>
 						<div className="flex flex-col gap-2">
-							<Label htmlFor={`${formId}-email`}>Email</Label>
+							<Label htmlFor={`${formId}-email`}>{CONTACT_FIELD_COPY.email.label}</Label>
 							<Input
 								aria-invalid={fieldError?.field === "email"}
 								aria-describedby={
@@ -112,7 +112,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 								spellCheck={false}
 								value={formData.email}
 								onChange={(event) => handleChange("email", event.target.value)}
-								placeholder="you@company.com…"
+								placeholder={CONTACT_FIELD_COPY.email.placeholder}
 								required
 							/>
 							{fieldError?.field === "email" && (
@@ -124,7 +124,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					</div>
 
 					<div className="flex flex-col gap-2">
-						<Label htmlFor={`${formId}-topic`}>What is this about?</Label>
+						<Label htmlFor={`${formId}-topic`}>{CONTACT_FIELD_COPY.topic.label}</Label>
 						<NativeSelect
 							aria-invalid={fieldError?.field === "topic"}
 							aria-describedby={fieldError?.field === "topic" ? `${formId}-topic-error` : undefined}
@@ -147,7 +147,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 					</div>
 
 					<div className="flex flex-col gap-2">
-						<Label htmlFor={`${formId}-message`}>Brief</Label>
+						<Label htmlFor={`${formId}-message`}>{CONTACT_FIELD_COPY.message.label}</Label>
 						<Textarea
 							aria-invalid={fieldError?.field === "message"}
 							aria-describedby={
@@ -157,7 +157,7 @@ export function InlineContact({ open, onClose, email }: InlineContactProps) {
 							name="message"
 							value={formData.message}
 							onChange={(event) => handleChange("message", event.target.value)}
-							placeholder="I’d like to talk about a project…"
+							placeholder={CONTACT_FIELD_COPY.message.placeholder}
 							required
 							rows={4}
 							className="min-h-28 resize-y"

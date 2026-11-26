@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { beforeEach, test } from "node:test";
 import { delivery } from "./fixtures/resend.mjs";
@@ -20,6 +21,8 @@ const { sendEmail } = await import("@/lib/actions/send-email");
 const { CONTACT_ENCODED, decodeContact } = await import("@/lib/contact");
 const { CONTACT_TOPICS, validateContactSubmission } = await import("@/lib/contact-form");
 const ownerEmail = decodeContact(CONTACT_ENCODED.email);
+const EXAMPLE_DOMAIN = /@example\.com/;
+const LITERAL_PLACEHOLDER = /placeholder="/;
 const SUBMISSION_ID = "6a19a7fe-5504-4262-8bbf-ecad29e40522";
 const valid = {
 	name: "Test Visitor",
@@ -230,4 +233,22 @@ test("unchanged retries keep their provider identity and another send can have i
 		delivery.options.map((options) => options.idempotencyKey),
 		[`contact/${SUBMISSION_ID}`, `contact/${SUBMISSION_ID}`, `contact/${anotherId}`]
 	);
+});
+
+test("both contact forms take their field words from one place", async () => {
+	const { CONTACT_FIELD_COPY } = await import("@/lib/contact-form");
+	assert.match(CONTACT_FIELD_COPY.email.placeholder, EXAMPLE_DOMAIN, "a reserved example domain");
+	for (const file of [
+		"../components/home/inline-contact.tsx",
+		"../app/contact/contact-client.tsx",
+	]) {
+		const source = readFileSync(new URL(file, import.meta.url), "utf8");
+		assert.doesNotMatch(source, LITERAL_PLACEHOLDER, `${file} hard-codes a placeholder`);
+		for (const field of ["name", "email", "topic", "message"]) {
+			assert.ok(
+				source.includes(`{CONTACT_FIELD_COPY.${field}.label}`),
+				`${file} labels ${field} from CONTACT_FIELD_COPY`
+			);
+		}
+	}
 });

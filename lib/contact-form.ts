@@ -8,6 +8,18 @@ export const CONTACT_TOPICS = [
 type ContactTopicValue = (typeof CONTACT_TOPICS)[number]["value"];
 export type ContactField = "name" | "email" | "message" | "topic";
 
+/**
+ * One set of words for both contact forms (the home drawer and /contact), so a
+ * field reads the same wherever it is filled in. Example addresses use the
+ * reserved example.com domain, never a real one.
+ */
+export const CONTACT_FIELD_COPY = {
+	name: { label: "Name", placeholder: "Alex Rivera…" },
+	email: { label: "Email", placeholder: "you@example.com…" },
+	topic: { label: "What is this about?" },
+	message: { label: "Message", placeholder: "I’d like to talk about a project…" },
+} as const;
+
 export const DEFAULT_CONTACT_TOPIC: ContactTopicValue = "conversation";
 export const CONTACT_DELIVERY_ERROR =
 	"Couldn't confirm your message was sent. Your draft is still here. Try again, or email me directly.";
