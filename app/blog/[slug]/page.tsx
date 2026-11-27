@@ -9,6 +9,7 @@ import {
 	TagList,
 } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
+import { MetaLine } from "@/components/common/meta-line";
 import { ledeClass, pageTitleClass } from "@/components/layout/page";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Link } from "@/components/ui/link";
@@ -126,17 +127,13 @@ async function BlogPostContent({ slug }: { slug: string }) {
 			    The identity block matches the case study's: the facts line, then
 			    the title and lede. Sharing sits at the foot, after reading. */}
 			<header className="flex w-full flex-col gap-4">
-				<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground tabular-nums">
+				<MetaLine className="tabular-nums">
 					{post.date && <time dateTime={post.date}>{safeFormatDate(post.date)}</time>}
 					{post.updated && post.updated !== post.date && (
-						<>
-							<span aria-hidden="true">·</span>
-							<time dateTime={post.updated}>Updated {safeFormatDate(post.updated)}</time>
-						</>
+						<time dateTime={post.updated}>Updated {safeFormatDate(post.updated)}</time>
 					)}
-					<span aria-hidden="true">·</span>
 					<span>{post.readingTime} min read</span>
-				</p>
+				</MetaLine>
 				<h1 className={pageTitleClass}>{post.title}</h1>
 				{post.excerpt && <p className={ledeClass}>{post.excerpt}</p>}
 				{post.tags && post.tags.length > 0 && <TagList className="pt-1" tags={post.tags} />}
