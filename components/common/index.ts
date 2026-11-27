@@ -8,6 +8,7 @@ export {
 	indexRowMarkerClass,
 } from "./index-list";
 export { Markdown } from "./markdown";
+export { MetaLine } from "./meta-line";
 export { PageToc } from "./page-toc";
 export { PageTocInline } from "./page-toc-inline";
 export { PrintInLightTheme } from "./print-in-light-theme";

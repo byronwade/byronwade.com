@@ -1,4 +1,10 @@
-import { Markdown, PageToc, PageTocInline, ProjectViewTracker } from "@/components/common";
+import {
+	Markdown,
+	MetaLine,
+	PageToc,
+	PageTocInline,
+	ProjectViewTracker,
+} from "@/components/common";
 import { indexRowAccentClass, indexRowLinkClass } from "@/components/common/index-list";
 import { JsonLd } from "@/components/common/json-ld";
 import { ledeClass, pageTitleClass, sectionHeadingClass } from "@/components/layout/page";
@@ -140,21 +146,13 @@ export function ProjectContent({ next, project }: ProjectContentProps) {
 			<SiteShell profile="evidence" width="wide">
 				{/* Executive read: identity, claim, the argument, the numbers, the way in. */}
 				<header className={cn(measureClass, "flex flex-col gap-4")}>
-					<p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-copy-13 text-muted-foreground">
+					<MetaLine>
 						<span>{projectTypeLabel}</span>
 						{project.category && project.category !== projectTypeLabel && (
-							<>
-								<span aria-hidden="true">·</span>
-								<span>{project.category}</span>
-							</>
+							<span>{project.category}</span>
 						)}
-						{formattedDate && (
-							<>
-								<span aria-hidden="true">·</span>
-								<time dateTime={isoDate}>{formattedDate}</time>
-							</>
-						)}
-					</p>
+						{formattedDate && <time dateTime={isoDate}>{formattedDate}</time>}
+					</MetaLine>
 
 					<h1 className={pageTitleClass}>{project.title}</h1>
 
