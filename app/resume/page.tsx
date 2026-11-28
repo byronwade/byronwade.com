@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import type { Person, WithContext } from "schema-dts";
-import { IndexList, IndexRow } from "@/components/common";
+import { IndexList, IndexRow, MetaLine } from "@/components/common";
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Button } from "@/components/ui/button";
@@ -191,13 +191,12 @@ export default function ResumePage() {
 								<h1 className="font-medium font-signature text-foreground text-heading-32">
 									Byron Wade
 								</h1>
-								{/* Each role stays whole when it fits, so a narrow screen breaks after the
-								    dot, not inside a title. A role wider than the line still wraps, and
-								    the dot stays with the first role instead of stranding on its own line. */}
-								<p className="text-body text-copy-16">
-									<span className="inline-block">Founder at Thorbis ·</span>{" "}
-									<span className="inline-block">Full Stack Developer</span>
-								</p>
+								{/* Each role stays whole when it fits; when the two wrap, the dot between
+								    them drops out rather than ending the first line. */}
+								<MetaLine className="text-body text-copy-16">
+									<span>Founder at Thorbis</span>
+									<span>Full Stack Developer</span>
+								</MetaLine>
 							</div>
 							<div className="relative size-14 shrink-0 overflow-hidden rounded-full ring-1 ring-border sm:size-16">
 								<Image
